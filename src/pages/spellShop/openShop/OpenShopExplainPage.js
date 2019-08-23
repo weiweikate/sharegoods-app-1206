@@ -14,7 +14,7 @@ import DesignRule from '../../../constants/DesignRule';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
-import HTML from 'react-native-render-html';
+import HTML from '@mr/react-native-render-html';
 import res from '../res';
 import { MRText as Text } from '../../../components/ui';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';

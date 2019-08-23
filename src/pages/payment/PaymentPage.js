@@ -10,6 +10,7 @@ import user from '../../model/user';
 import { payment, paymentType, payStatus, payStatusMsg } from './Payment';
 import PasswordView from './PayPasswordView';
 import { PaymentResult } from './PaymentResultPage';
+
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge';
 import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
@@ -57,7 +58,8 @@ export default class PaymentPage extends BasePage {
 
     goToPay = () => {
         const { bizType, modeType, platformOrderNo, amounts, oneCoupon } = payment;
-        payment.checkOrderStatus(platformOrderNo, bizType, modeType, amounts).then(result => {
+        const { paySignResult } = this.params;
+        payment.checkOrderStatus(platformOrderNo, bizType, modeType, amounts, '', paySignResult).then(result => {
             if (result.code === payStatus.payNo) {
                 if (payment.amounts <= 0) {
                     this._zeroPay();
@@ -101,6 +103,7 @@ export default class PaymentPage extends BasePage {
     _selectedBalance() {
         payment.selectBalancePayment();
     }
+
     _platformPay(password) {
         let selectBance = payment.selectedBalace;
         let { availableBalance } = user;//去除用余额
@@ -216,7 +219,7 @@ export default class PaymentPage extends BasePage {
         const { selectedBalace, name, bizType, oneCoupon } = payment;
         const { showPwd } = this.state;
         let { availableBalance } = user;
-        availableBalance = availableBalance || '0.00'
+        availableBalance = availableBalance || '0.00';
         let channelAmount = payment.amounts;
         //有优惠券先减掉优惠券
         if (bizType === 1) {

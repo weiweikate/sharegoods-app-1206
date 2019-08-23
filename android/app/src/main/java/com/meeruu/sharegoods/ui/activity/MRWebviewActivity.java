@@ -3,7 +3,6 @@ package com.meeruu.sharegoods.ui.activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,6 +12,8 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentTransaction;
 
 import com.meeruu.commonlib.base.BaseActivity;
 import com.meeruu.commonlib.callback.OnWebCommonListener;

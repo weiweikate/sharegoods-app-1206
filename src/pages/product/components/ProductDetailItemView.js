@@ -253,7 +253,7 @@ export class PromoteItemView extends Component {
                         })
                     }
                 </View>
-                <Image source={arrow_right_black}/>
+                <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>
             </NoMoreClick>
         );
     }
@@ -309,7 +309,7 @@ export class ServiceItemView extends Component {
                     {this._imgText('48小时发货')}
                     {afterSaleLimit ? this._imgText('仅支持换货') : (sevenDayReturn ? this._imgText('7天退换') : null)}
                 </View>
-                <Image source={arrow_right_black}/>
+                <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>
             </NoMoreClick>
         );
     }
@@ -356,7 +356,7 @@ export class ParamItemView extends Component {
                             fontSize: 13
                         }}>{paramNames.join(' ')}</Text>
                     </View>
-                    <Image source={arrow_right_black}/>
+                    <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>
                 </NoMoreClick>
             </View>
 

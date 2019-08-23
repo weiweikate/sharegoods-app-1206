@@ -12,7 +12,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -23,12 +22,12 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewTreeObserver;
 
+import androidx.appcompat.widget.AppCompatImageView;
+
 @SuppressWarnings("deprecation")
 public class ClipZoomImageView extends AppCompatImageView implements
         OnScaleGestureListener, OnTouchListener,
-        ViewTreeObserver.OnGlobalLayoutListener
-
-{
+        ViewTreeObserver.OnGlobalLayoutListener {
 
     public static float SCALE_MAX = 6.0f;
     private static float SCALE_MID = 1.0f;

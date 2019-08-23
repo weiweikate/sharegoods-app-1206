@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-    View,
-    StyleSheet,
-    AppState,
-    NetInfo, BackHandler
-} from 'react-native';
+import { AppState, BackHandler, StyleSheet, View } from 'react-native';
 
 import BasePage from '../../BasePage';
-
+import NetInfo from '@react-native-community/netinfo';
 import { observer } from 'mobx-react';
 import MyShopPage from './myShop/MyShopPage';
 import ShopRecruitPage from './shopRecruit/ShopRecruitPage';
@@ -79,9 +74,9 @@ export default class MyShop_RecruitPage extends BasePage {
                 if (!state.params) {//二级页面不返回首页 //安卓回退
                     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 }
-                NetInfo.isConnected.fetch().done((isConnected) => {
+                NetInfo.fetch().then(state => {
                     // 有网络
-                    if (isConnected) {
+                    if (state.isConnected) {
                         // 请求定位
                         geolocation.getLastLocation().then(result => {
                             store.save('@mr/storage_MrLocation', result);

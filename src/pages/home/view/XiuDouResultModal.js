@@ -95,7 +95,7 @@ export default class XiuDouResultModal extends React.Component {
                         justifyContent: 'center'}}
                                       onPress={()=>{this.close()}}
                     >
-                        <Image source={res.button.btn_close_white}/>
+                        <Image source={res.button.btn_close_white} style={{width: 30,height:30}}/>
                     </TouchableOpacity>
                 </ImageBackground>
             </View>

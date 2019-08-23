@@ -99,8 +99,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         height: 44,
-        paddingLeft: 21,
-        paddingRight: 28,
+        paddingHorizontal: 15,
         backgroundColor: 'white',
         flexDirection: 'row'
     }

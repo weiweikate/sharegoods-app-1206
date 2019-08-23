@@ -8,7 +8,7 @@ import {
     TouchableWithoutFeedback,
     View
 } from 'react-native';
-import Video from 'react-native-video';
+import Video from '@mr/react-native-video';
 // import Orientation from 'react-native-orientation';
 import icon_video_play from './icon_video_play.png';
 import icon_video_pause from './icon_video_pause.png';

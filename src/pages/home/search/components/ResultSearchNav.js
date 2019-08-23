@@ -61,7 +61,7 @@ export default class ResultSearchNav extends Component {
             <View style={[styles.container, this.props.style]}>
                 <View style={styles.contentView}>
                     <TouchableOpacity style={styles.navBackBtn} onPress={this.props.goBack}>
-                        <Image source={navBack}/>
+                        <Image source={navBack} style={{ width: 30, height: 30 }}/>
                     </TouchableOpacity>
                     <View style={styles.inputView}>
                         <MRTextInputWithCancel style={{ paddingHorizontal: 16 }}
@@ -75,7 +75,8 @@ export default class ResultSearchNav extends Component {
                         />
                     </View>
                     <TouchableOpacity style={styles.styleTypeBtn} onPress={this.props.changeLayout}>
-                        <Image source={this.props.isHorizontal ? horizontalRow : verticalRow}/>
+                        <Image source={this.props.isHorizontal ? horizontalRow : verticalRow}
+                               style={{ width: 23, height: 23 }}/>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.lineView}/>

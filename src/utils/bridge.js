@@ -1,17 +1,14 @@
 // 原生桥接接口函数请使用'$'开头
-import {
-    NativeModules,
-    Platform
-} from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import ScreenUtils from './ScreenUtils';
 import StringUtils from './StringUtils';
 import TimerMixin from 'react-timer-mixin';
-import { setCookieToken, setCookies, clearCookies } from '@mr/webview';
+import { clearCookies, setCookies, setCookieToken } from '@mr/webview';
 import apiEnvironment from '../api/ApiEnvironment';
 
 export default {
-    $checkIsCanComment(){
-        if(Platform.OS === 'ios'){
+    $checkIsCanComment() {
+        if (Platform.OS === 'ios') {
             NativeModules.commModule.checkIsCanComment();
         }
     },
@@ -46,9 +43,8 @@ export default {
      * @param timeout   加载中最长展示时间(提示语展示时间)。单位秒。默认为0秒，无限loading。
      * Prompt:          loading是全局的，尽量慎用，在合适的场景中使用。
      */
-    showLoading(message , timeout = 0, callback = () => {
-    }) {
-        if(Platform.OS !== 'ios'){
+    showLoading(message, timeout = 0) {
+        if (Platform.OS !== 'ios') {
             message = message || '加载中';
         }
         NativeModules.commModule.showLoadingDialog(message);
@@ -56,16 +52,13 @@ export default {
             TimerMixin.setTimeout(() => {
                 // 检测版本更新
                 NativeModules.commModule.hideLoadingDialog();
-                callback();
             }, timeout);
         }
     },
     /**
      * hiddenLoading  隐藏全局loading
      */
-    hiddenLoading(callback = () => {
-    }) {
-        callback();
+    hiddenLoading() {
         NativeModules.commModule.hideLoadingDialog();
     },
     /**
@@ -128,10 +121,10 @@ export default {
     }) {
         NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
     },
-    createQRToAlbum(info){
+    createQRToAlbum(info) {
         return NativeModules.LoginAndShareModule.createQRToAlbum(info);
     },
-    createShowProductImage(info){
+    createShowProductImage(info) {
         return NativeModules.LoginAndShareModule.createShowProductImage(info);
     },
     saveInviteFriendsImage(QRString, logoStr, onSuccess, onError = (errorStr) => {

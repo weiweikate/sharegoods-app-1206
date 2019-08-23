@@ -30,7 +30,6 @@ repositories {
 
 dependencies {
     implementation 'com.nimbusds:nimbus-jose-jwt:5.1'
-    api rootProject.ext.dependencies.support
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }

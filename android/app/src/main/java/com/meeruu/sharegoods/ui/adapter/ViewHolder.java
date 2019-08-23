@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.v7.widget.RecyclerView;
 import android.text.Spanned;
 import android.text.util.Linkify;
 import android.util.SparseArray;
@@ -17,6 +16,8 @@ import android.widget.Checkable;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.commonlib.utils.ImageLoadUtils;

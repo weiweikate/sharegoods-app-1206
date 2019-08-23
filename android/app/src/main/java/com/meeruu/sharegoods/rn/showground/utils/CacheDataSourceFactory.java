@@ -12,14 +12,18 @@ import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 import com.google.android.exoplayer2.util.Util;
+import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.sharegoods.R;
 
 import java.io.File;
 
-public class CacheDataSourceFactory implements DataSource.Factory{
+public class CacheDataSourceFactory implements DataSource.Factory {
     private final Context context;
     private final DefaultDataSourceFactory defaultDatasourceFactory;
     private final long maxFileSize, maxCacheSize;
+    private String fileName;
+    private SimpleCache simpleCache;
+    private LeastRecentlyUsedCacheEvictor evictor;
 
     public CacheDataSourceFactory(Context context, long maxCacheSize, long maxFileSize) {
         super();
@@ -31,12 +35,27 @@ public class CacheDataSourceFactory implements DataSource.Factory{
         defaultDatasourceFactory = new DefaultDataSourceFactory(this.context,
                 bandwidthMeter,
                 new DefaultHttpDataSourceFactory(userAgent, bandwidthMeter));
+        evictor = new LeastRecentlyUsedCacheEvictor(maxCacheSize);
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public void realseCache() {
+        if (simpleCache != null) {
+            simpleCache.release();
+            simpleCache = null;
+        }
     }
 
     @Override
     public DataSource createDataSource() {
-        LeastRecentlyUsedCacheEvictor evictor = new LeastRecentlyUsedCacheEvictor(maxCacheSize);
-        SimpleCache simpleCache = new SimpleCache(new File(context.getCacheDir(), "media"), evictor);
+        File fileDir = SDCardUtils.getFileDirPath(this.context, "MR/media/"
+                + fileName);
+        if (simpleCache == null) {
+            simpleCache = new SimpleCache(fileDir, evictor);
+        }
         return new CacheDataSource(simpleCache, defaultDatasourceFactory.createDataSource(),
                 new FileDataSource(), new CacheDataSink(simpleCache, maxFileSize),
                 CacheDataSource.FLAG_BLOCK_ON_CACHE | CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR, null);

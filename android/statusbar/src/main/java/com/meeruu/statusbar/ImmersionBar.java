@@ -6,24 +6,25 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.FloatRange;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.ColorUtils;
-import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.FloatRange;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -144,16 +145,6 @@ public final class ImmersionBar implements ImmersionCallback {
         return getRetriever().get(fragment);
     }
 
-    /**
-     * 在Fragment使用
-     * With immersion bar.
-     *
-     * @param fragment the fragment
-     * @return the immersion bar
-     */
-    public static ImmersionBar with(@NonNull android.app.Fragment fragment) {
-        return getRetriever().get(fragment);
-    }
 
     /**
      * 在DialogFragment使用
@@ -163,17 +154,6 @@ public final class ImmersionBar implements ImmersionCallback {
      * @return the immersion bar
      */
     public static ImmersionBar with(@NonNull DialogFragment dialogFragment) {
-        return getRetriever().get(dialogFragment);
-    }
-
-    /**
-     * 在DialogFragment使用
-     * With immersion bar.
-     *
-     * @param dialogFragment the dialog fragment
-     * @return the immersion bar
-     */
-    public static ImmersionBar with(@NonNull android.app.DialogFragment dialogFragment) {
         return getRetriever().get(dialogFragment);
     }
 
@@ -2361,10 +2341,6 @@ public final class ImmersionBar implements ImmersionCallback {
     }
 
     public static void setTitleBarMarginTop(Fragment fragment, View... view) {
-        setTitleBarMarginTop(fragment.getActivity(), view);
-    }
-
-    public static void setTitleBarMarginTop(android.app.Fragment fragment, View... view) {
         setTitleBarMarginTop(fragment.getActivity(), view);
     }
 

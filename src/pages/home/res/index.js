@@ -4,7 +4,6 @@ import search from './search';
 import task from './task'
 
 const resHome = {
-    arrowRight: require('./arrow_right.png'),
     goods: require('./goods.png'),
     home_icon_logo_red: require('./home_icon_logo_red.png'),
     icon_search: require('./icon_search.png'),

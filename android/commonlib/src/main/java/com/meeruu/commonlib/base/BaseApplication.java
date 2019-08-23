@@ -1,14 +1,16 @@
 package com.meeruu.commonlib.base;
 
+import android.app.Activity;
 import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.os.Build;
 import android.os.Looper;
 import android.os.MessageQueue;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.webkit.WebView;
+
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -32,7 +34,6 @@ import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SensorsUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
-import com.meeruu.qiyu.activity.QiyuServiceMessageActivity;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.OnBotEventListener;
 import com.qiyukf.unicorn.api.OnMessageItemClickListener;
@@ -178,7 +179,7 @@ public class BaseApplication extends MultiDexApplication {
                     } else {
                         EventBus.getDefault().post(new Event.MR2HTMLEvent(url));
                     }
-                    ((QiyuServiceMessageActivity) context).finish();
+                    ((Activity) context).finish();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }

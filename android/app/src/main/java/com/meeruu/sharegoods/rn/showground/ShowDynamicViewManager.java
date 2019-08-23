@@ -1,9 +1,10 @@
 package com.meeruu.sharegoods.rn.showground;
 
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -25,6 +26,7 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
     public static final int REPLACE_ITEM_DATA = 3;
     public static final int SCROLL_TO_TOP = 4;
     public static final int DELETE_ITEM = 5;
+
     @Override
     public String getName() {
         return COMPONENT_NAME;
@@ -66,7 +68,7 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
     @Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("replaceData", REPLACE_DATA,"addDataToTop",ADD_DATA_TOP,"replaceItemData",REPLACE_ITEM_DATA,"scrollToTop",SCROLL_TO_TOP,"deleteItem",DELETE_ITEM);
+        return MapBuilder.of("replaceData", REPLACE_DATA, "addDataToTop", ADD_DATA_TOP, "replaceItemData", REPLACE_ITEM_DATA, "scrollToTop", SCROLL_TO_TOP, "deleteItem", DELETE_ITEM);
     }
 
     @Override
@@ -79,28 +81,28 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
                 }
             }
             break;
-            case ADD_DATA_TOP:{
+            case ADD_DATA_TOP: {
                 Object object = root.getTag();
                 if (object != null && object instanceof ShowDynamicView) {
                     ((ShowDynamicView) object).addDataToTop(args.getString(0));
                 }
             }
             break;
-            case REPLACE_ITEM_DATA:{
+            case REPLACE_ITEM_DATA: {
                 Object object = root.getTag();
                 if (object != null && object instanceof ShowDynamicView) {
                     ((ShowDynamicView) object).repelaceItemData(args.getInt(0), args.getString(1));
                 }
             }
             break;
-            case SCROLL_TO_TOP:{
+            case SCROLL_TO_TOP: {
                 Object object = root.getTag();
                 if (object != null && object instanceof ShowDynamicView) {
                     ((ShowDynamicView) object).scrollIndex(0);
                 }
             }
             break;
-            case DELETE_ITEM:{
+            case DELETE_ITEM: {
                 Object object = root.getTag();
                 if (object != null && object instanceof ShowDynamicView) {
                     ((ShowDynamicView) object).scrollIndex(0);

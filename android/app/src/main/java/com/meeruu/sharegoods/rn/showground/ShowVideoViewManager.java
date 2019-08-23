@@ -1,7 +1,8 @@
 package com.meeruu.sharegoods.rn.showground;
 
-import android.support.annotation.Nullable;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -30,22 +31,17 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
         return COMPONENT_NAME;
     }
 
-    @Override
-    public void onDropViewInstance(@Nonnull View view) {
-        super.onDropViewInstance(view);
-        ((VideoListView)view.getTag()).releasePlayer();
-    }
-
     @Nonnull
     @Override
     protected View createViewInstance(@Nonnull ThemedReactContext reactContext) {
-        final VideoListView videoListView = new VideoListView();
+        VideoListView videoListView = new VideoListView();
         View view = videoListView.getVideoListView(reactContext);
         view.setTag(videoListView);
 
         reactContext.addLifecycleEventListener(new LifecycleEventListener() {
             @Override
-            public void onHostResume() {}
+            public void onHostResume() {
+            }
 
             @Override
             public void onHostPause() {
@@ -57,7 +53,6 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
                 videoListView.releasePlayer();
             }
         });
-
         return view;
     }
 
@@ -68,29 +63,29 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
         boolean isCollect = false;
         String type = "0";
         HashMap data = map.toHashMap();
-        if(data.containsKey("isPersonal")){
+        if (data.containsKey("isPersonal")) {
             isPersonal = (boolean) data.get("isPersonal");
-            if(isPersonal){
+            if (isPersonal) {
                 isCollect = (boolean) data.get("isCollect");
             }
         }
-        if(data.containsKey("tabType")){
-            type = (String)data.get("tabType");
+        if (data.containsKey("tabType")) {
+            type = (String) data.get("tabType");
         }
 
         NewestShowGroundBean.DataBean videoListBean = JSON.parseObject(JSONObject.toJSONString(data), NewestShowGroundBean.DataBean.class);
         List<NewestShowGroundBean.DataBean> list = new ArrayList<NewestShowGroundBean.DataBean>();
         list.add(videoListBean);
-        ((VideoListView) view.getTag()).refreshData(list,isPersonal,isCollect,type);
+        ((VideoListView) view.getTag()).refreshData(list, isPersonal, isCollect, type);
     }
 
     @ReactProp(name = "isLogin")
-    public void setLogin(View view, boolean isLogin){
+    public void setLogin(View view, boolean isLogin) {
         ((VideoListView) view.getTag()).setLogin(isLogin);
     }
 
     @ReactProp(name = "userCode")
-    public void setLogin(View view, String userCode){
+    public void setLogin(View view, String userCode) {
         ((VideoListView) view.getTag()).setUserCode(userCode);
     }
 
@@ -108,5 +103,13 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
                 .put("MrCollectionEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onCollection")))
                 .put("MrSeeUserEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onSeeUser")))
                 .build();
+    }
+
+    @Override
+    public void onDropViewInstance(@Nonnull View view) {
+        super.onDropViewInstance(view);
+        if (view.getTag() != null) {
+            ((VideoListView) view.getTag()).releasePlayer();
+        }
     }
 }

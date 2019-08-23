@@ -14,7 +14,7 @@ import DesignRule from '../../../constants/DesignRule';
 import productRes from '../res/product';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import HTML from 'react-native-render-html';
+import HTML from '@mr/react-native-render-html';
 import SelectionPage from '../SelectionPage';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { track, trackEvent } from '../../../utils/SensorsTrack';

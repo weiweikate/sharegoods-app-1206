@@ -9,39 +9,37 @@
  *
  */
 
+
 'use strict';
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-    WebView
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import BasePage from '../../../../BasePage';
+import WebView from '@mr/webview';
 
 type Props = {};
-export default class GongMallContractPage  extends BasePage<Props> {
+export default class GongMallContractPage extends BasePage<Props> {
 
-  $navigationBarOptions = {
-    title: '工猫合同',
-    show: true// false则隐藏导航
-  };
+    $navigationBarOptions = {
+        title: '工猫合同',
+        show: true// false则隐藏导航
+    };
 
-  _render() {
-    return (
-      <View style={styles.container}>
-          <WebView source={{ uri: 'http://' + this.params.url }}
-                   javaScriptEnabled={true}
-                   domStorageEnabled={true}
-                   scalesPageToFit={true}
-                   style={styles.webViewWrapper}
-          />
-      </View>
-    );
-  }
+    _render() {
+        return (
+            <View style={styles.container}>
+                <WebView source={{ uri: 'http://' + this.params.url }}
+                         javaScriptEnabled={true}
+                         domStorageEnabled={true}
+                         scalesPageToFit={true}
+                         style={styles.webViewWrapper}
+                />
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
+    container: {
+        flex: 1
+    }
 });
