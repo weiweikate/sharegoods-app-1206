@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     icon: {
-        marginTop: 71
+        marginTop: 71, width: 70, height: 70
     },
     desc: {
         fontSize: 14,

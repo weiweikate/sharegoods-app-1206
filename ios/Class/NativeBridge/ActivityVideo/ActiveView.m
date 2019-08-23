@@ -196,6 +196,7 @@
   self.callBackArr = [NSMutableArray arrayWithObject:params];
   self.VideoHeaderView.model = firstData;
   [self.scrollView setupData:self.dataArr];
+  [self videoHotRequest];
   [self refreshData];
 
 }
@@ -225,6 +226,7 @@
   self.current = index;
   if(self.current<self.dataArr.count&&[self.dataArr objectAtIndex:self.current]){
     self.VideoHeaderView.model =[self.dataArr objectAtIndex:self.current];
+    [self videoHotRequest];
   }
 }
 
@@ -293,7 +295,18 @@
 }
 
 
-#pragma arguments --RN callback Native
+#pragma arguments -- 视频热度接口请求
 
+-(void)videoHotRequest{
+  MBModelData* data = self.dataArr[self.current];
+  
+  if(data.showNo){
+    [NetWorkTool requestWithURL:ShowApi_incrCountByType params:@{@"showNo": data.showNo,@"type":@6}  toModel:nil success:^(NSDictionary* result) {
+      
+    } failure:^(NSString *msg, NSInteger code) {
+    [MBProgressHUD showSuccess:msg];
+    } showLoading:nil];
+  }
+}
 
 @end

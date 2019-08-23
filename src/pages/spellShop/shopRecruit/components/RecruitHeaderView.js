@@ -39,7 +39,7 @@ export default class RecommendRow extends Component {
     _renderItems = (img, tittle, content) => {
         return (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Image source={img}/>
+                <Image source={img} style={{ width: 12, height: 12 }}/>
                 <Text style={{ color: '#333333', fontSize: 13, marginLeft: 2 }} allowFontScaling={false}>{tittle}</Text>
             </View>
             <Text style={{
