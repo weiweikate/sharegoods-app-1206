@@ -26,22 +26,24 @@ export default class InfoRow extends Component {
     render() {
         return (<View style={styles.row}>
             <Image style={styles.img} source={this.props.icon}/>
-            <Text style={styles.title} allowFontScaling={false}>{StringUtils.isNoEmpty(this.props.title) ? this.props.title : ''}</Text>
-            <Text style={styles.desc} allowFontScaling={false}>{StringUtils.isNoEmpty(this.props.desc) ? this.props.desc : ''}</Text>
+            <Text style={styles.title}
+                  allowFontScaling={false}>{StringUtils.isNoEmpty(this.props.title) ? this.props.title : ''}</Text>
+            <Text style={styles.desc}
+                  allowFontScaling={false}>{StringUtils.isNoEmpty(this.props.desc) ? this.props.desc : ''}</Text>
         </View>);
     }
 }
 
 const styles = StyleSheet.create({
     row: {
-        marginHorizontal:15,marginBottom:10,borderRadius:5,
+        marginHorizontal: 15, marginBottom: 10, borderRadius: 5,
         height: 44,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white'
     },
     img: {
-        marginLeft: 15
+        marginLeft: 15, width: 14, height: 14
     },
     title: {
         fontSize: 13,

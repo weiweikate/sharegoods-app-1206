@@ -1,6 +1,7 @@
 package com.meeruu.commonlib.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.ViewTreeObserver;
@@ -24,6 +25,7 @@ import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.common.RotationOptions;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.image.CloseableBitmap;
 import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.listener.BaseRequestListener;
 import com.facebook.imagepipeline.request.ImageRequest;
@@ -887,5 +889,31 @@ public class ImageLoadUtils {
 
     public static void resumeLoadImage() {
         Fresco.getImagePipeline().resume();
+    }
+
+    public static Bitmap gitBitmapFromCache(String url) {
+        Uri uri = Uri.parse(url);
+        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+        ImageRequest imageRequest = ImageRequest.fromUri(uri);
+        DataSource<CloseableReference<CloseableImage>> dataSource =
+                imagePipeline.fetchImageFromBitmapCache(imageRequest, CallerThreadExecutor.getInstance());
+        try {
+            CloseableReference<CloseableImage> imageCloseableReference = dataSource.getResult();
+            if (imageCloseableReference != null) {
+                try {
+                    CloseableBitmap image = (CloseableBitmap) imageCloseableReference.get();
+                    Bitmap bmp = image.getUnderlyingBitmap();
+                    if (bmp != null) {
+                        return bmp;
+                    }
+                    return null;
+                } finally {
+                    CloseableReference.closeSafely(imageCloseableReference);
+                }
+            }
+        } finally {
+            dataSource.close();
+        }
+        return null;
     }
 }
