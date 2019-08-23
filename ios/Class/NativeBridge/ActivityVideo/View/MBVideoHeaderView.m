@@ -260,7 +260,7 @@
     }
   }
   if(model.hotCount){
-    self.hotLab.text = [NSString stringWithFormat:@"%ld人气值",model.hotCount];
+    self.hotLab.text = [NSString stringWithFormat:@"%@人气值",[NSString stringWithNumber:model.hotCount]];
   }
 }
 
