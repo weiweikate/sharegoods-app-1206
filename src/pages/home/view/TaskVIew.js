@@ -29,7 +29,8 @@ import {
     View,
     TouchableOpacity,
     ImageBackground,
-    ScrollView
+    ScrollView,
+    TouchableWithoutFeedback
 } from 'react-native';
 
 import {
@@ -44,6 +45,7 @@ import taskModel, { mineTaskModel } from '../model/TaskModel';
 import TaskModalView from './TaskModalView';
 // import { IntervalMsgNavigate } from '../../../comm/components/IntervalMsgView';
 import ImageLoader from '@mr/image-placeholder';
+import { routePush } from '../../../navigation/RouterMap';
 
 const { autoSizeWidth, px2dp } = ScreenUtils;
 const {
@@ -463,6 +465,37 @@ export default class TaskVIew extends React.Component {
         let type = this.props.type;
         let progress = this.model.progress + '';
         let fontSize = autoSizeWidth(17);
+        if (this.model.type === 'home'){
+            return (
+                <View style={[{
+                    width: ScreenUtils.width,
+                }, this.props.style]}>
+                    <View style={{
+                        width: ScreenUtils.width,
+                        paddingHorizontal: 15,
+                    }}>
+                    {this.renderTitle(type)}
+                    </View>
+                    <TouchableWithoutFeedback onPress={()=> {routePush('HtmlPage', {uri: '/cycle-coupon'})}}>
+                        <View>
+                    <ImageLoader style={{height: ScreenUtils.autoSizeWidth(120), width: ScreenUtils.width}}
+                                 source={{uri: 'https://mr-prod-sg.oss-cn-hangzhou.aliyuncs.com/app/10_01_28__08_23_2019.jpg'}}
+                    />
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <View style={{backgroundColor: 'white',borderRadius: 8,
+                        overflow: 'hidden',
+                        marginTop: 10,
+                        marginHorizontal: 15
+                    }}>
+                        {this.renderTaskView()}
+                        {this.renderBtn()}
+                    </View>
+                    <TaskModalView type={type}/>
+                </View>
+            );
+
+        }
         return (
             <View style={[{
                 width: ScreenUtils.width,

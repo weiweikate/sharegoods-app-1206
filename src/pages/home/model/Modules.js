@@ -8,9 +8,9 @@ import { todayModule } from './HomeTodayModel';
 import { channelModules } from './HomeChannelModel';
 import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
-import { categoryModule } from './HomeCategoryModel';
 import { limitGoModule } from './HomeLimitGoModel';
 import taskModel from './TaskModel';
+import { tabModel } from './HomeTabModel';
 
 //首页modules
 class HomeModule {
@@ -119,7 +119,7 @@ class HomeModule {
         }, 1000);
 
         // 首页类目
-        categoryModule.loadCategoryList(this.firstLoad);
+        tabModel.loadTabList(this.firstLoad);
         // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
         // 首页频道类目
@@ -183,38 +183,39 @@ class HomeModule {
         if (this.isFetching === true) {
             return;
         }
-        this.homeList = home ;
+        this.homeList = home;
         try {
             this.refreshing = true;
-            const tabData =  yield HomeApi.getTabList();
-            this.tabList = tabData.data || []
+            const tabData = yield HomeApi.getTabList();
+            this.tabList = tabData.data || [];
             if (this.tabList.length > 0) {
                 home.push({
                     id: 11,
                     type: homeType.goodsTitle
                 });
                 this.homeList = [...home];
-                if (this.tabId){
+                if (this.tabId) {
                     let tabId = this.tabList[0].id;
                     let tabName = this.tabList[0].name;
                     let tabListIndex = 0;
                     this.tabList.forEach((item, index) => {
                         if (item.id === this.tabId) {
-                            tabListIndex = index
+                            tabListIndex = index;
                             tabId = item.id;
                             tabName = item.name;
                         }
-                    })
+                    });
                     this.tabId = tabId;
                     this.tabName = tabName;
                     this.tabListIndex = tabListIndex;
-                }else {
+                } else {
                     this.tabId = this.tabList[0].id;
-                    this.tabName = this.tabList[0].name;;
+                    this.tabName = this.tabList[0].name;
+                    ;
                     this.tabListIndex = 0;
                 }
                 this.getGoods();
-            }else {
+            } else {
                 this.isEnd = true;
             }
         } catch (error) {
@@ -223,10 +224,10 @@ class HomeModule {
         }
     });
 
-    @action getGoods (){
+    @action getGoods() {
         this.isEnd = false;
         this.refreshing = true;
-        HomeApi.getRecommendList({tabId: this.tabId,  "page":1, "pageSize":10,}).then(data => {
+        HomeApi.getRecommendList({ tabId: this.tabId, 'page': 1, 'pageSize': 10 }).then(data => {
             this.page = 1;
             let list = data.data.data || [];
             if (!data.data.isMore) {
@@ -257,9 +258,9 @@ class HomeModule {
                     id: 'goods'
                 });
             }
-          let temp = this.homeList.filter((item) => {
+            let temp = this.homeList.filter((item) => {
                 return item.type !== homeType.goods;
-            })
+            });
             this.goodsOtherLen = temp.length;
             this.homeList = [...temp, ...home];
             this.isFetching = false;
@@ -272,10 +273,11 @@ class HomeModule {
             this.isRefreshing = false;
             this.errorMsg = err.msg;
             this.refreshing = false;
-        })
+        });
 
 
     }
+
     //加载为你推荐列表
     @action loadMoreHomeList = flow(function* () {
         if (this.isFetching || this.refreshing) {
@@ -290,8 +292,8 @@ class HomeModule {
         try {
             const timeStamp = new Date().getTime();
             this.isFetching = true;
-            let page = this.page + 1
-            const result = yield HomeApi.getRecommendList({ page: page,tabId: this.tabId, pageSize:10});
+            let page = this.page + 1;
+            const result = yield HomeApi.getRecommendList({ page: page, tabId: this.tabId, pageSize: 10 });
             this.isFetching = false;
             let list = result.data.data || [];
             if (!result.data.isMore) {
@@ -346,7 +348,7 @@ class HomeModule {
         this.isFocused = focuse;
     };
 
-    @action tabSelect(index, tabId, tabName){
+    @action tabSelect(index, tabId, tabName) {
         this.tabListIndex = index;
         this.tabId = tabId;
         this.tabName = tabName;
