@@ -100,7 +100,7 @@ export default class MyShopPage extends BasePage {
                         <Image style={{ marginRight: 10, width: 18, height: 18 }} source={icons8_Shop_50px}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this._clickSettingItem}>
-                        <Image source={myStore ? shezhi : my_Shop_gengduo} style={{ width: 13, height: 12 }}/>
+                        <Image source={myStore ? shezhi : my_Shop_gengduo} style={{ width: 18, height: 18 }}/>
                     </TouchableOpacity>
                 </View>
             );
