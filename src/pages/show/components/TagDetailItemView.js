@@ -45,16 +45,16 @@ export default class TagDetailItemView extends PureComponent {
                     let resourceItem = itemData.resource[i];
                     if (resourceItem.type === 5) {
                         uri = resourceItem.baseUrl;
-                        width = resourceItem.width;
-                        height = resourceItem.height;
+                        width = resourceItem.width || 1;
+                        height = resourceItem.height || 1;
                     }
                 }
             }
         } else {
             if (itemData.resource) {
                 uri = itemData.resource[0].baseUrl;
-                width = itemData.resource[0].width;
-                height = itemData.resource[0].height;
+                width = itemData.resource[0].width || 1;
+                height = itemData.resource[0].height || 1;
             }
         }
 
