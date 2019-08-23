@@ -139,6 +139,8 @@ public class VideoListView {
      * 网络状态监听器
      */
     private NetWatchdog netWatchdog;
+    private ExtractorMediaSource.Factory factory;
+    private CacheDataSourceFactory cacheDataSourceFactory;
 
     public View getVideoListView(ReactContext context) {
         this.mContext = context;
@@ -157,7 +159,11 @@ public class VideoListView {
     }
 
     private void initPlayer(final View view) {
+        releasePlayer();
         mPlayerViewContainer = (RnFrameLayout) View.inflate(mContext, R.layout.layout_player_view, null);
+        cacheDataSourceFactory = new CacheDataSourceFactory(mContext, 10 * 1024 * 1024,
+                100 * 1024 * 1024);
+        factory = new ExtractorMediaSource.Factory(cacheDataSourceFactory);
         videoView = mPlayerViewContainer.findViewById(R.id.video_view);
         videoView.setUseController(false);
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(new DefaultBandwidthMeter());
@@ -183,7 +189,7 @@ public class VideoListView {
                 }
             }
         });
-        videoView.setPlayer((SimpleExoPlayer) exoPlayer);
+        videoView.setPlayer(exoPlayer);
         gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
 
             @Override
@@ -262,6 +268,9 @@ public class VideoListView {
             exoPlayer.setPlayWhenReady(false);
             exoPlayer.release();
             exoPlayer = null;
+        }
+        if (cacheDataSourceFactory != null) {
+            cacheDataSourceFactory.realseCache();
         }
     }
 
@@ -676,8 +685,9 @@ public class VideoListView {
 
     private MediaSource buildSource(String url) {
         Uri mp4VideoUri = Uri.parse(url);
-        MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, new CacheDataSourceFactory(mContext, 100 * 1024 * 1024, 5 * 1024 * 1024), new DefaultExtractorsFactory(), mainHandler, null);
-        return videoSource;
+        String fileName = url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
+        cacheDataSourceFactory.setFileName(fileName);
+        return factory.createMediaSource(mp4VideoUri);
 
     }
 
