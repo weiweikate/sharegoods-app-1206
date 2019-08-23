@@ -14,7 +14,6 @@ import { NoMoreClick} from '../../../../components/ui';
 import {observer} from 'mobx-react';
 import {SmoothPushPreLoadHighComponentFirstDelay} from '../../../../comm/components/SmoothPushHighComponent';
 import RouterMap from '../../../../navigation/RouterMap';
-import CustomerServiceButton from '../../components/CustomerServiceButton';
 
 const {px2dp} = ScreenUtils;
 @SmoothPushPreLoadHighComponentFirstDelay
@@ -101,8 +100,6 @@ export default class HelperCenterQuestionTypeList extends BasePage {
                     {this.renderHotQuestionList()}
                 </ScrollView>
                 <View style={{height: 20, backgroundColor: DesignRule.bgColor}}/>
-                {/*联系客服按钮*/}
-                <CustomerServiceButton/>
             </View>
         );
     };

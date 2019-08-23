@@ -6,12 +6,11 @@ import {Image, View} from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText as Text, NoMoreClick } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
-import LinearGradient from 'react-native-linear-gradient';
 import res from '../res';
 import {beginChatType, QYChatTool} from '../../../utils/QYModule/QYChatTool';
 import {track, trackEvent} from '../../../utils/SensorsTrack';
 
-const icon_kefu = res.button.icon_kefu;
+const icon_kefu_2 = res.helperAndCustomerService.icon_kefu_2;
 
 export default class CustomerServiceButton extends Component{
 
@@ -45,27 +44,23 @@ export default class CustomerServiceButton extends Component{
                         style={{
                             height: ScreenUtils.autoSizeWidth(40),
                             borderRadius: ScreenUtils.autoSizeWidth(20),
-                            overflow: 'hidden'
+                            overflow: 'hidden',
+                            borderWidth:ScreenUtils.autoSizeWidth(0.5),
+                            borderColor:"#CCCCCC",
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginBottom:ScreenUtils.autoSizeWidth(5),
                         }}
                         onPress={() => this.jumpQYIMPage()}>
-                        <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
-                                        colors={['#FC5D39', '#FF0050']}
-                                        style={{
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                            justifyContent: 'center',
-                                            flex: 1
-                                        }}
-                        >
-                            <Image source={icon_kefu} style={{height: 23, width: 23}} resizeMode={'contain'}/>
+                        <Image source={icon_kefu_2} style={{height: 23, width: 23}} resizeMode={'contain'}/>
 
-                            <Text style={{
-                                fontFamily: 'PingFangSC-Regular',
-                                fontSize: 13,
-                                color: 'white',
-                                marginLeft: 4
-                            }} allowFontScaling={false}>在线客服</Text>
-                        </LinearGradient>
+                        <Text style={{
+                            fontFamily: 'PingFangSC-Regular',
+                            fontSize: 13,
+                            color: '#999999',
+                            marginLeft: 4
+                        }} allowFontScaling={false}>平台客服</Text>
                     </NoMoreClick>
                 </View>
                 <Text style={{

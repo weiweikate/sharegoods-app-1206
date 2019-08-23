@@ -15,6 +15,7 @@ const  helperAndCustomerService = {
     icon_feedback_2:require('./icon_feedback_2.png'),
     icon_auto_feedback_2:require('./icon_auto_feedback_2.png'),
     icon_question_label:require('./question_label.png'),
+    icon_kefu_2:require('./icon_kefu_2.png'),
 }
 
 export default helperAndCustomerService;

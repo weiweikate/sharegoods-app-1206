@@ -57,18 +57,18 @@ export default class MyHelperCenter extends BasePage {
                 }}>
                     {
                         typeList.length ?
-                            <View style={styles.title}>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    <View style={{width: 2, height: 8, backgroundColor: '#FF0050', borderRadius: 1}}/>
-                                    <UIText value={'常见问题'}
-                                            style={{
-                                                marginLeft: 10,
-                                                fontSize: DesignRule.fontSize_threeTitle_28,
-                                                color: DesignRule.textColor_mainTitle,
-                                                fontWeight: '600'
-                                            }}/>
-                                </View>
-                                <TouchableWithoutFeedback onPress={this.jumpToAllQuestionTypePage}>
+                            <TouchableWithoutFeedback onPress={this.jumpToAllQuestionTypePage} >
+                                <View style={styles.title}>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <View style={{width: 2, height: 8, backgroundColor: '#FF0050', borderRadius: 1}}/>
+                                        <UIText value={'常见问题'}
+                                                style={{
+                                                    marginLeft: 10,
+                                                    fontSize: DesignRule.fontSize_threeTitle_28,
+                                                    color: DesignRule.textColor_mainTitle,
+                                                    fontWeight: '600'
+                                                }}/>
+                                    </View>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                         <UIText value={'查看全部'}
                                                 style={{
@@ -78,8 +78,8 @@ export default class MyHelperCenter extends BasePage {
                                         <Image source={res.button.arrow_right}
                                                style={{width: 4, height: 8, marginLeft: 6}}/>
                                     </View>
-                                </TouchableWithoutFeedback>
-                            </View>
+                                </View>
+                            </TouchableWithoutFeedback>
                             : null
                     }
                     {typeList.map((item, index) => {
