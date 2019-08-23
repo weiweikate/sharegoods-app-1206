@@ -52,7 +52,6 @@ export class LimitGoModules {
                 this.currentPage = -1;
                 throw new Error('不显示秒杀');
             } else {
-
                 const res = yield HomeApi.getLimitGo({
                     type: 0
                 });

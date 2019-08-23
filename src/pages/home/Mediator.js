@@ -18,7 +18,7 @@ mediatorAddFunc('Home_UserLevelUpdate', (p) => {
 
 mediatorAddFunc('Home_AdNavigate', (p) => {
     if (p) {
-        const router = homeModule.homeNavigate(p.linkType, p.linkTypeCode);
+        const router = homeModule.homeNavigate(p.linkType, p.linkTypeCode || p.linkCode);
         let params = homeModule.paramsNavigate(p);
         routePush(router, { ...params });
     }

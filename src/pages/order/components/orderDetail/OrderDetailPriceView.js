@@ -18,7 +18,7 @@ export default class OrderDetailPriceView extends Component {
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
+            <View style={{ height: 20, backgroundColor: DesignRule.bgColor }}/>
         );
     };
     render(){
@@ -72,7 +72,7 @@ export default class OrderDetailPriceView extends Component {
                                 leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
                                 rightText={StringUtils.formatMoneyString(payAmount)}
                                 rightTextStyle={{ color: DesignRule.mainColor, fontSize: 15 }} isArrow={false}
-                                isLine={true}/>
+                                isLine={false}/>
             </View>
         )
     }

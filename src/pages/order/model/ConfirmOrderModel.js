@@ -20,6 +20,8 @@ class ConfirmOrderModel {
     canUseCou = true;
     @observable
     isAllVirtual = false;
+    @observable
+    canInvoke = false
 
     addressId = '';
     addressData = {};
@@ -59,6 +61,7 @@ class ConfirmOrderModel {
         this.payInfo = {};
         this.receiveInfo = {};
         this.data = null;
+        this.canInvoke = false
 
     }
 
@@ -176,6 +179,13 @@ class ConfirmOrderModel {
                 data = data.data || {};
                 let userCouponCode = '';
                 (data.data || []).find((item)=>{
+                    if (item.canInvoke === true && item.type == 5)
+                    {
+                        this.canInvoke = true;
+                    }
+                        if (item.status !== 0){
+                        return;//不可用
+                    }
                     if (item.couponConfigId == couponsId) {
                         userCouponCode = item.code;
                         return true;

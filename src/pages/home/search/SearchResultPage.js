@@ -170,7 +170,7 @@ export default class SearchResultPage extends BasePage {
                     itemData.push(item);
                     dataList.push({
                         itemData: itemData,
-                        type: viewTypes.rowView
+                        itemType: viewTypes.rowView
                     });
                     itemData = [];
                 } else {
@@ -180,12 +180,12 @@ export default class SearchResultPage extends BasePage {
             if (itemData.length > 0) {
                 dataList.push({
                     itemData: itemData,
-                    type: viewTypes.rowView
+                    itemType: viewTypes.rowView
                 });
             }
         } else {
             (nextState.productList || []).forEach((item) => {
-                item.type = viewTypes.rowView1;
+                item.itemType = viewTypes.rowView1;
                 dataList.push(item);
             });
         }
@@ -375,7 +375,7 @@ export default class SearchResultPage extends BasePage {
     });
 
     _layoutProvider = new LayoutProvider((index) => {
-        return this.dataProvider.getDataForIndex(index).type;
+        return this.dataProvider.getDataForIndex(index).itemType;
     }, (type, dim) => {
         dim.width = width;
         switch (type) {

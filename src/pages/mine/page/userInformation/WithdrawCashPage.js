@@ -133,6 +133,7 @@ export default class WithdrawCashPage extends BasePage {
 
     $navigationBarOptions = {
         title: '提现',
+        rightNavTitle:'提现记录',
         show: true // false则隐藏导航
     };
 
@@ -172,6 +173,10 @@ export default class WithdrawCashPage extends BasePage {
         this._getRate();
         this._getLastBankInfo();
     };
+
+    $NavBarRightPressed=()=>{
+        this.$navigate(RouterMap.WithdrawRecordPage);
+    }
 
     _getLastBankInfo() {
         MineAPI.getLastBankInfo().then((data) => {
@@ -499,7 +504,7 @@ export default class WithdrawCashPage extends BasePage {
         if (this.state.errorTip !== null) {
             tip2 = this.state.errorTip;
         } else if (!parseFloat(this.state.money)) {
-            tip2 = `可用余额${user.availableBalance}`;
+            tip2 = `可用余额${user.availableBalance || 0}`;
         } else {
             if (!EmptyUtils.isEmpty(this.state.rate)) {
                 // tip2 = `可提现，额外扣除￥${Math.ceil(accMul(this.state.rate / 100, parseFloat(this.state.money)) * 100) / 100}手续费(费率${this.state.rate}%)`;

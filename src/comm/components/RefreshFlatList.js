@@ -283,6 +283,7 @@ export default class RefreshFlatList extends React.Component {
             }
 
             that.allLoadCompleted = allLoadCompleted;
+            this.props.dataChangeListener && this.props.dataChangeListener(data);
             that.setState({
                 refreshing: false,
                 loadingMore: false,
@@ -366,11 +367,13 @@ export class BaseLoadMoreComponent extends React.Component {
                 return this.renderLoadingMore();
             case 'noMoreData':
                 return this.renderLoadCompleted();
+            default:
+                return <View />
         }
     }
 }
 
-class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
+export class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
 
     renderIdleMore() {
         return (
@@ -403,7 +406,7 @@ class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
 
 const styles = StyleSheet.create({
     footer: {
-        height: 70,
+        height: 50,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row'

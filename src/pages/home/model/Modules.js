@@ -8,9 +8,9 @@ import { todayModule } from './HomeTodayModel';
 import { channelModules } from './HomeChannelModel';
 import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
-import { categoryModule } from './HomeCategoryModel';
 import { limitGoModule } from './HomeLimitGoModel';
 import taskModel from './TaskModel';
+import { tabModel } from './HomeTabModel';
 
 //首页modules
 class HomeModule {
@@ -19,11 +19,15 @@ class HomeModule {
     @observable isRefreshing = false;
     @observable isFocused = false;
     @observable goodsOtherLen = 0;
+    @observable tabList = [];
+    @observable tabListIndex = 0;
     isFetching = false;
     isEnd = false;
     page = 1;
     firstLoad = true;
     errorMsg = '';
+    tabId = '';
+    refreshing = false;
     //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
@@ -70,8 +74,8 @@ class HomeModule {
     };
 
     @action initHomeParams() {
-        this.homeList = [];
-        this.page = 1;
+        // this.homeList = [];
+        // this.page = 1;
         this.isFetching = false;
         this.isEnd = false;
         this.firstLoad = true;
@@ -115,7 +119,7 @@ class HomeModule {
         }, 1000);
 
         // 首页类目
-        categoryModule.loadCategoryList(this.firstLoad);
+        tabModel.loadTabList(this.firstLoad);
         // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
         // 首页频道类目
@@ -139,7 +143,7 @@ class HomeModule {
         this.isEnd = false;
         this.firstLoad = false;
 
-        this.homeList = [{
+        let home = [{
             id: 0,
             type: homeType.category
         }, {
@@ -179,21 +183,59 @@ class HomeModule {
         if (this.isFetching === true) {
             return;
         }
+        this.homeList = home;
         try {
-            this.isFetching = true;
-            const result = yield HomeApi.getGoodsInHome({ page: this.page });
-            let list = result.data.data || [];
-            if (this.page === result.data.totalPage || result.data.totalPage === 0) {
-                this.isEnd = true;
-            }
-            let home = [];
-            if (list.length > 0) {
+            this.refreshing = true;
+            const tabData = yield HomeApi.getTabList();
+            this.tabList = tabData.data || [];
+            if (this.tabList.length > 0) {
                 home.push({
                     id: 11,
                     type: homeType.goodsTitle
                 });
+                this.homeList = [...home];
+                if (this.tabId) {
+                    let tabId = this.tabList[0].id;
+                    let tabName = this.tabList[0].name;
+                    let tabListIndex = 0;
+                    this.tabList.forEach((item, index) => {
+                        if (item.id === this.tabId) {
+                            tabListIndex = index;
+                            tabId = item.id;
+                            tabName = item.name;
+                        }
+                    });
+                    this.tabId = tabId;
+                    this.tabName = tabName;
+                    this.tabListIndex = tabListIndex;
+                } else {
+                    this.tabId = this.tabList[0].id;
+                    this.tabName = this.tabList[0].name;
+                    ;
+                    this.tabListIndex = 0;
+                }
+                this.getGoods();
+            } else {
+                this.isEnd = true;
             }
+        } catch (error) {
+            this.errorMsg = error.msg;
+            this.isRefreshing = false;
+        }
+    });
+
+    @action getGoods() {
+        this.isEnd = false;
+        this.refreshing = true;
+        HomeApi.getRecommendList({ tabId: this.tabId, 'page': 1, 'pageSize': 10 }).then(data => {
+            this.page = 1;
+            let list = data.data.data || [];
+            if (!data.data.isMore) {
+                this.isEnd = true;
+            }
+
             let itemData = [];
+            let home = [];
             for (let i = 0, len = list.length; i < len; i++) {
                 if (i % 2 === 1) {
                     let good = list[i];
@@ -208,6 +250,7 @@ class HomeModule {
                     itemData.push(list[i]);
                 }
             }
+
             if (itemData.length > 0) {
                 home.push({
                     itemData: itemData,
@@ -215,23 +258,29 @@ class HomeModule {
                     id: 'goods'
                 });
             }
-            this.goodsOtherLen = this.homeList.length;
-            this.homeList = [...this.homeList, ...home];
+            let temp = this.homeList.filter((item) => {
+                return item.type !== homeType.goods;
+            });
+            this.goodsOtherLen = temp.length;
+            this.homeList = [...temp, ...home];
             this.isFetching = false;
             this.isRefreshing = false;
-            this.page++;
+            this.refreshing = false;
+            this.page = 1;
             this.errorMsg = '';
-        } catch (error) {
+        }).catch(err => {
             this.isFetching = false;
             this.isRefreshing = false;
-            this.errorMsg = error.msg;
-            console.log(error);
-        }
-    });
+            this.errorMsg = err.msg;
+            this.refreshing = false;
+        });
+
+
+    }
 
     //加载为你推荐列表
     @action loadMoreHomeList = flow(function* () {
-        if (this.isFetching) {
+        if (this.isFetching || this.refreshing) {
             return;
         }
         if (this.isEnd) {
@@ -243,10 +292,11 @@ class HomeModule {
         try {
             const timeStamp = new Date().getTime();
             this.isFetching = true;
-            const result = yield HomeApi.getGoodsInHome({ page: this.page });
+            let page = this.page + 1;
+            const result = yield HomeApi.getRecommendList({ page: page, tabId: this.tabId, pageSize: 10 });
             this.isFetching = false;
             let list = result.data.data || [];
-            if (this.page === result.data.totalPage) {
+            if (!result.data.isMore) {
                 this.isEnd = true;
             }
             let itemData = [];
@@ -297,6 +347,13 @@ class HomeModule {
     @action homeFocused = (focuse) => {
         this.isFocused = focuse;
     };
+
+    @action tabSelect(index, tabId, tabName) {
+        this.tabListIndex = index;
+        this.tabId = tabId;
+        this.tabName = tabName;
+        this.getGoods();
+    }
 }
 
 export const homeModule = new HomeModule();
