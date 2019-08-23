@@ -14,6 +14,7 @@ import { NoMoreClick} from '../../../../components/ui';
 import {observer} from 'mobx-react';
 import {SmoothPushPreLoadHighComponentFirstDelay} from '../../../../comm/components/SmoothPushHighComponent';
 import RouterMap from '../../../../navigation/RouterMap';
+import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 
 const {px2dp} = ScreenUtils;
 @SmoothPushPreLoadHighComponentFirstDelay
@@ -37,7 +38,8 @@ export default class HelperCenterQuestionTypeList extends BasePage {
             <View style={{
                 width: ScreenUtils.width,
                 paddingLeft: px2dp(15),
-                paddingRight: px2dp(15)
+                paddingRight: px2dp(15),
+                flex: 1
             }}>
                 <View style={{
                     flexDirection: 'row',
@@ -55,44 +57,56 @@ export default class HelperCenterQuestionTypeList extends BasePage {
                             }}/>
                 </View>
                 <View style={{
-                    backgroundColor: 'white',
-                    borderRadius: px2dp(5)
+                    borderRadius: px2dp(5),
+                    flex: 1
                 }}>
-                    {this.state.typeList.map((item, index) => {
-                        return (
-                            <NoMoreClick activeOpacity={0.6}
-                                         onPress={() => this.jumpToAllQuestionList()}
-                                         key={index}
-                                         style={styles.hotQuestionStyle}
-                            >
-                                {
-                                    index != 0 ?
-                                        <View style={{
-                                            borderBottomWidth: 0.5,
-                                            borderColor: '#dedede',
-                                        }}
-                                        >
-                                        </View>
-                                        : null
-                                }
-                                <View style={styles.hotQuestionItemStyle}>
-                                    <UIText value={item.name}
-                                            numberOfLines={1}
-                                            style={{
-                                                fontSize: DesignRule.fontSize_threeTitle,
-                                                color: DesignRule.textColor_secondTitle,
-                                            }}/>
-                                    <Image source={res.button.arrow_right}
-                                           style={{width: 4, height: 8, marginLeft: 6}}/>
-                                </View>
-                            </NoMoreClick>
-                        );
-                    })}
+                    <RefreshFlatList url={MineApi.queryHelpCenterList}
+                                     nestedScrollEnabled={true}
+                                     params={{}}
+                                     renderItem={this.renderItem}
+                                     defaultEmptyText={'还没内容哦'}
+                                     sizeKey={'pageSize'}
+                                     pageKey={'page'}
+                                     style={{flex: 1}}
+                    />
                 </View>
 
             </View>
         );
     };
+
+    renderItem = ({item,index}) =>{
+        const {id,name} = item
+        return (
+            <NoMoreClick activeOpacity={0.6}
+                         onPress={() => this.jumpToAllQuestionList(id)}
+                         key={index}
+                         style={styles.hotQuestionStyle}
+            >
+                {
+                    index != 0 ?
+                        <View style={{
+                            borderBottomWidth: 0.5,
+                            borderColor: '#dedede',
+                        }}
+                        >
+                        </View>
+                        : null
+                }
+                <View style={styles.hotQuestionItemStyle}>
+                    <UIText value={name}
+                            numberOfLines={1}
+                            style={{
+                                fontSize: DesignRule.fontSize_threeTitle,
+                                color: DesignRule.textColor_secondTitle,
+                            }}/>
+                    <Image source={res.button.arrow_right}
+                           style={{width: 4, height: 8, marginLeft: 6}}/>
+                </View>
+            </NoMoreClick>
+        );
+    }
+
     renderBodyView = () => {
         return (
             <View style={{flex: 1}}>
@@ -111,25 +125,8 @@ export default class HelperCenterQuestionTypeList extends BasePage {
     // 初始化数据
 
     componentDidMount() {
-        let list = [];
-        MineApi.queryHelpQuestionList().then(res => {
-            console.log(res);
-            res.data.forEach(item => {
-                list.push({
-                    name: item.name,
-                    list: item.helpQuestionExtList,
-                    typeid: item.id,
-                    imgUrl: item.imgUrl
-                });
-            });
-            console.log('componentDidMount', list);
-            this.setState({
-                typeList: list
-            });
-        }).catch(error => {
-            this.$toastShow(error.msg);
-            console.log(error);
-        });
+
+
     }
 
     _render() {
@@ -150,7 +147,8 @@ const styles = StyleSheet.create({
     hotQuestionStyle: {
         paddingLeft: 15,
         paddingRight: 15,
-        flex: 1
+        flex: 1,
+        backgroundColor: 'white',
     },
     hotQuestionItemStyle: {
         paddingLeft: 5,

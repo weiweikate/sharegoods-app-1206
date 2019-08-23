@@ -19,8 +19,6 @@ export default class HelperCenterQuestionDetail extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            title: '',
-            content: '',
             noHelpNum: 0,
             useHelpNum: 0,
             hasFeedBackNoHelp:false,
@@ -34,8 +32,8 @@ export default class HelperCenterQuestionDetail extends BasePage {
     };
 
     componentDidMount() {
+        console.log(this.params.content)
         this.getDetail()
-        this.getFeedBackNum();
     }
 
     renderRightButton = () =>{
@@ -55,13 +53,14 @@ export default class HelperCenterQuestionDetail extends BasePage {
     _render() {
 
         const {
-            content,
             hasFeedBackNoHelp,
             hasFeedBackUseHelp,
             noHelpNum,
-            title
         } = this.state
-
+        const {
+            title,
+            content
+        } = this.params
         return (
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}
@@ -178,42 +177,18 @@ export default class HelperCenterQuestionDetail extends BasePage {
         })
     }
 
-    // 获取反馈的数量
-    getFeedBackNum(){
-        MineApi.findQuestionEffectById({
-            id: this.params.id
-        }).then(res => {
-            const {
-                isHelp=0,
-                notHelp=0,
-                type
-            } = (res.data || {})
-            this.setState({
-                useHelpNum: isHelp>9999 ? '9999+':isHelp,
-                noHelpNum: notHelp>9999 ? '9999+':notHelp,
-                hasFeedBackNoHelp: type === 0? true:false,
-                hasFeedBackUseHelp:type === 1? true:false,
-            });
-        }).catch(err => {
-            console.log(err);
-        });
-    }
-
-    feedbackClick(type=2){
-        const reqUrl = {
-            1:'updateHelpQuestionToClick',
-            2:'updateHelpQuestionToClick'
-        }[type]
+    feedbackClick = (type=2)=>{
         // hadHelp 0为没有用 1为有用
-        MineApi[reqUrl]({
-            id: this.params.id,
-            hadHelp: type==1? 0:1
+        MineApi.addHelpCenterResponse({
+            helpDetailId: this.params.id,
+            type: type==1? 0:1
         }).then(res => {
-            this.$toastShow('' + res.data);
-            this.getFeedBackNum();
+            this.$toastShow('感谢您的反馈');
         }).catch(err => {
             if (err.code === 10009) {
                 routeNavigate(RouterMap.LoginPage);
+            } else {
+                this.$toastShow('' + err.msg);
             }
         });
     }

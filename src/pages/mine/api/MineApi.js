@@ -125,8 +125,13 @@ const api = {
     //查询秀迷等级列表
     getFansLevelList:['/user/fansLevelList',{method:'get'}],
     //获取我的页面广告
-    queryAdList:['/advertising/queryAdvertisingList',{method:'post'}]
-
+    queryAdList:['/advertising/queryAdvertisingList',{method:'post'}],
+    // 获取问题类型列表
+    queryHelpCenterList:['/helpCenter/queryHelpCenterList',{method:'post'}],
+    // 获取二级问题列表 type: 1 常见 2 普通
+    queryHelpCenterDetailList:['/helpCenter/queryHelpCenterDetailList',{method:'post'}],
+    // 问题是否有用 type: 0 没用 1 有用
+    addHelpCenterResponse:['/helpCenter/addResponse',{method:'post'}],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 
