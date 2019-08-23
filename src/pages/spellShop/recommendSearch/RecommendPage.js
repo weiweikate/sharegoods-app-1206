@@ -75,10 +75,10 @@ export default class RecommendPage extends BasePage {
     $NavBarRenderRightItem = () => {
         return <View style={styles.rightBarItemContainer}>
             <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
-                <Image source={ShopItemLogo}/>
+                <Image source={ShopItemLogo} style={{ width: 20, height: 20 }}/>
             </TouchableOpacity>
             <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickSearchItem}>
-                <Image source={SearchItemLogo}/>
+                <Image source={SearchItemLogo} style={{ width: 20, height: 20 }}/>
             </TouchableOpacity>
         </View>;
     };
