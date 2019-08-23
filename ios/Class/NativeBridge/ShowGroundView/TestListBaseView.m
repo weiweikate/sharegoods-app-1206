@@ -77,13 +77,12 @@
  */
 - (void)refreshData
 {
-  self.page = 1;
   self.isError = NO;
   NSMutableDictionary *dic = [NSMutableDictionary new];
   if (self.params) {
     dic = [self.params mutableCopy];
   }
-  [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
+  [dic addEntriesFromDictionary:@{@"size": @"20"}];
   __weak TestListBaseView * weakSelf = self;
   [NetWorkTool requestWithURL:_api params:dic  toModel:[ShowQueryModel class] success:^(ShowQueryModel* model) {
     weakSelf.dataArr = [model.data mutableCopy];
@@ -108,12 +107,17 @@
  */
 - (void)getMoreData
 {
-  self.page++;
   NSMutableDictionary *dic = [NSMutableDictionary new];
+  NSString *cursor = [self.dataArr.lastObject valueForKey:@"cursor"];
+  
   if (self.params) {
     dic = [self.params mutableCopy];
   }
-  [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
+  if(cursor){
+    [dic addEntriesFromDictionary:@{@"cursor":cursor}];
+  }
+  
+  [dic addEntriesFromDictionary:@{@"size": @"20"}];
   __weak TestListBaseView * weakSelf = self;
   [NetWorkTool requestWithURL:_api params:dic toModel:[ShowQueryModel class] success:^(ShowQueryModel* model) {
     

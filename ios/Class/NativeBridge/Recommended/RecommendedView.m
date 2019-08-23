@@ -200,7 +200,6 @@ static NSString *IDType = @"TypeCell";
         self.tableView.mj_footer.hidden = NO;
       });
     }
-    weakSelf.noMore = model.isMore>0?NO:YES;
     weakSelf.errCode = 10000;
   } failure:^(NSString *msg, NSInteger code) {
     weakSelf.errCode = code;
@@ -217,10 +216,6 @@ static NSString *IDType = @"TypeCell";
   NSMutableDictionary *dic = [NSMutableDictionary new];
   NSString *cursor = [self.dataArr.lastObject valueForKey:@"cursor"];
  
-  if(self.noMore||!cursor){
-    [self.tableView.mj_footer endRefreshingWithNoMoreData];
-    return;
-  }
   if (self.params) {
     dic = [self.params mutableCopy];
   }
@@ -243,7 +238,6 @@ static NSString *IDType = @"TypeCell";
     }else{
       [weakSelf.tableView.mj_footer endRefreshing];
     }
-      weakSelf.noMore = model.isMore>0?NO:YES;
       weakSelf.errCode = 10000;
   } failure:^(NSString *msg, NSInteger code) {
     weakSelf.errCode = code;
