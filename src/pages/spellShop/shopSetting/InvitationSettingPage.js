@@ -87,7 +87,7 @@ export default class InvitationSettingPage extends BasePage {
         }}>
             <View style={[styles.row, index === 0 ? { marginTop: 10 } : null]}>
                 <View style={styles.rowTop}>
-                    <Animated.Image style={[transform ? { transform } : null]}
+                    <Animated.Image style={[transform ? { transform } : null, { width: 15, height: 15 }]}
                                     source={index === this.state.selIndex ? SelIcon : UnSelIcon}/>
                     <Text style={styles.text} allowFontScaling={false}>{value}</Text>
                 </View>

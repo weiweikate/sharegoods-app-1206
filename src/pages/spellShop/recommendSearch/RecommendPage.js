@@ -75,10 +75,10 @@ export default class RecommendPage extends BasePage {
     $NavBarRenderRightItem = () => {
         return <View style={styles.rightBarItemContainer}>
             <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
-                <Image source={ShopItemLogo}/>
+                <Image source={ShopItemLogo} style={{ width: 20, height: 20 }}/>
             </TouchableOpacity>
             <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickSearchItem}>
-                <Image source={SearchItemLogo}/>
+                <Image source={SearchItemLogo} style={{ width: 20, height: 20 }}/>
             </TouchableOpacity>
         </View>;
     };
@@ -300,6 +300,7 @@ export default class RecommendPage extends BasePage {
                 reloadBtnClick: this._refreshing
             },
             emptyProps: {
+                imageStyle: { width: 120, height: 120 },
                 source: res.recommendSearch.shop_notHave,
                 description: this.state.segmentIndex === 1 ? '抱歉, 附近暂时没有拼店' : '暂无拼店'
             }

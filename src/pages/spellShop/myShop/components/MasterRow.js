@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     },
     iconGap: {
         marginLeft: 0,
-        marginTop: 10
+        marginTop: 10, width: 78, height: 25
     },
     row: {
         flexDirection: 'row',

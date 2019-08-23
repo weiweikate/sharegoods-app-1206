@@ -120,7 +120,8 @@ export default class ShopPageSettingPage extends BasePage {
                     <Text style={styles.text}>{key}</Text>
                     {
                         showArrow ?
-                            <Image source={ArrowImg}/> : <Text style={styles.desc}>{value || ''}</Text>
+                            <Image source={ArrowImg} style={{ width: 10, height: 10 }}/> :
+                            <Text style={styles.desc}>{value || ''}</Text>
                     }
                 </View>
             </View>
