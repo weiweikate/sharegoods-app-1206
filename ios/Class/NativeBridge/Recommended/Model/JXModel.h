@@ -25,6 +25,7 @@
 
 @property (nonatomic,copy) NSString * title;
 @property (nonatomic,copy) NSString * content;
+@property (nonatomic,copy) NSString * cursor;//查询关键词  
 @property (nonatomic,assign) NSInteger downloadCount; //下载数
 @property (nonatomic,assign) NSInteger collectCount; //收藏数
 @property (nonatomic,assign) NSInteger likesCount; //点赞数

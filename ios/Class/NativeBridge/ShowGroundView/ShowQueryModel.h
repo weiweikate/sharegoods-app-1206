@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_END
 @interface ShowQuery_dataModel : NSObject
 @property (nonatomic, copy)NSString *ID;
 @property (nonatomic, copy)NSString *code;
+@property (nonatomic, copy)NSString *cursor;//查询关键词
 @property (nonatomic, copy)NSString *title;
 @property (nonatomic, copy)NSString *pureContent_1;
 @property (nonatomic, copy)NSString *coverImg;
