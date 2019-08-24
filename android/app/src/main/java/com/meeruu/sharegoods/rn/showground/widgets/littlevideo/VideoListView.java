@@ -232,7 +232,6 @@ public class VideoListView {
                 return;
             }
         }
-
         isPauseInvoke = false;
         exoPlayer.setPlayWhenReady(true);
     }
@@ -620,17 +619,6 @@ public class VideoListView {
     }
 
     /**
-     * 停止视频播放
-     */
-    private void stopPlay() {
-        ViewParent parent = mPlayerViewContainer.getParent();
-        if (parent != null && parent instanceof FrameLayout) {
-            ((FrameLayout) parent).removeView(mPlayerViewContainer);
-        }
-        pausePlay();
-    }
-
-    /**
      * 开始播放
      *
      * @param position 播放位置
@@ -640,12 +628,9 @@ public class VideoListView {
         if (position < 0 || position > list.size()) {
             return;
         }
-        final NewestShowGroundBean.DataBean video = list.get(position);
         //恢复界面状态
 //        isPauseInvoke = false;
         BaseVideoListAdapter.BaseHolder holder = (BaseVideoListAdapter.BaseHolder) recycler.findViewHolderForLayoutPosition(position);
-        holder.getPlayIcon().setVisibility(View.VISIBLE);
-        holder.getCoverView().setVisibility(View.VISIBLE);
         ViewParent parent = mPlayerViewContainer.getParent();
         if (parent != null && parent instanceof FrameLayout) {
             ((ViewGroup) parent).removeView(mPlayerViewContainer);
@@ -653,7 +638,8 @@ public class VideoListView {
         if (holder != null) {
             holder.getContainerView().addView(mPlayerViewContainer, 0);
         }
-
+        holder.getCoverView().setVisibility(View.VISIBLE);
+        final NewestShowGroundBean.DataBean video = list.get(position);
         List<NewestShowGroundBean.DataBean.ResourceBean> resource = video.getResource();
         String videoUrl = null;
         if (resource != null) {
@@ -666,6 +652,8 @@ public class VideoListView {
             }
         }
         exoPlayer.prepare(buildSource(videoUrl));
+        // 延后显示按钮
+        holder.getPlayIcon().setVisibility(View.VISIBLE);
     }
 
     private MediaSource buildSource(String url) {
@@ -673,7 +661,6 @@ public class VideoListView {
         String fileName = url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
         cacheDataSourceFactory.setFileName(fileName);
         return factory.createMediaSource(mp4VideoUri);
-
     }
 
     /**
@@ -692,7 +679,6 @@ public class VideoListView {
         if (adapter != null) {
             adapter.addMoreData(list);
         }
-
     }
 
 
@@ -773,10 +759,8 @@ public class VideoListView {
                 long time = System.currentTimeMillis();
                 SPCacheUtils.put(SPKey, time);
             }
-        })
-
-                .setNegativeButton("取消", (dialogInterface, i) -> {
-                }).create();
+        }).setNegativeButton("取消", (dialogInterface, i) -> {
+        }).create();
         alertDialog.show();
     }
 
@@ -799,18 +783,15 @@ public class VideoListView {
                 if (date == 0 || !TimeUtils.isSameDate(date, System.currentTimeMillis())) {
                     showNetWarning(view.getContext());
                 }
-
             }
         }
 
         @Override
         public void on4GToWifi() {
-
         }
 
         @Override
         public void onNetDisconnected() {
-
         }
     }
 
