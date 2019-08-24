@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import { todayModule } from '../model/HomeTodayModel';
-import { recommendModule } from '../model/HomeRecommendModel';
-import { subjectModule } from '../model/HomeSubjectModel';
-import { homeFocusAdModel } from '../model/HomeFocusAdModel';
-import { homeType } from '../HomeTypes';
-import { bannerModule } from '../model/HomeBannerModel';
-import HomeBannerView, { bannerHeight } from './HomeBannerView';
-import user from '../../../model/user';
-import taskModel from '../model/TaskModel';
-import { channelModules } from '../model/HomeChannelModel';
-import { homeExpandBnnerModel } from '../model/HomeExpandBnnerModel';
-import { limitGoModule } from '../model/HomeLimitGoModel';
-import HomeTodayView, { todayHeight } from './HomeTodayView';
-import HomeRecommendView, { recommendHeight } from './HomeRecommendView';
-import { homeModule } from '../model/Modules';
-import GoodsCell, { kHomeGoodsViewHeight } from './HomeGoodsView';
-import { homeTabManager } from '../manager/HomeTabManager';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import { todayModule } from '../../model/HomeTodayModel';
+import { recommendModule } from '../../model/HomeRecommendModel';
+import { subjectModule } from '../../model/HomeSubjectModel';
+import { homeFocusAdModel } from '../../model/HomeFocusAdModel';
+import { homeType } from '../../HomeTypes';
+import { bannerModule } from '../../model/HomeBannerModel';
+import HomeBannerView, { bannerHeight } from '../HomeBannerView';
+import user from '../../../../model/user';
+import taskModel from '../../model/TaskModel';
+import { channelModules } from '../../model/HomeChannelModel';
+import { homeExpandBnnerModel } from '../../model/HomeExpandBnnerModel';
+import { limitGoModule } from '../../model/HomeLimitGoModel';
+import HomeTodayView, { todayHeight } from '../HomeTodayView';
+import HomeRecommendView, { recommendHeight } from '../HomeRecommendView';
+import { homeModule } from '../../model/Modules';
+import GoodsCell, { kHomeGoodsViewHeight } from '../HomeGoodsView';
+import { homeTabManager } from '../../manager/HomeTabManager';
 import {
     ActivityIndicator,
     DeviceEventEmitter,
@@ -28,20 +28,20 @@ import {
     StyleSheet,
     View
 } from 'react-native';
-import { routePush } from '../../../navigation/RouterMap';
-import HomeUserView from './HomeUserView';
-import TaskVIew from './TaskVIew';
-import HomeChannelView from './HomeChannelView';
-import HomeExpandBannerView from './HomeExpandBannerView';
-import HomeFocusAdView from './HomeFocusAdView';
-import HomeLimitGoView from './HomeLimitGoView';
-import HomeSubjectView from './HomeSubjectView';
-import TabTitleView from './TabTitleView';
-import ImageAdView from './ImageAdView';
-import GoodsCustomView from './GoodsCustomView';
-import DesignRule from '../../../constants/DesignRule';
-import intervalMsgModel from '../../../comm/components/IntervalMsgView';
-import { MRText as Text } from '../../../components/ui';
+import { routePush } from '../../../../navigation/RouterMap';
+import HomeUserView from '../HomeUserView';
+import TaskVIew from '../TaskVIew';
+import HomeChannelView from '../HomeChannelView';
+import HomeExpandBannerView from '../HomeExpandBannerView';
+import HomeFocusAdView from '../HomeFocusAdView';
+import HomeLimitGoView from '../HomeLimitGoView';
+import HomeSubjectView from '../HomeSubjectView';
+import TabTitleView from '../TabTitleView';
+import ImageAdView from '../ImageAdView';
+import GoodsCustomView from '../GoodsCustomView';
+import DesignRule from '../../../../constants/DesignRule';
+import intervalMsgModel from '../../../../comm/components/IntervalMsgView';
+import { MRText as Text } from '../../../../components/ui/index';
 
 
 const { JSPushBridge } = NativeModules;

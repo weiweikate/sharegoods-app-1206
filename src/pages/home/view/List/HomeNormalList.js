@@ -16,15 +16,15 @@ import React from 'react';
 
 import { Image, RefreshControl, SectionList, TouchableWithoutFeedback, View } from 'react-native';
 
-import { MRText } from '../../../components/ui';
-import DesignRule from '../../../constants/DesignRule';
-import HomeAPI from '../api/HomeAPI';
+import { MRText } from '../../../../components/ui';
+import DesignRule from '../../../../constants/DesignRule';
+import HomeAPI from '../../api/HomeAPI';
 import ImageLoader from '@mr/image-placeholder';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import { DefaultLoadMoreComponent } from '../../../comm/components/RefreshFlatList';
-import RouterMap, { routePush } from '../../../navigation/RouterMap';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
-import res from '../res';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import { DefaultLoadMoreComponent } from '../../../../comm/components/RefreshFlatList';
+import RouterMap, { routePush } from '../../../../navigation/RouterMap';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
+import res from '../../res';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
