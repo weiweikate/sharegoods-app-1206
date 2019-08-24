@@ -48,7 +48,10 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.meeruu.commonlib.callback.BaseCallback;
+import com.meeruu.commonlib.config.BaseRequestConfig;
+import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.utils.DensityUtils;
+import com.meeruu.commonlib.utils.HttpUrlUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.TimeUtils;
@@ -73,6 +76,7 @@ import com.meeruu.sharegoods.rn.showground.widgets.RnFrameLayout;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -611,6 +615,8 @@ public class VideoListView {
     private void changeHeader(final NewestShowGroundBean.DataBean bean) {
 
         final NewestShowGroundBean.DataBean.UserInfoVOBean userInfoVOBean = bean.getUserInfoVO();
+        incrHotValue(bean.getShowNo());
+
         String userUrl = userInfoVOBean.getUserImg();
         if (TextUtils.isEmpty(userUrl)) {
             ImageLoadUtils.loadImageResAsCircle(mContext, R.drawable.bg_app_user, userIcon);
@@ -831,4 +837,32 @@ public class VideoListView {
         }
     }
 
+
+    private static void incrHotValue(String showNo){
+        IncrHotValueConfig incrHotValueConfig = new IncrHotValueConfig();
+        incrHotValueConfig.setParams(showNo);
+        RequestManager.getInstance().doPost(incrHotValueConfig, null);
+    }
+
+
+    private static class IncrHotValueConfig implements BaseRequestConfig{
+        private String showNo;
+
+        @Override
+        public String getUrl() {
+            return HttpUrlUtils.getUrl(HttpUrlUtils.INCR_COUNT_BY_TYPE);
+        }
+
+        public void setParams(String params) {
+            showNo = params;
+        }
+
+        @Override
+        public Map getParams() {
+            HashMap map = new HashMap();
+            map.put("showNo",showNo);
+            map.put("type",6+"");
+            return map;
+        }
+    }
 }
