@@ -22,8 +22,10 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-public class ShowVideoViewManager extends SimpleViewManager<View> {
+public class ShowVideoViewManager extends SimpleViewManager<View> implements LifecycleEventListener {
+
     private static final String COMPONENT_NAME = "MrShowVideoListView";
+    private VideoListView videoListView;
 
     @Nonnull
     @Override
@@ -34,25 +36,11 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
     @Nonnull
     @Override
     protected View createViewInstance(@Nonnull ThemedReactContext reactContext) {
-        VideoListView videoListView = new VideoListView();
+        videoListView = new VideoListView();
         View view = videoListView.getVideoListView(reactContext);
         view.setTag(videoListView);
+        reactContext.addLifecycleEventListener(this);
 
-        reactContext.addLifecycleEventListener(new LifecycleEventListener() {
-            @Override
-            public void onHostResume() {
-            }
-
-            @Override
-            public void onHostPause() {
-                videoListView.pausePlay();
-            }
-
-            @Override
-            public void onHostDestroy() {
-                videoListView.releasePlayer();
-            }
-        });
         return view;
     }
 
@@ -111,5 +99,21 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
         if (view.getTag() != null) {
             ((VideoListView) view.getTag()).releasePlayer();
         }
+        ((ThemedReactContext) view.getContext()).removeLifecycleEventListener(this);
+    }
+
+    @Override
+    public void onHostResume() {
+
+    }
+
+    @Override
+    public void onHostPause() {
+        videoListView.pausePlay();
+    }
+
+    @Override
+    public void onHostDestroy() {
+        videoListView.releasePlayer();
     }
 }

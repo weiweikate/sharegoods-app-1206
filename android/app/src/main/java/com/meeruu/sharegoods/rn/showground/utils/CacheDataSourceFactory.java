@@ -24,6 +24,8 @@ public class CacheDataSourceFactory implements DataSource.Factory {
     private String fileName;
     private SimpleCache simpleCache;
     private LeastRecentlyUsedCacheEvictor evictor;
+    private FileDataSource fileDataSource;
+    private CacheDataSink cacheDataSink;
 
     public CacheDataSourceFactory(Context context, long maxCacheSize, long maxFileSize) {
         super();
@@ -36,6 +38,7 @@ public class CacheDataSourceFactory implements DataSource.Factory {
                 bandwidthMeter,
                 new DefaultHttpDataSourceFactory(userAgent, bandwidthMeter));
         evictor = new LeastRecentlyUsedCacheEvictor(maxCacheSize);
+        fileDataSource = new FileDataSource();
     }
 
     public void setFileName(String fileName) {
@@ -56,8 +59,12 @@ public class CacheDataSourceFactory implements DataSource.Factory {
         if (simpleCache == null) {
             simpleCache = new SimpleCache(fileDir, evictor);
         }
-        return new CacheDataSource(simpleCache, defaultDatasourceFactory.createDataSource(),
-                new FileDataSource(), new CacheDataSink(simpleCache, maxFileSize),
+        if (cacheDataSink == null) {
+            cacheDataSink = new CacheDataSink(simpleCache, maxFileSize);
+        }
+        CacheDataSource dataSource = new CacheDataSource(simpleCache, defaultDatasourceFactory.createDataSource(),
+                fileDataSource, cacheDataSink,
                 CacheDataSource.FLAG_BLOCK_ON_CACHE | CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR, null);
+        return dataSource;
     }
 }
