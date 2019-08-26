@@ -113,7 +113,8 @@ export default class HttpUtils {
                     'sg-token': token ? token : '',
                     'platform': this.platform,
                     'version': rsa_config.version,
-                    'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
+                    'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
+                    'DEV_ENV_BRANCH': '1.0.0-cashier'
                 }
             };
             return axios.get(url, config);
@@ -160,7 +161,8 @@ export default class HttpUtils {
                 'sg-token': token ? token : '',
                 'platform': this.platform,
                 'version': rsa_config.version,
-                'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
+                'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
+                'DEV_ENV_BRANCH': '1.0.0-cashier'
             };
             return axios.post(url, params, config);
         }).then(response => {
