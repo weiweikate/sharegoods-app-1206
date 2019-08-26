@@ -37,11 +37,12 @@ import HomeFocusAdView from '../HomeFocusAdView';
 import HomeLimitGoView from '../HomeLimitGoView';
 import HomeSubjectView from '../HomeSubjectView';
 import TabTitleView from '../TabTitleView';
-import ImageAdView from '../ImageAdView';
+import  { TopicImageAdView } from '../ImageAdView';
 import GoodsCustomView from '../GoodsCustomView';
 import DesignRule from '../../../../constants/DesignRule';
 import intervalMsgModel from '../../../../comm/components/IntervalMsgView';
 import { MRText as Text } from '../../../../components/ui/index';
+import TextCustomView from '../TextCustomView';
 
 
 const { JSPushBridge } = NativeModules;
@@ -115,6 +116,9 @@ export default class HomeFirstTabView extends Component {
             case homeType.custom_imgAD:
                 dim.height = type.itemHeight;
                 break;
+            case homeType.custom_text:
+                dim.height = 1;
+                break;
             default:
                 dim.height = 0;
         }
@@ -171,6 +175,16 @@ export default class HomeFirstTabView extends Component {
         } else if (type === homeType.custom_imgAD) {
             return <ImageAdView data={item}/>;
         } else if (type === homeType.custom_goods) {
+            return <GoodsCustomView data={item}/>;
+        } else if (type === homeType.custom_text) {
+            // let p = {specialTopicId:  this.props.data.linkCode}
+            // p.specialTopicArea = 6;
+            return <TextCustomView data={item}/>;
+        } else if (type === homeType.custom_imgAD) {
+            // p.specialTopicArea = 1;
+            return <TopicImageAdView data={item} />;
+        } else if (type === homeType.custom_goods) {
+            // p.specialTopicArea = 3;
             return <GoodsCustomView data={item}/>;
         }
         return <View/>;
@@ -245,6 +259,7 @@ export default class HomeFirstTabView extends Component {
                 onScrollBeginDrag={this.props.onScrollBeginDrag}
                 showsVerticalScrollIndicator={false}
                 removeClippedSubviews={false}
+                forceNonDeterministicRendering={true}
                 onScroll={this._onListViewScroll}
                 renderFooter={() => <Footer
                     isFetching={homeModule.isFetching}

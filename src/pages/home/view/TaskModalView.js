@@ -167,7 +167,6 @@ export default class TaskModalView extends React.Component {
     onPress(item){
         if (item)  {
             routePush('HtmlPage', {uri: item.parameter})
-            alert(item.parameter)
         }
         this.model.closeAlert()
     }
