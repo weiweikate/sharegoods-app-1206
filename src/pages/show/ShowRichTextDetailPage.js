@@ -332,7 +332,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                 {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
                     this._goToShare();
                 }}>
-                    <Image source={iconShowShare}/>
+                    <Image style={{width:20,height:20}} source={iconShowShare}/>
                 </TouchableOpacity> : null}
 
             </View>

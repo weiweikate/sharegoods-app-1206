@@ -361,7 +361,7 @@ export default class ShowDetailPage extends BasePage {
                     this.setState({showText:false},this._goToShare)
 
                 }}>
-                    <Image source={iconShowShare}/>
+                    <Image style={{width:20,height:20}} source={iconShowShare}/>
                 </TouchableOpacity> : null}
 
             </View>
