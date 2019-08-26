@@ -132,6 +132,8 @@ const api = {
     queryHelpCenterDetailList:['/helpCenter/queryHelpCenterDetailList',{method:'post'}],
     // 问题是否有用 type: 0 没用 1 有用
     addHelpCenterResponse:['/helpCenter/addResponse',{method:'post'}],
+    //提现记录
+    queryWithdrawRecord:['/user/withdraw/query',{method:'post'}]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

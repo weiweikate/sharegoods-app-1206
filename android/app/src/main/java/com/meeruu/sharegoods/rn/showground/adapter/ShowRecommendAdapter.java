@@ -148,7 +148,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         download.setText(NumUtils.formatShowNum(item.getDownloadCount()));
 
         TextView like = helper.getView(R.id.like_num);
-        like.setText(NumUtils.formatShowNum(item.getHotCount()));
+        like.setText(NumUtils.formatShowNum(item.getLikesCount()));
 
         SimpleDraweeView coverView = helper.getView(R.id.iv_cover);
         RelativeLayout foreground = helper.getView(R.id.foreground_view);

@@ -59,7 +59,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="2dp"
                 android:text="0"
                 android:id="@+id/tv_download"
                 android:textColor="@color/white"
@@ -75,7 +75,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="2dp"
                 android:text="0"
                 android:id="@+id/tv_collection"
                 android:textColor="@color/white"
@@ -91,7 +91,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="2dp"
                 android:text="0"
                 android:id="@+id/tv_like"
                 android:textColor="@color/white"

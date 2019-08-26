@@ -248,7 +248,7 @@
 
     self.footerView.products = model.products;
     self.footerView.downloadCount = model.downloadCount;
-    self.footerView.likesCount = model.like;
+    self.footerView.likesCount = model.likesCount;
     self.footerView.shareCount = model.shareCount;
     self.footerView.collectCount = model.collectCount;
     self.footerView.isLike = model.like;
