@@ -57,7 +57,6 @@ export default class HelperCenterQuestionTypeList extends BasePage {
                             }}/>
                 </View>
                 <View style={{
-                    borderRadius: px2dp(5),
                     flex: 1
                 }}>
                     <RefreshFlatList url={MineApi.queryHelpCenterDetailList}
@@ -68,12 +67,16 @@ export default class HelperCenterQuestionTypeList extends BasePage {
                                      sizeKey={'pageSize'}
                                      pageKey={'page'}
                                      style={{flex: 1}}
+                                     ref={(ref) => {this.helpList = ref}}
                     />
                 </View>
 
             </View>
         );
     };
+    refreshList = ()=>{
+        this.helpList.onRefresh()
+    }
     renderBodyView = () => {
         return (
             <View style={{flex: 1}}>
@@ -86,16 +89,19 @@ export default class HelperCenterQuestionTypeList extends BasePage {
     };
 
     renderItem = ({item,index})=>{
+        const data = this.helpList.getSourceData()
         const {
-            title,
-            content,
-            id
+            title
         } = item
         return (
             <NoMoreClick activeOpacity={0.6}
-                         onPress={() => this.jumpQuestionDetail(id,title,content)}
+                         onPress={() => this.jumpQuestionDetail(item)}
                          key={index}
-                         style={styles.hotQuestionStyle}
+                         style={[
+                             styles.hotQuestionStyle,
+                             index==0? {borderTopLeftRadius:5,borderTopRightRadius:5}:{},
+                             index== data.length-1? {borderBottomLeftRadius:5,borderBottomRightRadius:5}:{},
+                         ]}
             >
                 {
                     index != 0 ?
@@ -123,8 +129,8 @@ export default class HelperCenterQuestionTypeList extends BasePage {
 
     // 跳转到问题详情页面
 
-    jumpQuestionDetail = (id,title,content)=> {
-        this.$navigate(RouterMap.HelperCenterQuestionDetail, {id,title,content});
+    jumpQuestionDetail = (detail)=> {
+        this.$navigate(RouterMap.HelperCenterQuestionDetail, {detail,refreshList:this.refreshList});
     }
 
     // 初始化数据

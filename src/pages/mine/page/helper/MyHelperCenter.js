@@ -14,7 +14,6 @@ import {MRText as Text, NoMoreClick} from '../../../../components/ui';
 import LinearGradient from 'react-native-linear-gradient';
 import user from '../../../../model/user';
 import {observer} from 'mobx-react';
-import StringUtils from '../../../../utils/StringUtils';
 import {SmoothPushPreLoadHighComponentFirstDelay} from '../../../../comm/components/SmoothPushHighComponent';
 import RouterMap, {routeNavigate} from '../../../../navigation/RouterMap';
 import CustomerServiceButton from '../../components/CustomerServiceButton';
@@ -40,6 +39,9 @@ export default class MyHelperCenter extends BasePage {
         title: '帮助中心',
         show: true // false则隐藏导航
     };
+    refreshList = ()=>{
+        this.helpHotList.onRefresh()
+    }
     // 常见问题列表
     renderHotQuestionList = () => {
         return (
@@ -51,7 +53,6 @@ export default class MyHelperCenter extends BasePage {
             }}>
                 <View style={{
                     marginTop: px2dp(25),
-                    borderRadius: px2dp(5),
                     flex: 1
                 }}>
                     <TouchableWithoutFeedback onPress={this.jumpToAllQuestionTypePage}>
@@ -79,6 +80,7 @@ export default class MyHelperCenter extends BasePage {
                         </View>
                     </TouchableWithoutFeedback>
                     <RefreshFlatList url={MineApi.queryHelpCenterDetailList}
+                                     ref={(ref) => {this.helpHotList = ref}}
                                      nestedScrollEnabled={true}
                                      params={{type: 1}}
                                      renderItem={this.renderItem}
@@ -95,13 +97,16 @@ export default class MyHelperCenter extends BasePage {
     };
 
     renderItem = ({item, index}) =>{
+        const data = this.helpHotList.getSourceData()
         const {
-            title,
-            content,
-            id
+            title
         } = item
         return (
-            <View key={index} style={styles.hotQuestionStyle}>
+            <View key={index} style={[
+                styles.hotQuestionStyle,
+                index==0? {borderTopLeftRadius:5,borderTopRightRadius:5}:{},
+                index== data.length-1? {borderBottomLeftRadius:5,borderBottomRightRadius:5}:{},
+            ]}>
                 {
                     index != 0 ?
                         <View style={{
@@ -114,7 +119,7 @@ export default class MyHelperCenter extends BasePage {
                 }
                 <NoMoreClick style={styles.hotQuestionItemStyle}
                              activeOpacity={0.6}
-                             onPress={()=> { this.jumpQuestionDetail(id,title,content)}}>
+                             onPress={()=> { this.jumpQuestionDetail(item)}}>
                     <UIText value={title}
                             numberOfLines={1}
                             style={{
@@ -193,11 +198,6 @@ export default class MyHelperCenter extends BasePage {
         );
     };
 
-    orderListq(list) {
-        if (StringUtils.isNoEmpty(list)) {
-            this.$navigate(RouterMap.HelperQuestionListPage, {list});
-        }
-    }
 
     jumpToAllQuestionTypePage() {
         routeNavigate(RouterMap.HelperCenterQuestionTypeList);
@@ -220,8 +220,8 @@ export default class MyHelperCenter extends BasePage {
 
     // 跳转到问题详情页面
 
-    jumpQuestionDetail = (id,title,content)=> {
-        this.$navigate(RouterMap.HelperCenterQuestionDetail, {id,title,content});
+    jumpQuestionDetail = (detail)=> {
+        this.$navigate(RouterMap.HelperCenterQuestionDetail, {detail,refreshList:this.refreshList});
     }
 
     // 初始化数据
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        height: 40,
+        height: 40
     },
     title: {
         display: 'flex',

@@ -57,7 +57,6 @@ export default class HelperCenterQuestionTypeList extends BasePage {
                             }}/>
                 </View>
                 <View style={{
-                    borderRadius: px2dp(5),
                     flex: 1
                 }}>
                     <RefreshFlatList url={MineApi.queryHelpCenterList}
@@ -68,6 +67,7 @@ export default class HelperCenterQuestionTypeList extends BasePage {
                                      sizeKey={'pageSize'}
                                      pageKey={'page'}
                                      style={{flex: 1}}
+                                     ref={(ref) => {this.helpTypeList = ref}}
                     />
                 </View>
 
@@ -76,12 +76,17 @@ export default class HelperCenterQuestionTypeList extends BasePage {
     };
 
     renderItem = ({item,index}) =>{
+        const data = this.helpTypeList.getSourceData()
         const {id,name} = item
         return (
             <NoMoreClick activeOpacity={0.6}
                          onPress={() => this.jumpToAllQuestionList(id)}
                          key={index}
-                         style={styles.hotQuestionStyle}
+                         style={[
+                             styles.hotQuestionStyle,
+                             index==0? {borderTopLeftRadius:5,borderTopRightRadius:5}:{},
+                             index== data.length-1? {borderBottomLeftRadius:5,borderBottomRightRadius:5}:{},
+                         ]}
             >
                 {
                     index != 0 ?

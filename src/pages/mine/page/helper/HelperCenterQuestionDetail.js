@@ -19,10 +19,12 @@ export default class HelperCenterQuestionDetail extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            noHelpNum: 0,
-            useHelpNum: 0,
+            useless:0,
+            useful:0,
             hasFeedBackNoHelp:false,
             hasFeedBackUseHelp:false,
+            content:'',
+            title:'',
         };
     }
 
@@ -32,13 +34,12 @@ export default class HelperCenterQuestionDetail extends BasePage {
     };
 
     componentDidMount() {
-        console.log(this.params.content)
         this.getDetail()
     }
 
     renderRightButton = () =>{
         const {
-            useHelpNum,
+            useful,
             hasFeedBackUseHelp
         } = this.state
         return (
@@ -46,7 +47,7 @@ export default class HelperCenterQuestionDetail extends BasePage {
                     styles.buttonText,
                     { color: hasFeedBackUseHelp? 'white': DesignRule.mainColor}
                   ]}
-                  allowFontScaling={false}>{`有用(${useHelpNum})`}
+                  allowFontScaling={false}>{`有用(${useful})`}
             </Text>
         )
     }
@@ -55,12 +56,10 @@ export default class HelperCenterQuestionDetail extends BasePage {
         const {
             hasFeedBackNoHelp,
             hasFeedBackUseHelp,
-            noHelpNum,
-        } = this.state
-        const {
+            useless,
             title,
             content
-        } = this.params
+        } = this.state
         return (
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}
@@ -122,7 +121,7 @@ export default class HelperCenterQuestionDetail extends BasePage {
                                        ]}
                                     allowFontScaling={false}
                                >
-                                   {`没有帮助(${noHelpNum})`}
+                                   {`没有帮助(${useless})`}
                                </Text>
                            </NoMoreClick>
                            <NoMoreClick activeOpacity={0.6}
@@ -163,31 +162,48 @@ export default class HelperCenterQuestionDetail extends BasePage {
     }
 
     // 获取反馈的详情
-    getDetail(){
-        MineApi.findHelpQuestionById({
-            id: this.params.id
-        }).then(res => {
-            let data = res.data || {};
-            this.setState({
-                title: data.title,
-                content: data.content,
-            });
-        }).catch(err => {
-            console.log(err);
+    getDetail = () =>{
+        const {
+            vote,
+            title,
+            content,
+            voteResult,
+            useful=0,
+            useless=0
+        } = (this.params.detail || {})
+        this.setState({
+            useless,
+            useful,
+            hasFeedBackNoHelp:vote && ( voteResult==0 ),
+            hasFeedBackUseHelp:vote && ( voteResult==1 ),
+            content,
+            title,
         })
     }
 
     feedbackClick = (type=2)=>{
         // hadHelp 0为没有用 1为有用
         MineApi.addHelpCenterResponse({
-            helpDetailId: this.params.id,
+            helpDetailId: this.params.detail.id,
             type: type==1? 0:1
         }).then(res => {
             this.$toastShow('感谢您的反馈');
+            this.params.refreshList()
+            const key = {
+                1:'hasFeedBackNoHelp',
+                2:'hasFeedBackUseHelp'
+            }[type]
+            let datas = res.data || {}
+            this.setState({
+                [key]:true,
+                useless:datas.useless,
+                useful:datas.useful
+            })
         }).catch(err => {
             if (err.code === 10009) {
                 routeNavigate(RouterMap.LoginPage);
             } else {
+                this.params.refreshList()
                 this.$toastShow('' + err.msg);
             }
         });
