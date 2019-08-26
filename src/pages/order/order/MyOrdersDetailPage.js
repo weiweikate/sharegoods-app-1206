@@ -86,7 +86,8 @@ export default class MyOrdersDetailPage extends BasePage {
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>
-                <Image source={moreIcon}/>
+                <Image source={moreIcon} style={{ width: 22 }}
+                       resizeMode={'contain'}/>
             </TouchableOpacity>
         );
     };

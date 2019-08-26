@@ -25,8 +25,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 2101
-        versionName "2.1.1"
+        versionCode 1000
+        versionName "1.0.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -204,7 +204,7 @@ dependencies {
     api project(':base_adapter')
     api project(':react-native-extra-dimensions-android')
     api project(':react-native-code-push')
-    implementation project(':@mr_react-native-gesture-handler')
+    implementation project(':react-native-gesture-handler')
     implementation project(':@mr_mr-rn-storage')
     implementation project(':@mr_rn-request')
     implementation project(':@mr_rn-geolocation')

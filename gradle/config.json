@@ -36,8 +36,8 @@
         "bulid_path": "../node_modules/@mr/mr-rn-storage/android/build.gradle"
     },
     "rn-gesture": {
-        "content": "apply from: '../../../../android/rn-gesture.gradle'",
-        "bulid_path": "../node_modules/@mr/react-native-gesture-handler/android/build.gradle"
+        "content": "apply from: '../../../android/rn-gesture.gradle'",
+        "bulid_path": "../node_modules/react-native-gesture-handler/android/build.gradle"
     },
     "rn-netInfo": {
         "content": "apply from: '../../../../android/rn-netInfo.gradle'",
