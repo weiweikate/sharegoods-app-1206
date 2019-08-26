@@ -72,10 +72,6 @@ export default class XiuDouResultModal extends React.Component {
                                              defaultEmptyText={'还没内容哦'}
                                              sizeKey={'pageSize'}
                                              pageKey={'pageIndex'}
-                                // handleRequestResult={(data)=> {
-                                //     data = data.data.data;
-                                //     return [...data,...data,...data,...data]
-                                // }}
                             />
                         </View>
                     </View>

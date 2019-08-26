@@ -36,9 +36,6 @@
 @property (nonatomic,assign) CHAT_TYPE  preChatType;
 @property (nonatomic,assign) BOOL  isVip;
 
-@property (nonatomic,strong) SuspensionBtn *suspensionBtn ;
-@property (nonatomic,strong) SuspensionBtn * changeToSupplierBtn;
-
 @end
 
 @implementation JRServiceManager
@@ -55,28 +52,9 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   }
   return _sessionListDic;
 }
--(SuspensionBtn *)suspensionBtn{
-  if(!_suspensionBtn){
-    _suspensionBtn = [[SuspensionBtn alloc]initWithFrame:CGRectMake(0, KScreenHeight/2, 100, 40)];
-    [_suspensionBtn setBackgroundImage:[UIImage imageNamed:@"rgongkf_icon"] forState:UIControlStateNormal];
-    [_suspensionBtn addTarget:self action:@selector(changeToPlatformAction:) forControlEvents:UIControlEventTouchUpInside];
-  }
-  return _suspensionBtn;
-}
--(SuspensionBtn *)changeToSupplierBtn{
-  if(!_changeToSupplierBtn){
-    _changeToSupplierBtn = [[SuspensionBtn alloc]initWithFrame:CGRectMake(0, KScreenHeight/2, 100, 40)];
-    [_changeToSupplierBtn setBackgroundImage:[UIImage imageNamed:@"SupplierBtn"] forState:UIControlStateNormal];
-    [_changeToSupplierBtn addTarget:self action:@selector(changeToSupplierAction:) forControlEvents:UIControlEventTouchUpInside];
-  }
-  return _changeToSupplierBtn;
-}
+
 -(void)changeToSupplierAction:(UIButton *)btn{
   if (self.preShopId && self.preShopId.length > 0) {
-    [self.changeToSupplierBtn removeFromSuperview];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-       [[UIApplication sharedApplication].delegate.window addSubview:self.suspensionBtn];
-    });
     NSMutableDictionary *dic = [self.dataDic mutableCopy];
     dic[@"title"] = self.preTitle;
     dic[@"shopId"] = self.preShopId;
@@ -92,9 +70,9 @@ SINGLETON_FOR_CLASS(JRServiceManager)
     }];
   }else{
     [JRLoadingAndToastTool showToast:@"暂不可直接切换到供应商客服~可在我的页面客服发起" andDelyTime:1];
-    [self.changeToSupplierBtn removeFromSuperview];
   }
 }
+
 -(void)connetMerchant:(NSString *)code
 {
   if (!code) {
@@ -111,30 +89,6 @@ SINGLETON_FOR_CLASS(JRServiceManager)
     
   } showLoading:@""];
 }
-//切换到平台客服
--(void)changeToPlatformAction:(UIButton *)btn{
-  //暂存上个供应商数据
-  [self.suspensionBtn removeFromSuperview];
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    [[UIApplication sharedApplication].delegate.window addSubview:self.changeToSupplierBtn];
-  });
-  self.preShopId = self.dataDic[@"shopId"];
-  self.preTitle = self.dataDic[@"title"];
-  self.preChatType = (NSInteger)self.dataDic[@"chatType"];
-  
-  [KRootVC dismissViewControllerAnimated:NO completion:^{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-      [self swichGroup:@{
-                         @"title":@"平台客服",
-                         @"shopId":@"",
-                         @"chatType":@(BEGIN_FROM_OTHER),
-                         @"data":self.dataDic[@"data"]
-                         }];
-    });
-  }];
-  
-}
-
 /**
  * groupId:0,
  * staffId:0,
@@ -196,14 +150,6 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   QYSessionViewController * sessionVC = [[QYSDK sharedSDK] sessionViewController];
   
   sessionVC.vipLevel = self.isVip?11:0;
-  //暂存客服来源类型
-  if (![chatInfo[@"shopId"] isEqualToString:suspensionId] && ((NSString *)chatInfo[@"shopId"]).length != 0) {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-       [[UIApplication sharedApplication].keyWindow addSubview:self.suspensionBtn];
-    });
-  }else{
-    [self.suspensionBtn removeFromSuperview];
-  }
   
   self.currentChatType = [chatInfo[@"chatType"] integerValue];
   sessionVC.sessionTitle = chatInfo[@"title"];
@@ -266,10 +212,6 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 
 - (void)onBack:(id)sender
 {
-  [self.suspensionBtn removeFromSuperview];
-  self.suspensionBtn.centerY = KScreenHeight/2;
-  [self.changeToSupplierBtn removeFromSuperview];
-  self.changeToSupplierBtn.centerY = KScreenHeight/2;
   [KRootVC dismissViewControllerAnimated:self.sessionVC completion:nil];
 }
 

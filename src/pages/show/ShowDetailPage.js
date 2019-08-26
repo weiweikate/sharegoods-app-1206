@@ -129,7 +129,7 @@ export default class ShowDetailPage extends BasePage {
                 author: detail.userInfoVO.userNo
             });
             if (this.params.isFormHeader) {
-                this.params.ref && this.params.ref.setClick(detail.click);
+                this.params.ref && this.params.ref.setClick(detail.hotCount);
             } else {
                 this.params.ref && this.params.ref.replaceData(this.params.index, detail.hotCount);
             }
@@ -361,7 +361,7 @@ export default class ShowDetailPage extends BasePage {
                     this.setState({showText:false},this._goToShare)
 
                 }}>
-                    <Image source={iconShowShare}/>
+                    <Image style={{width:20,height:20}} source={iconShowShare}/>
                 </TouchableOpacity> : null}
 
             </View>

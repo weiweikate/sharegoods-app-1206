@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     },
     topIcon: {
         marginLeft: 23,
-        marginRight: 8
+        marginRight: 8, width: 14, height: 12
     },
     topTitle: {
         fontSize: 15,

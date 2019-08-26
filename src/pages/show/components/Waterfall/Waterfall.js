@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import ItemView from './ItemView';
 import EmptyUtils from '../../../../utils/EmptyUtils';
+import { MRText } from '../../../../components/ui';
+import DesignRule from '../../../../constants/DesignRule';
 
 var styles = StyleSheet.create({
     root: {
@@ -11,7 +13,16 @@ var styles = StyleSheet.create({
     container: {
         alignSelf: 'stretch'
     },
-    header: {}
+    footer: {
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row'
+    },
+    footerText:{
+        fontSize: DesignRule.fontSize_24,
+        color: DesignRule.textColor_secondTitle
+    }
 });
 
 export default class Waterfall extends Component {
@@ -357,11 +368,20 @@ export default class Waterfall extends Component {
     };
     _renderHeader = () => {
         return (
-            <View style={styles.header} ref={this._refHeader} onLayout={this._onHeaderLayout}>
+            <View ref={this._refHeader} onLayout={this._onHeaderLayout}>
                 {this.props.renderHeader && this.props.renderHeader()}
             </View>
         );
     };
+
+    _renderFooter = ()=>{
+        return(
+            <View style={styles.footer}>
+                <MRText style={styles.footerText} allowFontScaling={false}>我也是有底线的~</MRText>
+            </View>
+        )
+    }
+
 
     render() {
         return (
@@ -373,6 +393,7 @@ export default class Waterfall extends Component {
                         this.props.renderEmpty() : null}
                     {this.width && this._renderItems()}
                 </View>
+                {!EmptyUtils.isEmptyArr(this.list) ? this._renderFooter():null}
             </ScrollView>
         );
     }

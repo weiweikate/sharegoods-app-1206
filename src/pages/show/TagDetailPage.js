@@ -48,7 +48,7 @@ export default class TagDetailPage extends BasePage {
             <NoMoreClick onPress={() => {
                 this.shareModal && this.shareModal.open();
             }}>
-                <Image source={iconShowShare}/>
+                <Image source={iconShowShare} style={{width:20,height:20}}/>
             </NoMoreClick>
         );
     };
