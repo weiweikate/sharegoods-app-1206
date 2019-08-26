@@ -293,7 +293,7 @@ const PromoteItemViewStyles = StyleSheet.create({
 export class ServiceItemView extends Component {
     _imgText = (text) => {
         return <View style={ServiceItemViewStyles.itemView}>
-            <Image source={service_true}/>
+            <Image source={service_true} style={{ width: 8, height: 8 }}/>
             <Text style={ServiceItemViewStyles.serviceValueText}>{text}</Text>
         </View>;
     };

@@ -85,7 +85,7 @@ export default class PasswordView extends Component {
             <View style={[styles.content, {height: keyboardHeight}]}>
             <View style={styles.row}>
                 <TouchableOpacity style={styles.left} onPress={()=> {this._dismiss()}}>
-                <Image style={styles.backImg} source={res.back}/>
+                <Image style={{width:20,height:20}} source={res.back}/>
                 </TouchableOpacity>
                 <View style={styles.titleView}>
                 <Text style={styles.input} allowFontScaling={false}>请输入平台的支付密码</Text>

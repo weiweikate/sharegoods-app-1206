@@ -498,7 +498,7 @@ export default class SearchResultPage extends BasePage {
                         <ShopCartRedNumView/>
                     </TouchableOpacity>
                     {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop.bind(this)}>
-                        <Image style={{ marginTop: 5 }} source={toTop}/>
+                        <Image style={{ marginTop: 5, width: 40, height: 40 }} source={toTop}/>
                     </TouchableOpacity> : null}
 
                 </View>
