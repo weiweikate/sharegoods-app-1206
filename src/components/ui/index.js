@@ -7,7 +7,6 @@ import CountDownReact from './CountdownReact';
 import RefreshList from './RefreshList';
 import HotSearch from './HotSearch';
 import RecentSearch from './RecentSearch';
-import SearchInput from './SearchInput';
 import AddPhotos from './AddPhotos';
 import NoMoreClick from './NoMoreClick';
 import PasswordInput from './PasswordInput';
@@ -24,7 +23,6 @@ export {
     RefreshList,
     HotSearch,
     RecentSearch,
-    SearchInput,
     AddPhotos,
     NoMoreClick,
     PasswordInput,

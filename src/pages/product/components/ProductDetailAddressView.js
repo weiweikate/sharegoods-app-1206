@@ -31,7 +31,7 @@ export class ProductDetailSetAddressView extends React.Component {
                 }}>
                     <MRText style={pStyles.nameText}>选择</MRText>
                     <MRText style={pStyles.valueText}>配送至: {showAreaText}</MRText>
-                    <Image source={arrow_right_black}/>
+                    <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>
                 </NoMoreClick>
             </View>
         );
@@ -82,7 +82,7 @@ export class ProductDetailSkuAddressView extends React.Component {
                             }}>{showAreaText}</MRText>
                         </View>
                     </View>
-                    <Image source={arrow_right_black}/>
+                    <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>
                 </NoMoreClick>
                 {(areaSkuList && areaSkuList.length === 0) && <MRText style={sStyles.noSkuAlert}>该地区不支持配送</MRText>}
                 <View style={sStyles.lineView}/>

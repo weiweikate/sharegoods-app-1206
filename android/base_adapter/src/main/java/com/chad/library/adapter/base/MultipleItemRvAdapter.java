@@ -1,8 +1,9 @@
 package com.chad.library.adapter.base;
 
-import android.support.annotation.Nullable;
 import android.util.SparseArray;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.util.MultiTypeDelegate;
@@ -12,14 +13,14 @@ import java.util.List;
 
 /**
  * https://github.com/chaychan
+ *
  * @author ChayChan
- * @description:
- * When there are multiple entries, avoid too much business logic in convert(),Put the logic of each item in the corresponding ItemProvider
+ * @description: When there are multiple entries, avoid too much business logic in convert(),Put the logic of each item in the corresponding ItemProvider
  * 当有多种条目的时候，避免在convert()中做太多的业务逻辑，把逻辑放在对应的ItemProvider中
  * @date 2018/3/21  9:55
  */
 
-public abstract class MultipleItemRvAdapter<T,V extends BaseViewHolder> extends BaseQuickAdapter<T, V> {
+public abstract class MultipleItemRvAdapter<T, V extends BaseViewHolder> extends BaseQuickAdapter<T, V> {
 
     private SparseArray<BaseItemProvider> mItemProviders;
     protected ProviderDelegate mProviderDelegate;
@@ -76,7 +77,7 @@ public abstract class MultipleItemRvAdapter<T,V extends BaseViewHolder> extends 
         OnItemClickListener clickListener = getOnItemClickListener();
         OnItemLongClickListener longClickListener = getOnItemLongClickListener();
 
-        if (clickListener != null && longClickListener != null){
+        if (clickListener != null && longClickListener != null) {
             //如果已经设置了子条目点击监听和子条目长按监听
             // If you have set up a sub-entry click monitor and sub-entries long press listen
             return;
@@ -84,7 +85,7 @@ public abstract class MultipleItemRvAdapter<T,V extends BaseViewHolder> extends 
 
         View itemView = helper.itemView;
 
-        if (clickListener == null){
+        if (clickListener == null) {
             //如果没有设置点击监听，则回调给itemProvider
             //Callback to itemProvider if no click listener is set
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +96,7 @@ public abstract class MultipleItemRvAdapter<T,V extends BaseViewHolder> extends 
             });
         }
 
-        if (longClickListener == null){
+        if (longClickListener == null) {
             //如果没有设置长按监听，则回调给itemProvider
             // If you do not set a long press listener, callback to the itemProvider
             itemView.setOnLongClickListener(new View.OnLongClickListener() {

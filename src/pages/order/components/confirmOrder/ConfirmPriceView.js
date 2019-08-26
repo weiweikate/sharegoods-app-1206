@@ -55,16 +55,16 @@ export default class ConfirmPriceView extends Component {
         // "promotionAmount":, //BigDecimal 促销金额
         // "tokenCoinAmount":, //BigDecimal 一元券抵扣金额
         // "couponCount":, //int 优惠券数量
-        if (confirmOrderModel.productOrderList.length === 0){
+        if (confirmOrderModel.productOrderList.length === 0) {
             return null;
         }
 
-        let {totalFreightFee = 0, totalAmount = 0, couponAmount = 0, promotionAmount = 0, tokenCoinAmount = 0} = confirmOrderModel.payInfo;
+        let { totalFreightFee = 0, totalAmount = 0, couponAmount = 0, promotionAmount = 0, tokenCoinAmount = 0 } = confirmOrderModel.payInfo;
         return (
 
             <View style={{ backgroundColor: 'white' }}>
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
-                 < View style={styles.couponsStyle}>
+                < View style={styles.couponsStyle}>
                     <UIText value={'商品金额'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText value={`${StringUtils.formatMoneyString(totalAmount)}`}
@@ -73,7 +73,7 @@ export default class ConfirmPriceView extends Component {
                 </View>
                 {this.renderLine()}
                 {confirmOrderModel.isAllVirtual ? null :
-                    <View style={[styles.couponsStyle,]}>
+                    <View style={[styles.couponsStyle]}>
                         <UIText value={'运费'} style={styles.blackText}/>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <UIText value={`${StringUtils.formatMoneyString(totalFreightFee)}`}
@@ -81,17 +81,17 @@ export default class ConfirmPriceView extends Component {
                         </View>
                     </View>
                 }
-                {confirmOrderModel.isAllVirtual ? null :this.renderLine()}
+                {confirmOrderModel.isAllVirtual ? null : this.renderLine()}
                 {promotionAmount != 0 ? <View style={styles.couponsStyle}
-                                               activeOpacity={0.5}
-                                               onPress={this.props.jumpToCouponsPage}>
+                                              activeOpacity={0.5}
+                                              onPress={this.props.jumpToCouponsPage}>
                     <UIText value={'组合优惠'} style={styles.blackText}/>
                     {this.renderLine()}
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={promotionAmount>0?('-'+StringUtils.formatMoneyString(promotionAmount)):('+'+ StringUtils.formatMoneyString(Math.abs(promotionAmount)))}
+                            value={promotionAmount > 0 ? ('-' + StringUtils.formatMoneyString(promotionAmount)) : ('+' + StringUtils.formatMoneyString(Math.abs(promotionAmount)))}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
-                        <Image source={arrow_right}/>
+                        <Image source={arrow_right} style={{ width: 7, height: 10 }}/>
                     </View>
                 </View> : null}
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
@@ -102,9 +102,9 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={confirmOrderModel.canUseCou ? (couponAmount != 0 ?'-'+StringUtils.formatMoneyString(couponAmount) :(confirmOrderModel.canInvoke? '请激活兑换券':'请选择优惠券')) : '不可用优惠券'}
+                            value={confirmOrderModel.canUseCou ? (couponAmount != 0 ? '-' + StringUtils.formatMoneyString(couponAmount) : (confirmOrderModel.canInvoke ? '请激活兑换券' : '请选择优惠券')) : '不可用优惠券'}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
-                        <Image source={arrow_right}/>
+                        <Image source={arrow_right} style={{ width: 7, height: 10 }}/>
                     </View>
                 </TouchableOpacity>
                 {this.renderLine()}
@@ -114,9 +114,9 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'1元现金券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={tokenCoinAmount != 0 ? '-'+StringUtils.formatMoneyString(tokenCoinAmount) : '请选择1元现金券'}
+                            value={tokenCoinAmount != 0 ? '-' + StringUtils.formatMoneyString(tokenCoinAmount) : '请选择1元现金券'}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
-                        <Image source={arrow_right}/>
+                        <Image source={arrow_right} style={{ width: 7, height: 10 }}/>
                     </View>
                 </TouchableOpacity>
                 {this.renderLine()}

@@ -14,7 +14,7 @@ import {
     NativeModules,
     StyleSheet,
     Text,
-    View
+    View, Alert
 } from 'react-native';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
@@ -85,6 +85,8 @@ class App extends Component {
         codePush.sync({
             updateDialog: false,
             installMode: codePush.InstallMode.ON_NEXT_RESUME
+        }, null, null, (update) => {
+            Alert.alert('333', update.downloadUrl);
         });
         netStatus.startMonitorNetworkStatus();
         // 环境配置

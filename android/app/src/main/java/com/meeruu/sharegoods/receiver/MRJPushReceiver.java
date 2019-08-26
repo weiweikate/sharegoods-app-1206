@@ -30,6 +30,7 @@ public class MRJPushReceiver extends JPushMessageReceiver {
 
     private static final String PACKAGENAME = "com.meeruu.sharegoods";
     private static final String LINk_KEY = "linkUrl";
+    private static final String LINK_NATIVE_URL = "linkNativeUrl";
     private static final String PAGE_KEY = "pageType";
     private static final String PARAMS_KEY = "params";
 
@@ -116,6 +117,14 @@ public class MRJPushReceiver extends JPushMessageReceiver {
             } catch (Exception e) {
             }
             String uri = "meeruu://path/HtmlPage/" + link;
+            deepLink(uri, context);
+        }else if(objExtra != null && objExtra.has(LINK_NATIVE_URL)){
+            String link = "";
+            try {
+                link = objExtra.getString(LINk_KEY);
+            }catch (Exception e){
+            }
+            String uri = "meeruu://path/" + link;
             deepLink(uri, context);
         } else {
             startApp(context);

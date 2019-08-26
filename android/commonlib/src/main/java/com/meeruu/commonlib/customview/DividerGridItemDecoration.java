@@ -1,8 +1,9 @@
 package com.meeruu.commonlib.customview;
 
 import android.graphics.Rect;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by louis on 2017/11/7.

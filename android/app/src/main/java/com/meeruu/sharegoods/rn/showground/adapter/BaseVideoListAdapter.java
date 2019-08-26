@@ -2,14 +2,15 @@ package com.meeruu.sharegoods.rn.showground.adapter;
 
 import android.content.Context;
 import android.graphics.Point;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseHolder> extends RecyclerView.Adapter<VH>  {
+public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseHolder> extends RecyclerView.Adapter<VH> {
 
     public static final String TAG = BaseVideoListAdapter.class.getSimpleName();
     protected List<NewestShowGroundBean.DataBean> list;
@@ -36,6 +37,7 @@ public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseH
         mScreenPoint.y = displayMetrics.heightPixels;
 
     }
+
     public BaseVideoListAdapter(Context context) {
         this(context, new ArrayList<NewestShowGroundBean.DataBean>());
     }
@@ -63,7 +65,7 @@ public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseH
 
         if (!TextUtils.equals(cover, tag)) {
             iv.setTag(cover);
-            ImageLoadUtils.loadScaleTypeNetImage(cover,iv, ScalingUtils.ScaleType.FIT_CENTER,true);
+            ImageLoadUtils.loadScaleTypeNetImage(cover, iv, ScalingUtils.ScaleType.FIT_CENTER, true);
         }
 
 //        new ImageLoaderImpl().loadImage(context, coverPath, new ImageLoaderOptions.Builder()
@@ -108,6 +110,7 @@ public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseH
 //        }).into(iv);
 
     }
+
     @Override
     public int getItemCount() {
         return list != null ? list.size() : 0;
@@ -115,6 +118,7 @@ public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseH
 
     /**
      * 刷新数据
+     *
      * @param list
      */
     public void refreshData(List<NewestShowGroundBean.DataBean> list) {
@@ -131,8 +135,10 @@ public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseH
         }
         notifyDataSetChanged();
     }
+
     /**
      * 添加数据
+     *
      * @param list
      */
     public void addMoreData(List<NewestShowGroundBean.DataBean> list) {
@@ -144,12 +150,15 @@ public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseH
         return list;
     }
 
-    public abstract class BaseHolder extends RecyclerView.ViewHolder  {
+    public abstract class BaseHolder extends RecyclerView.ViewHolder {
         public BaseHolder(View itemView) {
             super(itemView);
         }
+
         public abstract SimpleDraweeView getCoverView();
+
         public abstract ImageView getPlayIcon();
+
         public abstract ViewGroup getContainerView();
     }
 }

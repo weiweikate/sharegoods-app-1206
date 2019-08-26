@@ -7,7 +7,7 @@ import {
     ImageBackground,
     TouchableOpacity
 } from 'react-native';
-import QRCode from 'react-native-qrcode';
+import QRCode from '@mr/react-native-qrcode';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import CommShareModal from '../../../comm/components/CommShareModal';

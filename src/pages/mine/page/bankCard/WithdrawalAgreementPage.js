@@ -15,7 +15,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    WebView,
     TouchableWithoutFeedback,
     NativeModules
 } from 'react-native';
@@ -26,6 +25,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import MineApi from '../../api/MineApi';
 import RouterMap from '../../../../navigation/RouterMap';
+import WebView from '@mr/webview';
 
 const { px2dp } = ScreenUtils;
 type Props = {};

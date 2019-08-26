@@ -2,12 +2,13 @@ package com.meeruu.sharegoods.rn.showground.widgets.recordview;
 
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.meeruu.sharegoods.R;
 
@@ -55,7 +56,7 @@ public class AlivcCountDownView extends FrameLayout {
 
             @Override
             public void onFinish() {
-                if (onCountDownFinishListener != null){
+                if (onCountDownFinishListener != null) {
                     onCountDownFinishListener.onFinish();
                 }
                 setVisibility(GONE);
@@ -65,7 +66,7 @@ public class AlivcCountDownView extends FrameLayout {
     }
 
     public void cancle() {
-        if (countDownTimer!=null){
+        if (countDownTimer != null) {
             countDownTimer.cancel();
             setVisibility(GONE);
         }
@@ -84,12 +85,12 @@ public class AlivcCountDownView extends FrameLayout {
 
     /**
      * 设置倒计时结束回调监听
+     *
      * @param listener
      */
     public void setOnCountDownFinishListener(OnCountDownFinishListener listener) {
         this.onCountDownFinishListener = listener;
     }
-
 
 
 }

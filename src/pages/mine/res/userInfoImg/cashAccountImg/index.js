@@ -22,7 +22,7 @@ const cashAccountImg = {
     zengsong_icon:require('./zhanghu_icon_zengsong.png'),
     qita_icon:require('./zhanghu_icon_qita.png'),
     writer_icon:require('./writer_icon.png'),
-    cash_noData:require('./noData.png'),
+    cash_noData:require('../../../../../comm/res/placeholder/no_data.png'),
 
 };
 export default cashAccountImg;

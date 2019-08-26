@@ -2,25 +2,27 @@ package com.meeruu.sharegoods.rn.showground.widgets;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class RnFrameLayout extends FrameLayout {
     protected boolean mRequestedLayout = false;
 
-    public RnFrameLayout( @NonNull Context context) {
+    public RnFrameLayout(@NonNull Context context) {
         super(context);
     }
 
-    public RnFrameLayout( @NonNull Context context, @Nullable AttributeSet attrs) {
+    public RnFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public RnFrameLayout( @NonNull Context context,  @Nullable AttributeSet attrs, int defStyleAttr) {
+    public RnFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
     @Override
     public void requestLayout() {
         super.requestLayout();

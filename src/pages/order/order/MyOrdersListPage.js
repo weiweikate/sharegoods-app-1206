@@ -42,7 +42,7 @@ class MyOrdersListPage extends BasePage {
     $NavBarRenderRightItem = () => {
         return (
             <TouchableOpacity onPress={this.gotoSearchPage}>
-                <Image source={search}/>
+                <Image source={search} style={{ width: 22, height: 22, marginRight: 10 }}/>
             </TouchableOpacity>
         );
     };
@@ -57,35 +57,36 @@ class MyOrdersListPage extends BasePage {
 
     componentDidMount() {
         //接收刷新的通知
-        this.listener = DeviceEventEmitter.addListener('REFRESH_ORDER', ()=> {
-            setTimeout(()=> {//后台接口异步，先等待1s刷新
-                let ref = this['reLoads_'+this.selectTab];
+        this.listener = DeviceEventEmitter.addListener('REFRESH_ORDER', () => {
+            setTimeout(() => {//后台接口异步，先等待1s刷新
+                let ref = this['reLoads_' + this.selectTab];
                 ref && ref.onRefresh();
-            }, 1000)
-        })
+            }, 1000);
+        });
         this.getCancelReasons();
 
     }
+
     //获取取消订单理由
     getCancelReasons = () => {
         MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(resp => {
             if (resp.code === 10000 && StringUtils.isNoEmpty(resp.data)) {
                 let arrs = resp.data.map((item) => {
-                    return item.value
+                    return item.value;
                 });
                 this.setState({
                     cancelReasons: arrs
                 });
             }
-        })
-    }
+        });
+    };
 
     _render() {
         return (
             <ScrollableTabView
                 onChangeTab={(obj) => {
-                    this.selectTab = obj.i
-                    let ref = this['reLoads_'+ this.selectTab];
+                    this.selectTab = obj.i;
+                    let ref = this['reLoads_' + this.selectTab];
                     ref && ref.onRefresh();
                 }}
                 style={styles.container}
@@ -94,15 +95,15 @@ class MyOrdersListPage extends BasePage {
                 //进界面的时候打算进第几个
                 initialPage={parseInt(this.state.index)}>
                 {
-                    ['全部', '待付款', '待发货', '待收货','待晒单'].map((item, index) => {
-                        return  <MyOrdersListView
-                            tabLabel = {item}
-                            pageStatus = {index}
-                            ref = {(e) => this['reLoads_'+index] = e}
-                            nav = {this.$navigate}
-                            navigation = {this.props.navigation}
-                            cancelReasons = {this.state.cancelReasons}
-                        />
+                    ['全部', '待付款', '待发货', '待收货', '待晒单'].map((item, index) => {
+                        return <MyOrdersListView
+                            tabLabel={item}
+                            pageStatus={index}
+                            ref={(e) => this['reLoads_' + index] = e}
+                            nav={this.$navigate}
+                            navigation={this.props.navigation}
+                            cancelReasons={this.state.cancelReasons}
+                        />;
                     })
                 }
             </ScrollableTabView>
@@ -111,13 +112,13 @@ class MyOrdersListPage extends BasePage {
 
     _renderTabBar = () => {
         return <DefaultTabBar
-            backgroundColor = {'white'}
-            activeTextColor = {DesignRule.mainColor}
-            inactiveTextColor = {DesignRule.textColor_instruction}
-            textStyle = {styles.tabBarText}
-            underlineStyle = {styles.tabBarUnderline}
-            style = {styles.tabBar}
-            tabStyle = {styles.tab}
+            backgroundColor={'white'}
+            activeTextColor={DesignRule.mainColor}
+            inactiveTextColor={DesignRule.textColor_instruction}
+            textStyle={styles.tabBarText}
+            underlineStyle={styles.tabBarUnderline}
+            style={styles.tabBar}
+            tabStyle={styles.tab}
         />;
     };
 }

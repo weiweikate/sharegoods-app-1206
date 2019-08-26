@@ -1,16 +1,18 @@
 package com.meeruu.sharegoods.rn.showground.utils;
 
 import android.content.res.Resources;
-import android.support.design.widget.TabLayout;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.lang.reflect.Field;
 
 public class IndicatorLineUtil {
     /**
      * 调节tablayout指示线宽度
+     *
      * @param tabs
      * @param leftDip
      * @param rightDip

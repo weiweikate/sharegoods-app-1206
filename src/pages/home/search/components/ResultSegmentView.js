@@ -44,7 +44,7 @@ export default class SearchSegmentView extends Component {
                 <Text
                     style={[styles.title, { color: this.state.selIndex === index ? DesignRule.mainColor : DesignRule.textColor_instruction }]}
                     allowFontScaling={false}>{title}</Text>
-                {index === 2 && <Image source={upDown}/>}
+                {index === 2 && <Image source={upDown} style={{ width: 7, height: 12 }}/>}
             </View>
         </TouchableWithoutFeedback>;
     };

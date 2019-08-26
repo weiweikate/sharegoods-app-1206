@@ -239,6 +239,13 @@
             "oss": "https://testh5.sharegoodsmall.com",
             "h5": "http://testh5.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c"
+        },
+        "dev_open_201": {
+            "name": "开发平台201",
+            "host": "http://devh5-openplatnew.sharegoodsmall.com/gateway",
+            "oss": "https://testh5.sharegoodsmall.com",
+            "h5": "http://testh5.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c"
         }
     }
 }

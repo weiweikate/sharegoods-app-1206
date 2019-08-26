@@ -1,10 +1,7 @@
 package com.meeruu.qiyu.activity;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
 
-import com.meeruu.qiyu.ScreenUtils;
 import com.meeruu.statusbar.ImmersionBar;
 import com.qiyukf.nim.uikit.common.media.picker.activity.PickerAlbumPreviewActivity;
 import com.qiyukf.unicorn.R;

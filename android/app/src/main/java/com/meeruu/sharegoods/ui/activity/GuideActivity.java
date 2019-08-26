@@ -2,13 +2,14 @@ package com.meeruu.sharegoods.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.meeruu.commonlib.base.BaseActivity;

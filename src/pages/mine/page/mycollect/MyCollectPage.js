@@ -7,11 +7,7 @@
  */
 
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-    ListView, Image, RefreshControl
-} from 'react-native';
+import { Image, RefreshControl, StyleSheet, View } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -21,13 +17,12 @@ import MineApi from '../../api/MineApi';
 import { observer } from 'mobx-react';
 import DesignRule from '../../../../constants/DesignRule';
 import UIImage from '@mr/image-placeholder';
-import { MRText as Text, NoMoreClick, AvatarImage } from '../../../../components/ui';
+import { AvatarImage, MRText as Text, NoMoreClick } from '../../../../components/ui';
 import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 
 import RES from '../../res';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
-import { routeNavigate } from '../../../../navigation/RouterMap';
-import RouterMap from '../../../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 
 const MoneyIcon = RES.collectShop.ic_money;
 const StarIcon = RES.collectShop.colloct_star;
@@ -37,7 +32,6 @@ const { statusBarHeight } = ScreenUtils;
 export default class MyCollectPage extends BasePage {
     constructor(props) {
         super(props);
-        this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
             viewData: [],
             selectAll: false,
@@ -101,15 +95,16 @@ export default class MyCollectPage extends BasePage {
         return this.state.viewData[index].status !== inValidCode;
         // return true;
     };
-    renderItem = (item, index) => {
-        console.log(item);
+    renderItem = (data) => {
+        console.log(data.item);
         return (
-            this.isValidItem(index) ? this.renderValidItem(item, index) : this.renderInvalidItem({ item, index })
+            this.isValidItem(data.index) ? this.renderValidItem(data) : this.renderInvalidItem(data)
         );
 
     };
 
-    renderValidItem = (item, index) => {
+    renderValidItem = (data) => {
+        let item = data.item;
         console.log(item);
         const storeStar = item.storeStarId;
         const starsArr = [];
@@ -152,7 +147,7 @@ export default class MyCollectPage extends BasePage {
             </NoMoreClick>
         );
     };
-    renderInvalidItem = ({ item, index }) => {
+    renderInvalidItem = ({ item }) => {
         console.log(item);
         const storeStar = item.storeStarId;
         const starsArr = [];
@@ -304,16 +299,19 @@ export default class MyCollectPage extends BasePage {
         console.log(this.state.viewData);
         return (
             <SwipeListView
-                dataSource={this.ds.cloneWithRows(this.state.viewData)}
+                data={this.state.viewData}
                 disableRightSwipe={true}
-                renderRow={(rowData, secId, rowId, rowMap) => (
-                    this.renderItem(rowData, rowId)
+                renderItem={(rowData) => (
+                    this.renderItem(rowData)
                 )}
-                renderHiddenRow={(data, secId, rowId, rowMap) => (
+                renderHiddenItem={(data, rowMap) => (
                     <NoMoreClick
                         style={styles.standaloneRowBack}
                         onPress={() => {
-                            rowMap[`${secId}${rowId}`].closeRow();
+                            let rowKey = data.item.key;
+                            if (rowMap[rowKey]) {
+                                rowMap[rowKey].closeRow();
+                            }
                             this.deleteFromShoppingCartByProductId(data.storeCode);
                         }}>
                         <View

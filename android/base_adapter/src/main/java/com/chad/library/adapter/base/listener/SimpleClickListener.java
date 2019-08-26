@@ -1,12 +1,13 @@
 package com.chad.library.adapter.base.listener;
 
 import android.os.Build;
-import android.support.v4.view.GestureDetectorCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.core.view.GestureDetectorCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -242,6 +243,7 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
     /**
      * Callback method to be invoked when an item in this AdapterView has
      * been clicked.
+     *
      * @param adapter
      * @param view     The view within the AdapterView that was clicked (this
      *                 will be a view provided by the adapter)
@@ -252,23 +254,28 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
     /**
      * callback method to be invoked when an item in this view has been
      * click and held
+     *
      * @param adapter
      * @param view     The view whihin the AbsListView that was clicked
      * @param position The position of the view int the adapter
      * @return true if the callback consumed the long click ,false otherwise
      */
     public abstract void onItemLongClick(BaseQuickAdapter adapter, View view, int position);
+
     /**
      * callback method to be invoked when an itemchild in this view has been click
+     *
      * @param adapter
      * @param view     The view whihin the AbsListView that was clicked
      * @param position The position of the view int the adapter
      * @return true if the callback consumed the long click ,false otherwise
      */
     public abstract void onItemChildClick(BaseQuickAdapter adapter, View view, int position);
+
     /**
      * callback method to be invoked when an item in this view has been
      * click and held
+     *
      * @param adapter
      * @param view     The view whihin the AbsListView that was clicked
      * @param position The position of the view int the adapter

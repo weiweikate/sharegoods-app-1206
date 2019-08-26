@@ -1,10 +1,11 @@
 package com.meeruu.sharegoods.rn.showground.widgets.littlevideo;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PagerSnapHelper;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class PagerLayoutManager extends LinearLayoutManager {
     private PagerSnapHelper mPagerSnapHelper;
@@ -57,9 +58,9 @@ public class PagerLayoutManager extends LinearLayoutManager {
     /**
      * 监听竖直方向的相对偏移量
      *
-     * @param dy y方向位移
+     * @param dy       y方向位移
      * @param recycler recyclerView
-     * @param state 滑动状态
+     * @param state    滑动状态
      * @return
      */
     @Override
@@ -84,6 +85,7 @@ public class PagerLayoutManager extends LinearLayoutManager {
 
     /**
      * 设置监听
+     *
      * @param listener
      */
     public void setOnViewPagerListener(OnViewPagerListener listener) {
@@ -122,15 +124,17 @@ public class PagerLayoutManager extends LinearLayoutManager {
 
         /**
          * 页面不可见, 释放
-         * @param isNext 是否有下一个
+         *
+         * @param isNext   是否有下一个
          * @param position 下标
          */
         void onPageRelease(boolean isNext, int position);
 
         /**
          * 选中的index
+         *
          * @param position 下标
-         * @param b 是否到底部
+         * @param b        是否到底部
          */
         void onPageSelected(int position, boolean b);
     }
