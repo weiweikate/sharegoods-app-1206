@@ -40,6 +40,7 @@ const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
 const icon_invite = res.myData.icon_invite;
 const cash_noData = res.cashAccount.cash_noData;
+const xiaofeitk = res.cashAccount.xiaofei_icon;
 
 const allKinds = {
     1: { title: '注册赠送', img: singInImg },
@@ -54,7 +55,8 @@ const allKinds = {
     10: { title: '邀请有礼奖励', img: icon_invite },
     11: { title: '分享奖励', img: fenxiang_icon },
     12: { title: '参与活动', img: tuiguang_icon },
-    13: { title: '活动奖励', img: zengsong_icon }
+    13: { title: '活动奖励', img: zengsong_icon },
+    21: { title: '售后回退', img: xiaofeitk },
 };
 
 
