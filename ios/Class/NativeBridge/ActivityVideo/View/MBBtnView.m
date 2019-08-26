@@ -299,6 +299,7 @@
     _tag1.layer.masksToBounds = YES;
     _tag1.tag = 1;
     [_tag1 addTarget:self action:@selector(clickTag:) forControlEvents:UIControlEventTouchUpInside];
+    _tag1.hidden = YES;
   }
   return _tag1;
 }
@@ -313,6 +314,8 @@
     _tag2.layer.masksToBounds = YES;
     _tag2.tag = 2;
     [_tag2 addTarget:self action:@selector(clickTag:) forControlEvents:UIControlEventTouchUpInside];
+    _tag2.hidden = YES;
+
   }
   return _tag2;
 }
@@ -327,6 +330,7 @@
     _tag3.layer.masksToBounds = YES;
     _tag3.tag = 3;
     [_tag3 addTarget:self action:@selector(clickTag:) forControlEvents:UIControlEventTouchUpInside];
+    _tag3.hidden = YES;
   }
   return _tag3;
 }
