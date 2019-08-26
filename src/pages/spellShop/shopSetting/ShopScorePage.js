@@ -41,8 +41,10 @@ export default class ShopScorePage extends BasePage {
                         <View style={styles.starContainer}>
                             {
                                 starsArr.map((item, index) => {
-                                    return <Image key={index} style={[index ? { marginLeft: 35 } : null]}
-                                                  source={StarIcon}/>;
+                                    return <Image key={index} style={[index ? { marginLeft: 35 } : null, {
+                                        width: 35,
+                                        height: 35
+                                    }]} source={StarIcon}/>;
                                 })
                             }
                         </View>

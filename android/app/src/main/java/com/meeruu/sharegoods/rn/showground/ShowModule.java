@@ -18,9 +18,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.config.BaseRequestConfig;
-import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.utils.HttpUrlUtils;
 import com.meeruu.sharegoods.event.ShowVideoEvent;
 import com.meeruu.sharegoods.rn.showground.activity.VideoRecordActivity;
@@ -41,14 +39,14 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-public class ShowModule extends ReactContextBaseJavaModule implements LifecycleEventListener ,ActivityEventListener{
+public class ShowModule extends ReactContextBaseJavaModule implements LifecycleEventListener, ActivityEventListener {
     public static final String MODULE_NAME = "ShowModule";
     private ReactApplicationContext mContext;
     private VODUploadCallback callback;
     private Promise videoPromise;
     private Promise uploadPromise;
     VODUploadClient uploader;
-    private String uploadAuth,uploadAddress;
+    private String uploadAuth, uploadAddress;
     public static final int result_code = 1234;
 
 
@@ -66,13 +64,13 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
         initUploader();
     }
 
-    private void initUploader(){
+    private void initUploader() {
         uploader = new VODUploadClientImpl(mContext.getApplicationContext());
         callback = new VODUploadCallback() {
             @Override
             public void onUploadSucceed(UploadFileInfo info) {
                 super.onUploadSucceed(info);
-                if(uploadPromise!=null){
+                if (uploadPromise != null) {
                     uploadPromise.resolve(null);
                     uploadPromise = null;
                 }
@@ -112,20 +110,20 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
             }
         };
         uploader.init(callback);
-        uploader.setPartSize(1024*1024);
+        uploader.setPartSize(1024 * 1024);
     }
 
     @ReactMethod
-    public void recordVideo(Promise promise){
+    public void recordVideo(Promise promise) {
         Intent intent = new Intent(getCurrentActivity(), VideoRecordActivity.class);
         getCurrentActivity().startActivity(intent);
         videoPromise = promise;
     }
 
     @ReactMethod
-    public void uploadVideo(final String title, final String path,final String videoAuth, final Promise promise){
+    public void uploadVideo(final String title, final String path, final String videoAuth, final Promise promise) {
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             promise.reject("文件不存在");
             return;
         }
@@ -159,7 +157,7 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
         VideoAuthBean videoAuthBean = JSON.parseObject(videoAuth, VideoAuthBean.class);
         uploadAddress = videoAuthBean.getUploadAddress();
         uploadAuth = videoAuthBean.getUploadAuth();
-        startUpload(title,fileName,path);
+        startUpload(title, fileName, path);
 
 //        WritableMap writableMap = Arguments.createMap();
 //        writableMap.putString("showNo",videoAuthBean.getShowNo());
@@ -167,13 +165,13 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
 //        promise.resolve(writableMap);
     }
 
-    private void startUpload(String title, String fileName,String path){
+    private void startUpload(String title, String fileName, String path) {
         VodInfo vodInfo = new VodInfo();
         vodInfo.setFileName(fileName);
         vodInfo.setTitle(title);
         uploader.stop();
         uploader.clearFiles();
-        uploader.addFile(path,vodInfo);
+        uploader.addFile(path, vodInfo);
         uploader.start();
     }
 
@@ -199,10 +197,10 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onVideoComplete(ShowVideoEvent event) {
         WritableMap writableMap = Arguments.createMap();
-        writableMap.putString("videoPath",event.getPath());
-        writableMap.putString("videoCover",event.getCover());
-        writableMap.putInt("width",event.getWidth());
-        writableMap.putInt("height",event.getHeight());
+        writableMap.putString("videoPath", event.getPath());
+        writableMap.putString("videoCover", event.getCover());
+        writableMap.putInt("width", event.getWidth());
+        writableMap.putInt("height", event.getHeight());
         videoPromise.resolve(writableMap);
     }
 
@@ -228,16 +226,16 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        if(resultCode == result_code){
+        if (resultCode == result_code) {
             List<LocalMedia> list = PictureSelector.obtainMultipleResult(data);
             LocalMedia localMedia = list.get(0);
             WritableMap map = new WritableNativeMap();
             map.putString("videoPath", localMedia.getPath());
-            ImageBean cover = VideoCoverUtils.getVideoThumb(mContext,localMedia.getPath());
-            map.putString("videoCover",cover.getPath());
+            ImageBean cover = VideoCoverUtils.getVideoThumb(mContext, localMedia.getPath());
+            map.putString("videoCover", cover.getPath());
             map.putInt("width", cover.getWidth());
             map.putInt("height", cover.getHeight());
-            if(videoPromise != null){
+            if (videoPromise != null) {
                 videoPromise.resolve(map);
             }
         }
@@ -246,5 +244,12 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
     @Override
     public void onNewIntent(Intent intent) {
 
+    }
+
+    @Override
+    public void onCatalystInstanceDestroy() {
+        super.onCatalystInstanceDestroy();
+        mContext.removeLifecycleEventListener(this);
+        mContext.removeActivityEventListener(this);
     }
 }

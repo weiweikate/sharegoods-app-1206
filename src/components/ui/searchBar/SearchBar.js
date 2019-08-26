@@ -6,7 +6,7 @@ import {
     StyleSheet
 } from 'react-native';
 import SearchIcon from './ss_03.png';
-import { MRTextInput as TextInput} from '../../../components/ui/UIText';
+import { MRTextInput as TextInput } from '../../../components/ui/UIText';
 
 export default class SearchBar extends Component {
 
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginLeft: 16,
-        marginRight: 6
+        marginRight: 6, width: 20, height: 20
     },
     desc: {
         fontSize: 14,

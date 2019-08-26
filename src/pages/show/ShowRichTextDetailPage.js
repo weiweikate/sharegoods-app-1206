@@ -129,9 +129,9 @@ export default class ShowRichTextDetailPage extends BasePage {
                 author: detail.userInfoVO.userNo
             });
             if (this.params.isFormHeader) {
-                this.params.ref && this.params.ref.setClick(detail.click);
+                this.params.ref && this.params.ref.setClick(detail.hotCount);
             } else {
-                this.params.ref && this.params.ref.replaceData(this.params.index, detail.click);
+                this.params.ref && this.params.ref.replaceData(this.params.index, detail.hotCount);
             }
             this.setState({
                 pageState: PageLoadingState.success

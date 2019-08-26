@@ -70,7 +70,7 @@ export default class ShopAssistantDetailPage extends BasePage {
 
     _renderDescRow = (icon, title, style = { marginBottom: 15 }) => {
         return <View style={[{ flexDirection: 'row', alignItems: 'center' }, style]}>
-            <Image source={icon}/>
+            <Image source={icon} style={{ width: 15, height: 15 }}/>
             <Text style={styles.rowTitle} allowFontScaling={false}>{title}</Text>
         </View>;
     };
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     icon: {
-        marginLeft: 25
+        marginLeft: 25, width: 14, height: 14
     },
     title: {
         fontSize: 13,

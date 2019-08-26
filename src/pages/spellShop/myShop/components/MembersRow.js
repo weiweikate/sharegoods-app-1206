@@ -44,7 +44,8 @@ export default class MembersRow extends Component {
                 <Text
                     style={[styles.iconDesc, { marginRight: userStatus !== 1 ? 21 : 0 }]}
                     allowFontScaling={false}>{`共${userCount || 0}人`}</Text>
-                {userStatus === 1 ? <Image style={styles.arrow} source={ArrowImg}/> : null}
+                {userStatus === 1 ?
+                    <Image style={styles.arrow} source={ArrowImg}/> : null}
             </TouchableOpacity>
             <View style={styles.membersContainer}>
                 {
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginLeft: 15,
-        marginRight: 8
+        marginRight: 8, width: 13, height: 12
     },
     iconTitle: {
         fontSize: 15,
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     },
     arrow: {
         marginLeft: 5,
-        marginRight: 15
+        marginRight: 15, width: 10, height: 10
     },
     membersContainer: {
         flexDirection: 'row',

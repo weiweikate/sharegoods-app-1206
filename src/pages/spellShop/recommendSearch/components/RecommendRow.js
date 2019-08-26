@@ -47,7 +47,7 @@ export default class RecommendRow extends Component {
         const { ...RecommendRowItem } = this.props.RecommendRowItem;
         //bonusNeedMoney总额 tradeBalance本月收入 totalTradeBalance累计收入
         //店铺本月销售额salesAmount  店铺总计销售额totalSalesAmount
-        let { storeUserList, tradeBalance, bonusNeedMoney,salesAmount,totalSalesAmount } = RecommendRowItem;
+        let { storeUserList, tradeBalance, bonusNeedMoney, salesAmount, totalSalesAmount } = RecommendRowItem;
         let tradeBalanceS = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
         /*进度*/
         bonusNeedMoney = StringUtils.isEmpty(bonusNeedMoney) ? 0 : parseFloat(bonusNeedMoney);
@@ -72,9 +72,11 @@ export default class RecommendRow extends Component {
                                          borderRadius={25}
                                          source={{ uri: RecommendRowItem.headUrl }}/>
                             <View style={styles.tittleContainer}>
-                                <Text style={styles.name} numberOfLines={1} allowFontScaling={false}>{RecommendRowItem.name || ''}</Text>
+                                <Text style={styles.name} numberOfLines={1}
+                                      allowFontScaling={false}>{RecommendRowItem.name || ''}</Text>
                                 <Text style={styles.member}
-                                      numberOfLines={1} allowFontScaling={false}>{`店主: ${RecommendRowItem.storeUserName || ''}`}</Text>
+                                      numberOfLines={1}
+                                      allowFontScaling={false}>{`店主: ${RecommendRowItem.storeUserName || ''}`}</Text>
                             </View>
                         </View>
                         <FlatList
@@ -99,7 +101,8 @@ export default class RecommendRow extends Component {
                         <Text style={{
                             marginTop: 8, marginBottom: 11, paddingHorizontal: 15,
                             color: DesignRule.textColor_secondTitle, fontSize: 10
-                        }} allowFontScaling={false}>奖励任务完成度<Text style={{ color: DesignRule.mainColor }}>{progress}%</Text></Text>
+                        }} allowFontScaling={false}>奖励任务完成度<Text
+                            style={{ color: DesignRule.mainColor }}>{progress}%</Text></Text>
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
                     <View style={{
@@ -110,11 +113,12 @@ export default class RecommendRow extends Component {
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                             {
                                 starsArr.map((item, index) => {
-                                    return <Image key={index} source={StarImg}/>;
+                                    return <Image key={index} source={StarImg} style={{ width: 16, height: 16 }}/>;
                                 })
                             }
                         </View>
-                        <Text style={{ marginTop: 9, color: '#939393', fontSize: 12 }} allowFontScaling={false}>店铺等级</Text>
+                        <Text style={{ marginTop: 9, color: '#939393', fontSize: 12 }}
+                              allowFontScaling={false}>店铺等级</Text>
                         <TouchableOpacity style={styles.joinBtn} onPress={() => {
                             this._onPress();
                         }}>
@@ -127,7 +131,8 @@ export default class RecommendRow extends Component {
                 <View style={styles.bottomContainer}>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop} allowFontScaling={false}>店铺成员</Text>
-                        <Text style={styles.containBottom} allowFontScaling={false}>{RecommendRowItem.storeUserNum || ''}</Text>
+                        <Text style={styles.containBottom}
+                              allowFontScaling={false}>{RecommendRowItem.storeUserNum || ''}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
@@ -137,7 +142,8 @@ export default class RecommendRow extends Component {
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop} allowFontScaling={false}>店铺总计销售额</Text>
-                        <Text style={styles.containBottom} allowFontScaling={false}>{`${totalSalesAmount || '0.00'}元`}</Text>
+                        <Text style={styles.containBottom}
+                              allowFontScaling={false}>{`${totalSalesAmount || '0.00'}元`}</Text>
                     </View>
                 </View>
 
