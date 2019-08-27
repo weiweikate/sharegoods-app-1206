@@ -222,6 +222,12 @@ export default class OrderDetailBottomButtonView extends Component {
                     pictureUrlString,
                     urlString:'/'+orderDetailModel.merchantOrderNo,
                     note: num,
+                    tags: [{
+                        focusIframe : '订单信息',
+                        url: 'https://qiyu.sharegoodsmall.com/#/orderList',
+                        label: '查看订单',
+                        data: JSON.stringify({orderNum: orderDetailModel.merchantOrderNo})
+                    }]
                 }}
             )
         } else {
@@ -239,6 +245,13 @@ export default class OrderDetailBottomButtonView extends Component {
                         pictureUrlString,
                         urlString:'/'+orderDetailModel.merchantOrderNo,
                         note: num,
+                        tags: [{
+                            focusIframe : '订单信息',
+                            url: 'https://qiyu.sharegoodsmall.com/#/orderList',
+                            label: '查看订单',
+                            data:JSON.stringify({orderNum: orderDetailModel.merchantOrderNo})
+                        }]
+
                     }}
                 )
             }).catch((e) => {
