@@ -11,6 +11,12 @@ import { recommendModule } from './HomeRecommendModel';
 import { limitGoModule } from './HomeLimitGoModel';
 import taskModel from './TaskModel';
 import { tabModel } from './HomeTabModel';
+import store from '@mr/rn-store';
+import { ImageAdViewGetHeight } from '../view/ImageAdView';
+import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
+const kHomeTopTopic = '@home/topTopic';
+const kHomeBottomTopic = '@home/bottomTopic';
+const kHomeType = '@home/type';
 
 //首页modules
 class HomeModule {
@@ -28,6 +34,55 @@ class HomeModule {
     errorMsg = '';
     tabId = '';
     refreshing = false;
+    fixedPartOne = [{
+        id: 0,
+        type: homeType.category
+    }, {
+        id: 1,
+        type: homeType.swiper
+    }, {
+        id: 2,
+        type: homeType.user
+    }, {
+        id: 12,
+        type: homeType.task
+    }, {
+        id: 3,
+        type: homeType.channel
+    }, {
+        id: 4,
+        type: homeType.expandBanner
+    }]
+    topTopice = [];
+    fixedPartTwo = [{
+        id: 5,
+        type: homeType.focusGrid
+    }, {
+        id: 6,
+        type: homeType.limitGo
+    }]
+    bottomTopice = []
+    fixedPartThree = [{
+        id: 7,
+        type: homeType.star
+    }, {
+        id: 8,
+        type: homeType.today
+    }, {
+        id: 9,
+        type: homeType.fine
+    }, {
+        id: 10,
+        type: homeType.homeHot
+    },{
+        id: 11,
+        type: homeType.goodsTitle
+    }];
+    goods = []
+
+    type = 0
+
+
     //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
@@ -112,13 +167,57 @@ class HomeModule {
         }
     };
 
+
+
+    getHomeListData = ()=>{
+        // alert(this.bottomTopice.length)
+        if (this.type === 0){
+            return [...this.fixedPartOne,
+                ...this.topTopice,
+                ...this.bottomTopice,
+                ...this.fixedPartTwo,
+                ...this.fixedPartThree,
+                ...this.goods
+            ]
+
+        } else if (this.type === 2){
+            return [...this.fixedPartOne,
+                ...this.fixedPartTwo,
+                ...this.topTopice,
+                ...this.bottomTopice,
+                ...this.fixedPartThree,
+                ...this.goods
+            ]
+        } else {
+            return [...this.fixedPartOne,
+                ...this.topTopice,
+                ...this.fixedPartTwo,
+                ...this.bottomTopice,
+                ...this.fixedPartThree,
+                ...this.goods
+            ]
+
+        }
+    }
+
     //加载为你推荐列表
     @action loadHomeList = flow(function* () {
         setTimeout(() => {
             this.isRefreshing = false;
         }, 1000);
 
-        // 首页类目
+        // if (this.firstLoad){
+        //     try {
+        //         this.type = yield store.get(kHomeType) || 0
+        //         let topTopice = yield store.get(kHomeTopTopic)
+        //         this.topTopice = topTopice || [];
+        //         let bottomTopice = yield store.get(kHomeBottomTopic)
+        //         this.bottomTopice = bottomTopice || [];
+        //     } catch (error) {
+        //     }
+        // }
+        this.getTopticData();
+        //首页类目
         tabModel.loadTabList(this.firstLoad);
         // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
@@ -142,58 +241,17 @@ class HomeModule {
         this.page = 1;
         this.isEnd = false;
         this.firstLoad = false;
-
-        let home = [{
-            id: 0,
-            type: homeType.category
-        }, {
-            id: 1,
-            type: homeType.swiper
-        }, {
-            id: 2,
-            type: homeType.user
-        }, {
-            id: 12,
-            type: homeType.task
-        }, {
-            id: 3,
-            type: homeType.channel
-        }, {
-            id: 4,
-            type: homeType.expandBanner
-        }, {
-            id: 5,
-            type: homeType.focusGrid
-        }, {
-            id: 6,
-            type: homeType.limitGo
-        }, {
-            id: 7,
-            type: homeType.star
-        }, {
-            id: 8,
-            type: homeType.today
-        }, {
-            id: 9,
-            type: homeType.fine
-        }, {
-            id: 10,
-            type: homeType.homeHot
-        }];
         if (this.isFetching === true) {
             return;
         }
-        this.homeList = home;
+        if (this.homeList.length === 0){
+            this.homeList = this.getHomeListData();
+        }
         try {
             this.refreshing = true;
             const tabData = yield HomeApi.getTabList();
             this.tabList = tabData.data || [];
             if (this.tabList.length > 0) {
-                home.push({
-                    id: 11,
-                    type: homeType.goodsTitle
-                });
-                this.homeList = [...home];
                 if (this.tabId) {
                     let tabId = this.tabList[0].id;
                     let tabName = this.tabList[0].name;
@@ -211,7 +269,6 @@ class HomeModule {
                 } else {
                     this.tabId = this.tabList[0].id;
                     this.tabName = this.tabList[0].name;
-                    ;
                     this.tabListIndex = 0;
                 }
                 this.getGoods();
@@ -263,13 +320,11 @@ class HomeModule {
             });
             this.goodsOtherLen = temp.length;
             this.homeList = [...temp, ...home];
-            this.isFetching = false;
             this.isRefreshing = false;
             this.refreshing = false;
             this.page = 1;
             this.errorMsg = '';
         }).catch(err => {
-            this.isFetching = false;
             this.isRefreshing = false;
             this.errorMsg = err.msg;
             this.refreshing = false;
@@ -323,6 +378,7 @@ class HomeModule {
                 });
             }
             this.homeList = this.homeList.concat(home);
+            this.goods = this.goods.concat(home);
             this.page++;
             this.isFetching = false;
             this.errorMsg = '';
@@ -353,6 +409,57 @@ class HomeModule {
         this.tabId = tabId;
         this.tabName = tabName;
         this.getGoods();
+    }
+
+    @action getTopticData(){
+        HomeApi.getHomeCustom({}).then((data)=>{
+            data = data.data || [];
+            let i = 0;
+            data.forEach((item, index) => {
+                let code = item.code;
+                if (code === 'placeholder') {
+                    this.type = 2 - index;
+                    store.save(kHomeType, this.type)
+                    return;
+                }
+                i++;
+                let isTop = i === 1;
+                HomeApi.getCustomTopic({topicCode: code, page: 1, pageSize: 10}).then((data)=> {
+                    if (isTop){
+                        this.topTopice = this.handleData(data)
+                        store.save(kHomeTopTopic, this.topTopice)
+                    } else {
+                        this.bottomTopice = this.handleData(data)
+                        store.save(kHomeBottomTopic, this.bottomTopice)
+                    }
+                    this.homeList = this.getHomeListData();
+                })
+            })
+
+            if (i === 0){
+                this.topTopice = []
+                this.bottomTopice = []
+            } else if (i === 1){
+                this.topTopice = []
+            }
+        })
+
+    }
+
+    handleData = (data) => {
+        data = data.data.widgets.data || []
+
+        return    data.map((item, index) => {
+            if (item.type === homeType.custom_goods){
+                item.itemHeight = GoodsCustomViewGetHeight(item)
+            }
+
+            if (item.type === homeType.custom_imgAD){
+                item.itemHeight = ImageAdViewGetHeight(item)
+            }
+
+            return item
+        })
     }
 }
 
