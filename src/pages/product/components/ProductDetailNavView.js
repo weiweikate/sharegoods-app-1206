@@ -28,7 +28,7 @@ export default class ProductDetailNavView extends Component {
                         <NoMoreClick style={styles.btnContainer} onPress={() => {
                             routePop();
                         }}>
-                            <Image source={back}/>
+                            <Image source={back} style={{ width: 28, height: 28 }}/>
                         </NoMoreClick>
                     </View>
                     <View style={styles.centerView}>
@@ -39,14 +39,14 @@ export default class ProductDetailNavView extends Component {
                         <NoMoreClick style={styles.btnContainer} onPress={() => {
                             routePush(RouterMap.ShopCart, { hiddeLeft: false });
                         }}>
-                            <Image source={shopCar}/>
+                            <Image source={shopCar} style={{ width: 28, height: 28 }}/>
                             {getAllGoodsClassNumber !== 0 && <View style={styles.amountView}>
                                 <MRText
                                     style={styles.amountText}>{getAllGoodsClassNumber > 99 ? 99 : getAllGoodsClassNumber}</MRText>
                             </View>}
                         </NoMoreClick>
                         <NoMoreClick style={styles.btnContainer} onPress={showAction}>
-                            <Image source={share}/>
+                            <Image source={share} style={{ width: 28, height: 28 }}/>
                         </NoMoreClick>
                     </View>
                 </View>
