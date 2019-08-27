@@ -201,8 +201,7 @@ class HomePage extends BasePage {
         return (
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
                 <HomeSearchView navigation={routePush}
-                                hasMessage={this.state.hasMessage}
-                />
+                                hasMessage={this.state.hasMessage}/>
                 <ScrollableTabView
                     onChangeTab={(obj) => {
                         let i = obj.i;
