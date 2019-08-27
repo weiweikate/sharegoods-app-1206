@@ -22,6 +22,7 @@ import bridge from '../../utils/bridge';
 import { replaceRoute } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
 import FinshPayAlertView from './FinshPayAlertView';
+import RecommendProductView from '../product/productScore/components/RecommendProductView';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -60,8 +61,8 @@ export default class PaymentFinshPage extends BasePage {
         this.state = {
             showShareView: false,
             couponIdList: [],
-            shareCode:'',
-            isShow:false
+            shareCode: '',
+            isShow: false
         };
         //orderPayResultPageType 有券无劵
         TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
@@ -80,8 +81,8 @@ export default class PaymentFinshPage extends BasePage {
         ).then(result => {
             console.log(result);
             this.setState({
-                couponIdList:result.data || [],
-            })
+                couponIdList: result.data || []
+            });
         });
         PaymentApi.judgeShare().then(result => {
             console.log(result);
@@ -94,16 +95,16 @@ export default class PaymentFinshPage extends BasePage {
             });
         }).catch(error => {
             this.setState({
-                showShareView:false
-            })
-        })
-        PaymentApi.jumpCheckIsAlter().then(result=>{
+                showShareView: false
+            });
+        });
+        PaymentApi.jumpCheckIsAlter().then(result => {
             console.log(result);
             this.setState({
-                isShow:result.data
-            })
-        }).catch(error=>{
-        })
+                isShow: result.data
+            });
+        }).catch(error => {
+        });
     }
 
     _render() {
@@ -113,7 +114,8 @@ export default class PaymentFinshPage extends BasePage {
                 {/*<RenderSeparator title={'你还有兑换券即将过期，快来使用吧'}/>*/}
                 {this.renderCouponList()}
                 {this.state.showShareView ? this._renderShareView() : null}
-                <FinshPayAlertView btnClick={()=>{
+                <RecommendProductView/>
+                <FinshPayAlertView btnClick={() => {
                     this._clickAlertView();
                 }} isShow={this.state.isShow}/>
             </ScrollView>
@@ -220,15 +222,15 @@ export default class PaymentFinshPage extends BasePage {
     /**
      点击弹窗
      */
-    _clickAlertView=()=>{
+    _clickAlertView = () => {
         this.setState({
-            isShow:false
-        },()=>{
-            this.$navigate(RouterMap.HtmlPage,{
-                uri:`${apiEnvironment.getCurrentH5Url()}/activity/freeOrder`
+            isShow: false
+        }, () => {
+            this.$navigate(RouterMap.HtmlPage, {
+                uri: `${apiEnvironment.getCurrentH5Url()}/activity/freeOrder`
             });
-        })
-    }
+        });
+    };
     /**
      * 渲染优惠券Items
      * @param itemData
