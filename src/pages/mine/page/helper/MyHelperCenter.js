@@ -40,7 +40,7 @@ export default class MyHelperCenter extends BasePage {
         show: true // false则隐藏导航
     };
     refreshList = ()=>{
-        this.helpHotList.onRefresh()
+        this.helpHotList && this.helpHotList.onRefresh()
     }
     // 常见问题列表
     renderHotQuestionList = () => {
@@ -97,7 +97,7 @@ export default class MyHelperCenter extends BasePage {
     };
 
     renderItem = ({item, index}) =>{
-        const data = this.helpHotList.getSourceData()
+        const data = this.helpHotList? this.helpHotList.getSourceData():[]
         const {
             title
         } = item
