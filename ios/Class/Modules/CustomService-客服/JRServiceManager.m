@@ -118,23 +118,24 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   QYCustomActionConfig  * actionConfig = [[QYSDK sharedSDK] customActionConfig];
   actionConfig.eventClickBlock = ^(NSString *eventName, NSString *eventData, NSString *messageId) {
     if ([eventName isEqualToString:@"QYEventNameTapCommodityInfo"]) {
-      [self onBack:nil];
       NSDictionary *urlData;
       if ([eventData containsString:@"http"]) {
         urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":eventData};
       }else{
         urlData = @{@"card_type":@(ORDER_CARD), @"linkUrl":eventData};
       }
+      [self onBack:nil];
       [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
     }else if ([eventName isEqualToString:@"QYEventNameTapLabelLink"]){
-      [self onBack:nil];
       if ([eventData containsString:@"h5.sharegoodsmall.com/product"] && [eventData containsString:@"http"])
       {
           NSDictionary *urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":eventData};
+        [self onBack:nil];
          [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
-      }else{
-        NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"uri":eventData,@"eventName": @"Event_navigateHtmlPage"};
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"EventToRN" object:urlData];
+      }else if([eventData containsString:@"http"]){
+        NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"linkUrl":eventData};
+        [self onBack:nil];
+        [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
       }
     }
   };
