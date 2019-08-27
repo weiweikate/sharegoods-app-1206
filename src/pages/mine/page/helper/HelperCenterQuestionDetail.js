@@ -5,7 +5,7 @@ import React from 'react';
 import {Image,ScrollView, StyleSheet, View} from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import HTML from 'react-native-render-html';
+import HTML from '@mr/react-native-render-html';
 import MineApi from '../../api/MineApi';
 import DesignRule from '../../../../constants/DesignRule';
 import {MRText as Text, NoMoreClick} from '../../../../components/ui';

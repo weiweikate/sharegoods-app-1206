@@ -78,6 +78,8 @@ class App extends Component {
     }
 
     async componentWillMount() {
+        // 禁止重启
+        codePush.disallowRestart();
         this.subscription && this.subscription.remove();
         // code push
         codePush.sync({
@@ -92,6 +94,8 @@ class App extends Component {
     }
 
     componentDidMount() {
+        // 在加载完了，允许重启
+        codePush.allowRestart();
         // 开机广告
         this.subscription = NativeAppEventEmitter.addListener(
             'Event_navigateHtmlPage',
