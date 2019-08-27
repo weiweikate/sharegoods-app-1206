@@ -19,16 +19,16 @@ import {
     RefreshControl
 } from 'react-native';
 
-import ScreenUtils from '../../../utils/ScreenUtils';
-import DesignRule from '../../../constants/DesignRule';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from '../../../../constants/DesignRule';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
-import { homeType } from '../HomeTypes';
-import { ImageAdViewGetHeight, TopicImageAdView } from './ImageAdView';
-import GoodsCustomView, { GoodsCustomViewGetHeight } from './GoodsCustomView';
-import HomeAPI from '../api/HomeAPI';
-import TextCustomView from './TextCustomView';
-import LoadMoreDataUtil from '../../../utils/LoadMoreDataUtil';
-import { DefaultLoadMoreComponent } from '../../../comm/components/RefreshFlatList';
+import { homeType } from '../../HomeTypes';
+import { ImageAdViewGetHeight, TopicImageAdView } from '../ImageAdView';
+import GoodsCustomView, { GoodsCustomViewGetHeight } from '../GoodsCustomView';
+import HomeAPI from '../../api/HomeAPI';
+import TextCustomView from '../TextCustomView';
+import LoadMoreDataUtil from '../../../../utils/LoadMoreDataUtil';
+import { DefaultLoadMoreComponent } from '../../../../comm/components/RefreshFlatList';
 import { observer } from 'mobx-react';
 @observer
 export default class DIYTopicList extends React.Component {

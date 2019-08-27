@@ -1015,7 +1015,7 @@ export default class MinePage extends BasePage {
         };
 
 
-        let menu = [message, service, address, collect, setting];
+        let menu = [message, address, service, collect, setting];
 
 
         if (this.state.hasFans) {
