@@ -52,12 +52,12 @@ class HomeModule {
     }, {
         id: 4,
         type: homeType.expandBanner
+    },{
+        id: 5,
+        type: homeType.focusGrid
     }]
     topTopice = [];
     fixedPartTwo = [{
-        id: 5,
-        type: homeType.focusGrid
-    }, {
         id: 6,
         type: homeType.limitGo
     }]
@@ -206,16 +206,16 @@ class HomeModule {
             this.isRefreshing = false;
         }, 1000);
 
-        // if (this.firstLoad){
-        //     try {
-        //         this.type = yield store.get(kHomeType) || 0
-        //         let topTopice = yield store.get(kHomeTopTopic)
-        //         this.topTopice = topTopice || [];
-        //         let bottomTopice = yield store.get(kHomeBottomTopic)
-        //         this.bottomTopice = bottomTopice || [];
-        //     } catch (error) {
-        //     }
-        // }
+        if (this.firstLoad){
+            try {
+                this.type = yield store.get(kHomeType) || 0
+                let topTopice = yield store.get(kHomeTopTopic)
+                this.topTopice = topTopice || [];
+                let bottomTopice = yield store.get(kHomeBottomTopic)
+                this.bottomTopice = bottomTopice || [];
+            } catch (error) {
+            }
+        }
         this.getTopticData();
         //首页类目
         tabModel.loadTabList(this.firstLoad);

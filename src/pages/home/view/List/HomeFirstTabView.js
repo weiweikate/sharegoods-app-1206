@@ -172,8 +172,6 @@ export default class HomeFirstTabView extends Component {
                          }}>
                 <TabTitleView/>
             </View>;
-        } else if (type === homeType.custom_imgAD) {
-            return <ImageAdView data={item}/>;
         } else if (type === homeType.custom_goods) {
             return <GoodsCustomView data={item}/>;
         } else if (type === homeType.custom_text) {
@@ -183,9 +181,6 @@ export default class HomeFirstTabView extends Component {
         } else if (type === homeType.custom_imgAD) {
             // p.specialTopicArea = 1;
             return <TopicImageAdView data={item} />;
-        } else if (type === homeType.custom_goods) {
-            // p.specialTopicArea = 3;
-            return <GoodsCustomView data={item}/>;
         }
         return <View/>;
     };
