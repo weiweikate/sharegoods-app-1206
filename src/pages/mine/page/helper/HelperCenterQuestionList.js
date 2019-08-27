@@ -75,7 +75,7 @@ export default class HelperCenterQuestionTypeList extends BasePage {
         );
     };
     refreshList = ()=>{
-        this.helpList.onRefresh()
+        this.helpList && this.helpList.onRefresh()
     }
     renderBodyView = () => {
         return (
@@ -89,7 +89,7 @@ export default class HelperCenterQuestionTypeList extends BasePage {
     };
 
     renderItem = ({item,index})=>{
-        const data = this.helpList.getSourceData()
+        const data = this.helpList? this.helpList.getSourceData():[]
         const {
             title
         } = item
