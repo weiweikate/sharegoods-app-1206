@@ -101,6 +101,18 @@ const allType = {
         title: '系统升级',
         icon: hongbao
     },
+    14: {
+        title: '百万补贴奖励金',
+        icon: shouru
+    },
+    15: {
+        title: '活跃任务奖励金',
+        icon: shouru
+    },
+    16: {
+        title: '管理任务奖励金',
+        icon: shouru
+    },
     17: {
         title: '抽奖奖励',
         icon: renwu
