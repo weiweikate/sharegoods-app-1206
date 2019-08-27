@@ -179,7 +179,7 @@ this.$navigate('HtmlPage', {
 });
 
 // A->B->C C返回
-this.$navigateBack(-2)
+this.$navigateBack(2)
 
 
 // 返回到首页

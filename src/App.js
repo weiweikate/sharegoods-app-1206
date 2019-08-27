@@ -14,7 +14,7 @@ import {
     NativeModules,
     StyleSheet,
     Text,
-    View, Alert
+    View
 } from 'react-native';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
@@ -78,15 +78,11 @@ class App extends Component {
     }
 
     async componentWillMount() {
-        // 禁止重启
-        codePush.disallowRestart();
         this.subscription && this.subscription.remove();
         // code push
         codePush.sync({
             updateDialog: false,
             installMode: codePush.InstallMode.ON_NEXT_RESUME
-        }, null, null, (update) => {
-            Alert.alert('333', update.downloadUrl);
         });
         netStatus.startMonitorNetworkStatus();
         // 环境配置
@@ -96,8 +92,6 @@ class App extends Component {
     }
 
     componentDidMount() {
-        // 在加载完了，允许重启
-        codePush.allowRestart();
         // 开机广告
         this.subscription = NativeAppEventEmitter.addListener(
             'Event_navigateHtmlPage',

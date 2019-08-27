@@ -17,6 +17,12 @@
         "gradle": "sh gradle.sh",
         "check-types": "tsc"
     },
+    "rnpm": {
+        "ios": {},
+        "android": {},
+        "assets": ["./path-to-assets"],
+        "plugin": "./path-to-commands.js"
+    },
     "lint-staged": {
         "src/**/*.js": "eslint"
     },
