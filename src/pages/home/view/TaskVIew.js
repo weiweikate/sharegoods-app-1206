@@ -68,6 +68,7 @@ const {
     inform,
     defaultImage
 } = res.task;
+const KTime = new Date().getTime()
 
 
 
@@ -479,7 +480,7 @@ export default class TaskVIew extends React.Component {
                     <TouchableWithoutFeedback onPress={()=> {routePush('HtmlPage', {uri: '/cycle-coupon'})}}>
                         <View>
                     <ImageLoader style={{height: ScreenUtils.autoSizeWidth(120), width: ScreenUtils.width}}
-                                 source={{uri: 'https://mr-prod-sg.oss-cn-hangzhou.aliyuncs.com/app/10_01_28__08_23_2019.jpg'}}
+                                 source={{uri: ('https://mr-prod-sg.oss-cn-hangzhou.aliyuncs.com/app/10_01_28__08_23_2019.jpg?ts='+KTime)}}
                     />
                         </View>
                     </TouchableWithoutFeedback>
