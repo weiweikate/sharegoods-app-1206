@@ -68,6 +68,7 @@ const {
     inform,
     defaultImage
 } = res.task;
+const KTime = new Date().getTime()
 
 
 
@@ -124,7 +125,7 @@ class TaskItem extends React.Component {
                         }}>
                             <MRText style={{ fontSize: autoSizeWidth(14), color: '#333333', maxWidth: maxWidth}}
                                     numberOfLines={1}>{name + progrossTitle}</MRText>
-                            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                            {prizeValue? <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                                             colors={['#FFCB02', '#FF9502']}
                                             style={{borderRadius: 3, overflow: 'hidden', marginLeft: 3, paddingHorizontal: 2}}
                             >
@@ -133,7 +134,8 @@ class TaskItem extends React.Component {
                                     color: 'white',
                                     marginBottom: 0.5
                                 }} allowFontScaling={false}>{'+'+prizeValue+'活跃值'}</MRText>
-                            </LinearGradient>
+                            </LinearGradient>: null
+                            }
                         </View>
                         <MRText style={{ fontSize: autoSizeWidth(12), color: '#999999'}}
                                 numberOfLines={1}>{memo}</MRText>
@@ -479,7 +481,7 @@ export default class TaskVIew extends React.Component {
                     <TouchableWithoutFeedback onPress={()=> {routePush('HtmlPage', {uri: '/cycle-coupon'})}}>
                         <View>
                     <ImageLoader style={{height: ScreenUtils.autoSizeWidth(120), width: ScreenUtils.width}}
-                                 source={{uri: 'https://mr-prod-sg.oss-cn-hangzhou.aliyuncs.com/app/10_01_28__08_23_2019.jpg'}}
+                                 source={{uri: ('https://mr-prod-sg.oss-cn-hangzhou.aliyuncs.com/app/10_01_28__08_23_2019.jpg?ts='+KTime)}}
                     />
                         </View>
                     </TouchableWithoutFeedback>

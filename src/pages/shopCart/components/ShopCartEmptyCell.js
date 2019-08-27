@@ -15,11 +15,12 @@ export default class ShopCartEmptyCell extends Component {
 
     render() {
         const { itemData, onClick } = this.props;
+        const { height, imageHeight, imgUrl, name, promotionMinPrice, minPrice } = itemData;
         return (
             <View style={{
                 width: cell_width,
                 borderRadius: px2dp(5),
-                height: itemData.height,
+                height: height,
                 backgroundColor: DesignRule.color_fff,
                 marginTop: px2dp(5),
                 overflow: 'hidden'
@@ -28,10 +29,10 @@ export default class ShopCartEmptyCell extends Component {
                     onClick();
                 }}>
                     <ImageLoad
-                        source={{ uri: itemData.imgUrl }}
+                        source={{ uri: imgUrl }}
                         style={{
                             width: cell_width,
-                            height: itemData.imageHeight,
+                            height: imageHeight
                         }}
                         showPlaceholder={false}
                     />
@@ -44,7 +45,7 @@ export default class ShopCartEmptyCell extends Component {
                                 marginRight: px2dp(10),
                                 height: px2dp(45)
                             }}>
-                        {itemData.name}
+                        {name}
                     </MRText>
                     <View style={{ flexDirection: 'row', marginTop: px2dp(3) }}>
                         {this.createTipView([])}
@@ -52,7 +53,7 @@ export default class ShopCartEmptyCell extends Component {
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: px2dp(10) }}>
                         <View style={{ flex: 1 }}>
                             <MRText style={{ color: 'rgba(255, 0, 80, 1)', fontSize: px2dp(12) }}>
-                                {`￥${ itemData.promotionMinPrice?itemData.promotionMinPrice:itemData.minPrice}起`}
+                                {`￥${ promotionMinPrice || minPrice}起`}
                             </MRText>
                         </View>
                     </View>
