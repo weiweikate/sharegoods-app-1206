@@ -101,6 +101,18 @@ const allType = {
         title: '系统升级',
         icon: hongbao
     },
+    14: {
+        title: '百万补贴奖励金',
+        icon: shouru
+    },
+    15: {
+        title: '活跃任务奖励金',
+        icon: shouru
+    },
+    16: {
+        title: '管理任务奖励金',
+        icon: shouru
+    },
     17: {
         title: '抽奖奖励',
         icon: renwu
@@ -489,7 +501,7 @@ export default class MyCashAccountPage extends BasePage {
                     data.data.map((item, index) => {
                         let remark = '';
                         let  icon = '';
-                        if(item.useType){
+                        if(item.useType && allType[item.useType]){
                             remark = allType[item.useType] ?  allType[item.useType].title : '其他';
                             icon = allType[item.useType] ? allType[item.useType].icon : qita;
                         }else {
