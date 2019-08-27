@@ -489,7 +489,7 @@ export default class MyCashAccountPage extends BasePage {
                     data.data.map((item, index) => {
                         let remark = '';
                         let  icon = '';
-                        if(item.useType){
+                        if(item.useType && allType[item.useType]){
                             remark = allType[item.useType] ?  allType[item.useType].title : '其他';
                             icon = allType[item.useType] ? allType[item.useType].icon : qita;
                         }else {
