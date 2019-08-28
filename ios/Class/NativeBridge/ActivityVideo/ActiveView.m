@@ -38,6 +38,7 @@
 @property (nonatomic, assign) BOOL isPersonal;
 @property (nonatomic, assign) BOOL isCollect;
 @property (nonatomic, assign) NSInteger tabType;
+@property (nonatomic, assign) BOOL isEnd;
 
 @property(nonatomic, strong)UILabel *emptyLb;
 @property (nonatomic, strong)UIView *emptyView;
@@ -125,6 +126,9 @@
     if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
       [weakSelf.callBackArr addObjectsFromArray:[result valueForKey:@"data"]];
     }
+    if(model.data.count<5){
+      self.isEnd = YES;
+    }
     self.VideoHeaderView.model = weakSelf.dataArr.firstObject;
     [self.scrollView setupData:weakSelf.dataArr];
 
@@ -138,6 +142,9 @@
  */
 - (void)getMoreData
 {
+  if(self.isEnd){
+    return;
+  }
   NSMutableDictionary *dic = [NSMutableDictionary new];
   NSString *currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
   if(self.isPersonal&&self.userCode){
@@ -158,7 +165,8 @@
       if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
         [weakSelf.callBackArr addObjectsFromArray:[result valueForKey:@"data"]];
       }
-      if(model.data.count==0){
+      if(model.data.count<5){
+        self.isEnd = YES;
         [MBProgressHUD showSuccess:@"我也是有底线的"];
       }
       [self.scrollView setupData:[model.data mutableCopy]];
@@ -186,25 +194,30 @@
   self.isPersonal = firstData.isPersonal;
   self.isCollect = firstData.isCollect;
   self.tabType = firstData.tabType;
-  
+
   self.dataArr = [NSMutableArray arrayWithObject:firstData];
   self.callBackArr = [NSMutableArray arrayWithObject:params];
   self.VideoHeaderView.model = firstData;
   [self.scrollView setupData:self.dataArr];
   [self videoHotRequest];
-  [self refreshData];
-
+  if(!self.isPersonal){
+    [self refreshData];
+  }
 }
 
 
 -(void)setUserCode:(NSString *)userCode{
   _userCode = userCode;
+  self.VideoHeaderView.userCode = userCode;
   if(userCode&&userCode.length>0){
     self.VideoHeaderView.isLogin = YES;
     self.scrollView.isLogin = YES;
   }else{
     self.VideoHeaderView.isLogin = NO;
     self.scrollView.isLogin = NO;
+  }
+  if(self.isPersonal){
+    [self refreshData];
   }
 }
 
@@ -294,10 +307,10 @@
 
 -(void)videoHotRequest{
   MBModelData* data = self.dataArr[self.current];
-  
+
   if(data.showNo){
     [NetWorkTool requestWithURL:ShowApi_incrCountByType params:@{@"showNo": data.showNo,@"type":@6}  toModel:nil success:^(NSDictionary* result) {
-      
+
     } failure:^(NSString *msg, NSInteger code) {
     [MBProgressHUD showSuccess:msg];
     } showLoading:nil];

@@ -33,7 +33,7 @@
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack)];
     [_goBackImg addGestureRecognizer:tapGesture];
     _goBackImg.layer.masksToBounds = YES;
-    
+
   }
   return _goBackImg;
 }
@@ -45,7 +45,7 @@
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickHeaderImg)];
     [_headImg addGestureRecognizer:tapGesture];
     _headImg.layer.masksToBounds = YES;
-    
+
   }
   return _headImg;
 }
@@ -73,7 +73,7 @@
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickShareImg)];
     [_shareImg addGestureRecognizer:tapGesture];
     _shareImg.layer.masksToBounds = YES;
-    
+
   }
   return _shareImg;
 }
@@ -104,13 +104,13 @@
     //关注
     [_guanBtn setBackgroundImage:[UIImage imageNamed:@"vGuanzhu"] forState:UIControlStateNormal];
     [_guanBtn setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"FFF5CC"]] forState:UIControlStateSelected];
-    
+
     [_guanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_guanBtn setTitleColor:[UIColor colorWithHexString:@"FF9502"] forState:UIControlStateSelected];
-    
+
     [_guanBtn setTitle:@"关注" forState:UIControlStateNormal];
     [_guanBtn setTitle:@"已关注" forState:UIControlStateSelected];
-    
+
     _guanBtn.titleLabel.font = [UIFont systemFontOfSize:13];
     _guanBtn.layer.cornerRadius = 14;
     _guanBtn.layer.masksToBounds = YES;
@@ -122,14 +122,14 @@
   self = [super initWithFrame:frame];
   if (self) {
     [self setUI];
-    
+
   }
   return  self;
 }
 
 -(void)setUI{
   UIImageView *hotImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"videoHot"]];
-  
+
   [self addSubview:self.hgImg];
   [self addSubview:self.goBackImg];
   [self addSubview:self.headImg];
@@ -142,48 +142,48 @@
   self.hgImg.sd_layout.leftEqualToView(self)
   .topSpaceToView(self, 0)
   .widthIs(KScreenWidth).heightIs(100);
-  
+
   //返回
   self.goBackImg.sd_layout.leftSpaceToView(self, 15)
   .topSpaceToView(self, kStatusBarHeight+7)
   .widthIs(20).heightIs(20);
-  
-  
+
+
   //头像
   self.headImg.sd_layout.leftSpaceToView(self.goBackImg, 10)
   .centerYEqualToView(self.goBackImg)
   .widthIs(30).heightIs(30);
   self.headImg.layer.cornerRadius = self.headImg.frame.size.width/2.0;
-  
+
   //昵称
   self.nameLab.sd_layout.leftSpaceToView(_headImg, 10)
   .heightIs(15).topEqualToView(self.headImg);
   [_nameLab setSingleLineAutoResizeWithMaxWidth:150];
-  
+
   //热度
   hotImage.sd_layout.leftSpaceToView(_headImg, 10)
   .topSpaceToView(self.nameLab, 2)
   .heightIs(15).widthIs(15);
-  
+
   self.hotLab.sd_layout.leftSpaceToView(hotImage, 2)
   .centerYEqualToView(hotImage)
   .heightIs(15);
   [self.hotLab setSingleLineAutoResizeWithMaxWidth:150];
-  
+
   //关注
     [_guanBtn addTarget:self action:@selector(tapGuanzhuBtn:) forControlEvents:UIControlEventTouchUpInside];
-  
+
     self.guanBtn.sd_layout.centerYEqualToView(self.headImg)
     .rightSpaceToView(self, 50)
     .heightIs(28)
     .widthIs(65);
-  
+
   self.shareImg.sd_layout.centerYEqualToView(self.headImg)
   .rightSpaceToView(self, 18)
   .heightIs(20)
   .widthIs(20);
-  
-  
+
+
 }
 
 -(void)clickHeaderImg{
@@ -205,7 +205,7 @@
   if(self.isLogin){
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary* dic = [[NSMutableDictionary alloc]init];
-  
+
     if(modeltemp.userInfoVO&&modeltemp.userInfoVO.userNo&&[defaults dictionaryForKey:@"guanzhu"]){
       [dic setValuesForKeysWithDictionary:[defaults dictionaryForKey:@"guanzhu"]];
       [dic setObject:sender.isSelected?@"NO":@"YES" forKey:modeltemp.userInfoVO.userNo];
@@ -239,12 +239,12 @@
 -(void)setModel:(MBModelData *)model{
   _model = model;
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  
+
   if(model.userInfoVO){
     self.nameLab.text = model.userInfoVO.userName?model.userInfoVO.userName:@"";
-    
+
     [self.headImg sd_setImageWithURL:[NSURL URLWithString:[model.userInfoVO.userImg getUrlAndWidth:30 height:30]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
-    
+
     if(model.userInfoVO.userNo){
       NSMutableDictionary* dic = [[NSMutableDictionary alloc]init];
       if(model.userInfoVO.userNo&&[defaults dictionaryForKey:@"guanzhu"]){
@@ -256,6 +256,11 @@
         }
       }else{
         self.guanBtn.selected = model.attentionStatus!=0?YES:NO;
+      }
+      if(self.userCode&&[self.userCode isEqualToString:model.userInfoVO.userNo]){
+        self.guanBtn.hidden = YES;
+      }else{
+        self.guanBtn.hidden = NO;
       }
     }
   }
