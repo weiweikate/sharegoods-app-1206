@@ -64,6 +64,6 @@ const styles = StyleSheet.create({
     bannerImage: {
         width: ScreenUtils.width,
         height: defaultBannerHeight,
-        marginBottom: px2dp(10)
+        marginBottom: px2dp(15)
     }
 });

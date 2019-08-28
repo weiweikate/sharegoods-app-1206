@@ -37,7 +37,7 @@ import HomeFocusAdView from '../HomeFocusAdView';
 import HomeLimitGoView from '../HomeLimitGoView';
 import HomeSubjectView from '../HomeSubjectView';
 import TabTitleView from '../TabTitleView';
-import { TopicImageAdView } from '../ImageAdView';
+import { TopicImageAdView } from '../TopicImageAdView';
 import GoodsCustomView from '../GoodsCustomView';
 import DesignRule from '../../../../constants/DesignRule';
 import intervalMsgModel from '../../../../comm/components/IntervalMsgView';

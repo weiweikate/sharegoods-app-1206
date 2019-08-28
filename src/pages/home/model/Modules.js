@@ -12,7 +12,7 @@ import { limitGoModule } from './HomeLimitGoModel';
 import taskModel from './TaskModel';
 import { tabModel } from './HomeTabModel';
 import store from '@mr/rn-store';
-import { ImageAdViewGetHeight } from '../view/ImageAdView';
+import { ImageAdViewGetHeight } from '../view/TopicImageAdView';
 import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
 import StringUtils from '../../../utils/StringUtils';
 

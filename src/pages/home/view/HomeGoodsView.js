@@ -12,8 +12,8 @@ import { MRText as Text } from '../../../components/ui/index';
 import StringUtils from '../../../utils/StringUtils';
 import { topicAdOnPress } from '../HomeTypes';
 
-export const kHomeGoodsViewHeight = px2dp(241+10);
-const goodsWidth = (ScreenUtils.width - px2dp(40)) / 2;
+export const kHomeGoodsViewHeight = px2dp(247);
+const goodsWidth = (ScreenUtils.width - px2dp(35)) / 2;
 
 const MoneyItems = ({ money }) => {
     if (EmptyUtils.isEmpty(money)) {
@@ -75,7 +75,7 @@ export default class GoodsCell extends Component {
         let index = goodsRowIndex - otherLen;
         return <View style={[styles.cell]}>
             <Goods goods={itemData[0]} press={() => this._goodsAction(itemData[0], 2 * index - 1)}/>
-            <View style={{ width: px2dp(10) }}/>
+            <View style={{ width: px2dp(5) }}/>
             {
                 itemData[1]
                     ?

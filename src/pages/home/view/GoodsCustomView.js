@@ -540,7 +540,7 @@ export default class GoodsCustomView extends React.Component {
             <View style={{height: (height - autoSizeWidth(10)),
                 width: ScreenUtils.width - autoSizeWidth(30),
                 marginLeft: autoSizeWidth(15),
-                marginTop: autoSizeWidth(10),
+                marginTop: autoSizeWidth(15),
             }}>
                 {this.renderGoods(data)}
             </View>
