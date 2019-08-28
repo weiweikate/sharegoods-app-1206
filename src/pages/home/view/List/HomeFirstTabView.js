@@ -37,7 +37,7 @@ import HomeFocusAdView from '../HomeFocusAdView';
 import HomeLimitGoView from '../HomeLimitGoView';
 import HomeSubjectView from '../HomeSubjectView';
 import TabTitleView from '../TabTitleView';
-import  { TopicImageAdView } from '../ImageAdView';
+import { TopicImageAdView } from '../ImageAdView';
 import GoodsCustomView from '../GoodsCustomView';
 import DesignRule from '../../../../constants/DesignRule';
 import intervalMsgModel from '../../../../comm/components/IntervalMsgView';
@@ -138,10 +138,7 @@ export default class HomeFirstTabView extends Component {
     _renderItem = (type, item, index) => {
         type = type.type;
         let data = item;
-        if (type === homeType.category) {
-            // return <HomeCategoryView navigate={routePush}/>;
-            return <View/>;
-        } else if (type === homeType.swiper) {
+        if (type === homeType.swiper) {
             return <HomeBannerView navigate={routePush}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={routePush}/>;
@@ -180,7 +177,7 @@ export default class HomeFirstTabView extends Component {
             return <TextCustomView data={item}/>;
         } else if (type === homeType.custom_imgAD) {
             // p.specialTopicArea = 1;
-            return <TopicImageAdView data={item} />;
+            return <TopicImageAdView data={item}/>;
         }
         return <View/>;
     };

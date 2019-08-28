@@ -121,7 +121,7 @@ export default class ShowBannerView extends Component {
             items.push(value.image);
         });
 
-        return <View style={{ height, marginTop: px2dp(10) ,marginBottom:px2dp(ScreenUtils.isIOS ? 5:0)}}>
+        return <View style={{ height, marginTop: px2dp(10), marginBottom: px2dp(ScreenUtils.isIOS ? 5 : 0) }}>
             {
                 bannerList.length === 1
                     ?
@@ -140,12 +140,12 @@ export default class ShowBannerView extends Component {
                     <MRBannerView
                         style={{
                             height: height,
-                            width: width + 0.5,
+                            width: ScreenUtils.width,
                             alignSelf: 'center'
                         }}
                         itemWidth={width + 0.5}
                         autoInterval={5}
-                        itemSpace={0}
+                        itemSpace={px2dp(30)}
                         itemRadius={5}
                         imgUrlArray={items}
                         interceptTouchEvent={true}  //android端起作用，是否拦截touch事件
