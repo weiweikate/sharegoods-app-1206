@@ -144,6 +144,17 @@ export default class GoodsCustomView extends React.Component {
     renderTwoGoods(data, height){
         let style = GoodsCustomViewGetItemStyle(data, height);
         let products = data.data || [];
+        let Views = []
+        if (products.length%3){
+           if (products.length%3 === 1){
+               Views = [<View style={[style, {backgroundColor: null}]}/>,
+                   <View style={[style, {backgroundColor: null}]}/>
+               ]
+           } else {
+               Views = [<View style={[style, {backgroundColor: null}]}/>]
+           }
+        }
+
         return (
             <View style={{flexDirection: 'row',
                 flexWrap: 'wrap',
@@ -166,6 +177,7 @@ export default class GoodsCustomView extends React.Component {
                         </TouchableWithoutFeedback>
                     )
                 }))}
+                {Views}
             </View>
         )
     }
@@ -521,7 +533,7 @@ export default class GoodsCustomView extends React.Component {
             <View style={{height,
                 width: ScreenUtils.width - autoSizeWidth(30),
                 marginLeft: autoSizeWidth(15),
-                marginBottom: autoSizeWidth(10)
+                marginTop: autoSizeWidth(10)
             }}>
                 {this.renderGoods(data)}
             </View>
