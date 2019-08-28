@@ -59,7 +59,7 @@ export default class SearchShowFansPage extends BasePage<Props> {
         const uri = { uri: item.headImg };
         let name = (item.nickname && item.nickname.substring(0, 28)) || '';
         let num = item.level ? item.level : 10;
-        let percent = item.percent ? item.percent + '%' : '0%';
+        // let percent = 0 + '';//item.percent ? item.percent + '%' : '0%';
         return (
             <ImageBackground key={index + 'showFans'} resizeMode={'stretch'} source={bg_fans_item}
                              style={styles.itemWrapper}>
@@ -72,26 +72,26 @@ export default class SearchShowFansPage extends BasePage<Props> {
                             <Text style={styles.fansNameStyle} numberOfLines={1}>{name}</Text>
                             {num < 9 ? <Image source={showFansVip[num - 1]} style={styles.levelIcon}/> : null}
                         </View>
-                        {item.percent && item.percent > 0 ? <View style={{ marginLeft: 8, marginTop: 5 }}>
-                            <View style={{
-                                width: 100,
-                                height: 10,
-                                backgroundColor: 'rgba(65,150,100,0.1)',
-                                borderRadius: 6
-                            }}>
-                                <View style={{
-                                    flex: 1,
-                                    width: percent,
-                                    height: 4,
-                                    backgroundColor: '#FF0450',
-                                    borderRadius: 6
-                                }}/>
-                            </View>
-                            <Text style={{ position: 'absolute', top: -2, left: 5, color: 'white', fontSize: 9 }}>
-                                任务进度：{percent}
-                            </Text>
-                        </View> : null
-                        }
+                        {/*{item.percent && item.percent > 0 ? <View style={{ marginLeft: 8, marginTop: 5 }}>*/}
+                            {/*<View style={{*/}
+                                {/*width: 100,*/}
+                                {/*height: 10,*/}
+                                {/*backgroundColor: 'rgba(65,150,100,0.1)',*/}
+                                {/*borderRadius: 6*/}
+                            {/*}}>*/}
+                                {/*<View style={{*/}
+                                    {/*flex: 1,*/}
+                                    {/*width: percent,*/}
+                                    {/*height: 4,*/}
+                                    {/*backgroundColor: '#FF0450',*/}
+                                    {/*borderRadius: 6*/}
+                                {/*}}/>*/}
+                            {/*</View>*/}
+                            {/*<Text style={{ position: 'absolute', top: -2, left: 5, color: 'white', fontSize: 9 }}>*/}
+                                {/*任务进度：{percent}*/}
+                            {/*</Text>*/}
+                        {/*</View> : null*/}
+                        {/*}*/}
                     </View>
 
                     {SettingModel.WXChatState ? (item.weChatNumber ? <TouchableWithoutFeedback onPress={() => {
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     },
     searchBarWrapper: {
         flex: 1,
-        height: px2dp(34),
+        height: px2dp(40),
         borderRadius: px2dp(17),
         backgroundColor: '#F7F7F7',
         flexDirection: 'row',
@@ -302,6 +302,10 @@ const styles = StyleSheet.create({
         height: px2dp(16),
         marginLeft: px2dp(10),
         marginRight: px2dp(10)
+    },
+    btnIcon: {
+        width: px2dp(28),
+        height: px2dp(28)
     }
 
 });
