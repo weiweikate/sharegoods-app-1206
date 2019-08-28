@@ -58,7 +58,7 @@ export default class GroupShowFansPage extends BasePage<Props> {
     _listItemRender = ({ item, index }) => {
         const uri = { uri: item.headImg };
         let name = (item.nickname && item.nickname.substring(0, 28)) || '';
-        let percent = item.percent ? item.percent + '%' : '0%';
+        // let percent = 0 + '';//item.percent ? item.percent + '%' : '0%';
         const { packageStatus, packageImg } = item;
         return (
             <ImageBackground key={index + 'showFans'} resizeMode={'stretch'} source={bg_fans_item}
@@ -74,26 +74,26 @@ export default class GroupShowFansPage extends BasePage<Props> {
                                 <UIImage source={{ uri: packageImg }}
                                          style={{ width: 59, height: 16, marginLeft: 10 }}/> : null}
                         </View>
-                        {item.percent && item.percent > 0 ? <View style={{ marginLeft: 8, marginTop: 5 }}>
-                            <View style={{
-                                width: 100,
-                                height: 10,
-                                backgroundColor: 'rgba(65,150,100,0.1)',
-                                borderRadius: 6
-                            }}>
-                                <View style={{
-                                    flex: 1,
-                                    width: percent,
-                                    height: 4,
-                                    backgroundColor: '#FF0450',
-                                    borderRadius: 6
-                                }}/>
-                            </View>
-                            <Text style={{ position: 'absolute', top: -2, left: 5, color: 'white', fontSize: 9 }}>
-                                任务进度：{percent}
-                            </Text>
-                        </View> : null
-                        }
+                        {/*{item.percent && item.percent > 0 ? <View style={{ marginLeft: 8, marginTop: 5 }}>*/}
+                            {/*<View style={{*/}
+                                {/*width: 100,*/}
+                                {/*height: 10,*/}
+                                {/*backgroundColor: 'rgba(65,150,100,0.1)',*/}
+                                {/*borderRadius: 6*/}
+                            {/*}}>*/}
+                                {/*<View style={{*/}
+                                    {/*flex: 1,*/}
+                                    {/*width: percent,*/}
+                                    {/*height: 4,*/}
+                                    {/*backgroundColor: '#FF0450',*/}
+                                    {/*borderRadius: 6*/}
+                                {/*}}/>*/}
+                            {/*</View>*/}
+                            {/*<Text style={{ position: 'absolute', top: -2, left: 5, color: 'white', fontSize: 9 }}>*/}
+                                {/*任务进度：{percent}*/}
+                            {/*</Text>*/}
+                        {/*</View> : null*/}
+                        {/*}*/}
                     </View>
 
                     {SettingModel.WXChatState ? (item.weChatNumber ? <TouchableWithoutFeedback onPress={() => {

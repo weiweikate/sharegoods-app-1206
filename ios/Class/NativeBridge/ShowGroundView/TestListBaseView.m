@@ -198,7 +198,9 @@
 {
   if (self.onPersonItemPress) {
     self.dataArr[indexPath.row].isPersonal = YES;
-    self.dataArr[indexPath.row].isCollect = YES;
+    if(self.type == 1){
+      self.dataArr[indexPath.row].isCollect = YES;
+    }
     self.onPersonItemPress([self.dataArr[indexPath.row] modelToJSONObject]);
   }
 }
