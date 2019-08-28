@@ -42,22 +42,8 @@ export default class HelperCenterQuestionTypeList extends BasePage {
                 flex: 1
             }}>
                 <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginTop:px2dp(10),
-                    marginBottom:px2dp(10),
-                }}>
-                    <View style={{width: 2, height: 8, backgroundColor: '#FF0050', borderRadius: 1}}/>
-                    <UIText value={'问题列表'}
-                            style={{
-                                marginLeft: 10,
-                                fontSize: DesignRule.fontSize_threeTitle_28,
-                                color: DesignRule.textColor_mainTitle,
-                                fontWeight: '600'
-                            }}/>
-                </View>
-                <View style={{
-                    flex: 1
+                    flex: 1,
+                    paddingTop:20
                 }}>
                     <RefreshFlatList url={MineApi.queryHelpCenterDetailList}
                                      nestedScrollEnabled={true}
