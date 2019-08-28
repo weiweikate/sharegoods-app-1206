@@ -34,7 +34,7 @@ export class LimitGoModules {
         }
 
         if (this.isShowFreeOrder) {
-            height += px2dp(55);
+            height += px2dp(50);
         }
         return height;
     }

@@ -47,7 +47,7 @@ import TextCustomView from '../TextCustomView';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
-const { px2dp, height, headerHeight } = ScreenUtils;
+const { px2dp, height, headerHeight, width } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 const nowTime = new Date().getTime();
 const HOME_REFRESH = 'homeRefresh';
@@ -181,8 +181,8 @@ export default class HomeFirstTabView extends Component {
         } else if (type === homeType.custom_imgAD) {
             // p.specialTopicArea = 1;
             return <TopicImageAdView data={item}/>;
-        }else if (type === homeType.placeholder){
-            return <View style={{width: 10, height: 1}}/>;
+        } else if (type === homeType.placeholder) {
+            return <View style={{ width: width, height: 1, backgroundColor: 'white' }}/>;
         }
         return <View/>;
     };

@@ -146,7 +146,7 @@ export default class HomeLimitGoView extends Component {
         }
 
         return (
-            <View style={[styles.container,{height: limitGoModule.limitHeight}]}>
+            <View style={[styles.container, { height: limitGoModule.limitHeight }]}>
                 <View style={{ paddingHorizontal: px2dp(15), flexDirection: 'row', alignItems: 'center' }}>
                     <HomeTitleView title={'限时购'}/>
                     <View style={{ flex: 1 }}/>
