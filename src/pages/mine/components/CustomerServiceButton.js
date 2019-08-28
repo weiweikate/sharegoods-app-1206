@@ -58,14 +58,14 @@ export default class CustomerServiceButton extends Component{
                         <Text style={{
                             fontFamily: 'PingFangSC-Regular',
                             fontSize: 13,
-                            color: '#999999',
+                            color: DesignRule.textColor_instruction,
                             marginLeft: 4
                         }} allowFontScaling={false}>平台客服</Text>
                     </NoMoreClick>
                 </View>
                 <Text style={{
                     fontSize: 10,
-                    color: DesignRule.textColor_secondTitle,
+                    color: DesignRule.textColor_instruction,
                     marginVertical: 5
                 }}>服务时间：9:00-22:00</Text>
             </View>
