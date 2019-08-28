@@ -211,8 +211,10 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         ImageView ivRecommend = helper.getView(R.id.iv_recommend);
         if ((item.getCreateSource() == CommValue.NORMAL_USER_CONTENT) || (item.getCreateSource() == CommValue.WRITER_CONTENT)) {
             ivRecommend.setVisibility(View.VISIBLE);
+            publishTime.setVisibility(View.GONE);
         } else {
             ivRecommend.setVisibility(View.GONE);
+            publishTime.setVisibility(View.VISIBLE);
         }
 
         helper.addOnClickListener(R.id.icon_download, R.id.icon_share, R.id.content,R.id.icon_hand,R.id.icon_collection,R.id.user_icon);
@@ -416,6 +418,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         int createSource = item.getCreateSource();
         if (createSource == CommValue.NORMAL_USER_CONTENT || createSource == CommValue.WRITER_CONTENT) {
             ivRecommend.setVisibility(View.VISIBLE);
+
         } else {
             ivRecommend.setVisibility(View.GONE);
         }
