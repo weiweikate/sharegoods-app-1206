@@ -111,7 +111,7 @@
   }
 
   if(self.isCollect){
-    [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
+    [dic setObject:@(1) forKey:@"isCollect"];
   }
   if(self.tabType){
     [dic setObject:[NSNumber numberWithInteger:self.tabType]  forKey:@"spreadPosition"];
@@ -144,7 +144,7 @@
     [dic setObject:self.userCode forKey:@"queryUserCode"];
   }
   if(self.isCollect){
-    [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
+    [dic setObject:@(1)  forKey:@"isCollect"];
   }
   if(self.tabType){
     [dic setObject:[NSNumber numberWithInteger:self.tabType]  forKey:@"spreadPosition"];
@@ -183,15 +183,10 @@
 
 -(void)setParams:(NSDictionary *)params{
   MBModelData* firstData = [MBModelData modelWithJSON:params];
-  if([params valueForKey:@"isPersonal"]){
-    self.isPersonal = [params valueForKey:@"isPersonal"];
-  }
-  if(self.isPersonal&&[params valueForKey:@"isCollect"]){
-    self.isCollect = [params valueForKey:@"isCollect"];
-  }
-  if([params valueForKey:@"tabType"]){
-    self.tabType = [[params valueForKey:@"tabType"] intValue];
-  }
+  self.isPersonal = firstData.isPersonal;
+  self.isCollect = firstData.isCollect;
+  self.tabType = firstData.tabType;
+  
   self.dataArr = [NSMutableArray arrayWithObject:firstData];
   self.callBackArr = [NSMutableArray arrayWithObject:params];
   self.VideoHeaderView.model = firstData;

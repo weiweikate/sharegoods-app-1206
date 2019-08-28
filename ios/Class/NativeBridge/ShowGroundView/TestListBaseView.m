@@ -197,6 +197,8 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
   if (self.onPersonItemPress) {
+    self.dataArr[indexPath.row].isPersonal = YES;
+    self.dataArr[indexPath.row].isCollect = YES;
     self.onPersonItemPress([self.dataArr[indexPath.row] modelToJSONObject]);
   }
 }

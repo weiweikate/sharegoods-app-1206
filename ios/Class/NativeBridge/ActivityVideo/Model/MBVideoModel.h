@@ -45,6 +45,9 @@
 @property (nonatomic,copy) NSString * nowTime;
 @property (nonatomic,copy) NSString * remark;
 
+@property (nonatomic,assign) BOOL isPersonal;//是否从个人中心跳转
+@property (nonatomic,assign) BOOL isCollect;//是否收藏
+@property (nonatomic,assign) NSInteger tabType;
 @property (nonatomic,assign) BOOL like;//是否点赞
 
 @property (nonatomic,assign) BOOL collect; //是否收藏
