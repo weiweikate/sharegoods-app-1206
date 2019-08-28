@@ -76,7 +76,7 @@ export default class HelperCenterQuestionTypeList extends BasePage {
     };
 
     renderItem = ({item,index}) =>{
-        const data = this.helpTypeList.getSourceData()
+        const data = this.helpTypeList? this.helpTypeList.getSourceData():[]
         const {id,name} = item
         return (
             <NoMoreClick activeOpacity={0.6}

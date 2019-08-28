@@ -40,7 +40,12 @@ export default class OrderDetailBottomButtonView extends Component {
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
-                            <View  style={styles.touchableStyle}>
+                            <View  style={{ height: px2dp(30),
+                                borderRadius: px2dp(15),
+                                marginRight: px2dp(10),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                width: px2dp(70)}}>
                                 <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}
                                         onPress={
                                             () => this.props.switchButton(nameArr.filter((item, i)=> {return i <= (nameArr.length - 1 - 2)}))
@@ -222,6 +227,12 @@ export default class OrderDetailBottomButtonView extends Component {
                     pictureUrlString,
                     urlString:'/'+orderDetailModel.merchantOrderNo,
                     note: num,
+                    tags: [{
+                        focusIframe : '订单信息',
+                        url: 'https://qiyu.sharegoodsmall.com/#/orderList',
+                        label: '查看订单',
+                        data: JSON.stringify({orderNum: orderDetailModel.merchantOrderNo})
+                    }]
                 }}
             )
         } else {
@@ -239,6 +250,13 @@ export default class OrderDetailBottomButtonView extends Component {
                         pictureUrlString,
                         urlString:'/'+orderDetailModel.merchantOrderNo,
                         note: num,
+                        tags: [{
+                            focusIframe : '订单信息',
+                            url: 'https://qiyu.sharegoodsmall.com/#/orderList',
+                            label: '查看订单',
+                            data:JSON.stringify({orderNum: orderDetailModel.merchantOrderNo})
+                        }]
+
                     }}
                 )
             }).catch((e) => {
@@ -261,5 +279,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: px2dp(70),
+        borderColor: DesignRule.lineColor_inWhiteBg
     }
 });

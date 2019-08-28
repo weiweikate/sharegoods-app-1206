@@ -21,7 +21,7 @@ import {
 
 import ImageLoader from '@mr/image-placeholder';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import { mediatorCallFunc } from '../../../SGMediator';
+// import { mediatorCallFunc } from '../../../SGMediator';
 import MRBannerViewComponent from '../../../components/ui/bannerView/MRBannerViewComponent';
 import { topicAdOnPress } from '../HomeTypes';
 
@@ -47,7 +47,9 @@ export default class ImageAdView extends React.Component {
                 return  data.imgs.map((item) => {
                     return (
                         <TouchableOpacity onPress={()=> {
-                            mediatorCallFunc('Home_AdNavigate',item)
+                            if (item.linkValue && item.linkValue.length > 0){
+                                topicAdOnPress(item.linkType,item.linkValue[0], this.props.p)
+                            }
                         }}>
                             <ImageLoader style={style}
                                          source={{uri: item.src}}
@@ -66,7 +68,10 @@ export default class ImageAdView extends React.Component {
                     modeStyle={1}
                     autoLoop={true}
                     onDidSelectItemAtIndex={(i) => {
-                        mediatorCallFunc('Home_AdNavigate',data.imgs[i])
+                        let item = data.imgs[i];
+                        if (item.linkValue && item.linkValue.length > 0){
+                            topicAdOnPress(item.linkType,item.linkValue[0], this.props.p)
+                        }
                     }}/>
         }
     }
@@ -80,7 +85,7 @@ export default class ImageAdView extends React.Component {
             return <View />
         }
         return (
-            <View style={{height, width: ScreenUtils.width - ScreenUtils.autoSizeWidth(30), marginLeft: ScreenUtils.autoSizeWidth(15), flexDirection: 'row', paddingTop: 10}}>
+            <View style={{height, width: ScreenUtils.width - ScreenUtils.autoSizeWidth(30), marginLeft: ScreenUtils.autoSizeWidth(15), flexDirection: 'row', paddingBottom: 10}}>
                 {this.renderImages(data, height)}
             </View>
         );
@@ -117,7 +122,9 @@ export class TopicImageAdView extends React.Component {
                         links.map((item) => {
                             return (
                                 <TouchableOpacity onPress={()=> {
-                                    topicAdOnPress(item.linkType,item.linkValue[0], {...this.props.p})
+                                    if (item.linkValue && item.linkValue.length > 0){
+                                        topicAdOnPress(item.linkType,item.linkValue[0], this.props.p)
+                                    }
 
                                 }}
                                                   style={{flex: 1}}
@@ -141,7 +148,7 @@ export class TopicImageAdView extends React.Component {
                     onDidSelectItemAtIndex={(i) => {
                         let links = data.imgs[i].links;
                         if (links && links.length > 0){
-                            topicAdOnPress(links[0].linkType,links[0].linkValue[0], {...this.props.p})
+                            topicAdOnPress(links[0].linkType,links[0].linkValue[0], this.props.p)
                         }
 
                     }}/>

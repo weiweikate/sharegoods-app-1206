@@ -95,7 +95,6 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
 
     @ReactProp(name = "imgUrlArray")
     public void setImgUrlArray(final BannerLayout view, ReadableArray urls) {
-        LogUtils.d("======" + urls.toString());
         if (urls != null) {
             final List datas = urls.toArrayList();
             final WebBannerAdapter adapter;

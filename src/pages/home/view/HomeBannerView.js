@@ -16,7 +16,6 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import DesignRule from '../../../constants/DesignRule';
 import { homePoint } from '../HomeTypes';
 
-
 @observer
 export default class HomeBannerView extends Component {
 
@@ -68,7 +67,6 @@ export default class HomeBannerView extends Component {
 
 const styles = StyleSheet.create({
     banner: {
-        paddingHorizontal: px2dp(15),
         height: bannerHeight,
         width: ScreenUtils.width,
         backgroundColor: 'white'
