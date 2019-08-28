@@ -24,6 +24,7 @@ import DesignRule from '../../../constants/DesignRule';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { ContentType } from '../HomeTypes';
 import res from '../res';
+import StringUtils from '../../../utils/StringUtils';
 
 const autoSizeWidth = ScreenUtils.px2dp;
 const tabBg = res.tabBg;
@@ -42,7 +43,7 @@ export default class TabTitleView extends React.Component {
         }
         return (
             <ScrollView horizontal={true}
-                        style={{ marginLeft: autoSizeWidth(5), marginTop: autoSizeWidth(13), backgroundColor: 'red' }}
+                        style={{ marginLeft: autoSizeWidth(5), marginTop: autoSizeWidth(13) }}
                         showsHorizontalScrollIndicator={false}>
                 {
                     homeModule.tabList.map((item, index) => {
@@ -50,32 +51,32 @@ export default class TabTitleView extends React.Component {
                             return <View/>;
                         }
                         return (
-                            <View style={{ justifyContent: 'center' }} key={index + 'TabTitleView'}>
-                                <TouchableWithoutFeedback onPress={() => {
-                                    homeModule.tabSelect(index, item.id, item.name);
-                                    track(trackEvent.HomeRecommendClick, {
-                                        homeRecArea: 1, contentType: ContentType.tab,
-                                        contentValue: item.name, contentIndex: index
-                                    });
-                                }}>
-                                    {homeModule.tabListIndex === index ?
-                                        <ImageBackground style={styles.item}
-                                                         source={tabBg}
-                                                         resizeMode={'contain'}>
-                                            <MRText style={[styles.title, { color: 'white' }]}
-                                                    numberOfLines={1}>{item.name}</MRText>
-                                            {item.secName ? <MRText style={[styles.detail, { color: 'white' }]}
-                                                                    numberOfLines={1}>{item.secName}</MRText> : null}
-                                        </ImageBackground>
-                                        : <View style={styles.item}>
-                                            <MRText style={styles.title} numberOfLines={1}>{item.name}</MRText>
-                                            {item.secName ? <MRText style={styles.detail}
-                                                                    numberOfLines={1}>{item.secName}</MRText> : null}
-                                        </View>
-                                    }
-                                </TouchableWithoutFeedback>
-                            </View>
-
+                            <TouchableWithoutFeedback key={index + 'TabTitleView'} onPress={() => {
+                                homeModule.tabSelect(index, item.id, item.name);
+                                track(trackEvent.HomeRecommendClick, {
+                                    homeRecArea: 1, contentType: ContentType.tab,
+                                    contentValue: item.name, contentIndex: index
+                                });
+                            }}>
+                                {homeModule.tabListIndex === index ?
+                                    <ImageBackground style={styles.item}
+                                                     source={tabBg}
+                                                     resizeMode={'contain'}>
+                                        <MRText style={[styles.title, { color: 'white' },
+                                            { marginTop: StringUtils.isNoEmpty(item.secName) ? 0 : 10 }]}
+                                                numberOfLines={1}>{item.name}</MRText>
+                                        <MRText style={[styles.detail, { color: 'white' }]}
+                                                numberOfLines={1}>{StringUtils.isNoEmpty(item.secName) ? item.secName : ''}</MRText>
+                                    </ImageBackground>
+                                    : <View style={styles.item}>
+                                        <MRText
+                                            style={[styles.title, { marginTop: StringUtils.isNoEmpty(item.secName) ? 0 : 10 }]}
+                                            numberOfLines={1}>{item.name}</MRText>
+                                        <MRText style={styles.detail}
+                                                numberOfLines={1}>{StringUtils.isNoEmpty(item.secName) ? item.secName : ''}</MRText>
+                                    </View>
+                                }
+                            </TouchableWithoutFeedback>
                         );
                     })
                 }
@@ -90,8 +91,7 @@ const styles = StyleSheet.create({
         width: autoSizeWidth(70),
         overflow: 'hidden',
         alignItems: 'center',
-        justifyContent: 'center',
-        marginLeft: autoSizeWidth(5)
+        justifyContent: 'center'
     },
     title: {
         fontSize: autoSizeWidth(13),
@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     detail: {
         fontSize: autoSizeWidth(10),
         color: DesignRule.textColor_instruction,
-        marginTop: -3
+        marginTop: -3,
+        marginBottom: 10
     }
 });

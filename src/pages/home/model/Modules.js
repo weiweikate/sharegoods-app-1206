@@ -200,7 +200,6 @@ class HomeModule {
 
     // 加载首页数据
     @action loadHomeList = flow(function* () {
-        this.firstLoad = false;
         setTimeout(() => {
             this.isRefreshing = false;
         }, 1000);
@@ -237,6 +236,7 @@ class HomeModule {
 
         taskModel.getData();
 
+        this.firstLoad = false;
         this.page = 1;
         this.isEnd = false;
         if (this.isFetching === true) {
