@@ -1036,13 +1036,13 @@ export default class MinePage extends BasePage {
                     width: '25%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginTop: px2dp(12),
-                    marginBottom: px2dp(15)
+                    marginTop: i < 4 ? px2dp(7) : 0,
+                    marginBottom: px2dp(8)
                 }} onPress={menu[i].onPress} key={i}>
                     <View style={{ paddingTop: 7, paddingLeft: 8, paddingRight: 8, paddingBottom: 0 }}>
                         <UIImage source={menu[i].icon}
                                  resizeMode={'contain'}
-                                 style={{ width: 20, marginBottom: 8 }}/>
+                                 style={{ width: 24, height: 24,marginBottom: 5 }}/>
                         {menu[i].num ? <View style={{
                             minWidth: 16,
                             height: 16,

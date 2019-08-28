@@ -24,6 +24,7 @@ import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 
 import { MRText } from '../../components/ui';
 import EmptyUtils from '../../utils/EmptyUtils';
+const { px2dp } = ScreenUtils;
 
 @observer
 export default class ShowActivityView extends Component {
@@ -229,7 +230,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginRight: 10,
         marginTop: 10,
-        fontSize: DesignRule.fontSize_24,
+        fontSize: px2dp(13),
         color: '#333333'
     }
 });
