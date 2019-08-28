@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import {
+    Image,
+    ImageBackground,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LinearGradient from 'react-native-linear-gradient';
@@ -43,7 +51,7 @@ export default class HomeLimitGoView extends Component {
     }
 
     _renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
-        const textColor = isTabActive ? '#FC533B' : '#666';
+        const textColor = isTabActive ? 'white' : '#666';
         const selectedValue = (value) => value.id === name;
         const { spikeList } = limitGoModule;
         const selectedModels = spikeList.filter(selectedValue);
@@ -60,31 +68,15 @@ export default class HomeLimitGoView extends Component {
             onPress={() => onPressHandler(page)}
             onLayout={onLayoutHandler}
         >
-            <View style={[styles.tab, { marginLeft: page === 0 ? 0 : px2dp(12) }]}>
+            <ImageBackground style={styles.tab}
+                             source={isTabActive ? res.tabBg : null}>
                 <Text style={[styles.time, { color: textColor }]}>
                     {time}
                 </Text>
-                {
-                    isTabActive
-                        ?
-                        <LinearGradient style={styles.active}
-                                        start={{ x: 0, y: 0 }}
-                                        end={{ x: 1, y: 0 }}
-                                        colors={['#FF0050', '#FC5D39']}
-                        >
-                            <Text style={styles.activeTitle}>
-                                {title}
-                            </Text>
-                        </LinearGradient>
-                        :
-                        <View style={styles.normal}>
-                            <Text style={styles.normalTitle}>
-                                {title}
-                            </Text>
-                        </View>
-
-                }
-            </View>
+                <Text style={[styles.title, { color: textColor }]}>
+                    {title}
+                </Text>
+            </ImageBackground>
         </TouchableOpacity>;
     }
 
@@ -170,7 +162,7 @@ export default class HomeLimitGoView extends Component {
                             this.openModal();
                         }}>
                             <Image source={res.limitGoHeader}
-                                   style={{ height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-11) }}/>
+                                   style={{ height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-10) }}/>
                         </TouchableOpacity> : null
                 }
 
@@ -286,8 +278,9 @@ const styles = StyleSheet.create({
         marginTop: px2dp(3)
     },
     tab: {
-        minWidth: px2dp(60),
-        alignItems: 'center'
+        minWidth: px2dp(67),
+        alignItems: 'center',
+        height: px2dp(51)
     },
     tabBar: {
         width: ScreenUtils.width,
@@ -297,37 +290,17 @@ const styles = StyleSheet.create({
         height: 0
     },
     time: {
-        color: '#FC533B',
-        fontWeight: '400',
-        fontSize: 16
-    },
-    normal: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: px2dp(60),
-        height: px2dp(20),
-        marginTop: px2dp(3),
-        borderRadius: px2dp(10)
-    },
-    normalTitle: {
         color: '#666',
-        fontSize: px2dp(12)
+        fontWeight: '400',
+        fontSize: 17
     },
-    active: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: px2dp(60),
-        height: px2dp(20),
-        marginTop: px2dp(3),
-        borderRadius: px2dp(10)
-    },
-    activeTitle: {
-        color: '#fff',
-        fontSize: px2dp(12)
+    title: {
+        color: '#666',
+        fontSize: 11
     },
     scrollTab: {
         borderWidth: 0,
-        height: px2dp(53)
+        height: px2dp(51)
     },
     goodsItem: {
         marginLeft: px2dp(15),

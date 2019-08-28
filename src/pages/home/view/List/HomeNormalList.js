@@ -97,7 +97,6 @@ export default class HomeNormalList extends React.Component {
     constructor(props) {
         super(props);
 
-
         this.state = {
             itemData: [],
             footerStatus: 'hidden',
@@ -113,13 +112,6 @@ export default class HomeNormalList extends React.Component {
         //     //排序方式 (1.升序 2.降序)
         // this.sortModel = 2;
     }
-
-    // case 'idle':
-    // return this.renderIdleMore();
-    // case 'loading':
-    // return this.renderLoadingMore();
-    // case 'noMoreData':
-    // return this.renderLoadCompleted();
 
     componentDidMount() {
         this.refreshData(true);
@@ -439,5 +431,3 @@ export default class HomeNormalList extends React.Component {
         }
     }
 }
-
-// const styles = StyleSheet.create({});

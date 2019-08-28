@@ -105,9 +105,6 @@ export default class DIYTopicList extends React.Component {
         this.dataProvider = this.dataProvider.cloneWithRows(this.loadMoreDataUtil.data);
         return (
             <RecyclerListView
-                ref={(ref) => {
-                    this.recyclerListView = ref;
-                }}
                 style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0}}
                 refreshControl={<RefreshControl refreshing={this.loadMoreDataUtil.refreshing}
                                                 onRefresh={this.loadMoreDataUtil.onRefresh}
