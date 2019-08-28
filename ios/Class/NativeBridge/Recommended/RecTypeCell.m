@@ -37,7 +37,7 @@
   if(!_contentLab){
     _contentLab = [[UILabel alloc]init];
     _contentLab.font = [UIFont systemFontOfSize:13];
-    _contentLab.textColor = [UIColor colorWithHexString:@"666666"];
+    _contentLab.textColor = [UIColor colorWithHexString:@"333333"];
     _contentLab.userInteractionEnabled=YES;
     _contentLab.numberOfLines = 1;
     UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside)];
