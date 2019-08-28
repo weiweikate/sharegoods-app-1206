@@ -80,6 +80,7 @@ export default class HomeTodayView extends Component {
                     height: px2dp(160),
                     width: ScreenUtil.width - px2dp(30)
                 }}
+                interceptTouchEvent={true}
                 itemWidth={px2dp(295)}
                 itemSpace={px2dp(10)}
                 itemRadius={px2dp(5)}

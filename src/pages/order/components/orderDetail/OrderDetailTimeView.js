@@ -3,10 +3,9 @@ import {
     StyleSheet,
     View,
     NativeModules,
-    TouchableOpacity
 } from "react-native";
 import {
-    UIText, MRText as Text, NoMoreClick, UIImage
+    UIText, MRText as Text, NoMoreClick
 } from "../../../../components/ui";
 import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
@@ -17,10 +16,8 @@ import { observer } from "mobx-react";
 import {QYChatTool, beginChatType} from '../../../../utils/QYModule/QYChatTool'
 
 const { px2dp } = ScreenUtils;
-import res from '../../res'
 import orderApi from '../../api/orderApi';
 import bridge from '../../../../utils/bridge';
-const kefu_icon = res.button.kefu_icon;
 
 @observer
 export default class OrderDetailTimeView extends Component {
@@ -132,12 +129,12 @@ export default class OrderDetailTimeView extends Component {
                     <UIText
                         value={"完成时间：" + DateUtils.getFormatDate(receiveTime / 1000)}
                         style={styles.textOrderDownStyle}/> : null}
-                <TouchableOpacity style={styles.kefuContainer}
-                                  onPress={()=>{this.concactKeFu()}}
-                >
-                    <UIImage source={kefu_icon} style={styles.kefuIcon}/>
-                    <Text style={styles.kefuText}>联系客服</Text>
-                </TouchableOpacity>
+                {/*<TouchableOpacity style={styles.kefuContainer}*/}
+                                  {/*onPress={()=>{this.concactKeFu()}}*/}
+                {/*>*/}
+                    {/*<UIImage source={kefu_icon} style={styles.kefuIcon}/>*/}
+                    {/*<Text style={styles.kefuText}>联系客服</Text>*/}
+                {/*</TouchableOpacity>*/}
                 {this.renderWideLine()}
             </View>
         );

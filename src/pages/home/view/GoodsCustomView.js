@@ -66,7 +66,7 @@ export default class GoodsCustomView extends React.Component {
         let products = data.data || [];
         let showMore = data.showMore || {}
         return(
-            <View style={{marginTop: autoSizeWidth(10)}}>
+            <View style={{}}>
             <ScrollView horizontal = {true}
                         showsHorizontalScrollIndicator={false}
             >
@@ -150,7 +150,6 @@ export default class GoodsCustomView extends React.Component {
                 alignItems:'flex-start',
                 width: ScreenUtils.width - ScreenUtils.autoSizeWidth(30),
                 justifyContent: 'space-between',
-                marginTop: autoSizeWidth(10)
             }}>
                 {products.map((item => {
                     return(
@@ -522,6 +521,7 @@ export default class GoodsCustomView extends React.Component {
             <View style={{height,
                 width: ScreenUtils.width - autoSizeWidth(30),
                 marginLeft: autoSizeWidth(15),
+                marginBottom: autoSizeWidth(10)
             }}>
                 {this.renderGoods(data)}
             </View>

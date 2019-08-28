@@ -2,14 +2,12 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet, Platform, Animated } from 'react-native';
+import { Animated, Platform, StyleSheet, View } from 'react-native';
 import ShowBannerView from './ShowBannerView';
 import { observer } from 'mobx-react';
-import { tag, showBannerModules } from './Show';
+import { showBannerModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
-
-const { px2dp } = ScreenUtils;
 import ShowRecommendView from './components/ShowRecommendView';
 import ReleaseButton from './components/ReleaseButton';
 
@@ -24,6 +22,8 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 import WhiteModel from './model/WhiteModel';
+
+const { px2dp } = ScreenUtils;
 
 @observer
 export default class ShowHotView extends React.Component {
@@ -72,7 +72,7 @@ export default class ShowHotView extends React.Component {
         });
     }
 
-    addCart = (productStr,detailStr) => {
+    addCart = (productStr, detailStr) => {
         const product = JSON.parse(productStr);
         const detail = JSON.parse(detailStr);
         let addCartModel = new AddCartModel();
@@ -85,18 +85,18 @@ export default class ShowHotView extends React.Component {
                     'productCode': product.prodCode
                 });
                 /*加入购物车埋点*/
-                const { showNo , userInfoVO } = detail;
+                const { showNo, userInfoVO } = detail;
                 const { userNo } = userInfoVO || {};
                 track(trackEvent.XiuChangAddToCart, {
-                    xiuChangBtnLocation:'1',
-                    xiuChangListType:'1',
-                    articleCode:showNo,
-                    author:userNo,
+                    xiuChangBtnLocation: '1',
+                    xiuChangListType: '1',
+                    articleCode: showNo,
+                    author: userNo,
                     spuCode: prodCode,
                     skuCode: skuCode,
                     spuName: name,
                     pricePerCommodity: originalPrice,
-                    spuAmount: amount,
+                    spuAmount: amount
                 });
             }, { productIsPromotionPrice: productIsPromotionPrice });
         }, (error) => {
@@ -125,14 +125,14 @@ export default class ShowHotView extends React.Component {
     };
 
     renderHeader = () => {
-        if(!this.props.hasBanner){
-            return <View/>
+        if (!this.props.hasBanner) {
+            return <View/>;
         }
         const { bannerList } = showBannerModules;
         if (!bannerList || bannerList.length <= 0) {
             return null;
         }
-        return (<View style={{ backgroundColor: DesignRule.bgColor, width: ScreenUtils.width - px2dp(30) }}>
+        return (<View style={{ backgroundColor: DesignRule.bgColor }}>
                 <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
             </View>
         );
@@ -165,7 +165,7 @@ export default class ShowHotView extends React.Component {
                                        onStartRefresh={() => {
                                            this.loadData();
                                        }}
-                                       onCollection={({nativeEvent})=>{
+                                       onCollection={({ nativeEvent }) => {
                                            if (!user.isLogin) {
                                                routeNavigate(RouterMap.LoginPage);
                                                return;
@@ -179,17 +179,20 @@ export default class ShowHotView extends React.Component {
                                                ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 2 });
                                            }
                                        }}
-                                       onSeeUser={({nativeEvent})=>{
+                                       onSeeUser={({ nativeEvent }) => {
                                            let userNo = nativeEvent.userInfoVO.userNo;
-                                           if(user.code === userNo){
+                                           if (user.code === userNo) {
                                                routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
-                                           }else {
-                                               routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
+                                           } else {
+                                               routeNavigate(RouterMap.MyDynamicPage, {
+                                                   userType: 'others',
+                                                   userInfo: nativeEvent.userInfoVO
+                                               });
                                            }
                                        }}
                                        params={{ spreadPosition: tag.Recommend + '' }}
                                        onItemPress={({ nativeEvent }) => {
-                                           const { showNo , userInfoVO } = nativeEvent;
+                                           const { showNo, userInfoVO } = nativeEvent;
                                            const { userNo } = userInfoVO || {};
                                            const { navigate } = this.props;
                                            let params = {
@@ -199,18 +202,21 @@ export default class ShowHotView extends React.Component {
                                            };
                                            if (nativeEvent.showType === 1) {
                                                navigate(RouterMap.ShowDetailPage, params);
-                                           }  else if(nativeEvent.showType === 3){
-                                               navigate(RouterMap.ShowVideoPage, {code:showNo,tabType:this.props.type === 'attention' ? 0:1});
-                                           }else {
+                                           } else if (nativeEvent.showType === 3) {
+                                               navigate(RouterMap.ShowVideoPage, {
+                                                   code: showNo,
+                                                   tabType: this.props.type === 'attention' ? 0 : 1
+                                               });
+                                           } else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
 
-                                           track(trackEvent.XiuChangEnterClick,{
-                                               xiuChangListType:1,
-                                               articleCode:showNo,
-                                               author:userNo,
-                                               xiuChangEnterBtnName:'秀场列表'
-                                           })
+                                           track(trackEvent.XiuChangEnterClick, {
+                                               xiuChangListType: 1,
+                                               articleCode: showNo,
+                                               author: userNo,
+                                               xiuChangEnterBtnName: '秀场列表'
+                                           });
 
                                        }}
                                        onNineClick={({ nativeEvent }) => {
@@ -220,22 +226,26 @@ export default class ShowHotView extends React.Component {
                                            });
                                        }}
                                        onAddCartClick={({ nativeEvent }) => {
-                                           this.addCart(nativeEvent.product,nativeEvent.detail);
+                                           this.addCart(nativeEvent.product, nativeEvent.detail);
                                        }}
 
                                        onPressProduct={({ nativeEvent }) => {
-                                           const detail = JSON.parse(nativeEvent.detail)
-                                           const product = JSON.parse(nativeEvent.product)
-                                           const {showNo} = detail || {};
+                                           const detail = JSON.parse(nativeEvent.detail);
+                                           const product = JSON.parse(nativeEvent.product);
+                                           const { showNo } = detail || {};
                                            track(trackEvent.XiuChangSpuClick, {
-                                               xiuChangBtnLocation:'1',
-                                               xiuChangListType:'1',
-                                               articleCode:showNo,
+                                               xiuChangBtnLocation: '1',
+                                               xiuChangListType: '1',
+                                               articleCode: showNo,
                                                spuCode: product.prodCode,
                                                spuName: product.name,
                                                author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
                                            });
-                                           routePush(RouterMap.ProductDetailPage, { productCode: product.prodCode ,trackType:3,trackCode:showNo});
+                                           routePush(RouterMap.ProductDetailPage, {
+                                               productCode: product.prodCode,
+                                               trackType: 3,
+                                               trackCode: showNo
+                                           });
                                        }}
 
                                        onZanPress={({ nativeEvent }) => {
@@ -257,29 +267,29 @@ export default class ShowHotView extends React.Component {
                                                return;
                                            }
                                            let { detail } = nativeEvent;
-                                           let callback = ()=>{
+                                           let callback = () => {
                                                detail.downloadCount += 1;
                                                ShowApi.incrCountByType({
                                                    showNo: nativeEvent.detail.showNo,
                                                    type: 4
                                                });
                                                this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
-                                               this.props.onShare(nativeEvent,true);
+                                               this.props.onShare(nativeEvent, true);
 
-                                               const { showNo , userInfoVO } = detail;
+                                               const { showNo, userInfoVO } = detail;
                                                const { userNo } = userInfoVO || {};
-                                               track(trackEvent.XiuChangDownLoadClick,{
-                                                   xiuChangBtnLocation:'1',
-                                                   xiuChangListType:'1',
-                                                   articleCode:showNo,
-                                                   author:userNo
-                                               })
-                                           }
-                                           DownloadUtils.downloadShow(detail,callback);
+                                               track(trackEvent.XiuChangDownLoadClick, {
+                                                   xiuChangBtnLocation: '1',
+                                                   xiuChangListType: '1',
+                                                   articleCode: showNo,
+                                                   author: userNo
+                                               });
+                                           };
+                                           DownloadUtils.downloadShow(detail, callback);
                                        }}
 
                                        onSharePress={({ nativeEvent }) => {
-                                           this.props.onShare(nativeEvent,false);
+                                           this.props.onShare(nativeEvent, false);
                                        }}
 
                                        onScrollY={({ nativeEvent }) => {
