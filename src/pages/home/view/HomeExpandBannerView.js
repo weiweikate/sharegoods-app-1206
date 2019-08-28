@@ -51,7 +51,7 @@ export default class HomeExpandBannerView extends Component {
     }
 
     render() {
-        return <View style={styles.container}>
+        return <View style={{ width: ScreenUtils.width,height: homeExpandBnnerModel.bannerHeight}}>
             {this._renderBanner()}
         </View>;
     }
@@ -64,6 +64,6 @@ const styles = StyleSheet.create({
     bannerImage: {
         width: ScreenUtils.width,
         height: defaultBannerHeight,
-        marginBottom: px2dp(15)
+        marginBottom: px2dp(10)
     }
 });

@@ -53,7 +53,7 @@ export default class TextCustomView extends React.Component {
             <TouchableWithoutFeedback onPress={()=>this.onPress(data)}>
                 <View style={{backgroundColor, marginHorizontal: autoSizeWidth(15),
                     width: ScreenUtils.width - autoSizeWidth(30),
-                    // marginBottom: autoSizeWidth(10),
+                    marginTop: autoSizeWidth(10),
                     borderRadius: 5,
                     overflow: 'hidden',
                     padding: autoSizeWidth(10)

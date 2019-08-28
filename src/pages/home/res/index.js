@@ -1,7 +1,7 @@
 import res from '../../../comm/res';
 import signIn from './signIn';
 import search from './search';
-import task from './task'
+import task from './task';
 
 const resHome = {
     goods: require('./goods.png'),
@@ -19,16 +19,16 @@ const resHome = {
     spike: require('./spike.png'),
     home_right: require('./home_right.png'),
     home_sallout: require('./home_pic_qiangguang.png'),
-    btn_bg:require('./btn_bg.png'),
-    unwin:require('./unwin.png'),
-    win:require('./win.png'),
-    limitGoHeader:require('./limitGoHeader.png'),
-    modalBg:require('./modalBg.png'),
-    shouye_icon_gengduo:require('./shouye_icon_gengduo.png'),
-    more:require('./more.png'),
-    arrow_bottom:require('./arrow_bottom.png'),
-    arrow_top:require('./arrow_top.png'),
-    tabBg:require('./tabBg.png'),
+    btn_bg: require('./btn_bg.png'),
+    unwin: require('./unwin.png'),
+    win: require('./win.png'),
+    limitGoHeader: require('./limitGoHeader.png'),
+    modalBg: require('./modalBg.png'),
+    shouye_icon_gengduo: require('./shouye_icon_gengduo.png'),
+    more: require('./more.png'),
+    arrow_bottom: require('./arrow_bottom.png'),
+    arrow_top: require('./arrow_top.png'),
+    tabBg: require('./tabBg.png'),
     signIn: {
         ...signIn
     },

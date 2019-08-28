@@ -36,6 +36,9 @@ class HomeModule {
     errorMsg = '';
     tabId = '';
     fixedPartOne = [{
+        id: -1,
+        type: homeType.placeholder
+    }, {
         id: 0,
         type: homeType.swiper
     }, {

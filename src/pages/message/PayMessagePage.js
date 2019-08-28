@@ -57,7 +57,7 @@ export default class PayMessagePage extends BasePage {
     }
 
     toHelperPage = () => {
-        this.$navigate(RouterMap.MyHelperPage);
+        this.$navigate(RouterMap.MyHelperCenter);
     };
 
     commitQuestion = () => {
@@ -140,7 +140,7 @@ export default class PayMessagePage extends BasePage {
     }
 
     showTitle() {
-        this.$navigate(RouterMap.MyHelperPage);
+        this.$navigate(RouterMap.MyHelperCenter);
     }
 }
 
