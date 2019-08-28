@@ -126,9 +126,6 @@
     if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
       [weakSelf.callBackArr addObjectsFromArray:[result valueForKey:@"data"]];
     }
-    if(model.data.count<5){
-      self.isEnd = YES;
-    }
     self.VideoHeaderView.model = weakSelf.dataArr.firstObject;
     [self.scrollView setupData:weakSelf.dataArr];
 
@@ -165,7 +162,7 @@
       if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
         [weakSelf.callBackArr addObjectsFromArray:[result valueForKey:@"data"]];
       }
-      if(model.data.count<5){
+      if(model.data.count==0){
         self.isEnd = YES;
         [MBProgressHUD showSuccess:@"我也是有底线的"];
       }
