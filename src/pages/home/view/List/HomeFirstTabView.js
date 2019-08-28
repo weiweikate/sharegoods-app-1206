@@ -119,6 +119,9 @@ export default class HomeFirstTabView extends Component {
             case homeType.custom_text:
                 dim.height = 1;
                 break;
+            case  homeType.placeholder:
+                dim.height = 1;
+                break;
             default:
                 dim.height = 0;
         }
@@ -178,6 +181,8 @@ export default class HomeFirstTabView extends Component {
         } else if (type === homeType.custom_imgAD) {
             // p.specialTopicArea = 1;
             return <TopicImageAdView data={item}/>;
+        }else if (type === homeType.placeholder){
+            return <View style={{width: 10, height: 1}}/>;
         }
         return <View/>;
     };

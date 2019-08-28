@@ -101,7 +101,7 @@ export class TopicImageAdView extends React.Component {
             return <View />
         }
         return (
-            <View style={{height, width: ScreenUtils.width , flexDirection: 'row', paddingTop: 10, backgroundColor: 'red'}}>
+            <View style={{height, width: ScreenUtils.width , flexDirection: 'row', paddingTop: 10}}>
                 {this.renderImages(data, height)}
             </View>
         );
