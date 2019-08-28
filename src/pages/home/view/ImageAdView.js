@@ -101,14 +101,14 @@ export class TopicImageAdView extends React.Component {
             return <View />
         }
         return (
-            <View style={{height, width: ScreenUtils.width , flexDirection: 'row', paddingTop: 10}}>
+            <View style={{height, width: ScreenUtils.width , flexDirection: 'row'}}>
                 {this.renderImages(data, height)}
             </View>
         );
     }
 
     renderImages(data, height){
-        height = height - 10;
+        height = height;
         switch (data.layout){
             case '1':
             case '2':
@@ -116,8 +116,8 @@ export class TopicImageAdView extends React.Component {
             case '4':
                 let links = data.imgs[0].links || []
                 return (
-                    <View style={{height, width: ScreenUtils.width - ScreenUtils.autoSizeWidth(30), marginLeft: ScreenUtils.autoSizeWidth(15)}}>
-                    <ImageLoader style={{height, width: ScreenUtils.width - ScreenUtils.autoSizeWidth(30) , flexDirection: 'row'}}
+                    <View style={{height, width: ScreenUtils.width}}>
+                    <ImageLoader style={{height, width: ScreenUtils.width, flexDirection: 'row'}}
                                  source={{uri: data.imgs[0].src}}
                     >{
                         links.map((item) => {
@@ -171,15 +171,15 @@ export function ImageAdViewGetHeight(data) {
     switch (data.layout){
         case '1':
             return ScreenUtils.autoSizeWidth(120);
-            return data.height / data.width * (ScreenUtils.width - ScreenUtils.autoSizeWidth(30)) + 10
+            return data.height / data.width * (ScreenUtils.width - ScreenUtils.autoSizeWidth(30))
         case '2':
-            return  ScreenUtils.autoSizeWidth(120) + 10
+            return  ScreenUtils.autoSizeWidth(120)
         case '3':
-            return ScreenUtils.autoSizeWidth(100) + 10
+            return ScreenUtils.autoSizeWidth(100)
         case '4':
-            return ScreenUtils.autoSizeWidth(100) + 10
+            return ScreenUtils.autoSizeWidth(100)
         case 'carousel':
-            return  ScreenUtils.autoSizeWidth(160) + 10
+            return  ScreenUtils.autoSizeWidth(160)
     }
     return 0;
 }

@@ -145,13 +145,13 @@ const styles = StyleSheet.create({
     textOrderDownStyle: {
         color: DesignRule.textColor_instruction,
         fontSize: px2dp(13),
-        marginLeft: px2dp(16),
+        marginLeft: px2dp(15),
         marginBottom: px2dp(10)
     },
     textGoodsDownStyle: {
         color: DesignRule.textColor_instruction,
         fontSize: px2dp(13),
-        marginLeft: px2dp(16),
+        marginLeft: px2dp(15),
         marginBottom: 10
     },
     clipStyle: {
