@@ -28,7 +28,7 @@ class StarsView extends Component {
                     changeStar(index, i);
                 }}>
                     <Image source={itemData.starCount >= i ? p_score_star : p_score_unStar}
-                           style={{ marginLeft: i === 1 ? 0 : px2dp(11) }}/>
+                           style={{ marginLeft: i === 1 ? 0 : px2dp(11), height: 20, width: 20 }}/>
                 </NoMoreClick>
             );
         }

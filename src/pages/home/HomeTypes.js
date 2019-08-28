@@ -31,7 +31,8 @@ export const homeType = {
     shopBanner: 23,//拼店详情底部banner
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
-    custom_goods: 'WIDGET-GOODS'
+    custom_goods: 'WIDGET-GOODS',
+    placeholder: 'placeholder',
 };
 
 export const homeLinkType = {

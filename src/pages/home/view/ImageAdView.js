@@ -101,7 +101,7 @@ export class TopicImageAdView extends React.Component {
             return <View />
         }
         return (
-            <View style={{height, width: ScreenUtils.width - ScreenUtils.autoSizeWidth(30), marginLeft: ScreenUtils.autoSizeWidth(15), flexDirection: 'row', paddingTop: 10}}>
+            <View style={{height, width: ScreenUtils.width , flexDirection: 'row', paddingTop: 10}}>
                 {this.renderImages(data, height)}
             </View>
         );
@@ -116,7 +116,8 @@ export class TopicImageAdView extends React.Component {
             case '4':
                 let links = data.imgs[0].links || []
                 return (
-                    <ImageLoader style={{height, width: ScreenUtils.width - ScreenUtils.autoSizeWidth(30)}}
+                    <View style={{height, width: ScreenUtils.width - ScreenUtils.autoSizeWidth(30), marginLeft: ScreenUtils.autoSizeWidth(15)}}>
+                    <ImageLoader style={{height, width: ScreenUtils.width - ScreenUtils.autoSizeWidth(30) , flexDirection: 'row'}}
                                  source={{uri: data.imgs[0].src}}
                     >{
                         links.map((item) => {
@@ -134,6 +135,7 @@ export class TopicImageAdView extends React.Component {
                         })
                     }
                     </ImageLoader>
+                    </View>
                 )
             case 'carousel':
                 let imgs = data.imgs.map(value => {
