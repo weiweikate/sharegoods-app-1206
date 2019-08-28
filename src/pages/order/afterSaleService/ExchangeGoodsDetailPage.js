@@ -562,8 +562,7 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     item_arrow: {
-        height: 10,
-        width: 7
+        height: 12
     }
 });
 

@@ -91,7 +91,7 @@ export default class ConfirmPriceView extends Component {
                         <UIText
                             value={promotionAmount > 0 ? ('-' + StringUtils.formatMoneyString(promotionAmount)) : ('+' + StringUtils.formatMoneyString(Math.abs(promotionAmount)))}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
-                        <Image source={arrow_right} style={{ width: 7, height: 10 }}/>
+                        <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
                     </View>
                 </View> : null}
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
@@ -104,7 +104,7 @@ export default class ConfirmPriceView extends Component {
                         <UIText
                             value={confirmOrderModel.canUseCou ? (couponAmount != 0 ? '-' + StringUtils.formatMoneyString(couponAmount) : (confirmOrderModel.canInvoke ? '请激活兑换券' : '请选择优惠券')) : '不可用优惠券'}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
-                        <Image source={arrow_right} style={{ width: 7, height: 10 }}/>
+                        <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
                     </View>
                 </TouchableOpacity>
                 {this.renderLine()}
@@ -116,7 +116,7 @@ export default class ConfirmPriceView extends Component {
                         <UIText
                             value={tokenCoinAmount != 0 ? '-' + StringUtils.formatMoneyString(tokenCoinAmount) : '请选择1元现金券'}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
-                        <Image source={arrow_right} style={{ width: 7, height: 10 }}/>
+                        <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
                     </View>
                 </TouchableOpacity>
                 {this.renderLine()}

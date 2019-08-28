@@ -106,8 +106,8 @@ export default class HelperCenterQuestionTypeList extends BasePage {
                                 fontSize: DesignRule.fontSize_threeTitle,
                                 color: DesignRule.textColor_secondTitle,
                             }}/>
-                    <Image source={res.button.arrow_right}
-                           style={{width: 4, height: 8, marginLeft: 6}}/>
+                    <Image source={res.button.arrow_right_black}
+                           style={{width: 5, height: 8, marginLeft: 6}}/>
                 </View>
             </NoMoreClick>
         );

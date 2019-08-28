@@ -564,7 +564,6 @@ export function GoodsCustomViewGetItemHeight(data) {
                 height += ScreenUtils.autoSizeWidth(20)//价格
             }
             if (buyButtonVisible) {
-
                 if (buyButtonType === 1 && priceHasInvalidVisible) {
                     height += ScreenUtils.autoSizeWidth(14)//老价格
                 } else if (buyButtonType === 2) {
