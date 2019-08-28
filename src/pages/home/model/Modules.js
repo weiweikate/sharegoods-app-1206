@@ -326,7 +326,7 @@ class HomeModule {
         }
     }
 
-    //加载为你推荐列表
+    // 加载为你推荐列表
     @action loadMoreHomeList = flow(function* () {
         if (this.isFetching || this.isRefreshing) {
             return;

@@ -165,8 +165,7 @@ export default class HomeFirstTabView extends Component {
             return <GoodsCell data={data} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
                               navigate={routePush}/>;
         } else if (type === homeType.goodsTitle) {
-            return <View style={styles.titleView}
-                         ref={e => this.toGoods = e}
+            return <View ref={e => this.toGoods = e}
                          onLayout={event => {
                              // 保留，不能删除
                          }}>
@@ -309,11 +308,6 @@ export default class HomeFirstTabView extends Component {
 }
 
 const styles = StyleSheet.create({
-    titleView: {
-
-        height: px2dp(43 + 24),
-        width: ScreenUtils.width
-    },
     messageBgStyle: {
         width: px2dp(295),
         height: px2dp(390),

@@ -14,17 +14,9 @@
 
 import React from 'react';
 
-import {
-    StyleSheet,
-    View,
-    ScrollView,
-    TouchableWithoutFeedback,
-    ImageBackground
-} from 'react-native';
+import { ImageBackground, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 
-import {
-    MRText
-} from '../../../components/ui';
+import { MRText } from '../../../components/ui';
 import { observer } from 'mobx-react';
 import { homeModule } from '../model/Modules';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -45,9 +37,12 @@ export default class TabTitleView extends React.Component {
     }
 
     render() {
+        if (homeModule.tabList.length === 0) {
+            return null;
+        }
         return (
             <ScrollView horizontal={true}
-                        style={{ marginLeft: autoSizeWidth(5), marginTop: autoSizeWidth(13) }}
+                        style={{ marginLeft: autoSizeWidth(5), marginTop: autoSizeWidth(13), backgroundColor: 'red' }}
                         showsHorizontalScrollIndicator={false}>
                 {
                     homeModule.tabList.map((item, index) => {
@@ -66,8 +61,7 @@ export default class TabTitleView extends React.Component {
                                     {homeModule.tabListIndex === index ?
                                         <ImageBackground style={styles.item}
                                                          source={tabBg}
-                                                         resizeMode={'contain'}
-                                        >
+                                                         resizeMode={'contain'}>
                                             <MRText style={[styles.title, { color: 'white' }]}
                                                     numberOfLines={1}>{item.name}</MRText>
                                             {item.secName ? <MRText style={[styles.detail, { color: 'white' }]}
@@ -97,8 +91,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: autoSizeWidth(5),
-        paddingBottom: autoSizeWidth(8)
+        marginLeft: autoSizeWidth(5)
     },
     title: {
         fontSize: autoSizeWidth(13),
