@@ -62,7 +62,6 @@ class HomePage extends BasePage {
         };
     }
 
-
     componentDidMount() {
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',

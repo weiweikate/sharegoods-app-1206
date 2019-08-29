@@ -16,7 +16,7 @@ import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 import { PageType } from '../myaccount/JudgePhonePage';
 // import SettingModel from "../../model/SettingModel";
 
-const arrow_right = res.button.arrow_right;
+const arrow_right = res.button.arrow_right_black;
 const PhonePwdStatus = {
     Undefined: 0,
     UnSet: 1,
@@ -66,7 +66,7 @@ export default class AccountSettingPage extends BasePage {
                     <UIText value={'修改手机号'} style={[styles.blackText, { flex: 1 }]}/>
                     <UIText value={user.phone}
                             style={{ fontSize: 13, color: DesignRule.textColor_secondTitle, marginRight: 8 }}/>
-                    <Image source={arrow_right} style={{ width: 10, height: 15 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ height: 12 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{
                     height: 0.5,
@@ -76,7 +76,7 @@ export default class AccountSettingPage extends BasePage {
                 }}/>
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPwd()}>
                     <UIText value={this.state.phonePwdStatus === 1 ? '设置密码' : '修改密码'} style={styles.blackText}/>
-                    <Image source={arrow_right} style={{ width: 10, height: 15 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ height: 12 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{
                     height: 0.5,
@@ -86,7 +86,7 @@ export default class AccountSettingPage extends BasePage {
                 }}/>
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPayPwd()}>
                     <UIText value={'交易密码设置'} style={styles.blackText}/>
-                    <Image source={arrow_right} style={{ width: 10, height: 15 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ height: 12 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{
                     height: 0.5,
@@ -98,7 +98,7 @@ export default class AccountSettingPage extends BasePage {
                     <UIText value={'微信账号'} style={[styles.blackText, { flex: 1 }]}/>
                     <UIText value={StringUtils.isEmpty(user.unionid) ? '未绑定' : (user.wechatName || '无昵称')}
                             style={{ fontSize: 13, color: DesignRule.textColor_secondTitle, marginRight: 8 }}/>
-                    <Image source={arrow_right} style={{ width: 10, height: 15 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ height: 12 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
 
                 {/*{this.renderLine()}*/}

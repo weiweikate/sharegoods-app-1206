@@ -74,8 +74,8 @@ export default class MyHelperCenter extends BasePage {
                                             fontSize: DesignRule.fontSize_24,
                                             color: DesignRule.textColor_instruction,
                                         }}/>
-                                <Image source={res.button.arrow_right}
-                                       style={{width: 4, height: 8, marginLeft: 6}}/>
+                                <Image source={res.button.arrow_right_black}
+                                       style={{width: 5, height: 8, marginLeft: 6}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
@@ -126,8 +126,8 @@ export default class MyHelperCenter extends BasePage {
                                 fontSize: DesignRule.fontSize_threeTitle,
                                 color: DesignRule.textColor_secondTitle,
                             }}/>
-                    <Image source={res.button.arrow_right}
-                           style={{width: 4, height: 8, marginLeft: 6}}/>
+                    <Image source={res.button.arrow_right_black}
+                           style={{width: 5, height: 8, marginLeft: 6}}/>
                 </NoMoreClick>
             </View>
         );

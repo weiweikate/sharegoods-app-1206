@@ -23,7 +23,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
 import { homeType } from '../../HomeTypes';
-import { ImageAdViewGetHeight, TopicImageAdView } from '../ImageAdView';
+import { ImageAdViewGetHeight, TopicImageAdView } from '../TopicImageAdView';
 import GoodsCustomView, { GoodsCustomViewGetHeight } from '../GoodsCustomView';
 import HomeAPI from '../../api/HomeAPI';
 import TextCustomView from '../TextCustomView';

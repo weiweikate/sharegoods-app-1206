@@ -213,7 +213,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         !this.state.showDele ? null :
                         <View style={{
                         position: 'absolute',
-                        bottom: 50,
+                        bottom: 45,
                         right: ScreenUtils.autoSizeWidth(180)-100,
                         backgroundColor: 'white',
                         borderRadius: 5,

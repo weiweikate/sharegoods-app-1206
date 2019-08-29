@@ -157,7 +157,8 @@ export default class TopicDetailHeaderView extends Component {
                     <Text style={styles.serviceValueText} numberOfLines={1}>
                         {`质量保障·48小时发货${(restrictionsTT & 4) === 4 ? '·7天退换' : ''}${(restrictionsTT & 8) === 8 ? '·节假日发货' : ''}`}
                     </Text>
-                    {activityType !== 3 ? <Image source={arrow_right} style={{ height: 10, width: 7 }}/> : null}
+                    {activityType !== 3 ?
+                        <Image resizeMode={'contain'} source={arrow_right} style={{ height: 10 }}/> : null}
                 </NoMoreClick>
                 {activityType === 3 ? null :
                     <ProductDetailScoreView style={{ marginBottom: 10 }} pData={data} navigation={navigation}/>}

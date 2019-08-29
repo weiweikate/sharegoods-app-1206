@@ -63,11 +63,7 @@ export default class GoodsCell extends Component {
             contentIndex: index,
             tabName: homeModule.tabName
         });
-        // let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         topicAdOnPress(data.linkType, data.linkCode);
-        // const { navigate } = this.props;
-        // let params = homeModule.paramsNavigate(data);
-        // navigate(route, params);
     }
 
     render() {

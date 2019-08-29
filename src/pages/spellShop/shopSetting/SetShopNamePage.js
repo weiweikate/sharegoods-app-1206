@@ -190,7 +190,7 @@ export default class SetShopNamePage extends BasePage {
                 <AvatarImage style={styles.updateImg} source={{ uri: uri }} borderRadius={px2dp(20)}/>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.updateText} allowFontScaling={false}>修改头像</Text>
-                    <Image source={arrow_right} style={styles.arrowImg}/>
+                    <Image resizeMode={'contain'} source={arrow_right} style={styles.arrowImg}/>
                 </View>
             </TouchableOpacity>;
         } else {
@@ -230,7 +230,7 @@ export default class SetShopNamePage extends BasePage {
                                    blurOnSubmit={false}
                                    style={styles.textInput}
                                    editable={false}/>
-                        <Image source={arrow_right} style={styles.arrowImg}/>
+                        <Image resizeMode={'contain'} source={arrow_right} style={styles.arrowImg}/>
                         <TouchableOpacity style={styles.bntArea}
                                           onPress={this._getCityPicker}/>
                     </View>
@@ -270,8 +270,7 @@ const styles = StyleSheet.create({
     arrowImg: {
         marginLeft: 10,
         marginRight: 15,
-        height: 10,
-        width: 7
+        height: 10
     },
     /*右  完成*/
     rightItem: {
