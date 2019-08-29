@@ -240,11 +240,11 @@ export default class CategorySearchPage extends BasePage {
     };
 
     _onCategoryClick = (item, index) => {
-        this.setState({
-            leftIndex: index
-        }, this._adjustCategory(index));
         // 点击分类
         if (this.state.leftIndex !== index) {
+            this.setState({
+                leftIndex: index
+            }, this._adjustCategory(index));
             // 先隐藏，后显示，起到刷新作用
             if (index === 0) {
                 // 热门分类
@@ -260,7 +260,7 @@ export default class CategorySearchPage extends BasePage {
                         }],
                         swiperShow: !StringUtils.isEmpty(datas.img)
                     }, () => {
-                        this.goods && this.goods.scrollToLocation({sectionIndex:0,itemIndex:0,animated:false});
+                        this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
                     });
                 }).catch((data) => {
                     bridge.hiddenLoading();
@@ -287,7 +287,7 @@ export default class CategorySearchPage extends BasePage {
                         }],
                         swiperShow: !StringUtils.isEmpty(datas.img)
                     }, () => {
-                        this.goods && this.goods.scrollToLocation({sectionIndex:0,itemIndex:0,animated:false});
+                        this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
                     });
                 }).catch((data) => {
                     bridge.hiddenLoading();
