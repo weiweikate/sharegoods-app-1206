@@ -1,7 +1,7 @@
 /**
  * Created by chenweiwei on 2019/8/21.
  */
-import React, { Component } from 'react';;
+import React, { Component } from 'react';
 import {Image, View} from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText as Text, NoMoreClick } from '../../../components/ui';

@@ -18,6 +18,8 @@ import {SmoothPushPreLoadHighComponentFirstDelay} from '../../../../comm/compone
 import RouterMap, {routeNavigate} from '../../../../navigation/RouterMap';
 import CustomerServiceButton from '../../components/CustomerServiceButton';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
+import HelperLoadMoreComponent from '../../components/HelperLoadMoreComponent';
+
 const {
     icon_tuikuan_2,
     icon_feedback_2,
@@ -89,6 +91,7 @@ export default class MyHelperCenter extends BasePage {
                                      sizeKey={'pageSize'}
                                      pageKey={'page'}
                                      style={{flex: 1}}
+                                     renderLoadMoreComponent={(status) => <HelperLoadMoreComponent status={status}/>}
                     />
                 </View>
             </View>
