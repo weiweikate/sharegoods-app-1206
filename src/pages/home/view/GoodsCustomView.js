@@ -33,6 +33,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { topicAdOnPress } from '../HomeTypes';
 import res from '../res'
 import { routePush } from '../../../navigation/RouterMap';
+import user from '../../../model/user';
 const shouye_icon_gengduo = res.shouye_icon_gengduo
 const icon_shopCar = res.icon_shopCar;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
@@ -82,7 +83,7 @@ export default class GoodsCustomView extends React.Component {
                                 {this.renderCommission(data, item)}
                                 {this.renderPrice(data, item)}
                                 {this.renderOldPrice(data, item)}
-                                {this.renderBtn(data)}
+                                {this.renderBtn(data, item)}
                             </View>
                         </TouchableWithoutFeedback>
                     )
@@ -112,6 +113,9 @@ export default class GoodsCustomView extends React.Component {
         let style = GoodsCustomViewGetItemStyle(data, height);
         let products = data.data || []
         let {commissionVisible, priceHasInvalidVisible } = data;
+        if (!user.isLogin) {
+            commissionVisible = false;
+        }
         return products.map(((item, i) => {
             let style2 = {}
             if (i === 0){
@@ -141,7 +145,7 @@ export default class GoodsCustomView extends React.Component {
                                 ¥<MRText  style={{fontSize: autoSizeWidth(18),
                                 color: DesignRule.mainColor, fontWeight: '600'}}>{item.minPrice}</MRText>起
                             </MRText>
-                            {this.renderBtn(data)}
+                            {this.renderBtn(data, item)}
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
@@ -186,7 +190,7 @@ export default class GoodsCustomView extends React.Component {
                                 {this.renderCommission(data, item)}
                                 {this.renderPrice(data, item)}
                                 {this.renderOldPrice(data, item)}
-                                {this.renderBtn(data)}
+                                {this.renderBtn(data,item)}
                             </View>
                         </TouchableWithoutFeedback>
                     )
@@ -199,7 +203,7 @@ export default class GoodsCustomView extends React.Component {
     renderImage(data, item, width){
 
         let marginBottom = 0;
-        let {cornerVisible, cornerImgSrc, cornerPosition, layout, mainPicBorderVisible, mainPicBorderUrl} = data;
+        let {cornerVisible, cornerImgSrc, cornerPosition, layout, mainPicBorderVisible, mainPicBorderUrl, priceInMainPicVisible} = data;
         let cornerStyle = {width: autoSizeWidth(28), height: autoSizeWidth(14), position: 'absolute', overflow: 'hidden'};
 
         switch (layout){
@@ -235,6 +239,17 @@ export default class GoodsCustomView extends React.Component {
                 cornerStyle.borderTopLeftRadius = 5;
                 break;
         }
+
+        let minPrice = item.minPrice + '';
+        let length = minPrice.length
+        let fontSize = autoSizeWidth(13)
+        if (length > 3 && length < 5){
+            fontSize = autoSizeWidth(11);
+        }else if (length >= 5) {
+            fontSize = autoSizeWidth(9);
+        }
+        const fixWidth =  autoSizeWidth(100);
+        let scale = width / fixWidth;
         return (
             <ImageLoader style={{height: width, width: width, marginBottom: marginBottom }}
                          source={{uri: item.imgUrl}}
@@ -243,6 +258,17 @@ export default class GoodsCustomView extends React.Component {
                 {mainPicBorderVisible? <ImageLoader source={{uri: mainPicBorderUrl}} style={{position: 'absolute', top: 0, left: 0,height: width, width: width}}
                                                     showPlaceholder={false}
                 >
+                        {priceInMainPicVisible ?
+                            <View style={{
+                                position: 'absolute', bottom: 0, left: 0, height: fixWidth / 4,
+                                width: fixWidth / 3,
+                                transform: [{ scale: scale},{translateX: (scale-1)*fixWidth/6.0/2},{translateY: -(scale-1)*fixWidth/8.0/2}],
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <MRText style={{ fontSize, color: 'white' }}>{minPrice}</MRText>
+                            </View>: null
+                        }
                     </ImageLoader>
                     : null}
                 {
@@ -322,18 +348,23 @@ export default class GoodsCustomView extends React.Component {
     renderCommission(data, item){
         let {commissionVisible, layout,priceNameVisible,
             priceNameAlias} = data
+        if (!user.isLogin) {
+            commissionVisible = false;
+        }
         if (!commissionVisible &&  !priceNameVisible) return null;
-        let style = {flexDirection: 'row',
-            marginLeft: autoSizeWidth(5),
-            height: autoSizeWidth(14),
-            alignItems: 'center'}
-        let textStyle = {fontSize: autoSizeWidth(12),
+        let style = {
+            marginLeft: autoSizeWidth(5)}
+        let textStyle = {
+            fontSize: autoSizeWidth(12),
             color: DesignRule.mainColor,
-            marginLeft: 4
+            marginLeft: 4,
+            height: autoSizeWidth(14),
         }
         switch (layout){
             case 2:
                 style.marginTop = autoSizeWidth(5)
+                style.flexDirection = 'row';
+                style.alignItems = 'center';
                 break
             case 3:
                 textStyle.fontSize = autoSizeWidth(10)
@@ -344,7 +375,11 @@ export default class GoodsCustomView extends React.Component {
         }
 
         return  <View style={style}>
-            {priceNameVisible ? <MRText style={styles.tip}>{priceNameAlias || '价格'}</MRText>: null}
+            {priceNameVisible ? <View style={{flexDirection: 'row'}}>
+                    <MRText style={[styles.tip,{  height: autoSizeWidth(14)}]}>{priceNameAlias || '价格'}</MRText>
+                <View style={{flex: 1}}/>
+                </View>
+                : null}
             {commissionVisible ? <MRText style={textStyle}>{'佣金¥'+item.shareMoney}</MRText>: null}
         </View>
     }
@@ -425,14 +460,14 @@ export default class GoodsCustomView extends React.Component {
         }
     }
 
-    renderBtn(item){
-        if (!item.buyButtonVisible) {
+    renderBtn(data, item){
+        if (!data.buyButtonVisible) {
             return;
         }
         let shopCarStyle = {}
         let buyBtnStyle = {}
         let buyTextStyle = {}
-        switch (item.layout){
+        switch (data.layout){
             case 1:
                 shopCarStyle = {
                     width: autoSizeWidth(20),
@@ -507,20 +542,20 @@ export default class GoodsCustomView extends React.Component {
                 buyTextStyle = {fontSize: autoSizeWidth(12), color: 'white'}
                 break;
         }
-        if (item.buyButtonType === 1){
+        if (data.buyButtonType === 1){
             return (
                 <TouchableWithoutFeedback onPress={() => this.gotoProduceDetail(item)}>
                     <ImageBackground style={shopCarStyle} source={icon_shopCar}/>
                 </TouchableWithoutFeedback>
             )
-        }else if(item.buyButtonType === 2){
+        }else if(data.buyButtonType === 2){
             return (
-                <TouchableWithoutFeedback onPress={() => this.addShopCar(item)}>
+                <TouchableWithoutFeedback onPress={() => this.gotoProduceDetail(item)}>
                     <LinearGradient start={{ x: 1, y: 0 }} end={{ x: 0, y: 0 }}
                                     colors={['#FC5D39', '#FF0050']}
                                     style={buyBtnStyle}
                     >
-                        <MRText style={buyTextStyle}>{item.buyButtonText}</MRText>
+                        <MRText style={buyTextStyle}>{data.buyButtonText}</MRText>
                     </LinearGradient>
                 </TouchableWithoutFeedback>
             )
@@ -595,7 +630,8 @@ export function GoodsCustomViewGetItemHeight(data) {
             height +=  ScreenUtils.autoSizeWidth(5)//间距
             if (titleVisible){ height += ScreenUtils.autoSizeWidth(20)}//title
             if (subtitleVisible){ height += ScreenUtils.autoSizeWidth(15)}//detail
-            if (commissionVisible || priceNameVisible){ height += ScreenUtils.autoSizeWidth(14)}//拼店
+            if (priceNameVisible){ height += ScreenUtils.autoSizeWidth(14)}//拼店
+            if (commissionVisible){ height += ScreenUtils.autoSizeWidth(14)}//佣金
             if (isShowPrice(data)){
                 height += ScreenUtils.autoSizeWidth(33/2)//价格
             }
@@ -613,7 +649,8 @@ export function GoodsCustomViewGetItemHeight(data) {
             height = ScreenUtils.autoSizeWidth(100);
             if (titleVisible){ height += ScreenUtils.autoSizeWidth(33/2)}//title
             if (subtitleVisible){ height += ScreenUtils.autoSizeWidth(14)}//detail
-            if (commissionVisible || priceNameVisible){ height += ScreenUtils.autoSizeWidth(14)}//拼店
+            if (priceNameVisible){ height += ScreenUtils.autoSizeWidth(14)}//拼店
+            if (commissionVisible){ height += ScreenUtils.autoSizeWidth(14)}//佣金
             if (isShowPrice(data)){
                 height += ScreenUtils.autoSizeWidth(33/2)//价格
             }
@@ -640,15 +677,17 @@ export function GoodsCustomViewGetHeight(data) {
     }
     let height = GoodsCustomViewGetItemHeight(data);
     let count = data.data.length;
+    let itemPadding = ScreenUtils.autoSizeWidth(data.itemPadding/2);
     switch (data.layout){
         case  1 :
-            return height * count + autoSizeWidth(10)*(count - 1) + autoSizeWidth(15)
+            itemPadding = autoSizeWidth(10);
+            return height * count + itemPadding*(count - 1) + autoSizeWidth(15)
         case  2 :
             count = Math.ceil(count/2);
-            return  height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(15)
+            return  height * count + itemPadding*(count - 1) + autoSizeWidth(15)
         case  3 :
             count = Math.ceil(count/3);
-            return  height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(15)
+            return  height * count + itemPadding*(count - 1) + autoSizeWidth(15)
         case  8 :
             return height  + autoSizeWidth(15)
     }
@@ -660,11 +699,12 @@ export function GoodsCustomViewGetHeight(data) {
 export function GoodsCustomViewGetItemStyle(data, height){
     let padding = autoSizeWidth(5)
     let itemPadding = ScreenUtils.autoSizeWidth(data.itemPadding/2);
+    padding = itemPadding;
     let width = ScreenUtils.width - ScreenUtils.autoSizeWidth(30);
     switch (data.layout){
         case 1:
-            padding = ScreenUtils.autoSizeWidth(10)
-            return {width, height, marginTop: padding, flexDirection: 'row', backgroundColor: 'white', borderRadius: 5, overflow: 'hidden'}
+            itemPadding = autoSizeWidth(10);
+            return {width, height, marginTop: itemPadding, flexDirection: 'row', backgroundColor: 'white', borderRadius: 5, overflow: 'hidden'}
         case 2:
             return  {width : (width - itemPadding)/2, height, backgroundColor: 'white', marginTop: padding, borderRadius: 5, overflow: 'hidden'}
         case 3:
