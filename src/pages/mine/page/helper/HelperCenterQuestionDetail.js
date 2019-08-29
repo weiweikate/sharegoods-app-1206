@@ -14,7 +14,7 @@ import UIText from '../../../../components/ui/UIText';
 import res from '../../res';
 import CustomerServiceButton from '../../components/CustomerServiceButton';
 import LinearGradient from 'react-native-linear-gradient';
-
+const {px2dp} = ScreenUtils;
 export default class HelperCenterQuestionDetail extends BasePage {
     constructor(props) {
         super(props);
@@ -66,13 +66,13 @@ export default class HelperCenterQuestionDetail extends BasePage {
                             style={{
                                 paddingTop:10,
                                 paddingBottom:10,
-                                paddingHorizontal:15,
+                                paddingHorizontal:px2dp(15),
                             }}
                 >
                    <View style={{
                             backgroundColor:"#fff",
                             borderRadius:5,
-                            paddingHorizontal:12,
+                            paddingHorizontal:px2dp(12),
                             paddingTop:10,
                             paddingBottom:15,
                         }}
@@ -90,7 +90,7 @@ export default class HelperCenterQuestionDetail extends BasePage {
                                    }}/>
                        </View>
                        {content ?
-                           <HTML html={content} imagesMaxWidth={ScreenUtils.width}
+                           <HTML html={content} imagesMaxWidth={ScreenUtils.width-px2dp(54)}
                                  baseFontStyle={{
                                      lineHeight: 20,
                                      fontSize:13,
@@ -103,15 +103,15 @@ export default class HelperCenterQuestionDetail extends BasePage {
                        }
                        <View style={{
                            alignItems: 'center',
-                           justifyContent: 'space-between',
+                           justifyContent: 'center',
                            flexDirection: 'row',
-                           paddingHorizontal: 40,
                            marginTop:20
                        }}>
                            <NoMoreClick activeOpacity={0.6}
                                         onPress={() => this.feedbackClick(1)}
                                         style={[
                                             styles.btn,
+                                            {marginRight:25},
                                             hasFeedBackNoHelp? styles.btnLeftActive:styles.btnLeft
                                         ]}
                            >
