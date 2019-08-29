@@ -39,7 +39,7 @@ export default class HelperCenterQuestionDetail extends BasePage {
 
     renderRightButton = () =>{
         const {
-            useful,
+            // useful,
             hasFeedBackUseHelp
         } = this.state
         return (
@@ -47,7 +47,9 @@ export default class HelperCenterQuestionDetail extends BasePage {
                     styles.buttonText,
                     { color: hasFeedBackUseHelp? 'white': DesignRule.mainColor}
                   ]}
-                  allowFontScaling={false}>{`有用(${useful})`}
+                  allowFontScaling={false}>
+                有用
+                {/*{`有用(${useful})`}*/}
             </Text>
         )
     }
@@ -56,7 +58,7 @@ export default class HelperCenterQuestionDetail extends BasePage {
         const {
             hasFeedBackNoHelp,
             hasFeedBackUseHelp,
-            useless,
+            // useless,
             title,
             content
         } = this.state
@@ -118,7 +120,8 @@ export default class HelperCenterQuestionDetail extends BasePage {
                             ]}
                                   allowFontScaling={false}
                             >
-                                {`没有帮助(${useless})`}
+                                没有帮助
+                                {/*{`没有帮助(${useless})`}*/}
                             </Text>
                         </NoMoreClick>
                         <NoMoreClick activeOpacity={0.6}
