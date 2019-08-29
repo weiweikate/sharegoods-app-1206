@@ -99,7 +99,8 @@ export default class TaskModalView extends React.Component {
                 if (item.parameter){
                     let params =  JSON.parse(item.parameter);
                     item.parameter = params.url;
-                    item.detail = params.name;
+                    item.name = params.name;
+                    item.detail = '';
                 }
             }else {
                 item.detail =  item.total + item.unit + item.name
@@ -150,7 +151,7 @@ export default class TaskModalView extends React.Component {
                         }
                         <TouchableOpacity onPress={()=> {this.onPress(lottery)}}>
                             <ImageBackground source={taskModal_btn} style={styles.btn}>
-                                <MRText style={styles.btnText}>{lottery?'查看': '确定'}</MRText>
+                                <MRText style={styles.btnText}>{lottery?(lottery.parameter?'查看':'关闭'): '确定'}</MRText>
                             </ImageBackground>
                         </TouchableOpacity>
                     </LinearGradient>

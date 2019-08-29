@@ -29,6 +29,7 @@ const resHome = {
     arrow_bottom: require('./arrow_bottom.png'),
     arrow_top: require('./arrow_top.png'),
     tabBg: require('./tabBg.png'),
+    icon_shopCar: require('./icon_shopCar.png'),
     signIn: {
         ...signIn
     },

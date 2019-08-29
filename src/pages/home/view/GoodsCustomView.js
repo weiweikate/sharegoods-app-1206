@@ -33,6 +33,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { topicAdOnPress } from '../HomeTypes';
 import res from '../res'
 const shouye_icon_gengduo = res.shouye_icon_gengduo
+const icon_shopCar = res.icon_shopCar;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 export default class GoodsCustomView extends React.Component {
@@ -427,8 +428,7 @@ export default class GoodsCustomView extends React.Component {
                     height: autoSizeWidth(20),
                     position: 'absolute',
                     right: autoSizeWidth(5),
-                    bottom: autoSizeWidth(10),
-                    backgroundColor: 'red'}
+                    bottom: autoSizeWidth(10)}
                 buyBtnStyle = {
                     borderRadius: 14,
                     overflow: 'hidden',
@@ -447,8 +447,7 @@ export default class GoodsCustomView extends React.Component {
                     height: autoSizeWidth(20),
                     position: 'absolute',
                     right: autoSizeWidth(10),
-                    bottom: autoSizeWidth(10),
-                    backgroundColor: 'red'}
+                    bottom: autoSizeWidth(10)}
                 buyBtnStyle = {borderRadius: 14, overflow: 'hidden',
                     height: autoSizeWidth(28),
                     marginTop: autoSizeWidth(5),
@@ -465,8 +464,7 @@ export default class GoodsCustomView extends React.Component {
                     height: autoSizeWidth(20),
                     position: 'absolute',
                     right: autoSizeWidth(5),
-                    bottom: autoSizeWidth(5),
-                    backgroundColor: 'red'}
+                    bottom: autoSizeWidth(5)}
 
                 buyBtnStyle = {borderRadius: autoSizeWidth(12), overflow: 'hidden',
                     height: autoSizeWidth(24),
@@ -485,8 +483,7 @@ export default class GoodsCustomView extends React.Component {
                     height: autoSizeWidth(20),
                     position: 'absolute',
                     right: autoSizeWidth(5),
-                    bottom: autoSizeWidth(5),
-                    backgroundColor: 'red'}
+                    bottom: autoSizeWidth(5)}
 
                 buyBtnStyle = {borderRadius: autoSizeWidth(12), overflow: 'hidden',
                     height: autoSizeWidth(24),
@@ -502,7 +499,7 @@ export default class GoodsCustomView extends React.Component {
         if (item.buyButtonType === 1){
             return (
                 <TouchableWithoutFeedback onPress={() => this.gotoProduceDetail(item)}>
-                    <ImageBackground style={shopCarStyle}/>
+                    <ImageBackground style={shopCarStyle} source={icon_shopCar}/>
                 </TouchableWithoutFeedback>
             )
         }else if(item.buyButtonType === 2){
