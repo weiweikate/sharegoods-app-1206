@@ -54,9 +54,6 @@ export default class CategorySearchPage extends BasePage {
         // 分类列表
         HomeAPI.findNameList().then((response) => {
             this.$loadingDismiss();
-            setTimeout(() => {
-                this.setState({ swiperShow: true });
-            }, 0);
             let datas = response.data || [];
             // 将为您推荐id设置为-10
             let item = { id: -10, name: '为您推荐' };
@@ -233,58 +230,50 @@ export default class CategorySearchPage extends BasePage {
         // 点击分类
         if (this.state.leftIndex !== index) {
             // 先隐藏，后显示，起到刷新作用
-            this.setState({
-                bannerData: [],
-                swiperShow: false,
-                sectionArr: []
-            }, () => {
-                setTimeout(() => {
-                    if (index === 0) {
-                        // 热门分类
-                        HomeAPI.findHotList().then((response) => {
-                            bridge.hiddenLoading();
-                            let datas = response.data || {};
-                            this.setState({
-                                sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList || [] }],
-                                bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
-                                    img: datas.img,
-                                    linkType: datas.linkType,
-                                    linkTypeCode: datas.linkTypeCode
-                                }],
-                                swiperShow: true
-                            });
-                        }).catch((data) => {
-                            bridge.hiddenLoading();
-                            bridge.$toast(data.msg);
-                        });
-                    } else {
-                        // 分级
-                        HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
-                            bridge.hiddenLoading();
-                            let datas = response.data || {};
-                            let arr = datas.productCategoryList && datas.productCategoryList.map((item, index) => {
-                                return {
-                                    index: index,
-                                    title: item.name,
-                                    data: item.productCategoryList || []
-                                };
-                            });
-                            this.setState({
-                                sectionArr: arr || [],
-                                bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
-                                    img: datas.img,
-                                    linkType: datas.linkType,
-                                    linkTypeCode: datas.linkTypeCode
-                                }],
-                                swiperShow: true
-                            });
-                        }).catch((data) => {
-                            bridge.hiddenLoading();
-                            bridge.$toast(data.msg);
-                        });
-                    }
-                }, 50);
-            });
+            if (index === 0) {
+                // 热门分类
+                HomeAPI.findHotList().then((response) => {
+                    bridge.hiddenLoading();
+                    let datas = response.data || {};
+                    this.setState({
+                        sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList || [] }],
+                        bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
+                            img: datas.img,
+                            linkType: datas.linkType,
+                            linkTypeCode: datas.linkTypeCode
+                        }],
+                        swiperShow: !StringUtils.isEmpty(datas.img)
+                    });
+                }).catch((data) => {
+                    bridge.hiddenLoading();
+                    bridge.$toast(data.msg);
+                });
+            } else {
+                // 分级
+                HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
+                    bridge.hiddenLoading();
+                    let datas = response.data || {};
+                    let arr = datas.productCategoryList && datas.productCategoryList.map((item, index) => {
+                        return {
+                            index: index,
+                            title: item.name,
+                            data: item.productCategoryList || []
+                        };
+                    });
+                    this.setState({
+                        sectionArr: arr || [],
+                        bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
+                            img: datas.img,
+                            linkType: datas.linkType,
+                            linkTypeCode: datas.linkTypeCode
+                        }],
+                        swiperShow: !StringUtils.isEmpty(datas.img)
+                    });
+                }).catch((data) => {
+                    bridge.hiddenLoading();
+                    bridge.$toast(data.msg);
+                });
+            }
         }
     };
 
