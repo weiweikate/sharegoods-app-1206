@@ -3,19 +3,19 @@
  */
 
 import React from 'react';
-import {Image, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineApi from '../../api/MineApi';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import {MRText as Text, NoMoreClick} from '../../../../components/ui';
+import { MRText as Text, NoMoreClick } from '../../../../components/ui';
 import LinearGradient from 'react-native-linear-gradient';
 import user from '../../../../model/user';
-import {observer} from 'mobx-react';
-import {SmoothPushPreLoadHighComponentFirstDelay} from '../../../../comm/components/SmoothPushHighComponent';
-import RouterMap, {routeNavigate} from '../../../../navigation/RouterMap';
+import { observer } from 'mobx-react';
+import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/components/SmoothPushHighComponent';
+import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 import CustomerServiceButton from '../../components/CustomerServiceButton';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import HelperLoadMoreComponent from '../../components/HelperLoadMoreComponent';
@@ -26,7 +26,7 @@ const {
     icon_auto_feedback_2
 } = res.helperAndCustomerService;
 
-const {px2dp} = ScreenUtils;
+const { px2dp } = ScreenUtils;
 @SmoothPushPreLoadHighComponentFirstDelay
 @observer
 export default class MyHelperCenter extends BasePage {
@@ -41,9 +41,9 @@ export default class MyHelperCenter extends BasePage {
         title: '帮助中心',
         show: true // false则隐藏导航
     };
-    refreshList = ()=>{
-        this.helpHotList && this.helpHotList.onRefresh()
-    }
+    refreshList = () => {
+        this.helpHotList && this.helpHotList.onRefresh();
+    };
     // 常见问题列表
     renderHotQuestionList = () => {
         return (
@@ -59,9 +59,9 @@ export default class MyHelperCenter extends BasePage {
                 }}>
                     <TouchableWithoutFeedback onPress={this.jumpToAllQuestionTypePage}>
                         <View style={styles.title}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <View
-                                    style={{width: 2, height: 8, backgroundColor: '#FF0050', borderRadius: 1}}/>
+                                    style={{ width: 2, height: 8, backgroundColor: '#FF0050', borderRadius: 1 }}/>
                                 <UIText value={'常见问题'}
                                         style={{
                                             marginLeft: 10,
@@ -70,32 +70,34 @@ export default class MyHelperCenter extends BasePage {
                                             fontWeight: '600'
                                         }}/>
                             </View>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <UIText value={'查看全部'}
                                         style={{
                                             fontSize: DesignRule.fontSize_24,
-                                            color: DesignRule.textColor_instruction,
+                                            color: DesignRule.textColor_instruction
                                         }}/>
                                 <Image source={res.button.arrow_right_black}
-                                       style={{width: 5, height: 8, marginLeft: 6}}/>
+                                       style={{ width: 5, height: 8, marginLeft: 6 }}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
                     <RefreshFlatList url={MineApi.queryHelpCenterDetailList}
                                      isSupportLoadingMore={false}
-                                     ref={(ref) => {this.helpHotList = ref}}
+                                     ref={(ref) => {
+                                         this.helpHotList = ref;
+                                     }}
                                      nestedScrollEnabled={true}
                                      params={{
                                          type: 1,
-                                         pageSize:100,
-                                         page:1
+                                         pageSize: 100,
+                                         page: 1
                                      }}
                                      renderItem={this.renderItem}
                                      emptyHeight={ScreenUtils.autoSizeWidth(300)}
                                      defaultEmptyText={'还没内容哦'}
-                                     style={{flex: 1}}
+                                     style={{ flex: 1 }}
                                      renderLoadMoreComponent={(status) => <HelperLoadMoreComponent status={status}/>}
-                                     renderFooter={()=><View style={{marginTop:40}}>
+                                     renderFooter={() => <View style={{ marginTop: 30 }}>
                                          <CustomerServiceButton/>
                                      </View>}
                     />
@@ -105,22 +107,22 @@ export default class MyHelperCenter extends BasePage {
         );
     };
 
-    renderItem = ({item, index}) =>{
-        const data = this.helpHotList? this.helpHotList.getSourceData():[]
+    renderItem = ({ item, index }) => {
+        const data = this.helpHotList ? this.helpHotList.getSourceData() : [];
         const {
             title
-        } = item
+        } = item;
         return (
             <View key={index} style={[
                 styles.hotQuestionStyle,
-                index==0? {borderTopLeftRadius:5,borderTopRightRadius:5}:{},
-                index== data.length-1? {borderBottomLeftRadius:5,borderBottomRightRadius:5}:{},
+                index == 0 ? { borderTopLeftRadius: 5, borderTopRightRadius: 5 } : {},
+                index == data.length - 1 ? { borderBottomLeftRadius: 5, borderBottomRightRadius: 5 } : {}
             ]}>
                 {
                     index != 0 ?
                         <View style={{
                             borderBottomWidth: 0.5,
-                            borderColor: '#dedede',
+                            borderColor: '#dedede'
                         }}
                         >
                         </View>
@@ -128,41 +130,43 @@ export default class MyHelperCenter extends BasePage {
                 }
                 <NoMoreClick style={styles.hotQuestionItemStyle}
                              activeOpacity={0.6}
-                             onPress={()=> { this.jumpQuestionDetail(item)}}>
+                             onPress={() => {
+                                 this.jumpQuestionDetail(item);
+                             }}>
                     <UIText value={title}
                             numberOfLines={1}
                             style={{
                                 fontSize: DesignRule.fontSize_threeTitle,
-                                color: DesignRule.textColor_secondTitle,
+                                color: DesignRule.textColor_secondTitle
                             }}/>
                     <Image source={res.button.arrow_right_black}
-                           style={{width: 5, height: 8, marginLeft: 6}}/>
+                           style={{ width: 5, height: 8, marginLeft: 6 }}/>
                 </NoMoreClick>
             </View>
         );
-    }
+    };
 
-    renderFeedBackButton = (type, icon, name)=> {
+    renderFeedBackButton = (type, icon, name) => {
         return (
             <NoMoreClick activeOpacity={0.6}
                          onPress={() => this.questionFeedBack(type)}
-                         style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+                         style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
             >
-                <Image source={icon} style={{width: 37, height: 37}}/>
+                <Image source={icon} style={{ width: 37, height: 37 }}/>
                 <Text style={styles.textFontstyle} allowFontScaling={false}>{name}</Text>
             </NoMoreClick>
-        )
-    }
+        );
+    };
 
     renderBodyView = () => {
         return (
-            <View style={{flex: 1}}>
-                <View style={{backgroundColor: DesignRule.bgColor}}>
+            <View style={{ flex: 1 }}>
+                <View style={{ backgroundColor: DesignRule.bgColor }}>
                     <View style={{
                         width: ScreenUtils.width,
                         height: px2dp(157)
                     }}>
-                        <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+                        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                                         colors={['#FC5D39', '#FF0050']}
                                         style={{
                                             padding: 20,
@@ -173,7 +177,7 @@ export default class MyHelperCenter extends BasePage {
                                     numberOfLines={2}
                                     style={{
                                         fontSize: 18,
-                                        color: '#fff',
+                                        color: '#fff'
                                     }}/>
                         </LinearGradient>
                         <View style={{
@@ -190,7 +194,7 @@ export default class MyHelperCenter extends BasePage {
                                 height: 87,
                                 flexDirection: 'row',
                                 backgroundColor: 'white',
-                                borderRadius: 5,
+                                borderRadius: 5
                             }}>
                                 {this.renderFeedBackButton(3, icon_auto_feedback_2, '查看订单')}
                                 {this.renderFeedBackButton(2, icon_feedback_2, '问题反馈')}
@@ -222,16 +226,16 @@ export default class MyHelperCenter extends BasePage {
         } else if (type === 2) {
             this.$navigate(RouterMap.HelperFeedbackPage);
         } else if (type === 3) {
-            this.$navigate(RouterMap.MyOrdersListPage, {index: 0});
+            this.$navigate(RouterMap.MyOrdersListPage, { index: 0 });
         }
 
     }
 
     // 跳转到问题详情页面
 
-    jumpQuestionDetail = (detail)=> {
-        this.$navigate(RouterMap.HelperCenterQuestionDetail, {detail,refreshList:this.refreshList});
-    }
+    jumpQuestionDetail = (detail) => {
+        this.$navigate(RouterMap.HelperCenterQuestionDetail, { detail, refreshList: this.refreshList });
+    };
 
     // 初始化数据
 
@@ -259,7 +263,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: 'white'
     },
     hotQuestionItemStyle: {
         paddingLeft: 5,
@@ -276,7 +280,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         height: 40,
         flexDirection: 'row',
-        paddingRight: 10,
+        paddingRight: 10
     },
     textFontstyle: {
         color: '#666666',
