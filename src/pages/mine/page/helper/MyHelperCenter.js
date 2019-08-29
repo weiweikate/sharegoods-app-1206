@@ -82,16 +82,22 @@ export default class MyHelperCenter extends BasePage {
                         </View>
                     </TouchableWithoutFeedback>
                     <RefreshFlatList url={MineApi.queryHelpCenterDetailList}
+                                     isSupportLoadingMore={false}
                                      ref={(ref) => {this.helpHotList = ref}}
                                      nestedScrollEnabled={true}
-                                     params={{type: 1}}
+                                     params={{
+                                         type: 1,
+                                         pageSize:100,
+                                         page:1
+                                     }}
                                      renderItem={this.renderItem}
                                      emptyHeight={ScreenUtils.autoSizeWidth(300)}
                                      defaultEmptyText={'还没内容哦'}
-                                     sizeKey={'pageSize'}
-                                     pageKey={'page'}
                                      style={{flex: 1}}
                                      renderLoadMoreComponent={(status) => <HelperLoadMoreComponent status={status}/>}
+                                     renderFooter={()=><View style={{marginTop:40}}>
+                                         <CustomerServiceButton/>
+                                     </View>}
                     />
                 </View>
             </View>
@@ -194,9 +200,9 @@ export default class MyHelperCenter extends BasePage {
                     </View>
                 </View>
                 {this.renderHotQuestionList()}
-                <View style={{height:6, backgroundColor: DesignRule.bgColor}}/>
+                {/*<View style={{height:6, backgroundColor: DesignRule.bgColor}}/>*/}
                 {/*联系客服按钮*/}
-                <CustomerServiceButton/>
+                {/*<CustomerServiceButton/>*/}
             </View>
         );
     };
