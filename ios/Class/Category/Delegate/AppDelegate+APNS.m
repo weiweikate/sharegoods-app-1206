@@ -277,10 +277,10 @@
   }
   // 用户点击通知栏打开消息，使用神策分析记录 "App 打开消息" 事件
   NSMutableDictionary *prop = [NSMutableDictionary dictionary];
-  [prop setValue:[NSString stringWithFormat:@"%@",userInfo[@"aps"][@"alert"]] forKey:@"msg_title"];
-  [prop setValue:[NSString stringWithFormat:@"%@",userInfo[@"_j_msgid"]] forKey:@"msg_id"];
-  [prop setValue:[NSString stringWithFormat:@"%@",userInfo[@"taskId"]] forKey:@"bizId"];
-  [prop setValue:[NSString stringWithFormat:@"%@",userInfo[@"bizType"]] forKey:@"bizType"];
+  [prop setValue:userInfo[@"aps"][@"alert"] forKey:@"msg_title"];
+  [prop setValue:userInfo[@"_j_msgid"] forKey:@"msg_id"];
+  [prop setValue:userInfo[@"bizId"] forKey:@"bizId"];
+  [prop setValue:userInfo[@"bizType"] forKey:@"bizType"];
   [[SensorsAnalyticsSDK sharedInstance] track:@"AppOpenNotification" withProperties:prop];
   
   // 直接上报数据
