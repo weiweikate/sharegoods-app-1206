@@ -10,7 +10,8 @@ import {
     DeviceEventEmitter,
     Alert,
     TouchableOpacity,
-    RefreshControl
+    RefreshControl,
+    Image
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import { UIText, UIImage, MRText } from '../../../components/ui';
@@ -288,7 +289,15 @@ class ExchangeGoodsDetailPage extends BasePage {
                               }}
                               title={'售后进度'}
                               titleStyle={{ color: 'white' }}
-                              rightNavImage={tongyong_icon_kefu_white}
+                              renderRight={()=> {
+                                  return(
+                                      <View style={{ width: 30, height: 30, alignItems: 'center', justifyContent: 'center'}}>
+                                          <Image source={tongyong_icon_kefu_white}
+                                                 resizeMode={'stretch'}
+                                                 style={{ width: 20, height: 20 }}/>
+                                      </View>
+                                  )
+                              }}
                               rightPressed={() => {
                                   this.connetKefu();
                               }}
@@ -562,8 +571,7 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     item_arrow: {
-        height: 10,
-        width: 7
+        height: 12
     }
 });
 

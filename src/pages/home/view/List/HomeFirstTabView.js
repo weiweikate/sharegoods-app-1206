@@ -37,7 +37,7 @@ import HomeFocusAdView from '../HomeFocusAdView';
 import HomeLimitGoView from '../HomeLimitGoView';
 import HomeSubjectView from '../HomeSubjectView';
 import TabTitleView from '../TabTitleView';
-import { TopicImageAdView } from '../ImageAdView';
+import { TopicImageAdView } from '../TopicImageAdView';
 import GoodsCustomView from '../GoodsCustomView';
 import DesignRule from '../../../../constants/DesignRule';
 import intervalMsgModel from '../../../../comm/components/IntervalMsgView';
@@ -47,7 +47,7 @@ import TextCustomView from '../TextCustomView';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
-const { px2dp, height, headerHeight } = ScreenUtils;
+const { px2dp, height, headerHeight, width } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 const nowTime = new Date().getTime();
 const HOME_REFRESH = 'homeRefresh';
@@ -107,7 +107,7 @@ export default class HomeFirstTabView extends Component {
                 dim.height = subjectList.length > 0 ? subjectHeight : 0;
                 break;
             case homeType.goodsTitle:
-                dim.height = homeModule.tabList.length > 0 ? px2dp(70) : 0;
+                dim.height = homeModule.tabList.length > 0 ? px2dp(66) : 0;
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
@@ -117,6 +117,9 @@ export default class HomeFirstTabView extends Component {
                 dim.height = type.itemHeight;
                 break;
             case homeType.custom_text:
+                dim.height = 1;
+                break;
+            case  homeType.placeholder:
                 dim.height = 1;
                 break;
             default:
@@ -162,8 +165,7 @@ export default class HomeFirstTabView extends Component {
             return <GoodsCell data={data} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
                               navigate={routePush}/>;
         } else if (type === homeType.goodsTitle) {
-            return <View style={styles.titleView}
-                         ref={e => this.toGoods = e}
+            return <View ref={e => this.toGoods = e}
                          onLayout={event => {
                              // 保留，不能删除
                          }}>
@@ -178,6 +180,8 @@ export default class HomeFirstTabView extends Component {
         } else if (type === homeType.custom_imgAD) {
             // p.specialTopicArea = 1;
             return <TopicImageAdView data={item}/>;
+        } else if (type === homeType.placeholder) {
+            return <View style={{ width: width, height: 1, backgroundColor: 'white' }}/>;
         }
         return <View/>;
     };
@@ -304,11 +308,6 @@ export default class HomeFirstTabView extends Component {
 }
 
 const styles = StyleSheet.create({
-    titleView: {
-
-        height: px2dp(43 + 24),
-        width: ScreenUtils.width
-    },
     messageBgStyle: {
         width: px2dp(295),
         height: px2dp(390),

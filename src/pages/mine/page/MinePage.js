@@ -34,7 +34,7 @@ import CommModal from '../../../comm/components/CommModal';
 import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
 import settingModel from '../model/SettingModel';
 import PullView from '../components/pulltorefreshlayout';
-import WhiteModel from '../../show/model/WhiteModel'
+import WhiteModel from '../../show/model/WhiteModel';
 import { mediatorCallFunc } from '../../../SGMediator';
 import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
 
@@ -56,8 +56,6 @@ const {
     mine_icon_address,
     // mine_icon_mission,
     // mine_icon_discollect,
-    mine_message_icon_white,
-    mine_setting_icon_white,
     // profile_banner,
     mine_icon_mentor,
     mine_icon_fans,
@@ -103,7 +101,7 @@ export default class MinePage extends BasePage {
             hasFans: false,
             hasFansMSGNum: 0,
             modalId: false,
-            adArr:[]
+            adArr: []
         };
 
     }
@@ -175,7 +173,7 @@ export default class MinePage extends BasePage {
     }
 
     loadAd = () => {
-        MineApi.queryAdList({type:24}).then(result => {
+        MineApi.queryAdList({ type: 24 }).then(result => {
             if (!EmptyUtils.isEmpty(result.data)) {
                 this.setState({
                     adArr: result.data
@@ -285,56 +283,6 @@ export default class MinePage extends BasePage {
         );
     }
 
-    navRender = () => {
-        return (
-            <View
-                style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
-                <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingRight: px2dp(15),
-                    height: headerHeight,
-                    paddingTop: statusBarHeight
-                }}>
-                    <View style={{ flex: 1 }}/>
-                    <Text style={{
-                        color: this.state.changeHeader ? DesignRule.white : DesignRule.textColor_mainTitle,
-                        fontSize: px2dp(17),
-                        includeFontPadding: false
-                    }}>
-                        我的
-                    </Text>
-                    <View style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        alignSelf: 'center',
-                        justifyContent: 'flex-end',
-                        flexDirection: 'row'
-                    }}>
-                        <UIImage source={this.state.changeHeader ? mine_setting_icon_white : mine_setting_icon_gray}
-                                 style={{ height: px2dp(21), width: px2dp(21), marginRight: 15 }}
-                                 onPress={() => this.jumpToSettingPage()}/>
-                        <View>
-                            <UIImage source={this.state.changeHeader ? mine_message_icon_white : mine_message_icon_gray}
-                                     style={{ height: px2dp(21), width: px2dp(21) }}
-                                     onPress={() => this.jumpToServicePage()}/>
-                            {this.state.hasMessageNum ? <View style={{
-                                width: 10,
-                                height: 10,
-                                backgroundColor: this.state.changeHeader ? DesignRule.white : DesignRule.mainColor,
-                                position: 'absolute',
-                                top: -3,
-                                right: -3,
-                                borderRadius: 5
-                            }}/> : null}
-
-                        </View>
-                    </View>
-                </View>
-            </View>
-        );
-    };
-
     renderUserHead = () => {
         let accreditID = !EmptyUtils.isEmpty(user.code) ? (
             <TouchableWithoutFeedback onLongPress={() => {
@@ -383,8 +331,9 @@ export default class MinePage extends BasePage {
 
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIconStyle}
-                         borderRadius={px2dp(27)}/> : <Image source={res.placeholder.avatar_default} style={styles.userIconStyle}
-                                                             borderRadius={px2dp(27)}/>;
+                         borderRadius={px2dp(27)}/> :
+            <Image source={res.placeholder.avatar_default} style={styles.userIconStyle}
+                   borderRadius={px2dp(27)}/>;
 
         return (
             <View style={styles.headerBgStyle}>
@@ -487,8 +436,9 @@ export default class MinePage extends BasePage {
 
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIconNavStyle}
-                         borderRadius={px2dp(15)}/> : <Image source={res.placeholder.avatar_default} style={styles.userIconNavStyle}
-                                                             borderRadius={px2dp(15)}/>;
+                         borderRadius={px2dp(15)}/> :
+            <Image source={res.placeholder.avatar_default} style={styles.userIconNavStyle}
+                   borderRadius={px2dp(15)}/>;
 
         return (
             <View style={{
@@ -751,7 +701,7 @@ export default class MinePage extends BasePage {
                                         fontSize: DesignRule.fontSize_24,
                                         color: DesignRule.textColor_instruction
                                     }}/>
-                            <UIImage source={res.button.arrow_right} style={{height: 12}}
+                            <UIImage source={res.button.arrow_right_black} style={{ height: 12 }}
                                      resizeMode={'contain'}/>
                         </View>
                     </View>
@@ -813,36 +763,37 @@ export default class MinePage extends BasePage {
     };
 
     renderADView = () => {
-        if(this.state.adArr.length <= 0){
+        if (this.state.adArr.length <= 0) {
             return null;
         }
 
         return (
             <View>
-                {this.state.adArr.map((item,index)=>{
-                    return(
+                {this.state.adArr.map((item, index) => {
+                    return (
                         <View>
-                            <TouchableOpacity onPress={()=>{console.log('item',item);
+                            <TouchableOpacity onPress={() => {
+                                console.log('item', item);
                                 track(trackEvent.bannerClick, {
-                                    bannerLocation:61,
-                                    bannerName:item.name,
-                                    bannerId:item.id,
-                                    bannerRank:item.rank,
-                                    bannerType:item.type,
-                                    bannerContent:item.title
+                                    bannerLocation: 61,
+                                    bannerName: item.name,
+                                    bannerId: item.id,
+                                    bannerRank: item.rank,
+                                    bannerType: item.type,
+                                    bannerContent: item.title
                                 });
-                                mediatorCallFunc('Home_AdNavigate',item)}}>
-                            {item.image ?
-                                <AutoHeightImage source={{ uri: item.image }} style={{}}
-                                                 borderRadius={5}
-                                                 ImgWidth={ScreenUtils.width}/>
-                                : null
-                            }
+                                mediatorCallFunc('Home_AdNavigate', item);
+                            }}>
+                                {item.image ?
+                                    <AutoHeightImage source={{ uri: item.image }} style={{}}
+                                                     borderRadius={5}
+                                                     ImgWidth={ScreenUtils.width}/>
+                                    : null
+                                }
                             </TouchableOpacity>
                         </View>
-                    )
-
-                    })
+                    );
+                })
                 }
             </View>
         );
@@ -1129,11 +1080,6 @@ export default class MinePage extends BasePage {
             routeNavigate(RouterMap.LoginPage);
             return;
         }
-
-
-
-
-
     };
 
     jumpToSettingPage = () => {

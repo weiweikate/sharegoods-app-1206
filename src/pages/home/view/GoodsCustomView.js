@@ -70,7 +70,7 @@ export default class GoodsCustomView extends React.Component {
             <ScrollView horizontal = {true}
                         showsHorizontalScrollIndicator={false}
             >
-                {products.map((item => {
+                {products.map(((item, i) => {
                     return(
                         <TouchableWithoutFeedback onPress={()=> {this.gotoProduceDetail(item)}}>
                             <View style = {style}>
@@ -105,10 +105,14 @@ export default class GoodsCustomView extends React.Component {
         let style = GoodsCustomViewGetItemStyle(data, height, );
         let products = data.data || []
         let {commissionVisible, priceHasInvalidVisible } = data;
-        return products.map((item => {
+        return products.map(((item, i) => {
+            let style2 = {}
+            if (i === 0){
+                style2.marginTop = 0;
+            }
             return(
                 <TouchableWithoutFeedback onPress={()=> {this.gotoProduceDetail(item)}}>
-                    <View style = {style}>
+                    <View style = {[style, style2]}>
                         {this.renderImage(data, item, style.height)}
                         <View style={{flex: 1, marginHorizontal: autoSizeWidth(10)}}>
                             {this.renderTitle(data, item)}
@@ -144,17 +148,31 @@ export default class GoodsCustomView extends React.Component {
     renderTwoGoods(data, height){
         let style = GoodsCustomViewGetItemStyle(data, height);
         let products = data.data || [];
+        let Views = []
+        if (products.length%3){
+           if (products.length%3 === 1){
+               Views = [<View style={[style, {backgroundColor: null}]}/>,
+                   <View style={[style, {backgroundColor: null}]}/>
+               ]
+           } else {
+               Views = [<View style={[style, {backgroundColor: null}]}/>]
+           }
+        }
+
         return (
             <View style={{flexDirection: 'row',
                 flexWrap: 'wrap',
-                alignItems:'flex-start',
                 width: ScreenUtils.width - ScreenUtils.autoSizeWidth(30),
                 justifyContent: 'space-between',
             }}>
-                {products.map((item => {
+                {products.map(((item,i) => {
+                    let style2 = {}
+                    if (i < data.layout){
+                        style2.marginTop = 0;
+                    }
                     return(
                         <TouchableWithoutFeedback onPress={()=> {this.gotoProduceDetail(item)}}>
-                            <View style = {style}>
+                            <View style = {[style,style2]}>
                                 {this.renderImage(data,item, style.width)}
                                 {this.renderTitle(data, item)}
                                 {this.rederDetail(data, item)}
@@ -166,6 +184,7 @@ export default class GoodsCustomView extends React.Component {
                         </TouchableWithoutFeedback>
                     )
                 }))}
+                {Views}
             </View>
         )
     }
@@ -518,10 +537,10 @@ export default class GoodsCustomView extends React.Component {
             return <View />;
         }
         return (
-            <View style={{height,
+            <View style={{height: (height - autoSizeWidth(10)),
                 width: ScreenUtils.width - autoSizeWidth(30),
                 marginLeft: autoSizeWidth(15),
-                marginBottom: autoSizeWidth(10)
+                marginTop: autoSizeWidth(15),
             }}>
                 {this.renderGoods(data)}
             </View>
@@ -552,7 +571,6 @@ export function GoodsCustomViewGetItemHeight(data) {
                 height += ScreenUtils.autoSizeWidth(20)//价格
             }
             if (buyButtonVisible) {
-
                 if (buyButtonType === 1 && priceHasInvalidVisible) {
                     height += ScreenUtils.autoSizeWidth(14)//老价格
                 } else if (buyButtonType === 2) {
@@ -615,13 +633,13 @@ export function GoodsCustomViewGetHeight(data) {
     let count = data.data.length;
     switch (data.layout){
         case  1 :
-            return height * count + autoSizeWidth(10)*(count - 1) + autoSizeWidth(10)
+            return height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(10)
         case  2 :
             count = Math.ceil(count/2);
-            return  height * count + autoSizeWidth(10)*(count - 1) + autoSizeWidth(10)
+            return  height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(10)
         case  3 :
             count = Math.ceil(count/3);
-            return  height * count + autoSizeWidth(10)*(count - 1) + autoSizeWidth(10)
+            return  height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(10)
         case  8 :
             return height  + autoSizeWidth(10)
     }
@@ -631,7 +649,7 @@ export function GoodsCustomViewGetHeight(data) {
 
 
 export function GoodsCustomViewGetItemStyle(data, height){
-    let padding = ScreenUtils.autoSizeWidth(5)
+    let padding = autoSizeWidth(5)
     let width = ScreenUtils.width - ScreenUtils.autoSizeWidth(30);
     switch (data.layout){
         case 1:

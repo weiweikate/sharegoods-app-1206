@@ -159,7 +159,7 @@ export default class UserInformationPage extends BasePage {
                     marginRight: 15
                 }}/>
                 <UserSingleItem leftText={'手机号'} rightText={user.phone} rightTextStyle={styles.grayText}
-                                leftTextStyle={styles.blackText} isArrow={false} isLine={false}/>
+                                leftTextStyle={styles.blackText} isArrow={false} isLine={true}/>
                 <UserSingleItem leftText={'微信号'} rightText={user.weChatNumber ? user.weChatNumber : '设置微信号'}
                                 rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isLine={false} isArrow={true}

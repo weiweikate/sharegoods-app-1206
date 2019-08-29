@@ -12,7 +12,7 @@ import { limitGoModule } from './HomeLimitGoModel';
 import taskModel from './TaskModel';
 import { tabModel } from './HomeTabModel';
 import store from '@mr/rn-store';
-import { ImageAdViewGetHeight } from '../view/ImageAdView';
+import { ImageAdViewGetHeight } from '../view/TopicImageAdView';
 import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
 import StringUtils from '../../../utils/StringUtils';
 
@@ -36,6 +36,9 @@ class HomeModule {
     errorMsg = '';
     tabId = '';
     fixedPartOne = [{
+        id: -1,
+        type: homeType.placeholder
+    }, {
         id: 0,
         type: homeType.swiper
     }, {
@@ -197,7 +200,6 @@ class HomeModule {
 
     // 加载首页数据
     @action loadHomeList = flow(function* () {
-        this.firstLoad = false;
         setTimeout(() => {
             this.isRefreshing = false;
         }, 1000);
@@ -234,6 +236,7 @@ class HomeModule {
 
         taskModel.getData();
 
+        this.firstLoad = false;
         this.page = 1;
         this.isEnd = false;
         if (this.isFetching === true) {
@@ -323,7 +326,7 @@ class HomeModule {
         }
     }
 
-    //加载为你推荐列表
+    // 加载为你推荐列表
     @action loadMoreHomeList = flow(function* () {
         if (this.isFetching || this.isRefreshing) {
             return;

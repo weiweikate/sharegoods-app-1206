@@ -23,7 +23,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
 import { homeType } from '../../HomeTypes';
-import { ImageAdViewGetHeight, TopicImageAdView } from '../ImageAdView';
+import { ImageAdViewGetHeight, TopicImageAdView } from '../TopicImageAdView';
 import GoodsCustomView, { GoodsCustomViewGetHeight } from '../GoodsCustomView';
 import HomeAPI from '../../api/HomeAPI';
 import TextCustomView from '../TextCustomView';
@@ -105,9 +105,6 @@ export default class DIYTopicList extends React.Component {
         this.dataProvider = this.dataProvider.cloneWithRows(this.loadMoreDataUtil.data);
         return (
             <RecyclerListView
-                ref={(ref) => {
-                    this.recyclerListView = ref;
-                }}
                 style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0}}
                 refreshControl={<RefreshControl refreshing={this.loadMoreDataUtil.refreshing}
                                                 onRefresh={this.loadMoreDataUtil.onRefresh}

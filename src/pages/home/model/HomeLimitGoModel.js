@@ -1,12 +1,12 @@
-import { observable, action, computed, flow } from 'mobx';
+import { action, computed, flow, observable } from 'mobx';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { homeType } from '../HomeTypes';
 import { homeModule } from './Modules';
-
-const { px2dp } = ScreenUtils;
 import HomeApi from '../api/HomeAPI';
 import { differenceInCalendarDays, format } from 'date-fns';
 import bridge from '../../../utils/bridge';
+
+const { px2dp } = ScreenUtils;
 
 export const limitStatus = {
     del: 0, //删除
@@ -28,21 +28,21 @@ export class LimitGoModules {
         const len = (this.currentGoodsList && this.currentGoodsList.length) || 0;
         let height = 0;
         if (len > 0) {
-            height = px2dp(98) + len * px2dp(140) + (len - 1) * px2dp(10) + 0.8;
+            height = px2dp(93) + len * px2dp(140) + (len - 1) * px2dp(10) + 0.8;
         } else {
-            height = px2dp(98) + 0.8;
+            height = px2dp(93) + 0.8;
         }
 
         if (this.isShowFreeOrder) {
-            height += px2dp(55);
+            height += px2dp(50);
         }
         return height;
     }
 
     @action loadLimitGo = flow(function* (change) {
-        HomeApi.freeOrderSwitch().then((data)=> {
+        HomeApi.freeOrderSwitch().then((data) => {
             this.isShowFreeOrder = data.data || false;
-        })
+        });
         try {
             const isShowResult = yield HomeApi.isShowLimitGo();
             if (!isShowResult.data) {
@@ -84,12 +84,13 @@ export class LimitGoModules {
                     let diff = differenceInCalendarDays(date, spikeTime);
                     let title = '即将开抢';
 
-                    if (diff > 0) { //如果是昨天， title就是昨日精选
-                        if (diff === 1) {
-                            title = '昨日精选';
-                        } else {
-                            title = format(spikeTime, 'D日') + '精选';
-                        }
+                    //如果是昨天， title就是昨日精选
+                    if (diff === 1) {
+                        title = '昨日精选';
+                    } else if (diff === -1) {
+                        title = '明日秒杀';
+                    } else if (diff !== 0) {
+                        title = format(spikeTime, 'M月D日');
                     }
 
                     if (diff === 0 && date >= parseInt(spikeTime, 0)) {  //今天，已经结束
@@ -98,16 +99,7 @@ export class LimitGoModules {
 
                     console.log('loadLimitGo', diff);
 
-                    let timeFormat = '';
-                    if (diff === 0) {
-                        timeFormat = format(spikeTime, 'HH:mm');
-                    } else if (diff === 1) {
-                        timeFormat = '昨日' + format(spikeTime, 'HH:mm');
-                    } else if (diff === -1) {
-                        timeFormat = '明日' + format(spikeTime, 'HH:mm');
-                    } else {
-                        timeFormat = format(spikeTime, 'D日HH:mm');
-                    }
+                    let timeFormat = format(spikeTime, 'HH:mm');
 
                     _spikeList.push({
                         title: title,

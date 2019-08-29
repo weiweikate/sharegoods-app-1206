@@ -28,7 +28,6 @@ export default class OrderDetailBottomButtonView extends Component {
 
     render() {
         let nameArr = [...orderDetailModel.menu];
-        if (nameArr.length > 0) {
             if (nameArr.length >= 3) {
                 return (
                     <View style={styles.containerStyle}>
@@ -86,11 +85,6 @@ export default class OrderDetailBottomButtonView extends Component {
                     </View>
                 );
             }
-
-        } else {
-            return null;
-        }
-
     }
 
     renderKeBtn = ()=> {

@@ -276,10 +276,11 @@
     [JPUSHService handleRemoteNotification:userInfo];
   }
   // 用户点击通知栏打开消息，使用神策分析记录 "App 打开消息" 事件
-  [[SensorsAnalyticsSDK sharedInstance] track:@"AppOpenNotification" withProperties:@{
-                                                                                      @"msg_title":[NSString stringWithFormat:@"%@",userInfo[@"aps"][@"alert"]],
-                                                                                      @"msg_id":[NSString stringWithFormat:@"%@",userInfo[@"_j_msgid"]]
-                                                                                      }];
+  NSDictionary *prop = [NSDictionary dictionary];
+  [prop setValue:[NSString stringWithFormat:@"%@",userInfo[@"aps"][@"alert"]] forKey:@"msg_title"];
+  [prop setValue:[NSString stringWithFormat:@"%@",userInfo[@"_j_msgid"]] forKey:@"msg_id"];
+  [prop setValue:[NSString stringWithFormat:@"%@",userInfo[@"taskId"]] forKey:@"bizId"];
+  [[SensorsAnalyticsSDK sharedInstance] track:@"AppOpenNotification" withProperties:prop];
   
   // 直接上报数据
   [[SensorsAnalyticsSDK sharedInstance] flush];
