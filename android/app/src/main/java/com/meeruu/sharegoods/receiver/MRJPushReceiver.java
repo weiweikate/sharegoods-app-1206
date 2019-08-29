@@ -152,8 +152,6 @@ public class MRJPushReceiver extends JPushMessageReceiver {
             if (objExtra != null && objExtra.has(TASK_ID)) {
                 String id = objExtra.getString(TASK_ID);
                 jsonObject.put(BIZ_ID, id);
-            } else {
-                jsonObject.put(BIZ_ID, notificationMessage.notificationId);
             }
 
             if(objExtra != null && objExtra.has(BIZ_TYPE)){
