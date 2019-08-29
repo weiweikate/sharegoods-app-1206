@@ -258,7 +258,7 @@ export default class HomeFirstTabView extends Component {
                 onScrollBeginDrag={this.props.onScrollBeginDrag}
                 showsVerticalScrollIndicator={false}
                 removeClippedSubviews={false}
-                forceNonDeterministicRendering={true}
+                // forceNonDeterministicRendering={true}
                 onScroll={this._onListViewScroll}
                 renderFooter={() => <Footer
                     isFetching={homeModule.isFetching}
