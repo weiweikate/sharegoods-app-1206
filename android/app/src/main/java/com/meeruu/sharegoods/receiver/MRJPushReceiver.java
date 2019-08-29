@@ -37,7 +37,6 @@ public class MRJPushReceiver extends JPushMessageReceiver {
     private static final String PARAMS_KEY = "params";
     private static final String BIZ_ID = "bizId";
     private static final String BIZ_TYPE = "bizType";
-    private static final String TASK_ID = "taskId";
     private static final String APP_OPENN_OTIFICATION = "AppOpenNotification";
 
     // 注册回调
@@ -149,8 +148,8 @@ public class MRJPushReceiver extends JPushMessageReceiver {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("msg_id", notificationMessage.msgId);
             jsonObject.put("msg_title", notificationMessage.notificationTitle);
-            if (objExtra != null && objExtra.has(TASK_ID)) {
-                String id = objExtra.getString(TASK_ID);
+            if (objExtra != null && objExtra.has(BIZ_ID)) {
+                String id = objExtra.getString(BIZ_ID);
                 jsonObject.put(BIZ_ID, id);
             }
 
