@@ -65,8 +65,8 @@ export default class HelperCenterQuestionDetail extends BasePage {
                 <ScrollView showsVerticalScrollIndicator={false}
                             style={{
                                 paddingTop:10,
-                                paddingBottom:10,
                                 paddingHorizontal:px2dp(15),
+                                marginBottom:4
                             }}
                 >
                    <View style={{
@@ -105,7 +105,8 @@ export default class HelperCenterQuestionDetail extends BasePage {
                            alignItems: 'center',
                            justifyContent: 'center',
                            flexDirection: 'row',
-                           marginTop:20
+                           marginTop:20,
+                           marginBottom:20,
                        }}>
                            <NoMoreClick activeOpacity={0.6}
                                         onPress={() => this.feedbackClick(1)}
