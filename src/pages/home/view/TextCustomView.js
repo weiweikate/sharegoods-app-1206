@@ -56,7 +56,6 @@ export default class TextCustomView extends React.Component {
                 <View style={{
                     backgroundColor, marginHorizontal: autoSizeWidth(15),
                     width: ScreenUtils.width - autoSizeWidth(30),
-                    marginTop: autoSizeWidth(15),
                     borderRadius: 5,
                     overflow: 'hidden',
                     padding: autoSizeWidth(10)

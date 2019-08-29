@@ -38,7 +38,6 @@ export class TopicImageAdView extends React.Component {
     }
 
     renderImages(data, height) {
-        height = height - ScreenUtils.autoSizeWidth(15);
         switch (data.layout) {
             case '1':
             case '2':
@@ -46,7 +45,7 @@ export class TopicImageAdView extends React.Component {
             case '4':
                 let links = data.imgs[0].links || [];
                 return (
-                    <View style={{ height, width: ScreenUtils.width, marginTop: ScreenUtils.autoSizeWidth(15) }}>
+                    <View style={{ height, width: ScreenUtils.width }}>
                         <ImageLoader style={{ height, width: ScreenUtils.width, flexDirection: 'row' }}
                                      source={{ uri: data.imgs[0].src }}
                         >{
@@ -72,7 +71,7 @@ export class TopicImageAdView extends React.Component {
                     return value.src || '';
                 });
                 return (
-                    <View style={{ height, width: ScreenUtils.width, marginTop: ScreenUtils.autoSizeWidth(15) }}>
+                    <View style={{ height, width: ScreenUtils.width, marginTop: ScreenUtils.autoSizeWidth(10) }}>
                         <MRBannerViewComponent
                             itemRadius={5}
                             imgUrlArray={imgs}
@@ -103,15 +102,15 @@ export function ImageAdViewGetHeight(data) {
     }
     switch (data.layout) {
         case '1':
-            return ScreenUtils.autoSizeWidth(135);
+            return ScreenUtils.autoSizeWidth(160);
         case '2':
-            return ScreenUtils.autoSizeWidth(135);
+            return ScreenUtils.autoSizeWidth(120);
         case '3':
-            return ScreenUtils.autoSizeWidth(115);
+            return ScreenUtils.autoSizeWidth(100);
         case '4':
-            return ScreenUtils.autoSizeWidth(115);
+            return ScreenUtils.autoSizeWidth(100);
         case 'carousel':
-            return ScreenUtils.autoSizeWidth(175);
+            return ScreenUtils.autoSizeWidth(170);
     }
     return 0;
 }
