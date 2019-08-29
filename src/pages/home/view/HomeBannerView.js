@@ -68,8 +68,7 @@ export default class HomeBannerView extends Component {
 const styles = StyleSheet.create({
     banner: {
         height: bannerHeight,
-        width: ScreenUtils.width,
-        backgroundColor: 'white'
+        width: ScreenUtils.width
     },
     defaultImg: {
         flex: 1,

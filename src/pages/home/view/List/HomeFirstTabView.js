@@ -146,7 +146,10 @@ export default class HomeFirstTabView extends Component {
         } else if (type === homeType.user) {
             return <HomeUserView navigate={routePush}/>;
         } else if (type === homeType.task) {
-            return <TaskVIew type={'home'} style={{ marginTop: ScreenUtils.autoSizeWidth(10) }}/>;
+            return <TaskVIew type={'home'} style={{
+                marginTop: ScreenUtils.autoSizeWidth(5),
+                marginBottom: ScreenUtils.autoSizeWidth(10)
+            }}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={routePush}/>;
         } else if (type === homeType.expandBanner) {
