@@ -262,7 +262,7 @@ export default class GoodsCustomView extends React.Component {
                             <View style={{
                                 position: 'absolute', bottom: 0, left: 0, height: fixWidth / 4,
                                 width: fixWidth / 3,
-                                transform: [{ scale: scale},{translateX: (scale-1)*fixWidth/6.0/2},{translateY: -(scale-1)*fixWidth/8.0/2}],
+                                transform: [{ scale: scale},{translateX: (scale-1)*fixWidth/6.0/scale},{translateY: -(scale-1)*fixWidth/8.0/scale}],
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
