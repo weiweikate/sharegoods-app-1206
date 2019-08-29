@@ -15,6 +15,7 @@ import {observer} from 'mobx-react';
 import {SmoothPushPreLoadHighComponentFirstDelay} from '../../../../comm/components/SmoothPushHighComponent';
 import RouterMap from '../../../../navigation/RouterMap';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
+import HelperLoadMoreComponent from '../../components/HelperLoadMoreComponent';
 
 const {px2dp} = ScreenUtils;
 @SmoothPushPreLoadHighComponentFirstDelay
@@ -54,6 +55,7 @@ export default class HelperCenterQuestionTypeList extends BasePage {
                                      pageKey={'page'}
                                      style={{flex: 1}}
                                      ref={(ref) => {this.helpList = ref}}
+                                     renderLoadMoreComponent={(status) => <HelperLoadMoreComponent status={status}/>}
                     />
                 </View>
 
