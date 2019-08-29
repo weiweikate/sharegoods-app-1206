@@ -88,10 +88,11 @@ export default class GoodsCustomView extends React.Component {
                 }))}
                 {
                     showMore.visible ?
-                        <TouchableWithoutFeedback onPress={()=> {topicAdOnPress(showMore.linkType,showMore.linkValue?showMore.linkValue[0]:'')}}>
+                        <TouchableWithoutFeedback onPress={()=> {
+                            topicAdOnPress(showMore.linkType,showMore.linkValue?showMore.linkValue[0]:'')}}>
                             <View style = {[style,{alignItems: 'center', justifyContent: 'center'}]}>
                                 <Image source={shouye_icon_gengduo}
-                                       style={{height: autoSizeWidth(16), width: autoSizeWidth(16), marginBottom: 10}}/>
+                                       style={{height: autoSizeWidth(18), width: autoSizeWidth(18), marginBottom: 10}}/>
                                 <MRText style={{fontSize: autoSizeWidth(12), color: '#666666'}}>查看更多</MRText>
                             </View>
                         </TouchableWithoutFeedback> : null
@@ -103,7 +104,7 @@ export default class GoodsCustomView extends React.Component {
 
     renderGoodsList(data, height)
     {
-        let style = GoodsCustomViewGetItemStyle(data, height, );
+        let style = GoodsCustomViewGetItemStyle(data, height);
         let products = data.data || []
         let {commissionVisible, priceHasInvalidVisible } = data;
         return products.map(((item, i) => {
@@ -535,11 +536,11 @@ export default class GoodsCustomView extends React.Component {
             return <View />;
         }
         return (
-            <View style={{height: (height - autoSizeWidth(30) ),
+            <View style={{height: (height - autoSizeWidth(15) ),
                 width: ScreenUtils.width - autoSizeWidth(30),
                 marginLeft: autoSizeWidth(15),
                 marginTop: autoSizeWidth(15),
-                marginBottom: data.marginBottom,
+                marginBottom: data.marginBottom
             }}>
                 {this.renderGoods(data)}
             </View>
@@ -631,15 +632,15 @@ export function GoodsCustomViewGetHeight(data) {
     let count = data.data.length;
     switch (data.layout){
         case  1 :
-            return height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(10)
+            return height * count + autoSizeWidth(10)*(count - 1) + autoSizeWidth(15)
         case  2 :
             count = Math.ceil(count/2);
-            return  height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(10)
+            return  height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(15)
         case  3 :
             count = Math.ceil(count/3);
-            return  height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(10)
+            return  height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(15)
         case  8 :
-            return height  + autoSizeWidth(10)
+            return height  + autoSizeWidth(15)
     }
     return 0;
 }
