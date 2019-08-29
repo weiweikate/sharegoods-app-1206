@@ -380,6 +380,7 @@ export default class ProductDetailPage extends BasePage {
                          keyExtractor={(item, index) => {
                              return item + index;
                          }}
+                         initialNumToRender = {13}
                          sections={sectionDataList}
                          scrollEventThrottle={10}
                          showsVerticalScrollIndicator={false}/>
