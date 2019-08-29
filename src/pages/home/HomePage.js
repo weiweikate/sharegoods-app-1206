@@ -46,6 +46,7 @@ import { observer } from 'mobx-react';
  * @email zhangjian@meeruu.com
  */
 
+
 @observer
 class HomePage extends BasePage {
 
@@ -233,7 +234,7 @@ class HomePage extends BasePage {
         let itemWidth = 60;
         let tabBarHeight = 42;
         return (
-            <View style={{ backgroundColor: 'white', height: tabBarHeight, width: ScreenUtils.width }}>
+            <View style={{ height: tabBarHeight, width: ScreenUtils.width, backgroundColor: 'white' }}>
                 <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}

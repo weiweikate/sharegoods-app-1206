@@ -2,19 +2,19 @@
  * 首页轮播图
  */
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-
-const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
 import { homeModule } from '../model/Modules';
 import { bannerModule } from '../model/HomeBannerModel';
-
-export const bannerHeight = px2dp(120);
 import MRBannerViewComponent from '../../../components/ui/bannerView/MRBannerViewComponent';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import DesignRule from '../../../constants/DesignRule';
 import { homePoint } from '../HomeTypes';
+
+const { px2dp, width } = ScreenUtils;
+
+export const bannerHeight = px2dp(120);
 
 @observer
 export default class HomeBannerView extends Component {
@@ -49,16 +49,28 @@ export default class HomeBannerView extends Component {
         return <View style={styles.banner}>
             {len === 0 ?
                 <View style={styles.defaultImg}/> :
-                <MRBannerViewComponent
-                    itemRadius={px2dp(5)}
-                    imgUrlArray={items}
-                    bannerHeight={bannerHeight}
-                    modeStyle={1}
-                    autoLoop={isFocused ? true : false}
-                    pageFocused={isFocused}
-                    onDidSelectItemAtIndex={(i) => {
-                        this._onPressRow(i);
-                    }}/>
+                <View>
+                    <View
+                        style={{
+                            backgroundColor: 'white',
+                            height: px2dp(90),
+                            width,
+                            position: 'absolute',
+                            top: 0,
+                            left: 0
+                        }}/>
+                    <MRBannerViewComponent
+                        itemRadius={px2dp(5)}
+                        imgUrlArray={items}
+                        bannerHeight={bannerHeight}
+                        modeStyle={1}
+                        autoLoop={isFocused ? true : false}
+                        pageFocused={isFocused}
+                        onDidSelectItemAtIndex={(i) => {
+                            this._onPressRow(i);
+                        }}/>
+                </View>
+
             }
         </View>;
     }
