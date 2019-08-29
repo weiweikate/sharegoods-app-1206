@@ -15,6 +15,7 @@ import store from '@mr/rn-store';
 import { ImageAdViewGetHeight } from '../view/TopicImageAdView';
 import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
 import StringUtils from '../../../utils/StringUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const kHomeTopTopic = '@home/topTopic';
 const kHomeBottomTopic = '@home/bottomTopic';
@@ -168,9 +169,10 @@ class HomeModule {
     };
 
 
-    getHomeListData = () => {
+    getHomeListData = (topic) => {
+        let home = []
         if (this.type === 0) {
-            return [...this.fixedPartOne,
+            home = [...this.fixedPartOne,
                 ...this.topTopice,
                 ...this.bottomTopice,
                 ...this.fixedPartTwo,
@@ -179,7 +181,7 @@ class HomeModule {
             ];
 
         } else if (this.type === 2) {
-            return [...this.fixedPartOne,
+            home = [...this.fixedPartOne,
                 ...this.fixedPartTwo,
                 ...this.topTopice,
                 ...this.bottomTopice,
@@ -187,7 +189,7 @@ class HomeModule {
                 ...this.goods
             ];
         } else {
-            return [...this.fixedPartOne,
+            home = [...this.fixedPartOne,
                 ...this.topTopice,
                 ...this.fixedPartTwo,
                 ...this.bottomTopice,
@@ -196,6 +198,9 @@ class HomeModule {
             ];
 
         }
+        return home;
+
+
     };
 
     // 加载首页数据
@@ -425,7 +430,7 @@ class HomeModule {
                         this.bottomTopice = this.handleData(data);
                         store.save(kHomeBottomTopic, this.bottomTopice);
                     }
-                    this.homeList = this.getHomeListData();
+                    this.homeList = this.getHomeListData(true);
                 });
             });
 
@@ -441,10 +446,19 @@ class HomeModule {
 
     handleData = (data) => {
         data = data.data.widgets.data || [];
-
+        let count = data.length;
         return data.map((item, index) => {
             if (item.type === homeType.custom_goods) {
+                item.buyButtonType = 1;
                 item.itemHeight = GoodsCustomViewGetHeight(item);
+                item.marginBottom = ScreenUtils.autoSizeWidth(0);
+                if (count-1 > index) {
+                   let type = data[index+1].type;
+                   if (type  === homeType.custom_imgAD || type === homeType.custom_text) {
+                       item.marginBottom = ScreenUtils.autoSizeWidth(15);
+                   }
+                }
+                item.itemHeight += item.marginBottom;
             }
 
             if (item.type === homeType.custom_imgAD) {

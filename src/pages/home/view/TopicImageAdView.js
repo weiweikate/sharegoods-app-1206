@@ -71,7 +71,7 @@ export class TopicImageAdView extends React.Component {
                     return value.src || '';
                 });
                 return (
-                    <View style={{ height, width: ScreenUtils.width, marginTop: ScreenUtils.autoSizeWidth(10) }}>
+                    <View style={{ height: height - ScreenUtils.autoSizeWidth(10), width: ScreenUtils.width, marginTop: ScreenUtils.autoSizeWidth(10) }}>
                         <MRBannerViewComponent
                             itemRadius={5}
                             imgUrlArray={imgs}

@@ -25,7 +25,7 @@ import store from '@mr/rn-store';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { IntervalMsgNavigate } from '../../../comm/components/IntervalMsgView';
 
-const activity_mission_main_no = 'activity_mission_main_no';    // 主线任务
+const activity_mission_main_no = 'activity_mission_main_no_new';    // 主线任务
 const activity_mission_daily_no = 'activity_mission_daily_no';     // 日常任务
 
 class TaskModel {

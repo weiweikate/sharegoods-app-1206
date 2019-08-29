@@ -529,7 +529,8 @@ export default class GoodsCustomView extends React.Component {
 
     render() {
         let data = this.props.data;
-        let height = data.itemHeight;
+        let marginBottom = data.marginBottom || 0;
+        let height = data.itemHeight - marginBottom;
         if (height === 0){
             return <View />;
         }
@@ -537,7 +538,8 @@ export default class GoodsCustomView extends React.Component {
             <View style={{height: (height - autoSizeWidth(10)),
                 width: ScreenUtils.width - autoSizeWidth(30),
                 marginLeft: autoSizeWidth(15),
-                marginTop: autoSizeWidth(15),
+                marginTop: autoSizeWidth(10),
+                marginBottom: data.marginBottom,
             }}>
                 {this.renderGoods(data)}
             </View>
@@ -546,7 +548,6 @@ export default class GoodsCustomView extends React.Component {
 }
 
 export function GoodsCustomViewGetItemHeight(data) {
-
     if (!data || !data.data || data.data.length === 0){
         return 0;
     }
