@@ -32,6 +32,7 @@ import DesignRule from '../../../constants/DesignRule';
 import LinearGradient from 'react-native-linear-gradient';
 import { topicAdOnPress } from '../HomeTypes';
 import res from '../res'
+import { routePush } from '../../../navigation/RouterMap';
 const shouye_icon_gengduo = res.shouye_icon_gengduo
 const icon_shopCar = res.icon_shopCar;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
@@ -88,10 +89,15 @@ export default class GoodsCustomView extends React.Component {
                 }))}
                 {
                     showMore.visible ?
-                        <TouchableWithoutFeedback onPress={()=> {topicAdOnPress(showMore.linkType,showMore.linkValue?showMore.linkValue[0]:'')}}>
+                        <TouchableWithoutFeedback onPress={()=> {
+                            if (showMore.linkValue && showMore.linkValue.length > 1){
+                                routePush('HtmlPage', {uri: `/search?c=${data.code + showMore.linkId}`})
+                            }else {
+                                topicAdOnPress(showMore.linkType,showMore.linkValue?showMore.linkValue[0]:'')}
+                        }}>
                             <View style = {[style,{alignItems: 'center', justifyContent: 'center'}]}>
                                 <Image source={shouye_icon_gengduo}
-                                       style={{height: autoSizeWidth(16), width: autoSizeWidth(16), marginBottom: 10}}/>
+                                       style={{height: autoSizeWidth(18), width: autoSizeWidth(18), marginBottom: 10}}/>
                                 <MRText style={{fontSize: autoSizeWidth(12), color: '#666666'}}>查看更多</MRText>
                             </View>
                         </TouchableWithoutFeedback> : null
@@ -103,7 +109,7 @@ export default class GoodsCustomView extends React.Component {
 
     renderGoodsList(data, height)
     {
-        let style = GoodsCustomViewGetItemStyle(data, height, );
+        let style = GoodsCustomViewGetItemStyle(data, height);
         let products = data.data || []
         let {commissionVisible, priceHasInvalidVisible } = data;
         return products.map(((item, i) => {
@@ -193,7 +199,7 @@ export default class GoodsCustomView extends React.Component {
     renderImage(data, item, width){
 
         let marginBottom = 0;
-        let {cornerVisible, cornerImgSrc, cornerPosition, layout} = data;
+        let {cornerVisible, cornerImgSrc, cornerPosition, layout, mainPicBorderVisible, mainPicBorderUrl} = data;
         let cornerStyle = {width: autoSizeWidth(28), height: autoSizeWidth(14), position: 'absolute', overflow: 'hidden'};
 
         switch (layout){
@@ -234,6 +240,11 @@ export default class GoodsCustomView extends React.Component {
                          source={{uri: item.imgUrl}}
                          showPlaceholder={false}
             >
+                {mainPicBorderVisible? <ImageLoader source={{uri: mainPicBorderUrl}} style={{position: 'absolute', top: 0, left: 0,height: width, width: width}}
+                                                    showPlaceholder={false}
+                >
+                    </ImageLoader>
+                    : null}
                 {
                     cornerVisible?<ImageLoader source={{uri: cornerImgSrc}} style={cornerStyle}
                                                showPlaceholder={false}
@@ -535,11 +546,11 @@ export default class GoodsCustomView extends React.Component {
             return <View />;
         }
         return (
-            <View style={{height: (height - autoSizeWidth(30) ),
+            <View style={{height: (height - autoSizeWidth(15) ),
                 width: ScreenUtils.width - autoSizeWidth(30),
                 marginLeft: autoSizeWidth(15),
                 marginTop: autoSizeWidth(15),
-                marginBottom: data.marginBottom,
+                marginBottom: data.marginBottom
             }}>
                 {this.renderGoods(data)}
             </View>
@@ -631,15 +642,15 @@ export function GoodsCustomViewGetHeight(data) {
     let count = data.data.length;
     switch (data.layout){
         case  1 :
-            return height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(10)
+            return height * count + autoSizeWidth(10)*(count - 1) + autoSizeWidth(15)
         case  2 :
             count = Math.ceil(count/2);
-            return  height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(10)
+            return  height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(15)
         case  3 :
             count = Math.ceil(count/3);
-            return  height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(10)
+            return  height * count + autoSizeWidth(5)*(count - 1) + autoSizeWidth(15)
         case  8 :
-            return height  + autoSizeWidth(10)
+            return height  + autoSizeWidth(15)
     }
     return 0;
 }
@@ -648,17 +659,18 @@ export function GoodsCustomViewGetHeight(data) {
 
 export function GoodsCustomViewGetItemStyle(data, height){
     let padding = autoSizeWidth(5)
+    let itemPadding = ScreenUtils.autoSizeWidth(data.itemPadding/2);
     let width = ScreenUtils.width - ScreenUtils.autoSizeWidth(30);
     switch (data.layout){
         case 1:
             padding = ScreenUtils.autoSizeWidth(10)
             return {width, height, marginTop: padding, flexDirection: 'row', backgroundColor: 'white', borderRadius: 5, overflow: 'hidden'}
         case 2:
-            return  {width : (width - padding)/2, height, backgroundColor: 'white', marginTop: padding, borderRadius: 5, overflow: 'hidden'}
+            return  {width : (width - itemPadding)/2, height, backgroundColor: 'white', marginTop: padding, borderRadius: 5, overflow: 'hidden'}
         case 3:
-            return {width : (width - 2*padding)/3, height, marginTop: padding, borderRadius: 5, overflow: 'hidden',backgroundColor: 'white'}
+            return {width : (width - 2*itemPadding)/3, height, marginTop: padding, borderRadius: 5, overflow: 'hidden',backgroundColor: 'white'}
         case 8:
-            return {width : autoSizeWidth(100), height, marginRight: padding, borderRadius: 5, overflow: 'hidden',backgroundColor: 'white'}
+            return {width : autoSizeWidth(100), height, marginRight: itemPadding, borderRadius: 5, overflow: 'hidden',backgroundColor: 'white'}
     }
     return {};
 }

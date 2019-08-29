@@ -241,17 +241,16 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   for (NSInteger index = 0 ; index < sessionList.count; index++) {
     QYSessionInfo * sessionInfo = sessionList[index];
     long long lastTime = (long long)sessionInfo.lastMessageTimeStamp;
-    NSDictionary * session =  @{
-                                @"hasTrashWords":@(sessionInfo.hasTrashWords),
-                                @"lastMessageText":sessionInfo.lastMessageText,
-                                @"lastMessageType":@(sessionInfo.lastMessageType),
-                                @"unreadCount":@(sessionInfo.unreadCount),
-                                @"status":@(sessionInfo.status),
-                                @"lastMessageTimeStamp":@(lastTime),
-                                @"shopId":sessionInfo.shopId,
-                            @"avatarImageUrlString":sessionInfo.avatarImageUrlString?sessionInfo.avatarImageUrlString:[NSNull null],
-                                @"sessionName":sessionInfo.sessionName,
-                                };
+    NSMutableDictionary *session = [NSMutableDictionary dictionary];
+    [session setValue:@(sessionInfo.hasTrashWords) forKey:@"hasTrashWords"];
+    [session setValue:sessionInfo.lastMessageText forKey:@"lastMessageText"];
+    [session setValue:@(sessionInfo.lastMessageType) forKey:@"lastMessageType"];
+    [session setValue:@(sessionInfo.unreadCount) forKey:@"unreadCount"];
+    [session setValue:@(sessionInfo.status) forKey:@"status"];
+    [session setValue:@(lastTime) forKey:@"lastMessageTimeStamp"];
+    [session setValue:sessionInfo.shopId forKey:@"shopId"];
+    [session setValue:sessionInfo.avatarImageUrlString forKey:@"avatarImageUrlString"];
+    [session setValue:sessionInfo.sessionName forKey:@"sessionName"];
     NSLog(@"%@",session);
     [sessionListDataArr addObject:session];
   }
