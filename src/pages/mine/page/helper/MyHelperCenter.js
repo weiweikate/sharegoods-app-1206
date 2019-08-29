@@ -194,7 +194,7 @@ export default class MyHelperCenter extends BasePage {
                     </View>
                 </View>
                 {this.renderHotQuestionList()}
-                <View style={{height: 26, backgroundColor: DesignRule.bgColor}}/>
+                <View style={{height:6, backgroundColor: DesignRule.bgColor}}/>
                 {/*联系客服按钮*/}
                 <CustomerServiceButton/>
             </View>

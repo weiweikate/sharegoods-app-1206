@@ -120,12 +120,14 @@ export class LimitGoModules {
                 }
                 // 选中限时购还在请求下来的数组中
                 if (currentTimeFormat && timeFormats.indexOf(currentTimeFormat) !== -1 && !change) {
-                    this.currentPage = timeFormats.indexOf(currentTimeFormat);
+                    // 数组越界才进行变动，否则当前页面不必变动
+                    if (this.currentPage > _spikeList.length - 1) {
+                        this.currentPage = timeFormats.indexOf(currentTimeFormat);
+                    }
                 } else {
                     //不然显示离当前时间最近的限时购
                     this.currentPage = _currentPage;
                 }
-
                 this.spikeList = _spikeList;
                 this.currentGoodsList = (_spikeList[this.currentPage] && _spikeList[this.currentPage].goods) || [];
                 homeModule.changeHomeList(homeType.limitGo);

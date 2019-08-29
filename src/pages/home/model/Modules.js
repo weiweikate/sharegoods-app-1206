@@ -413,6 +413,8 @@ class HomeModule {
         HomeApi.getHomeCustom({}).then((data) => {
             data = data.data || [];
             let i = 0;
+            let top = true;
+            let bottom = true;
             data.forEach((item, index) => {
                 let code = item.code;
                 if (code === 'placeholder') {
@@ -422,6 +424,11 @@ class HomeModule {
                 }
                 i++;
                 let isTop = i === 1;
+                if (isTop) {
+                    top = false;
+                }else {
+                    bottom = false;
+                }
                 HomeApi.getCustomTopic({ topicCode: code, page: 1, pageSize: 10 }).then((data) => {
                     if (isTop) {
                         this.topTopice = this.handleData(data);
@@ -434,11 +441,17 @@ class HomeModule {
                 });
             });
 
-            if (i === 0) {
-                this.topTopice = [];
-                this.bottomTopice = [];
-            } else if (i === 1) {
-                this.topTopice = [];
+            if (top) {
+                this.topTopice = []
+                store.save(kHomeBottomTopic, this.bottomTopice);
+            }
+            if (bottom) {
+                this.bottomTopice = []
+                store.save(kHomeBottomTopic, this.bottomTopice);
+            }
+
+            if (top || bottom){
+                this.homeList = this.getHomeListData(true);
             }
         });
 
@@ -449,7 +462,6 @@ class HomeModule {
         let count = data.length;
         return data.map((item, index) => {
             if (item.type === homeType.custom_goods) {
-                item.buyButtonType = 1;
                 item.itemHeight = GoodsCustomViewGetHeight(item);
                 item.marginBottom = ScreenUtils.autoSizeWidth(0);
                 if (count-1 > index) {

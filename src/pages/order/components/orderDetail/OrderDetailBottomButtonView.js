@@ -248,7 +248,7 @@ export default class OrderDetailBottomButtonView extends Component {
                             focusIframe : '订单信息',
                             url: 'https://qiyu.sharegoodsmall.com/#/orderList',
                             label: '查看订单',
-                            data:JSON.stringify({orderNum: orderDetailModel.merchantOrderNo})
+                            data:{orderNum: orderDetailModel.merchantOrderNo}
                         }]
 
                     }}

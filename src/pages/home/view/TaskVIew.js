@@ -478,7 +478,7 @@ export default class TaskVIew extends React.Component {
                     }}>
                     {this.renderTitle(type)}
                     </View>
-                    <TouchableWithoutFeedback onPress={()=> {routePush('HtmlPage', {uri: '/cycle-coupon'})}}>
+                    <TouchableWithoutFeedback onPress={()=> {routePush('HtmlPage', {uri: '/topic/temp/ST20190455'})}}>
                         <View>
                     <ImageLoader style={{height: ScreenUtils.autoSizeWidth(120), width: ScreenUtils.width}}
                                  source={{uri: ('https://mr-prod-sg.oss-cn-hangzhou.aliyuncs.com/app/10_01_28__08_23_2019.jpg?ts='+KTime)}}
