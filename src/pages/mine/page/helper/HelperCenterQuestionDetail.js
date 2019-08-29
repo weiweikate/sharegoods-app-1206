@@ -66,96 +66,110 @@ export default class HelperCenterQuestionDetail extends BasePage {
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}
                             style={{
-                                marginBottom:6,
-                                backgroundColor:"#fff",
+                                backgroundColor:"transparent",
                                 borderRadius:px2dp(5),
-                                paddingHorizontal:px2dp(12),
-                                paddingTop:10,
+                                overflow:'hidden'
                             }}
                 >
-                    <View style={styles.title}>
-                        <Image source={res.helperAndCustomerService.icon_question_label}
-                               style={{width:16, height:16}}
-                        />
-                        <UIText value={title}
-                                style={{
-                                    marginLeft:8,
-                                    fontSize: DesignRule.fontSize_threeTitle_28,
-                                    color: DesignRule.textColor_mainTitle,
-                                    fontWeight: '600'
-                                }}/>
-                    </View>
-                    {content ?
-                        <View>
-                            <HTML html={content} imagesMaxWidth={ScreenUtils.width-px2dp(54)}
-                                  baseFontStyle={{
-                                      lineHeight: 20,
-                                      fontSize:13,
-                                      color:'#666666',
-                                  }}
-                                  containerStyle={{
-                                      backgroundColor: 'transparent',
-                                  }}/>
-                        </View>
-                        : null
-                    }
                     <View style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexDirection: 'row',
-                        marginTop:20,
-                        paddingBottom:20,
-                    }}>
-                        <NoMoreClick activeOpacity={0.6}
-                                     onPress={() => this.feedbackClick(1)}
-                                     style={[
-                                         styles.btn,
-                                         {marginRight:25},
-                                         hasFeedBackNoHelp? styles.btnLeftActive:styles.btnLeft
-                                     ]}
-                        >
-                            <Text style={[
-                                styles.buttonText,
-                                {color: !hasFeedBackNoHelp? '#999999' : 'white'}
-                            ]}
-                                  allowFontScaling={false}
+                            paddingTop:10,
+                            borderRadius:px2dp(5),
+                            backgroundColor:"#fff",
+                            paddingHorizontal:px2dp(12),
+                          }}
+                    >
+                        <View style={styles.title}>
+                            <Image source={res.helperAndCustomerService.icon_question_label}
+                                   style={{width:16, height:16}}
+                            />
+                            <UIText value={title}
+                                    style={{
+                                        marginLeft:8,
+                                        fontSize: DesignRule.fontSize_threeTitle_28,
+                                        color: DesignRule.textColor_mainTitle,
+                                        fontWeight: '600'
+                                    }}/>
+                        </View>
+                        {content ?
+                            <View>
+                                <HTML html={content} imagesMaxWidth={ScreenUtils.width-px2dp(54)}
+                                      baseFontStyle={{
+                                          lineHeight: 20,
+                                          fontSize:13,
+                                          color:'#666666',
+                                      }}
+                                      containerStyle={{
+                                          backgroundColor: 'transparent',
+                                      }}/>
+                            </View>
+                            : null
+                        }
+                        <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexDirection: 'row',
+                            marginTop:20,
+                            paddingBottom:20,
+                        }}>
+                            <NoMoreClick activeOpacity={0.6}
+                                         onPress={() => this.feedbackClick(1)}
+                                         style={[
+                                             styles.btn,
+                                             {marginRight:25},
+                                             hasFeedBackNoHelp? styles.btnLeftActive:styles.btnLeft
+                                         ]}
                             >
-                                没有帮助
-                                {/*{`没有帮助(${useless})`}*/}
-                            </Text>
-                        </NoMoreClick>
-                        <NoMoreClick activeOpacity={0.6}
-                                     onPress={() => this.feedbackClick(2)}
-                                     style={[
-                                         styles.btn,
-                                         hasFeedBackUseHelp? styles.rightActiveButton:styles.btnRight
-                                     ]}
-                        >
-                            {
-                                hasFeedBackUseHelp?
-                                    <LinearGradient  start={{x: 0, y: 0}}
-                                                     end={{x: 1, y: 0}}
-                                                     colors={['#FC5D39', '#FF0050']}
-                                                     style={{
-                                                         alignItems: 'center',
-                                                         flexDirection: 'row',
-                                                         justifyContent: 'center',
-                                                         flex: 1,
-                                                         width:120,
-                                                         borderRadius: 16,
-                                                     }}
-                                    >
-                                        {this.renderRightButton()}
-                                    </LinearGradient>:
-                                    <View>
-                                        {this.renderRightButton()}
-                                    </View>
-                            }
-                        </NoMoreClick>
+                                <Text style={[
+                                    styles.buttonText,
+                                    {color: !hasFeedBackNoHelp? '#999999' : 'white'}
+                                ]}
+                                      allowFontScaling={false}
+                                >
+                                    没有帮助
+                                    {/*{`没有帮助(${useless})`}*/}
+                                </Text>
+                            </NoMoreClick>
+                            <NoMoreClick activeOpacity={0.6}
+                                         onPress={() => this.feedbackClick(2)}
+                                         style={[
+                                             styles.btn,
+                                             hasFeedBackUseHelp? styles.rightActiveButton:styles.btnRight
+                                         ]}
+                            >
+                                {
+                                    hasFeedBackUseHelp?
+                                        <LinearGradient  start={{x: 0, y: 0}}
+                                                         end={{x: 1, y: 0}}
+                                                         colors={['#FC5D39', '#FF0050']}
+                                                         style={{
+                                                             alignItems: 'center',
+                                                             flexDirection: 'row',
+                                                             justifyContent: 'center',
+                                                             flex: 1,
+                                                             width:120,
+                                                             borderRadius: 16,
+                                                         }}
+                                        >
+                                            {this.renderRightButton()}
+                                        </LinearGradient>:
+                                        <View>
+                                            {this.renderRightButton()}
+                                        </View>
+                                }
+                            </NoMoreClick>
+                        </View>
+                    </View>
+                    {/*联系客服按钮*/}
+                    <View style={{
+                        backgroundColor: DesignRule.bgColor,
+                        paddingTop:30,
+                        paddingBottom:30,
+                        justifyContent:'center',
+                        alignItems:'center'
+                    }}>
+                        <CustomerServiceButton />
                     </View>
                 </ScrollView>
-                {/*联系客服按钮*/}
-                <CustomerServiceButton/>
             </View>
         );
     }

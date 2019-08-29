@@ -37,7 +37,7 @@ export default class CustomerServiceButton extends Component{
                 <View style={{
                     width: ScreenUtils.width,
                     justifyContent: 'space-between',
-                    paddingHorizontal: 15,
+                    paddingHorizontal: 26,
                     zIndex: 21
                 }}>
                     <NoMoreClick
