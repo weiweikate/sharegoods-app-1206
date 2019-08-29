@@ -75,7 +75,7 @@ export class TopicImageAdView extends React.Component {
                         <MRBannerViewComponent
                             itemRadius={5}
                             imgUrlArray={imgs}
-                            bannerHeight={height}
+                            bannerHeight={height - ScreenUtils.autoSizeWidth(10)}
                             modeStyle={1}
                             autoLoop={true}
                             onDidSelectItemAtIndex={(i) => {

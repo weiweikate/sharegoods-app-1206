@@ -45,7 +45,8 @@ export default class DIYTopicList extends React.Component {
 
             return    data.map((item, index) => {
                 if (item.type === homeType.custom_goods){
-                    item.itemHeight = GoodsCustomViewGetHeight(item)
+                    item.marginBottom = ScreenUtils.autoSizeWidth(15);
+                    item.itemHeight = GoodsCustomViewGetHeight(item) + ScreenUtils.autoSizeWidth(15)
                 }
 
                 if (item.type === homeType.custom_imgAD){
