@@ -63,7 +63,7 @@ export default class GoodsCell extends Component {
             contentIndex: index,
             tabName: homeModule.tabName
         });
-        topicAdOnPress(data.linkType, data.linkCode);
+        topicAdOnPress({},{linkType: data.linkType, linkValue: [data.linkCode]});
     }
 
     render() {

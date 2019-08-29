@@ -117,11 +117,6 @@
     commodityInfo.urlString = infoData[@"urlString"];
     commodityInfo.note = infoData[@"note"];
     if (infoData[@"tags"]) {
-      NSArray * arr = infoData[@"tags"];
-      for(int i = 0; i< arr.count; i++){
-        NSDictionary *dic =arr[i][@"data"] ;
-        arr[i][@"data"] = [dic jsonStringEncoded];
-      }
          commodityInfo.tagsArray = [NSArray modelArrayWithClass:[QYCommodityTag class] json:infoData[@"tags"]];
     }
     commodityInfo.show = YES;

@@ -24,7 +24,6 @@ import {
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { topicAdOnPress } from '../HomeTypes';
-import { routePush } from '../../../navigation/RouterMap';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
@@ -42,11 +41,7 @@ export default class TextCustomView extends React.Component {
 
     //linkType 链接类型：1商品 2专题 3限时购专场 4直降商品 5不做跳转
     onPress(data) {
-        if (data.linkValue && data.linkValue.length > 1){
-            routePush('HtmlPage', {uri: `/search?c=${data.code + data.linkId}`})
-        }else {
-            topicAdOnPress(data.linkType, data.linkValue[0], this.props.p, this.props.data.text);
-        }
+            topicAdOnPress(data, data, this.props.p, this.props.data.text);
     }
 
     render() {
