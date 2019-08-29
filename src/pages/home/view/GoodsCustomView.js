@@ -32,7 +32,6 @@ import DesignRule from '../../../constants/DesignRule';
 import LinearGradient from 'react-native-linear-gradient';
 import { topicAdOnPress } from '../HomeTypes';
 import res from '../res'
-import { routePush } from '../../../navigation/RouterMap';
 import user from '../../../model/user';
 const shouye_icon_gengduo = res.shouye_icon_gengduo
 const icon_shopCar = res.icon_shopCar;
@@ -91,10 +90,7 @@ export default class GoodsCustomView extends React.Component {
                 {
                     showMore.visible ?
                         <TouchableWithoutFeedback onPress={()=> {
-                            if (showMore.linkValue && showMore.linkValue.length > 1){
-                                routePush('HtmlPage', {uri: `/search?c=${data.code + showMore.linkId}`})
-                            }else {
-                                topicAdOnPress(showMore.linkType,showMore.linkValue?showMore.linkValue[0]:'')}
+                                topicAdOnPress(data,showMore)
                         }}>
                             <View style = {[style,{alignItems: 'center', justifyContent: 'center'}]}>
                                 <Image source={shouye_icon_gengduo}
@@ -563,12 +559,12 @@ export default class GoodsCustomView extends React.Component {
     }
 
     gotoProduceDetail(item){
-        topicAdOnPress(1,item.prodCode, this.props.p, item.name)
+        topicAdOnPress({},{ linkType: 1, linkValue:[item.prodCode]}, this.props.p, item.name)
 
     }
     //添加购物车
     addShopCar(item){
-        topicAdOnPress(1,item.prodCode, this.props.p, item.name)
+        topicAdOnPress({},{ linkType: 1, linkValue:[item.prodCode]}, this.props.p, item.name)
     }
 
 
