@@ -108,7 +108,6 @@ export default class CategorySearchPage extends BasePage {
     _adjustCategory=(index)=>{
         if(index < 7){
             this.categoryRef && this.categoryRef.scrollToOffset({animated:true,offset:0});
-
             return;
         }
         this.categoryRef && this.categoryRef.scrollToOffset({animated:true,offset:(index-6)*45});
