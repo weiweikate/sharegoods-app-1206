@@ -726,36 +726,37 @@ export default class MinePage extends BasePage {
                 borderRadius: px2dp(10),
                 marginTop: px2dp(10)
             }}>
-                <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginTop: px2dp(10),
-                    marginBottom: px2dp(10)
-                }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{ width: 2, height: 8, backgroundColor: '#FF0050', borderRadius: 1 }}/>
-                        <UIText value={'我的订单'}
-                                style={{
-                                    marginLeft: 10,
-                                    fontSize: DesignRule.fontSize_threeTitle,
-                                    color: DesignRule.textColor_mainTitle,
-                                    fontWeight: '600'
-                                }}/>
-                    </View>
-                    <TouchableWithoutFeedback onPress={this.jumpToAllOrder}>
-                        <View style={{ flexDirection: 'row', marginRight: 10, alignItems: 'center' }}>
+                <TouchableWithoutFeedback onPress={this.jumpToAllOrder}>
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginTop: px2dp(10),
+                        marginBottom: px2dp(10)
+                    }}>
+
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <View style={{width: 2, height: 8, backgroundColor: '#FF0050', borderRadius: 1}}/>
+                            <UIText value={'我的订单'}
+                                    style={{
+                                        marginLeft: 10,
+                                        fontSize: DesignRule.fontSize_threeTitle,
+                                        color: DesignRule.textColor_mainTitle,
+                                        fontWeight: '600'
+                                    }}/>
+                        </View>
+                        <View style={{flexDirection: 'row', marginRight: 10, alignItems: 'center',}}>
                             <UIText value={'查看全部'}
                                     style={{
                                         fontSize: DesignRule.fontSize_24,
                                         color: DesignRule.textColor_instruction
                                     }}/>
-                            <UIImage source={res.button.arrow_right} style={{ height: 12 }}
+                            <UIImage source={res.button.arrow_right} style={{height: 12}}
                                      resizeMode={'contain'}/>
                         </View>
-                    </TouchableWithoutFeedback>
-                </View>
-                {/*<ScrollView style={{ width: DesignRule.width - DesignRule.margin_page * 2 }} horizontal={true}*/}
+                    </View>
+                </TouchableWithoutFeedback>
+    {/*<ScrollView style={{ width: DesignRule.width - DesignRule.margin_page * 2 }} horizontal={true}*/}
                 {/*showsHorizontalScrollIndicator={false}>*/}
                 <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(15) }}>
                     {this.renderOrderStates()}
