@@ -36,6 +36,7 @@ public class MRJPushReceiver extends JPushMessageReceiver {
     private static final String PAGE_KEY = "pageType";
     private static final String PARAMS_KEY = "params";
     private static final String BIZ_ID = "bizId";
+    private static final String BIZ_TYPE = "bizType";
     private static final String TASK_ID = "taskId";
     private static final String APP_OPENN_OTIFICATION = "AppOpenNotification";
 
@@ -154,6 +155,12 @@ public class MRJPushReceiver extends JPushMessageReceiver {
             } else {
                 jsonObject.put(BIZ_ID, notificationMessage.notificationId);
             }
+
+            if(objExtra != null && objExtra.has(BIZ_TYPE)){
+                String type = objExtra.getString(BIZ_TYPE);
+                jsonObject.put(type, type);
+            }
+
             SensorsUtils.trackCustomeEvent(APP_OPENN_OTIFICATION, jsonObject);
         } catch (Exception e) {
         }
