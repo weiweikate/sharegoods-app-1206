@@ -156,14 +156,23 @@ export default class GoodsCustomView extends React.Component {
         let style = GoodsCustomViewGetItemStyle(data, height);
         let products = data.data || [];
         let Views = []
-        if (products.length%3){
-           if (products.length%3 === 1){
-               Views = [<View style={[style, {backgroundColor: null}]}/>,
-                   <View style={[style, {backgroundColor: null}]}/>
-               ]
-           } else {
-               Views = [<View style={[style, {backgroundColor: null}]}/>]
-           }
+        if (data.layout === 3){
+            if (products.length%3){
+                if (products.length%3 === 1){
+                    Views = [<View style={[style, {backgroundColor: null}]}/>,
+                        <View style={[style, {backgroundColor: null}]}/>
+                    ]
+                } else {
+                    Views = [<View style={[style, {backgroundColor: null}]}/>]
+                }
+            }
+        } else {
+            if (products.length%2){
+                if (products.length%2 === 1){
+                    Views = [<View style={[style, {backgroundColor: null}]}/>
+                    ]
+                }
+            }
         }
 
         return (
@@ -581,7 +590,7 @@ export default class GoodsCustomView extends React.Component {
                 width: ScreenUtils.width - autoSizeWidth(30),
                 marginLeft: autoSizeWidth(15),
                 marginTop: autoSizeWidth(15),
-                marginBottom: data.marginBottom
+                marginBottom: data.marginBottom,
             }}>
                 {this.renderGoods(data)}
             </View>
@@ -672,7 +681,7 @@ export function GoodsCustomViewGetHeight(data) {
         return 0;
     }
     let height = GoodsCustomViewGetItemHeight(data);
-    let count = data.data.length;
+    let count = data.data.length - 1;
     let itemPadding = ScreenUtils.autoSizeWidth(data.itemPadding/2);
     switch (data.layout){
         case  1 :
