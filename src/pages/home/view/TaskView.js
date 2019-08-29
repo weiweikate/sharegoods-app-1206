@@ -270,7 +270,7 @@ class TaskItem extends React.Component {
 }
 
 @observer
-export default class TaskVIew extends React.Component {
+export default class TaskView extends React.Component {
 
     constructor(props) {
         super(props);
@@ -502,7 +502,8 @@ export default class TaskVIew extends React.Component {
         if (this.model.type === 'home') {
             return (
                 <View style={[{
-                    width: ScreenUtils.width
+                    width: ScreenUtils.width,
+                    minHeight: 100
                 }, this.props.style]}>
                     <View style={{
                         width: ScreenUtils.width,
@@ -536,7 +537,7 @@ export default class TaskVIew extends React.Component {
         return (
             <View style={[{
                 width: ScreenUtils.width,
-                paddingHorizontal: 15
+                paddingHorizontal: 15, minHeight: 100
             }, this.props.style]}>
                 <View style={{
                     backgroundColor: 'white', borderRadius: 8,

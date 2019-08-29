@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
         paddingRight: px2dp(16),
         paddingTop: px2dp(8),
         justifyContent: 'space-between',
-        backgroundColor: 'white',
         width: ScreenUtils.width
     },
     item: {

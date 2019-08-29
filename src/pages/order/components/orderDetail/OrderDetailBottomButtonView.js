@@ -10,8 +10,9 @@ import RouterMap, { routePop, routePush } from '../../../../navigation/RouterMap
 import { payment } from '../../../payment/Payment';
 import { MRText as Text, NoMoreClick, UIText } from '../../../../components/ui';
 import { clickOrderAgain, clickOrderConfirmReceipt, clickOrderLogistics } from '../../order/CommonOrderHandle';
-import res from '../../res'
+import res from '../../res';
 import { beginChatType, QYChatTool } from '../../../../utils/QYModule/QYChatTool';
+
 const kefu_icon = res.kefu_icon;
 
 const { px2dp } = ScreenUtils;
@@ -28,50 +29,37 @@ export default class OrderDetailBottomButtonView extends Component {
 
     render() {
         let nameArr = [...orderDetailModel.menu];
-            if (nameArr.length >= 3) {
-                return (
-                    <View style={styles.containerStyle}>
-                        {this.renderKeBtn()}
-                        <View style={{ flex: 1}} />
+        if (nameArr.length >= 3) {
+            return (
+                <View style={styles.containerStyle}>
+                    {this.renderKeBtn()}
+                    <View style={{ flex: 1 }}/>
+                    <View style={{
+                        height: px2dp(48),
+                        marginRight: 6,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
                         <View style={{
-                            height: px2dp(48),
-                            marginRight: 6,
+                            height: px2dp(30),
+                            borderRadius: px2dp(15),
+                            marginRight: px2dp(10),
+                            justifyContent: 'center',
                             alignItems: 'center',
-                            justifyContent: 'center'
+                            width: px2dp(70)
                         }}>
-                            <View  style={{ height: px2dp(30),
-                                borderRadius: px2dp(15),
-                                marginRight: px2dp(10),
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                width: px2dp(70)}}>
-                                <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}
-                                        onPress={
-                                            () => this.props.switchButton(nameArr.filter((item, i)=> {return i <= (nameArr.length - 1 - 2)}))
-                                        }/>
-                            </View>
+                            <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}
+                                    onPress={
+                                        () => this.props.switchButton(nameArr.filter((item, i) => {
+                                            return i <= (nameArr.length - 1 - 2);
+                                        }))
+                                    }/>
                         </View>
-                        {nameArr.filter((item, i)=> {return i > (nameArr.length - 1 - 2)})
-                            .map((item, i) => {
-                                return <NoMoreClick key={i}
-                                                    style={[styles.touchableStyle, { borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
-                                                    onPress={() => {
-                                                        this.operationMenuClick(item);
-                                                    }}>
-                                    <Text
-                                        style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}
-                                        allowFontScaling={false}>{item.operation}</Text>
-                                </NoMoreClick>;
-                            })}
                     </View>
-                );
-            } else {
-                let datas = nameArr;
-                return (
-                    <View style={styles.containerStyle}>
-                        {this.renderKeBtn()}
-                        <View style={{ flex: 1}} />
-                        {datas.map((item, i) => {
+                    {nameArr.filter((item, i) => {
+                        return i > (nameArr.length - 1 - 2);
+                    })
+                        .map((item, i) => {
                             return <NoMoreClick key={i}
                                                 style={[styles.touchableStyle, { borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
                                                 onPress={() => {
@@ -82,19 +70,40 @@ export default class OrderDetailBottomButtonView extends Component {
                                     allowFontScaling={false}>{item.operation}</Text>
                             </NoMoreClick>;
                         })}
-                    </View>
-                );
-            }
+                </View>
+            );
+        } else {
+            let datas = nameArr;
+            return (
+                <View style={styles.containerStyle}>
+                    {this.renderKeBtn()}
+                    <View style={{ flex: 1 }}/>
+                    {datas.map((item, i) => {
+                        return <NoMoreClick key={i}
+                                            style={[styles.touchableStyle, { borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
+                                            onPress={() => {
+                                                this.operationMenuClick(item);
+                                            }}>
+                            <Text
+                                style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}
+                                allowFontScaling={false}>{item.operation}</Text>
+                        </NoMoreClick>;
+                    })}
+                </View>
+            );
+        }
     }
 
-    renderKeBtn = ()=> {
-        return <NoMoreClick style={{flexDirection: 'row', marginLeft:px2dp(15)}}
-                            onPress={()=> {this.concactKeFu()}}
+    renderKeBtn = () => {
+        return <NoMoreClick style={{ flexDirection: 'row', marginLeft: px2dp(15) }}
+                            onPress={() => {
+                                this.concactKeFu();
+                            }}
         >
-            <Image source={kefu_icon} style={{height: px2dp(20), width: px2dp(20)}}/>
-            <Text style={{color: DesignRule.mainColor, fontSize: px2dp(13), marginLeft: 5}}> 联系商家</Text>
-        </NoMoreClick>
-    }
+            <Image source={kefu_icon} style={{ height: px2dp(20), width: px2dp(20) }}/>
+            <Text style={{ color: DesignRule.mainColor, fontSize: px2dp(13), marginLeft: 5 }}> 联系商家</Text>
+        </NoMoreClick>;
+    };
 
     operationMenuClick = (menu) => {
         /*
@@ -196,66 +205,67 @@ export default class OrderDetailBottomButtonView extends Component {
         }
     }
 
-    concactKeFu(){
+    concactKeFu() {
         let supplierCode = orderDetailModel.merchantOrder.merchantCode || '';
-        let desc = ''
+        let desc = '';
         let pictureUrlString = '';
-        let num = ''
-        if (orderDetailModel.productsList().length > 0){
+        let num = '';
+        if (orderDetailModel.productsList().length > 0) {
             let item = orderDetailModel.productsList()[0];
             desc = item.productName || '';
             pictureUrlString = item.specImg || '';
-            num = '共'+item.quantity +'件商品';
+            num = '共' + item.quantity + '件商品';
 
         }
-        if (this.data){
+        if (this.data) {
             QYChatTool.beginQYChat({
-                routePath: '',
-                urlString: '',
-                title:this.data.title || '',
-                shopId:this.data.shopId || '',
-                chatType: beginChatType.BEGIN_FROM_ORDER,
-                data: {
-                    title: '订单号:'+orderDetailModel.merchantOrderNo,
-                    desc,
-                    pictureUrlString,
-                    urlString:'/'+orderDetailModel.merchantOrderNo,
-                    note: num,
-                    tags: [{
-                        focusIframe : '订单信息',
-                        url: 'https://qiyu.sharegoodsmall.com/#/orderList',
-                        label: '查看订单',
-                        data: JSON.stringify({orderNum: orderDetailModel.merchantOrderNo})
-                    }]
-                }}
-            )
-        } else {
-            OrderApi.getProductShopInfoBySupplierCode({supplierCode}).then((data)=> {
-                this.data = data.data;
-                QYChatTool.beginQYChat({
                     routePath: '',
                     urlString: '',
                     title: this.data.title || '',
                     shopId: this.data.shopId || '',
                     chatType: beginChatType.BEGIN_FROM_ORDER,
                     data: {
-                        title: orderDetailModel.merchantOrderNo,
+                        title: '订单号:' + orderDetailModel.merchantOrderNo,
                         desc,
                         pictureUrlString,
-                        urlString:'/'+orderDetailModel.merchantOrderNo,
+                        urlString: '/' + orderDetailModel.merchantOrderNo,
                         note: num,
                         tags: [{
-                            focusIframe : '订单信息',
+                            focusIframe: '订单信息',
                             url: 'https://qiyu.sharegoodsmall.com/#/orderList',
                             label: '查看订单',
-                            data:{orderNum: orderDetailModel.merchantOrderNo}
+                            data: orderDetailModel.merchantOrderNo
                         }]
-
-                    }}
-                )
+                    }
+                }
+            );
+        } else {
+            OrderApi.getProductShopInfoBySupplierCode({ supplierCode }).then((data) => {
+                this.data = data.data;
+                QYChatTool.beginQYChat({
+                        routePath: '',
+                        urlString: '',
+                        title: this.data.title || '',
+                        shopId: this.data.shopId || '',
+                        chatType: beginChatType.BEGIN_FROM_ORDER,
+                        data: {
+                            title: orderDetailModel.merchantOrderNo,
+                            desc,
+                            pictureUrlString,
+                            urlString: '/' + orderDetailModel.merchantOrderNo,
+                            note: num,
+                            tags: [{
+                                focusIframe: '订单信息',
+                                url: 'https://qiyu.sharegoodsmall.com/#/orderList',
+                                label: '查看订单',
+                                data: orderDetailModel.merchantOrderNo
+                            }]
+                        }
+                    }
+                );
             }).catch((e) => {
-                Toast.$toast(e.msg)
-            })
+                Toast.$toast(e.msg);
+            });
         }
 
     }

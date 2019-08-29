@@ -32,7 +32,7 @@ import CommModal from '../../../comm/components/CommModal';
 import { homeModule } from '../model/Modules';
 import RouterMap from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
-import TaskVIew from '../view/TaskVIew';
+import TaskView from '../view/TaskView';
 import { mineTaskModel } from '../model/TaskModel';
 
 const { px2dp } = ScreenUtils;
@@ -571,7 +571,7 @@ export default class SignInPage extends BasePage {
                     showsVerticalScrollIndicator={false}>
                     {this._headerIconRender()}
                     {this.state.signInData ? this._signInInfoRender() : null}
-                    <TaskVIew type={'mine'}
+                    <TaskView type={'mine'}
                               isSignIn={true}
                               signIn={this.userSign}
                               style={{ marginTop: platformHeight, backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
