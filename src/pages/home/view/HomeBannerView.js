@@ -49,7 +49,7 @@ export default class HomeBannerView extends Component {
         return <View style={styles.banner}>
             {len === 0 ?
                 <View style={styles.defaultImg}/> :
-                <View>
+                <View style={{ height: bannerHeight }}>
                     <View
                         style={{
                             backgroundColor: 'white',
