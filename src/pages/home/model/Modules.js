@@ -449,7 +449,6 @@ class HomeModule {
         let count = data.length;
         return data.map((item, index) => {
             if (item.type === homeType.custom_goods) {
-                item.buyButtonType = 1;
                 item.itemHeight = GoodsCustomViewGetHeight(item);
                 item.marginBottom = ScreenUtils.autoSizeWidth(0);
                 if (count-1 > index) {
