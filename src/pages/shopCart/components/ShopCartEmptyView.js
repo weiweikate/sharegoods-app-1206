@@ -68,7 +68,7 @@ export default class ShopCartEmptyView extends Component {
     }
 
     componentDidMount() {
-        shopCartEmptyModel.getRecommendProducts();
+        shopCartEmptyModel.getRecommendProducts(true);
     }
 
     _renderItem = (type, itemData, index) => {

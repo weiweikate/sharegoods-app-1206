@@ -137,11 +137,14 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
       if (isRight) {
         [cache setObject:data forKey:key withBlock:^{
 //          resolve(@{@"imagePath":key});
+          CGFloat width = videoImage.size.width ? videoImage.size.width:KScreenWidth;
+          CGFloat height = videoImage.size.height ? videoImage.size.height:KScreenHeight;
+
           NSDictionary * videoDic = @{
                                       @"videoCover":key,
                                       @"videoPath":path,
-                                      @"width":@(KScreenWidth),
-                                      @"heigth":@(KScreenHeight)
+                                      @"width":@(width),
+                                      @"height":@(height)
                                       };
           if (finshBlock) {
             finshBlock(@[videoDic]);

@@ -41,7 +41,7 @@ export default class ShopHeaderBonus extends Component {
             <View>
                 <View style={styles.whiteBg}>
                     <View style={styles.whiteBgTopRow}>
-                        <Image source={CCZImg}/>
+                        <Image source={CCZImg} style={{ width: 14, height: 14 }}/>
                         <Text style={styles.gongXian}>{`本店铺任务完成度${progress}%`}</Text>
                     </View>
                     <View style={{

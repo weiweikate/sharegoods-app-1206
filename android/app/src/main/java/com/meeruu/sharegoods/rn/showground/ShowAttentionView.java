@@ -3,17 +3,18 @@ package com.meeruu.sharegoods.rn.showground;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -29,7 +30,6 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.tool.FastScrollLinearLayoutManager;
 import com.meeruu.commonlib.utils.DensityUtils;
-import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
@@ -98,7 +98,7 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
         return (ViewGroup) view;
     }
 
-    public void setLogin(boolean login){
+    public void setLogin(boolean login) {
         isLogin = login;
     }
 
@@ -158,7 +158,7 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
         });
         ProductsAdapter.AddCartListener addCartListener = new ProductsAdapter.AddCartListener() {
             @Override
-            public void onAddCart(String product,String detail) {
+            public void onAddCart(String product, String detail) {
                 addCartEvent.init(view.getId());
                 WritableMap map = Arguments.createMap();
                 map.putString("product", product);
@@ -170,7 +170,7 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
 
         ProductsAdapter.PressProductListener pressProductListener = new ProductsAdapter.PressProductListener() {
             @Override
-            public void onPressProduct(String product,String detail) {
+            public void onPressProduct(String product, String detail) {
                 onPressProductEvent onPressProductEvent = new onPressProductEvent();
                 onPressProductEvent.init(view.getId());
                 WritableMap writableMap = Arguments.createMap();
@@ -396,7 +396,7 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
 
     private void delayCollection(NewestShowGroundBean.DataBean bean, View view, int position,
                                  List<NewestShowGroundBean.DataBean> data) {
-        if(!isLogin){
+        if (!isLogin) {
             onCollectionEvent.init(view.getId());
             eventDispatcher.dispatchEvent(onCollectionEvent);
             return;
@@ -425,8 +425,6 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
         data.set(position, bean);
         adapter.replaceData(data);
     }
-
-
 
 
     private void delayDownload(View view, int position, NewestShowGroundBean.DataBean bean) {
@@ -519,8 +517,8 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
                                 resolveResource.add(resourceBean.getBaseUrl());
                             }
 
-                            if(resourceBean.getType() == 5){
-                                bean.setCoverType(VideoCoverUtils.getCoverType(resourceBean.getWidth(),resourceBean.getHeight()));
+                            if (resourceBean.getType() == 5) {
+                                bean.setCoverType(VideoCoverUtils.getCoverType(resourceBean.getWidth(), resourceBean.getHeight()));
                                 bean.setVideoCover(resourceBean.getBaseUrl());
                                 break;
                             }
@@ -534,7 +532,7 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
         return data;
     }
 
-    private NewestShowGroundBean.DataBean resolveItem(NewestShowGroundBean.DataBean bean){
+    private NewestShowGroundBean.DataBean resolveItem(NewestShowGroundBean.DataBean bean) {
         if (bean.getItemType() == 1 || bean.getItemType() == 3) {
             List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
             List<String> resolveResource = new ArrayList<>();
@@ -545,8 +543,8 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
                         resolveResource.add(resourceBean.getBaseUrl());
                     }
 
-                    if(resourceBean.getType() == 5){
-                        bean.setCoverType(VideoCoverUtils.getCoverType(resourceBean.getWidth(),resourceBean.getHeight()));
+                    if (resourceBean.getType() == 5) {
+                        bean.setCoverType(VideoCoverUtils.getCoverType(resourceBean.getWidth(), resourceBean.getHeight()));
                         bean.setVideoCover(resourceBean.getBaseUrl());
                         break;
                     }
@@ -613,7 +611,7 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
         }
     }
 
-    public void setType(String type){
+    public void setType(String type) {
         adapter.setType(type);
     }
 

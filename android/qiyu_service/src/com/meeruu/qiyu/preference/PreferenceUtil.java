@@ -3,7 +3,8 @@ package com.meeruu.qiyu.preference;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 
 public class PreferenceUtil {

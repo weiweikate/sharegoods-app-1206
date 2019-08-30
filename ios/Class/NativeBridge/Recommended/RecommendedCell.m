@@ -38,8 +38,8 @@
 -(UILabel *)contentLab{
     if(!_contentLab){
         _contentLab = [[UILabel alloc]init];
-        _contentLab.font = [UIFont systemFontOfSize:13];
-        _contentLab.textColor = [UIColor colorWithHexString:@"666666"];;
+        _contentLab.font = [UIFont systemFontOfSize:14];
+        _contentLab.textColor = [UIColor colorWithHexString:@"333333"];;
       _contentLab.userInteractionEnabled=YES;
       UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside)];
       [_contentLab sizeToFit];
@@ -238,17 +238,17 @@
 
     self.contentLab.text = model.content;
     if(model.content.length>0){
-      self.contentLab.sd_layout.topSpaceToView(self.headView, 3);
-      self.bodyView.sd_layout.topSpaceToView(self.contentLab, 6);
+      self.contentLab.sd_layout.topSpaceToView(self.headView, 6);
+      self.bodyView.sd_layout.topSpaceToView(self.contentLab, 9);
 
     }else{
       self.contentLab.sd_layout.topSpaceToView(self.headView, 0);
-      self.bodyView.sd_layout.topSpaceToView(self.contentLab, 3);
+      self.bodyView.sd_layout.topSpaceToView(self.contentLab, 10);
     }
 
     self.footerView.products = model.products;
     self.footerView.downloadCount = model.downloadCount;
-    self.footerView.likesCount = model.like;
+    self.footerView.likesCount = model.likesCount;
     self.footerView.shareCount = model.shareCount;
     self.footerView.collectCount = model.collectCount;
     self.footerView.isLike = model.like;

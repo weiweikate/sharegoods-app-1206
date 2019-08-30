@@ -3,8 +3,8 @@ package com.reactnative.ivpusic.imagepicker;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.ClipData;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,16 +19,14 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 import android.webkit.MimeTypeMap;
-import android.content.ContentResolver;
 import android.widget.Toast;
 
-import com.facebook.common.util.UriUtil;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -38,11 +36,9 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
-import com.reactnative.ivpusic.imagepicker.picture.lib.PicturePreviewActivity;
 import com.reactnative.ivpusic.imagepicker.picture.lib.PictureSelector;
 import com.reactnative.ivpusic.imagepicker.picture.lib.config.PictureConfig;
 import com.reactnative.ivpusic.imagepicker.picture.lib.config.PictureMimeType;
@@ -52,21 +48,16 @@ import com.reactnative.ivpusic.imagepicker.picture.lib.tools.Md5Utils;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
@@ -345,7 +336,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
         setConfiguration(options);
         resultCollector.setup(promise, multiple);
 
-        permissionsCheck(activity, promise, Arrays.asList(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO), new Callable<Void>() {
+        permissionsCheck(activity, promise, Arrays.asList(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO), new Callable<Void>() {
             @Override
             public Void call() {
                 openCameraView(activity);
@@ -354,7 +345,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
         });
     }
 
-    private void openCameraView(Activity activity){
+    private void openCameraView(Activity activity) {
         activity.startActivityForResult(new Intent(activity, CameraActivity.class), REQ_CAMERA);
     }
 
@@ -436,7 +427,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
 
 
             if (multiple) {
-                if(edit){
+                if (edit) {
                     PictureSelector.create(getCurrentActivity()).openGallery(canVideo ? PictureMimeType.ofAll() : PictureMimeType.ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
                             .theme(R.style.picture_default_style)//主题样式(不设置为默认样式) 也可参考demo values/styles下 例如：R.style.picture.white.style
                             .maxSelectNum(allCount)// 最大图片选择数量 int
@@ -477,7 +468,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
                             //.recordVideoSecond()//视频秒数录制 默认60s int
                             .isDragFrame(false)// 是否可拖动裁剪框(固定)
                             .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
-                }else {
+                } else {
                     Intent intentCustomerAlbum = new Intent(getCurrentActivity(), CustomerGalleryActivity.class);
                     intentCustomerAlbum.putExtra("allCount", allCount);
                     getCurrentActivity().startActivityForResult(intentCustomerAlbum, MULTIPLE_IMAGE_PICKER_REQUEST);
@@ -920,9 +911,9 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
         for (int i = 0; i < list.size(); i++) {
             WritableMap map = new WritableNativeMap();
             LocalMedia item = list.get(i);
-            if(item.getPictureType().contains("video")){
+            if (item.getPictureType().contains("video")) {
                 resultCollector.notifySuccess(resolveVideoReslut(item));
-            }else {
+            } else {
                 String url = item.getPath();
                 if (!TextUtils.isEmpty(item.getCutPath())) {
                     url = item.getCutPath();
@@ -933,34 +924,33 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
                 BitmapFactory.decodeFile(url, options);
                 map.putInt("width", options.outWidth);
                 map.putInt("height", options.outHeight);
-                map.putString("type","image");
+                map.putString("type", "image");
                 resultCollector.notifySuccess(map);
             }
         }
     }
 
 
-
-    private WritableMap resolveVideoReslut(LocalMedia localMedia){
+    private WritableMap resolveVideoReslut(LocalMedia localMedia) {
         WritableMap map = new WritableNativeMap();
         map.putString("path", "file://" + localMedia.getPath());
         map.putInt("width", localMedia.getWidth());
         map.putInt("height", localMedia.getHeight());
-        map.putString("type",localMedia.getPictureType());
-        map.putDouble("videoTime",localMedia.getDuration());
+        map.putString("type", localMedia.getPictureType());
+        map.putDouble("videoTime", localMedia.getDuration());
         resultCollector.notifySuccess(map);
         return map;
     }
 
-    private void singleEdit(Intent data){
-        if(data == null){
+    private void singleEdit(Intent data) {
+        if (data == null) {
             resultCollector.notifyProblem(E_CANNOT_LAUNCH_CAMERA, "cancel");
             return;
         }
         String path = data.getStringExtra(EXTRA_IMAGE_SAVE_PATH);
-        if(TextUtils.isEmpty(path)){
+        if (TextUtils.isEmpty(path)) {
             resultCollector.notifyProblem(E_CANNOT_LAUNCH_CAMERA, "Cannot launch camera");
-        }else {
+        } else {
             resultCollector.setWaitCount(1);
             WritableMap map = new WritableNativeMap();
             map.putString("path", "file://" + path);
@@ -972,8 +962,9 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
             resultCollector.notifySuccess(map);
         }
     }
-    public void resolveCamera(final int resultCode,Intent data){
-        if(data == null){
+
+    public void resolveCamera(final int resultCode, Intent data) {
+        if (data == null) {
             return;
         }
         if (resultCode == RES_CAMERA_PICTURE) {
@@ -998,7 +989,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
 
     }
 
-  @Override
+    @Override
     public void onActivityResult(Activity activity, final int requestCode, final int resultCode, final Intent data) {
         if (requestCode == IMAGE_PICKER_REQUEST) {
             imagePickerResult(activity, requestCode, resultCode, data);
@@ -1014,10 +1005,10 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
             }
         } else if (requestCode == PictureConfig.CHOOSE_REQUEST) {
             multPickerCrop(data);
-        }else if(requestCode == REQ_IMAGE_EDIT){
+        } else if (requestCode == REQ_IMAGE_EDIT) {
             singleEdit(data);
-        }else if(requestCode == REQ_CAMERA){
-            resolveCamera(resultCode,data);
+        } else if (requestCode == REQ_CAMERA) {
+            resolveCamera(resultCode, data);
         }
     }
 

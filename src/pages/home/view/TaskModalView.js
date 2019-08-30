@@ -54,7 +54,9 @@ const GiftType = {
     exp: 1,
     xiudou: 2,
     coupon: 3,
-    lottery: 4
+    lottery: 4,
+    lotteryChance: 5,
+    adv: 6
 }
 @observer
 export default class TaskModalView extends React.Component {
@@ -74,18 +76,36 @@ export default class TaskModalView extends React.Component {
     renderContent() {
 
         let alertData = this.model.alertData || []
-        let images = [taskModal_exp,taskModal_dou,taskModal_h, taskModal_chou];
-        let bgs = [exp_bg, dou_bg, h_bg, chou_bg]
+        let images = [taskModal_exp,taskModal_dou,taskModal_h, taskModal_chou, taskModal_chou, taskModal_chou];
+        let bgs = [exp_bg, dou_bg, h_bg, chou_bg,chou_bg, chou_bg]
         let lottery = null;
         alertData = alertData.filter((item) => {
             if (GiftType[item.code]){
-                if (GiftType[item.code] === GiftType.lottery) {
+                if (GiftType[item.code] === GiftType.lottery || GiftType[item.code] === GiftType.lotteryChance || GiftType[item.code] === GiftType.adv) {
                     lottery = item;
-                    return true;
                 }
                 return true;
             }
             return false;
+        })
+        alertData = alertData.map((item) => {
+            if (GiftType[item.code] === GiftType.lotteryChance) {
+                if (item.parameter){
+                    let params =  JSON.parse(item.parameter);
+                    item.parameter = params.url;
+                }
+                item.detail =  item.total + item.unit + item.name
+            } else if (GiftType[item.code] === GiftType.adv) {
+                if (item.parameter){
+                    let params =  JSON.parse(item.parameter);
+                    item.parameter = params.url;
+                    item.name = params.name;
+                    item.detail = '';
+                }
+            }else {
+                item.detail =  item.total + item.unit + item.name
+            }
+            return item;
         })
         return(
             <View style={styles.modal}>
@@ -104,7 +124,7 @@ export default class TaskModalView extends React.Component {
                         </View>
                         {
                             alertData.map((item) => {
-                                let {total, code, unit = '', name} = item;
+                                let {code} = item;
                                 return(
                                     <ImageBackground source={bgs[GiftType[code]-1]} style={{
                                         height: ScreenUtils.autoSizeWidth(51),
@@ -122,7 +142,7 @@ export default class TaskModalView extends React.Component {
                                             marginLeft: ScreenUtils.autoSizeWidth(10)
                                         }}>
                                             <MRText style={{fontSize: ScreenUtils.autoSizeWidth(14), color: DesignRule.mainColor}}>{item.name}</MRText>
-                                            <MRText style={{fontSize: ScreenUtils.autoSizeWidth(11), color: '#999999'}}>{total + unit + name}</MRText>
+                                            <MRText style={{fontSize: ScreenUtils.autoSizeWidth(11), color: '#999999'}}>{item.detail}</MRText>
                                         </View>
 
                                     </ImageBackground>
@@ -131,7 +151,7 @@ export default class TaskModalView extends React.Component {
                         }
                         <TouchableOpacity onPress={()=> {this.onPress(lottery)}}>
                             <ImageBackground source={taskModal_btn} style={styles.btn}>
-                                <MRText style={styles.btnText}>{lottery?'去抽奖': '确定'}</MRText>
+                                <MRText style={styles.btnText}>{lottery?(lottery.parameter?'查看':'关闭'): '确定'}</MRText>
                             </ImageBackground>
                         </TouchableOpacity>
                     </LinearGradient>
@@ -145,9 +165,9 @@ export default class TaskModalView extends React.Component {
         )
     }
 
-    onPress(lottery){
-        if (lottery)  {
-            routePush('HtmlPage', {uri: lottery.parameter})
+    onPress(item){
+        if (item && item.parameter)  {
+            routePush('HtmlPage', {uri: item.parameter})
         }
         this.model.closeAlert()
     }

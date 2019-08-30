@@ -74,12 +74,18 @@ export default class DownPricePage extends BasePage {
         return (
 
             <TouchableOpacity
-                style={{ flex: 1, justifyContent: 'center' }}
+                style={{
+                    width: px2dp(40),
+                    height: px2dp(44),
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
                 onPress={() => {
                     this.shareModal && this.shareModal.open();
                 }}
             >
-                <Image source={message_three}/>
+                <Image source={message_three} style={{width: 22}}
+                       resizeMode={'contain'}/>
             </TouchableOpacity>
         );
     };

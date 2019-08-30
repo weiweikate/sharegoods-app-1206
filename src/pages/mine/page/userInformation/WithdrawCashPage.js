@@ -133,6 +133,7 @@ export default class WithdrawCashPage extends BasePage {
 
     $navigationBarOptions = {
         title: '提现',
+        rightNavTitle:'提现记录',
         show: true // false则隐藏导航
     };
 
@@ -172,6 +173,10 @@ export default class WithdrawCashPage extends BasePage {
         this._getRate();
         this._getLastBankInfo();
     };
+
+    $NavBarRightPressed=()=>{
+        this.$navigate(RouterMap.WithdrawRecordPage);
+    }
 
     _getLastBankInfo() {
         MineAPI.getLastBankInfo().then((data) => {
@@ -610,7 +615,7 @@ export default class WithdrawCashPage extends BasePage {
                     </View>
                 </View>
                 <View style={{ justifyContent: 'center', marginRight: 15 }}>
-                    <UIImage source={arrow_right} style={{ height: 10, width: 7 }}/>
+                    <UIImage resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
                 </View>
             </TouchableOpacity>
         );
@@ -634,7 +639,7 @@ export default class WithdrawCashPage extends BasePage {
                     </View>
                 </View>
                 <View style={{ justifyContent: 'center', marginRight: 15 }}>
-                    <UIImage source={arrow_right} style={{ height: 10, width: 7 }}/>
+                    <UIImage resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
                 </View>
             </TouchableOpacity>
         );

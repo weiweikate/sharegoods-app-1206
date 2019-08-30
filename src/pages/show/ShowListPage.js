@@ -259,7 +259,7 @@ export default class ShowListPage extends BasePage {
                     left
                         ?
                         <TouchableOpacity style={styles.backImg} onPress={() => this._onLeftPressed()}>
-                            <Image source={icon_header_back}/>
+                            <Image source={icon_header_back} style={{ width: 30, height: 30 }}/>
                         </TouchableOpacity>
                         :
                         null

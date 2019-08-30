@@ -55,6 +55,7 @@ export default class MyOrdersDetailPage extends BasePage {
         this.state = {
             isShowSingleSelctionModal: false,
             isShowShowMessageModal: false,
+            moreData: []
         };
     }
 
@@ -86,7 +87,8 @@ export default class MyOrdersDetailPage extends BasePage {
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>
-                <Image source={moreIcon}/>
+                <Image source={moreIcon} style={{ width: 22 }}
+                       resizeMode={'contain'}/>
             </TouchableOpacity>
         );
     };
@@ -192,6 +194,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         {this.renderFooter()}
                     </ScrollView>
                     <OrderDetailBottomButtonView
+                        ref={(ref)=>{ this.btnView = ref}}
                         openCancelModal = {(callBack)=>{
                             let isPay = true;
                             if (!callBack) {
@@ -200,27 +203,39 @@ export default class MyOrdersDetailPage extends BasePage {
                             }
                             this.cancelProdectsModal&&this.cancelProdectsModal.open(orderDetailModel.platformOrderNo,callBack,isPay)
                         }}
-                        switchButton={() => {
-                            this.setState({ showDele: !this.state.showDele });
+                        switchButton={(moreData) => {
+                            this.setState({ showDele: !this.state.showDele, moreData});
                         }}
                         dataHandleDeleteOrder={this.params.dataHandleDeleteOrder}
                         dataHandleConfirmOrder={this.params.dataHandleConfirmOrder}
                         loadPageData={() => this.loadPageData()}/>
-                    {!this.state.showDele ? null : <NoMoreClick style={{
-                        width: 68,
-                        height: 32,
+                    { //这个代码应该与底部按钮（OrderDetailBottomButtonView）封装在一起
+                        !this.state.showDele ? null :
+                        <View style={{
                         position: 'absolute',
                         bottom: 45,
-                        left: 29,
-                        backgroundColor: DesignRule.textColor_instruction,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 5
-                    }} onPress={() => {
-                        this.operationDelete(), this.setState({ showDele: false });
+                        right: ScreenUtils.autoSizeWidth(180)-100,
+                        backgroundColor: 'white',
+                        borderRadius: 5,
+                            borderWidth: 1,
+                            borderColor: DesignRule.bgColor
                     }}>
-                        <UIText value={'删除订单'} style={{ color: 'white', fontSize: 13 }}/>
-                    </NoMoreClick>}
+                            {this.state.moreData.map((item) => {
+                               return ( <NoMoreClick style={{
+                                   width: 100,
+                                   height: 40,
+                                   justifyContent: 'center',
+                                   marginLeft: 10
+                               }} onPress={() => {
+                                 this.setState({ showDele: false });
+                                 //与底部button点击用一套逻辑
+                                 this.btnView&&this.btnView.operationMenuClick(item);
+                               }}>
+                                   <UIText value={item.operation} style={{ color: '#666666', fontSize: 13 }}/>
+                               </NoMoreClick>)
+                            })}
+                        </View>
+                      }
                 </View>
             );
         }

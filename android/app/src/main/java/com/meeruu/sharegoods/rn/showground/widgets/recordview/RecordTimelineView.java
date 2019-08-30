@@ -9,10 +9,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -78,46 +79,46 @@ public class RecordTimelineView extends View {
                     paint.setColor(getResources().getColor(offsetColor));
             }
             if (info.drawType == DrawType.OFFSET) {
-                canvas.drawRect((lastTotalDuration - info.length) / (float)maxDuration * getWidth(), 0f,
-                    lastTotalDuration / (float)maxDuration * getWidth(), getHeight(), paint);
+                canvas.drawRect((lastTotalDuration - info.length) / (float) maxDuration * getWidth(), 0f,
+                        lastTotalDuration / (float) maxDuration * getWidth(), getHeight(), paint);
             } else {
                 //第一个片段，在最左侧添加半圆
-                if (i==0){
-                    rectF.set(0,0 ,getHeight() ,getHeight());
-                    canvas.drawArc(rectF,90 ,180 , true, paint);
-                    float right = (lastTotalDuration + info.length) / (float)maxDuration * getWidth();
-                    if (right>getHeight()/2){
-                        canvas.drawRect(getHeight()/2, 0f,
-                            right, getHeight(), paint);
+                if (i == 0) {
+                    rectF.set(0, 0, getHeight(), getHeight());
+                    canvas.drawArc(rectF, 90, 180, true, paint);
+                    float right = (lastTotalDuration + info.length) / (float) maxDuration * getWidth();
+                    if (right > getHeight() / 2) {
+                        canvas.drawRect(getHeight() / 2, 0f,
+                                right, getHeight(), paint);
                     }
 
                 } else {
-                    canvas.drawRect(lastTotalDuration / (float)maxDuration * getWidth(), 0f,
-                        (lastTotalDuration + info.length) / (float)maxDuration * getWidth(), getHeight(), paint);
+                    canvas.drawRect(lastTotalDuration / (float) maxDuration * getWidth(), 0f,
+                            (lastTotalDuration + info.length) / (float) maxDuration * getWidth(), getHeight(), paint);
                 }
                 lastTotalDuration += info.length;
             }
         }
         if (currentClipDuration != null && currentClipDuration.length != 0) {
             paint.setColor(getResources().getColor(durationColor));
-            float left = lastTotalDuration / (float)maxDuration * getWidth();
-            float right = (lastTotalDuration + currentClipDuration.length) / (float)maxDuration * getWidth();
+            float left = lastTotalDuration / (float) maxDuration * getWidth();
+            float right = (lastTotalDuration + currentClipDuration.length) / (float) maxDuration * getWidth();
             //第一个片段，在最左侧添加半圆
-            if (clipDurationList.size()==0){
-                rectF.set(0,0 ,getHeight() ,getHeight());
-                canvas.drawArc(rectF,90 ,180 , true, paint);
-                if (right>getHeight()/2){
-                    canvas.drawRect(left+getHeight()/2, 0f, right, getHeight(), paint);
+            if (clipDurationList.size() == 0) {
+                rectF.set(0, 0, getHeight(), getHeight());
+                canvas.drawArc(rectF, 90, 180, true, paint);
+                if (right > getHeight() / 2) {
+                    canvas.drawRect(left + getHeight() / 2, 0f, right, getHeight(), paint);
                 }
-            }else {
+            } else {
                 canvas.drawRect(left, 0f, right, getHeight(), paint);
             }
 
         }
         if (lastTotalDuration + currentClipDuration.length < minDuration) {
             paint.setColor(getResources().getColor(offsetColor));
-            canvas.drawRect(minDuration / (float)maxDuration * getWidth(), 0f,
-                (minDuration + maxDuration / 200) / (float)maxDuration * getWidth(), getHeight(), paint);
+            canvas.drawRect(minDuration / (float) maxDuration * getWidth(), 0f,
+                    (minDuration + maxDuration / 200) / (float) maxDuration * getWidth(), getHeight(), paint);
         }
         Log.e("onDraw", "lastTotalDuration" + lastTotalDuration + "\n" + "maxDuration" + maxDuration);
     }
@@ -130,7 +131,7 @@ public class RecordTimelineView extends View {
         clipDurationList.add(info);
         currentClipDuration = new DrawInfo();
         Log.i(TAG, "TotalDuration :" + getTimelineDuration() + " ,currentDuration : " + currentClipDuration.length
-            + " ,count : " + clipDurationList.size());
+                + " ,count : " + clipDurationList.size());
         invalidate();
     }
 

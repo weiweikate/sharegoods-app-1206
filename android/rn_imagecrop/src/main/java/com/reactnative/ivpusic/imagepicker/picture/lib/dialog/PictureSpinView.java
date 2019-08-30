@@ -18,9 +18,9 @@ package com.reactnative.ivpusic.imagepicker.picture.lib.dialog;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.reactnative.ivpusic.imagepicker.R;
 

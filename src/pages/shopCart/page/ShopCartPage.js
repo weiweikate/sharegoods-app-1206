@@ -2,7 +2,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { BackHandler, Image, ListView, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { BackHandler, Image, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -32,8 +32,6 @@ export default class ShopCartPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        this.contentList = null;
         let hiddeLeft = true;
         if (!(this.params.hiddeLeft === undefined)) {
             hiddeLeft = this.params.hiddeLeft;
@@ -55,9 +53,7 @@ export default class ShopCartPage extends BasePage {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 this.pageFocus = true;
                 shopCartCacheTool.getShopCartGoodsListData();
-                if (shopCartEmptyModel.firstLoad || shopCartEmptyModel.emptyViewList.length === 0) {
-                    shopCartEmptyModel.getRecommendProducts(true);
-                }
+                shopCartEmptyModel.getRecommendProducts(true);
             }
         );
         this.willBlurSubscription = this.props.navigation.addListener(

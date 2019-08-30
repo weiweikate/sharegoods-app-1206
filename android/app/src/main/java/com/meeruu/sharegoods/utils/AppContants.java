@@ -1,8 +1,8 @@
 package com.meeruu.sharegoods.utils;
 
 /**
- * @author yqy
- * @date on 2018/4/12
+ * @author louis
+ * @date on 2018/10/12
  * @describe 常量配置类
  */
 public class AppContants {

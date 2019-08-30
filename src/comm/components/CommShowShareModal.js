@@ -134,7 +134,7 @@ export default class CommShowShareModal extends React.Component {
                     }]);
             return;
         }
-        console.log('type',this.props.type)
+        console.log('type', this.props.type);
         this.defaultShareType = 1;
         this.setState({ modalVisible: true, shareType: this.defaultShareType, showToastImage: false });
         this.modal && this.modal.open();
@@ -222,7 +222,7 @@ export default class CommShowShareModal extends React.Component {
             params = this.props.miniProgramJson;
         }
 
-        if(platformType === 4){
+        if (platformType === 4) {
             let name = this.props.shareName ? this.props.shareName : '';
             params.title = '';
             params.dec = `${name}的文章 ${params.title}(想看更多？下载：@秀购App：https://h5.sharegoodsmall.com/download )文章链接请点击：`;
@@ -287,7 +287,7 @@ export default class CommShowShareModal extends React.Component {
         }
         const { type } = this.props;
         // const { shareType } = this.state;
-        let scale =  667 / 375;
+        let scale = 667 / 375;
         this.imageWidth = 240;
         this.imageHeight = 335;
         if (this.imageWidth * scale >= (ScreenUtils.height - 275 - ScreenUtils.safeBottom)) {
@@ -326,12 +326,12 @@ export default class CommShowShareModal extends React.Component {
             }
         });
 
-        if( type === 'show'){
+        if (type === 'show') {
             this.showImage();
             arrayWeb.push({
                 image: res.share.download, title: '下载推广图片', onPress: () => {
                     this.setState({ shareType: 0 }, () => {
-                        console.log('this.state.path',this.state.path)
+                        console.log('this.state.path', this.state.path);
                         this.saveImage(this.state.path);
                     });
                 }
@@ -362,19 +362,21 @@ export default class CommShowShareModal extends React.Component {
                     position: 'absolute'
                 }}
                 >
-                    <TouchableOpacity style={{ flex: 1, justifyContent: 'flex-end' }} onPress={() => {
-                        this.close();
-                    }}>
+                    <TouchableOpacity activeOpacity={0.7}
+                                      style={{ flex: 1, justifyContent: 'flex-end' }}
+                                      onPress={() => {
+                                          this.close();
+                                      }}>
                         <Animated.View style={{
                             transform: [{ translateY: this.state.y }],
                             paddingBottom: ScreenUtils.safeBottom,
                             backgroundColor: 'white',
-                            borderRadius: 10,
+                            borderRadius: 10
 
                         }}>
                             <View
                                 style={[styles.contentContainer, { height: autoSizeWidth(180) }]}>
-                                <View style={{flex: 1, alignItems: 'center',justifyContent:'center'}}>
+                                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                                     <MRText style={{
                                         color: DesignRule.textColor_mainTitle,
                                         fontSize: autoSizeWidth(12),
@@ -384,11 +386,16 @@ export default class CommShowShareModal extends React.Component {
                                     <MRText style={{
                                         color: DesignRule.textColor_mainTitle,
                                         fontSize: autoSizeWidth(12),
-                                        marginHorizontal: 7,
+                                        marginHorizontal: 7
                                     }}>{type === 'showDown' ? '文案已复制，图片已下载到相册' :
                                         type === 'showVideoDown' ? '文案已复制，视频已下载到相册' : ''}</MRText>
                                 </View>
-                                <View style={{ flex: 2, flexDirection: 'row', borderRadius: 10,justifyContent:'center' }}>
+                                <View style={{
+                                    flex: 2,
+                                    flexDirection: 'row',
+                                    borderRadius: 10,
+                                    justifyContent: 'center'
+                                }}>
                                     {
                                         arrayWeb.map((item, index) => {
                                             return (
@@ -428,7 +435,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         height: autoSizeWidth(175),
         borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
+        borderTopRightRadius: 10
     },
     header: {
         flexDirection: 'row',

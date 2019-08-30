@@ -6,7 +6,7 @@ import NoMoreClick from '../../../components/ui/NoMoreClick';
 import RouterMap from '../../../navigation/RouterMap';
 import SpellShopApi from '../api/SpellShopApi';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
-import HTML from 'react-native-render-html';
+import HTML from '@mr/react-native-render-html';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import StringUtils from '../../../utils/StringUtils';
 import spellStatusModel from '../model/SpellStatusModel';

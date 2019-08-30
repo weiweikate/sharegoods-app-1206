@@ -3,14 +3,8 @@
  * 消息中心页面
  */
 import React from 'react';
-import {
-    StyleSheet, View, Image, DeviceEventEmitter,
-    TouchableOpacity, ScrollView
-} from 'react-native';
-import {
-    UIText
-} from '../../components/ui';
-import { MRText as Text } from '../../components/ui';
+import { DeviceEventEmitter, Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { MRText as Text, UIText } from '../../components/ui';
 import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
 import MessageApi from './api/MessageApi';
@@ -131,7 +125,7 @@ export default class MessageCenterPage extends BasePage {
         QYChatTool.beginQYChat(params);
     };
 
-     renderBodyView = () => {
+    renderBodyView = () => {
         let leftImage = [noticeIcon, newsIcon, spellIcon];
         let leftText = ['通知', '消息', '拼店消息'];
         let arr = [];
@@ -152,19 +146,18 @@ export default class MessageCenterPage extends BasePage {
                 <View key={i} style={{ width: ScreenUtils.width, height: 60, marginTop: 11 }}>
                     <TouchableOpacity style={{
                         flex: 1,
-                        justifyContent: 'space-between',
                         alignItems: 'center',
                         paddingHorizontal: DesignRule.margin_page,
                         backgroundColor: 'white',
                         flexDirection: 'row'
                     }} onPress={() => this.orderMenuJump(i)}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Image source={leftImage[i]} style={{ height: 35 }} resizeMode={'contain'}/>
-                            <UIText value={leftText[i]} style={[{
-                                fontSize: DesignRule.fontSize_secondTitle,
-                                marginLeft: DesignRule.margin_page
-                            }]}/>
-                        </View>
+                        <Image source={leftImage[i]} style={{ height: 35, width: 35 }}
+                               resizeMode={'contain'}/>
+                        <UIText value={leftText[i]} style={[{
+                            fontSize: DesignRule.fontSize_secondTitle,
+                            marginLeft: DesignRule.margin_page,
+                            flex: 1
+                        }]}/>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             {count ? <View style={{
                                 marginRight: 7,
@@ -181,7 +174,7 @@ export default class MessageCenterPage extends BasePage {
                                     fontSize: px2dp(9)
                                 }}>{count}</Text>
                             </View> : null}
-                            <Image source={arrow_right} style={{ height: 14 }} resizeMode={'contain'}/>
+                            <Image source={arrow_right} style={{ height: 12 }} resizeMode={'contain'}/>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -189,7 +182,6 @@ export default class MessageCenterPage extends BasePage {
         }
         return arr;
     };
-
 }
 
 const styles = StyleSheet.create({

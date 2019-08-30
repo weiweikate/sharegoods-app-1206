@@ -1,7 +1,8 @@
 package com.reactnative.ivpusic.imagepicker.picture.lib.tools;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.io.FileInputStream;

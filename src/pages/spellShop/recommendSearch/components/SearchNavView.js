@@ -1,18 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    Image
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../../../comm/res';
-import {
-    MRText as Text, MRTextInput as TextInput
-} from '../../../../components/ui';
+import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
 
 
 const icon_header_back = res.button.icon_header_back;
@@ -70,7 +63,7 @@ export default class SearchNavView extends Component {
                     {!this.state.onFocus && <TouchableOpacity onPress={() => {
                         this.props.navigation.goBack();
                     }} style={{ width: 48, justifyContent: 'center', alignItems: 'center' }}>
-                        <Image source={icon_header_back}/>
+                        <Image source={icon_header_back} style={{ width: 30, height: 30 }}/>
                     </TouchableOpacity>}
                     <View style={[styles.inputView, {
                         marginLeft: this.state.onFocus ? 15 : 0,

@@ -4,12 +4,16 @@ apply plugin: 'com.sensorsdata.analytics.android'
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 project.ext.react = [
-        entryFile: "index.js"
+        entryFile   : "index.js",
+        enableHermes: false  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
 
+
+def enableHermes = project.ext.react.get("enableHermes", false)
 def enableSeparateBuildPerCPUArchitecture = false
+def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -21,8 +25,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 2100
-        versionName "2.1.0"
+        versionCode 2101
+        versionName "2.1.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -32,6 +36,10 @@ android {
     }
     dexOptions {
         jumboMode true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     lintOptions {
         checkReleaseBuilds false
@@ -45,6 +53,14 @@ android {
             universalApk false  // If true, also generate a universal APK
             include "armeabi-v7a", "x86"
         }
+    }
+    packagingOptions {
+        pickFirst '**/armeabi-v7a/libc++_shared.so'
+        pickFirst '**/x86/libc++_shared.so'
+        pickFirst '**/arm64-v8a/libc++_shared.so'
+        pickFirst '**/x86_64/libc++_shared.so'
+        pickFirst '**/x86/libjsc.so'
+        pickFirst '**/armeabi-v7a/libjsc.so'
     }
     sourceSets {
         main {
@@ -78,9 +94,9 @@ android {
             manifestPlaceholders = [
                     JPUSH_PKGNAME : "com.meeruu.sharegoods",
                     // 开发环境
-//                    JPUSH_APPKEY  : "3288c3f3feb6c119e3d88049",
+                    JPUSH_APPKEY  : "3288c3f3feb6c119e3d88049",
                     // 生产环境
-                    JPUSH_APPKEY  : "7fde54543daf045a209a7abf",
+//                    JPUSH_APPKEY  : "7fde54543daf045a209a7abf",
                     JPUSH_CHANNEL : "guanwang", //暂时填写默认值即可.
                     XIAOMI_APPKEY : "",//小米平台注册的appkey
                     XIAOMI_APPID  : "",//小米平台注册的appid
@@ -95,8 +111,11 @@ android {
             ]
         }
         releaseStaging {
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
             signingConfig signingConfigs.release
-            buildConfigField "String", "CODEPUSH_KEY", '"94RNS0GDIN5Nz11zEuDHvFV0NXhY4ksvOXqog"'
+            buildConfigField "String", "CODEPUSH_KEY", '"mkJ7arPkmEFxQcosZQh1EQwsIl2N4ksvOXqog"'
             manifestPlaceholders = [
                     JPUSH_PKGNAME : "com.meeruu.sharegoods",
                     // 生产环境
@@ -120,7 +139,7 @@ android {
             zipAlignEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "CODEPUSH_KEY", '"6ZFHpKAvxdVykH8IMLL3aLRxwwFk4ksvOXqog"'
+            buildConfigField "String", "CODEPUSH_KEY", '"oINKVk36QLNtFykLGUBp6XL9VYJx4ksvOXqog"'
             manifestPlaceholders = [
                     JPUSH_PKGNAME : "com.meeruu.sharegoods",
                     // 生产环境
@@ -157,40 +176,28 @@ sensorsAnalytics {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    configurations {
-        all*.exclude group: 'com.android.support', module: 'support-v13'
-    }
-    debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.3') {
-        exclude(module: 'support-core-utils')
-    }
-    releaseImplementation('com.squareup.leakcanary:leakcanary-android-no-op:1.6.3') {
-        exclude(module: 'support-core-utils')
+
+    if (enableHermes) {
+        def hermesPath = "../../node_modules/hermesvm/android/"
+        debugImplementation files(hermesPath + "hermes-debug.aar")
+        releaseImplementation files(hermesPath + "hermes-release.aar")
+        releaseStagingImplementation files(hermesPath + "hermes-release.aar")
+    } else {
+        implementation jscFlavor
     }
 
-    releaseStagingImplementation('com.squareup.leakcanary:leakcanary-android-no-op:1.6.3') {
-        exclude(module: 'support-core-utils')
-    }
-
-    // Optional, if you use support library fragments:
-    debugImplementation('com.squareup.leakcanary:leakcanary-support-fragment:1.6.3') {
-        exclude(module: 'support-core-utils')
-    }
-
-    api rootProject.ext.dependencies.support
-    api rootProject.ext.dependencies.design
     api rootProject.ext.dependencies.eventbus
     api rootProject.ext.dependencies.zxing
     api rootProject.ext.dependencies.wechat
-    api rootProject.ext.dependencies.recyclerview
     api rootProject.ext.dependencies.lottie
     api rootProject.ext.dependencies.webp
     api rootProject.ext.dependencies.webpAnimated
 
-
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
-    api project(':react-native-video')
+    api project(':@mr_react-native-video')
     api project(':react-native-linear-gradient')
     api project(':react-native-fetch-blob')
+    api project(':@react-native-community_netinfo')
     api project(':commonlib')
     api project(':qrcode')
     api project(':rn_deviceinfo')
@@ -213,4 +220,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.aliyun.video.android:upload:1.5.2'
     implementation 'com.aliyun.dpa:oss-android-sdk:+'
+
 }

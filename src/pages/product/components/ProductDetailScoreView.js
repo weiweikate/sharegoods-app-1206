@@ -127,7 +127,7 @@ export class ProductDetailScoreView extends Component {
                 <NoMoreClick style={styles.tittleView} onPress={this._allScoreAction}>
                     <Text style={styles.countText}>{`晒单(${totalComment || 0})`}</Text>
                     <Text style={styles.moreText}>查看全部</Text>
-                    <Image style={styles.moreImage} source={arrow_right}/>
+                    <Image resizeMode={'contain'} style={styles.moreImage} source={arrow_right}/>
                 </NoMoreClick>
                 {
                     comment ? this._renderContent(comment) : null
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
         fontSize: 12, color: DesignRule.textColor_instruction
     },
     moreImage: {
-        marginLeft: 5
+        marginLeft: 5, height: 10
     },
     /**内容**/
     iconView: {

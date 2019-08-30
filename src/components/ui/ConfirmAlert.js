@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Modal from '../../comm/components/CommModal';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
-import {MRText as Text}from './UIText';
+import { MRText as Text } from './UIText';
 
 // const PANNELHEIGHT = 203;
 // const Animated_Duration = 300; //默认的动画持续时间
@@ -151,7 +147,7 @@ export default class ConfirmAlert extends Component {
                                 width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(16 * 8)) / 2,
                                 height: 32,
                                 borderRadius: 5
-                            }}>
+                            }} activeOpacity={0.7}>
                                 <Text style={{
                                     fontSize: 16,
                                     color: DesignRule.textColor_instruction
@@ -165,7 +161,7 @@ export default class ConfirmAlert extends Component {
                                 width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(16 * 8)) / 2,
                                 height: 32,
                                 borderRadius: 5
-                            }}>
+                            }} activeOpacity={0.7}>
                                 <Text style={{
                                     fontSize: 16,
                                     color: 'white'

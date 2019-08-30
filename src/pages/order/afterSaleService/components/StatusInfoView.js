@@ -150,6 +150,7 @@ export default class StatusInfoView extends React.Component {
                 if (subStatus === WAIT_SENDBACK){
                     return{
                         titleStr: '平台已经同意申请，等待平台发货',
+                        remarkStr: remarks,
                     }
                 }
                 // return{
@@ -220,6 +221,7 @@ export default class StatusInfoView extends React.Component {
                 if (subStatus === WAIT_SENDBACK){
                     return{
                         titleStr: '平台已经同意申请，等待平台发货',
+                        remarkStr: remarks,
                     }
                 }
 

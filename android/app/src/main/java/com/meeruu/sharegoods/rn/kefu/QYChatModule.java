@@ -1,9 +1,11 @@
 package com.meeruu.sharegoods.rn.kefu;
 
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.facebook.react.bridge.Arguments;
@@ -16,11 +18,9 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.utils.AppUtils;
-import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.qiyu.Event;
 import com.meeruu.qiyu.preference.PreferenceUtil;
 import com.qiyukf.unicorn.api.ConsultSource;
-import com.qiyukf.unicorn.api.ProductDetail;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.UnreadCountChangeListener;
 import com.qiyukf.unicorn.api.YSFUserInfo;
@@ -34,6 +34,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+
+import static com.qiyukf.unicorn.api.ProductDetail.Builder;
+import static com.qiyukf.unicorn.api.ProductDetail.Tag;
 
 public class QYChatModule extends ReactContextBaseJavaModule {
 
@@ -217,7 +220,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
         }
         ReadableMap map = params.getMap("data");
         if (map.hasKey("urlString")) {
-            ProductDetail productDetail = new ProductDetail.Builder()
+            Builder productDetail = new Builder()
                     .setShow(1)
                     .setSendByUser(true)
                     .setAlwaysSend(true)
@@ -227,9 +230,14 @@ public class QYChatModule extends ReactContextBaseJavaModule {
                     .setDesc(map.hasKey("desc") ? map.getString("desc") : "")
                     .setPicture(map.hasKey("pictureUrlString") ? map.getString("pictureUrlString") : "")
                     .setUrl(map.getString("urlString"))
-                    .setNote(map.hasKey("note") ? map.getString("note") : "")
-                    .build();
-            source.productDetail = productDetail;
+                    .setNote(map.hasKey("note") ? map.getString("note") : "");
+            if (map.hasKey("tags")) {
+                List<Tag> tagList = JSON.parseArray(map.getArray("tags").toString(), Tag.class);
+                if (tagList != null) {
+                    productDetail.setTags(tagList);
+                }
+            }
+            source.productDetail = productDetail.build();
         }
         /**
          * 请注意： 调用该接口前，应先检查Unicorn.isServiceAvailable()，

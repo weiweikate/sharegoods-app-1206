@@ -2,7 +2,8 @@ package com.reactnative.ivpusic.imagepicker.picture.lib.config;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.StyleRes;
+
+import androidx.annotation.StyleRes;
 
 import com.reactnative.ivpusic.imagepicker.R;
 import com.reactnative.ivpusic.imagepicker.picture.lib.entity.LocalMedia;

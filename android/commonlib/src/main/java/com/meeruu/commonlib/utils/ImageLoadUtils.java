@@ -1,10 +1,12 @@
 package com.meeruu.commonlib.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
 import android.view.ViewTreeObserver;
+
+import androidx.annotation.DrawableRes;
 
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.executors.UiThreadImmediateExecutorService;
@@ -23,6 +25,7 @@ import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.common.RotationOptions;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.image.CloseableBitmap;
 import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.listener.BaseRequestListener;
 import com.facebook.imagepipeline.request.ImageRequest;
@@ -251,7 +254,6 @@ public class ImageLoadUtils {
             loadRoundImage(uri, view, radius);
             return;
         }
-
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -577,7 +579,10 @@ public class ImageLoadUtils {
             requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
         }
         ImageRequest request = requestBuilder.build();
-        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setRoundingParams(RoundingParams.fromCornersRadius(radius)).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
+        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources())
+                .setRoundingParams(RoundingParams.fromCornersRadius(radius)).setPlaceholderImage(R.drawable.bg_app_img)
+                .setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
         DraweeController controller = Fresco.newDraweeControllerBuilder().setImageRequest(request).setOldController(view.getController()).build();
         view.setHierarchy(hierarchy);
         view.setController(controller);
@@ -884,5 +889,31 @@ public class ImageLoadUtils {
 
     public static void resumeLoadImage() {
         Fresco.getImagePipeline().resume();
+    }
+
+    public static Bitmap gitBitmapFromCache(String url) {
+        Uri uri = Uri.parse(url);
+        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+        ImageRequest imageRequest = ImageRequest.fromUri(uri);
+        DataSource<CloseableReference<CloseableImage>> dataSource =
+                imagePipeline.fetchImageFromBitmapCache(imageRequest, CallerThreadExecutor.getInstance());
+        try {
+            CloseableReference<CloseableImage> imageCloseableReference = dataSource.getResult();
+            if (imageCloseableReference != null) {
+                try {
+                    CloseableBitmap image = (CloseableBitmap) imageCloseableReference.get();
+                    Bitmap bmp = image.getUnderlyingBitmap();
+                    if (bmp != null) {
+                        return bmp;
+                    }
+                    return null;
+                } finally {
+                    CloseableReference.closeSafely(imageCloseableReference);
+                }
+            }
+        } finally {
+            dataSource.close();
+        }
+        return null;
     }
 }

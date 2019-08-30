@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
@@ -13,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
 
 import com.reactnative.ivpusic.imagepicker.R;
 import com.reactnative.ivpusic.imagepicker.picture.lib.adapter.SimpleFragmentAdapter;
@@ -34,9 +34,7 @@ import com.reactnative.ivpusic.imagepicker.picture.lib.tools.VoiceUtils;
 import com.reactnative.ivpusic.imagepicker.picture.lib.widget.PreviewViewPager;
 import com.yalantis.ucrop.UCrop;
 
-
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,7 +114,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements View.
         tv_edit = findViewById(R.id.tv_edit);
         if (!config.enableCrop) {
             tv_edit.setVisibility(View.INVISIBLE);
-        }else {
+        } else {
             tv_edit.setOnClickListener(this);
         }
         tv_img_num.setSelected(config.checkNumMode ? true : false);
@@ -422,7 +420,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements View.
 //                }
 
                 LocalMedia image1 = images.get(viewPager.getCurrentItem());
-                File file = new File(getCacheDir(), Md5Utils.md5(image1.getPath()) +String.valueOf(System.currentTimeMillis())+ ".jpg");
+                File file = new File(getCacheDir(), Md5Utils.md5(image1.getPath()) + String.valueOf(System.currentTimeMillis()) + ".jpg");
                 Intent intent = new Intent(PicturePreviewActivity.this, IMGEditActivity.class);
                 intent.putExtra(IMGEditActivity.EXTRA_IMAGE_URI, Uri.fromFile(new File(image1.getPath())));
                 intent.putExtra(EXTRA_IMAGE_SAVE_PATH, file.getAbsolutePath());
@@ -487,12 +485,12 @@ public class PicturePreviewActivity extends PictureBaseActivity implements View.
                         image.setCut(true);
                         images.set(viewPager.getCurrentItem(), image);
                         adapter.notifyDataSetChanged();
-                        refreshPreActivity(oldPath,path);
+                        refreshPreActivity(oldPath, path);
 
-                        for(int i = 0;i<selectImages.size();i++){
+                        for (int i = 0; i < selectImages.size(); i++) {
                             LocalMedia selectImage = selectImages.get(i);
-                            if(TextUtils.equals(oldPath,selectImage.getPath())){
-                                selectImages.set(i,image);
+                            if (TextUtils.equals(oldPath, selectImage.getPath())) {
+                                selectImages.set(i, image);
                                 break;
                             }
                         }
@@ -509,7 +507,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements View.
 
 
     private void refreshPreActivity(String oldPath, String path) {
-        RefreshSelector obj = new RefreshSelector(oldPath,path);
+        RefreshSelector obj = new RefreshSelector(oldPath, path);
         RxBus.getDefault().post(obj);
     }
 

@@ -76,7 +76,7 @@ export default class ListFooter extends Component {
                                 inputRange: [0, 1],
                                 outputRange: ['0deg', '360deg']
                             })
-                        }]
+                        }], width: 15, height: 15
                     }} source={LoadingImg}/>
                     <Text style={{ marginLeft: 8, color: '#B5B5B5', fontSize: 12 }}
                           allowFontScaling={false}>加载更多中...</Text>
@@ -89,7 +89,7 @@ export default class ListFooter extends Component {
         if (errorDesc) {
             errorDesc = typeof errorDesc === 'string' ? errorDesc : '未知错误~';
             return (
-                <TouchableOpacity style={styles.container} onPress={this._clickError}>
+                <TouchableOpacity style={styles.container} onPress={this._clickError} activeOpacity={0.7}>
                     <Text numberOfLines={2} style={styles.title} allowFontScaling={false}>
                         {`${errorDesc}\n点击重新加载`}
                     </Text>

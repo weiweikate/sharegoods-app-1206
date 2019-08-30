@@ -7,14 +7,14 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.reactnative.ivpusic.imagepicker.cameralibrary.JCameraView;
 import com.reactnative.ivpusic.imagepicker.cameralibrary.listener.ClickListener;
@@ -45,9 +45,9 @@ public class CameraActivity extends AppCompatActivity {
         jCameraView = (JCameraView) findViewById(R.id.jcameraview);
         //设置视频保存路径
         jCameraView.setSaveVideoPath(Environment.getExternalStorageDirectory().getPath() + File.separator + "JCamera");
-        if(PickerModule.canVideo){
+        if (PickerModule.canVideo) {
             jCameraView.setFeatures(JCameraView.BUTTON_STATE_BOTH);
-        }else {
+        } else {
             jCameraView.setFeatures(JCameraView.BUTTON_STATE_ONLY_CAPTURE);
         }
         jCameraView.setMediaQuality(JCameraView.MEDIA_QUALITY_MIDDLE);

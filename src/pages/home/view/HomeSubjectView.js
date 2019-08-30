@@ -49,7 +49,7 @@ const GoodItems = ({ img, title, money, press }) => {
 const MoreItem = ({ press }) => <TouchableOpacity style={styles.moreView} onPress={() => {
     press && press();
 }}>
-    <Image source={res.home_right}/>
+    <Image source={res.home_right} style={{ width: 18, height: 18 }}/>
     <View style={{ height: px2dp(10) }}/>
     <Text style={styles.seeMore} allowFontScaling={false}>查看更多</Text>
 </TouchableOpacity>;

@@ -2,17 +2,16 @@ package com.meeruu.statusbar;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,16 +62,6 @@ class RequestManagerRetriever implements Handler.Callback {
         return getSupportFragment(fragment.getChildFragmentManager(), mTag + fragment.toString()).get(fragment);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public ImmersionBar get(android.app.Fragment fragment) {
-        checkNotNull(fragment, "fragment is null");
-        checkNotNull(fragment.getActivity(), "fragment.getActivity() is null");
-        if (fragment instanceof android.app.DialogFragment) {
-            checkNotNull(((android.app.DialogFragment) fragment).getDialog(), "fragment.getDialog() is null");
-        }
-        return getFragment(fragment.getChildFragmentManager(), mTag + fragment.toString()).get(fragment);
-    }
-
     public ImmersionBar get(Activity activity, Dialog dialog) {
         checkNotNull(activity, "activity is null");
         checkNotNull(dialog, "dialog is null");
@@ -93,7 +82,7 @@ class RequestManagerRetriever implements Handler.Callback {
                 fragment.get(activity, dialog).destroy();
             }
         } else {
-            RequestManagerFragment fragment = getFragment(activity.getFragmentManager(),mTag +  dialog.toString(), true);
+            RequestManagerFragment fragment = getFragment(activity.getFragmentManager(), mTag + dialog.toString(), true);
             if (fragment != null) {
                 fragment.get(activity, dialog).destroy();
             }

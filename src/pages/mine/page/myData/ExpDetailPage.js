@@ -93,6 +93,9 @@ export default class ExpDetailPage extends BasePage {
     };
 
     componentDidMount() {
+        if (!this.params.experience && !this.params.levelExperience) {
+            this.getUserExperience();
+        }
         this.onRefresh();
     }
 
@@ -386,6 +389,24 @@ export default class ExpDetailPage extends BasePage {
         this.currentPage = 1;
         this.getDataFromNetwork();
     };
+
+    getUserExperience = () => {
+        // 当前等级
+        MineApi.getUserLevelInfo().then(response => {
+            console.log(response);
+            // console.warn(JSON.stringify(response,null,4));
+            const {data} = response;
+            this.setState({
+                experience: data.experience || 0,
+                levelExperience: data.levelExperience || 0,
+            });
+        }).catch(err => {
+            if (err.code === 10009) {
+                this.gotoLoginPage();
+            }
+        });
+    };
+
     onLoadMore = () => {
         if (!this.state.isEmpty) {
             this.currentPage++;

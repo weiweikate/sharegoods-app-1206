@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center', width: px2dp(54)
     },
     leftImage: {
-        marginBottom: 1
+        marginBottom: 1, width: 24, height: 24
     },
     leftText: {
         fontSize: 11, color: DesignRule.textColor_secondTitle

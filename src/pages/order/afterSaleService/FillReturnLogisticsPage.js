@@ -117,7 +117,7 @@ export default class FillReturnLogisticsPage extends BasePage {
                             <UIText
                                 style={this.state.logisticsCompanyName ? styles.item_detail : styles.item_placeholder}
                                 value={this.state.logisticsCompanyName || '请选择物流公司'}/>
-                            <UIImage source={arrow_right} style={{ height: 9, width: 9, marginRight: 20 }}/>
+                            <UIImage resizeMode={'contain'} source={arrow_right} style={{ height: 10, marginRight: 20 }}/>
                         </View>
                     </TouchableWithoutFeedback>
                 </ScrollView>

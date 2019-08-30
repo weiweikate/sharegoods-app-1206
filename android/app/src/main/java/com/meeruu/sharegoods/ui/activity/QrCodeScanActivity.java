@@ -2,7 +2,8 @@ package com.meeruu.sharegoods.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.permissions.Permission;

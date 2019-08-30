@@ -14,7 +14,7 @@ import DesignRule from '../../../constants/DesignRule';
 import productRes from '../res/product';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import HTML from 'react-native-render-html';
+import HTML from '@mr/react-native-render-html';
 import SelectionPage from '../SelectionPage';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
@@ -198,7 +198,7 @@ export class XpDetailPage extends BasePage {
                 quantity: amount,
                 productCode: this.xpDetailModel.selectedSpuCode,
                 activityCode: '',
-                batchNo: 1,
+                batchNo: 1
             });
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
@@ -227,14 +227,14 @@ export class XpDetailPage extends BasePage {
             <View style={styles.productPramsView}>
                 <TouchableOpacity style={styles.pramsBtn} onPress={this._activityAction}>
                     <Text style={styles.pramsText}>活动规则</Text>
-                    <Image style={styles.arrowImg} source={arrow_right_black}/>
+                    <Image resizeMode={'contain'} style={styles.arrowImg} source={arrow_right_black}/>
                 </TouchableOpacity>
                 {
                     pParamList.length !== 0 ? <View>
                         <View style={styles.lineView}/>
                         <TouchableOpacity style={styles.pramsBtn} onPress={this._paramsAction}>
                             <Text style={styles.pramsText}>参数信息</Text>
-                            <Image style={styles.arrowImg} source={arrow_right_black}/>
+                            <Image resizeMode={'contain'} style={styles.arrowImg} source={arrow_right_black}/>
                         </TouchableOpacity>
                     </View> : null
                 }
@@ -360,7 +360,8 @@ const styles = StyleSheet.create({
         fontSize: 13, color: DesignRule.textColor_mainTitle
     },
     arrowImg: {
-        marginRight: 15
+        marginRight: 15,
+        height: 12
     },
     lineView: {
         backgroundColor: DesignRule.lineColor_inWhiteBg,

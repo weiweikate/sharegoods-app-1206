@@ -16,7 +16,6 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import { netState } from '@mr/rn-request';
 import res from './comm/res';
 import bridge from './utils/bridge';
-import Toast from './utils/bridge';
 import DesignRule from './constants/DesignRule';
 import RouterMap, { GoToTabItem, replaceRoute, routeNavigate, routePop, routePush } from './navigation/RouterMap';
 
@@ -82,24 +81,22 @@ export default class BasePage extends Component {
                     }} allowFontScaling={false}>
                     请检查你的网络
                 </Text>
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity activeOpacity={0.7} onPress={() => {
                     if (netState.isConnected) {
                         this.viewDidLoad = true;
                         this.$refreshData();
                         this.setState({ viewDidLoad: true });//为了触发render
                     }
-                }}
-                                  style={{
-                                      height: 36,
-                                      width: 115,
-                                      borderRadius: 18,
-                                      borderColor: DesignRule.bgColor_btn,
-                                      borderWidth: DesignRule.lineHeight * 1.5,
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                      marginTop: 20
-                                  }}
-                >
+                }} style={{
+                    height: 36,
+                    width: 115,
+                    borderRadius: 18,
+                    borderColor: DesignRule.bgColor_btn,
+                    borderWidth: DesignRule.lineHeight * 1.5,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 20
+                }}>
                     <Text style={{
                         color: DesignRule.bgColor_btn,
                         fontSize: DesignRule.fontSize_mediumBtnText
@@ -243,11 +240,10 @@ export default class BasePage extends Component {
     $toastShow = (title) => {
         bridge.$toast(title);
     };
-    $loadingShow = (msg, timeout = 0, callback = () => {
-    }) => {
-        Toast.showLoading(msg, timeout, callback());
+    $loadingShow = (msg, timeout = 0) => {
+        bridge.showLoading(msg, timeout);
     };
-    $loadingDismiss = (callBack) => {
-        Toast.hiddenLoading(callBack);
+    $loadingDismiss = () => {
+        bridge.hiddenLoading();
     };
 }

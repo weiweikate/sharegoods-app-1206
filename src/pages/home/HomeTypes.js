@@ -31,7 +31,8 @@ export const homeType = {
     shopBanner: 23,//拼店详情底部banner
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
-    custom_goods: 'WIDGET-GOODS'
+    custom_goods: 'WIDGET-GOODS',
+    placeholder: 'placeholder',
 };
 
 export const homeLinkType = {
@@ -104,8 +105,20 @@ export const ContentType = {
 }
 
 
-export function topicAdOnPress(linkType, linkValue, p, title) {
+export function topicAdOnPress(data, item, p, title) {
     let p2 = {}
+    let linkValues = item.linkValue;
+    let linkType = item.linkType;
+    let linkValue = ''
+    if (  linkValues ){
+        if (linkValues.length > 1){
+            linkType = 99;
+        }
+        if (linkValues.length > 0){
+            linkValue = linkValues[0];
+        }
+
+    }
     switch (linkType){
         case 1:
             p2.contentType = 1
@@ -131,6 +144,9 @@ export function topicAdOnPress(linkType, linkValue, p, title) {
             p2.contentType = 6
             p2.contentKey = '/spike'
             routePush('HtmlPage', {uri: '/spike'})
+            break
+        case 99:
+            routePush('HtmlPage', {uri: `/search?c=${data.code + item.linkId}`})
             break
     }
     if (p){

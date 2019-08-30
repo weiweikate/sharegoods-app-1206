@@ -74,14 +74,17 @@ export class AddCapacityPricePage extends BasePage {
             expandId: id,
             tokenCoinCount: amount
         }).then((data) => {
-            const { orderNo, price } = data.data || {};
+            const { orderNo, price, payVersion, payCallBackUrl, paySign } = data.data || {};
             this.$navigate(RouterMap.PaymentPage, {
                 platformOrderNo: orderNo,
                 amounts: price,
                 orderProductList: [{ productName: '拼店扩容' }],
                 bizType: 1,
                 modeType: 1,
-                oneCoupon: amount
+                oneCoupon: amount,
+                paySignResult: {
+                    payAmount: price, paySign, payVersion, payCallBackUrl
+                }
             });
         }).catch((e) => {
             this.$toastShow(e.msg);

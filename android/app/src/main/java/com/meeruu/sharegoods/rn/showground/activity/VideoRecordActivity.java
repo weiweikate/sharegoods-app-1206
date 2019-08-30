@@ -9,10 +9,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import com.aliyun.common.utils.MySystemParams;
 import com.aliyun.recorder.supply.AliyunIRecorder;
@@ -238,8 +239,8 @@ public class VideoRecordActivity extends Activity {
         videoRecordView.setCompleteListener(new AliyunSVideoRecordView.OnFinishListener() {
             @Override
             public void onComplete(String path, int duration) {
-                Intent intent = new Intent(VideoRecordActivity.this,VideoPlayActivity.class);
-                intent.putExtra("video_path",path);
+                Intent intent = new Intent(VideoRecordActivity.this, VideoPlayActivity.class);
+                intent.putExtra("video_path", path);
                 startActivity(intent);
             }
         });
@@ -279,14 +280,14 @@ public class VideoRecordActivity extends Activity {
             }
         }
 
-        if(requestCode == result_code){
+        if (requestCode == result_code) {
             List<LocalMedia> list = PictureSelector.obtainMultipleResult(data);
-            if(list == null || list.size() == 0){
+            if (list == null || list.size() == 0) {
                 return;
             }
             LocalMedia localMedia = list.get(0);
             ShowVideoEvent showVideoEvent = new ShowVideoEvent();
-            ImageBean cover = VideoCoverUtils.getVideoThumb(this,localMedia.getPath());
+            ImageBean cover = VideoCoverUtils.getVideoThumb(this, localMedia.getPath());
             showVideoEvent.setHeight(cover.getHeight());
             showVideoEvent.setWidth(cover.getWidth());
             showVideoEvent.setCover(cover.getPath());
@@ -301,7 +302,7 @@ public class VideoRecordActivity extends Activity {
         super.onRestart();
         if (isCalling) {
 //            phoningToast = FixedToastUtils.show(this, getResources().getString(R.string.alivc_phone_state_calling));
-              ToastUtils.showToast( getResources().getString(R.string.alivc_phone_state_calling));
+            ToastUtils.showToast(getResources().getString(R.string.alivc_phone_state_calling));
         }
     }
 
@@ -315,10 +316,11 @@ public class VideoRecordActivity extends Activity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onVideoComplete(ShowVideoEvent event) {
-       finish();
+        finish();
     }
 
     public static final int PERMISSION_REQUEST_CODE = 1000;
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -346,6 +348,7 @@ public class VideoRecordActivity extends Activity {
 
     //系统授权设置的弹框
     AlertDialog openAppDetDialog = null;
+
     private void showPermissionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getString(R.string.app_name) + "需要访问 \"相册\"、\"摄像头\" 和 \"外部存储器\",否则会影响绝大部分功能使用, 请到 \"应用信息 -> 权限\" 中设置！");

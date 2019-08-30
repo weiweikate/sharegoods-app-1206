@@ -1,30 +1,28 @@
 package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
-import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.CollectionAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.event.GoCollectionEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.CollectionPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
@@ -34,7 +32,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
+public class ShowCollectionView implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
     private EventDispatcher eventDispatcher;
     private Handler handler;
     private WeakReference<View> showgroundView;
@@ -51,7 +49,7 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
     private int deleteIndex = -1;
 
 
-    public ViewGroup getShowCollectionView(ReactContext reactContext,DynamicInterface dynamicInterface){
+    public ViewGroup getShowCollectionView(ReactContext reactContext, DynamicInterface dynamicInterface) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         this.dynamicInterface = dynamicInterface;
         LayoutInflater inflater = LayoutInflater.from(reactContext);
@@ -108,9 +106,9 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(dynamicInterface != null){
-                   dynamicInterface.goCollection();
-               }
+                if (dynamicInterface != null) {
+                    dynamicInterface.goCollection();
+                }
             }
         });
         adapter.setEmptyView(emptyView);
@@ -127,7 +125,7 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
             public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
                 if (data != null && dynamicInterface != null) {
-                    dynamicInterface.onItemPress(data.get(position),position,true,true);
+                    dynamicInterface.onItemPress(data.get(position), position, true, true);
                 }
             }
         });
@@ -252,7 +250,7 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
                             if (resourceBean.getType() == 2) {
                                 resolveResource.add(resourceBean.getBaseUrl());
                             }
-                            if(resourceBean.getType() == 5){
+                            if (resourceBean.getType() == 5) {
                                 bean.setVideoCover(resourceBean.getBaseUrl());
                                 bean.setCoverWidth(resourceBean.getWidth());
                                 bean.setCoverHeight(resourceBean.getHeight());

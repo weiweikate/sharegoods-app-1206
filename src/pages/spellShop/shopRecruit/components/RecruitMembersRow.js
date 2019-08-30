@@ -4,24 +4,16 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    View,
-    Image,
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import cRes from '../../../../comm/res';
 import AvatarImage from '../../../../components/ui/AvatarImage';
+import { MRText as Text } from '../../../../components/ui';
 
 const PeopleImg = res.shopRecruit.dy_07;
 const arrowImg = cRes.button.arrow_right_black;
-import {
-    MRText as Text
-} from '../../../../components/ui';
 
 
 export default class AssistantRow extends Component {
@@ -38,7 +30,7 @@ export default class AssistantRow extends Component {
                 <Image style={styles.topIcon} source={PeopleImg}/>
                 <Text style={styles.topTitle} allowFontScaling={false}>{'店铺成员'}</Text>
                 <Text style={styles.topDescText} allowFontScaling={false}>{`${userCount || 0}人`}</Text>
-                {myStore ? <Image style={styles.topArrow} source={arrowImg}/> : null}
+                {myStore ? <Image resizeMode={'contain'} style={styles.topArrow} source={arrowImg}/> : null}
             </TouchableOpacity>
             <View style={styles.dash}/>
             <ScrollView bounces={false} showsHorizontalScrollIndicator={false}>
@@ -78,7 +70,7 @@ const styles = StyleSheet.create({
     },
     topIcon: {
         marginLeft: 23,
-        marginRight: 8
+        marginRight: 8, width: 14, height: 12
     },
     topTitle: {
         fontSize: 15,
@@ -93,7 +85,8 @@ const styles = StyleSheet.create({
     },
     topArrow: {
         marginLeft: 5,
-        marginRight: 21
+        marginRight: 21,
+        height: 10
     },
     dash: {
         width: ScreenUtils.width,

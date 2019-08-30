@@ -20,11 +20,6 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
-import android.support.annotation.StringRes;
-import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
 import android.util.SparseArray;
 import android.view.View;
@@ -37,6 +32,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -87,7 +88,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     private int getClickPosition() {
-        if (getLayoutPosition()>=adapter.getHeaderLayoutCount()){
+        if (getLayoutPosition() >= adapter.getHeaderLayoutCount()) {
             return getLayoutPosition() - adapter.getHeaderLayoutCount();
         }
         return 0;
@@ -376,7 +377,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
      * or if you can use  recyclerView.addOnItemTouch(listerer)  wo also support this menthod
      */
     @SuppressWarnings("unchecked")
-    public BaseViewHolder addOnClickListener(@IdRes final int ...viewIds) {
+    public BaseViewHolder addOnClickListener(@IdRes final int... viewIds) {
         for (int viewId : viewIds) {
             childClickViewIds.add(viewId);
             final View view = getView(viewId);
@@ -404,7 +405,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
      * @param viewIds add the child views id   can support childview click
      * @return
      */
-    public BaseViewHolder setNestView(@IdRes int ... viewIds) {
+    public BaseViewHolder setNestView(@IdRes int... viewIds) {
         for (int viewId : viewIds) {
             nestViews.add(viewId);
         }
@@ -423,7 +424,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
      * or if you can use  recyclerView.addOnItemTouch(listerer)  wo also support this menthod
      */
     @SuppressWarnings("unchecked")
-    public BaseViewHolder addOnLongClickListener(@IdRes final int ... viewIds) {
+    public BaseViewHolder addOnLongClickListener(@IdRes final int... viewIds) {
         for (int viewId : viewIds) {
             itemChildLongClickViewIds.add(viewId);
             final View view = getView(viewId);
@@ -569,14 +570,15 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         }
         return this;
     }
+
     /**
      * Set the enabled state of this view.
      *
-     * @param viewId  The view id.
+     * @param viewId The view id.
      * @param enable The checked status;
      * @return The BaseViewHolder for chaining.
      */
-    public BaseViewHolder setEnabled(@IdRes int viewId,boolean enable) {
+    public BaseViewHolder setEnabled(@IdRes int viewId, boolean enable) {
         View view = getView(viewId);
         view.setEnabled(enable);
         return this;

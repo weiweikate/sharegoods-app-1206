@@ -618,7 +618,7 @@ export default class ReleaseNotesPage extends BasePage {
                         <MRText style={styles.tagPlaceholder}>
                             添加活动 获得更多曝光
                         </MRText>
-                        <Image source={arrow_right_black} style={{ width: px2dp(10), height: px2dp(16) }}/>
+                        <Image resizeMode={'contain'} source={arrow_right_black} style={{ height: px2dp(12) }}/>
                     </View>
                 </TouchableWithoutFeedback>
             );
@@ -635,7 +635,7 @@ export default class ReleaseNotesPage extends BasePage {
                         );
                     })}
                     <View style={{ flex: 1 }}/>
-                    <Image source={arrow_right_black} style={{ width: px2dp(10), height: px2dp(16) }}/>
+                    <Image resizeMode={'contain'} source={arrow_right_black} style={{ height: px2dp(12) }}/>
                 </View>
             </TouchableWithoutFeedback>
         );

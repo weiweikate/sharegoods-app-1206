@@ -72,10 +72,6 @@ export default class XiuDouResultModal extends React.Component {
                                              defaultEmptyText={'还没内容哦'}
                                              sizeKey={'pageSize'}
                                              pageKey={'pageIndex'}
-                                // handleRequestResult={(data)=> {
-                                //     data = data.data.data;
-                                //     return [...data,...data,...data,...data]
-                                // }}
                             />
                         </View>
                     </View>
@@ -95,7 +91,7 @@ export default class XiuDouResultModal extends React.Component {
                         justifyContent: 'center'}}
                                       onPress={()=>{this.close()}}
                     >
-                        <Image source={res.button.btn_close_white}/>
+                        <Image source={res.button.btn_close_white} style={{width: 30,height:30}}/>
                     </TouchableOpacity>
                 </ImageBackground>
             </View>
