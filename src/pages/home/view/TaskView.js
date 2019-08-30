@@ -502,8 +502,7 @@ export default class TaskView extends React.Component {
         if (this.model.type === 'home') {
             return (
                 <View style={[{
-                    width: ScreenUtils.width,
-                    minHeight: 100
+                    width: ScreenUtils.width
                 }, this.props.style]}>
                     <View style={{
                         width: ScreenUtils.width,
@@ -537,7 +536,7 @@ export default class TaskView extends React.Component {
         return (
             <View style={[{
                 width: ScreenUtils.width,
-                paddingHorizontal: 15, minHeight: 100
+                paddingHorizontal: 15
             }, this.props.style]}>
                 <View style={{
                     backgroundColor: 'white', borderRadius: 8,
