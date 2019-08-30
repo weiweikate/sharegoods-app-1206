@@ -323,6 +323,7 @@ class HomeModule {
                 });
                 this.goodsOtherLen = temp.length;
                 this.homeList = [...temp, ...home];
+                this.goods = home;
                 this.isRefreshing = false;
                 this.page += 1;
                 this.errorMsg = '';

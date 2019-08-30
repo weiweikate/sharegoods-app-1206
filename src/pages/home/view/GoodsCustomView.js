@@ -360,9 +360,8 @@ export default class GoodsCustomView extends React.Component {
         let style = {
             marginLeft: autoSizeWidth(5)}
         let textStyle = {
-            fontSize: autoSizeWidth(12),
+            fontSize: autoSizeWidth(10),
             color: DesignRule.mainColor,
-            marginLeft: 4,
             height: autoSizeWidth(14),
         }
         switch (layout){
@@ -370,6 +369,7 @@ export default class GoodsCustomView extends React.Component {
                 style.marginTop = autoSizeWidth(5)
                 style.flexDirection = 'row';
                 style.alignItems = 'center';
+                textStyle.marginLeft = 4;
                 break
             case 3:
                 textStyle.fontSize = autoSizeWidth(10)

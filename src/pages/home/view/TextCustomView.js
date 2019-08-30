@@ -50,13 +50,11 @@ export default class TextCustomView extends React.Component {
         return (
             <TouchableWithoutFeedback onPress={() => this.onPress(data)}>
                 <View style={{
-                    backgroundColor, marginHorizontal: autoSizeWidth(15),
-                    width: ScreenUtils.width - autoSizeWidth(30),
-                    borderRadius: 5,
-                    overflow: 'hidden',
+                    backgroundColor,
+                    width: ScreenUtils.width,
                     justifyContent: 'center',
                     height: data.itemHeight || 0,
-                    paddingHorizontal: autoSizeWidth(10)
+                    paddingHorizontal: autoSizeWidth(15)
 
                 }}>
                     {data.text ?
