@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     indexView: {
         position: 'absolute',
         bottom: 5,
-        left: 0,
+        left: px2dp(15),
         width: ScreenUtils.width - px2dp(30),
         flexDirection: 'row',
         justifyContent: 'center'
