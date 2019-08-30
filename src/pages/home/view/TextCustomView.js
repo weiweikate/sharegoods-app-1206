@@ -15,12 +15,10 @@ import React from 'react';
 
 import {
     View,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Text
 } from 'react-native';
 
-import {
-    MRText
-} from '../../../components/ui';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { topicAdOnPress } from '../HomeTypes';
@@ -56,12 +54,13 @@ export default class TextCustomView extends React.Component {
                     width: ScreenUtils.width - autoSizeWidth(30),
                     borderRadius: 5,
                     overflow: 'hidden',
-                    padding: autoSizeWidth(10)
+                    paddingVertical: autoSizeWidth(10),
+                    height: data.itemHeight
                 }}>
                     {data.text ?
-                        <MRText style={{ textAlign, color, fontSize: autoSizeWidth(14) }}>{data.text}</MRText> : null}
-                    {data.subText ? <MRText
-                        style={{ textAlign, color, fontSize: autoSizeWidth(12) }}>{data.subText}</MRText> : null}
+                        <Text style={{ textAlign, color, fontSize: autoSizeWidth(14) }}>{data.text}</Text> : null}
+                    {data.subText ? <Text
+                        style={{ textAlign, color, fontSize: autoSizeWidth(12) }}>{data.subText}</Text> : null}
                 </View>
             </TouchableWithoutFeedback>
         );

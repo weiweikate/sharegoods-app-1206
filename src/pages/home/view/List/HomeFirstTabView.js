@@ -115,12 +115,10 @@ export default class HomeFirstTabView extends Component {
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
                 break;
+            case homeType.custom_text:
             case homeType.custom_goods:
             case homeType.custom_imgAD:
                 dim.height = type.itemHeight;
-                break;
-            case homeType.custom_text:
-                dim.height = 1;
                 break;
             case  homeType.placeholder:
                 dim.height = 1;

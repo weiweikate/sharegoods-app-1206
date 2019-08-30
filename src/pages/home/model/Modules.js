@@ -16,7 +16,9 @@ import { ImageAdViewGetHeight } from '../view/TopicImageAdView';
 import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import bridge from '../../../utils/bridge';
 
+const autoSizeWidth = ScreenUtils.autoSizeWidth;
 const kHomeTopTopic = '@home/topTopic';
 const kHomeBottomTopic = '@home/bottomTopic';
 const kHomeType = '@home/type';
@@ -431,7 +433,7 @@ class HomeModule {
                 }
                 HomeApi.getCustomTopic({ topicCode: code, page: 1, pageSize: 10 }).then((data) => {
                     if (isTop) {
-                        this.topTopice = this.handleData(data);
+                        this.topTopice = this.handleData(data , isTop);
                         store.save(kHomeTopTopic, this.topTopice);
                     } else {
                         this.bottomTopice = this.handleData(data);
@@ -457,21 +459,24 @@ class HomeModule {
 
     }
 
-    handleData = (data) => {
+    @action handleData = (data, isTop) => {
         if (!data.data || !data.data.widgets){
             return [];
         }
         data = data.data.widgets.data || [];
+        data = [...data];
+        let p = []
         let count = data.length;
-        return data.map((item, index) => {
+        for (let index = 0; index < count; index ++){
+            let item = data[index];
             if (item.type === homeType.custom_goods) {
                 item.itemHeight = GoodsCustomViewGetHeight(item);
                 item.marginBottom = ScreenUtils.autoSizeWidth(0);
                 if (count-1 > index) {
-                   let type = data[index+1].type;
-                   if (type  === homeType.custom_imgAD || type === homeType.custom_text) {
-                       item.marginBottom = ScreenUtils.autoSizeWidth(15);
-                   }
+                    let type = data[index+1].type;
+                    if (type  === homeType.custom_imgAD || type === homeType.custom_text) {
+                        item.marginBottom = ScreenUtils.autoSizeWidth(15);
+                    }
                 }
                 item.itemHeight += item.marginBottom;
             }
@@ -479,8 +484,38 @@ class HomeModule {
             if (item.type === homeType.custom_imgAD) {
                 item.itemHeight = ImageAdViewGetHeight(item);
             }
-            return item;
-        });
+
+            if (item.type === homeType.custom_text) {
+
+                item.detailHeight = 0;
+                item.textHeight = 0;
+                if (item.text) {
+                    p.push(bridge.getTextHeightWithWidth(item.text, autoSizeWidth(14), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
+                        item.textHeight = r.height;
+                        item.itemHeight = r.height + item.detailHeight+ autoSizeWidth(20)
+                    }));
+                }
+                if (item.subText) {
+                    p.push(bridge.getTextHeightWithWidth(item.subText, autoSizeWidth(12), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
+                        item.detailHeight = r.height;
+                        item.itemHeight = r.height + item.textHeight + autoSizeWidth(20)
+                    }));
+                }
+            }
+        }
+
+
+        Promise.all(p).then(()=> {
+            if (isTop) {
+                this.topTopice = data;
+                store.save(kHomeTopTopic, this.topTopice);
+            } else {
+                this.bottomTopice = data;
+                store.save(kHomeBottomTopic, this.bottomTopice);
+            }
+            this.homeList = this.getHomeListData(true);
+        })
+
     };
 }
 

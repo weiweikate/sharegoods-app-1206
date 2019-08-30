@@ -216,5 +216,8 @@ export default {
     isApkExist: (version) => {
         return NativeModules.commModule.apkExist(version);
     },
-    getAPKChannel: NativeModules.commModule.getAPKChannel
+    getAPKChannel: NativeModules.commModule.getAPKChannel,
+    getTextHeightWithWidth: (str, fontSize, width)=> {
+        return NativeModules.commModule.getTextHeightWithWidth(str, fontSize, width)
+    }
 };
