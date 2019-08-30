@@ -55,14 +55,14 @@ export default class TextCustomView extends React.Component {
                     borderRadius: 5,
                     overflow: 'hidden',
                     justifyContent: 'center',
-                    height: data.itemHeight,
+                    height: data.itemHeight || 0,
                     paddingHorizontal: autoSizeWidth(10)
 
                 }}>
                     {data.text ?
-                        <Text style={{ textAlign, color, fontSize: autoSizeWidth(14) }}>{data.text}</Text> : null}
+                        <Text  style={{includeFontPadding: false, textAlign, color, fontSize: autoSizeWidth(14) }}>{data.text}</Text> : null}
                     {data.subText ? <Text
-                        style={{ textAlign, color, fontSize: autoSizeWidth(12), marginTop: 3 }}>{data.subText}</Text> : null}
+                        style={{includeFontPadding: true, textAlign, color, fontSize: autoSizeWidth(12), marginTop: 3 }}>{data.subText}</Text> : null}
                 </View>
             </TouchableWithoutFeedback>
         );

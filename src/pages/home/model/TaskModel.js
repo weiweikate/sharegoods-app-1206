@@ -237,10 +237,10 @@ class TaskModel {
             } else {
                 homeHeight = px2dp(48 + 83 + 10 + 30);
             }
-        }
 
-        if (this.type === 'home'){
-            homeHeight += px2dp(20);
+            if (this.type === 'home'){
+                homeHeight += px2dp(40);
+            }
         }
         if (homeHeight !== this.homeHeight) {
             this.homeHeight = homeHeight;

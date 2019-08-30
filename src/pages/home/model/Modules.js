@@ -489,6 +489,7 @@ class HomeModule {
 
                 item.detailHeight = 0;
                 item.textHeight = 0;
+                item.itemHeight = 0;
                 if (item.text) {
                     p.push(bridge.getTextHeightWithWidth(item.text, autoSizeWidth(14), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
                         item.textHeight = r.height;

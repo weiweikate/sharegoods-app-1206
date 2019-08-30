@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         paddingRight: px2dp(16),
         paddingTop: px2dp(8),
         justifyContent: 'space-between',
-        width: ScreenUtils.width
+        width: ScreenUtils.width,
     },
     item: {
         width: px2dp(56),
