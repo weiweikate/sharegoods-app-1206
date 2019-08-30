@@ -1,23 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    Image
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 // import ViewPager from '../../../components/ui/ViewPager';
 import ActivityView from './ActivityView';
-import { isNoEmpty } from '../../../utils/StringUtils';
-import StringUtils from '../../../utils/StringUtils';
+import StringUtils, { isNoEmpty } from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import TopicDetailBanner from './TopicDetailBanner';
-import {
-    MRText as Text
-} from '../../../components/ui';
-
+import { MRText as Text } from '../../../components/ui';
 // const { px2dp } = ScreenUtils;
 import res from '../res';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
@@ -166,7 +157,8 @@ export default class TopicDetailHeaderView extends Component {
                     <Text style={styles.serviceValueText} numberOfLines={1}>
                         {`质量保障·48小时发货${(restrictionsTT & 4) === 4 ? '·7天退换' : ''}${(restrictionsTT & 8) === 8 ? '·节假日发货' : ''}`}
                     </Text>
-                    {activityType !== 3 ? <Image source={arrow_right}/> : null}
+                    {activityType !== 3 ?
+                        <Image resizeMode={'contain'} source={arrow_right} style={{ height: 10 }}/> : null}
                 </NoMoreClick>
                 {activityType === 3 ? null :
                     <ProductDetailScoreView style={{ marginBottom: 10 }} pData={data} navigation={navigation}/>}

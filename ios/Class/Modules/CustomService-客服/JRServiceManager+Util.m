@@ -116,6 +116,9 @@
     commodityInfo.pictureUrlString = infoData[@"pictureUrlString"];
     commodityInfo.urlString = infoData[@"urlString"];
     commodityInfo.note = infoData[@"note"];
+    if (infoData[@"tags"]) {
+         commodityInfo.tagsArray = [NSArray modelArrayWithClass:[QYCommodityTag class] json:infoData[@"tags"]];
+    }
     commodityInfo.show = YES;
     commodityInfo.actionText = sendBtnTitl;
     commodityInfo.actionTextColor = [UIColor redColor];

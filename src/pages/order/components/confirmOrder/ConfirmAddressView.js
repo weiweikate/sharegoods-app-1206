@@ -137,8 +137,7 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     arrowRightStyle: {
-        width: ScreenUtils.autoSizeWidth(10),
-        height: ScreenUtils.autoSizeWidth(14),
+        height: ScreenUtils.autoSizeWidth(12),
         marginRight: ScreenUtils.autoSizeWidth(15)
     },
 

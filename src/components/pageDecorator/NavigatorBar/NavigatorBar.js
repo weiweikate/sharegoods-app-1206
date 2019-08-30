@@ -150,6 +150,7 @@ export default class NavigatorBar extends Component {
         // 文案
         if (leftNavTitle && typeof leftNavTitle === 'string') {
             return <TouchableOpacity
+                activeOpacity={0.7}
                 style={[styles.left,
                     {
                         top: ScreenUtils.statusBarHeight
@@ -165,15 +166,15 @@ export default class NavigatorBar extends Component {
         // 图片
         if (leftNavImage) {
             return <TouchableOpacity
-                style={[styles.left,
-                    {
-                        top: ScreenUtils.statusBarHeight
-                    }]}
+                activeOpacity={0.7}
+                style={[styles.left, {
+                    top: ScreenUtils.statusBarHeight
+                }]}
                 onPress={this._onLeftPressed}>
                 <Image
                     source={leftNavImage}
                     resizeMode={'stretch'}
-                    style={leftImageStyle}
+                    style={[{ width: 30, height: 30 }, leftImageStyle]}
                 />
             </TouchableOpacity>;
         }
@@ -201,15 +202,19 @@ export default class NavigatorBar extends Component {
         }
         if (rightNavImage) {
             return <TouchableOpacity
+                activeOpacity={0.7}
                 style={styles.right}
                 onPress={this._onRightPressed}>
                 <View>
-                    <Image source={rightNavImage}/>
+                    <Image source={rightNavImage}
+                           resizeMode={'stretch'}
+                           style={{ width: 30, height: 30 }}/>
                 </View>
             </TouchableOpacity>;
         }
         if (rightNavTitle && typeof rightNavTitle === 'string') {
             return <TouchableOpacity
+                activeOpacity={0.7}
                 style={styles.right}
                 onPress={this._onRightPressed}>
                 <Text style={[styles.button, this.props.rightTitleStyle]}
@@ -290,7 +295,7 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         justifyContent: 'center',
-        paddingHorizontal: 10
+        paddingHorizontal: 5
     },
     button: {
         color: DesignRule.textColor_mainTitle,

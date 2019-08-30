@@ -87,7 +87,6 @@ const GoodsDetailItem = props => {
                 goodsNum={goodsNum}
                 onPress={clickItem}
                 style={style}/>
-            {this.renderLine()}
             {this.renderAfterSaleService()}
         </View>
     );

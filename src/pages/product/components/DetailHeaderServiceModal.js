@@ -50,7 +50,7 @@ export default class DetailHeaderServiceModal extends Component {
         const { headerTittle, headerImg } = section;
         return <TouchableWithoutFeedback>
             <View style={styles.itemHeaderView}>
-                <Image source={headerImg}/>
+                <Image source={headerImg} style={{ width: 16, height: 16 }}/>
                 <Text style={styles.itemHeaderText}>{headerTittle}</Text>
             </View>
         </TouchableWithoutFeedback>;

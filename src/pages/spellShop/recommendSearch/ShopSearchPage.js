@@ -117,7 +117,7 @@ export default class ShopSearchPage extends BasePage {
     };
 
     _clickShopAtRow = (item) => {
-        this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: item.storeNumber,wayToPinType:1 });
+        this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: item.storeNumber, wayToPinType: 1 });
     };
 
     // 渲染行
@@ -162,6 +162,7 @@ export default class ShopSearchPage extends BasePage {
                 reloadBtnClick: this._refreshing
             },
             emptyProps: {
+                imageStyle: { width: 120, height: 120 },
                 source: res.recommendSearch.shop_notHave,
                 description: '抱歉,没有你想找的拼店',
                 subDescription: '请重新确认后查找'

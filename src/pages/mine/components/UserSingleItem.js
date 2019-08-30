@@ -14,7 +14,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 // import ImageLoad from '@mr/image-placeholder';
-import { MRText as Text ,AvatarImage} from '../../../components/ui';
+import { MRText as Text, AvatarImage } from '../../../components/ui';
 
 export default class UserSingleItem extends Component {
     constructor(props) {
@@ -51,7 +51,7 @@ export default class UserSingleItem extends Component {
     renderLine = () => {
         const { isLine = true } = this.props;
         return (!isLine ? null :
-                <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
+                <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg }}/>
         );
     };
 
@@ -70,8 +70,8 @@ export default class UserSingleItem extends Component {
         return (
             !headImage ? null :
                 <AvatarImage source={{ uri: StringUtils.isNoEmpty(headImage) ? headImage : '' }}
-                           style={{ width: 30, height: 30, borderRadius: 15, marginRight: isArrow ? 8 : 15 }}
-                           borderRadius={15}/>
+                             style={{ width: 30, height: 30, borderRadius: 15, marginRight: isArrow ? 8 : 15 }}
+                             borderRadius={15}/>
         );
     };
     renderArrow = () => {
@@ -79,7 +79,7 @@ export default class UserSingleItem extends Component {
         return (!isArrow ? null :
                 <View style={{ justifyContent: 'center', marginRight: 15, flexDirection: 'row', alignItems: 'center' }}>
                     {this.renderheadImage()}
-                    <Image source={res.button.arrow_right}/>
+                    <Image source={res.button.arrow_right_black} style={{ width: 6, height: 10 }}/>
                 </View>
         );
     };

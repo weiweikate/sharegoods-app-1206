@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.view.ViewCompat;
-import android.view.View;
-import android.view.View.OnAttachStateChangeListener;
+import androidx.core.view.ViewCompat;
 import android.widget.ImageView;
+import android.view.View.OnAttachStateChangeListener;
+import android.view.View;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.react.bridge.Arguments;
@@ -36,8 +36,8 @@ class LottieAnimationViewManager extends SimpleViewManager<LottieAnimationView> 
 
   @Override public Map<String, Object> getExportedViewConstants() {
     return MapBuilder.<String, Object>builder()
-        .put("VERSION", VERSION)
-        .build();
+            .put("VERSION", VERSION)
+            .build();
   }
 
   @Override public String getName() {
@@ -81,26 +81,26 @@ class LottieAnimationViewManager extends SimpleViewManager<LottieAnimationView> 
     }
     if (reactContext != null) {
       reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
-          view.getId(),
-          "animationFinish",
-          event);
+              view.getId(),
+              "animationFinish",
+              event);
     }
   }
 
   @Override public Map getExportedCustomBubblingEventTypeConstants() {
     return MapBuilder.builder()
-        .put(
-            "animationFinish",
-            MapBuilder.of(
-                "phasedRegistrationNames",
-                MapBuilder.of("bubbled", "onAnimationFinish")))
-        .build();
+            .put(
+                    "animationFinish",
+                    MapBuilder.of(
+                            "phasedRegistrationNames",
+                            MapBuilder.of("bubbled", "onAnimationFinish")))
+            .build();
   }
 
   @Override public Map<String, Integer> getCommandsMap() {
     return MapBuilder.of(
-        "play", COMMAND_PLAY,
-        "reset", COMMAND_RESET
+            "play", COMMAND_PLAY,
+            "reset", COMMAND_RESET
     );
   }
 
@@ -120,19 +120,19 @@ class LottieAnimationViewManager extends SimpleViewManager<LottieAnimationView> 
               view.playAnimation();
             } else {
               view.addOnAttachStateChangeListener(new OnAttachStateChangeListener() {
-                   @Override
-                   public void onViewAttachedToWindow(View v) {
-                      LottieAnimationView view = (LottieAnimationView)v;
-                      view.setProgress(0f);
-                      view.playAnimation();
-                      view.removeOnAttachStateChangeListener(this);
-                   }
+                @Override
+                public void onViewAttachedToWindow(View v) {
+                  LottieAnimationView view = (LottieAnimationView)v;
+                  view.setProgress(0f);
+                  view.playAnimation();
+                  view.removeOnAttachStateChangeListener(this);
+                }
 
-                   @Override
-                   public void onViewDetachedFromWindow(View v) {
-                      view.removeOnAttachStateChangeListener(this);
-                   }
-               });
+                @Override
+                public void onViewDetachedFromWindow(View v) {
+                  view.removeOnAttachStateChangeListener(this);
+                }
+              });
             }
           }
         });
@@ -162,30 +162,6 @@ class LottieAnimationViewManager extends SimpleViewManager<LottieAnimationView> 
     getOrCreatePropertyManager(view).setAnimationJson(json);
   }
 
-  /**
-   *
-   * @param view
-   * @param name
-   */
-  @ReactProp(name = "cacheStrategy")
-  public void setCacheStrategy(LottieAnimationView view, String name) {
-    if (name != null) {
-      LottieAnimationView.CacheStrategy strategy = LottieAnimationView.DEFAULT_CACHE_STRATEGY;
-      switch (name) {
-        case "none":
-          strategy = LottieAnimationView.CacheStrategy.None;
-          break;
-        case "weak":
-           strategy = LottieAnimationView.CacheStrategy.Weak;
-           break;
-        case "strong":
-          strategy = LottieAnimationView.CacheStrategy.Strong;
-          break;
-      }
-      getOrCreatePropertyManager(view).setCacheStrategy(strategy);
-    }
-  }
-
   @ReactProp(name = "resizeMode")
   public void setResizeMode(LottieAnimationView view, String resizeMode) {
     ImageView.ScaleType mode = null;
@@ -212,11 +188,6 @@ class LottieAnimationViewManager extends SimpleViewManager<LottieAnimationView> 
   @ReactProp(name = "loop")
   public void setLoop(LottieAnimationView view, boolean loop) {
     getOrCreatePropertyManager(view).setLoop(loop);
-  }
-
-  @ReactProp(name = "hardwareAccelerationAndroid")
-  public void setHardwareAcceleration(LottieAnimationView view, boolean use) {
-    getOrCreatePropertyManager(view).setUseHardwareAcceleration(use);
   }
 
   @ReactProp(name = "imageAssetsFolder")

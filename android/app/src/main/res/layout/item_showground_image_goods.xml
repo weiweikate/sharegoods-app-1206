@@ -16,48 +16,62 @@
         android:layout_marginTop="15dp"
         app:roundAsCircle="true" />
 
-    <TextView
-        android:id="@+id/user_name"
+    <LinearLayout
+        android:id="@+id/name_wrapper"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="12.5dp"
         android:layout_toRightOf="@+id/user_icon"
-        android:includeFontPadding="false"
         android:gravity="center_vertical"
-        android:textColor="@color/textColor_mainTitle"
-        android:textSize="13sp"
-        android:layout_marginTop="12dp"/>
+        android:orientation="vertical">
 
-    <ImageView android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/icon_fire"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="12dp"
-        android:layout_toRightOf="@id/user_name"
-        android:id="@+id/iv_fire"/>
-    <TextView android:layout_height="20dp"
-        android:layout_width="wrap_content"
-        android:id="@+id/tv_hotCount"
-        android:textSize="11sp"
-        android:layout_marginTop="12dp"
-        android:textColor="#FF0050"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:layout_toRightOf="@id/iv_fire"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/publish_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/user_icon"
-        android:layout_marginLeft="5dp"
-        android:layout_toEndOf="@+id/user_icon"
-        android:layout_toRightOf="@+id/user_icon"
-        android:layout_marginBottom="-4dp"
-        android:includeFontPadding="false"
-        android:textColor="@color/textColor_instruction"
-        android:textSize="11sp" />
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:includeFontPadding="false"
+                android:textColor="@color/textColor_mainTitle"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:id="@+id/iv_fire"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/icon_fire" />
+
+            <TextView
+                android:id="@+id/tv_hotCount"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:textColor="#FF0050"
+                android:textSize="11sp" />
+        </LinearLayout>
+        <View android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/spring"/>
+
+        <TextView
+            android:id="@+id/publish_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/user_icon"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/user_icon"
+            android:layout_toRightOf="@+id/user_icon"
+            android:includeFontPadding="false"
+            android:textColor="@color/textColor_instruction"
+            android:textSize="11sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/content"

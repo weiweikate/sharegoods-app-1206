@@ -99,7 +99,7 @@ export default class SelectionHeaderView extends Component {
                     </View>
                     <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
                                       onPress={this.props.closeSelectionPage}>
-                        <Image source={icon_close}/>
+                        <Image source={icon_close} style={{ width: 22, height: 22 }}/>
                     </TouchableOpacity>
                 </View>
             </View>

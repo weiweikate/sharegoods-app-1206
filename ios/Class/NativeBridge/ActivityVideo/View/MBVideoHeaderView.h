@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<MBHeaderViewDelegate> dataDelegate;
 @property(nonatomic,strong)MBModelData* model;
 @property (nonatomic, assign) BOOL isLogin;
+@property (nonatomic, copy) NSString* userCode;
 
 @end
 

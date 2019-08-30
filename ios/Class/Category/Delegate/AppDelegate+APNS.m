@@ -276,10 +276,12 @@
     [JPUSHService handleRemoteNotification:userInfo];
   }
   // 用户点击通知栏打开消息，使用神策分析记录 "App 打开消息" 事件
-  [[SensorsAnalyticsSDK sharedInstance] track:@"AppOpenNotification" withProperties:@{
-                                                                                      @"msg_title":[NSString stringWithFormat:@"%@",userInfo[@"aps"][@"alert"]],
-                                                                                      @"msg_id":[NSString stringWithFormat:@"%@",userInfo[@"_j_msgid"]]
-                                                                                      }];
+  NSMutableDictionary *prop = [NSMutableDictionary dictionary];
+  [prop setValue:userInfo[@"aps"][@"alert"] forKey:@"msg_title"];
+  [prop setValue:userInfo[@"_j_msgid"] forKey:@"msg_id"];
+  [prop setValue:userInfo[@"bizId"] forKey:@"bizId"];
+  [prop setValue:userInfo[@"bizType"] forKey:@"bizType"];
+  [[SensorsAnalyticsSDK sharedInstance] track:@"AppOpenNotification" withProperties:prop];
   
   // 直接上报数据
   [[SensorsAnalyticsSDK sharedInstance] flush];
@@ -319,9 +321,12 @@
 -(void)showChatViewController:(NSDictionary *)userInfo{
   NSString *openURL = nil;
   NSString * linkUrl = userInfo[@"linkUrl"];
+  NSString * linkNativeUrl = userInfo[@"linkNativeUrl"];
   if (linkUrl &&[linkUrl isKindOfClass:[NSString class]] &&linkUrl.length > 0) {
     NSString*hString = [linkUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@"`#%^{}\"[]|\\<> "]];
     openURL = [NSString stringWithFormat:@"meeruu://path/HtmlPage/%@",hString];
+  }else if(linkNativeUrl &&[linkNativeUrl isKindOfClass:[NSString class]] &&linkNativeUrl.length > 0){
+    openURL = [NSString stringWithFormat:@"meeruu://path/%@",linkNativeUrl];
   }
   if (!openURL) {
     return;

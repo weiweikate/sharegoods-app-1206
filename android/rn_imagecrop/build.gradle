@@ -59,7 +59,6 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation 'id.zelory:compressor:2.1.0'
-    api rootProject.ext.dependencies.support
     api rootProject.ext.dependencies.recyclerview
     api project(':ucrop')
     api "io.reactivex.rxjava2:rxjava:2.0.5"

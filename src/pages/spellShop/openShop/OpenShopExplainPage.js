@@ -14,7 +14,7 @@ import DesignRule from '../../../constants/DesignRule';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
-import HTML from 'react-native-render-html';
+import HTML from '@mr/react-native-render-html';
 import res from '../res';
 import { MRText as Text } from '../../../components/ui';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
@@ -122,7 +122,7 @@ export default class OpenShopExplainPage extends BasePage {
                             isSelected: !isSelected
                         });
                     }}>
-                        <Image source={isSelected ? openShop_yes : openShop_no}/>
+                        <Image source={isSelected ? openShop_yes : openShop_no} style={{ width: 12, height: 12 }}/>
                     </NoMoreClick>
                     <Text style={styles.descText}>点击我要开店则默认同意杭州名融网络有限公司<Text
                         style={{ color: DesignRule.mainColor }} onPress={this._onPress}>《拼店管理条例》</Text></Text>

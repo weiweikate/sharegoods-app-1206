@@ -1,12 +1,6 @@
 package com.meeruu.sharegoods.rn.showground.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.PagerSnapHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
-import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -14,6 +8,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.OrientationHelper;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -208,10 +209,15 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         ImageView ivRecommend = helper.getView(R.id.iv_recommend);
+        View spring = helper.getView(R.id.spring);
         if ((item.getCreateSource() == CommValue.NORMAL_USER_CONTENT) || (item.getCreateSource() == CommValue.WRITER_CONTENT)) {
             ivRecommend.setVisibility(View.VISIBLE);
+            publishTime.setVisibility(View.GONE);
+            spring.setVisibility(View.GONE);
         } else {
             ivRecommend.setVisibility(View.GONE);
+            publishTime.setVisibility(View.VISIBLE);
+            spring.setVisibility(View.VISIBLE);
         }
 
         helper.addOnClickListener(R.id.icon_download, R.id.icon_share, R.id.content,R.id.icon_hand,R.id.icon_collection,R.id.user_icon);
@@ -412,11 +418,18 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         ImageView ivRecommend = helper.getView(R.id.iv_recommend);
+        View spring = helper.getView(R.id.spring);
+
         int createSource = item.getCreateSource();
         if (createSource == CommValue.NORMAL_USER_CONTENT || createSource == CommValue.WRITER_CONTENT) {
             ivRecommend.setVisibility(View.VISIBLE);
+            spring.setVisibility(View.GONE);
+            publishTime.setVisibility(View.GONE);
         } else {
             ivRecommend.setVisibility(View.GONE);
+            spring.setVisibility(View.VISIBLE);
+            publishTime.setVisibility(View.VISIBLE);
+
         }
         helper.addOnClickListener(R.id.icon_download, R.id.icon_share, R.id.content,R.id.icon_collection,R.id.icon_hand,R.id.user_icon);
     }

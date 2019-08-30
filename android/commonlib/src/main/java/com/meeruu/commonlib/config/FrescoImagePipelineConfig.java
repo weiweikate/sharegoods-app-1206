@@ -24,15 +24,16 @@ import com.meeruu.commonlib.utils.SDCardUtils;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 
 public class FrescoImagePipelineConfig {
 
     // 最大缓存数量
-    private static final int MAX_CACHE_ENTRIES = 128;
-    private static final int MAX_CACHE_ASHM_ENTRIES = 128;
-    private static final int MAX_CACHE_EVICTION_ENTRIES = 16;
+    private static final int MAX_CACHE_ENTRIES = 256;
+
+    private static final long PARAMS_CHECK_INTERVAL_MS = TimeUnit.MINUTES.toMillis(5);
 
     // 小图极低磁盘空间缓存的最大值（特性：可将大量的小图放到额外放在另一个磁盘空间防止大图占用磁盘空间而删除了大量的小图）
     private static final int MAX_SMALL_DISK_VERYLOW_CACHE_SIZE = 20 * ByteConstants.MB;
@@ -47,7 +48,7 @@ public class FrescoImagePipelineConfig {
     private static final int MAX_DISK_CACHE_LOW_SIZE = 60 * ByteConstants.MB;
 
     // 默认图磁盘缓存的最大值
-    private static final int MAX_DISK_CACHE_SIZE = 100 * ByteConstants.MB;
+    private static final int MAX_DISK_CACHE_SIZE = 150 * ByteConstants.MB;
 
     // 小图所放路径的文件夹名
     private static final String IMAGE_PIPELINE_SMALL_CACHE_DIR = "small_pic";
@@ -63,21 +64,13 @@ public class FrescoImagePipelineConfig {
         Supplier<MemoryCacheParams> mSupplierMemoryCacheParams = new Supplier<MemoryCacheParams>() {
             @Override
             public MemoryCacheParams get() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    return new MemoryCacheParams(
-                            maxCacheSize,                          // 最大总图片缓存空间
-                            MAX_CACHE_ENTRIES,                     // 最大总图片缓存数量
-                            maxCacheSize / 3,    // 准备清除的总图片最大空间
-                            MAX_CACHE_EVICTION_ENTRIES,            // 准备清除的总图片最大数量
-                            maxCacheSize / 2);     // 单个图片最大大小
-                } else {
-                    return new MemoryCacheParams(
-                            maxCacheSize,
-                            MAX_CACHE_ASHM_ENTRIES,
-                            Integer.MAX_VALUE,
-                            Integer.MAX_VALUE,
-                            Integer.MAX_VALUE);
-                }
+                return new MemoryCacheParams(
+                        maxCacheSize,       // 最大总图片缓存空间
+                        MAX_CACHE_ENTRIES,  // 最大总图片缓存数量
+                        Integer.MAX_VALUE,  // 准备清除的总图片最大空间
+                        Integer.MAX_VALUE,  // 准备清除的总图片最大数量
+                        Integer.MAX_VALUE,  // 单个图片最大大小
+                        PARAMS_CHECK_INTERVAL_MS);  // 间隔时间
             }
         };
         File cacheFile = SDCardUtils.getFileDirPath(context, "MR/cache");
@@ -136,11 +129,17 @@ public class FrescoImagePipelineConfig {
         final ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         final int maxMemory = Math.min(activityManager.getMemoryClass() * ByteConstants.MB, Integer.MAX_VALUE);
         if (maxMemory < 32 * ByteConstants.MB) {
-            return 5 * ByteConstants.MB;
+            return 4 * ByteConstants.MB;
         } else if (maxMemory < 64 * ByteConstants.MB) {
-            return 10 * ByteConstants.MB;
+            return 6 * ByteConstants.MB;
         } else {
-            return maxMemory / 4;
+            // We don't want to use more ashmem on Gingerbread for now, since it doesn't respond well to
+            // native memory pressure (doesn't throw exceptions, crashes app, crashes phone)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                return 8 * ByteConstants.MB;
+            } else {
+                return maxMemory / 4;
+            }
         }
     }
 }

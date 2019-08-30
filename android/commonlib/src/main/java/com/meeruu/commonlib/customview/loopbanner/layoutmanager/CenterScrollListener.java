@@ -1,6 +1,6 @@
 package com.meeruu.commonlib.customview.loopbanner.layoutmanager;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 /**
@@ -14,7 +14,7 @@ public class CenterScrollListener extends RecyclerView.OnScrollListener {
     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
         final RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-      
+
         final OverFlyingLayoutManager.OnPageChangeListener onPageChangeListener = ((OverFlyingLayoutManager) layoutManager).onPageChangeListener;
         if (onPageChangeListener != null) {
             onPageChangeListener.onPageScrollStateChanged(newState);

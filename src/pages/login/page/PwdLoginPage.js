@@ -36,7 +36,7 @@ export default class PwdLoginPage extends BasePage {
     $navigationBarOptions = {
         show: true, // false则隐藏导航
         leftNavImage: res.other.close_X,
-        leftImageStyle: { marginLeft: 10 },
+        leftImageStyle: { marginLeft: 10, width: 20, height: 20 },
         headerStyle: { borderBottomWidth: 0 }
     };
 

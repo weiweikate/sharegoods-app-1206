@@ -9,7 +9,7 @@ import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import RouterMap, { routePop } from '../../../../navigation/RouterMap';
 
-const arrow_right = res.button.arrow_right;
+const arrow_right = res.button.arrow_right_black;
 export default class SelectAreaPage extends BasePage {
 
     // 导航配置
@@ -44,11 +44,11 @@ export default class SelectAreaPage extends BasePage {
                 url={MineAPI.getAreaList}
                 params={{ fatherCode: this.state.fatherCode }}
                 handleRequestResult={(response) => {
-                   let data = response.data || [];
-                   if (this.params.tag === 'street') {
-                       data = [{name: '不选择街道', code: ''},...data]
-                   }
-                   return data;
+                    let data = response.data || [];
+                    if (this.params.tag === 'street') {
+                        data = [{ name: '不选择街道', code: '' }, ...data];
+                    }
+                    return data;
                 }}
             />
         );
@@ -57,7 +57,8 @@ export default class SelectAreaPage extends BasePage {
     _renderItem = (item) => {
         return <NoMoreClick style={styles.container} onPress={() => this._onItemClick(item.item)}>
             <UIText value={item.item.name} style={styles.blackText}/>
-            <Image source={arrow_right} style={{ marginRight: 18 }} resizeMode={'contain'}/>
+            <Image source={arrow_right} style={{ marginRight: 18, height: 12 }}
+                   resizeMode={'contain'}/>
         </NoMoreClick>;
     };
 
@@ -66,7 +67,7 @@ export default class SelectAreaPage extends BasePage {
     };
 
     _onItemClick = (item) => {
-        const { setArea, provinceCode, provinceName, cityCode, cityName, areaCode,areaName  } = this.props.navigation.state.params || {};
+        const { setArea, provinceCode, provinceName, cityCode, cityName, areaCode, areaName } = this.props.navigation.state.params || {};
         if (this.state.tag === 'province') {
             // 跳转到市级
             this.$navigate(RouterMap.SelectAreaPage, {
@@ -90,12 +91,12 @@ export default class SelectAreaPage extends BasePage {
                 type: this.params.type
             });
         } else if (this.state.tag === 'area') {
-            if (this.params.type === 3){
+            if (this.params.type === 3) {
                 if (this.canBack) {
                     this.canBack = false;
                     routePop(3);
-                    let areaText = provinceName + cityName + item.name ;
-                    setArea && setArea(provinceCode, provinceName, cityCode, cityName, item.code, item.name, '', '',areaText, );
+                    let areaText = provinceName + cityName + item.name;
+                    setArea && setArea(provinceCode, provinceName, cityCode, cityName, item.code, item.name, '', '', areaText);
                 }
                 return;
             }
@@ -115,9 +116,9 @@ export default class SelectAreaPage extends BasePage {
             if (this.canBack) {
                 this.canBack = false;
                 routePop(4);
-                let streetName = item.code === '' ? '':item.name;
+                let streetName = item.code === '' ? '' : item.name;
                 let areaText = provinceName + cityName + areaName + streetName;
-                setArea && setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, item.code, streetName,areaText, );
+                setArea && setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, item.code, streetName, areaText);
             }
         }
     };

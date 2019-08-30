@@ -10,6 +10,7 @@ import RouterMap from '../../../navigation/RouterMap';
 import res from '../res/product';
 import OrderApi from '../../order/api/orderApi';
 import ProductApi from '../api/ProductApi';
+import RecommendProductView from './components/RecommendProductView';
 
 const { tongyon_icon_check_green } = res.button;
 const { kong_icon_shaidan } = res.productScore;
@@ -18,8 +19,7 @@ const { width, autoSizeHeight } = ScreenUtils;
 export default class P_ScoreSuccessPage extends BasePage {
 
     state = {
-        dataList: [],
-        isFail: false
+        dataList: []
     };
 
     componentDidMount() {
@@ -33,9 +33,6 @@ export default class P_ScoreSuccessPage extends BasePage {
                 dataList: tempList
             });
         }).catch(() => {
-            this.setState({
-                isFail: true
-            });
         });
     };
 
@@ -79,6 +76,10 @@ export default class P_ScoreSuccessPage extends BasePage {
         </View>;
     };
 
+    _renderListFooter = () => {
+        return <RecommendProductView/>;
+    };
+
     _renderItem = ({ item, index }) => {
         //warehouseOrderNo 仓库订单号
         //productName 产品标题  specImg 规格图
@@ -110,11 +111,12 @@ export default class P_ScoreSuccessPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                {this._renderListHeader()}
-                {this.state.isFail ? null : <FlatList data={this.state.dataList}
-                                                      renderItem={this._renderItem}
-                                                      keyExtractor={this._keyExtractor}
-                                                      ListEmptyComponent={this._ListEmptyComponent}/>}
+                <FlatList data={this.state.dataList}
+                          renderItem={this._renderItem}
+                          keyExtractor={this._keyExtractor}
+                          ListHeaderComponent={this._renderListHeader}
+                          ListFooterComponent={this._renderListFooter}
+                          ListEmptyComponent={this._ListEmptyComponent}/>
 
             </View>
         );
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.white
     },
     headerImg: {
-        marginTop: 20, marginBottom: 10
+        marginTop: 20, marginBottom: 10, height: 70, width: 70
     },
     headerText: {
         fontSize: 17, color: DesignRule.textColor_mainTitle
@@ -155,7 +157,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     emptyImage: {
-        marginTop: autoSizeHeight(70)
+        marginTop: autoSizeHeight(70), height: 120, width: 120
     },
     emptyText: {
         marginTop: 10,

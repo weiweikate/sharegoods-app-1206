@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
     Platform,
-    NetInfo,
     View,
     TouchableWithoutFeedback,
     Image
@@ -9,6 +8,8 @@ import {
 import res from '../res';
 import DesignRule from '../../constants/DesignRule';
 import {MRText as Text} from '../../components/ui';
+import NetInfo from '@react-native-community/netinfo'
+
 class NetStatus {
 
     constructor() {

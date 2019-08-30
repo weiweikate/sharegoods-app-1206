@@ -1,9 +1,10 @@
 package com.meeruu.commonlib.utils;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 public class FastClickUtil {
-    public static final int MIN_DELAY_TIME= 500;  // 两次点击间隔不能少于500ms
+    public static final int MIN_DELAY_TIME = 500;  // 两次点击间隔不能少于500ms
     private static long lastClickTime;
     private static long lastNoRecordClickTime;
     private static long sLastClickTime;
@@ -23,6 +24,7 @@ public class FastClickUtil {
 
     /**
      * 用于判断录制按钮和其他按钮同时按下
+     *
      * @return
      */
     public static boolean isRecordWithOtherClick() {

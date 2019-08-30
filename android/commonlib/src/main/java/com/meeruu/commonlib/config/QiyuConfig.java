@@ -1,7 +1,8 @@
 package com.meeruu.commonlib.config;
 
+import android.app.Activity;
+
 import com.meeruu.commonlib.R;
-import com.meeruu.qiyu.activity.QiyuServiceMessageActivity;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.YSFOptions;
@@ -12,7 +13,11 @@ public class QiyuConfig {
     public static YSFOptions options() {
         YSFOptions options = new YSFOptions();
         StatusBarNotificationConfig statusBarNotificationConfig = new StatusBarNotificationConfig();
-        statusBarNotificationConfig.notificationEntrance = QiyuServiceMessageActivity.class;
+        try {
+            statusBarNotificationConfig.notificationEntrance = (Class<? extends Activity>) Class.forName("com.meeruu.qiyu.activity.QiyuServiceMessageActivity");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         statusBarNotificationConfig.notificationSmallIconId = R.mipmap.ic_launcher_round;
         statusBarNotificationConfig.contentTitle = "秀购";
         options.statusBarNotificationConfig = statusBarNotificationConfig;

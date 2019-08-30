@@ -14,10 +14,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:3.4.2'
         //添加神策分析 android-gradle-plugin 依赖
         classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:3.0.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.30"
     }
 }
 
@@ -35,7 +34,11 @@ allprojects {
         jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url "$rootDir/../node_modules/react-native/android"
+            url("$rootDir/../node_modules/react-native/android")
+        }
+        maven {
+            // Android JSC is installed from npm
+            url("$rootDir/../node_modules/jsc-android/dist")
         }
     }
 }

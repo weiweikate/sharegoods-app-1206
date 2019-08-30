@@ -3,7 +3,6 @@ package com.reactnative.ivpusic.imagepicker.picture.lib.imaging.gallery;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +12,11 @@ import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.reactnative.ivpusic.imagepicker.R;
 import com.reactnative.ivpusic.imagepicker.picture.lib.imaging.widget.IMGViewHolderCallback;
-
 
 import java.util.ArrayList;
 import java.util.List;

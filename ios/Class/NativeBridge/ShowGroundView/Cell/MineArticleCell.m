@@ -70,11 +70,6 @@
   .leftSpaceToView(self.contentView, 10)
   .bottomSpaceToView(self.contentView, 0);
   
-  _videoImgView.sd_layout
-  .centerXEqualToView(_imgView)
-  .centerYEqualToView(_imgView)
-  .widthIs(50).heightIs(50);
-  
   _btn.sd_layout
   .heightIs(35)
   .widthIs(35)
@@ -85,6 +80,11 @@
   .topSpaceToView(self.contentView, 0)
   .leftSpaceToView(self.contentView, 0)
   .rightSpaceToView(self.contentView, 0);
+  
+  _videoImgView.sd_layout
+  .centerXEqualToView(_imgView)
+  .centerYEqualToView(_imgView)
+  .widthIs(50).heightIs(50);
   
   _titleLb.sd_layout
   .leftSpaceToView(self.contentView, 10)

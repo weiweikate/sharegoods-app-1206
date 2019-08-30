@@ -3,12 +3,13 @@ package com.smartstudy.qrcode;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.meeruu.statusbar.ImmersionBar;
 import com.smartstudy.qrcode.qrdecode.BarcodeFormat;

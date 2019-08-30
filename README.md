@@ -179,7 +179,7 @@ this.$navigate('HtmlPage', {
 });
 
 // A->B->C C返回
-this.$navigateBack(-2)
+this.$navigateBack(2)
 
 
 // 返回到首页
@@ -253,3 +253,7 @@ android开发人员在引入新的module包时，需要重新配置gradle文件�
    
 #### 清除npm缓存
    * react-native start --reset-cache   
+
+#### Android打包
+   * cd android && ./gradlew assembleRelease
+   * 测试release包：react-native run-android --variant=release

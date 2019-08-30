@@ -1,6 +1,6 @@
 package com.meeruu.sharegoods.rn.viewmanager;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
@@ -14,8 +14,8 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.customview.loopbanner.BannerLayout;
-import com.meeruu.commonlib.customview.loopbanner.OnPageSelected;
 import com.meeruu.commonlib.utils.DensityUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.sharegoods.ui.adapter.WebBannerAdapter;
 
 import java.lang.ref.WeakReference;
@@ -49,21 +49,18 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
     private void initBannerEvent(final ReactContext reactContext, final BannerLayout banner) {
         scrollToIndexEvent = new onDidScrollToIndexEvent();
         selectItemAtIndexEvent = new onDidSelectItemAtIndexEvent();
-        banner.setOnPageSelected(new OnPageSelected() {
-            @Override
-            public void pageSelected(int position) {
-                if (eventDispatcher == null) {
-                    eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
-                }
-                if (scrollToIndexEvent == null) {
-                    scrollToIndexEvent = new onDidScrollToIndexEvent();
-                }
-                scrollToIndexEvent.setIndex(position);
-                scrollToIndexEvent.init(banner.getId());
-                try {
-                    eventDispatcher.dispatchEvent(scrollToIndexEvent);
-                } catch (AssertionError e) {
-                }
+        banner.setOnPageSelected(position -> {
+            if (eventDispatcher == null) {
+                eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+            }
+            if (scrollToIndexEvent == null) {
+                scrollToIndexEvent = new onDidScrollToIndexEvent();
+            }
+            scrollToIndexEvent.setIndex(position);
+            scrollToIndexEvent.init(banner.getId());
+            try {
+                eventDispatcher.dispatchEvent(scrollToIndexEvent);
+            } catch (AssertionError e) {
             }
         });
     }
@@ -73,7 +70,7 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
         private WeakReference<BannerLayout> reference;
 
 
-        public MRListener(BannerLayout view) {
+        MRListener(BannerLayout view) {
             reference = new WeakReference<>(view);
         }
 
@@ -106,47 +103,35 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                 view.set2First();
                 adapter = (WebBannerAdapter) view.getAdapter();
                 adapter.setUrlList(null);
-                view.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setWidth(adapter, view);
-                        adapter.setUrlList(datas);
-                        view.setBannerSize(adapter);
-                    }
+                view.postDelayed(() -> {
+                    adapter.setUrlList(datas);
+                    view.setBannerSize(adapter);
                 }, 500);
             } else {
-                adapter = new WebBannerAdapter(view.getContext(), datas);
-                setWidth(adapter, view);
+                adapter = new WebBannerAdapter(view, datas);
                 view.setAdapter(adapter);
             }
             if (!view.isPlaying()) {
                 view.setAutoPlaying(true);
             }
-            adapter.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    view.setAutoPlaying(false);
-                    selectItemAtIndexEvent.init(view.getId());
-                    selectItemAtIndexEvent.setIndex(position);
-                    try {
-                        eventDispatcher.dispatchEvent(selectItemAtIndexEvent);
-                    } catch (AssertionError e) {
-                    }
+            adapter.setOnBannerItemClickListener(position -> {
+                view.setAutoPlaying(false);
+                selectItemAtIndexEvent.init(view.getId());
+                selectItemAtIndexEvent.setIndex(position);
+                try {
+                    eventDispatcher.dispatchEvent(selectItemAtIndexEvent);
+                } catch (AssertionError e) {
                 }
             });
-        }
-    }
-
-    private void setWidth(WebBannerAdapter adapter, BannerLayout view) {
-        if (view.getItemWidth() > 0) {
-            adapter.setItemWidth(view.getItemWidth());
         }
     }
 
     @ReactProp(name = "itemWidth")
     public void setItemWidth(BannerLayout view, Integer width) {
         if (width > 0 && BaseApplication.appContext != null) {
-            view.setItemWidth(DensityUtils.dip2px(width));
+            if (view.getItemWidth() != width) {
+                view.setItemWidth(DensityUtils.dip2px(width));
+            }
         }
     }
 

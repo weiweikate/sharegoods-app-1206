@@ -3,7 +3,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import connectStyle from './connectStyle';
-import {MRText as Text}from './UIText';
+import { MRText as Text } from './UIText';
 
 const UIButton = props => {
     const {
@@ -15,7 +15,9 @@ const UIButton = props => {
     } = props;
 
     return (
-        <TouchableOpacity style={[themeStyle.btn_container, style && style]} {...attributes}>
+        <TouchableOpacity
+            activeOpacity={0.7}
+            style={[themeStyle.btn_container, style && style]} {...attributes}>
             <Text style={[themeStyle.btn_text, txStyle && txStyle]}>
                 {value}
             </Text>

@@ -60,6 +60,9 @@ NS_ASSUME_NONNULL_END
 @property (nonatomic, assign)NSInteger showType;
 @property (nonatomic, assign)NSInteger status;
 
+@property (nonatomic,assign) BOOL isPersonal;//是否从个人中心跳转
+@property (nonatomic,assign) BOOL isCollect;//是否收藏
+
 /**
  宽高比
  */

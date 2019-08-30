@@ -85,7 +85,7 @@ export default class ShopHeader extends Component {
                             <Text style={{ fontSize: 11, color: '#999999' }} allowFontScaling={false}>店铺星级：</Text>
                             {
                                 starsArr.map((item, index) => {
-                                    return <Image key={index} source={StarImg}/>;
+                                    return <Image key={index} source={StarImg} style={{ width: 18, height: 18 }}/>;
                                 })
                             }
                         </View>
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     imgBg: {
         position: 'absolute',
         left: 0, top: 0,
-        width: ScreenUtils.width
+        width: ScreenUtils.width, height: px2dp(227)
     },
     whiteBg: {
         marginTop: px2dp(25),

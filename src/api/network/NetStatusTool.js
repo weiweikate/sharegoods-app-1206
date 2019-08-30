@@ -1,7 +1,8 @@
 import {
     Platform,
-    NetInfo,
 } from 'react-native';
+import NetInfo from '@react-native-community/netinfo'
+
 class NetStatusTool {
 
     constructor() {

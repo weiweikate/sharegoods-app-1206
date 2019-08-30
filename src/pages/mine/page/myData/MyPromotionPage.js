@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 import MineApi from '../../api/MineApi';
-import HTML from 'react-native-render-html';
+import HTML from '@mr/react-native-render-html';
 import LinearGradient from 'react-native-linear-gradient';
 // 图片资源
 import DesignRule from '../../../../constants/DesignRule';

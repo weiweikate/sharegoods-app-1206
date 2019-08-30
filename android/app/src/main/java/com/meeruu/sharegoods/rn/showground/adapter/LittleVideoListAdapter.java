@@ -2,7 +2,6 @@ package com.meeruu.sharegoods.rn.showground.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +11,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.commonlib.utils.DensityUtils;
@@ -23,10 +24,11 @@ import java.util.List;
 
 import static com.meeruu.sharegoods.rn.showground.widgets.littlevideo.VideoListView.isLogin;
 
-public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoListAdapter.MyHolder>{
+public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoListAdapter.MyHolder> {
 
     public static final String TAG = LittleVideoListAdapter.class.getSimpleName();
-//    private OnItemBtnClick mItemBtnClick;
+
+    //    private OnItemBtnClick mItemBtnClick;
     public LittleVideoListAdapter(Context context,
                                   List<NewestShowGroundBean.DataBean> list) {
         super(context, list);
@@ -38,7 +40,7 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
 
     private VideoListCallback videoListCallback;
 
-    public void setVideoListCallback(VideoListCallback callback){
+    public void setVideoListCallback(VideoListCallback callback) {
         this.videoListCallback = callback;
     }
 
@@ -56,15 +58,15 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
             onBindViewHolder(holder, position);
         } else {
             final NewestShowGroundBean.DataBean itemData = this.list.get(position);
-            if(itemData.isLike()){
+            if (itemData.isLike()) {
                 holder.ivLike.setImageResource(R.drawable.icon_liked);
-            }else {
+            } else {
                 holder.ivLike.setImageResource(R.drawable.icon_like);
             }
 
-            if(itemData.isCollect()){
+            if (itemData.isCollect()) {
                 holder.ivCollection.setImageResource(R.drawable.icon_collected);
-            }else {
+            } else {
                 holder.ivCollection.setImageResource(R.drawable.icon_collection);
             }
         }
@@ -79,30 +81,30 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         List<NewestShowGroundBean.DataBean.ShowTagsBean> showTagsBeanList = itemData.getShowTags();
 
         //标签
-        if(showTagsBeanList == null || showTagsBeanList.size() == 0){
+        if (showTagsBeanList == null || showTagsBeanList.size() == 0) {
             myHolder.tagWrapper.setVisibility(View.GONE);
-        }else {
+        } else {
             myHolder.tagWrapper.setVisibility(View.VISIBLE);
             myHolder.tagWrapper.removeAllViews();
-            for(int i = 0;i<showTagsBeanList.size();i++){
+            for (int i = 0; i < showTagsBeanList.size(); i++) {
                 final NewestShowGroundBean.DataBean.ShowTagsBean showTagsBean = showTagsBeanList.get(i);
                 TextView textView = new TextView(context);
                 textView.setTextColor(Color.WHITE);
                 textView.setTextSize(12);
-                textView.setText("#"+showTagsBean.getName());
+                textView.setText("#" + showTagsBean.getName());
                 int pad = DensityUtils.dip2px(8);
-                textView.setPadding(pad,0,pad,0);
+                textView.setPadding(pad, 0, pad, 0);
                 textView.setGravity(Gravity.CENTER);
                 textView.setBackgroundResource(R.drawable.tag_background);
                 LinearLayout.LayoutParams tvParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, DensityUtils.dip2px(24));
                 int margin = DensityUtils.dip2px(10);
-                tvParam.setMargins(i== 0 ? 0: margin,0,0,0);
+                tvParam.setMargins(i == 0 ? 0 : margin, 0, 0, 0);
                 textView.setLayoutParams(tvParam);
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(videoListCallback != null){
-                            videoListCallback.onTag(showTagsBean,position);
+                        if (videoListCallback != null) {
+                            videoListCallback.onTag(showTagsBean, position);
                         }
                     }
                 });
@@ -116,33 +118,33 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         myHolder.like.setText(NumUtils.formatShowNum(itemData.getLikesCount()));
         myHolder.like.setTag(itemData.getLikesCount());
 
-        if(itemData.isLike()){
+        if (itemData.isLike()) {
             myHolder.ivLike.setImageResource(R.drawable.icon_liked);
-        }else {
+        } else {
             myHolder.ivLike.setImageResource(R.drawable.icon_like);
         }
         myHolder.ivLike.setTag(itemData.isLike());
 
-        if(itemData.getProducts() == null || itemData.getProducts().size() == 0){
+        if (itemData.getProducts() == null || itemData.getProducts().size() == 0) {
             myHolder.line.setVisibility(View.GONE);
             myHolder.tvBuy.setVisibility(View.GONE);
-        }else {
+        } else {
             myHolder.line.setVisibility(View.VISIBLE);
             myHolder.tvBuy.setVisibility(View.VISIBLE);
         }
 
-        if(itemData.isCollect()){
+        if (itemData.isCollect()) {
             myHolder.ivCollection.setImageResource(R.drawable.icon_collected);
-        }else {
+        } else {
             myHolder.ivCollection.setImageResource(R.drawable.icon_collection);
         }
         myHolder.ivCollection.setTag(itemData.isCollect());
 
         String content = itemData.getContent();
-        if(TextUtils.isEmpty(content)){
+        if (TextUtils.isEmpty(content)) {
             myHolder.previewWrapper.setVisibility(View.GONE);
             myHolder.detailWrapper.setVisibility(View.GONE);
-        }else {
+        } else {
             myHolder.previewWrapper.setVisibility(View.VISIBLE);
             myHolder.detailWrapper.setVisibility(View.INVISIBLE);
             myHolder.tvDetail.setText(content);
@@ -152,13 +154,13 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         myHolder.ivDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(videoListCallback != null){
-                    videoListCallback.onDownload(itemData,position);
+                if (videoListCallback != null) {
+                    videoListCallback.onDownload(itemData, position);
                 }
-                if(!isLogin){
+                if (!isLogin) {
                     return;
                 }
-                int download = (Integer) myHolder.download.getTag()+1;
+                int download = (Integer) myHolder.download.getTag() + 1;
                 myHolder.download.setText(NumUtils.formatShowNum(download));
                 myHolder.download.setTag(download);
 
@@ -170,24 +172,24 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
             @Override
             public void onClick(View v) {
                 boolean isLike = (Boolean) myHolder.ivLike.getTag();
-                if(isLike){
+                if (isLike) {
                     myHolder.ivLike.setTag(Boolean.FALSE);
                     myHolder.ivLike.setImageResource(R.drawable.icon_like);
                     int like = (Integer) myHolder.like.getTag();
-                    like-=1;
+                    like -= 1;
                     myHolder.like.setTag(like);
                     myHolder.like.setText(NumUtils.formatShowNum(like));
-                }else {
+                } else {
                     myHolder.ivLike.setTag(Boolean.TRUE);
                     myHolder.ivLike.setImageResource(R.drawable.icon_liked);
                     int like = (Integer) myHolder.like.getTag();
-                    like+=1;
+                    like += 1;
                     myHolder.like.setTag(like);
                     myHolder.like.setText(NumUtils.formatShowNum(like));
                 }
 
-                if(videoListCallback != null){
-                    videoListCallback.onLike(itemData,position);
+                if (videoListCallback != null) {
+                    videoListCallback.onLike(itemData, position);
                 }
             }
         });
@@ -195,57 +197,57 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         myHolder.ivCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(videoListCallback != null){
-                    videoListCallback.onCollection(itemData,position);
+                if (videoListCallback != null) {
+                    videoListCallback.onCollection(itemData, position);
                 }
-                if(!isLogin){
+                if (!isLogin) {
                     return;
                 }
-                boolean isCollectioned =(Boolean) myHolder.ivCollection.getTag();
-                if(isCollectioned){
+                boolean isCollectioned = (Boolean) myHolder.ivCollection.getTag();
+                if (isCollectioned) {
                     myHolder.ivCollection.setTag(Boolean.FALSE);
                     myHolder.ivCollection.setImageResource(R.drawable.icon_collection);
                     int collectionTag = (Integer) myHolder.collection.getTag();
-                    collectionTag-=1;
+                    collectionTag -= 1;
                     myHolder.collection.setTag(collectionTag);
                     myHolder.collection.setText(NumUtils.formatShowNum(collectionTag));
-                }else {
+                } else {
                     myHolder.ivCollection.setTag(Boolean.TRUE);
                     myHolder.ivCollection.setImageResource(R.drawable.icon_collected);
                     int collectionTag = (Integer) myHolder.collection.getTag();
-                    collectionTag+=1;
+                    collectionTag += 1;
                     myHolder.collection.setTag(collectionTag);
                     myHolder.collection.setText(NumUtils.formatShowNum(collectionTag));
                 }
             }
         });
-
 
 
         myHolder.tvBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(videoListCallback != null){
-                    videoListCallback.onBuy(itemData,position);
+                if (videoListCallback != null) {
+                    videoListCallback.onBuy(itemData, position);
                 }
             }
         });
     }
 
-    public final class  MyHolder extends BaseVideoListAdapter.BaseHolder {
+    public final class MyHolder extends BaseVideoListAdapter.BaseHolder {
         private SimpleDraweeView thumb;
         public FrameLayout playerView;
         private ViewGroup mRootView;
         private ViewGroup tagWrapper;
-        private ViewGroup detailWrapper,previewWrapper;
+        private ViewGroup detailWrapper, previewWrapper;
         private TextView tvDetail;
         private TextView previewDetail;
-        private TextView close,open;
+        private TextView close, open;
         private ImageView playIcon;
-        private TextView like,download,collection;
+        private TextView like, download, collection;
         private TextView tvBuy;
         private View line;
-        private ImageView ivLike,ivCollection,ivDownload;
+        private ImageView ivLike, ivCollection, ivDownload;
+
         MyHolder(@NonNull View itemView) {
             super(itemView);
             thumb = itemView.findViewById(R.id.img_thumb);
@@ -299,11 +301,15 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         }
     }
 
-    public interface VideoListCallback{
-        void onDownload(NewestShowGroundBean.DataBean dataBean,int position);
-        void onCollection(NewestShowGroundBean.DataBean dataBean,int position);
-        void onLike(NewestShowGroundBean.DataBean dataBean,int position);
-        void onTag(NewestShowGroundBean.DataBean.ShowTagsBean tagsBean,int position);
-        void onBuy(NewestShowGroundBean.DataBean dataBean,int position);
+    public interface VideoListCallback {
+        void onDownload(NewestShowGroundBean.DataBean dataBean, int position);
+
+        void onCollection(NewestShowGroundBean.DataBean dataBean, int position);
+
+        void onLike(NewestShowGroundBean.DataBean dataBean, int position);
+
+        void onTag(NewestShowGroundBean.DataBean.ShowTagsBean tagsBean, int position);
+
+        void onBuy(NewestShowGroundBean.DataBean dataBean, int position);
     }
 }

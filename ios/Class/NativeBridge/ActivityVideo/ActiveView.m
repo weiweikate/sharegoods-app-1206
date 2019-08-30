@@ -38,6 +38,7 @@
 @property (nonatomic, assign) BOOL isPersonal;
 @property (nonatomic, assign) BOOL isCollect;
 @property (nonatomic, assign) NSInteger tabType;
+@property (nonatomic, assign) BOOL isEnd;
 
 @property(nonatomic, strong)UILabel *emptyLb;
 @property (nonatomic, strong)UIView *emptyView;
@@ -111,7 +112,7 @@
   }
 
   if(self.isCollect){
-    [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
+    [dic setObject:@(1) forKey:@"isCollect"];
   }
   if(self.tabType){
     [dic setObject:[NSNumber numberWithInteger:self.tabType]  forKey:@"spreadPosition"];
@@ -138,13 +139,16 @@
  */
 - (void)getMoreData
 {
+  if(self.isEnd){
+    return;
+  }
   NSMutableDictionary *dic = [NSMutableDictionary new];
   NSString *currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
   if(self.isPersonal&&self.userCode){
     [dic setObject:self.userCode forKey:@"queryUserCode"];
   }
   if(self.isCollect){
-    [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
+    [dic setObject:@(1)  forKey:@"isCollect"];
   }
   if(self.tabType){
     [dic setObject:[NSNumber numberWithInteger:self.tabType]  forKey:@"spreadPosition"];
@@ -159,6 +163,7 @@
         [weakSelf.callBackArr addObjectsFromArray:[result valueForKey:@"data"]];
       }
       if(model.data.count==0){
+        self.isEnd = YES;
         [MBProgressHUD showSuccess:@"我也是有底线的"];
       }
       [self.scrollView setupData:[model.data mutableCopy]];
@@ -183,32 +188,33 @@
 
 -(void)setParams:(NSDictionary *)params{
   MBModelData* firstData = [MBModelData modelWithJSON:params];
-  if([params valueForKey:@"isPersonal"]){
-    self.isPersonal = [params valueForKey:@"isPersonal"];
-  }
-  if(self.isPersonal&&[params valueForKey:@"isCollect"]){
-    self.isCollect = [params valueForKey:@"isCollect"];
-  }
-  if([params valueForKey:@"tabType"]){
-    self.tabType = [[params valueForKey:@"tabType"] intValue];
-  }
+  self.isPersonal = firstData.isPersonal;
+  self.isCollect = firstData.isCollect;
+  self.tabType = firstData.tabType;
+
   self.dataArr = [NSMutableArray arrayWithObject:firstData];
   self.callBackArr = [NSMutableArray arrayWithObject:params];
   self.VideoHeaderView.model = firstData;
   [self.scrollView setupData:self.dataArr];
-  [self refreshData];
-
+  [self videoHotRequest];
+  if(!self.isPersonal){
+    [self refreshData];
+  }
 }
 
 
 -(void)setUserCode:(NSString *)userCode{
   _userCode = userCode;
+  self.VideoHeaderView.userCode = userCode;
   if(userCode&&userCode.length>0){
     self.VideoHeaderView.isLogin = YES;
     self.scrollView.isLogin = YES;
   }else{
     self.VideoHeaderView.isLogin = NO;
     self.scrollView.isLogin = NO;
+  }
+  if(self.isPersonal){
+    [self refreshData];
   }
 }
 
@@ -225,6 +231,7 @@
   self.current = index;
   if(self.current<self.dataArr.count&&[self.dataArr objectAtIndex:self.current]){
     self.VideoHeaderView.model =[self.dataArr objectAtIndex:self.current];
+    [self videoHotRequest];
   }
 }
 
@@ -293,7 +300,18 @@
 }
 
 
-#pragma arguments --RN callback Native
+#pragma arguments -- 视频热度接口请求
 
+-(void)videoHotRequest{
+  MBModelData* data = self.dataArr[self.current];
+
+  if(data.showNo){
+    [NetWorkTool requestWithURL:ShowApi_incrCountByType params:@{@"showNo": data.showNo,@"type":@6}  toModel:nil success:^(NSDictionary* result) {
+
+    } failure:^(NSString *msg, NSInteger code) {
+    [MBProgressHUD showSuccess:msg];
+    } showLoading:nil];
+  }
+}
 
 @end

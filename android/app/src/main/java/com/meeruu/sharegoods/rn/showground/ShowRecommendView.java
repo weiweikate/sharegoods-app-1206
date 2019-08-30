@@ -3,17 +3,18 @@ package com.meeruu.sharegoods.rn.showground;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -156,29 +157,23 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 }
             }
         });
-        ProductsAdapter.AddCartListener addCartListener = new ProductsAdapter.AddCartListener() {
-            @Override
-            public void onAddCart(String product, String detail) {
-                addCartEvent.init(view.getId());
-                WritableMap map = Arguments.createMap();
-                map.putString("product", product);
-                map.putString("detail", detail);
-                addCartEvent.setData(map);
-                eventDispatcher.dispatchEvent(addCartEvent);
-            }
+        ProductsAdapter.AddCartListener addCartListener = (product, detail) -> {
+            addCartEvent.init(view.getId());
+            WritableMap map = Arguments.createMap();
+            map.putString("product", product);
+            map.putString("detail", detail);
+            addCartEvent.setData(map);
+            eventDispatcher.dispatchEvent(addCartEvent);
         };
 
-        ProductsAdapter.PressProductListener pressProductListener = new ProductsAdapter.PressProductListener() {
-            @Override
-            public void onPressProduct(String product, String detail) {
-                onPressProductEvent onPressProductEvent = new onPressProductEvent();
-                onPressProductEvent.init(view.getId());
-                WritableMap writableMap = Arguments.createMap();
-                writableMap.putString("product", product);
-                writableMap.putString("detail", detail);
-                onPressProductEvent.setData(writableMap);
-                eventDispatcher.dispatchEvent(onPressProductEvent);
-            }
+        ProductsAdapter.PressProductListener pressProductListener = (product, detail) -> {
+            onPressProductEvent onPressProductEvent = new onPressProductEvent();
+            onPressProductEvent.init(view.getId());
+            WritableMap writableMap = Arguments.createMap();
+            writableMap.putString("product", product);
+            writableMap.putString("detail", detail);
+            onPressProductEvent.setData(writableMap);
+            eventDispatcher.dispatchEvent(onPressProductEvent);
         };
 
         NineGridView.clickL clickL = new NineGridView.clickL() {
@@ -206,19 +201,11 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         ((SimpleItemAnimator) recyclerView.getItemAnimator())
                 .setSupportsChangeAnimations(false);
         adapter.setEnableLoadMore(true);
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                page++;
-                presenter.getShowList(page);
-            }
+        adapter.setOnLoadMoreListener(() -> {
+            page++;
+            presenter.getShowList(page);
         }, recyclerView);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
-                toDetail(position, view);
-            }
-        });
+        adapter.setOnItemClickListener((adapter, view1, position) -> toDetail(position, view));
         adapter.setLoadMoreView(new CustomLoadMoreView());
         setRecyclerViewItemEvent(view);
         adapter.setHasStableIds(true);

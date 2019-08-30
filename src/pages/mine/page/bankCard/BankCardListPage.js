@@ -2,22 +2,19 @@ import React from 'react';
 import user from '../../../../model/user';
 
 import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    ImageBackground,
-    TouchableWithoutFeedback,
-    ScrollView, ListView,
-    RefreshControl,
     Alert,
     DeviceEventEmitter,
-    Image
+    Image,
+    ImageBackground,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import {
-    MRText,
-    UIText
-} from '../../../../components/ui';
+import { MRText, UIText } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineApi from '../../api/MineApi';
@@ -31,6 +28,7 @@ import BankCardIconModel from './BankCardIconModel';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import bridge from '../../../../utils/bridge';
 import { formatCardWithSpace } from './AddBankCardPage';
+import CommonUtils from '../../../../utils/CommonUtils';
 
 const {
     bankcard_empty,
@@ -42,7 +40,6 @@ const {
 export default class BankCardListPage extends BasePage {
     constructor(props) {
         super(props);
-        this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
             viewData: [],
             isShowUnbindCardModal: false,
@@ -129,13 +126,13 @@ export default class BankCardListPage extends BasePage {
         );
     };
 
-    _renderValidItem = (rowData, rowId, rowMap) => {
-        const { bankName, type, cardNo } = rowData || {};
+    _renderValidItem = (rowData) => {
+        const { bankName, type, cardNo,isShow } = rowData.item || {};
         const { defaultBankIconBg, defaultBankIcon, bankCardIconBg_type, bankCardIcon_type } = BankCardIconModel;
         const bankIcon = bankCardIcon_type[bankName] || defaultBankIcon;
         const bankIconBg = bankCardIconBg_type[bankName] || defaultBankIconBg;
         return (
-            <NoMoreClick onPress={() => this.callBack(this.state.viewData[rowId])} activeOpacity={1}>
+            <NoMoreClick onPress={() => this.callBack(this.state.viewData[rowData.index])} activeOpacity={1}>
                 <ImageBackground style={styles.bankCardView}
                                  source={bankIconBg}
                                  resizeMode={'stretch'}>
@@ -146,10 +143,12 @@ export default class BankCardListPage extends BasePage {
                                     style={{ fontSize: 17, color: 'white', paddingLeft: 10, fontWeight: '500' }}/>
                         </View>
                         <NoMoreClick onPress={() => {
-                            rowData.isShow = !rowData.isShow;
-                            this.forceUpdate();
+                            let viewData = CommonUtils.deepClone(this.state.viewData);
+                            let item = viewData[rowData.index];
+                            item.isShow=!item.isShow;
+                            this.setState({viewData})
                         }}>
-                            <Image source={rowData.isShow ? bankCardShow : bankCardHide}
+                            <Image source={isShow ? bankCardShow : bankCardHide}
                                    style={{ width: 20, height: 20 }}/>
                         </NoMoreClick>
                     </View>
@@ -157,7 +156,7 @@ export default class BankCardListPage extends BasePage {
                             style={{ fontSize: 13, color: 'white', paddingLeft: 50 }}/>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
                         <UIText
-                            value={rowData.isShow ? formatCardWithSpace(cardNo) : StringUtils.formatBankCardNum(cardNo)}
+                            value={isShow ? formatCardWithSpace(cardNo) : StringUtils.formatBankCardNum(cardNo)}
                             style={{
                                 fontSize: 20, color: 'white', paddingLeft: 50, fontWeight: '500'
                             }}/>
@@ -169,19 +168,21 @@ export default class BankCardListPage extends BasePage {
 
     renderList = () => {
         if (this.state.viewData.length) {
-            const tempArr = this.ds.cloneWithRows(this.state.viewData);
             return (<SwipeListView
                 style={{ backgroundColor: DesignRule.white }}
-                dataSource={tempArr}
+                data={this.state.viewData}
                 disableRightSwipe={true}
-                renderRow={(rowData, secId, rowId, rowMap) => (
-                    this._renderValidItem(rowData, rowId, rowMap)
+                renderItem={(rowData) => (
+                    this._renderValidItem(rowData)
                 )}
-                renderHiddenRow={(data, secId, rowId, rowMap) => (
+                renderHiddenItem={(data, rowMap) => (
                     <TouchableOpacity
                         style={styles.standaloneRowBack}
                         onPress={() => {
-                            rowMap[`${secId}${rowId}`].closeRow();
+                            let rowKey = data.item.key;
+                            if (rowMap[rowKey]) {
+                                rowMap[rowKey].closeRow();
+                            }
                             this.deleteBankCard(data);
                         }}>
                         <View style={styles.deleteStyle}>

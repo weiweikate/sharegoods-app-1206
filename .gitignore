@@ -26,6 +26,8 @@ Pods/
 !JSPhotoSDK.bundle
 !JVerificationResource.bundle
 !AlivcShortVideoImage.bundle
+# CocoaPods
+/ios/Pods/
 
 # Android/IntelliJ
 #

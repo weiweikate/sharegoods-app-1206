@@ -1,7 +1,7 @@
 package com.meeruu.sharegoods.ui.adapter;
 
-import android.support.v4.util.SparseArrayCompat;
 
+import androidx.collection.SparseArrayCompat;
 
 /**
  * Created by louis on 2017/3/2.

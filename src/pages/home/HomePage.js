@@ -31,10 +31,10 @@ import taskModel from './model/TaskModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
 import { routePush } from '../../navigation/RouterMap';
-import HomeNormalList from './view/HomeNormalList';
-import DIYTopicList from './view/DIYTopicList';
 import { tabModel } from './model/HomeTabModel';
-import HomeFirstTabView from './view/HomeFirstTabView';
+import HomeFirstTabView from './view/List/HomeFirstTabView';
+import HomeNormalList from './view/List/HomeNormalList';
+import DIYTopicList from './view/List/DIYTopicList';
 import { observer } from 'mobx-react';
 
 
@@ -45,6 +45,7 @@ import { observer } from 'mobx-react';
  * @org www.sharegoodsmall.com
  * @email zhangjian@meeruu.com
  */
+
 
 @observer
 class HomePage extends BasePage {
@@ -61,7 +62,6 @@ class HomePage extends BasePage {
             y: new Animated.Value(0)
         };
     }
-
 
     componentDidMount() {
         this.willBlurSubscription = this.props.navigation.addListener(
@@ -201,8 +201,7 @@ class HomePage extends BasePage {
         return (
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
                 <HomeSearchView navigation={routePush}
-                                hasMessage={this.state.hasMessage}
-                />
+                                hasMessage={this.state.hasMessage}/>
                 <ScrollableTabView
                     onChangeTab={(obj) => {
                         let i = obj.i;
@@ -235,7 +234,7 @@ class HomePage extends BasePage {
         let itemWidth = 60;
         let tabBarHeight = 42;
         return (
-            <View style={{ backgroundColor: 'white', height: tabBarHeight, width: ScreenUtils.width }}>
+            <View style={{ height: tabBarHeight, width: ScreenUtils.width, backgroundColor: 'white' }}>
                 <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
