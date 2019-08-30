@@ -33,7 +33,7 @@ export default class LoadMoreDataUtil{
     pageKey = 'page'
     pageSizeKey = 'pageSize'
     handleData = (data)=>{return data.data.data}
-    asynHandleData = null;
+    asyncHandleData = null;
     paramsFunc = ()=>{return {}} //请求参数
     isMoreFunc = (data)=>{return data.data.isMore}
 
@@ -55,8 +55,8 @@ export default class LoadMoreDataUtil{
             this.refreshing = false;
             this.isRefreshing = false;
             this.page = this.defaultPage;
-            if (this.asynHandleData){
-                this.asynHandleData(result).then((r)=>{
+            if (this.asyncHandleData){
+                this.asyncHandleData(result).then((r)=>{
                     this.data = r;
                 })
             } else {
@@ -88,8 +88,8 @@ export default class LoadMoreDataUtil{
 
         this.API(params).then((result)=> {
             this.isLoadMore = false;
-            if (this.asynHandleData){
-                this.asynHandleData(result).then((r)=>{
+            if (this.asyncHandleData){
+                this.asyncHandleData(result).then((r)=>{
                     this.data = this.data.concat(this.handleData(r));
                 })
             } else {
