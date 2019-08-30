@@ -110,7 +110,7 @@ export default class NetFailedView extends Component {
         const btnStyle = [styles.btn];
         ///按钮文字样式
         const btnTextStyle = [styles.btnText];
-        return (<TouchableOpacity activeOpacity={0.5} style={btnStyle} onPress={this.props.reloadBtnClick}>
+        return (<TouchableOpacity activeOpacity={0.7} style={btnStyle} onPress={this.props.reloadBtnClick}>
             <Text style={btnTextStyle} allowFontScaling={false}>
                 {buttonText}
             </Text>

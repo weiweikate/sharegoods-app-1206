@@ -81,24 +81,22 @@ export default class BasePage extends Component {
                     }} allowFontScaling={false}>
                     请检查你的网络
                 </Text>
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity activeOpacity={0.7} onPress={() => {
                     if (netState.isConnected) {
                         this.viewDidLoad = true;
                         this.$refreshData();
                         this.setState({ viewDidLoad: true });//为了触发render
                     }
-                }}
-                                  style={{
-                                      height: 36,
-                                      width: 115,
-                                      borderRadius: 18,
-                                      borderColor: DesignRule.bgColor_btn,
-                                      borderWidth: DesignRule.lineHeight * 1.5,
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                      marginTop: 20
-                                  }}
-                >
+                }} style={{
+                    height: 36,
+                    width: 115,
+                    borderRadius: 18,
+                    borderColor: DesignRule.bgColor_btn,
+                    borderWidth: DesignRule.lineHeight * 1.5,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 20
+                }}>
                     <Text style={{
                         color: DesignRule.bgColor_btn,
                         fontSize: DesignRule.fontSize_mediumBtnText

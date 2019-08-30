@@ -54,6 +54,7 @@ class TabBarDot extends React.Component {
         return (<View style={[styles.tabsDot, this.props.style, ]}>
             {this.props.tabs.map((tab, i) => {
                 return <TouchableOpacity ref={(component) => this.tabComponent.push(component)}
+                                         activeOpacity={0.7}
                                          key={tab} onPress={() => this._onIconPress(i)}
                                          style={[styles.tabDot,{backgroundColor: (this.props.activeTab === i ? '#ccc' : '#fff')}]}>
                     <View style={styles.dot} />

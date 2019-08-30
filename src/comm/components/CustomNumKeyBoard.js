@@ -133,7 +133,9 @@ export default class CustomNumKeyBoard extends Component {
 
     _getNumViewItem = (itemText) => {
         return (
-            <TouchableOpacity onPress={() => {
+            <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => {
                 this._itemClick( itemText)
             }}>
                 <View style={styles.numItemBgStyle}>
