@@ -360,7 +360,7 @@ export default class GoodsCustomView extends React.Component {
         let style = {
             marginLeft: autoSizeWidth(5)}
         let textStyle = {
-            fontSize: autoSizeWidth(12),
+            fontSize: autoSizeWidth(10),
             color: DesignRule.mainColor,
             marginLeft: 4,
             height: autoSizeWidth(14),
