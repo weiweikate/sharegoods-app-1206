@@ -42,7 +42,7 @@ export default class DIYTopicList extends React.Component {
         this.loadMoreDataUtil = new LoadMoreDataUtil()
         this.loadMoreDataUtil.API = HomeAPI.getCustomTopic;
         this.loadMoreDataUtil.paramsFunc = () => {return{topicCode: (this.props.data || {}).linkCode}};
-        this.loadMoreDataUtil.asynHandleData = (data) => {
+        this.loadMoreDataUtil.asyncHandleData = (data) => {
             data = data.data.widgets.data || []
 
             data = [...data];
