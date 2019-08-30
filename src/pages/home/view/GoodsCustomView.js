@@ -125,12 +125,12 @@ export default class GoodsCustomView extends React.Component {
                             {this.renderTitle(data, item)}
                             {this.rederDetail(data, item)}
                             { commissionVisible ?   <MRText style={{fontSize: autoSizeWidth(12),
-                                color: DesignRule.mainColor}}>{'佣金¥'+item.minPriceY}</MRText> : null}
+                                color: DesignRule.mainColor}}>{item.minPriceY?'佣金¥'+item.minPriceY: ''}</MRText> : null}
                             <View style={{flex: 1}}/>
                             <View style={{flexDirection: 'row'}}>
                                 <MRText style={styles.tip}>{'拼店价'}</MRText>
                                 {priceHasInvalidVisible?
-                                    <MRText style={[styles.oldPrice, {marginLeft: 5}]}>{item.originalPrice}</MRText>
+                                    <MRText style={[styles.oldPrice, {marginLeft: 5}]}>{'¥' + item.originalPrice}</MRText>
                                     :null}
                             </View>
                             <MRText style={{fontSize: autoSizeWidth(12),
@@ -384,7 +384,7 @@ export default class GoodsCustomView extends React.Component {
                 {layout === 2? null:<View style={{flex: 1}}/>}
                 </View>
                 : null}
-            {commissionVisible ? <MRText style={textStyle}>{'佣金¥'+item.minPriceY}</MRText>: null}
+            {commissionVisible ? <MRText style={textStyle}>{item.minPriceY?'佣金¥'+item.minPriceY: ''}</MRText>: null}
         </View>
     }
 
@@ -436,7 +436,7 @@ export default class GoodsCustomView extends React.Component {
             </MRText> : null}
             {
                 priceHasInvalidVisible ?
-                    <MRText style={[styles.oldPrice, oldPrice]}>{item.originalPrice}</MRText> : null
+                    <MRText style={[styles.oldPrice, oldPrice]}>{'¥' + item.originalPrice}</MRText> : null
             }
         </View>
 
@@ -463,7 +463,7 @@ export default class GoodsCustomView extends React.Component {
             case 2:
             case 3:
             case 8:
-                return  <MRText style={[styles.oldPrice, {marginLeft: 5, height: autoSizeWidth(14)}]}>{item.originalPrice}</MRText>
+                return  <MRText style={[styles.oldPrice, {marginLeft: 5, height: autoSizeWidth(14)}]}>{'￥' + item.originalPrice}</MRText>
 
         }
     }
