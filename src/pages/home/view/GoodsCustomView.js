@@ -125,7 +125,7 @@ export default class GoodsCustomView extends React.Component {
                             {this.renderTitle(data, item)}
                             {this.rederDetail(data, item)}
                             { commissionVisible ?   <MRText style={{fontSize: autoSizeWidth(12),
-                                color: DesignRule.mainColor}}>{'佣金¥'+item.shareMoney}</MRText> : null}
+                                color: DesignRule.mainColor}}>{'佣金¥'+item.minPriceY}</MRText> : null}
                             <View style={{flex: 1}}/>
                             <View style={{flexDirection: 'row'}}>
                                 <MRText style={styles.tip}>{'拼店价'}</MRText>
@@ -378,19 +378,18 @@ export default class GoodsCustomView extends React.Component {
                 textStyle.fontSize = autoSizeWidth(10)
                 break
         }
-
         return  <View style={style}>
             {priceNameVisible ? <View style={{flexDirection: 'row'}}>
                     <MRText style={[styles.tip,{  height: autoSizeWidth(14)}]}>{priceNameAlias || '价格'}</MRText>
-                <View style={{flex: 1}}/>
+                {layout === 2? null:<View style={{flex: 1}}/>}
                 </View>
                 : null}
-            {commissionVisible ? <MRText style={textStyle}>{'佣金¥'+item.shareMoney}</MRText>: null}
+            {commissionVisible ? <MRText style={textStyle}>{'佣金¥'+item.minPriceY}</MRText>: null}
         </View>
     }
 
     renderPrice(data, item){
-        let {priceVisible,layout, buyButtonVisible, buyButtonType, priceHasInvalidVisible} = data
+        let {priceVisible,layout, buyButtonVisible, buyButtonType, priceHasInvalidVisible, priceBelowTitleVisible} = data
         if (priceHasInvalidVisible) {
             priceHasInvalidVisible = false;
             if (layout === 2 || layout === 3){
@@ -398,6 +397,9 @@ export default class GoodsCustomView extends React.Component {
                     priceHasInvalidVisible = true;
                 }
             }
+        }
+        if (!priceBelowTitleVisible) {
+            priceVisible = false;
         }
         if (!priceVisible && !priceHasInvalidVisible){
             return null;
@@ -428,7 +430,7 @@ export default class GoodsCustomView extends React.Component {
                 break
         }
         return <View style={container}>
-            {priceVisible?<MRText style={textStyle}>¥
+            {(priceVisible && priceBelowTitleVisible)?<MRText style={textStyle}>¥
                 <MRText style={priceStyle}>{item.minPrice}
                 </MRText>起
             </MRText> : null}
@@ -451,6 +453,7 @@ export default class GoodsCustomView extends React.Component {
                 }
             }
         }
+
 
         if (!priceHasInvalidVisible){
            return null;
@@ -686,6 +689,7 @@ export function GoodsCustomViewGetHeight(data) {
     switch (data.layout){
         case  1 :
             itemPadding = autoSizeWidth(10);
+            count++;
             return height * count + itemPadding*(count - 1) + autoSizeWidth(15)
         case  2 :
             count = Math.ceil(count/2);
@@ -721,7 +725,10 @@ export function GoodsCustomViewGetItemStyle(data, height){
 }
 
 function isShowPrice(data) {
-    let {priceVisible,layout, buyButtonVisible, buyButtonType, priceHasInvalidVisible} = data
+    let {priceVisible,layout, buyButtonVisible, buyButtonType, priceHasInvalidVisible, priceBelowTitleVisible} = data
+    if(!priceBelowTitleVisible){
+        priceVisible = false;
+    }
     if (priceHasInvalidVisible) {
         priceHasInvalidVisible = false;
         if (layout === 2 || layout === 3){

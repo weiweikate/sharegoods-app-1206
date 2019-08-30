@@ -87,6 +87,9 @@ export default class HomeFirstTabView extends Component {
                 break;
             case homeType.channel:
                 dim.height = channelModules.channelList.length > 0 ? px2dp(90) : 0;
+                if (channelModules.channelList.length > 5){
+                    dim.height = px2dp(180)
+                }
                 break;
             case homeType.expandBanner:
                 dim.height = homeExpandBnnerModel.bannerHeight;

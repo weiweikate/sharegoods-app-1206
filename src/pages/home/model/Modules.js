@@ -46,11 +46,11 @@ class HomeModule {
         id: 1,
         type: homeType.user
     }, {
-        id: 11,
-        type: homeType.task
-    }, {
         id: 2,
         type: homeType.channel
+    },{
+        id: 11,
+        type: homeType.task
     }, {
         id: 3,
         type: homeType.expandBanner
@@ -458,6 +458,9 @@ class HomeModule {
     }
 
     handleData = (data) => {
+        if (!data.data || !data.data.widgets){
+            return [];
+        }
         data = data.data.widgets.data || [];
         let count = data.length;
         return data.map((item, index) => {
