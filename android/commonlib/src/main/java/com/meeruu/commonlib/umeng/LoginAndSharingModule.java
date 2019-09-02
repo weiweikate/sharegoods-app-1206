@@ -246,7 +246,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         promise.reject("图片获取失败");
                         return;
                     }
-                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(1));
                     if (bmp != null && !bmp.isRecycled()) {
                         drawShowProduct(mContext, data, bmp, promise);
                     } else {
@@ -425,7 +425,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         fail.invoke("图片获取失败");
                         return;
                     }
-                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(1));
                     if (bmp != null && !bmp.isRecycled()) {
                         drawWeb(context, bmp, shareImageBean, success, fail);
                     } else {
@@ -483,7 +483,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         fail.invoke("图片获取失败");
                         return;
                     }
-                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(1));
                     if (bmp != null && !bmp.isRecycled()) {
                         getShowHeaderBitmap(context, bmp, shareImageBean, success, fail);
 
@@ -521,7 +521,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         fail.invoke("图片获取失败");
                         return;
                     }
-                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(1));
                     if (bmp != null && !bmp.isRecycled()) {
                         getShowHeaderBitmap(context, bmp, shareImageBean, success, fail);
 
@@ -561,7 +561,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                             fail.invoke("图片获取失败");
                             return;
                         }
-                        Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                        Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(1));
 
                         if (bmp != null && !bmp.isRecycled()) {
                             if ("show".equals(shareImageBean.getImageType())) {
@@ -876,7 +876,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         drawInviteFriendsImage(context, bitmap, shareImageBean, success, fail);
                         return;
                     }
-                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(1));
                     if (bmp != null && !bmp.isRecycled()) {
                         drawInviteFriendsImage(context, bmp, shareImageBean, success, fail);
                     } else {
@@ -924,7 +924,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         fail.invoke("店主图片下载失败");
                         return;
                     }
-                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(1));
                     if (bmp != null && !bmp.isRecycled()) {
                         drawShopInviteFriendsImageWithHeader(context, map, bmp, success, fail);
                     } else {
@@ -1274,7 +1274,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         fail.invoke("图片获取失败");
                         return;
                     }
-                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(1));
                     if (bmp != null && !bmp.isRecycled()) {
                         getHeaderBitmap(context, bmp, shareImageBean, success, fail);
                     } else {
@@ -1313,7 +1313,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         draw(context, productBitmap, header, shareImageBean, success, fail);
                         return;
                     }
-                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(1));
                     if (bmp != null && !bmp.isRecycled()) {
                         draw(context, productBitmap, bmp, shareImageBean, success, fail);
                     } else {
