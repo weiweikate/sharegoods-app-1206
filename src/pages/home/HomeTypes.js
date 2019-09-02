@@ -33,6 +33,7 @@ export const homeType = {
     custom_text: 'WIDGET-TEXT',
     custom_goods: 'WIDGET-GOODS',
     placeholder: 'placeholder',
+    homeHotTitle:'homeHotTitle',
 };
 
 export const homeLinkType = {

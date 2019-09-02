@@ -43,6 +43,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import intervalMsgModel from '../../../../comm/components/IntervalMsgView';
 import { MRText as Text } from '../../../../components/ui/index';
 import TextCustomView from '../TextCustomView';
+import HomeHotTitleView from '../HomeHotTitleView';
 
 
 const { JSPushBridge } = NativeModules;
@@ -63,16 +64,16 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
 @observer
 export default class HomeFirstTabView extends Component {
     dataProvider = new DataProvider((r1, r2) => {
-        return r1 !== r2;
+        return r1.id !== r2.id;
     });
 
     layoutProvider = new LayoutProvider((i) => {
-        return this.dataProvider.getDataForIndex(i) || {};
+        return homeModule.homeList[i] || {};
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
         const { todayList } = todayModule;
         const { recommendList } = recommendModule;
-        const { subjectHeight, subjectList } = subjectModule;
+        const { subjectList } = subjectModule;
         const { foucusHeight } = homeFocusAdModel;
 
         switch (type.type) {
@@ -86,7 +87,7 @@ export default class HomeFirstTabView extends Component {
                 dim.height = taskModel.homeHeight;
                 break;
             case homeType.channel:
-                dim.height = channelModules.channelHeight
+                dim.height = channelModules.channelHeight;
                 break;
             case homeType.expandBanner:
                 dim.height = homeExpandBnnerModel.bannerHeight;
@@ -103,8 +104,11 @@ export default class HomeFirstTabView extends Component {
             case homeType.fine:
                 dim.height = recommendList.length > 0 ? recommendHeight : 0;
                 break;
+            case homeType.homeHotTitle:
+                dim.height = subjectList.length > 0 ? px2dp(60) : 0;
+                break;
             case homeType.homeHot:
-                dim.height = subjectList.length > 0 ? subjectHeight : 0;
+                dim.height = subjectModule.subBannerHeight + (subjectList.length > 0 ? px2dp(185) : 0);
                 break;
             case homeType.goodsTitle:
                 dim.height = homeModule.tabList.length > 0 ? px2dp(66) : 0;
@@ -160,8 +164,10 @@ export default class HomeFirstTabView extends Component {
             return <HomeTodayView navigate={routePush}/>;
         } else if (type === homeType.fine) {
             return <HomeRecommendView navigate={routePush}/>;
+        } else if (type === homeType.homeHotTitle) {
+            return <HomeHotTitleView title={'超值热卖'}/>;
         } else if (type === homeType.homeHot) {
-            return <HomeSubjectView navigate={routePush}/>;
+            return <HomeSubjectView navigate={routePush} data={item}/>;
         } else if (type === homeType.goods) {
             return <GoodsCell data={data} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
                               navigate={routePush}/>;
@@ -175,11 +181,8 @@ export default class HomeFirstTabView extends Component {
         } else if (type === homeType.custom_goods) {
             return <GoodsCustomView data={item}/>;
         } else if (type === homeType.custom_text) {
-            // let p = {specialTopicId:  this.props.data.linkCode}
-            // p.specialTopicArea = 6;
             return <TextCustomView data={item}/>;
         } else if (type === homeType.custom_imgAD) {
-            // p.specialTopicArea = 1;
             return <TopicImageAdView data={item}/>;
         } else if (type === homeType.placeholder) {
             return <View style={{ width: width, height: 1, backgroundColor: 'white' }}/>;
@@ -251,12 +254,11 @@ export default class HomeFirstTabView extends Component {
                 onEndReached={this._onEndReached.bind(this)}
                 onEndReachedThreshold={ScreenUtils.height / 3}
                 dataProvider={this.dataProvider}
+                renderAheadOffset={ScreenUtils.height - ScreenUtils.headerHeight - 30}
                 rowRenderer={this._renderItem.bind(this)}
                 layoutProvider={this.layoutProvider}
                 onScrollBeginDrag={this.props.onScrollBeginDrag}
                 showsVerticalScrollIndicator={false}
-                removeClippedSubviews={false}
-                // forceNonDeterministicRendering={true}
                 onScroll={this._onListViewScroll}
                 renderFooter={() => <Footer
                     isFetching={homeModule.isFetching}

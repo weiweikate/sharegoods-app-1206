@@ -50,7 +50,7 @@ class HomeModule {
     }, {
         id: 2,
         type: homeType.channel
-    },{
+    }, {
         id: 11,
         type: homeType.task
     }, {
@@ -75,12 +75,6 @@ class HomeModule {
     }, {
         id: 8,
         type: homeType.fine
-    }, {
-        id: 9,
-        type: homeType.homeHot
-    }, {
-        id: 10,
-        type: homeType.goodsTitle
     }];
     goods = [];
 
@@ -172,13 +166,14 @@ class HomeModule {
 
 
     getHomeListData = (topic) => {
-        let home = []
+        let home = [];
         if (this.type === 0) {
             home = [...this.fixedPartOne,
                 ...this.topTopice,
                 ...this.bottomTopice,
                 ...this.fixedPartTwo,
                 ...this.fixedPartThree,
+                ...subjectModule.subjectList,
                 ...this.goods
             ];
 
@@ -188,6 +183,7 @@ class HomeModule {
                 ...this.topTopice,
                 ...this.bottomTopice,
                 ...this.fixedPartThree,
+                ...subjectModule.subjectList,
                 ...this.goods
             ];
         } else {
@@ -196,6 +192,7 @@ class HomeModule {
                 ...this.fixedPartTwo,
                 ...this.bottomTopice,
                 ...this.fixedPartThree,
+                ...subjectModule.subjectList,
                 ...this.goods
             ];
 
@@ -293,9 +290,12 @@ class HomeModule {
                 if (!data.data.isMore) {
                     this.isEnd = true;
                 }
-
                 let itemData = [];
                 let home = [];
+                home.push({
+                    id: 10,
+                    type: homeType.goodsTitle
+                });
                 for (let i = 0, len = list.length; i < len; i++) {
                     if (i % 2 === 1) {
                         let good = list[i];
@@ -303,7 +303,7 @@ class HomeModule {
                         home.push({
                             itemData: itemData,
                             type: homeType.goods,
-                            id: 'goods' + i
+                            id: 'goods' + good.recommendId + good.id
                         });
                         itemData = [];
                     } else {
@@ -320,6 +320,8 @@ class HomeModule {
                 }
                 let temp = this.homeList.filter((item) => {
                     return item.type !== homeType.goods;
+                }).filter((item) => {
+                    return item.type !== homeType.goodsTitle;
                 });
                 this.goodsOtherLen = temp.length;
                 this.homeList = [...temp, ...home];
@@ -346,7 +348,6 @@ class HomeModule {
             return;
         }
         try {
-            const timeStamp = new Date().getTime();
             this.isFetching = true;
             const result = yield HomeApi.getRecommendList({ page: this.page, tabId: this.tabId, pageSize: 10 });
             this.isFetching = false;
@@ -356,6 +357,12 @@ class HomeModule {
             }
             let itemData = [];
             let home = [];
+            if (this.page === 1) {
+                home.push({
+                    id: 10,
+                    type: homeType.goodsTitle
+                });
+            }
             for (let i = 0, len = list.length; i < len; i++) {
                 if (i % 2 === 1) {
                     let good = list[i];
@@ -363,7 +370,7 @@ class HomeModule {
                     home.push({
                         itemData: itemData,
                         type: homeType.goods,
-                        id: 'goods' + good.linkTypeCode + i + timeStamp
+                        id: 'goods' + good.recommendId + good.id
                     });
                     itemData = [];
                 } else {
@@ -429,12 +436,12 @@ class HomeModule {
                 let isTop = i === 1;
                 if (isTop) {
                     top = false;
-                }else {
+                } else {
                     bottom = false;
                 }
                 HomeApi.getCustomTopic({ topicCode: code, page: 1, pageSize: 10 }).then((data) => {
                     if (isTop) {
-                        this.topTopice = this.handleData(data , isTop);
+                        this.topTopice = this.handleData(data, isTop);
                         store.save(kHomeTopTopic, this.topTopice);
                     } else {
                         this.bottomTopice = this.handleData(data);
@@ -445,15 +452,15 @@ class HomeModule {
             });
 
             if (top) {
-                this.topTopice = []
+                this.topTopice = [];
                 store.save(kHomeBottomTopic, this.bottomTopice);
             }
             if (bottom) {
-                this.bottomTopice = []
+                this.bottomTopice = [];
                 store.save(kHomeBottomTopic, this.bottomTopice);
             }
 
-            if (top || bottom){
+            if (top || bottom) {
                 this.homeList = this.getHomeListData(true);
             }
         });
@@ -461,21 +468,21 @@ class HomeModule {
     }
 
     @action handleData = (data, isTop) => {
-        if (!data.data || !data.data.widgets){
+        if (!data.data || !data.data.widgets) {
             return [];
         }
         data = data.data.widgets.data || [];
         data = [...data];
-        let p = []
+        let p = [];
         let count = data.length;
-        for (let index = 0; index < count; index ++){
+        for (let index = 0; index < count; index++) {
             let item = data[index];
             if (item.type === homeType.custom_goods) {
                 item.itemHeight = GoodsCustomViewGetHeight(item);
                 item.marginBottom = ScreenUtils.autoSizeWidth(0);
-                if (count-1 > index) {
-                    let type = data[index+1].type;
-                    if (type  === homeType.custom_imgAD || type === homeType.custom_text) {
+                if (count - 1 > index) {
+                    let type = data[index + 1].type;
+                    if (type === homeType.custom_imgAD || type === homeType.custom_text) {
                         item.marginBottom = ScreenUtils.autoSizeWidth(15);
                     }
                 }
@@ -487,27 +494,26 @@ class HomeModule {
             }
 
             if (item.type === homeType.custom_text) {
-
                 item.detailHeight = 0;
                 item.textHeight = 0;
                 item.itemHeight = 0;
                 if (item.text) {
                     p.push(bridge.getTextHeightWithWidth(item.text, autoSizeWidth(14), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
                         item.textHeight = r.height;
-                        item.itemHeight = r.height + item.detailHeight+ autoSizeWidth(20)
+                        item.itemHeight = r.height + item.detailHeight + autoSizeWidth(20);
                     }));
                 }
                 if (item.subText) {
                     p.push(bridge.getTextHeightWithWidth(item.subText, autoSizeWidth(12), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
                         item.detailHeight = r.height;
-                        item.itemHeight = r.height + item.textHeight + autoSizeWidth(20)
+                        item.itemHeight = r.height + item.textHeight + autoSizeWidth(20);
                     }));
                 }
             }
         }
 
 
-        Promise.all(p).then(()=> {
+        Promise.all(p).then(() => {
             if (isTop) {
                 this.topTopice = data;
                 store.save(kHomeTopTopic, this.topTopice);
@@ -516,7 +522,7 @@ class HomeModule {
                 store.save(kHomeBottomTopic, this.bottomTopice);
             }
             this.homeList = this.getHomeListData(true);
-        })
+        });
 
     };
 }

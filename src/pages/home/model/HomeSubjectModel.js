@@ -1,21 +1,22 @@
-import { observable, flow, action } from 'mobx';
+import { action, flow, observable } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import store from '@mr/rn-store';
+import ScreenUtil from '../../../utils/ScreenUtils';
+import { homeModule } from './Modules';
 
 const kHomeHotStore = '@home/kHomeHotStore';
-import ScreenUtil from '../../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtil;
 
 const bannerWidth = ScreenUtil.width - px2dp(50);
 const bannerHeight = bannerWidth * (240 / 650);
-import { homeModule } from './Modules';
 
 //专题
 class SubjectModule {
     @observable subjectList = [];
-    @observable subjectHeight = 0;
+    subBannerHeight = bannerHeight;
+
     //记载专题
     @action
     loadSubjectList = flow(function* (isCache) {
@@ -24,13 +25,11 @@ class SubjectModule {
                 const storeRes = yield store.get(kHomeHotStore);
                 if (storeRes) {
                     this.computeHeight(storeRes);
-                    this.subjectList = storeRes || [];
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.homeHot });
             let list = res.data || [];
             this.computeHeight(list);
-            this.subjectList = list;
             homeModule.changeHomeList(homeType.homeHot);
             store.save(kHomeHotStore, res.data);
         } catch (error) {
@@ -40,17 +39,20 @@ class SubjectModule {
 
     computeHeight = (data) => {
         if (data.length > 0) {
-            let height = px2dp(60);
-            data.map(value => {
-                const { topicBannerProductDTOList } = value;
-                if (topicBannerProductDTOList && topicBannerProductDTOList.length > 0) {
-                    height += px2dp(185);
-                } else {
-                    height += px2dp(15);
-                }
-                height += bannerHeight;
+            let subList = [];
+            subList.push({
+                id: 12,
+                type: homeType.homeHotTitle
             });
-            this.subjectHeight = height;
+            data.map((value, index) => {
+                subList.push({
+                    itemData: value,
+                    type: homeType.homeHot,
+                    id: value.id + '_' + index,
+                    itemIndex: index
+                });
+            });
+            this.subjectList = subList;
         }
     };
 }
