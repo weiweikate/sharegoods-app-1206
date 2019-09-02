@@ -33,6 +33,7 @@ export default class LoadMoreDataUtil{
     pageKey = 'page'
     pageSizeKey = 'pageSize'
     handleData = (data)=>{return data.data.data}
+    asyncHandleData = null;
     paramsFunc = ()=>{return {}} //请求参数
     isMoreFunc = (data)=>{return data.data.isMore}
 
@@ -54,7 +55,13 @@ export default class LoadMoreDataUtil{
             this.refreshing = false;
             this.isRefreshing = false;
             this.page = this.defaultPage;
-            this.data = this.handleData(result);
+            if (this.asyncHandleData){
+                this.asyncHandleData(result).then((r)=>{
+                    this.data = r;
+                })
+            } else {
+                this.data = this.handleData(result);
+            }
             this.footerStatus = this.isMoreFunc(result) ? 'idle': 'noMoreData'
         }).catch((err) => {
             this.refreshing = false;
@@ -81,7 +88,13 @@ export default class LoadMoreDataUtil{
 
         this.API(params).then((result)=> {
             this.isLoadMore = false;
-            this.data = this.data.concat(this.handleData(result));
+            if (this.asyncHandleData){
+                this.asyncHandleData(result).then((r)=>{
+                    this.data = this.data.concat(this.handleData(r));
+                })
+            } else {
+                this.data = this.data.concat(this.handleData(result));
+            }
             this.footerStatus = this.isMoreFunc(result) ? 'idle': 'noMoreData'
         }).catch((err) => {
             this.footerStatus = 'idle'

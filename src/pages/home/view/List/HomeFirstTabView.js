@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import { todayModule } from '../model/HomeTodayModel';
-import { recommendModule } from '../model/HomeRecommendModel';
-import { subjectModule } from '../model/HomeSubjectModel';
-import { homeFocusAdModel } from '../model/HomeFocusAdModel';
-import { homeType } from '../HomeTypes';
-import { bannerModule } from '../model/HomeBannerModel';
-import HomeBannerView, { bannerHeight } from './HomeBannerView';
-import user from '../../../model/user';
-import taskModel from '../model/TaskModel';
-import { channelModules } from '../model/HomeChannelModel';
-import { homeExpandBnnerModel } from '../model/HomeExpandBnnerModel';
-import { limitGoModule } from '../model/HomeLimitGoModel';
-import HomeTodayView, { todayHeight } from './HomeTodayView';
-import HomeRecommendView, { recommendHeight } from './HomeRecommendView';
-import { homeModule } from '../model/Modules';
-import GoodsCell, { kHomeGoodsViewHeight } from './HomeGoodsView';
-import { homeTabManager } from '../manager/HomeTabManager';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import { todayModule } from '../../model/HomeTodayModel';
+import { recommendModule } from '../../model/HomeRecommendModel';
+import { subjectModule } from '../../model/HomeSubjectModel';
+import { homeFocusAdModel } from '../../model/HomeFocusAdModel';
+import { homeType } from '../../HomeTypes';
+import { bannerModule } from '../../model/HomeBannerModel';
+import HomeBannerView, { bannerHeight } from '../HomeBannerView';
+import user from '../../../../model/user';
+import taskModel from '../../model/TaskModel';
+import { channelModules } from '../../model/HomeChannelModel';
+import { homeExpandBnnerModel } from '../../model/HomeExpandBnnerModel';
+import { limitGoModule } from '../../model/HomeLimitGoModel';
+import HomeTodayView, { todayHeight } from '../HomeTodayView';
+import HomeRecommendView, { recommendHeight } from '../HomeRecommendView';
+import { homeModule } from '../../model/Modules';
+import GoodsCell, { kHomeGoodsViewHeight } from '../HomeGoodsView';
+import { homeTabManager } from '../../manager/HomeTabManager';
 import {
     ActivityIndicator,
     DeviceEventEmitter,
@@ -28,25 +28,26 @@ import {
     StyleSheet,
     View
 } from 'react-native';
-import { routePush } from '../../../navigation/RouterMap';
-import HomeUserView from './HomeUserView';
-import TaskVIew from './TaskVIew';
-import HomeChannelView from './HomeChannelView';
-import HomeExpandBannerView from './HomeExpandBannerView';
-import HomeFocusAdView from './HomeFocusAdView';
-import HomeLimitGoView from './HomeLimitGoView';
-import HomeSubjectView from './HomeSubjectView';
-import TabTitleView from './TabTitleView';
-import ImageAdView from './ImageAdView';
-import GoodsCustomView from './GoodsCustomView';
-import DesignRule from '../../../constants/DesignRule';
-import intervalMsgModel from '../../../comm/components/IntervalMsgView';
-import { MRText as Text } from '../../../components/ui';
+import { routePush } from '../../../../navigation/RouterMap';
+import HomeUserView from '../HomeUserView';
+import TaskView from '../TaskView';
+import HomeChannelView from '../HomeChannelView';
+import HomeExpandBannerView from '../HomeExpandBannerView';
+import HomeFocusAdView from '../HomeFocusAdView';
+import HomeLimitGoView from '../HomeLimitGoView';
+import HomeSubjectView from '../HomeSubjectView';
+import TabTitleView from '../TabTitleView';
+import { TopicImageAdView } from '../TopicImageAdView';
+import GoodsCustomView from '../GoodsCustomView';
+import DesignRule from '../../../../constants/DesignRule';
+import intervalMsgModel from '../../../../comm/components/IntervalMsgView';
+import { MRText as Text } from '../../../../components/ui/index';
+import TextCustomView from '../TextCustomView';
 
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
-const { px2dp, height, headerHeight } = ScreenUtils;
+const { px2dp, height, headerHeight, width } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 const nowTime = new Date().getTime();
 const HOME_REFRESH = 'homeRefresh';
@@ -85,7 +86,7 @@ export default class HomeFirstTabView extends Component {
                 dim.height = taskModel.homeHeight;
                 break;
             case homeType.channel:
-                dim.height = channelModules.channelList.length > 0 ? px2dp(90) : 0;
+                dim.height = channelModules.channelHeight
                 break;
             case homeType.expandBanner:
                 dim.height = homeExpandBnnerModel.bannerHeight;
@@ -106,14 +107,18 @@ export default class HomeFirstTabView extends Component {
                 dim.height = subjectList.length > 0 ? subjectHeight : 0;
                 break;
             case homeType.goodsTitle:
-                dim.height = homeModule.tabList.length > 0 ? px2dp(70) : 0;
+                dim.height = homeModule.tabList.length > 0 ? px2dp(66) : 0;
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
                 break;
+            case homeType.custom_text:
             case homeType.custom_goods:
             case homeType.custom_imgAD:
-                dim.height = type.itemHeight;
+                dim.height = type.itemHeight || 0;
+                break;
+            case  homeType.placeholder:
+                dim.height = 1;
                 break;
             default:
                 dim.height = 0;
@@ -134,15 +139,15 @@ export default class HomeFirstTabView extends Component {
     _renderItem = (type, item, index) => {
         type = type.type;
         let data = item;
-        if (type === homeType.category) {
-            // return <HomeCategoryView navigate={routePush}/>;
-            return <View/>;
-        } else if (type === homeType.swiper) {
+        if (type === homeType.swiper) {
             return <HomeBannerView navigate={routePush}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={routePush}/>;
         } else if (type === homeType.task) {
-            return <TaskVIew type={'home'} style={{ marginTop: ScreenUtils.autoSizeWidth(10) }}/>;
+            return <TaskView type={'home'} style={{
+                marginTop: ScreenUtils.autoSizeWidth(5),
+                marginBottom: ScreenUtils.autoSizeWidth(10)
+            }}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={routePush}/>;
         } else if (type === homeType.expandBanner) {
@@ -161,17 +166,23 @@ export default class HomeFirstTabView extends Component {
             return <GoodsCell data={data} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
                               navigate={routePush}/>;
         } else if (type === homeType.goodsTitle) {
-            return <View style={styles.titleView}
-                         ref={e => this.toGoods = e}
+            return <View ref={e => this.toGoods = e}
                          onLayout={event => {
                              // 保留，不能删除
                          }}>
                 <TabTitleView/>
             </View>;
-        } else if (type === homeType.custom_imgAD) {
-            return <ImageAdView data={item}/>;
         } else if (type === homeType.custom_goods) {
             return <GoodsCustomView data={item}/>;
+        } else if (type === homeType.custom_text) {
+            // let p = {specialTopicId:  this.props.data.linkCode}
+            // p.specialTopicArea = 6;
+            return <TextCustomView data={item}/>;
+        } else if (type === homeType.custom_imgAD) {
+            // p.specialTopicArea = 1;
+            return <TopicImageAdView data={item}/>;
+        } else if (type === homeType.placeholder) {
+            return <View style={{ width: width, height: 1, backgroundColor: 'white' }}/>;
         }
         return <View/>;
     };
@@ -245,6 +256,7 @@ export default class HomeFirstTabView extends Component {
                 onScrollBeginDrag={this.props.onScrollBeginDrag}
                 showsVerticalScrollIndicator={false}
                 removeClippedSubviews={false}
+                // forceNonDeterministicRendering={true}
                 onScroll={this._onListViewScroll}
                 renderFooter={() => <Footer
                     isFetching={homeModule.isFetching}
@@ -297,11 +309,6 @@ export default class HomeFirstTabView extends Component {
 }
 
 const styles = StyleSheet.create({
-    titleView: {
-
-        height: px2dp(43 + 24),
-        width: ScreenUtils.width
-    },
     messageBgStyle: {
         width: px2dp(295),
         height: px2dp(390),

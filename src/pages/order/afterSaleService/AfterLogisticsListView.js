@@ -59,7 +59,7 @@ export default class AfterLogisticsListView extends BasePage {
                             fontSize: 12,
                             color: DesignRule.textColor_mainTitle
                         }}>{`${expName}: ${expNO}`}</MRText>
-                        <Image source={res.button.arrow_right_black}/>
+                        <Image resizeMode={'contain'} source={res.button.arrow_right_black} style={{ height: 12 }}/>
                     </View>
                 </TouchableOpacity>
                 <GoodsItem

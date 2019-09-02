@@ -42,10 +42,11 @@ class AddPhotos extends Component {
     renderPhotoItem = (item, index, imgList) => {
         return (
             <TouchableOpacity style={{ marginRight: ScreenUtils.autoSizeWidth(5), marginBottom: 12 }} key={index}
+                              activeOpacity={0.7}
                               onPress={()=> {this.imgClick(imgList,index)}}
             >
                 <ImageLoad style={styles.photo_item} source={{ uri: this.props.imageArr[index] }}/>
-                <TouchableOpacity style={styles.delete_btn} onPress={() => {
+                <TouchableOpacity activeOpacity={0.7} style={styles.delete_btn} onPress={() => {
                     this.props.deletePic(index);
                 }}>
                     <Image style={{ width: 24, height: 24 }} source={deleteImage}/>

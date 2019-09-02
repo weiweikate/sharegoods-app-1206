@@ -21,6 +21,8 @@ const icon_search = res.search;
 const itemImgW = (ScreenUtils.width - 110 - 2 * 10.5 - 2 * 30) / 3;
 const bannerW = ScreenUtils.width - 110;
 const bannerH = bannerW * 118 / 265;
+const categoryHeight = ScreenUtils.height - 56 - ScreenUtils.headerHeight;
+
 export default class CategorySearchPage extends BasePage {
 
     constructor(props) {
@@ -54,9 +56,6 @@ export default class CategorySearchPage extends BasePage {
         // 分类列表
         HomeAPI.findNameList().then((response) => {
             this.$loadingDismiss();
-            setTimeout(() => {
-                this.setState({ swiperShow: true });
-            }, 0);
             let datas = response.data || [];
             // 将为您推荐id设置为-10
             let item = { id: -10, name: '为您推荐' };
@@ -106,6 +105,14 @@ export default class CategorySearchPage extends BasePage {
         this.$navigate(RouterMap.SearchPage);
     };
 
+    _adjustCategory = (index) => {
+        if (index < 7) {
+            this.categoryRef && this.categoryRef.scrollToOffset({ animated: true, offset: 0 });
+            return;
+        }
+        this.categoryRef && this.categoryRef.scrollToOffset({ animated: true, offset: (index - 6) * 45 });
+    };
+
     _render() {
         return (
 
@@ -121,10 +128,13 @@ export default class CategorySearchPage extends BasePage {
                     {
                         this.state.nameArr && this.state.nameArr.length > 0 ?
                             <FlatList
+                                ref={(ref) => {
+                                    this.categoryRef = ref;
+                                }}
                                 style={{
                                     width: 90,
                                     backgroundColor: DesignRule.lineColor_inColorBg,
-                                    height: ScreenUtils.height - 56 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
+                                    height: categoryHeight //屏幕高减去搜索框以及头部高
                                 }}
                                 renderItem={this._categoryItem}
                                 refreshing={false}
@@ -165,6 +175,9 @@ export default class CategorySearchPage extends BasePage {
                                 /> : null
                         }
                         <SectionList
+                            ref={(ref) => {
+                                this.goods = ref;
+                            }}
                             style={{
                                 marginTop: this.state.bannerData.length > 0 ? 10 : 0,
                                 marginLeft: 10,
@@ -227,65 +240,60 @@ export default class CategorySearchPage extends BasePage {
     };
 
     _onCategoryClick = (item, index) => {
-        this.setState({
-            leftIndex: index
-        });
         // 点击分类
         if (this.state.leftIndex !== index) {
-            bridge.showLoading('加载中');
-            // 先隐藏，后显示，起到刷新作用
             this.setState({
-                bannerData: [],
-                swiperShow: false,
-                sectionArr: []
-            }, () => {
-                setTimeout(() => {
-                    if (index === 0) {
-                        // 热门分类
-                        HomeAPI.findHotList().then((response) => {
-                            bridge.hiddenLoading();
-                            let datas = response.data || {};
-                            this.setState({
-                                sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList || [] }],
-                                bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
-                                    img: datas.img,
-                                    linkType: datas.linkType,
-                                    linkTypeCode: datas.linkTypeCode
-                                }],
-                                swiperShow: true
-                            });
-                        }).catch((data) => {
-                            bridge.hiddenLoading();
-                            bridge.$toast(data.msg);
-                        });
-                    } else {
-                        // 分级
-                        HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
-                            bridge.hiddenLoading();
-                            let datas = response.data || {};
-                            let arr = datas.productCategoryList && datas.productCategoryList.map((item, index) => {
-                                return {
-                                    index: index,
-                                    title: item.name,
-                                    data: item.productCategoryList || []
-                                };
-                            });
-                            this.setState({
-                                sectionArr: arr || [],
-                                bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
-                                    img: datas.img,
-                                    linkType: datas.linkType,
-                                    linkTypeCode: datas.linkTypeCode
-                                }],
-                                swiperShow: true
-                            });
-                        }).catch((data) => {
-                            bridge.hiddenLoading();
-                            bridge.$toast(data.msg);
-                        });
-                    }
-                }, 50);
-            });
+                leftIndex: index
+            }, this._adjustCategory(index));
+            // 先隐藏，后显示，起到刷新作用
+            if (index === 0) {
+                // 热门分类
+                HomeAPI.findHotList().then((response) => {
+                    bridge.hiddenLoading();
+                    let datas = response.data || {};
+                    this.setState({
+                        sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList || [] }],
+                        bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
+                            img: datas.img,
+                            linkType: datas.linkType,
+                            linkTypeCode: datas.linkTypeCode
+                        }],
+                        swiperShow: !StringUtils.isEmpty(datas.img)
+                    }, () => {
+                        this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
+                    });
+                }).catch((data) => {
+                    bridge.hiddenLoading();
+                    bridge.$toast(data.msg);
+                });
+            } else {
+                // 分级
+                HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
+                    bridge.hiddenLoading();
+                    let datas = response.data || {};
+                    let arr = datas.productCategoryList && datas.productCategoryList.map((item, index) => {
+                        return {
+                            index: index,
+                            title: item.name,
+                            data: item.productCategoryList || []
+                        };
+                    });
+                    this.setState({
+                        sectionArr: arr || [],
+                        bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
+                            img: datas.img,
+                            linkType: datas.linkType,
+                            linkTypeCode: datas.linkTypeCode
+                        }],
+                        swiperShow: !StringUtils.isEmpty(datas.img)
+                    }, () => {
+                        this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
+                    });
+                }).catch((data) => {
+                    bridge.hiddenLoading();
+                    bridge.$toast(data.msg);
+                });
+            }
         }
     };
 

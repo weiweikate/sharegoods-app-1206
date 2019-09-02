@@ -150,6 +150,7 @@ export default class NavigatorBar extends Component {
         // 文案
         if (leftNavTitle && typeof leftNavTitle === 'string') {
             return <TouchableOpacity
+                activeOpacity={0.7}
                 style={[styles.left,
                     {
                         top: ScreenUtils.statusBarHeight
@@ -165,6 +166,7 @@ export default class NavigatorBar extends Component {
         // 图片
         if (leftNavImage) {
             return <TouchableOpacity
+                activeOpacity={0.7}
                 style={[styles.left, {
                     top: ScreenUtils.statusBarHeight
                 }]}
@@ -200,6 +202,7 @@ export default class NavigatorBar extends Component {
         }
         if (rightNavImage) {
             return <TouchableOpacity
+                activeOpacity={0.7}
                 style={styles.right}
                 onPress={this._onRightPressed}>
                 <View>
@@ -211,6 +214,7 @@ export default class NavigatorBar extends Component {
         }
         if (rightNavTitle && typeof rightNavTitle === 'string') {
             return <TouchableOpacity
+                activeOpacity={0.7}
                 style={styles.right}
                 onPress={this._onRightPressed}>
                 <Text style={[styles.button, this.props.rightTitleStyle]}

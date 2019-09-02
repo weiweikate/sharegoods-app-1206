@@ -28,19 +28,19 @@ export function formatCardWithSpace(text) {
         }
 
         if (phone && phone.length < 9) {
-            return `${phone.substring(0, 4)} ${phone.substring(4, phone.length)}`;
+            return `${phone.substring(0, 4)}  ${phone.substring(4, phone.length)}`;
         }
 
         if (phone && phone.length < 13) {
-            return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, phone.length)}`;
+            return `${phone.substring(0, 4)}  ${phone.substring(4, 8)}  ${phone.substring(8, phone.length)}`;
         }
 
         if (phone && phone.length < 17) {
-            return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, 12)} ${phone.substring(12, phone.length)}`;
+            return `${phone.substring(0, 4)}  ${phone.substring(4, 8)}  ${phone.substring(8, 12)}  ${phone.substring(12, phone.length)}`;
         }
 
         if (phone && phone.length > 16) {
-            return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, 12)} ${phone.substring(12, 16)} ${phone.substring(16, phone.length)}`;
+            return `${phone.substring(0, 4)}  ${phone.substring(4, 8)}  ${phone.substring(8, 12)}  ${phone.substring(12, 16)}  ${phone.substring(16, phone.length)}`;
         }
     } else {
         return text;

@@ -13,7 +13,7 @@ const deepLinkPath = {
     /*售后申请*/
     'AfterSaleServicePage': 'path/AfterSaleServicePage/:orderProductNo/:pageType',
     /*物流详情*/
-    'LogisticsDetailsPage': 'path/LogisticsDetailsPage/:expressNo/:expressCode/:expressName',
+    'LogisticsDetailsPage': 'path/LogisticsDetailsPage/:expressNo/:expressCode',
     /*订单列表*/
     'MyOrdersListPage': 'path/MyOrdersListPage'
 };

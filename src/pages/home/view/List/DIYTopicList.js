@@ -19,17 +19,19 @@ import {
     RefreshControl
 } from 'react-native';
 
-import ScreenUtils from '../../../utils/ScreenUtils';
-import DesignRule from '../../../constants/DesignRule';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from '../../../../constants/DesignRule';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
-import { homeType } from '../HomeTypes';
-import { ImageAdViewGetHeight, TopicImageAdView } from './ImageAdView';
-import GoodsCustomView, { GoodsCustomViewGetHeight } from './GoodsCustomView';
-import HomeAPI from '../api/HomeAPI';
-import TextCustomView from './TextCustomView';
-import LoadMoreDataUtil from '../../../utils/LoadMoreDataUtil';
-import { DefaultLoadMoreComponent } from '../../../comm/components/RefreshFlatList';
+import { homeType } from '../../HomeTypes';
+import { ImageAdViewGetHeight, TopicImageAdView } from '../TopicImageAdView';
+import GoodsCustomView, { GoodsCustomViewGetHeight } from '../GoodsCustomView';
+import HomeAPI from '../../api/HomeAPI';
+import TextCustomView from '../TextCustomView';
+import LoadMoreDataUtil from '../../../../utils/LoadMoreDataUtil';
+import { DefaultLoadMoreComponent } from '../../../../comm/components/RefreshFlatList';
 import { observer } from 'mobx-react';
+import bridge from '../../../../utils/bridge';
+const autoSizeWidth = ScreenUtils.autoSizeWidth;
 @observer
 export default class DIYTopicList extends React.Component {
 
@@ -40,19 +42,50 @@ export default class DIYTopicList extends React.Component {
         this.loadMoreDataUtil = new LoadMoreDataUtil()
         this.loadMoreDataUtil.API = HomeAPI.getCustomTopic;
         this.loadMoreDataUtil.paramsFunc = () => {return{topicCode: (this.props.data || {}).linkCode}};
-        this.loadMoreDataUtil.handleData = (data) => {
+        this.loadMoreDataUtil.asyncHandleData = (data) => {
             data = data.data.widgets.data || []
 
-            return    data.map((item, index) => {
-                if (item.type === homeType.custom_goods){
-                    item.itemHeight = GoodsCustomViewGetHeight(item)
+            data = [...data];
+            let p = []
+            let count = data.length;
+            for (let index = 0; index < count; index ++){
+                let item = data[index];
+                if (item.type === homeType.custom_goods) {
+                    item.itemHeight = GoodsCustomViewGetHeight(item);
+                    item.marginBottom = ScreenUtils.autoSizeWidth(0);
+                    if (count-1 > index) {
+                        let type = data[index+1].type;
+                        if (type  === homeType.custom_imgAD || type === homeType.custom_text) {
+                            item.marginBottom = ScreenUtils.autoSizeWidth(15);
+                        }
+                    }
+                    item.itemHeight += item.marginBottom;
                 }
 
-                if (item.type === homeType.custom_imgAD){
-                    item.itemHeight = ImageAdViewGetHeight(item)
+                if (item.type === homeType.custom_imgAD) {
+                    item.itemHeight = ImageAdViewGetHeight(item);
                 }
 
-                return item
+                if (item.type === homeType.custom_text) {
+
+                    item.detailHeight = 0;
+                    item.textHeight = 0;
+                    if (item.text) {
+                        p.push(bridge.getTextHeightWithWidth(item.text, autoSizeWidth(14), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
+                            item.textHeight = r.height;
+                            item.itemHeight = r.height + item.detailHeight+ autoSizeWidth(20)
+                        }));
+                    }
+                    if (item.subText) {
+                        p.push(bridge.getTextHeightWithWidth(item.subText, autoSizeWidth(12), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
+                            item.detailHeight = r.height;
+                            item.itemHeight = r.height + item.textHeight + autoSizeWidth(20)
+                        }));
+                    }
+                }
+            }
+           return Promise.all(p).then(()=> {
+               return data
             })
         } ;
         this.loadMoreDataUtil.isMoreFunc = (data) => {return data.data.widgets.isMore}
@@ -68,10 +101,8 @@ export default class DIYTopicList extends React.Component {
         switch (type.type) {
            case homeType.custom_goods:
             case homeType.custom_imgAD:
+                case homeType.custom_text:
                dim.height = type.itemHeight;
-                break;
-            case homeType.custom_text:
-                dim.height = 1;
                 break;
             default:
                 dim.height = 0;
@@ -105,9 +136,6 @@ export default class DIYTopicList extends React.Component {
         this.dataProvider = this.dataProvider.cloneWithRows(this.loadMoreDataUtil.data);
         return (
             <RecyclerListView
-                ref={(ref) => {
-                    this.recyclerListView = ref;
-                }}
                 style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0}}
                 refreshControl={<RefreshControl refreshing={this.loadMoreDataUtil.refreshing}
                                                 onRefresh={this.loadMoreDataUtil.onRefresh}
@@ -120,7 +148,7 @@ export default class DIYTopicList extends React.Component {
                 showsVerticalScrollIndicator={false}
                 removeClippedSubviews={false}
                 canChangeSize={false}
-                forceNonDeterministicRendering={true}
+                // forceNonDeterministicRendering={true}
                 renderFooter={() => <DefaultLoadMoreComponent status={this.loadMoreDataUtil.footerStatus}/>
                 }
             />

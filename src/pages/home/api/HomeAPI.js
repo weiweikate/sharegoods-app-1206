@@ -1,5 +1,5 @@
 const api = {
-
+    getHomeCustom: ['/homeCustom/query', { method: 'get' }],
     getFirstList: ['/homeNav/getFirstList', { method: 'get' }],
     getSecondaryList: ['/homeNav/getSecondaryList', { method: 'get' }],
     getTabList: ['/recommend/getTabList', { method: 'get' }],

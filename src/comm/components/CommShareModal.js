@@ -405,9 +405,12 @@ export default class CommShareModal extends React.Component {
                     position: 'absolute'
                 }}
                 >
-                    <TouchableOpacity style={{ flex: 1, justifyContent: 'flex-end' }} onPress={() => {
-                        this.close();
-                    }}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={{ flex: 1, justifyContent: 'flex-end' }}
+                        onPress={() => {
+                            this.close();
+                        }}>
                         {
                             currentType ?
                                 <Animated.View style={{

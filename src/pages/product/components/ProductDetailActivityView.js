@@ -37,7 +37,7 @@ export class ActivityWillBeginView extends Component {
                 <View style={WillBeginStyles.rightView}>
                     <MRText style={WillBeginStyles.rightText}>{showTimeText}</MRText>
                     {extraProperty === 'toSpike' &&
-                    <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>}
+                    <Image resizeMode={'contain'} source={arrow_right_black} style={{ height: 10 }}/>}
                 </View>
             </NoMoreClick>
         );
@@ -123,7 +123,7 @@ export class ActivityDidBeginView extends Component {
                         </View>
                     </View>
                     {extraProperty === 'toSpike' &&
-                    <Image source={arrow_right_black} style={{ marginRight: 8, width: 7, height: 10 }}/>}
+                    <Image resizeMode={'contain'} source={arrow_right_black} style={{ marginRight: 8, height: 10 }}/>}
                 </View>
             </NoMoreClick>
         );

@@ -174,7 +174,7 @@ export default class MessageCenterPage extends BasePage {
                                     fontSize: px2dp(9)
                                 }}>{count}</Text>
                             </View> : null}
-                            <Image source={arrow_right} style={{ height: 14 }} resizeMode={'contain'}/>
+                            <Image source={arrow_right} style={{ height: 12 }} resizeMode={'contain'}/>
                         </View>
                     </TouchableOpacity>
                 </View>

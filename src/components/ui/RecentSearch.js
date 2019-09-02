@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,
-    Image,
-    DeviceEventEmitter,
-    TouchableOpacity,
-    // NativeModules
-} from 'react-native';
+import { DeviceEventEmitter, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import StringUtils from '../../utils/StringUtils';
 import DesignRule from '../../constants/DesignRule';
-import {MRText as Text}from './UIText';
+import { MRText as Text } from './UIText';
 
 /**
  * 最近搜索view
@@ -38,7 +31,9 @@ class RecentSearch extends Component {
     renderDeleteImg = () => {
         if (this.props.recentData.length > 0) {
             return (
-                <TouchableOpacity onPress={() => this.props.clearHistory()}>
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => this.props.clearHistory()}>
                     <Image
                         style={styles.image}
                         source={require('./searchBar/search_delete.png')}
@@ -64,7 +59,7 @@ class RecentSearch extends Component {
             // console.log('从父组件拿到最近搜索记录=' + this.props.recentData)
             for (let index = 0; index < this.props.recentData.length; index++) {
                 tagList.push(
-                    <TouchableOpacity key={index} onPress={() =>
+                    <TouchableOpacity activeOpacity={0.7} key={index} onPress={() =>
                         DeviceEventEmitter.emit('inputText', this.props.recentData[index])}>
                         <Text style={styles.tagText}>{StringUtils.formatString(this.props.recentData[index])}</Text>
                     </TouchableOpacity>
@@ -99,7 +94,7 @@ const styles = StyleSheet.create(
             paddingRight: 20,
             paddingTop: 10,
             flexWrap: 'wrap',
-            alignItems: 'center',
+            alignItems: 'center'
         },
         tagText: {
             backgroundColor: '#DFDFDF',

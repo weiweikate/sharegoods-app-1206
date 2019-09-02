@@ -90,7 +90,7 @@ export class HeaderItemView extends Component {
                 <View style={styles.shopSubView}>
                     <View style={styles.shopSubLineView}/>
                     <Text style={styles.shopSubText}>加入拼店</Text>
-                    <Image source={arrow_right_red}/>
+                    <Image resizeMode={'contain'} source={arrow_right_red} style={{ height: 12 }}/>
                 </View>
             </NoMoreClick>
         );
@@ -253,7 +253,7 @@ export class PromoteItemView extends Component {
                         })
                     }
                 </View>
-                <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>
+                <Image resizeMode={'contain'} source={arrow_right_black} style={{ height: 10 }}/>
             </NoMoreClick>
         );
     }
@@ -293,7 +293,7 @@ const PromoteItemViewStyles = StyleSheet.create({
 export class ServiceItemView extends Component {
     _imgText = (text) => {
         return <View style={ServiceItemViewStyles.itemView}>
-            <Image source={service_true}/>
+            <Image source={service_true} style={{ width: 8, height: 8 }}/>
             <Text style={ServiceItemViewStyles.serviceValueText}>{text}</Text>
         </View>;
     };
@@ -309,7 +309,7 @@ export class ServiceItemView extends Component {
                     {this._imgText('48小时发货')}
                     {afterSaleLimit ? this._imgText('仅支持换货') : (sevenDayReturn ? this._imgText('7天退换') : null)}
                 </View>
-                <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>
+                <Image resizeMode={'contain'} source={arrow_right_black} style={{ height: 10 }}/>
             </NoMoreClick>
         );
     }
@@ -356,7 +356,7 @@ export class ParamItemView extends Component {
                             fontSize: 13
                         }}>{paramNames.join(' ')}</Text>
                     </View>
-                    <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>
+                    <Image resizeMode={'contain'} source={arrow_right_black} style={{ height: 10 }}/>
                 </NoMoreClick>
             </View>
 
