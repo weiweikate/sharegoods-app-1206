@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -40,6 +42,7 @@ import com.meeruu.commonlib.event.Event;
 import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
+import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.FileUtils;
 import com.meeruu.commonlib.utils.ImageCacheUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
@@ -619,6 +622,37 @@ public class CommModule extends ReactContextBaseJavaModule {
         intent.putExtra("url_action", "get");
         getCurrentActivity().startActivityForResult(intent, ParameterUtils.REQUEST_CODE_GONGMAO);
     }
+
+    @ReactMethod
+    public void getTextHeightWithWidth(String text,float fontSize,float width, Promise promise) {
+        WritableMap map = Arguments.createMap();
+        if(TextUtils.isEmpty(text)){
+            map.putInt("height",0);
+            promise.resolve(map);
+            return;
+        }
+        Paint paint = new Paint();
+        paint.setTextSize(fontSize);
+        Rect rect = new Rect();
+        paint.getTextBounds(text,0,text.length(),rect);
+        int oWidth = rect.width();
+        int oHeight = (int)getFontHeight(paint);
+        width = DensityUtils.px2dip(width);
+        int i = (int)Math.ceil((double)oWidth/(double)width);
+        map.putInt("height",oHeight*i);
+        promise.resolve(map);
+    }
+
+    /***
+     * 获取字体高度
+     * @param paint
+     * @return
+     */
+    public static float getFontHeight(Paint paint) {
+        Paint.FontMetrics fm = paint.getFontMetrics();
+        return ((int) Math.ceil(fm.descent - fm.top) + 2) /2 ;
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void event2RNHtmlPage(Event.MR2HTMLEvent event) {

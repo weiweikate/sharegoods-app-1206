@@ -12,20 +12,19 @@
 
 'use strict';
 
-import { observable, action } from 'mobx';
+import { action, observable } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 
 import ScreenUtil from '../../../utils/ScreenUtils';
-
-const { px2dp } = ScreenUtil;
-
 import { homeModule } from './Modules';
 import bridge from '../../../utils/bridge';
 import store from '@mr/rn-store';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { IntervalMsgNavigate } from '../../../comm/components/IntervalMsgView';
 
-const activity_mission_main_no = 'activity_mission_main_no';    // 主线任务
+const { px2dp } = ScreenUtil;
+
+const activity_mission_main_no = 'activity_mission_main_no_new';    // 主线任务
 const activity_mission_daily_no = 'activity_mission_daily_no';     // 日常任务
 
 class TaskModel {
@@ -89,7 +88,7 @@ class TaskModel {
             let length = data.ruleList.length;
             if (length > 0) {
                 if (data.ruleList && data.ruleList[length - 1]) {
-                        this.totalProgress = data.ruleList[length - 1].value;
+                    this.totalProgress = data.ruleList[length - 1].value;
                 }
             }
             if (this.type === 'home') {
@@ -105,13 +104,13 @@ class TaskModel {
     }
 
     @action
-    findCanOpenProgress(){
-        let canOpenProgress = -1
+    findCanOpenProgress() {
+        let canOpenProgress = -1;
         this.boxs.forEach(item => {
             if (canOpenProgress === -1 && item.prizeStatus === 1) {
                 canOpenProgress = item.value;
             }
-        })
+        });
         this.canOpenProgress = canOpenProgress;
     }
 
@@ -187,7 +186,7 @@ class TaskModel {
         this.missionBtnClickEvent(item);
         if (item.status === 0) {
             let { interactiveCode, interactiveValue, category } = item;
-            IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue, category===1);
+            IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue, category === 1);
             return;
         }
         bridge.showLoading();
@@ -234,9 +233,13 @@ class TaskModel {
             homeHeight = 0;
         } else {
             if (this.expanded) {
-                homeHeight = px2dp(48 + 383 + 10+ 10);
+                homeHeight = px2dp(48 + 383 + 10 + 10);
             } else {
-                homeHeight = px2dp(48 + 83 + 10+ 30);
+                homeHeight = px2dp(48 + 83 + 10 + 30);
+            }
+
+            if (this.type === 'home'){
+                homeHeight += px2dp(40);
             }
         }
         if (homeHeight !== this.homeHeight) {
@@ -246,22 +249,25 @@ class TaskModel {
     }
 
     /** 埋点相关*/
-    boxBtnClickEvent(item){
-        track(trackEvent.BoxBtnClick,{boxNum: this.boxs.indexOf(item), userValue: this.progress});
+    boxBtnClickEvent(item) {
+        track(trackEvent.BoxBtnClick, { boxNum: this.boxs.indexOf(item), userValue: this.progress });
     }
 
-    missionBtnClickEvent(item){
-        track(trackEvent.MissionBtnClick,{
-            missionBtnName:item.status === 0 ? '前往' : '领奖',
-            missionId:item.no,
+    missionBtnClickEvent(item) {
+        track(trackEvent.MissionBtnClick, {
+            missionBtnName: item.status === 0 ? '前往' : '领奖',
+            missionId: item.no,
             missionName: item.name,
             missionIndex: this.tasks.indexOf(item),
-            userValue: this.progress});
+            userValue: this.progress
+        });
     }
 
-    expandedEvent(){
-        track(trackEvent.MissionFrameBtnClick,{missionFrameBtnName: this.expanded ?
-                '收起任务列表' : '做任务赚活跃值', userValue: this.progress});
+    expandedEvent() {
+        track(trackEvent.MissionFrameBtnClick, {
+            missionFrameBtnName: this.expanded ?
+                '收起任务列表' : '做任务赚活跃值', userValue: this.progress
+        });
     }
 }
 

@@ -242,7 +242,7 @@ class AfterSaleServicePage extends BasePage {
                             fontSize: 13,
                             marginRight: 5
                         }} value={StringUtils.isNoEmpty(this.state.returnReason) ? this.state.returnReason : '请选择'}/>
-                        <UIImage source={arrow_right} style={{ height: 10, width: 7, marginRight: 15 }}/>
+                        <UIImage resizeMode={'contain'} source={arrow_right} style={{ height: 12, marginRight: 15 }}/>
                     </View>
                 </TouchableOpacity>
                 {this.refundAndExchangeType()}

@@ -118,23 +118,24 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   QYCustomActionConfig  * actionConfig = [[QYSDK sharedSDK] customActionConfig];
   actionConfig.eventClickBlock = ^(NSString *eventName, NSString *eventData, NSString *messageId) {
     if ([eventName isEqualToString:@"QYEventNameTapCommodityInfo"]) {
-      [self onBack:nil];
       NSDictionary *urlData;
       if ([eventData containsString:@"http"]) {
         urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":eventData};
       }else{
         urlData = @{@"card_type":@(ORDER_CARD), @"linkUrl":eventData};
       }
+      [self onBack:nil];
       [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
     }else if ([eventName isEqualToString:@"QYEventNameTapLabelLink"]){
-      [self onBack:nil];
       if ([eventData containsString:@"h5.sharegoodsmall.com/product"] && [eventData containsString:@"http"])
       {
           NSDictionary *urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":eventData};
+        [self onBack:nil];
          [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
-      }else{
-        NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"uri":eventData,@"eventName": @"Event_navigateHtmlPage"};
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"EventToRN" object:urlData];
+      }else if([eventData containsString:@"http"]){
+        NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"linkUrl":eventData};
+        [self onBack:nil];
+        [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
       }
     }
   };
@@ -240,17 +241,16 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   for (NSInteger index = 0 ; index < sessionList.count; index++) {
     QYSessionInfo * sessionInfo = sessionList[index];
     long long lastTime = (long long)sessionInfo.lastMessageTimeStamp;
-    NSDictionary * session =  @{
-                                @"hasTrashWords":@(sessionInfo.hasTrashWords),
-                                @"lastMessageText":sessionInfo.lastMessageText,
-                                @"lastMessageType":@(sessionInfo.lastMessageType),
-                                @"unreadCount":@(sessionInfo.unreadCount),
-                                @"status":@(sessionInfo.status),
-                                @"lastMessageTimeStamp":@(lastTime),
-                                @"shopId":sessionInfo.shopId,
-                            @"avatarImageUrlString":sessionInfo.avatarImageUrlString?sessionInfo.avatarImageUrlString:[NSNull null],
-                                @"sessionName":sessionInfo.sessionName,
-                                };
+    NSMutableDictionary *session = [NSMutableDictionary dictionary];
+    [session setValue:@(sessionInfo.hasTrashWords) forKey:@"hasTrashWords"];
+    [session setValue:sessionInfo.lastMessageText forKey:@"lastMessageText"];
+    [session setValue:@(sessionInfo.lastMessageType) forKey:@"lastMessageType"];
+    [session setValue:@(sessionInfo.unreadCount) forKey:@"unreadCount"];
+    [session setValue:@(sessionInfo.status) forKey:@"status"];
+    [session setValue:@(lastTime) forKey:@"lastMessageTimeStamp"];
+    [session setValue:sessionInfo.shopId forKey:@"shopId"];
+    [session setValue:sessionInfo.avatarImageUrlString forKey:@"avatarImageUrlString"];
+    [session setValue:sessionInfo.sessionName forKey:@"sessionName"];
     NSLog(@"%@",session);
     [sessionListDataArr addObject:session];
   }

@@ -15,6 +15,7 @@
 #import "CommentTool.h"
 #import "IJSVideoManager.h"
 #import "NetWorkTool.h"
+#import "NSString+UrlAddParams.h"
 
 #define AppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 
@@ -310,6 +311,17 @@ RCT_EXPORT_METHOD(RN_ImageCompression:(NSArray *) paths
   NSLog(@"执行开始");
   callback(@[]);
   NSLog(@"执行结束");
+}
+RCT_EXPORT_METHOD(getTextHeightWithWidth:(NSString*)str
+                  fontSize:(CGFloat)fontSize
+                  width:(CGFloat)width
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject){
+  CGFloat height = 0.0;
+  if (str) {
+   height = [str getStringHeightWithfontSize:fontSize viewWidth:width];
+  }
+  resolve(@{@"height": [NSNumber numberWithFloat:height]});
 }
 
 

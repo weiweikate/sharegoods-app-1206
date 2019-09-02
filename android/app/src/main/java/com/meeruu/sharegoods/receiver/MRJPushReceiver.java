@@ -3,10 +3,12 @@ package com.meeruu.sharegoods.receiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.TableLayout;
 
 import com.meeruu.commonlib.event.Event;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.LogUtils;
+import com.meeruu.commonlib.utils.SensorsUtils;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
 import org.greenrobot.eventbus.EventBus;
@@ -33,6 +35,9 @@ public class MRJPushReceiver extends JPushMessageReceiver {
     private static final String LINK_NATIVE_URL = "linkNativeUrl";
     private static final String PAGE_KEY = "pageType";
     private static final String PARAMS_KEY = "params";
+    private static final String BIZ_ID = "bizId";
+    private static final String BIZ_TYPE = "bizType";
+    private static final String APP_OPENN_OTIFICATION = "AppOpenNotification";
 
     // 注册回调
     @Override
@@ -46,6 +51,7 @@ public class MRJPushReceiver extends JPushMessageReceiver {
     @Override
     public void onNotifyMessageOpened(Context context, NotificationMessage notificationMessage) {
         super.onNotifyMessageOpened(context, notificationMessage);
+        trackPush(notificationMessage);
         try {
             JSONObject objExtra = new JSONObject(notificationMessage.notificationExtras);
             notifyOpened(context, objExtra);
@@ -118,16 +124,42 @@ public class MRJPushReceiver extends JPushMessageReceiver {
             }
             String uri = "meeruu://path/HtmlPage/" + link;
             deepLink(uri, context);
-        }else if(objExtra != null && objExtra.has(LINK_NATIVE_URL)){
+        } else if (objExtra != null && objExtra.has(LINK_NATIVE_URL)) {
             String link = "";
             try {
                 link = objExtra.getString(LINk_KEY);
-            }catch (Exception e){
+            } catch (Exception e) {
             }
             String uri = "meeruu://path/" + link;
             deepLink(uri, context);
         } else {
             startApp(context);
+        }
+    }
+
+    /**
+     * 推送消息神策埋点
+     *
+     * @param notificationMessage
+     */
+    private void trackPush(NotificationMessage notificationMessage) {
+        try {
+            JSONObject objExtra = new JSONObject(notificationMessage.notificationExtras);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("msg_id", notificationMessage.msgId);
+            jsonObject.put("msg_title", notificationMessage.notificationTitle);
+            if (objExtra != null && objExtra.has(BIZ_ID)) {
+                String id = objExtra.getString(BIZ_ID);
+                jsonObject.put(BIZ_ID, id);
+            }
+
+            if(objExtra != null && objExtra.has(BIZ_TYPE)){
+                String type = objExtra.getString(BIZ_TYPE);
+                jsonObject.put(type, type);
+            }
+
+            SensorsUtils.trackCustomeEvent(APP_OPENN_OTIFICATION, jsonObject);
+        } catch (Exception e) {
         }
     }
 

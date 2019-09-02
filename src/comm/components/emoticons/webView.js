@@ -30,6 +30,7 @@ class Webview extends React.Component {
                   visible='hidden'>
                 <View style={styles.toolbar}>
                     <TouchableOpacity
+                        activeOpacity={0.7}
                         style={styles.leftIOSContainer}
                         onPress={this._onBackPress.bind(this)}
                     >
@@ -40,7 +41,7 @@ class Webview extends React.Component {
                     </TouchableOpacity>
 
                     <View style={styles.titleViewIOS}>
-                        <TouchableOpacity style={styles.titleViewIOSClick}>
+                        <TouchableOpacity style={styles.titleViewIOSClick} activeOpacity={0.7}>
                             <Text
                                 style={styles.titleIOS}
                             >

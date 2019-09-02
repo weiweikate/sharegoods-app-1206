@@ -25,6 +25,7 @@ export default class CheckLogisticsPage extends BasePage {
             expressName: expressName
         });
     }
+
 //{this.params.expressList.length + this.params.unSendProductInfoList.length}
     _render() {
         return (
@@ -54,7 +55,8 @@ export default class CheckLogisticsPage extends BasePage {
                                         fontSize: 12,
                                         color: DesignRule.textColor_mainTitle
                                     }}>{`${item.expressName}: ${item.expressNo}`}</Text>
-                                    <Image source={res.button.arrow_right_black}/>
+                                    <Image resizeMode={'contain'} source={res.button.arrow_right_black}
+                                           style={{ height: 12 }}/>
                                 </View>
                             </TouchableOpacity>
                             <View style={{ backgroundColor: '#E4E4E4', height: 0.5, width: ScreenUtils.width }}/>
@@ -110,21 +112,21 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: DesignRule.bgColor
     },
-    ScrollStyle:{
+    ScrollStyle: {
         height: 20,
         width: ScreenUtils.width,
         backgroundColor: DesignRule.mainColor,
         alignItems: 'center',
         justifyContent: 'center'
     },
-    ViewSecStyle:{
+    ViewSecStyle: {
         alignItems: 'center',
         marginTop: 8,
         marginBottom: 8,
         height: 17,
         justifyContent: 'center'
     },
-    expStyle:{
+    expStyle: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',

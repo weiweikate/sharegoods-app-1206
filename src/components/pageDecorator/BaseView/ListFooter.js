@@ -89,7 +89,7 @@ export default class ListFooter extends Component {
         if (errorDesc) {
             errorDesc = typeof errorDesc === 'string' ? errorDesc : '未知错误~';
             return (
-                <TouchableOpacity style={styles.container} onPress={this._clickError}>
+                <TouchableOpacity style={styles.container} onPress={this._clickError} activeOpacity={0.7}>
                     <Text numberOfLines={2} style={styles.title} allowFontScaling={false}>
                         {`${errorDesc}\n点击重新加载`}
                     </Text>

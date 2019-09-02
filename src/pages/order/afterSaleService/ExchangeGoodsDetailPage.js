@@ -10,7 +10,8 @@ import {
     DeviceEventEmitter,
     Alert,
     TouchableOpacity,
-    RefreshControl
+    RefreshControl,
+    Image
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import { UIText, UIImage, MRText } from '../../../components/ui';
@@ -38,6 +39,7 @@ import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/Navigat
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
+import LinearGradient from 'react-native-linear-gradient';
 
 const {
     PAGE_AREFUND,
@@ -170,6 +172,39 @@ class ExchangeGoodsDetailPage extends BasePage {
         let isShow_afterInfo = !isShow_backAddressView;
         return (
             <View style={styles.container}>
+                <LinearGradient start={{x: 0, y: 0}}
+                                end={{x: 1, y: 0}}
+                                colors={['#FF0050', '#FC5D39']}
+                >
+                    <NavigatorBar headerStyle={{
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        borderBottomWidth: 0
+                    }}
+                                  leftNavImage={back_white}
+                                  leftPressed={() => {
+                                      this.$navigateBack();
+                                  }}
+                                  title={'售后进度'}
+                                  titleStyle={{color: 'white'}}
+                                  renderRight={() => {
+                                      return (
+                                          <View style={{
+                                              width: 30,
+                                              height: 30,
+                                              alignItems: 'center',
+                                              justifyContent: 'center'
+                                          }}>
+                                              <Image source={tongyong_icon_kefu_white}
+                                                     resizeMode={'stretch'}
+                                                     style={{width: 20, height: 20}}/>
+                                          </View>
+                                      )
+                                  }}
+                                  rightPressed={() => {
+                                      this.connetKefu();
+                                  }}
+                    />
+                </LinearGradient>
                 <ScrollView showsVerticalScrollIndicator={false}
                             refreshControl={
                                 <RefreshControl
@@ -274,25 +309,6 @@ class ExchangeGoodsDetailPage extends BasePage {
                     </TouchableOpacity>
                     <View style={{ height: ScreenUtils.safeBottom }}/>
                 </ScrollView>
-                <NavigatorBar headerStyle={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    backgroundColor: 'rgba(0,0,0,0)',
-                    borderBottomWidth: 0
-                }}
-                              leftNavImage={back_white}
-                              leftPressed={() => {
-                                  this.$navigateBack();
-                              }}
-                              title={'售后进度'}
-                              titleStyle={{ color: 'white' }}
-                              rightNavImage={tongyong_icon_kefu_white}
-                              rightPressed={() => {
-                                  this.connetKefu();
-                              }}
-                />
             </View>
         );
     }
@@ -562,8 +578,7 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     item_arrow: {
-        height: 10,
-        width: 7
+        height: 12
     }
 });
 

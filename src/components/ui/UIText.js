@@ -75,7 +75,7 @@ class MRTextInputWithCancel extends React.Component {
                                onFocus && onFocus(nativeEvent);
                            }}
                            {...attributes}/>
-                {showCancel && <TouchableOpacity onPress={() => {
+                {showCancel && <TouchableOpacity activeOpacity={0.7} onPress={() => {
                     this.onChangeText('', onChangeText);
                 }}>
                     <Image style={{ width: 16, height: 16 }} source={UITextInputCancel}/>

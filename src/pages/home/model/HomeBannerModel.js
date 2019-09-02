@@ -1,4 +1,4 @@
-import { observable, computed, action, flow } from 'mobx';
+import { observable, action, flow } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import store from '@mr/rn-store';
@@ -9,10 +9,6 @@ const kHomeTopBannerStore = '@home/kHomeTopBannerStore';
 
 export class BannerModules {
     @observable bannerList = [];
-
-    @computed get bannerCount() {
-        return this.bannerList.length;
-    }
 
     @action loadBannerList = flow(function* (isCache) {
         try {

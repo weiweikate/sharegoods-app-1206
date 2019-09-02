@@ -9,7 +9,7 @@
 #ifndef JRNotiOrKey_h
 #define JRNotiOrKey_h
 
-#define KDEBUG_XG 1
+//#define KDEBUG_XG 1
 
 #ifdef KDEBUG_XG
 #define KJSPushKey  @"3288c3f3feb6c119e3d88049" //极光测试key

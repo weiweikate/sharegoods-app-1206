@@ -1,9 +1,7 @@
 //支付消息结果页面
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
-import {
-    UIImage
-} from '../../components/ui';
+import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { MRText as Text, UIImage } from '../../components/ui';
 import ScreenUtils from '../../utils/ScreenUtils';
 import StringUtils from '../../utils/StringUtils';
 import BasePage from '../../BasePage';
@@ -11,10 +9,9 @@ import DateUtils from '../../utils/DateUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
 import DesignRule from '../../constants/DesignRule';
 import RES from './res';
+import RouterMap from '../../navigation/RouterMap';
 
 const arrow_right = RES.button.arrow_right_black;
-import { MRText as Text } from '../../components/ui';
-import RouterMap from '../../navigation/RouterMap';
 
 const payTypes = [1, 2, 4, 8, 16];
 const payTexts = ['纯平台', '微信(小程序)', '微信(APP)', '支付宝', '银联'];
@@ -57,7 +54,7 @@ export default class PayMessagePage extends BasePage {
     }
 
     toHelperPage = () => {
-        this.$navigate(RouterMap.MyHelperPage);
+        this.$navigate(RouterMap.MyHelperCenter);
     };
 
     commitQuestion = () => {
@@ -140,7 +137,7 @@ export default class PayMessagePage extends BasePage {
     }
 
     showTitle() {
-        this.$navigate(RouterMap.MyHelperPage);
+        this.$navigate(RouterMap.MyHelperCenter);
     }
 }
 
@@ -162,7 +159,8 @@ class NewsDetailItem extends Component {
                         <Text style={styles.textsingle}>{this.props.titles}</Text>
                         <Text style={styles.textsingle}>{this.props.rightmg}</Text>
                         {this.props.isshow ?
-                            <UIImage source={arrow_right} style={{ width: 7, height: 10, marginRight: 13 }}/> : null}
+                            <UIImage resizeMode={'contain'} source={arrow_right}
+                                     style={{ height: 12, marginRight: 13 }}/> : null}
                     </View>
                     <View style={{ height: 1, backgroundColor: DesignRule.bgColor, width: ScreenUtils.width }}/>
                 </View>

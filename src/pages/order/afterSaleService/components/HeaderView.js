@@ -16,7 +16,6 @@ import React from "react";
 import {
     StyleSheet,
     View,
-    ImageBackground,
     Platform
 } from "react-native";
 
@@ -28,6 +27,7 @@ import res from "../../res";
 const  autoSizeWidth = ScreenUtils.autoSizeWidth;
 import {AfterStatus, SubStatus, PageType, isRefundFail} from '../AfterType'
 import DottedLine from '../../../../comm/components/DottedLine';
+import LinearGradient from 'react-native-linear-gradient';
 
 const {
     PAGE_AREFUND,
@@ -54,7 +54,6 @@ const {
 
 const {
     afterSaleService: {
-        exchangeGoodsDetailBg,
         white_triangular
     }
 } = res;
@@ -70,11 +69,15 @@ export default class HeaderView extends React.Component {
     render() {
         let { status, pageType, subStatus, refundStatus} = this.props;
         return (
-            <ImageBackground source={exchangeGoodsDetailBg} style={styles.container}>
+            <LinearGradient start={{x: 0, y: 0}}
+                            end={{x: 1, y: 0}}
+                            colors={['#FF0050', '#FC5D39']}
+                            style={styles.container}
+            >
                 <View style={{marginHorizontal: autoSizeWidth(34), height: 55, marginBottom: autoSizeWidth(20)}}>
                     {this.renderTimerLine(status, pageType, subStatus, refundStatus)}
                 </View>
-            </ImageBackground>
+            </LinearGradient>
         );
     }
 
@@ -422,7 +425,7 @@ export default class HeaderView extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: autoSizeWidth(110) + ScreenUtils.headerHeight,
+        height: autoSizeWidth(110),
         width: autoSizeWidth(375),
         justifyContent: 'flex-end',
     },

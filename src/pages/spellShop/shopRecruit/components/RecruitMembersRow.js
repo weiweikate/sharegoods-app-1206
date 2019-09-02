@@ -30,7 +30,7 @@ export default class AssistantRow extends Component {
                 <Image style={styles.topIcon} source={PeopleImg}/>
                 <Text style={styles.topTitle} allowFontScaling={false}>{'店铺成员'}</Text>
                 <Text style={styles.topDescText} allowFontScaling={false}>{`${userCount || 0}人`}</Text>
-                {myStore ? <Image style={styles.topArrow} source={arrowImg}/> : null}
+                {myStore ? <Image resizeMode={'contain'} style={styles.topArrow} source={arrowImg}/> : null}
             </TouchableOpacity>
             <View style={styles.dash}/>
             <ScrollView bounces={false} showsHorizontalScrollIndicator={false}>
@@ -86,8 +86,7 @@ const styles = StyleSheet.create({
     topArrow: {
         marginLeft: 5,
         marginRight: 21,
-        height: 10,
-        width: 7
+        height: 10
     },
     dash: {
         width: ScreenUtils.width,

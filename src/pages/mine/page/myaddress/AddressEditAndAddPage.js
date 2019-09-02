@@ -1,6 +1,4 @@
-import {
-    View, StyleSheet, TouchableOpacity, Image, Alert
-} from 'react-native';
+import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import StringUtils from '../../../../utils/StringUtils';
@@ -23,7 +21,7 @@ const addrUnSelectedIcon = res.button.unselected_circle;
  * @email luoyongming@meeruu.com
  */
 const dismissKeyboard = require('dismissKeyboard');
-const arrow_right = res.button.arrow_right;
+const arrow_right = res.button.arrow_right_black;
 
 export default class AddressEditAndAddPage extends BasePage {
 
@@ -37,27 +35,41 @@ export default class AddressEditAndAddPage extends BasePage {
         if (this.params.from === 'edit') {
             const { receiver, tel, address } = this.params;
             if (this.state.receiverText === receiver &&
-                this.state.telText === tel&&
-                this.state.addrText ===  address
-            ){
+                this.state.telText === tel &&
+                this.state.addrText === address
+            ) {
                 routePop();
-            }else {
-                Alert.alert('','信息未保存，确认返回吗？',[
-                    { text: `取消`, onPress: () => {} },
-                    { text: `确定`, onPress: () => {routePop()}}])
+            } else {
+                Alert.alert('', '信息未保存，确认返回吗？', [
+                    {
+                        text: `取消`, onPress: () => {
+                        }
+                    },
+                    {
+                        text: `确定`, onPress: () => {
+                            routePop();
+                        }
+                    }]);
             }
 
-        }else {
+        } else {
             if (StringUtils.isEmpty(this.state.receiverText) &&
                 StringUtils.isEmpty(this.state.telText) &&
                 StringUtils.isEmpty(this.state.provinceCode) &&
                 StringUtils.isEmpty(this.state.addrText)
             ) {
                 routePop();
-            }else {
-                Alert.alert('','信息未保存，确认返回吗？',[
-                    { text: `取消`, onPress: () => {} },
-                    { text: `确定`, onPress: () => {routePop()}}])
+            } else {
+                Alert.alert('', '信息未保存，确认返回吗？', [
+                    {
+                        text: `取消`, onPress: () => {
+                        }
+                    },
+                    {
+                        text: `确定`, onPress: () => {
+                            routePop();
+                        }
+                    }]);
             }
         }
     };
@@ -197,7 +209,8 @@ export default class AddressEditAndAddPage extends BasePage {
             <TouchableOpacity style={styles.horizontalItem} onPress={() => this._getCityPicker()}>
                 <Text style={[styles.itemLeftText]}>所在地区</Text>
                 <Text style={{ flex: 1 }}>{this.state.areaText}</Text>
-                <Image source={arrow_right} style={{ width: 10, height: 15, marginLeft: 4 }} resizeMode={'contain'}/>
+                <Image source={arrow_right} style={{ height: 12, marginLeft: 4 }}
+                       resizeMode={'contain'}/>
             </TouchableOpacity>
             <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             <View style={{ backgroundColor: 'white' }}>
@@ -243,7 +256,7 @@ export default class AddressEditAndAddPage extends BasePage {
         });
     };
 
-    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName,streetCode, streetName,areaText) {
+    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, streetCode, streetName, areaText) {
         console.log(areaText);
         this.setState({
             areaText: areaText,
