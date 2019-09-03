@@ -197,6 +197,7 @@ dependencies {
     api project(':@mr_react-native-video')
     api project(':react-native-linear-gradient')
     api project(':react-native-fetch-blob')
+    api project(':react-native-refresh')
     api project(':@react-native-community_netinfo')
     api project(':commonlib')
     api project(':qrcode')

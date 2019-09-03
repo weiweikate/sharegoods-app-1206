@@ -24,7 +24,6 @@ import {
     DeviceEventEmitter,
     NativeEventEmitter,
     NativeModules,
-    RefreshControl,
     StyleSheet,
     View
 } from 'react-native';
@@ -43,6 +42,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import intervalMsgModel from '../../../../comm/components/IntervalMsgView';
 import { MRText as Text } from '../../../../components/ui/index';
 import TextCustomView from '../TextCustomView';
+import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
 
 
 const { JSPushBridge } = NativeModules;
@@ -235,6 +235,17 @@ export default class HomeFirstTabView extends Component {
         });
     };
 
+    renderRefreshLoading = () => {
+
+        return (
+            <HeaderLoading
+                refreshing={homeModule.isRefreshing}
+                // source={require('../../../../comm/components/lottieheader/lottie2.json')}
+                onRefresh={this._onRefresh.bind(this)}
+            />
+        );
+    };
+
 
     render() {
         const { homeList } = homeModule;
@@ -245,9 +256,7 @@ export default class HomeFirstTabView extends Component {
                     this.recyclerListView = ref;
                 }}
                 style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
-                refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
-                                                onRefresh={this._onRefresh.bind(this)}
-                                                colors={[DesignRule.mainColor]}/>}
+                refreshControl={this.renderRefreshLoading()}
                 onEndReached={this._onEndReached.bind(this)}
                 onEndReachedThreshold={ScreenUtils.height / 3}
                 dataProvider={this.dataProvider}

@@ -10,6 +10,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
 import com.facebook.react.shell.MainReactPackage;
+import com.jiasong.refresh.RCTRefreshLayoutPackage;
 import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.config.FrescoImagePipelineConfig;
@@ -109,7 +110,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     codePush,
                     new RNCWebViewPackage(),
                     new AsyncStoragePackage(),
-                    new RNGestureHandlerPackage()
+                    new RNGestureHandlerPackage(),
+                    new RCTRefreshLayoutPackage()
             );
         }
 
