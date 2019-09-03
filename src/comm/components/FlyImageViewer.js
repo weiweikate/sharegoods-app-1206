@@ -733,20 +733,10 @@ export default class FlyImageViewer extends Component {
         if (!this.props.onSave) {
             bridge.$toast('图片保存中...');
             let that = this;
-            if (Platform.OS === 'ios') {
-                CameraRoll.saveToCameraRoll(that.props.imageUrls[that.state.currentShowIndex])
-                    .then(() => {
-                        that.props.onSaveToCamera(that.state.currentShowIndex);
-                    });
-            } else {
-                ImageCacheManager().downloadAndCacheUrl(that.props.imageUrls[this.state.currentShowIndex]).then(((path) => {
-                    CameraRoll.saveToCameraRoll(path)
-                        .then(() => {
-                            that.props.onSaveToCamera(that.state.currentShowIndex);
-                        });
-                }));
-            }
-
+            CameraRoll.saveToCameraRoll(that.props.imageUrls[that.state.currentShowIndex])
+                .then(() => {
+                    that.props.onSaveToCamera(that.state.currentShowIndex);
+            });
         } else {
             this.props.onSave(this.props.imageUrls[this.state.currentShowIndex]);
         }
