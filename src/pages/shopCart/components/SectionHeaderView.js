@@ -33,10 +33,14 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={{
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 50
+    height: 50,
+    width:section_width
 }}>
-    <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
-                       color={DesignRule.mainColor}/>
+    {
+        (!errorMsg && !isEnd)?<ActivityIndicator style={{ marginRight: 6 }} animating={true} size={'small'}
+                                                 color={DesignRule.mainColor}/>:null
+    }
+
     <Text style={{
         color: DesignRule.textColor_instruction,
         fontSize: DesignRule.fontSize_24
