@@ -40,11 +40,12 @@ export default class HomeBannerView extends Component {
         }
         const isFocused = homeModule.isFocused;
         let items = [];
-        bannerList.map(value => {
-            if (value.image) {
-                items.push(value.image);
-            }
-        });
+        let data = bannerList[0] || {};
+        if (data.itemData) {
+            data.itemData.map(item => {
+                items.push(item.image);
+            });
+        }
         let len = items.length;
         return <View style={styles.banner}>
             {len === 0 ?

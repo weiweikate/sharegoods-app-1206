@@ -19,18 +19,11 @@ class SubjectModule {
 
     //记载专题
     @action
-    loadSubjectList = flow(function* (isCache) {
+    loadSubjectList = flow(function* () {
         try {
-            if (isCache) {
-                const storeRes = yield store.get(kHomeHotStore);
-                if (storeRes) {
-                    this.computeHeight(storeRes);
-                }
-            }
             const res = yield HomeApi.getHomeData({ type: homeType.homeHot });
             let list = res.data || [];
             this.computeHeight(list);
-            homeModule.changeHomeList(homeType.homeHot);
             store.save(kHomeHotStore, res.data);
         } catch (error) {
             console.log(error);
@@ -39,11 +32,8 @@ class SubjectModule {
 
     computeHeight = (data) => {
         if (data.length > 0) {
+            this.subjectList = [];
             let subList = [];
-            subList.push({
-                id: 12,
-                type: homeType.homeHotTitle
-            });
             data.map((value, index) => {
                 subList.push({
                     itemData: value,
@@ -53,7 +43,10 @@ class SubjectModule {
                 });
             });
             this.subjectList = subList;
+        } else {
+            this.subjectList = [];
         }
+        homeModule.changeHomeList(homeType.homeHot, this.subjectList);
     };
 }
 

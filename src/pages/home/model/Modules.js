@@ -39,9 +39,6 @@ class HomeModule {
     errorMsg = '';
     tabId = '';
     fixedPartOne = [{
-        id: -1,
-        type: homeType.placeholder
-    }, {
         id: 0,
         type: homeType.swiper
     }, {
@@ -75,6 +72,15 @@ class HomeModule {
     }, {
         id: 8,
         type: homeType.fine
+    }, {
+        id: 12,
+        type: homeType.homeHotTitle
+    }, {
+        id: 9,
+        type: homeType.homeHot
+    }, {
+        id: 10,
+        type: homeType.goodsTitle
     }];
     goods = [];
 
@@ -120,10 +126,26 @@ class HomeModule {
         };
 
     };
-    @action changeHomeList = (type) => {
-        this.homeList = this.homeList.map((item) => {
-            return ({ ...item });
+
+    /**
+     * 替换占位list
+     * @param type view类型
+     * @param list 对应的数组数据
+     */
+    @action changeHomeList = (type, list) => {
+        let startIndex = this.homeList.findIndex(item => {
+            return item.type == type;
         });
+        let len = 0;
+        this.homeList.map(item => {
+            if (item.type == type) {
+                len += 1;
+            }
+        });
+        console.log(type + ' ******* ' + startIndex + ' ******* ' + len);
+        if (list && startIndex > -1) {
+            this.homeList.splice(startIndex, len, ...list);
+        }
     };
 
     @action initHomeParams() {
@@ -157,7 +179,7 @@ class HomeModule {
                 limitGoModule.loadLimitGo(false);
                 break;
             case homeType.homeHot:
-                subjectModule.loadSubjectList(this.firstLoad);
+                subjectModule.loadSubjectList();
                 break;
             default:
                 break;
@@ -173,17 +195,14 @@ class HomeModule {
                 ...this.bottomTopice,
                 ...this.fixedPartTwo,
                 ...this.fixedPartThree,
-                ...subjectModule.subjectList,
                 ...this.goods
             ];
-
         } else if (this.type === 2) {
             home = [...this.fixedPartOne,
                 ...this.fixedPartTwo,
                 ...this.topTopice,
                 ...this.bottomTopice,
                 ...this.fixedPartThree,
-                ...subjectModule.subjectList,
                 ...this.goods
             ];
         } else {
@@ -192,14 +211,10 @@ class HomeModule {
                 ...this.fixedPartTwo,
                 ...this.bottomTopice,
                 ...this.fixedPartThree,
-                ...subjectModule.subjectList,
                 ...this.goods
             ];
-
         }
         return home;
-
-
     };
 
     // 加载首页数据
@@ -236,7 +251,7 @@ class HomeModule {
         // 首页精品推荐
         recommendModule.loadRecommendList(this.firstLoad);
         // 超值热卖
-        subjectModule.loadSubjectList(this.firstLoad);
+        subjectModule.loadSubjectList();
 
         taskModel.getData();
 

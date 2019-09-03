@@ -1,14 +1,24 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import ScreenUtil from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
+import { subjectModule } from '../model/HomeSubjectModel';
+import { observer } from 'mobx-react';
 
 const { px2dp } = ScreenUtil;
-import DesignRule from '../../../constants/DesignRule';
 
-export default ({ title }) => <View style={styles.titleView}>
-    <View style={styles.flag}/>
-    <Text style={styles.title}>{title}</Text>
-</View>
+const HomeHotTitleView = ({ title }) => {
+
+    const { subjectList } = subjectModule;
+    if (subjectList.length === 0) {
+        return null;
+    }
+
+    return <View style={styles.titleView}>
+        <View style={styles.flag}/>
+        <Text style={styles.title}>{title}</Text>
+    </View>;
+};
 
 const styles = StyleSheet.create({
     flag: {
@@ -34,3 +44,4 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     }
 });
+export default observer(HomeHotTitleView);

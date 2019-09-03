@@ -48,7 +48,7 @@ import HomeHotTitleView from '../HomeHotTitleView';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
-const { px2dp, height, headerHeight, width } = ScreenUtils;
+const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 const nowTime = new Date().getTime();
 const HOME_REFRESH = 'homeRefresh';
@@ -93,7 +93,7 @@ export default class HomeFirstTabView extends Component {
                 dim.height = homeExpandBnnerModel.bannerHeight;
                 break;
             case homeType.focusGrid:
-                dim.height = foucusHeight > 0 ? (foucusHeight + (homeExpandBnnerModel.banner.length > 0 ? px2dp(20) : px2dp(10))) : 0;
+                dim.height = foucusHeight > 0 ? (foucusHeight + (homeExpandBnnerModel.expBannerList.length > 0 ? px2dp(20) : px2dp(10))) : 0;
                 break;
             case homeType.limitGo:
                 dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitHeight : 0;
@@ -108,7 +108,7 @@ export default class HomeFirstTabView extends Component {
                 dim.height = subjectList.length > 0 ? px2dp(60) : 0;
                 break;
             case homeType.homeHot:
-                dim.height = subjectModule.subBannerHeight + (subjectList.length > 0 ? px2dp(185) : 0);
+                dim.height = subjectList.length > 0 ? (subjectModule.subBannerHeight + px2dp(185)) : 0;
                 break;
             case homeType.goodsTitle:
                 dim.height = homeModule.tabList.length > 0 ? px2dp(66) : 0;
@@ -120,9 +120,6 @@ export default class HomeFirstTabView extends Component {
             case homeType.custom_goods:
             case homeType.custom_imgAD:
                 dim.height = type.itemHeight || 0;
-                break;
-            case  homeType.placeholder:
-                dim.height = 1;
                 break;
             default:
                 dim.height = 0;
@@ -142,7 +139,6 @@ export default class HomeFirstTabView extends Component {
 
     _renderItem = (type, item, index) => {
         type = type.type;
-        let data = item;
         if (type === homeType.swiper) {
             return <HomeBannerView navigate={routePush}/>;
         } else if (type === homeType.user) {
@@ -169,7 +165,7 @@ export default class HomeFirstTabView extends Component {
         } else if (type === homeType.homeHot) {
             return <HomeSubjectView navigate={routePush} data={item}/>;
         } else if (type === homeType.goods) {
-            return <GoodsCell data={data} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
+            return <GoodsCell data={item} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
                               navigate={routePush}/>;
         } else if (type === homeType.goodsTitle) {
             return <View ref={e => this.toGoods = e}
@@ -184,8 +180,6 @@ export default class HomeFirstTabView extends Component {
             return <TextCustomView data={item}/>;
         } else if (type === homeType.custom_imgAD) {
             return <TopicImageAdView data={item}/>;
-        } else if (type === homeType.placeholder) {
-            return <View style={{ width: width, height: 1, backgroundColor: 'white' }}/>;
         }
         return <View/>;
     };
@@ -254,7 +248,6 @@ export default class HomeFirstTabView extends Component {
                 onEndReached={this._onEndReached.bind(this)}
                 onEndReachedThreshold={ScreenUtils.height / 3}
                 dataProvider={this.dataProvider}
-                renderAheadOffset={ScreenUtils.height - ScreenUtils.headerHeight - 30}
                 rowRenderer={this._renderItem.bind(this)}
                 layoutProvider={this.layoutProvider}
                 onScrollBeginDrag={this.props.onScrollBeginDrag}

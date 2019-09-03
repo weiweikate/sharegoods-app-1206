@@ -190,7 +190,6 @@ const codeLoginAction = (LoginParam, callBack) => {
     }
 
     LoginAPI.codeLogin(requestParams).then((data) => {
-        console.log('----' + JSON.stringify(data));
         UserModel.saveToken(data.data.token);
         UserModel.saveUserInfo(data.data);
         bridge.setCookies(data.data);

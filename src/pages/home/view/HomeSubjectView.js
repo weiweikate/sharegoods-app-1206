@@ -148,15 +148,15 @@ export default class HomeSubjectView extends Component {
         if (subjectList.length <= 0) {
             return null;
         }
-        let item = this.props.data && this.props.data.itemData;
+        let index = this.props.data && this.props.data.itemIndex;
+        let item = subjectList[index] && subjectList[index].itemData;
         if (!item) {
             return null;
         }
-
         return (<ActivityItem data={item} key={item.id}
-                              press={() => this._subjectActions(item, item.itemIndex)}
+                              press={() => this._subjectActions(item, index)}
                               goodsPress={(good) => {
-                                  this._goodAction(good, item, item.itemIndex);
+                                  this._goodAction(good, item, index);
                               }}/>);
     }
 }

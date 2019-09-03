@@ -95,7 +95,6 @@ export default class DownPricePage extends BasePage {
         this.didBlurSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                console.log('-----' + linkTypeCode);
                 setTimeout(() => {
                     this.dataModel.loadTopicData(linkTypeCode);
                     this.dataModel.getAdvertisingList({
