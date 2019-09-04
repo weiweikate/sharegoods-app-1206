@@ -6,7 +6,7 @@ import {
     Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    View
+    View, Platform
 } from 'react-native';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -291,11 +291,13 @@ const styles = StyleSheet.create({
     time: {
         color: '#666',
         fontWeight: '400',
-        fontSize: 17
+        fontSize: 17,
+        marginTop: Platform.OS === 'ios' ? 3 : 0
     },
     title: {
         color: '#666',
-        fontSize: 11
+        fontSize: 11,
+        marginTop: Platform.OS === 'ios' ? 4 : 2
     },
     scrollTab: {
         borderWidth: 0,
