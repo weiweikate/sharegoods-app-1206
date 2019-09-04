@@ -63,7 +63,10 @@ export default class SearchBar extends Component {
                                                placeholderTextColor={DesignRule.textColor_hint}
                                                value={this.state.inputText}
                                                onChangeText={(text) => this.onChangeText(text)}
-                                               onSubmitEditing={(event) => this.onSubmitEditing(event.nativeEvent.text)}/>
+                                               onSubmitEditing={(event) => this.onSubmitEditing(event.nativeEvent.text)}
+                                               returnKeyType={'search'}
+                                               autoFocus={true}
+                        />
 
                     </View>
                     <TouchableOpacity onPress={this.props.cancel}>

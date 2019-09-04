@@ -478,7 +478,7 @@ export default class SearchResultPage extends BasePage {
                 <ResultSearchNav changeLayout={this._changeLayout}
                                  ref={(ref) => this.ResultSearchNav = ref}
                                  goBack={() => {
-                                     this.$navigateBack();
+                                     this.params.isFromSearch ? this.$navigateBack(2): this.$navigateBack();
                                  }}
                                  isHorizontal={this.state.isHorizontal}
                                  defaultValue={this.state.textInput}

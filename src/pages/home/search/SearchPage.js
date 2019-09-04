@@ -138,7 +138,8 @@ export default class SearchPage extends BasePage {
         this.$navigate(RouterMap.SearchResultPage, {
             keywords: text,
             hotWordId: hotWordId,
-            searchType: hotWordId ? 3 : (StringUtils.isNoEmpty(index) ? 2 : 1)//
+            searchType: hotWordId ? 3 : (StringUtils.isNoEmpty(index) ? 2 : 1),
+            isFromSearch:true
         });
     };
 
