@@ -133,18 +133,19 @@ class HomeModule {
      * @param list 对应的数组数据
      */
     @action changeHomeList = (type, list) => {
-        let startIndex = this.homeList.findIndex(item => {
-            return item.type == type;
-        });
-        let len = 0;
-        this.homeList.map(item => {
-            if (item.type == type) {
-                len += 1;
+        if (list) {
+            let startIndex = this.homeList.findIndex(item => {
+                return item.type == type;
+            });
+            let len = 0;
+            this.homeList.map(item => {
+                if (item.type == type) {
+                    len += 1;
+                }
+            });
+            if (startIndex > -1) {
+                this.homeList.splice(startIndex, len, ...list);
             }
-        });
-        console.log(type + ' ******* ' + startIndex + ' ******* ' + len);
-        if (list && startIndex > -1) {
-            this.homeList.splice(startIndex, len, ...list);
         }
     };
 
