@@ -239,7 +239,7 @@ export default class CategorySearchPage extends BasePage {
         TrackApi.BannerClick({ bannerLocation: 31, ...trackDic });
     };
 
-    _onCategoryClick = (item, index) => {
+    _onCategoryClick = (data, index) => {
         // 点击分类
         if (this.state.leftIndex !== index) {
             this.setState({
@@ -262,18 +262,18 @@ export default class CategorySearchPage extends BasePage {
                     }, () => {
                         this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
                     });
-                }).catch((data) => {
+                }).catch((error) => {
                     bridge.hiddenLoading();
-                    bridge.$toast(data.msg);
+                    bridge.$toast(error.msg);
                 });
             } else {
                 // 分级
-                HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
+                HomeAPI.findProductCategoryList({ id: data.id }).then((response) => {
                     bridge.hiddenLoading();
                     let datas = response.data || {};
-                    let arr = datas.productCategoryList && datas.productCategoryList.map((item, index) => {
+                    let arr = datas.productCategoryList && datas.productCategoryList.map((item, i) => {
                         return {
-                            index: index,
+                            index: i,
                             title: item.name,
                             data: item.productCategoryList || []
                         };
@@ -289,9 +289,9 @@ export default class CategorySearchPage extends BasePage {
                     }, () => {
                         this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
                     });
-                }).catch((data) => {
+                }).catch((err) => {
                     bridge.hiddenLoading();
-                    bridge.$toast(data.msg);
+                    bridge.$toast(err.msg);
                 });
             }
         }
