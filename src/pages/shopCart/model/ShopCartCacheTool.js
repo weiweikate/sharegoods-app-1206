@@ -9,7 +9,7 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 // import { get, save } from '@mr/rn-store';
 
 class ShopCartCacheTool {
-    static  shopCartLocalStorageKey = '@mr/'+apiEnvironment.getCurrentHostUrl() +'/shopCartLocalStorageKey';
+    static  shopCartLocalStorageKey = '@mr/' + apiEnvironment.getCurrentHostUrl() + '/shopCartLocalStorageKey';
     /**
      * 删除本地数据
      */

@@ -68,15 +68,15 @@ function RefreshAnimateHeader(props) {
           ref={lottieRef}
           style={[styles.lottery,{height:headerHeight}]}
           resizeMode={'cover'}
-          loop={true}
+          loop={false}
           autoSize={false}
           autoPlay={false}
-          speed={2}
+          speed={1}
           source={source}
           hardwareAccelerationAndroid={true}
           cacheStrategy={'strong'}
           progress={progressRef.current.interpolate({
-            inputRange: [0, 200],
+            inputRange: [0, headerHeight * 3],
             outputRange: [0, 1],
             extrapolate: 'clamp',
           })}

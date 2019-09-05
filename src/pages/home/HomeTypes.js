@@ -132,12 +132,12 @@ export function topicAdOnPress(data, item, p, title) {
         case 2:
             p2.contentType = 3
             p2.contentKey = linkValue
-            if (linkValue &&  linkValue.indexOf("ZT") === 0) {
-                routePush('HtmlPage', {uri: '/subject/'+linkValue})
-            }else if (linkValue &&  linkValue.indexOf("ST") === 0) {
-                routePush('HtmlPage', {uri: '/topic/temp/'+linkValue})
+            if (linkValue &&  linkValue.indexOf('ZT') === 0) {
+                routePush('HtmlPage', {uri: '/subject/' + linkValue})
+            }else if (linkValue &&  linkValue.indexOf('ST') === 0) {
+                routePush('HtmlPage', {uri: '/topic/temp/' + linkValue})
             }else {
-                routePush('HtmlPage', {uri: '/custom/'+linkValue})
+                routePush('HtmlPage', {uri: '/custom/' + linkValue})
             }
             break
         case 3:

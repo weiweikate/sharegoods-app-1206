@@ -38,7 +38,7 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={{
 }}>
     {
         (!isEnd && !errorMsg) ? <ActivityIndicator style={{ marginRight: 6 }} animating={true} size={'small'}
-                                                   color={DesignRule.mainColor}/>:null
+                                                   color={DesignRule.mainColor}/> : null
     }
 
     <Text style={{
@@ -208,7 +208,7 @@ export default class SectionHeaderView extends Component {
             bridge.$toast('活动不存在');
         }
     };
-};
+}
 
 SectionHeaderView.propTypes = {
     //cell 数据

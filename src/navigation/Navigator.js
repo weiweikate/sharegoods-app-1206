@@ -10,6 +10,8 @@ import bridge from '../utils/bridge';
 import showPinFlagModel from '../model/ShowPinFlag';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
 
+//无需转场动画的页面
+const noAnimatedPage = [RouterMap.SearchResultPage,RouterMap.SearchPage,RouterMap.SearchPageOrder];
 /***
  * 无转场动画
  */
@@ -17,7 +19,7 @@ const noAnimatedTransition = (toTransitionProps, fromTransitionProps) => {
     const isBack = !!fromTransitionProps && fromTransitionProps.navigation.state.index >= toTransitionProps.navigation.state.index;
     const routeName = isBack ? fromTransitionProps.scene.route.routeName : toTransitionProps.scene.route.routeName;
     //指定无转场动画的页面
-    if (routeName === RouterMap.SearchResultPage) {
+    if (noAnimatedPage.indexOf(routeName) > -1) {
         return {
             screenInterpolator: StackViewStyleInterpolator.forNoAnimation
         }

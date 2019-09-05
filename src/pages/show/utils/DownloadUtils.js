@@ -133,7 +133,7 @@ function downloadShow(data, callback) {
             startDownload(data, callback);
         }
     });
-};
+}
 
 function startDownload(data, callback) {
     //保存商品推广图

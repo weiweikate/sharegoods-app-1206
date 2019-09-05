@@ -32,17 +32,17 @@ function clickOrderLogistics(merchantOrderNo){
 }
 
 function clickOrderConfirmReceipt(merchantOrderNo, subStatus, callBack){
-    let content = `确定收到货了吗?`;
+    let content = '确定收到货了吗?';
     if (subStatus === 3){
         content = '该订单存在未发货的商品，不能确认收货';
     }
     Alert.alert('', `${content}`, [
         {
-            text: `取消`, onPress: () => {
+            text: '取消', onPress: () => {
             }
         },
         {
-            text: `确定`, onPress: () => {
+            text: '确定', onPress: () => {
                 if (subStatus === 3) {
                     return;
                 }

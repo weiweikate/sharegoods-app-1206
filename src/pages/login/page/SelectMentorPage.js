@@ -56,7 +56,7 @@ export default class SelectMentorPage extends BasePage {
     static navigationOptions = {
         gesturesEnabled: false
     };
-    
+
     $navigationBarOptions = {
         title: '',
         show: true// false则隐藏导航

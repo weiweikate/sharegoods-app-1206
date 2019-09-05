@@ -14,8 +14,8 @@ const AddressItem = props => {
     this.defaultPress = () => {
         let { name = '',
             phone = '',
-            address = ''} =props;
-        Clipboard.setString(name +'；手机号：'+ phone + '；收件人地址:'+address);
+            address = ''} = props;
+        Clipboard.setString(name + '；手机号：' + phone + '；收件人地址:' + address);
         NativeModules.commModule.toast('已复制地址');
     };
     const {

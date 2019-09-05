@@ -79,8 +79,8 @@ export default class ShowDetailVideoView extends PureComponent {
 
     scrollEnd=(y)=>{
         if(this.layoutData){
-            let itemY =this.layoutData.y;
-            let absY = Math.abs(y-itemY);
+            let itemY = this.layoutData.y;
+            let absY = Math.abs(y - itemY);
             let mulScreen = Math.round(absY / height);
             console.log(mulScreen)
             if(mulScreen != 0){
@@ -152,7 +152,7 @@ export default class ShowDetailVideoView extends PureComponent {
     render() {
         return (
             <View style={styles.container} onLayout={this._onLayout}>
-                {!this.state.needHide?this._render():null}
+                {!this.state.needHide ? this._render() : null}
             </View>
         );
     }

@@ -5,7 +5,7 @@ import EmptyUtils from '../../../../utils/EmptyUtils';
 import { MRText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
 
-var styles = StyleSheet.create({
+let styles = StyleSheet.create({
     root: {
         flex: 1,
         alignSelf: 'stretch'
@@ -45,7 +45,7 @@ export default class Waterfall extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        var { data } = nextProps;
+        let { data } = nextProps;
         if (!data instanceof Array) {
             var err = new Error('props.data should be an array!');
             return console.error(err);
@@ -70,7 +70,7 @@ export default class Waterfall extends Component {
         }
         //add more item
         else if (data.length > this.list.length) {
-            for (var i = this.list.length; i < data.length; ++i) {
+            for (let i = this.list.length; i < data.length; ++i) {
                 this.list.push(data[i]);
             }
             this.forceUpdate();
@@ -94,7 +94,7 @@ export default class Waterfall extends Component {
     }
 
     _resetColHeight() {
-        var { numberOfColumns } = this.props;
+        let { numberOfColumns } = this.props;
         this.colHeights = [];
         for (let i = 0; i < numberOfColumns; ++i) {
             this.colHeights.push(0);
@@ -105,7 +105,7 @@ export default class Waterfall extends Component {
     }
 
     _getItemWidth() {
-        var { numberOfColumns, gap } = this.props;
+        let { numberOfColumns, gap } = this.props;
         if (gap > 0) {
             return (this.width - gap * (1 + numberOfColumns)) / numberOfColumns;
         }
@@ -115,13 +115,13 @@ export default class Waterfall extends Component {
     }
 
     _getMaxHeight() {
-        var maxCol = this._getMaxCol();
+        let maxCol = this._getMaxCol();
         return this.headerHeight + this.colHeights[maxCol];
     }
 
     _getMinHeight() {
-        var minCol = this._getMinCol();
-        var { gap } = this.props;
+        let minCol = this._getMinCol();
+        let { gap } = this.props;
         if (gap > 0) {
             return gap + this.headerHeight + this.colHeights[minCol];
         } else {
@@ -130,12 +130,12 @@ export default class Waterfall extends Component {
     }
 
     _getMaxCol() {
-        var numberOfColumns = 0;
-        var max = this.colHeights[0];
-        for (var i = 0; i < this.colHeights.length; ++i) {
+        let numberOfColumns = 0;
+        let max = this.colHeights[0];
+        for (let i = 0; i < this.colHeights.length; ++i) {
             if (this.colHeights[i] > max) {
                 numberOfColumns = i;
-                ;
+
                 max = this.colHeights[i];
             }
         }
@@ -143,9 +143,9 @@ export default class Waterfall extends Component {
     }
 
     _getMinCol() {
-        var numberOfColumns = 0;
-        var min = this.colHeights[0];
-        for (var i = 0; i < this.colHeights.length; ++i) {
+        let numberOfColumns = 0;
+        let min = this.colHeights[0];
+        for (let i = 0; i < this.colHeights.length; ++i) {
             if (this.colHeights[i] < min) {
                 numberOfColumns = i;
                 min = this.colHeights[i];
@@ -159,11 +159,11 @@ export default class Waterfall extends Component {
     }
 
     _renderItem = (item, idx) => {
-        var { renderItem } = this.props;
-        var ref = (ref) => {
+        let { renderItem } = this.props;
+        let ref = (ref) => {
             this._refItem(ref, idx);
         };
-        var initStyle = {
+        let initStyle = {
             position: 'absolute',
             width: this._getItemWidth(),
             left: -1000,
@@ -195,20 +195,20 @@ export default class Waterfall extends Component {
             this._resetVisibleRange();
             this._resetColHeight();
         }
-        var placementJob = (itemRef) => {
+        let placementJob = (itemRef) => {
             if (!itemRef) {
                 return;
             }
 
-            var minCol = this._getMinCol();
-            var left = minCol * this._getItemWidth();
+            let minCol = this._getMinCol();
+            let left = minCol * this._getItemWidth();
 
             var { gap } = this.props;
             if (gap > 0) {
                 left += (minCol + 1) * gap;
             }
 
-            var top = this._getMinHeight();
+            let top = this._getMinHeight();
             itemRef.setPosition(left, top);
             // itemRef.showUp();
 
@@ -232,10 +232,10 @@ export default class Waterfall extends Component {
             }
         };
 
-        var idx = itemRef.props.idx;
+        let idx = itemRef.props.idx;
         this.placementJobs[idx] = () => placementJob(itemRef);
 
-        var currentJob = this.placementJobs[this.curPlacingIdx];
+        let currentJob = this.placementJobs[this.curPlacingIdx];
         while (currentJob) {
             delete this.placementJobs[this.curPlacingIdx];
             currentJob();
@@ -245,7 +245,7 @@ export default class Waterfall extends Component {
 
     _onRootLayout = (e) => {
         this.props.onLayout && this.props.onLayout(e);
-        var { width, height } = e.nativeEvent.layout;
+        let { width, height } = e.nativeEvent.layout;
         if (width != this.width) {
             this.forceUpdate();
         }
@@ -254,7 +254,7 @@ export default class Waterfall extends Component {
     };
     _onHeaderLayout = (e) => {
         this.props.onHeaderLayout && this.props.onHeaderLayout(e);
-        var { width, height } = e.nativeEvent.layout;
+        let { width, height } = e.nativeEvent.layout;
         this.headerWidth = width;
         this.headerHeight = height;
     };
@@ -268,10 +268,10 @@ export default class Waterfall extends Component {
         this.header = ref;
     };
     _controlItemVisibility = (contentOffsetY) => {
-        var expansionOfScope = this.props.expansionOfScope || 0;
-        var top = contentOffsetY - expansionOfScope;
-        var bottom = contentOffsetY + this.height + expansionOfScope;
-        var { start, end } = this.visibleRange;
+        let expansionOfScope = this.props.expansionOfScope || 0;
+        let top = contentOffsetY - expansionOfScope;
+        let bottom = contentOffsetY + this.height + expansionOfScope;
+        let { start, end } = this.visibleRange;
         if (this.lastContentOffset === undefined) {
             for (var i = 0; i < this.itemRefs.length; ++i) {
                 var itemView = this.itemRefs[i];
@@ -348,9 +348,9 @@ export default class Waterfall extends Component {
         this.lastContentOffset = contentOffsetY;
     };
     _onScroll = (e) => {
-        var { onScroll, onEndReached, onEndReachedThreshold } = this.props;
-        var { nativeEvent } = e;
-        var { contentOffset, layoutMeasurement, contentSize } = nativeEvent;
+        let { onScroll, onEndReached, onEndReachedThreshold } = this.props;
+        let { nativeEvent } = e;
+        let { contentOffset, layoutMeasurement, contentSize } = nativeEvent;
 
         this._controlItemVisibility(contentOffset.y);
         onScroll && onScroll(e);
@@ -393,7 +393,7 @@ export default class Waterfall extends Component {
                         this.props.renderEmpty() : null}
                     {this.width && this._renderItems()}
                 </View>
-                {!EmptyUtils.isEmptyArr(this.list) ? this._renderFooter():null}
+                {!EmptyUtils.isEmptyArr(this.list) ? this._renderFooter() : null}
             </ScrollView>
         );
     }

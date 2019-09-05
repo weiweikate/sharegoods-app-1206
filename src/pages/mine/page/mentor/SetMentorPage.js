@@ -162,7 +162,7 @@ export default class SetMentorPage extends BasePage {
     };
 
     _buttonRender = () => {
-        let canCommit = ((this.state.searchCode === this.state.nowSearch )&& this.state.hasSearch && !this.state.hasError && this.state.canSet);
+        let canCommit = ((this.state.searchCode === this.state.nowSearch ) && this.state.hasSearch && !this.state.hasError && this.state.canSet);
         let color = canCommit ? DesignRule.textColor_btnText : DesignRule.textColor_placeholder;
         return (
             <TouchableWithoutFeedback disabled={!canCommit} onPress={() => {

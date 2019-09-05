@@ -49,7 +49,7 @@ export default class ConfirmOrderPage extends BasePage {
                     style={{ flex: 1 }}
                     showsVerticalScrollIndicator={false}>
                     {
-                        !confirmOrderModel.isAllVirtual?  <ConfirmAddressView selectAddress={() => this.selectAddress()}/>:null
+                        !confirmOrderModel.isAllVirtual ?  <ConfirmAddressView selectAddress={() => this.selectAddress()}/> : null
                     }
                     {
                         confirmOrderModel.productOrderList.map((item, index) => {
@@ -80,9 +80,9 @@ export default class ConfirmOrderPage extends BasePage {
                         confirmOrderModel.failProductList.length > 0 ?
                             confirmOrderModel.failProductList.map((item, index) => {
                                return <GoodsItem
-                                   key={'failProductList'+index}
+                                   key={'failProductList' + index}
                                    uri={item.specImg}
-                                   activityCodes={item.failReason?[item.failReason]:[]}
+                                   activityCodes={item.failReason ? [item.failReason] : []}
                                    goodsName={item.productName}
                                    salePrice={item.unitPrice}
                                    category={item.spec}

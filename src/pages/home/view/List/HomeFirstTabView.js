@@ -236,7 +236,6 @@ export default class HomeFirstTabView extends Component {
     };
 
     renderRefreshLoading = () => {
-
         return (
             <HeaderLoading
                 refreshing={homeModule.isRefreshing}

@@ -3,29 +3,18 @@ import React from 'react';
 import RefreshAnimateHeader from './RefreshAnimateHeader';
 
 function ListHeaderLoading(props) {
-  const { isRefreshing, onRefresh,source, ...others } = props;
+  const { isRefreshing, onRefresh,source,headerHeight, ...others } = props;
 
   return (
     <RefreshAnimateHeader
       refreshing={isRefreshing}
-      headerHeight={30}
-      source={source || require('./lottie1.json')}
+      headerHeight={headerHeight || 60}
+      source={source || require('./pull_step2.json')}
       onRefresh={onRefresh}
       {...others}
     />
   );
 }
-
-// ListHeaderLoading.propTypes = {
-//   isRefreshing: PropTypes.bool,
-//   onRefresh: PropTypes.func,
-//   colors: PropTypes.array,
-//   progressBackgroundColor: PropTypes.string,
-//   size: PropTypes.any,
-//   tintColor: PropTypes.string,
-//   title: PropTypes.string,
-//   progressViewOffset: PropTypes.number,
-// };
 
 ListHeaderLoading.defaultProps = {
   isRefreshing: false,

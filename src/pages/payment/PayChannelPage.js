@@ -173,7 +173,7 @@ export default class ChannelPage extends BasePage {
         if (payment.isGoToPay === false && Platform.OS === 'android') {
             return;
         }
-        if (Platform.OS=== 'android' &&  selctedPayType === paymentType.alipay  && !this.isBack){
+        if (Platform.OS === 'android' &&  selctedPayType === paymentType.alipay  && !this.isBack){
             this.isBack = true;
         } else if (payment.platformOrderNo && selctedPayType !== paymentType.none && this.canShowAlter) {
             this.isBack = false;

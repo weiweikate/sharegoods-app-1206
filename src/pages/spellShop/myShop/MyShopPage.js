@@ -2,11 +2,11 @@
 //三种角色身份 普通 店长 店员
 
 import React from 'react';
-import { Alert, Image, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {Alert, Image, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 
-import { observer } from 'mobx-react';
+import {observer} from 'mobx-react';
 import BasePage from '../../../BasePage';
-import { MRText as Text } from '../../../components/ui';
+import {MRText as Text} from '../../../components/ui';
 
 import ShopHeader from './components/ShopHeader';
 import ShopHeaderBonus from './components/ShopHeaderBonus';
@@ -20,7 +20,7 @@ import StringUtils from '../../../utils/StringUtils';
 import spellStatusModel from '../model/SpellStatusModel';
 // import ConfirmAlert from "../../../components/ui/ConfirmAlert";
 import CommShareModal from '../../../comm/components/CommShareModal';
-import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import {PageLoadingState} from '../../../components/pageDecorator/PageState';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -29,13 +29,13 @@ import user from '../../../model/user';
 // import bridge from '../../../utils/bridge';
 import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
-import { ShopBottomBannerView, ShopCardView, ShopProductItemView } from './components/ShopDetailItemView';
+import {track, trackEvent} from '../../../utils/SensorsTrack';
+import {ShopBottomBannerView, ShopCardView, ShopProductItemView} from './components/ShopDetailItemView';
 import MyShopDetailModel from './MyShopDetailModel';
-import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
+import {IntervalMsgView, IntervalType} from '../../../comm/components/IntervalMsgView';
 import RouterMap from '../../../navigation/RouterMap';
 // 图片资源
-
+import HeaderLoading from '../../../comm/components/lottieheader/ListHeaderLoading';
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = resCommon.button.back_white;
 const shezhi = res.myShop.shezhi;
@@ -74,15 +74,15 @@ export default class MyShopPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity style={{ width: 40, justifyContent: 'center' }}
+                        <TouchableOpacity style={{width: 40, justifyContent: 'center'}}
                                           onPress={() => {
                                               this.$navigateBack();
                                           }}>
-                            <Image source={NavLeft} style={{ width: 30, height: 30 }}/>
+                            <Image source={NavLeft} style={{width: 30, height: 30}}/>
                         </TouchableOpacity> : null}
                 </View>
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 17, color: '#ffffff' }} allowFontScaling={false}>{this.state.tittle}</Text>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{fontSize: 17, color: '#ffffff'}} allowFontScaling={false}>{this.state.tittle}</Text>
                 </View>
                 {this._RightItem()}
             </View>
@@ -90,17 +90,17 @@ export default class MyShopPage extends BasePage {
     };
 
     _RightItem = () => {
-        const { myStore, userStatus } = this.state.storeData;
+        const {myStore, userStatus} = this.state.storeData;
         if (userStatus === 1) {
             return (
                 <View style={styles.rightBarItemContainer}>
                     <TouchableOpacity onPress={() => {
                         this.$navigate(RouterMap.RecommendPage);
                     }}>
-                        <Image style={{ marginRight: 10, width: 18, height: 18 }} source={icons8_Shop_50px}/>
+                        <Image style={{marginRight: 10, width: 18, height: 18}} source={icons8_Shop_50px}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this._clickSettingItem}>
-                        <Image source={myStore ? shezhi : my_Shop_gengduo} style={{ width: 18, height: 18 }}/>
+                        <Image source={myStore ? shezhi : my_Shop_gengduo} style={{width: 18, height: 18}}/>
                     </TouchableOpacity>
                 </View>
             );
@@ -134,7 +134,7 @@ export default class MyShopPage extends BasePage {
         this.willFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                const { state } = payload;
+                const {state} = payload;
                 console.log('willFocus', state);
                 if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
                     this._loadPageData();
@@ -165,9 +165,9 @@ export default class MyShopPage extends BasePage {
 
     _requestGetById = () => {
         //店铺信息
-        SpellShopApi.getById({ storeCode: this.state.storeCode }).then((data) => {
+        SpellShopApi.getById({storeCode: this.state.storeCode}).then((data) => {
             let dataTemp = data.data || {};
-            const { userStatus, storeNumber } = dataTemp;
+            const {userStatus, storeNumber} = dataTemp;
             this.setState({
                 loadingState: PageLoadingState.success,
                 isRefresh: false,
@@ -191,7 +191,7 @@ export default class MyShopPage extends BasePage {
 
     // 点击店铺设置
     _clickSettingItem = () => {
-        const { myStore } = this.state.storeData;
+        const {myStore} = this.state.storeData;
         if (myStore) {
             this.$navigate(RouterMap.ShopPageSettingPage, {
                 storeData: this.state.storeData,
@@ -228,7 +228,7 @@ export default class MyShopPage extends BasePage {
                         }, {
                             text: '退出', onPress: () => {
                                 this.$loadingShow();
-                                SpellShopApi.quitStore({ storeCode: this.state.storeCode }).then((data) => {
+                                SpellShopApi.quitStore({storeCode: this.state.storeCode}).then((data) => {
                                     if (!this.props.leftNavItemHidden) {
                                         this._loadPageData();
                                     }
@@ -248,13 +248,13 @@ export default class MyShopPage extends BasePage {
 
     // 点击店铺公告
     _clickShopAnnouncement = () => {
-        this.$navigate(RouterMap.AnnouncementListPage, { storeData: this.state.storeData });
+        this.$navigate(RouterMap.AnnouncementListPage, {storeData: this.state.storeData});
     };
 
     // 点击全部成员
     _clickAllMembers = () => {
         if (this.state.storeData.userStatus === 1) {
-            this.$navigate(RouterMap.ShopAssistantPage, { storeData: this.state.storeData });
+            this.$navigate(RouterMap.ShopAssistantPage, {storeData: this.state.storeData});
         }
     };
 
@@ -264,7 +264,7 @@ export default class MyShopPage extends BasePage {
 
     //加入店铺
     _joinBtnAction = () => {
-        const { name } = this.state.storeData;
+        const {name} = this.state.storeData;
         // this.delAlert.show({
         //     title: `确定要申请${name}吗?`,
         //     confirmCallBack: () => {
@@ -291,7 +291,7 @@ export default class MyShopPage extends BasePage {
                 {
                     text: '申请', onPress: () => {
                         this.$loadingShow();
-                        SpellShopApi.addToStore({ storeCode: this.state.storeCode }).then((data) => {
+                        SpellShopApi.addToStore({storeCode: this.state.storeCode}).then((data) => {
                             if (!this.props.leftNavItemHidden) {
                                 this._loadPageData();
                             }
@@ -331,7 +331,7 @@ export default class MyShopPage extends BasePage {
         //bonusCount店长个人分红次数
         //totalBonusMoney店长个人已获得分红金
         //managerTotalBonusMoney作为店长的总分红
-        const { totalBonusMoney } = manager;
+        const {totalBonusMoney} = manager;
         if (userStatus === 1) {
             return (
                 <View>
@@ -352,7 +352,7 @@ export default class MyShopPage extends BasePage {
     };
 
     _renderJoinBtn = () => {
-        const { storeMaxUser, userCount, recruitStatus, userStatus, status } = this.state.storeData;
+        const {storeMaxUser, userCount, recruitStatus, userStatus, status} = this.state.storeData;
         //已经加入||为空
         if (userStatus === 1 || StringUtils.isEmpty(userStatus)) {
             return null;
@@ -402,7 +402,7 @@ export default class MyShopPage extends BasePage {
                                      marginBottom: 30,
                                      alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
                                  }}>
-            <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>{btnText}</Text>
+            <Text style={{fontSize: 16, color: 'white'}} allowFontScaling={false}>{btnText}</Text>
         </TouchableOpacity>;
     };
 
@@ -411,18 +411,18 @@ export default class MyShopPage extends BasePage {
             height: StyleSheet.hairlineWidth, backgroundColor: DesignRule.lineColor_inWhiteBg
         }}/>);
     };
+
+
     // 主题内容
     renderBodyView = () => {
-        let { userStatus, storeUserList, userCount } = this.state.storeData;
+        let {userStatus, storeUserList, userCount} = this.state.storeData;
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         onScroll={this._onScroll}
                         scrollEventThrottle={30}
-                        refreshControl={<RefreshControl
-                            onRefresh={this._onRefresh}
+                        refreshControl={<HeaderLoading
                             refreshing={this.state.isRefresh}
-                            progressViewOffset={ScreenUtils.headerHeight}
-                            colors={[DesignRule.mainColor]}
+                            onRefresh={this._onRefresh}
                         />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
                 {userStatus === 1 && <ShopCardView/>}
@@ -458,7 +458,7 @@ export default class MyShopPage extends BasePage {
     };
 
     _render() {
-        const { name, headUrl, profile, storeNumber } = this.state.storeData || {};
+        const {name, headUrl, profile, storeNumber} = this.state.storeData || {};
         return (
             <View style={styles.container}>
                 <LinearGradient colors={['#FF1C89', '#FF156E']}

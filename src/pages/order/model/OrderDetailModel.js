@@ -1,8 +1,8 @@
 import { observable, action } from 'mobx'
 import OrderApi from '../api/orderApi'
 // import StringUtils from "../../../utils/StringUtils";
-import Toast from "../../../utils/bridge";
-import { PageLoadingState } from "../../../components/pageDecorator/PageState";
+import Toast from '../../../utils/bridge';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import { checkOrderAfterSaleService, GetViewOrderStatus, OrderType } from '../order/OrderType';
 
 
@@ -30,25 +30,25 @@ class OrderDetailModel {
 
     @action loadDetailInfo(merchantOrderNo) {
         this.merchantOrderNo = merchantOrderNo;
-        this.deleteInfo=false
+        this.deleteInfo = false
         return OrderApi.lookDetail({
             merchantOrderNo:merchantOrderNo
         }).then(rep => {
             this.data = rep.data;
             this.handleData(rep.data || {})
         }).catch(err=>{
-            if(err.code===47002){
-                this.deleteInfo=true
+            if(err.code === 47002){
+                this.deleteInfo = true
             }else{
-                orderDetailModel.netFailedInfo=err
-                orderDetailModel.loadingState=PageLoadingState.fail
+                orderDetailModel.netFailedInfo = err
+                orderDetailModel.loadingState = PageLoadingState.fail
             }
             Toast.hiddenLoading();
             Toast.$toast(err.msg);
         })
     }
     @action dataHandleConfirmOrder(){
-        if (this.data&&this.data.merchantOrder) {
+        if (this.data && this.data.merchantOrder) {
             this.data.merchantOrder.status = OrderType.COMPLETED;
             this.handleData({...this.data})
         }
@@ -61,7 +61,7 @@ class OrderDetailModel {
         this.payInfo = data.payInfo || {}
         this.receiveInfo = data.receiveInfo || {}
         let {cancelTime, nowTime, receiveTime, cancelReason} = this.baseInfo
-        orderDetailModel.loadingState=PageLoadingState.success
+        orderDetailModel.loadingState = PageLoadingState.success
         this.platformOrderNo = this.merchantOrder.platformOrderNo || '';
         let menu =  [...GetViewOrderStatus(this.merchantOrder.status).menu_orderDetail];
         let hasAfterSaleService = checkOrderAfterSaleService(this.merchantOrder.productOrderList, this.merchantOrder.status, this.baseInfo.nowTime);
@@ -88,7 +88,7 @@ class OrderDetailModel {
                 this.sellerState = '';
                 this.buyState = '等待买家付款';
                 if (cancelTime - nowTime > 0){
-                    this.startTimer((cancelTime - nowTime)/1000);
+                    this.startTimer((cancelTime - nowTime) / 1000);
                 }
                 break;
             }
@@ -109,7 +109,7 @@ class OrderDetailModel {
                 this.sellerState = '';
                 this.buyState = '平台已发货';
                 if (receiveTime - nowTime > 0){
-                    this.startTimer((receiveTime - nowTime)/1000);
+                    this.startTimer((receiveTime - nowTime) / 1000);
                 }
                 break;
             }
@@ -208,9 +208,9 @@ class OrderDetailModel {
             }
         }
         if (this.merchantOrder.status ===  OrderType.WAIT_PAY){
-            return '还剩'+ time + '时间自动关闭订单'
+            return '还剩' + time + '时间自动关闭订单'
         }else {
-            return '还剩'+ time + '时间自动确认收货'
+            return '还剩' + time + '时间自动确认收货'
         }
 
     }

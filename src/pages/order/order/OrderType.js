@@ -164,14 +164,14 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
             }
 
             if (status === OrderType.WAIT_DELIVER || status === OrderType.PAID)
-                if ((restrictions & 4) !== 4) {
+                {if ((restrictions & 4) !== 4) {
                     if (isShowToast) {
                         bridge.$toast('该商品不能退款');
                     }
                     return;
-                }
+                }}
         }
-        if (status === OrderType.COMPLETED && nowTime && afterSaleEndTime && afterSaleEndTime < nowTime && !(afterStaus<7 && afterStaus>=1)) {
+        if (status === OrderType.COMPLETED && nowTime && afterSaleEndTime && afterSaleEndTime < nowTime && !(afterStaus < 7 && afterStaus >= 1)) {
             if (isShowToast){
                 bridge.$toast('该商品售后已过期');
             }
@@ -190,8 +190,8 @@ function judgeProduceIsContainActivityTypes(product, containActivitys = []) {
         return item.activityType;
     });
     //判断是否有2数组是否有交集
-    for (let i = 0; i< activityTypes.length; i++){
-        for (let j = 0; j < containActivitys.length; j ++){
+    for (let i = 0; i < activityTypes.length; i++){
+        for (let j = 0; j < containActivitys.length; j++){
             if (activityTypes[i] === containActivitys[j]) {
                 return activityList[i];
             }

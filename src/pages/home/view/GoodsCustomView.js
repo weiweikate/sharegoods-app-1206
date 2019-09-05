@@ -125,13 +125,13 @@ export default class GoodsCustomView extends React.Component {
                             {this.renderTitle(data, item)}
                             {this.rederDetail(data, item)}
                             { commissionVisible ?   <MRText style={{fontSize: autoSizeWidth(12),
-                                color: DesignRule.mainColor}}>{item.minPriceY?'佣金¥'+item.minPriceY: ''}</MRText> : null}
+                                color: DesignRule.mainColor}}>{item.minPriceY ? '佣金¥' + item.minPriceY : ''}</MRText> : null}
                             <View style={{flex: 1}}/>
                             <View style={{flexDirection: 'row'}}>
                                 <MRText style={styles.tip}>{'拼店价'}</MRText>
-                                {priceHasInvalidVisible?
+                                {priceHasInvalidVisible ?
                                     <MRText style={[styles.oldPrice, {marginLeft: 5}]}>{'¥' + item.originalPrice}</MRText>
-                                    :null}
+                                    : null}
                             </View>
                             <MRText style={{fontSize: autoSizeWidth(12),
                                 color: DesignRule.mainColor,
@@ -157,8 +157,8 @@ export default class GoodsCustomView extends React.Component {
         let products = data.data || [];
         let Views = []
         if (data.layout === 3){
-            if (products.length%3){
-                if (products.length%3 === 1){
+            if (products.length % 3){
+                if (products.length % 3 === 1){
                     Views = [<View style={[style, {backgroundColor: null}]}/>,
                         <View style={[style, {backgroundColor: null}]}/>
                     ]
@@ -167,8 +167,8 @@ export default class GoodsCustomView extends React.Component {
                 }
             }
         } else {
-            if (products.length%2){
-                if (products.length%2 === 1){
+            if (products.length % 2){
+                if (products.length % 2 === 1){
                     Views = [<View style={[style, {backgroundColor: null}]}/>
                     ]
                 }
@@ -260,24 +260,24 @@ export default class GoodsCustomView extends React.Component {
                          source={{uri: item.imgUrl}}
                          showPlaceholder={false}
             >
-                {mainPicBorderVisible? <ImageLoader source={{uri: mainPicBorderUrl}} style={{position: 'absolute', top: 0, left: 0,height: width, width: width}}
+                {mainPicBorderVisible ? <ImageLoader source={{uri: mainPicBorderUrl}} style={{position: 'absolute', top: 0, left: 0,height: width, width: width}}
                                                     showPlaceholder={false}
                 >
                         {priceInMainPicVisible ?
                             <View style={{
                                 position: 'absolute', bottom: 0, left: 0, height: fixWidth / 4,
                                 width: fixWidth / 3,
-                                transform: [{ scale: scale},{translateX: (scale-1)*fixWidth/6.0/scale},{translateY: -(scale-1)*fixWidth/8.0/scale}],
+                                transform: [{ scale: scale},{translateX: (scale - 1) * fixWidth / 6.0 / scale},{translateY: -(scale - 1) * fixWidth / 8.0 / scale}],
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
                                 <MRText style={{ fontSize, color: 'white' }}>{minPrice}</MRText>
-                            </View>: null
+                            </View> : null
                         }
                     </ImageLoader>
                     : null}
                 {
-                    cornerVisible?<ImageLoader source={{uri: cornerImgSrc}} style={cornerStyle}
+                    cornerVisible ? <ImageLoader source={{uri: cornerImgSrc}} style={cornerStyle}
                                                showPlaceholder={false}
                     /> : null
                 }
@@ -286,7 +286,7 @@ export default class GoodsCustomView extends React.Component {
 
     renderTitle(data, item){
         let {titleVisible, layout} = data
-        if (!titleVisible) return null;
+        if (!titleVisible) {return null;}
         switch (layout){
             case 3:
             case 2:
@@ -312,7 +312,7 @@ export default class GoodsCustomView extends React.Component {
 
     rederDetail(data, item){
         let {subtitleVisible, layout} = data
-        if (!subtitleVisible) return null;
+        if (!subtitleVisible) {return null;}
         switch (layout){
             case 1:
                 return  <MRText style={{fontSize: autoSizeWidth(12),
@@ -323,7 +323,7 @@ export default class GoodsCustomView extends React.Component {
             case 2:
                 return <MRText style={{fontSize: autoSizeWidth(12),
                     color: DesignRule.textColor_instruction,
-                    height: autoSizeWidth(33/2),
+                    height: autoSizeWidth(33 / 2),
                     marginHorizontal: autoSizeWidth(5)
                 }}
                                numberOfLines={1}
@@ -356,7 +356,7 @@ export default class GoodsCustomView extends React.Component {
         if (!user.isLogin) {
             commissionVisible = false;
         }
-        if (!commissionVisible &&  !priceNameVisible) return null;
+        if (!commissionVisible &&  !priceNameVisible) {return null;}
         let style = {
             marginLeft: autoSizeWidth(5)}
         let textStyle = {
@@ -381,10 +381,10 @@ export default class GoodsCustomView extends React.Component {
         return  <View style={style}>
             {priceNameVisible ? <View style={{flexDirection: 'row'}}>
                     <MRText style={[styles.tip,{  height: autoSizeWidth(14)}]}>{priceNameAlias || '价格'}</MRText>
-                {layout === 2? null:<View style={{flex: 1}}/>}
+                {layout === 2 ? null : <View style={{flex: 1}}/>}
                 </View>
                 : null}
-            {commissionVisible ? <MRText style={textStyle}>{item.minPriceY?'佣金¥'+item.minPriceY: ''}</MRText>: null}
+            {commissionVisible ? <MRText style={textStyle}>{item.minPriceY ? '佣金¥' + item.minPriceY : ''}</MRText> : null}
         </View>
     }
 
@@ -420,17 +420,17 @@ export default class GoodsCustomView extends React.Component {
                 break
             case 3:
                 priceStyle.fontSize = autoSizeWidth(14)
-                container.height = autoSizeWidth(33/2)
+                container.height = autoSizeWidth(33 / 2)
                 container.marginTop = autoSizeWidth(0)
                 break
             case 8:
                 priceStyle.fontSize = autoSizeWidth(12)
-                container.height = autoSizeWidth(33/2)
+                container.height = autoSizeWidth(33 / 2)
                 container.marginTop = autoSizeWidth(0)
                 break
         }
         return <View style={container}>
-            {(priceVisible && priceBelowTitleVisible)?<MRText style={textStyle}>¥
+            {(priceVisible && priceBelowTitleVisible) ? <MRText style={textStyle}>¥
                 <MRText style={priceStyle}>{item.minPrice}
                 </MRText>起
             </MRText> : null}
@@ -634,14 +634,14 @@ export function GoodsCustomViewGetItemHeight(data) {
             return height
         case  3 :
 
-            height = ScreenUtils.autoSizeWidth(224/2);
+            height = ScreenUtils.autoSizeWidth(224 / 2);
             height +=  ScreenUtils.autoSizeWidth(5)//间距
             if (titleVisible){ height += ScreenUtils.autoSizeWidth(20)}//title
             if (subtitleVisible){ height += ScreenUtils.autoSizeWidth(15)}//detail
             if (priceNameVisible){ height += ScreenUtils.autoSizeWidth(14)}//拼店
             if (commissionVisible){ height += ScreenUtils.autoSizeWidth(14)}//佣金
             if (isShowPrice(data)){
-                height += ScreenUtils.autoSizeWidth(33/2)//价格
+                height += ScreenUtils.autoSizeWidth(33 / 2)//价格
             }
             if (buyButtonVisible) {
                 if (buyButtonType === 1 && priceHasInvalidVisible) {
@@ -655,12 +655,12 @@ export function GoodsCustomViewGetItemHeight(data) {
             return height
         case  8 :
             height = ScreenUtils.autoSizeWidth(100);
-            if (titleVisible){ height += ScreenUtils.autoSizeWidth(33/2)}//title
+            if (titleVisible){ height += ScreenUtils.autoSizeWidth(33 / 2)}//title
             if (subtitleVisible){ height += ScreenUtils.autoSizeWidth(14)}//detail
             if (priceNameVisible){ height += ScreenUtils.autoSizeWidth(14)}//拼店
             if (commissionVisible){ height += ScreenUtils.autoSizeWidth(14)}//佣金
             if (isShowPrice(data)){
-                height += ScreenUtils.autoSizeWidth(33/2)//价格
+                height += ScreenUtils.autoSizeWidth(33 / 2)//价格
             }
             if (priceHasInvalidVisible) {
                 height +=  ScreenUtils.autoSizeWidth(14)//老价格
@@ -685,18 +685,18 @@ export function GoodsCustomViewGetHeight(data) {
     }
     let height = GoodsCustomViewGetItemHeight(data);
     let count = data.data.length - 1;
-    let itemPadding = ScreenUtils.autoSizeWidth(data.itemPadding/2);
+    let itemPadding = ScreenUtils.autoSizeWidth(data.itemPadding / 2);
     switch (data.layout){
         case  1 :
             itemPadding = autoSizeWidth(10);
             count++;
-            return height * count + itemPadding*(count - 1) + autoSizeWidth(15)
+            return height * count + itemPadding * (count - 1) + autoSizeWidth(15)
         case  2 :
-            count = Math.ceil(count/2);
-            return  height * count + itemPadding*(count - 1) + autoSizeWidth(15)
+            count = Math.ceil(count / 2);
+            return  height * count + itemPadding * (count - 1) + autoSizeWidth(15)
         case  3 :
-            count = Math.ceil(count/3);
-            return  height * count + itemPadding*(count - 1) + autoSizeWidth(15)
+            count = Math.ceil(count / 3);
+            return  height * count + itemPadding * (count - 1) + autoSizeWidth(15)
         case  8 :
             return height  + autoSizeWidth(15)
     }
@@ -707,7 +707,7 @@ export function GoodsCustomViewGetHeight(data) {
 
 export function GoodsCustomViewGetItemStyle(data, height){
     let padding = autoSizeWidth(5)
-    let itemPadding = ScreenUtils.autoSizeWidth(data.itemPadding/2);
+    let itemPadding = ScreenUtils.autoSizeWidth(data.itemPadding / 2);
     padding = itemPadding;
     let width = ScreenUtils.width - ScreenUtils.autoSizeWidth(30);
     switch (data.layout){
@@ -715,9 +715,9 @@ export function GoodsCustomViewGetItemStyle(data, height){
             itemPadding = autoSizeWidth(10);
             return {width, height, marginTop: itemPadding, flexDirection: 'row', backgroundColor: 'white', borderRadius: 5, overflow: 'hidden'}
         case 2:
-            return  {width : (width - itemPadding)/2, height, backgroundColor: 'white', marginTop: padding, borderRadius: 5, overflow: 'hidden'}
+            return  {width : (width - itemPadding) / 2, height, backgroundColor: 'white', marginTop: padding, borderRadius: 5, overflow: 'hidden'}
         case 3:
-            return {width : (width - 2*itemPadding)/3, height, marginTop: padding, borderRadius: 5, overflow: 'hidden',backgroundColor: 'white'}
+            return {width : (width - 2 * itemPadding) / 3, height, marginTop: padding, borderRadius: 5, overflow: 'hidden',backgroundColor: 'white'}
         case 8:
             return {width : autoSizeWidth(100), height, marginRight: itemPadding, borderRadius: 5, overflow: 'hidden',backgroundColor: 'white'}
     }
