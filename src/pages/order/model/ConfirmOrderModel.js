@@ -126,7 +126,7 @@ class ConfirmOrderModel {
             // "skuCode":, //string 平台skuCode
             // "quantity":, //int 购买数量
             // "activityCode":, //string 活动code
-            // "batchNo": //string 活动批次号
+            // "batchNo": //string 活动批次  (拼团业务传递团id)
             let { skuCode, quantity, activityCode, batchNo } = item;
             return { skuCode, quantity, activityCode, batchNo };
         });
@@ -149,7 +149,8 @@ class ConfirmOrderModel {
             productList: productList,
             invokeInfo: { //接口请求信息
                 source: this.orderParamVO.source,  //int 订单来源: 1.购物车 2.直接下单
-                channel: 2//int 渠道来源: 1.小程序 2.APP 3.H5
+                channel: 2,//int 渠道来源: 1.小程序 2.APP 3.H5
+                bizTag:  this.orderParamVO.bizTag,//"bizTag": //String 订单标记 group-拼团 非拼团不需要传  －－－－－－－－－－－－0917拼团业务新增
             },
             ext: { //扩展信息
                 userMessage: this.message// string 买家留言

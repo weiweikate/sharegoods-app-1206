@@ -66,7 +66,7 @@ const ViewOrderStatus = {
     6:  {
         status: '已付款',
         menuData:[{ id:1, operation:'取消订单', isRed:false}],
-        menu_orderDetail: []
+        menu_orderDetail: [{ id:1, operation:'取消订单', isRed:false}]
     },
 }
 
@@ -119,11 +119,25 @@ function GetAfterBtns(product) {
     }
 }
 
-function GetViewOrderStatus(status, subStatus) {
+function GetViewOrderStatus(status, subStatus, isGroup) {
     if (status){
         let data = {...ViewOrderStatus[status]} || {menuData:[], menu_orderDetail:[]}
         if (status === OrderType.DELIVERED && subStatus === 3){
             data.status = '部分发货'
+        }
+        if (isGroup) {
+            if (status === OrderType.PAID){
+                data.status = '未成团' ;
+                data.menu_orderDetail = [{ id:19, operation:'查看拼团', isRed:false}];
+                data.menuData = [{ id:19, operation:'查看拼团', isRed:false}];
+            }
+            if (status === OrderType.WAIT_DELIVER ||
+                status === OrderType.DELIVERED ||
+                status === OrderType.COMPLETED
+            ){
+                data.menu_orderDetail = [...data.menu_orderDetail, { id:19, operation:'查看拼团', isRed:false}];
+                data.menuData = [...data.menuData, { id:19, operation:'查看拼团', isRed:false}];
+            }
         }
         return data;
     }
@@ -134,7 +148,8 @@ function GetViewOrderStatus(status, subStatus) {
 function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast) {
     if (status === OrderType.WAIT_PAY ||
         status === OrderType.DELETED ||
-        status === OrderType.CLOSED
+        status === OrderType.CLOSED ||
+        status === OrderType.PAID
     ) {//待付款、无售后
         return false;
     }

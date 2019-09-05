@@ -2,7 +2,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
     Image,
     ScrollView, Text, Alert, DeviceEventEmitter
 } from 'react-native';
@@ -34,6 +33,8 @@ import { GetAfterBtns, checkOrderAfterSaleService, judgeProduceIsContainActivity
 import CancelProdectsModal from '../components/orderDetail/CancelProdectsModal';
 import { backToHome, routePush } from '../../../navigation/RouterMap';
 import RouterMap from '../../../navigation/RouterMap';
+import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
+import LinearGradient from 'react-native-linear-gradient';
 
 const buyerHasPay = res.buyerHasPay;
 const productDetailHome = res.productDetailHome;
@@ -44,6 +45,7 @@ const hasDeliverIcon = res.dingdanxiangqing_icon_yifehe;
 const refuseIcon = res.dingdanxiangqing_icon_guangbi;
 const moreIcon = res.message_three;
 const deleteIcon = res.delete_icon;
+const back_white = res.button.back_white;
 
 const { px2dp } = ScreenUtils;
 
@@ -61,7 +63,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
     $navigationBarOptions = {
         title: '订单详情',
-        show: true// false则隐藏导航
+        show: false// false则隐藏导航
     };
     $getPageStateOptions = () => {
         return {
@@ -79,19 +81,6 @@ export default class MyOrdersDetailPage extends BasePage {
         this.loadPageData();
     };
 
-    $NavBarRenderRightItem = () => {
-        return (
-            <TouchableOpacity onPress={this.showMore} style={{
-                width: px2dp(40),
-                height: px2dp(44),
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
-                <Image source={moreIcon} style={{ width: 22 }}
-                       resizeMode={'contain'}/>
-            </TouchableOpacity>
-        );
-    };
 
     componentDidMount() {
         this.loadPageData();
@@ -245,6 +234,39 @@ export default class MyOrdersDetailPage extends BasePage {
     _render = () => {
         return (
             <View style={styles.container}>
+                <LinearGradient start={{x: 0, y: 0}}
+                                end={{x: 1, y: 0}}
+                                colors={['#FF0050', '#FC5D39']}
+                >
+                    <NavigatorBar headerStyle={{
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        borderBottomWidth: 0
+                    }}
+                                  leftNavImage={back_white}
+                                  leftPressed={() => {
+                                      this.$navigateBack();
+                                  }}
+                                  title={'订单详情'}
+                                  titleStyle={{color: 'white'}}
+                                  renderRight={() => {
+                                      return (
+                                          <View style={{
+                                              width: 30,
+                                              height: 30,
+                                              alignItems: 'center',
+                                              justifyContent: 'center'
+                                          }}>
+                                              <Image source={moreIcon}
+                                                     resizeMode={'stretch'}
+                                                     style={{width: 20, height: 5, tintColor: 'white'}}/>
+                                          </View>
+                                      )
+                                  }}
+                                  rightPressed={() => {
+                                      this.showMore();
+                                  }}
+                    />
+                </LinearGradient>
                 {renderViewByLoadingState(this.$getPageStateOptions(), this._renderContent)}
                 {this.renderModal()}
             </View>

@@ -29,6 +29,7 @@ const index = {
     delete_icon: require('./tongyong_icon_dingdan_nor.png'),
     empty_icon: require('./emptyIcon.png'),
     kefu_icon: require('./kefu_icon.png'),
+    step_header: require('./step_header.png'),
     afterSaleService: {
         ...afterSaleService
     },

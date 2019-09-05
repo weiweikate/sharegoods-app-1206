@@ -2,17 +2,15 @@ import React,{Component} from 'react';
 import {
     StyleSheet,
     View,
-    ImageBackground,
 } from 'react-native';
 import {
-    UIText, UIImage
+    UIText
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { orderDetailModel } from '../../model/OrderDetailModel';
 import { observer } from 'mobx-react';
-import res from '../../res';
-const productDetailImg = res.productDetailImg;
+import LinearGradient from 'react-native-linear-gradient';
 const {px2dp} = ScreenUtils;
 
 @observer
@@ -23,9 +21,11 @@ export default class OrderDetailStatusView extends Component{
     render(){
         // const {statusMsg} = orderStatusModel
         return(
-            <View>
-                <ImageBackground style={styles.redRectangle} source={productDetailImg}>
-                    <UIImage source={this.props.leftTopIcon} style={{ height: px2dp(25), width:px2dp(25), marginTop: px2dp(-22) }}/>
+                <LinearGradient style={styles.redRectangle}
+                                 start={{x: 0, y: 0}}
+                                 end={{x: 1, y: 0}}
+                                 colors={['#FF0050', '#FC5D39']}
+                >
                     <View style={{ marginTop:px2dp(-22)}}>
                         <UIText value={orderDetailModel.buyState} style={styles.textStyle}/>
                         {StringUtils.isNoEmpty(orderDetailModel.moreDetail) ?
@@ -33,8 +33,8 @@ export default class OrderDetailStatusView extends Component{
                                     style={{ color: 'white', fontSize: px2dp(13), marginLeft: px2dp(10) }}/> : null
                         }
                     </View>
-                </ImageBackground>
-            </View>
+                                     </LinearGradient>
+
         )
     }
 
