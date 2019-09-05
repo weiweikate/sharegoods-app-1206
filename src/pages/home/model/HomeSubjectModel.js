@@ -38,7 +38,7 @@ class SubjectModule {
                 subList.push({
                     itemData: value,
                     type: homeType.homeHot,
-                    id: value.id + '_' + index,
+                    id: value.id + '' + index,
                     itemIndex: index
                 });
             });
