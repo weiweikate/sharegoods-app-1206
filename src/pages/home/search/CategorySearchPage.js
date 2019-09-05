@@ -43,10 +43,10 @@ export default class CategorySearchPage extends BasePage {
     componentDidMount() {
         this.$loadingShow('加载中');
         setTimeout(() => {
-            let categoryId = this.params.categoryId;
-            this.getTypeList(categoryId);
-            if (categoryId) {
-                this._getTypeSection(categoryId);
+            let typeId = this.params.typeId;
+            this.getTypeList(typeId);
+            if (typeId) {
+                this._getTypeSection(typeId);
             } else {
                 this.getHotSection();
             }
@@ -57,7 +57,7 @@ export default class CategorySearchPage extends BasePage {
         clearTimeout();
     }
 
-    getTypeList = (categoryId) => {
+    getTypeList = (typeId) => {
         // 分类列表
         HomeAPI.findNameList().then((response) => {
             this.$loadingDismiss();
@@ -69,14 +69,20 @@ export default class CategorySearchPage extends BasePage {
                 nameArr: datas || []
             }, () => {
                 // 滚动到指定位置
-                if (categoryId) {
+                if (typeId) {
                     let index = datas.findIndex((item) => {
-                        return item.id === categoryId;
+                        return item.id === typeId;
                     });
-                    if (this.state.leftIndex !== index) {
-                        this.setState({
-                            leftIndex: index
-                        }, this._adjustCategory(index));
+                    if (index > -1) {
+                        // 找到了对应分类
+                        if (this.state.leftIndex !== index) {
+                            this.setState({
+                                leftIndex: index
+                            }, this._adjustCategory(index));
+                        }
+                    } else {
+                        // 未找到对应分类
+                        this.getHotSection();
                     }
                 }
             });
