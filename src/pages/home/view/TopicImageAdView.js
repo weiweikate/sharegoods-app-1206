@@ -99,17 +99,22 @@ export function ImageAdViewGetHeight(data) {
     if (!data || !data.imgs || data.imgs.length === 0) {
         return 0;
     }
+    let {width, height} = data.imgs[1];
+    let viewHeight = 0;
+    if (typeof width === 'number' && typeof height === 'number') {
+        viewHeight = ScreenUtils.width / width * height;
+    }
     switch (data.layout) {
         case '1':
-            return ScreenUtils.autoSizeWidth(160);
+            return viewHeight || ScreenUtils.autoSizeWidth(160);
         case '2':
-            return ScreenUtils.autoSizeWidth(120);
+            return viewHeight || ScreenUtils.autoSizeWidth(120);
         case '3':
-            return ScreenUtils.autoSizeWidth(100);
+            return viewHeight || ScreenUtils.autoSizeWidth(100);
         case '4':
-            return ScreenUtils.autoSizeWidth(100);
+            return viewHeight || ScreenUtils.autoSizeWidth(100);
         case 'carousel':
-            return ScreenUtils.autoSizeWidth(170);
+            return viewHeight? (viewHeight+ScreenUtils.autoSizeWidth(10)): ScreenUtils.autoSizeWidth(170);
     }
     return 0;
 }
