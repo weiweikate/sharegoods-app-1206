@@ -70,8 +70,8 @@ export default class CategorySearchPage extends BasePage {
             }, () => {
                 // 滚动到指定位置
                 if (typeId) {
-                    let index = datas.findIndex((item) => {
-                        return item.id === typeId;
+                    let index = datas.findIndex((val) => {
+                        return val.id === typeId;
                     });
                     if (index > -1) {
                         // 找到了对应分类
