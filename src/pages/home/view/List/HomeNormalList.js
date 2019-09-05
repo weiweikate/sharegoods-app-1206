@@ -316,7 +316,7 @@ export default class HomeNormalList extends React.Component {
                             <TouchableWithoutFeedback onPress={() => {
                                 let p = {};
                                 if (icon.linkType === 'all') {
-                                    routePush(RouterMap.CategorySearchPage, { categoryId: this.props.data.firstCategoryId });
+                                    routePush(RouterMap.CategorySearchPage, { typeId: this.props.data.firstCategoryId });
                                     p = { contentType: 10, contentKey: '' };
                                 }
 
