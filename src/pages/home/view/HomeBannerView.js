@@ -21,6 +21,7 @@ export default class HomeBannerView extends Component {
 
     _onPressRow = (index) => {
         const { bannerList } = bannerModule;
+
         let data = bannerList[index];
 
         if (data) {
@@ -40,12 +41,9 @@ export default class HomeBannerView extends Component {
         }
         const isFocused = homeModule.isFocused;
         let items = [];
-        let data = bannerList[0] || {};
-        if (data.itemData) {
-            data.itemData.map(item => {
-                items.push(item.image);
-            });
-        }
+        bannerList.map(item => {
+            items.push(item.image);
+        });
         let len = items.length;
         return <View style={styles.banner}>
             {len === 0 ?

@@ -125,7 +125,6 @@ export default class HomeNormalList extends React.Component {
             count = count >= 4 ? 4 : count;
             itemData = itemData.slice(0, count);
             itemData.push({
-
                 'iconName': '查看更多',
                 'iconImage': res.more,
                 'linkType': 'all'
@@ -317,15 +316,13 @@ export default class HomeNormalList extends React.Component {
                             <TouchableWithoutFeedback onPress={() => {
                                 let p = {};
                                 if (icon.linkType === 'all') {
-                                    routePush(RouterMap.CategorySearchPage);
+                                    routePush(RouterMap.CategorySearchPage, { categoryId: this.props.data.firstCategoryId });
                                     p = { contentType: 10, contentKey: '' };
-
                                 }
 
                                 if (icon.linkType === 1) {
                                     routePush(RouterMap.SearchResultPage, { categoryId: icon.linkCode });
                                     p = { contentType: 12, contentKey: icon.linkCode };
-
                                 }
                                 if (icon.linkType === 2) {
                                     routePush('HtmlPage', { uri: '/custom/' + icon.linkCode });

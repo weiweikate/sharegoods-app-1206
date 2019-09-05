@@ -27,18 +27,11 @@ export class BannerModules {
     });
 
     assembleList(data) {
-        if (data.length > 0) {
-            let topBanner = {
-                itemData: data,
-                id: 0,
-                type: homeType.swiper
-            };
-            this.bannerList = [];
-            this.bannerList.push(topBanner);
-        } else {
-            this.bannerList = [];
-        }
-        homeModule.changeHomeList(homeType.swiper, this.bannerList);
+        this.bannerList = data;
+        homeModule.changeHomeList(homeType.swiper, [{
+            id: 0,
+            type: homeType.swiper
+        }]);
     }
 }
 
