@@ -15,7 +15,8 @@ const deepLinkPath = {
     /*物流详情*/
     'LogisticsDetailsPage': 'path/LogisticsDetailsPage/:expressNo/:expressCode',
     /*订单列表*/
-    'MyOrdersListPage': 'path/MyOrdersListPage'
+    'MyOrdersListPage': 'path/MyOrdersListPage',
+    'MyOrdersDetailPage': 'path/MyOrdersDetailPage/:merchantOrderNo',
 };
 
 export default deepLinkPath;
