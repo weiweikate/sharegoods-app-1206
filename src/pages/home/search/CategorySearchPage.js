@@ -43,8 +43,13 @@ export default class CategorySearchPage extends BasePage {
     componentDidMount() {
         this.$loadingShow('加载中');
         setTimeout(() => {
-            this.getTypeList();
-            this.getTypeSection();
+            let categoryId = this.params.categoryId;
+            this.getTypeList(categoryId);
+            if (categoryId) {
+                this._getTypeSection(categoryId);
+            } else {
+                this.getHotSection();
+            }
         }, 100);
     }
 
@@ -52,7 +57,7 @@ export default class CategorySearchPage extends BasePage {
         clearTimeout();
     }
 
-    getTypeList = () => {
+    getTypeList = (categoryId) => {
         // 分类列表
         HomeAPI.findNameList().then((response) => {
             this.$loadingDismiss();
@@ -62,6 +67,18 @@ export default class CategorySearchPage extends BasePage {
             datas.unshift(item);
             this.setState({
                 nameArr: datas || []
+            }, () => {
+                // 滚动到指定位置
+                if (categoryId) {
+                    let index = datas.findIndex((item) => {
+                        return item.id === categoryId;
+                    });
+                    if (this.state.leftIndex !== index) {
+                        this.setState({
+                            leftIndex: index
+                        }, this._adjustCategory(index));
+                    }
+                }
             });
         }).catch((data) => {
             this.$loadingDismiss();
@@ -69,7 +86,7 @@ export default class CategorySearchPage extends BasePage {
         });
     };
 
-    getTypeSection = () => {
+    getHotSection = () => {
         // 热门分类
         HomeAPI.findHotList().then((response) => {
             let datas = response.data || {};
@@ -268,33 +285,37 @@ export default class CategorySearchPage extends BasePage {
                 });
             } else {
                 // 分级
-                HomeAPI.findProductCategoryList({ id: data.id }).then((response) => {
-                    bridge.hiddenLoading();
-                    let datas = response.data || {};
-                    let arr = datas.productCategoryList && datas.productCategoryList.map((item, i) => {
-                        return {
-                            index: i,
-                            title: item.name,
-                            data: item.productCategoryList || []
-                        };
-                    });
-                    this.setState({
-                        sectionArr: arr || [],
-                        bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
-                            img: datas.img,
-                            linkType: datas.linkType,
-                            linkTypeCode: datas.linkTypeCode
-                        }],
-                        swiperShow: !StringUtils.isEmpty(datas.img)
-                    }, () => {
-                        this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
-                    });
-                }).catch((err) => {
-                    bridge.hiddenLoading();
-                    bridge.$toast(err.msg);
-                });
+                this._getTypeSection(data.id);
             }
         }
+    };
+
+    _getTypeSection = (id) => {
+        HomeAPI.findProductCategoryList({ id }).then((response) => {
+            bridge.hiddenLoading();
+            let datas = response.data || {};
+            let arr = datas.productCategoryList && datas.productCategoryList.map((item, i) => {
+                return {
+                    index: i,
+                    title: item.name,
+                    data: item.productCategoryList || []
+                };
+            });
+            this.setState({
+                sectionArr: arr || [],
+                bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
+                    img: datas.img,
+                    linkType: datas.linkType,
+                    linkTypeCode: datas.linkTypeCode
+                }],
+                swiperShow: !StringUtils.isEmpty(datas.img)
+            }, () => {
+                this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
+            });
+        }).catch((err) => {
+            bridge.hiddenLoading();
+            bridge.$toast(err.msg);
+        });
     };
 
     _sectionItem = (item) => {
