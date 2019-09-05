@@ -5,7 +5,6 @@
  */
 
 import React, { Component } from 'react';
-import { ImageCacheManager } from 'react-native-cached-image';
 import {
     ActionSheetIOS,
     ActivityIndicator,
@@ -736,14 +735,10 @@ export default class FlyImageViewer extends Component {
             CameraRoll.saveToCameraRoll(that.props.imageUrls[that.state.currentShowIndex])
                 .then(() => {
                     that.props.onSaveToCamera(that.state.currentShowIndex);
-            });
+                });
         } else {
             this.props.onSave(this.props.imageUrls[this.state.currentShowIndex]);
         }
-
-        // this.setState({
-        //     isShowMenu: false
-        // });
     }
 
     getMenu() {

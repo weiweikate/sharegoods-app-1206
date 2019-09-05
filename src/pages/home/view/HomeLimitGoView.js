@@ -167,9 +167,6 @@ export default class HomeLimitGoView extends Component {
                 }
 
                 <ScrollableTabView
-                    ref={ref => {
-                        this.scrollableTabView = ref;
-                    }}
                     style={styles.tabBar}
                     page={limitGoModule.currentPage !== -1 ? limitGoModule.currentPage : limitGoModule.initialPage}
                     renderTabBar={() => <ScrollableTabBar style={styles.scrollTab} underlineStyle={styles.underline}

@@ -6,11 +6,12 @@
     android:background="@android:color/white"
     android:orientation="vertical"
     android:visibility="gone">
+    <include layout="@layout/ysf_include_divider"/>
 
     <com.qiyukf.unicorn.widget.ViewPagerFixed
         android:id="@+id/viewPager"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/ysf_message_action_list_height"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
         android:layout_marginTop="4dp" />
 
     <LinearLayout
