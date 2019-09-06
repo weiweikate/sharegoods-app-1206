@@ -141,7 +141,6 @@ export const getDateDiff = (endDate) => {
 }
 
 export const getDateDiffFun = (endDate,currentDate) => {
-    console.log(currentDate);
     let diff = (Date.parse(new Date(endDate)) - Date.parse(new Date())) / 1000;
     if (diff <= 0) {
         return false;
@@ -154,6 +153,7 @@ export const getDateDiffFun = (endDate,currentDate) => {
         min: 0,
         sec: 0,
         millisec: 0,
+        currentDate: currentDate
     };
 
     if (diff >= (365.25 * 86400)) {

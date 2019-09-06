@@ -196,14 +196,14 @@ export default class MinePage extends BasePage {
      * @func 请求是否有参与拼团且拼团即将结束
      */
     loadGroupList = () => {
-        // MineApi.getGroupList({page: 1, size: 10, groupStatus: 2}).then((result) => {
-        //     console.log(result)
-        //     if (!EmptyUtils.isEmpty(result.data)) {
-        //         this.setState({
-        //             groupData: result.data[0]
-        //         });
-        //     }
-        // }).catch((error) => {});
+        MineApi.getGroupList({page: 1, size: 10, groupStatus: 2}).then((result) => {
+            console.log(result)
+            if (!EmptyUtils.isEmpty(result.data)) {
+                this.setState({
+                    groupData: result.data[0]
+                });
+            }
+        }).catch((error) => {});
     };
 
     loadMessageCount = () => {

@@ -53,10 +53,10 @@ export default class SpellGroupList extends BasePage {
                     renderTabBar={this._renderTabBar}
                     //进界面的时候打算进第几个
                     initialPage={0}>
-                    <SpellGroupView tabLabel={'全部'} title={'全部'}/>
-                    <SpellGroupView tabLabel={'拼团中'} title={'拼团中'}/>
-                    <SpellGroupView tabLabel={'拼团成功'} title={'拼团成功'}/>
-                    <SpellGroupView tabLabel={'拼团失败'} title={'拼团失败'}/>
+                    <SpellGroupView tabLabel={'全部'} title={'全部'} params={0}/>
+                    <SpellGroupView tabLabel={'拼团中'} title={'拼团中'} params={2}/>
+                    <SpellGroupView tabLabel={'拼团成功'} title={'拼团成功'} params={3}/>
+                    <SpellGroupView tabLabel={'拼团失败'} title={'拼团失败'} params={-1}/>
                 </ScrollableTabView>
             </View>
         );

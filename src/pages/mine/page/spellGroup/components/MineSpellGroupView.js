@@ -6,7 +6,7 @@
  * @email zhoujianxin@meeruu.com
  */
 
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {
     StyleSheet,
     Text,
@@ -26,7 +26,7 @@ const { px2dp } = ScreenUtils;
 
 
 @observer
-export default class MineSpellGroupView extends Component {
+export default class MineSpellGroupView extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -35,7 +35,10 @@ export default class MineSpellGroupView extends Component {
     }
 
     componentDidMount() {
-        TimeModel.getCurrentTime();
+        const {data} = this.props;
+        if(!EmptyUtils.isEmpty(data)) {
+            TimeModel.getCurrentTime();
+        }
     }
 
     render() {

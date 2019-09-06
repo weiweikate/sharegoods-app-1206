@@ -6,7 +6,7 @@
  * @email zhoujianxin@meeruu.com
  */
 
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {
     StyleSheet,
     Text,
@@ -33,7 +33,7 @@ const ENUMSTATUS = {
 
 
 @observer
-export default class ListItemView extends Component {
+export default class ListItemView extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -48,7 +48,7 @@ export default class ListItemView extends Component {
     }
 
     render() {
-        const {item ,index, title, onClick} = this.props;
+        const {item, onClick} = this.props;
         let backtime = DateUtils.getDateDiffFun(item.endTime, TimeModel.spellGroupDate);
 
         let color = item.groupStatus === ENUMSTATUS.GROUPSTATUS_SUCCESS ? '#333333' :
@@ -100,12 +100,12 @@ export default class ListItemView extends Component {
                     <View style={{flex: 1, justifyContent: 'space-around', marginVertical: 7}}>
                         <View>
                             <Text numberOfLines={1} style={{color: '#333333', fontSize: 14, marginRight: 10}}>
-                                {title}{item.goodsName}
+                                {item.goodsName}
                             </Text>
 
                             <View style={{flexDirection: 'row', alignItems: 'center',marginTop: 6}}>
                                 {
-                                    index / 2.0 === 0 ?
+                                    item.startGroupLeader ?
                                         <LinearGradient style={{marginRight: 5, borderRadius: 2}}
                                                         start={{x: 0, y: 0.5}}
                                                         end={{x: 1, y: 0.5}}
@@ -139,7 +139,7 @@ export default class ListItemView extends Component {
                             <TouchableWithoutFeedback
                                 onPress={() => {
                                     let type = item.groupStatus != ENUMSTATUS.GROUPSTATUS_SUCCESS && item.groupStatus != ENUMSTATUS.GROUPSTATUS_FAIL
-                                    onClick && onClick(type);
+                                    onClick && onClick(type, item);
                                 }
                                 }
 
