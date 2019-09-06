@@ -9,7 +9,7 @@ function ListHeaderLoading(props) {
     <RefreshAnimateHeader
       refreshing={isRefreshing}
       headerHeight={headerHeight || 60}
-      source={source || require('./pull_step2.json')}
+      source={source || require('./pull.json')}
       onRefresh={onRefresh}
       {...others}
     />
