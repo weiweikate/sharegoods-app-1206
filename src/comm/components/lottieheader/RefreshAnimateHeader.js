@@ -22,7 +22,7 @@ function RefreshAnimateHeader(props) {
 
     const onRefreshCallBack = useCallback(
         (state) => {
-            lottieRef.current.play(8, 50);
+            lottieRef.current.play(16, 100);
             onRefresh && onRefresh(state);
             currentState.current = state;
         },
@@ -35,7 +35,7 @@ function RefreshAnimateHeader(props) {
 
     const onIdleRefreshCallBack = useCallback((state) => {
         if (currentState.current === RefreshState.End) {
-            lottieRef.current.play(0, 50);
+            lottieRef.current.play(0, 16);
             lottieRef.current.reset();
         }
         currentState.current = state;
@@ -68,7 +68,7 @@ function RefreshAnimateHeader(props) {
                     loop={false}
                     autoSize={false}
                     autoPlay={false}
-                    speed={1}
+                    speed={2}
                     source={source}
                     hardwareAccelerationAndroid={true}
                     cacheStrategy={'strong'}
