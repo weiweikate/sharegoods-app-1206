@@ -40,8 +40,9 @@ export default class GroupSelectModel extends Component {
     };
 
     render() {
-        const {createAD, inviteShare} = this.props;
+        const {createAD, inviteShare, data} = this.props;
         const {visible} = this.state;
+        let showParams = data;
         return (
             <Modal
                 visible={visible}
@@ -57,10 +58,15 @@ export default class GroupSelectModel extends Component {
                         <TouchableOpacity style={styles.btnTouchStyle}
                                           activeOpacity={0.7}
                                           onPress={() => {
+                                              if (data && showParams['type']) {
+                                                  showParams['type'] = 'Group';
+                                              } else {
+                                                  showParams = 'Group';
+                                              }
                                               this.setState({
                                                   visible: false
-                                              },()=>{
-                                                  inviteShare && inviteShare()
+                                              }, () => {
+                                                  inviteShare && inviteShare(showParams)
                                               });
                                           }}>
                             <Text style={{color: '#0076FF', fontSize: 17}} allowFontScaling={false}>
@@ -73,10 +79,16 @@ export default class GroupSelectModel extends Component {
                         <TouchableOpacity style={styles.btnTouchStyle}
                                           activeOpacity={0.7}
                                           onPress={() => {
+                                              if (data && showParams['type']) {
+                                                  showParams['type'] = 'GroupAD';
+                                              } else {
+                                                  showParams = 'GroupAD';
+
+                                              }
                                               this.setState({
                                                   visible: false
-                                              },()=>{
-                                                  createAD && createAD();
+                                              }, () => {
+                                                  createAD && createAD(showParams);
                                               });
                                           }}>
                             <Text style={{color: '#0076FF', fontSize: 17}} allowFontScaling={false}>

@@ -53,7 +53,7 @@ const {
     // mine_invite,
     mine_invite2,
     // mine_moreMoney,
-    // mine_icon_favorite_shop,
+    mine_icon_group,
     mine_icon_help_service,
     mine_icon_address,
     // mine_icon_mission,
@@ -197,10 +197,10 @@ export default class MinePage extends BasePage {
      */
     loadGroupList = () => {
         MineApi.getGroupList({page: 1, size: 10, groupStatus: 2}).then((result) => {
-            console.log(result)
-            if (!EmptyUtils.isEmpty(result.data)) {
+            alert(JSON.stringify(result))
+            if (result.data&&!EmptyUtils.isEmpty(result.data.data)) {
                 this.setState({
-                    groupData: result.data[0]
+                    groupData: result.data.data[0]
                 });
             }
         }).catch((error) => {});
@@ -961,7 +961,7 @@ export default class MinePage extends BasePage {
 
         let spellGroup = {
             text: '我的拼团',
-            icon: mine_setting_icon_gray,
+            icon: mine_icon_group,
             onPress: () => {
                 this.$navigate(RouterMap.SpellGroupList);
             }

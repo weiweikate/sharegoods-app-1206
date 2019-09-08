@@ -55,16 +55,16 @@ export default class SpellGroupView extends PureComponent {
                     ref={(ref) => {
                         this.SelectModel = ref
                     }}
-                    createAD={() => {
+                    createAD={(data) => {
                         this.setState({
-                            shareType: 'GroupAD'
+                            shareType: data
                         }, () => {
                             this.ShareModel.open && this.ShareModel.open();
                         });
                     }}
-                    inviteShare={() => {
+                    inviteShare={(data) => {
                         this.setState({
-                            shareType: 'Group'
+                            shareType: data
                         }, () => {
                             this.ShareModel.open && this.ShareModel.open();
                         })
