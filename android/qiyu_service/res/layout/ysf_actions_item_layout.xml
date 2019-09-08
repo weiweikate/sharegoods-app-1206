@@ -8,9 +8,9 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="120px"
-        android:layout_height="120px"
-        android:layout_marginBottom="@dimen/ysf_input_panel_image_margin_bottom"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="@dimen/ysf_input_panel_image_margin_top"
         android:contentDescription="@null"
         tools:src="@drawable/ysf_message_plus_photo_selector"/>

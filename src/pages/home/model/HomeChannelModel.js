@@ -16,15 +16,13 @@ class ChannelModules {
             if (isCache) {
                 const storeRes = yield store.get(kHomeChannelStore);
                 if (storeRes) {
-                    this.channelList = storeRes || [];
-                    this.saveChannelHeight(this.channelList);
+                    this.saveChannelHeight(storeRes || []);
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.channel });
-            this.channelList = res.data || [];
-            this.saveChannelHeight(this.channelList);
-            homeModule.changeHomeList(homeType.channel);
-            store.save(kHomeChannelStore, this.channelList);
+            this.saveChannelHeight(res.data || []);
+            homeModule.changeHomeList(homeType.channel, this.channelList);
+            store.save(kHomeChannelStore, res.data || []);
         } catch (error) {
             console.log(error);
         }
@@ -32,7 +30,15 @@ class ChannelModules {
 
     saveChannelHeight(list) {
         this.channelHeight = list.length > 0 ? (list.length <= 5 ? ScreenUtils.px2dp(90) : ScreenUtils.px2dp(170)) : 0;
-
+        let channelData = {
+            itemData: list,
+            id: 2,
+            type: homeType.channel
+        };
+        this.channelList = [];
+        if (list.length > 0) {
+            this.channelList.push(channelData);
+        }
     }
 }
 

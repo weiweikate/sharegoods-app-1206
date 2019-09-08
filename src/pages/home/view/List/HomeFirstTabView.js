@@ -43,11 +43,12 @@ import DesignRule from '../../../../constants/DesignRule';
 import intervalMsgModel from '../../../../comm/components/IntervalMsgView';
 import { MRText as Text } from '../../../../components/ui/index';
 import TextCustomView from '../TextCustomView';
+import HomeHotTitleView from '../HomeHotTitleView';
 
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
-const { px2dp, height, headerHeight, width } = ScreenUtils;
+const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 const nowTime = new Date().getTime();
 const HOME_REFRESH = 'homeRefresh';
@@ -63,16 +64,16 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
 @observer
 export default class HomeFirstTabView extends Component {
     dataProvider = new DataProvider((r1, r2) => {
-        return r1 !== r2;
+        return r1.id !== r2.id;
     });
 
     layoutProvider = new LayoutProvider((i) => {
-        return this.dataProvider.getDataForIndex(i) || {};
+        return homeModule.homeList[i] || {};
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
         const { todayList } = todayModule;
         const { recommendList } = recommendModule;
-        const { subjectHeight, subjectList } = subjectModule;
+        const { subjectList } = subjectModule;
         const { foucusHeight } = homeFocusAdModel;
 
         switch (type.type) {
@@ -86,13 +87,13 @@ export default class HomeFirstTabView extends Component {
                 dim.height = taskModel.homeHeight;
                 break;
             case homeType.channel:
-                dim.height = channelModules.channelHeight
+                dim.height = channelModules.channelHeight;
                 break;
             case homeType.expandBanner:
                 dim.height = homeExpandBnnerModel.bannerHeight;
                 break;
             case homeType.focusGrid:
-                dim.height = foucusHeight > 0 ? (foucusHeight + (homeExpandBnnerModel.banner.length > 0 ? px2dp(20) : px2dp(10))) : 0;
+                dim.height = foucusHeight > 0 ? (foucusHeight + (homeExpandBnnerModel.expBannerList.length > 0 ? px2dp(20) : px2dp(10))) : 0;
                 break;
             case homeType.limitGo:
                 dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitHeight : 0;
@@ -103,8 +104,11 @@ export default class HomeFirstTabView extends Component {
             case homeType.fine:
                 dim.height = recommendList.length > 0 ? recommendHeight : 0;
                 break;
+            case homeType.homeHotTitle:
+                dim.height = subjectList.length > 0 ? px2dp(60) : 0;
+                break;
             case homeType.homeHot:
-                dim.height = subjectList.length > 0 ? subjectHeight : 0;
+                dim.height = subjectList.length > 0 ? (subjectModule.subBannerHeight + px2dp(185)) : 0;
                 break;
             case homeType.goodsTitle:
                 dim.height = homeModule.tabList.length > 0 ? px2dp(66) : 0;
@@ -116,9 +120,6 @@ export default class HomeFirstTabView extends Component {
             case homeType.custom_goods:
             case homeType.custom_imgAD:
                 dim.height = type.itemHeight || 0;
-                break;
-            case  homeType.placeholder:
-                dim.height = 1;
                 break;
             default:
                 dim.height = 0;
@@ -138,7 +139,6 @@ export default class HomeFirstTabView extends Component {
 
     _renderItem = (type, item, index) => {
         type = type.type;
-        let data = item;
         if (type === homeType.swiper) {
             return <HomeBannerView navigate={routePush}/>;
         } else if (type === homeType.user) {
@@ -160,10 +160,12 @@ export default class HomeFirstTabView extends Component {
             return <HomeTodayView navigate={routePush}/>;
         } else if (type === homeType.fine) {
             return <HomeRecommendView navigate={routePush}/>;
+        } else if (type === homeType.homeHotTitle) {
+            return <HomeHotTitleView title={'超值热卖'}/>;
         } else if (type === homeType.homeHot) {
-            return <HomeSubjectView navigate={routePush}/>;
+            return <HomeSubjectView navigate={routePush} data={item}/>;
         } else if (type === homeType.goods) {
-            return <GoodsCell data={data} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
+            return <GoodsCell data={item} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
                               navigate={routePush}/>;
         } else if (type === homeType.goodsTitle) {
             return <View ref={e => this.toGoods = e}
@@ -175,14 +177,9 @@ export default class HomeFirstTabView extends Component {
         } else if (type === homeType.custom_goods) {
             return <GoodsCustomView data={item}/>;
         } else if (type === homeType.custom_text) {
-            // let p = {specialTopicId:  this.props.data.linkCode}
-            // p.specialTopicArea = 6;
             return <TextCustomView data={item}/>;
         } else if (type === homeType.custom_imgAD) {
-            // p.specialTopicArea = 1;
             return <TopicImageAdView data={item}/>;
-        } else if (type === homeType.placeholder) {
-            return <View style={{ width: width, height: 1, backgroundColor: 'white' }}/>;
         }
         return <View/>;
     };
@@ -255,8 +252,6 @@ export default class HomeFirstTabView extends Component {
                 layoutProvider={this.layoutProvider}
                 onScrollBeginDrag={this.props.onScrollBeginDrag}
                 showsVerticalScrollIndicator={false}
-                removeClippedSubviews={false}
-                // forceNonDeterministicRendering={true}
                 onScroll={this._onListViewScroll}
                 renderFooter={() => <Footer
                     isFetching={homeModule.isFetching}
