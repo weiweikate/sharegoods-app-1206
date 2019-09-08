@@ -75,9 +75,9 @@ export default class GroupShareImage extends Component {
                                 >
                                     <View style={styles.goodsInfo}>
                                         <View style={{flexDirection: 'row', justifyContent: 'center',}}>
-                                            {data.image ?
+                                            {data.imageUrlStr ?
                                                 <Image
-                                                    source={data.image}
+                                                    source={{uri:data.imageUrlStr}}
                                                     style={styles.goodsImg}/>
                                                 :
                                                 <View style={[styles.goodsImg,{backgroundColor:'#f5f5f5'}]}/>
@@ -85,7 +85,7 @@ export default class GroupShareImage extends Component {
                                             <View style={{flex: 1, marginHorizontal: 7}}>
                                                 <View>
                                                     <Text numberOfLines={1} style={{fontSize: 14, color: '#333333'}}>
-                                                        {data.goodsName ? data.goodsName : '秀一秀，赚到够'}
+                                                        {data.titleStr ? data.titleStr : '秀一秀，赚到够'}
                                                     </Text>
                                                 </View>
 
@@ -101,10 +101,10 @@ export default class GroupShareImage extends Component {
                                                 <View style={{flex:1}}/>
                                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                     <Text style={{color: '#FF0050', fontSize: 17}}>
-                                                        ¥{data.activityAmount ? data.activityAmount : '0.0'}
+                                                        ¥{data.priceStr ? data.priceStr : '0.0'}
                                                     </Text>
-                                                    <Text style={{color: '#999999', fontSize: 11, marginLeft: 5}}>
-                                                        ¥{data.skuPrice ? data.skuPrice : '0.0'}
+                                                    <Text style={{color: '#999999', fontSize: 11, marginLeft: 5, textDecorationLine: 'line-through'}}>
+                                                        ¥{data.originalPrice ? data.originalPrice : '0.0'}
                                                     </Text>
                                                 </View>
                                             </View>

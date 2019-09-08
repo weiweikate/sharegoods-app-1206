@@ -24,6 +24,7 @@ import res from '../../../../show/res';
 import DesignRule from '../../../../../constants/DesignRule';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import apiEnvironment from '../../../../../api/ApiEnvironment';
+import RouterMap from '../../../../../navigation/RouterMap';
 
 export default class SpellGroupView extends PureComponent {
 
@@ -72,21 +73,23 @@ export default class SpellGroupView extends PureComponent {
 
                 />
                 <CommShareModal
-                    ref={(ref)=>{this.ShareModel = ref}}
+                    ref={(ref) => {
+                        this.ShareModel = ref
+                    }}
                     type={this.state.shareType}
-                    imageJson= {{ // 分享商品图片的数据
-                        imageUrlStr:  selectData.image||'logo.png',
-                        imageType: 'group', // 为空就是生成商品分享的图片， web：网页分享的图片
-                        titleStr:  selectData.goodsName||'秀一秀，赚到够',
-                        priceStr: selectData.activityAmount, // 拼团价格
-                        originalPrice: selectData.skuPrice,
-                        QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${selectData.id?selectData.id:''}`,
+                    imageJson={{ // 分享商品图片的数据
+                        imageUrlStr: selectData.image || 'logo.png',
+                        imageType: 'group', // 为空就是生成商品分享的图片， web：网页分享的图片 group:生成拼团海报
+                        titleStr: selectData.goodsName || '秀一秀，赚到够',
+                        priceStr: selectData.activityAmount + '', // 拼团活动价格
+                        originalPrice: selectData.skuPrice + '',//划线价格
+                        QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${selectData.id ? selectData.id : ''}`,
                     }}
                     webJson={{
-                        title:`[仅剩${selectData.surplusPerson}个名额] 我${selectData.activityAmount}元带走了${selectData.goodsName}`||'秀一秀，赚到够',//分享标题(当为图文分享时候使用)
-                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${selectData.id?selectData.id:''}`,//(图文分享下的链接)
-                        thumImage: selectData.image||'logo.png',//(分享图标小图(https链接)图文分享使用)
-                        dec: `我买了${selectData.goodsName}，该商品已拼${selectData.alreadySaleNum}件了，快来参团吧!`
+                        title: `[仅剩${selectData.surplusPerson}个名额] 我${selectData.activityAmount || ''}元带走了${selectData.goodsName || ''}` || '秀一秀，赚到够',//分享标题(当为图文分享时候使用)
+                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${selectData.id ? selectData.id : ''}`,//(图文分享下的链接)
+                        thumImage: selectData.image || 'logo.png',//(分享图标小图(https链接)图文分享使用)
+                        dec: `我买了${selectData.goodsName || ''}，该商品已拼${selectData.alreadySaleNum || ''}件了，快来参团吧!`
                     }}
                 />
             </View>
@@ -136,7 +139,9 @@ export default class SpellGroupView extends PureComponent {
                             });
                         this.SelectModel.onOpen && this.SelectModel.onOpen();
                     } else {
-
+                        this.props.navigate(RouterMap.HtmlPage, {
+                            uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${item.id}`
+                        });
                     }
                 }}
             />

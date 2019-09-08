@@ -197,7 +197,6 @@ export default class MinePage extends BasePage {
      */
     loadGroupList = () => {
         MineApi.getGroupList({page: 1, size: 10, groupStatus: 2}).then((result) => {
-            alert(JSON.stringify(result))
             if (result.data&&!EmptyUtils.isEmpty(result.data.data)) {
                 this.setState({
                     groupData: result.data.data[0]

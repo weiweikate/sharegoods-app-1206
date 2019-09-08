@@ -34,7 +34,7 @@ export default class MineSpellGroupView extends PureComponent {
         };
     }
 
-    componentDidMount() {
+    componentWillReceiveProps() {
         const {data} = this.props;
         if(!EmptyUtils.isEmpty(data)) {
             TimeModel.getCurrentTime();

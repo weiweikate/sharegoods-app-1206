@@ -8,25 +8,31 @@ class TimeModel {
     spellGroupDate = 0;
 
     @action getCurrentTime() {
-        this.mineTime = setInterval(() => {
-            this.countdownDate = Math.round(new Date());
-        }, 1000);
+        if (!this.mineTime) {
+            this.mineTime = setInterval(() => {
+                this.countdownDate = Math.round(new Date());
+            }, 1000);
+        }
     }
 
     @action stopMineTime() {
         this.countdownDate = 0;
         this.mineTime && clearInterval(this.mineTime);
+        this.mineTime = null;
     }
 
     @action getSpellGroupTime() {
-        this.spellGroup = setInterval(() => {
-            this.spellGroupDate = Math.round(new Date());
-        }, 1000);
+        if (!this.spellGroup) {
+            this.spellGroup = setInterval(() => {
+                this.spellGroupDate = Math.round(new Date());
+            }, 1000);
+        }
     }
 
     @action stopSpellGroupTime() {
         this.spellGroupDate = 0;
         this.spellGroup && clearInterval(this.spellGroup);
+        this.spellGroup = null;
     }
 
 

@@ -116,13 +116,13 @@ export default class ListItemView extends PureComponent {
                                         </LinearGradient> : null
                                 }
 
-                                {item.groupCount ?
+                                {item.groupNum ?
                                     <View style={{
                                         flexDirection: 'row',
                                         backgroundColor: 'rgba(255,0,80,0.1)',
                                         borderRadius: 2
                                     }}>
-                                        <Text style={{color: '#FF0050', fontSize: 10, marginHorizontal: 4,}}>{item.groupCount}人团</Text>
+                                        <Text style={{color: '#FF0050', fontSize: 10, marginHorizontal: 4,}}>{item.groupNum}人团</Text>
                                     </View>
                                     : null
                                 }
