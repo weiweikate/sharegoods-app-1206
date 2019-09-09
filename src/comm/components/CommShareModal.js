@@ -121,7 +121,7 @@ export default class CommShareModal extends React.Component {
     open() {
 
         if (user.isLogin) {
-            // user.userShare();
+            user.userShare();
         } else {
             Alert.alert('', '为了给您提供更完整的服务，\n请登录后操作',
                 [{
