@@ -7,15 +7,20 @@
  */
 
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList, Image } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import CommModal from '../../../../comm/components/CommModal';
-import { GroupPersonItem } from './ProductGroupItemView';
+import { GroupPersonItem, TimeLabelText } from './ProductGroupItemView';
 import { MRText } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import LinearGradient from 'react-native-linear-gradient';
+import HTML from '@mr/react-native-render-html';
+import StringUtils from '../../../../utils/StringUtils';
+import { observer } from 'mobx-react';
+import whoAreYou from './whoAreYou.png';
+import morePerson from './morePerson.png';
 
 const { px2dp } = ScreenUtils;
 
@@ -31,11 +36,16 @@ export default class ProductGroupModal extends Component {
         modalVisible: false
     };
 
-    show = ({ actionType }) => {
-        this.setState({
-            modalVisible: true,
-            actionType
-        });
+    show = ({ actionType, data, extraData, goToBuy }) => {
+        setTimeout(() => {
+            this.setState({
+                modalVisible: true,
+                actionType,
+                data,
+                extraData,
+                goToBuy
+            });
+        }, 500);
     };
 
     _close = () => {
@@ -45,7 +55,7 @@ export default class ProductGroupModal extends Component {
     };
 
     render() {
-        const { modalVisible, actionType } = this.state;
+        const { modalVisible, actionType, data, extraData, goToBuy } = this.state;
         if (!modalVisible) {
             return null;
         }
@@ -53,13 +63,20 @@ export default class ProductGroupModal extends Component {
             <CommModal onRequestClose={this._close}
                        visible={this.state.modalVisible}
                        transparent={true}>
-                {actionType === action_type.persons && <View style={styles.containerView}>
+                {actionType === action_type.persons &&
+                <View style={styles.containerView}>
                     <NoMoreClick style={{ flex: 1 }} onPress={this._close} activeOpacity={1}/>
-                    <GroupPersonAllList/>
+                    <GroupPersonAllList data={data} goToBuy={goToBuy} showModal={this.show}/>
                 </View>}
+                {actionType === action_type.join &&
                 <NoMoreClick onPress={this._close} activeOpacity={1} style={styles.containerView1}>
-                    <GroupJoinView/>
-                </NoMoreClick>
+                    <GroupJoinView data={data} extraData={extraData} goToBuy={goToBuy} close={this._close}/>
+                </NoMoreClick>}
+                {actionType === action_type.desc &&
+                <View style={styles.containerView}>
+                    <NoMoreClick style={{ flex: 1 }} onPress={this._close} activeOpacity={1}/>
+                    <GroupDescView data={data}/>
+                </View>}
             </CommModal>
         );
     }
@@ -78,9 +95,14 @@ const styles = StyleSheet.create({
     }
 });
 
+/*
+* 正在凑团
+* */
 class GroupPersonAllList extends Component {
-    _renderItem = () => {
-        return <GroupPersonItem/>;
+
+    _renderItem = ({ item }) => {
+        return <GroupPersonItem itemData={item} style={stylesAll.itemView} goToBuy={this.props.goToBuy}
+                                showModal={this.props.showModal}/>;
     };
 
     render() {
@@ -92,8 +114,8 @@ class GroupPersonAllList extends Component {
                 </View>
                 <FlatList
                     style={stylesAll.flatList}
-                    data={[{}, {}, {}, {}, {}, {}]}
-                    keyExtractor={(item) => item.prodCode + ''}
+                    data={this.props.data || []}
+                    keyExtractor={(item) => item.id + ''}
                     renderItem={this._renderItem}
                     showsHorizontalScrollIndicator={false}
                     initialNumToRender={5}
@@ -111,36 +133,82 @@ const stylesAll = StyleSheet.create({
     },
     topView: {
         flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-        height: 54, marginHorizontal: 15
+        height: 54, paddingHorizontal: 15
     },
     topLText: {
-        fontSize: 14, color: DesignRule.textColor_mainTitle
+        fontSize: 17, color: DesignRule.textColor_mainTitle, fontWeight: '500'
     },
     topRText: {
-        fontSize: 14, color: DesignRule.textColor_mainTitle
+        fontSize: 12, color: DesignRule.textColor_instruction
+    },
+    itemView: {
+        marginHorizontal: 15, backgroundColor: 'white', borderRadius: 10, marginBottom: 10
     }
 });
 
+/*
+* 参加与...的拼单
+* */
+@observer
 export class GroupJoinView extends Component {
 
-    render() {
+    renderItem = (item, index, length) => {
+        if (index > 4) {
+            return null;
+        }
+        const { userHeadImg, startGroupLeader } = item;
+        let source;
+        if (index === 3 && length > 3) {
+            source = morePerson;
+        }
         return (
-            <View style={stylesJoin.container}>
-                <MRText style={stylesJoin.topText}>参与刘丽丽1…**2333的拼单</MRText>
-                <MRText style={stylesJoin.topText1}>仅剩1个名额，23:23:23后结束</MRText>
+            <View>
+                {
+                    source ? <Image style={[stylesJoin.icon, { marginLeft: index === 0 ? 0 : px2dp(20) }]}
+                                    source={source}/> :
+                        <UIImage key={index}
+                                 isAvatar={true}
+                                 style={[stylesJoin.icon, { marginLeft: index === 0 ? 0 : px2dp(20) }]}
+                                 source={source ? source : { uri: userHeadImg }}>
+                            {startGroupLeader ? <View style={stylesJoin.leaderView}>
+                                <MRText style={stylesJoin.leaderText}>团长</MRText>
+                            </View> : null}
+                        </UIImage>
+                }
+            </View>
+
+        );
+    };
+
+    render() {
+        const { extraData, data, goToBuy, close } = this.props;
+        const { groupNum, endTime, id } = extraData;
+        let leaderName;
+        for (const item of data) {
+            if (item.startGroupLeader) {
+                leaderName = item.nickName;
+                break;
+            }
+        }
+        return (
+            <NoMoreClick style={stylesJoin.container} onPress={() => {
+            }} activeOpacity={1}>
+                <MRText style={stylesJoin.topText}>参与{leaderName}的拼单</MRText>
+                <MRText
+                    style={stylesJoin.topText1}>仅剩{StringUtils.sub(groupNum, data.length)}个名额，<TimeLabelText
+                    endTime={endTime}/>后结束</MRText>
                 <View style={stylesJoin.iconView}>
                     {
-                        ['', '', ''].map((item, index) => {
-                            return <UIImage key={index}
-                                            style={[stylesJoin.icon, { marginLeft: index === 0 ? 0 : px2dp(20) }]}
-                                            borderRadius={px2dp(20)}
-                                            source={{ uri: 'https://cdn.sharegoodsmall.com/sharegoods/cc49225d27ae4c35ac62b4fbe6718b55.png' }}/>;
+                        (data || []).map((item, index) => {
+                            return this.renderItem(item, index, data.length);
                         })
-
                     }
+                    <Image style={[stylesJoin.icon, { marginLeft: px2dp(20) }]}
+                           source={whoAreYou}/>
                 </View>
                 <NoMoreClick onPress={() => {
-                    this.requestGroupPerson();
+                    close();
+                    goToBuy && goToBuy(id);
                 }}>
                     <LinearGradient style={stylesJoin.linearGradient}
                                     start={{ x: 0, y: 0 }}
@@ -149,7 +217,7 @@ export class GroupJoinView extends Component {
                         <MRText style={stylesJoin.btnText}>一键参团</MRText>
                     </LinearGradient>
                 </NoMoreClick>
-            </View>
+            </NoMoreClick>
         );
     }
 }
@@ -169,7 +237,7 @@ const stylesJoin = StyleSheet.create({
         alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'center', marginVertical: 33
     },
     icon: {
-        width: px2dp(40), height: px2dp(40)
+        width: px2dp(40), height: px2dp(40), borderRadius: px2dp(20)
     },
     linearGradient: {
         justifyContent: 'center', alignItems: 'center', marginBottom: 25,
@@ -177,6 +245,47 @@ const stylesJoin = StyleSheet.create({
     },
     btnText: {
         fontSize: 14, color: 'white'
+    },
+
+    leaderView: {
+        width: 32, height: 15, borderRadius: 7.5, backgroundColor: DesignRule.mainColor,
+        justifyContent: 'center', alignItems: 'center'
+    },
+    leaderText: {
+        fontSize: 11, color: 'white'
     }
 });
 
+/*
+* 活动玩法
+* */
+class GroupDescView extends Component {
+    render() {
+        return (
+            <View style={stylesDesc.container}>
+                <View style={stylesDesc.topView}>
+                    <MRText style={stylesDesc.topText}>拼团玩法</MRText>
+                </View>
+                <HTML html={this.props.data}
+                      imagesMaxWidth={ScreenUtils.width}
+                      imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
+                      containerStyle={{ backgroundColor: '#fff' }}/>
+            </View>
+        );
+    }
+}
+
+const stylesDesc = StyleSheet.create({
+    container: {
+        height: ScreenUtils.autoSizeHeight(405),
+        borderTopLeftRadius: 10, borderTopRightRadius: 10,
+        backgroundColor: DesignRule.bgColor
+    },
+    topView: {
+        flexDirection: 'row', justifyContent: 'center', alignItems: 'center',
+        height: 54
+    },
+    topText: {
+        fontSize: 17, color: DesignRule.textColor_mainTitle, fontWeight: '500'
+    }
+});

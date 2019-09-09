@@ -275,6 +275,11 @@ export default class ProductDetailModel {
         return activityType === activity_type.group && activityStatus === activity_status.inSell && (groupActivity.subProductList || []).length > 0;
     }
 
+    @computed get isPinGroupIn() {
+        const { activityType, activityStatus } = this;
+        return activityType === activity_type.pinGroup && activityStatus === activity_status.inSell;
+    }
+
     @computed get groupSubProductCanSell() {
         const { subProductList } = this.groupActivity;
         for (const subProduct of (subProductList || [])) {
@@ -313,6 +318,9 @@ export default class ProductDetailModel {
         minutes = minutes >= 10 ? minutes : minutes === 0 ? '00' : `0${minutes}`;
         second = second >= 10 ? second : second === 0 ? '00' : `0${second}`;
         if (activityStatus === activity_status.unBegin) {
+            if (this.activityType === activity_type.pinGroup) {
+                return `距开始${hours}:${minutes}:${second}:${leave4}`;
+            }
             //'yyyy-MM-dd HH:mm:ss';
             //小于一小时
             if (skillTimeout < 3600 * 1000) {
@@ -328,6 +336,9 @@ export default class ProductDetailModel {
             }
             return DateUtils.formatDate(this.startTime, 'dd号HH:mm') + '开抢';
         } else if (activityStatus === activity_status.inSell) {
+            if (this.activityType === activity_type.pinGroup) {
+                return `${hours}:${minutes}:${second}:${leave4}`;
+            }
             if (days < 1) {
                 return `距结束${hours}:${minutes}:${second}:${leave4}`;
             } else {
@@ -370,7 +381,7 @@ export default class ProductDetailModel {
     @computed get sectionDataList() {
         const {
             promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel,
-            type, isGroupIn, productDetailSuitModel, isHuaFei, singleActivity
+            type, isGroupIn, productDetailSuitModel, isHuaFei, isPinGroupIn, singleActivity
         } = this;
         const { couponsList } = productDetailCouponsViewModel;
         const { activityCode } = productDetailSuitModel;
@@ -402,10 +413,10 @@ export default class ProductDetailModel {
         sectionArr.push({ key: sectionType.sectionSetting, data: settingList });
         /*拼团相关*/
         let groupList = [];
-        (this.activityType === activity_type.pinGroup && activityTag === '100105') && groupList.push({ itemKey: productItemType.groupIsOld });
+        activityTag === 101106 && groupList.push({ itemKey: productItemType.groupIsOld });
         groupList.push({ itemKey: productItemType.groupOpenPersonS });
         groupList.push({ itemKey: productItemType.groupProductList });
-        sectionArr.push({ key: sectionType.sectionGroup, data: groupList });
+        isPinGroupIn && sectionArr.push({ key: sectionType.sectionGroup, data: groupList });
         /*晒单,图片,价格说明*/
         sectionArr.push(
             { key: sectionType.sectionScore, data: [{ itemKey: productItemType.comment }] },
@@ -623,7 +634,7 @@ export default class ProductDetailModel {
                 return;
             }
             const { code, activityTag } = singleActivity;
-            this.productGroupModel.requestCheckJoinUser({ prodCode: this.prodCode, activityCode: code, activityTag });
+            this.productGroupModel.requestCheckStartJoinUser({ prodCode: this.prodCode, activityCode: code, activityTag });
             this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
             this.productGroupModel.requestGroupProduct({ activityCode: code });
             this.productGroupModel.requestGroupDesc();

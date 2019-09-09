@@ -12,12 +12,17 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import { MRText } from '../../../../components/ui';
 import LinearGradient from 'react-native-linear-gradient';
 import DesignRule from '../../../../constants/DesignRule';
+import { observer } from 'mobx-react';
 
 const { px2dp } = ScreenUtils;
 
 /*拼团未开始*/
-export class GroupActivityWillBeginView extends Component {
+@observer
+export class GroupActivityInView extends Component {
     render() {
+        const { productDetailModel } = this.props;
+        const { showTimeText, promotionMinPrice, singleActivity, minPrice } = productDetailModel;
+        const { groupNum } = singleActivity || {};
         return (
             <View style={stylesWill.container}>
                 <LinearGradient style={stylesWill.leftView}
@@ -26,22 +31,22 @@ export class GroupActivityWillBeginView extends Component {
                                 colors={['#FC5D39', '#FF0050']}>
                     <MRText style={stylesWill.price}>
                         ¥
-                        <MRText style={stylesWill.priceBig}>69</MRText>
+                        <MRText style={stylesWill.priceBig}>{promotionMinPrice}</MRText>
                         起
                     </MRText>
-                    <View>
+                    <View style={{ flex: 1 }}>
                         <LinearGradient style={stylesWill.numView}
                                         start={{ x: 0, y: 0 }}
                                         end={{ x: 1, y: 0 }}
                                         colors={['#FFEDA9', '#FFC97F']}>
-                            <MRText style={stylesWill.numText}>2人团</MRText>
+                            <MRText style={stylesWill.numText}>{groupNum}人团</MRText>
                         </LinearGradient>
-                        <MRText style={stylesWill.priceO}>销售价:￥79</MRText>
+                        <MRText style={stylesWill.priceO}>销售价:￥{minPrice}起</MRText>
                     </View>
                 </LinearGradient>
                 <View style={stylesWill.rightView}>
                     <MRText style={stylesWill.rTopText}>距结束</MRText>
-                    <MRText style={stylesWill.rBottomText}>14:17:24.09</MRText>
+                    <MRText style={stylesWill.rBottomText}>{showTimeText}</MRText>
                 </View>
             </View>
         );
@@ -63,10 +68,10 @@ const stylesWill = StyleSheet.create({
         fontSize: 36, color: 'white'
     },
     numView: {
-        height: 16, width: 37, borderRadius: 8, justifyContent: 'center', alignItems: 'center'
+        height: 16, borderRadius: 8, justifyContent: 'center', alignSelf: 'flex-start'
     },
     numText: {
-        fontSize: 11, color: DesignRule.textColor_redWarn
+        fontSize: 11, color: DesignRule.textColor_redWarn, paddingHorizontal: 4, fontWeight: '500'
     },
     priceO: {
         fontSize: 12, color: 'white'
@@ -84,16 +89,19 @@ const stylesWill = StyleSheet.create({
 
 });
 
-export class GroupActivityInView extends Component {
+@observer
+export class GroupActivityWillBeginView extends Component {
     render() {
+        const { productDetailModel } = this.props;
+        const { showTimeText, promotionMinPrice } = productDetailModel;
         return (
             <View style={stylesIn.container}>
-                <MRText style={stylesIn.price}>¥23333</MRText>
+                <MRText style={stylesIn.price}>¥{promotionMinPrice}起</MRText>
                 <View style={stylesIn.groupView}>
                     <MRText style={stylesIn.groupText}>拼团价</MRText>
                 </View>
                 <View style={{ flex: 1 }}/>
-                <MRText style={stylesIn.timeText}>距开始23:59:24.9</MRText>
+                <MRText style={stylesIn.timeText}>{showTimeText}</MRText>
             </View>
         );
     }

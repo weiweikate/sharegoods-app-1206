@@ -14,6 +14,9 @@ import { product_status } from '../ProductDetailModel';
 import LinearGradient from 'react-native-linear-gradient';
 import StringUtils from '../../../utils/StringUtils';
 import { formatDate } from '../../../utils/DateUtils';
+import { routePush } from '../../../navigation/RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
+import apiEnvironment from '../../../api/ApiEnvironment';
 
 const { xiangqing_btn_gouwuche_nor, jiarugouwuche_no, me_bangzu_kefu_icon } = res;
 const { px2dp } = ScreenUtils;
@@ -34,7 +37,8 @@ export default class DetailBottomView extends Component {
         let { pData } = this.props;
         let {
             productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning,
-            orderOnProduct, isGroupIn, groupSubProductCanSell, upTime, isHuaFei
+            orderOnProduct, isGroupIn, groupSubProductCanSell, upTime, isHuaFei, isPinGroupIn,
+            minPrice, promotionMinPrice, productGroupModel
         } = pData || {};
         //总库存
         let stock = 0;
@@ -47,6 +51,8 @@ export default class DetailBottomView extends Component {
         const cantBuy = productStatus !== product_status.on || orderOnProduct === 0 || (isGroupIn && !groupSubProductCanSell);
         //不能加购(不能单独购买)
         const cantJoin = orderOnProduct === 0 || isHuaFei;
+
+        const { hasOpenGroup, groupId } = productGroupModel;
         return (
             <View style={{ backgroundColor: 'white' }}>
                 {
@@ -109,7 +115,7 @@ export default class DetailBottomView extends Component {
                                                     <Text style={[styles.btnText, {
                                                         color: DesignRule.white,
                                                         fontSize: (isNoEmpty(selfReturning) && selfReturning > 0) ? 14 : 17
-                                                    }]}>立即购买</Text>
+                                                    }]}>{isPinGroupIn ? `￥${minPrice}起单买` : '立即购买'}</Text>
                                                     {(isNoEmpty(selfReturning) && selfReturning > 0) && < Text style={{
                                                         fontSize: 11, color: 'white', marginTop: -2
                                                     }}>返{selfReturning}</Text>}
@@ -117,12 +123,21 @@ export default class DetailBottomView extends Component {
                                         }
                                     </TouchableOpacity>
                                     <TouchableOpacity style={[styles.btn]}
-                                                      onPress={() => this.props.bottomViewAction('jlj')}>
+                                                      onPress={() => {
+                                                          if (isPinGroupIn && hasOpenGroup) {
+                                                              routePush(RouterMap.HtmlPage, {
+                                                                  uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${groupId}`
+                                                              });
+                                                              return;
+                                                          }
+                                                          this.props.bottomViewAction(isPinGroupIn ? 'pinGroup' : 'jlj');
+                                                      }}>
                                         <LinearGradient style={styles.LinearGradient}
                                                         start={{ x: 0, y: 0 }}
                                                         end={{ x: 1, y: 0 }}
                                                         colors={['#FC5D39', '#FF0050']}>
-                                            <Text style={styles.btnText}>分享秀一秀</Text>
+                                            <Text
+                                                style={styles.btnText}>{isPinGroupIn ? (hasOpenGroup ? `￥${promotionMinPrice}起开团` : '查看我的团') : '分享秀一秀'}</Text>
                                         </LinearGradient>
                                     </TouchableOpacity>
                                 </View>

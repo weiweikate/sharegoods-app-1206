@@ -239,8 +239,9 @@ export default class SelectionPage extends Component {
         if (!itemData) {
             return;
         }
+        const { productIsPromotionPrice } = this.state.propData;
         this.setState({ modalVisible: false }, () => {
-            this.state.callBack(this.state.amount, itemData.skuCode, itemData);
+            this.state.callBack(this.state.amount, itemData.skuCode, itemData, productIsPromotionPrice);
         });
     };
 

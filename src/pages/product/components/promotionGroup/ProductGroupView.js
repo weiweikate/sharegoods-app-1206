@@ -15,12 +15,11 @@ import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import { GroupPersonItem, GroupProductItem } from './ProductGroupItemView';
 import RES from '../../res/product';
 import ProductGroupModal, { action_type } from './ProductGroupModal';
-import ProductApi from '../../api/ProductApi';
 import { observer } from 'mobx-react';
 
 const { arrow_right_black } = RES.button;
 
-/*老带新页面*/
+/*商详老带新页面*/
 export class GroupIsOldView extends Component {
     render() {
         return (
@@ -47,23 +46,20 @@ const stylesOld = StyleSheet.create({
     }
 });
 
-/*拼团团长们*/
+/*商详发起拼团的人*/
 @observer
 export class GroupOpenPersonSView extends Component {
-    requestGroupPerson = ({ groupId }) => {
-        ProductApi.promotion_group_joinUser({ groupId }).then((item) => {
-            this.ProductGroupModal.show({ actionType: action_type.persons });
-        }).catch(e => {
-        });
+    showModal = (data) => {
+        this.ProductGroupModal.show(data);
     };
 
     render() {
-        const { productGroupModel } = this.props;
-        const { groupList } = productGroupModel;
+        const { productGroupModel, goToBuy } = this.props;
+        const { groupList, groupDesc } = productGroupModel;
         return (
             <View style={stylesPerson.container}>
-                <NoMoreClick style={stylesPerson.topBtn} onPress={(item) => {
-                    this.ProductGroupModal.show({ actionType: action_type.persons });
+                <NoMoreClick style={stylesPerson.topBtn} onPress={() => {
+                    this.ProductGroupModal.show({ actionType: action_type.persons, data: groupList });
                 }}>
                     <MRText style={stylesPerson.topLeftText}>以下小伙伴正在发起拼团，你可以直接参加</MRText>
                     <View style={stylesPerson.topRightView}>
@@ -76,13 +72,12 @@ export class GroupOpenPersonSView extends Component {
                         if (index > 1) {
                             return null;
                         }
-                        return <GroupPersonItem key={index} itemData={item} onPress={() => {
-                            this.requestGroupPerson({ groupId: item.id });
-                        }}/>;
+                        return <GroupPersonItem key={index} itemData={item} goToBuy={goToBuy}
+                                                showModal={this.showModal}/>;
                     })
                 }
                 <NoMoreClick style={stylesPerson.bottomView} onPress={() => {
-                    this.ProductGroupModal.show({ actionType: action_type.desc });
+                    this.ProductGroupModal.show({ actionType: action_type.desc, data: groupDesc, goToBuy });
                 }}>
                     <MRText style={stylesPerson.bottomText}>玩法<MRText
                         style={stylesPerson.bottomText1}> 支付开团邀请1人参团，人数不足自动退款</MRText></MRText>
@@ -127,14 +122,16 @@ const stylesPerson = StyleSheet.create({
     }
 });
 
-/*拼团商品列表*/
+/*商详大家都在拼商品列表*/
 @observer
 export class GroupProductListView extends Component {
-    _renderItem = () => {
-        return <GroupProductItem/>;
+    _renderItem = ({ item }) => {
+        return <GroupProductItem itemData={item}/>;
     };
 
     render() {
+        const { productGroupModel } = this.props;
+        const { groupList } = productGroupModel;
         return (
             <View style={stylesProduct.bgView}>
                 <View style={stylesProduct.tittleView}>
@@ -142,8 +139,8 @@ export class GroupProductListView extends Component {
                 </View>
                 <FlatList
                     style={stylesProduct.flatList}
-                    data={[{}, {}, {}, {}, {}, {}]}
-                    keyExtractor={(item) => item.prodCode + ''}
+                    data={groupList || []}
+                    keyExtractor={(item) => item.id + ''}
                     renderItem={this._renderItem}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}

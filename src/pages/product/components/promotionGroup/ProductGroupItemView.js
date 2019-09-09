@@ -17,13 +17,16 @@ import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
 import StringUtils from '../../../../utils/StringUtils';
+import { action_type } from './ProductGroupModal';
+import ProductApi from '../../api/ProductApi';
+import { routePush } from '../../../../navigation/RouterMap';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
 
 @observer
-export class GroupPersonItem extends Component {
-
+export class TimeLabelText extends Component {
     state = {
         timeOutTime: ''
     };
@@ -33,24 +36,21 @@ export class GroupPersonItem extends Component {
     }
 
     timeAutorun = autorun(() => {
-        const { nowTime, endTime } = this.props.itemData;
+        const { endTime } = this.props;
         if (!isNoEmpty(endTime)) {
             return;
         }
         this.timeInterval && clearInterval(this.timeInterval);
-        if (isNoEmpty(nowTime) && isNoEmpty(endTime)) {
-            let countdownDate = new Date().getTime() + ((endTime + 500) - nowTime);
-            this.timeInterval = setInterval(() => {
-                let timeOut = countdownDate - new Date().getTime();
-                if (timeOut <= 0) {
-                    timeOut = 0;
-                    this.timeInterval && clearInterval(this.timeInterval);
-                }
-                this.setState({
-                    timeOutTime: this.getDataText(timeOut)
-                });
-            }, 200);
-        }
+        this.timeInterval = setInterval(() => {
+            let timeOut = (endTime + 500) - new Date().getTime();
+            if (timeOut <= 0) {
+                timeOut = 0;
+                this.timeInterval && clearInterval(this.timeInterval);
+            }
+            this.setState({
+                timeOutTime: this.getDataText(timeOut)
+            });
+        }, 200);
     });
 
     getDataText = (timeLeave) => {
@@ -80,21 +80,45 @@ export class GroupPersonItem extends Component {
     };
 
     render() {
-        const { initiatorUserImg, initiatorUserName, surplusPerson } = this.props.itemData || {};
-        const { timeOutTime } = this.state;
+        return <MRText style={stylesPerson.midTimeText}>剩余{this.state.timeOutTime}</MRText>;
+    }
+}
+
+/*
+* 商详发起拼团的人item
+* */
+
+export class GroupPersonItem extends Component {
+
+    requestGroupPerson = ({ groupId, itemData }) => {
+        ProductApi.promotion_group_joinUser({ groupId }).then((data) => {
+            this.props.showModal({
+                actionType: action_type.join,
+                data: data.data,
+                extraData: itemData,
+                goToBuy: this.props.goToBuy
+            });
+        }).catch(e => {
+        });
+    };
+
+    render() {
+        const { itemData } = this.props;
+        const { initiatorUserImg, initiatorUserName, surplusPerson, id, endTime } = itemData || {};
         return (
-            <View style={stylesPerson.container}>
+            <View style={[stylesPerson.container, this.props.style]}>
                 <View style={stylesPerson.nameView}>
                     <UIImage style={stylesPerson.nameImg}
-                             borderRadius={20}
                              source={{ uri: initiatorUserImg }}/>
                     <MRText style={stylesPerson.nameText}>{initiatorUserName}</MRText>
                 </View>
-                <View style={stylesPerson.rightView}>
+                <NoMoreClick style={stylesPerson.rightView} onPress={() => {
+                    this.requestGroupPerson({ groupId: id, itemData });
+                }}>
                     <View>
                         <MRText style={stylesPerson.midNumText}>还差<MRText
                             style={{ color: DesignRule.textColor_redWarn }}>{surplusPerson}</MRText>人成团</MRText>
-                        <MRText style={stylesPerson.midTimeText}>剩余{timeOutTime}</MRText>
+                        <TimeLabelText endTime={endTime}/>
                     </View>
                     <LinearGradient style={stylesPerson.linearGradient}
                                     start={{ x: 0, y: 0 }}
@@ -102,7 +126,7 @@ export class GroupPersonItem extends Component {
                                     colors={['#FC5D39', '#FF0050']}>
                         <MRText style={stylesPerson.linearText}>去凑团</MRText>
                     </LinearGradient>
-                </View>
+                </NoMoreClick>
             </View>
         );
     }
@@ -118,7 +142,7 @@ const stylesPerson = StyleSheet.create({
         width: px2dp(157), marginLeft: 15
     },
     nameImg: {
-        width: 40, height: 40
+        width: 40, height: 40, borderRadius: 20, overflow: 'hidden'
     },
     nameText: {
         flex: 1, paddingHorizontal: 10,
@@ -145,18 +169,23 @@ const stylesPerson = StyleSheet.create({
     }
 });
 
+/*
+* 商详大家都在拼的商品item
+* */
 @observer
 export class GroupProductItem extends Component {
     render() {
+        const { image, goodsName, skuPrice, prodCode } = this.props.itemData;
         return (
             <NoMoreClick style={[stylesProduct.container, this.props.style]} onPress={() => {
+                routePush(RouterMap.ProductDetailPage, { productCode: prodCode });
             }}>
                 <UIImage style={stylesProduct.img}
                          borderRadius={5}
-                         source={{ uri: 'https://cdn.sharegoodsmall.com/sharegoods/cc49225d27ae4c35ac62b4fbe6718b55.png' }}/>
-                <MRText style={stylesProduct.nameText} numberOfLines={1}>每日坚果商主每</MRText>
+                         source={{ uri: image }}/>
+                <MRText style={stylesProduct.nameText} numberOfLines={1}>{goodsName}</MRText>
                 <View style={stylesProduct.bottomView}>
-                    <MRText style={stylesProduct.bottomText} numberOfLines={1}>¥233</MRText>
+                    <MRText style={stylesProduct.bottomText} numberOfLines={1}>¥{skuPrice}</MRText>
                     <LinearGradient style={stylesProduct.bottomBtn}
                                     start={{ x: 0, y: 0 }}
                                     end={{ x: 1, y: 0 }}
