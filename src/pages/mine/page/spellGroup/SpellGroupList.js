@@ -22,6 +22,8 @@ import res from '../../res';
 import SpellGroupView from './components/SpellGroupView'
 import { observer } from 'mobx-react';
 import TimeModel from '../../model/TimeModel';
+import user from '../../../../model/user';
+import RouterMap from '../../../../navigation/RouterMap';
 
 @observer
 export default class SpellGroupList extends BasePage {
@@ -34,6 +36,13 @@ export default class SpellGroupList extends BasePage {
         this.state = {
             selectTab: 0,
         };
+    }
+
+    componentDidMount() {
+        if(!user.isLogin){
+            this.$navigate(RouterMap.LoginPage);
+        }
+
     }
 
     componentWillUnmount() {

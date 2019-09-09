@@ -100,7 +100,9 @@ export default class RequestDetailPage extends BasePage {
             );
         } else if(this.state.hasRightItem === 'showGroupRightItem') {
             return (
-                <TouchableOpacity onPress={()=>{alert('123')}} style={{
+                <TouchableOpacity onPress={()=>{
+                    this.$navigate(RouterMap.SpellGroupList);
+                }} style={{
                     width: ScreenUtils.px2dp(40),
                     height: ScreenUtils.px2dp(44),
                     alignItems: 'center',
