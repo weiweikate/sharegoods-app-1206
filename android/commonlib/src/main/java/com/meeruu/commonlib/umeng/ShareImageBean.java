@@ -11,6 +11,16 @@ public class ShareImageBean {
     public String spell;
     public String discount;
 
+    public String getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(String originalPrice) {
+        this.originalPrice = originalPrice;
+    }
+
+    public String originalPrice;
+
     public String imageType;
     public String headerImage;
     public String userName;
