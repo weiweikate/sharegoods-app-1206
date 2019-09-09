@@ -21,6 +21,7 @@ import bridge from '../../../utils/bridge';
 import store from '@mr/rn-store';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { IntervalMsgNavigate } from '../../../comm/components/IntervalMsgView';
+import { homeType } from '../HomeTypes';
 
 const { px2dp } = ScreenUtil;
 
@@ -238,13 +239,16 @@ class TaskModel {
                 homeHeight = px2dp(48 + 83 + 10 + 30);
             }
 
-            if (this.type === 'home'){
+            if (this.type === 'home') {
                 homeHeight += px2dp(40);
             }
         }
         if (homeHeight !== this.homeHeight) {
             this.homeHeight = homeHeight;
-            homeModule.changeHomeList();
+            homeModule.changeHomeList(homeType.task, [{
+                id: 11,
+                type: homeType.task
+            }]);
         }
     }
 

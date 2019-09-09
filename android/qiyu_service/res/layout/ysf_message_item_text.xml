@@ -16,7 +16,7 @@
         android:maxWidth="@dimen/ysf_bubble_max_width"
         android:layout_gravity="center"
         android:textColor="@color/ysf_black_b3000000"
-        android:textSize="@dimen/ysf_text_size_16" />
+        android:textSize="16sp" />
     <ImageView
         android:id="@+id/message_item_rich_gif"
         android:layout_width="100dp"

@@ -75,7 +75,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: ScreenUtils.autoSizeHeight(49),
-        borderRadius: 4,
-        overflow: 'hidden'
     }
 });

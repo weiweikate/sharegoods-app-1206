@@ -2,6 +2,7 @@
 <com.qiyukf.nim.uikit.session.module.input.MessageRootLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layerType="hardware">
 
     <LinearLayout
@@ -63,13 +64,17 @@
                 android:scrollbars="vertical"
                 android:visibility="gone" />
 
+            <!--语音提示布局-->
             <RelativeLayout
                 android:id="@+id/ysf_audio_recording_panel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/ysf_recording_background"
-                android:padding="15dp"
+                android:paddingBottom="12dp"
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="28dp"
                 android:visibility="gone">
 
                 <FrameLayout
@@ -142,12 +147,13 @@
                     android:layout_below="@id/ysf_audio_recording_animation_view"
                     android:layout_centerHorizontal="true"
                     android:maxLines="1"
-                    android:padding="5dp"
+                    android:layout_marginTop="10dp"
                     android:text="@string/ysf_audio_record_cancel_tip"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/ysf_text_size_13" />
+                    android:textSize="14sp" />
             </RelativeLayout>
 
+            <!--聊天助手-->
             <ImageView
                 android:id="@+id/ysf_session_list_entrance"
                 android:layout_width="42dp"
@@ -160,25 +166,29 @@
                 android:visibility="gone" />
         </FrameLayout>
 
+        <!--底部输入栏布局-->
         <include layout="@layout/ysf_message_activity_bottom_layout" />
     </LinearLayout>
 
+    <!--播放语音时候的提示功能-->
     <RelativeLayout
         android:id="@+id/play_audio_mode_tips_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/ysf_play_audio_mode_background"
-        android:padding="5dp"
-        android:visibility="gone">
+       android:visibility="gone">
 
         <ImageView
             android:id="@+id/play_audio_mode_tips_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            tools:src="@drawable/ysf_play_audio_mode_earphone1"/>
 
         <TextView
             android:id="@+id/play_audio_mode_tips_label"
@@ -187,7 +197,19 @@
             android:layout_toRightOf="@id/play_audio_mode_tips_indicator"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/ysf_text_size_14" />
+            android:textSize="16sp"
+            tools:text="111111111"/>
+        <ImageView
+            android:id="@+id/ysf_play_audio_mode_tip_close"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/ysf_ic_dialog_close"/>
+        
+        
     </RelativeLayout>
 </com.qiyukf.nim.uikit.session.module.input.MessageRootLayout>

@@ -43,8 +43,13 @@ export default class CategorySearchPage extends BasePage {
     componentDidMount() {
         this.$loadingShow('加载中');
         setTimeout(() => {
-            this.getTypeList();
-            this.getTypeSection();
+            let typeId = this.params.typeId;
+            this.getTypeList(typeId);
+            if (typeId) {
+                this._getTypeSection(typeId);
+            } else {
+                this.getHotSection();
+            }
         }, 100);
     }
 
@@ -52,7 +57,7 @@ export default class CategorySearchPage extends BasePage {
         clearTimeout();
     }
 
-    getTypeList = () => {
+    getTypeList = (typeId) => {
         // 分类列表
         HomeAPI.findNameList().then((response) => {
             this.$loadingDismiss();
@@ -62,6 +67,24 @@ export default class CategorySearchPage extends BasePage {
             datas.unshift(item);
             this.setState({
                 nameArr: datas || []
+            }, () => {
+                // 滚动到指定位置
+                if (typeId) {
+                    let index = datas.findIndex((val) => {
+                        return val.id === typeId;
+                    });
+                    if (index > -1) {
+                        // 找到了对应分类
+                        if (this.state.leftIndex !== index) {
+                            this.setState({
+                                leftIndex: index
+                            }, this._adjustCategory(index));
+                        }
+                    } else {
+                        // 未找到对应分类
+                        this.getHotSection();
+                    }
+                }
             });
         }).catch((data) => {
             this.$loadingDismiss();
@@ -69,7 +92,7 @@ export default class CategorySearchPage extends BasePage {
         });
     };
 
-    getTypeSection = () => {
+    getHotSection = () => {
         // 热门分类
         HomeAPI.findHotList().then((response) => {
             let datas = response.data || {};
@@ -239,7 +262,7 @@ export default class CategorySearchPage extends BasePage {
         TrackApi.BannerClick({ bannerLocation: 31, ...trackDic });
     };
 
-    _onCategoryClick = (item, index) => {
+    _onCategoryClick = (data, index) => {
         // 点击分类
         if (this.state.leftIndex !== index) {
             this.setState({
@@ -262,39 +285,43 @@ export default class CategorySearchPage extends BasePage {
                     }, () => {
                         this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
                     });
-                }).catch((data) => {
+                }).catch((error) => {
                     bridge.hiddenLoading();
-                    bridge.$toast(data.msg);
+                    bridge.$toast(error.msg);
                 });
             } else {
                 // 分级
-                HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
-                    bridge.hiddenLoading();
-                    let datas = response.data || {};
-                    let arr = datas.productCategoryList && datas.productCategoryList.map((item, index) => {
-                        return {
-                            index: index,
-                            title: item.name,
-                            data: item.productCategoryList || []
-                        };
-                    });
-                    this.setState({
-                        sectionArr: arr || [],
-                        bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
-                            img: datas.img,
-                            linkType: datas.linkType,
-                            linkTypeCode: datas.linkTypeCode
-                        }],
-                        swiperShow: !StringUtils.isEmpty(datas.img)
-                    }, () => {
-                        this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
-                    });
-                }).catch((data) => {
-                    bridge.hiddenLoading();
-                    bridge.$toast(data.msg);
-                });
+                this._getTypeSection(data.id);
             }
         }
+    };
+
+    _getTypeSection = (id) => {
+        HomeAPI.findProductCategoryList({ id }).then((response) => {
+            bridge.hiddenLoading();
+            let datas = response.data || {};
+            let arr = datas.productCategoryList && datas.productCategoryList.map((item, i) => {
+                return {
+                    index: i,
+                    title: item.name,
+                    data: item.productCategoryList || []
+                };
+            });
+            this.setState({
+                sectionArr: arr || [],
+                bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
+                    img: datas.img,
+                    linkType: datas.linkType,
+                    linkTypeCode: datas.linkTypeCode
+                }],
+                swiperShow: !StringUtils.isEmpty(datas.img)
+            }, () => {
+                this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
+            });
+        }).catch((err) => {
+            bridge.hiddenLoading();
+            bridge.$toast(err.msg);
+        });
     };
 
     _sectionItem = (item) => {

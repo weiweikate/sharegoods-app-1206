@@ -37,6 +37,8 @@ import PullView from '../components/pulltorefreshlayout';
 import WhiteModel from '../../show/model/WhiteModel';
 import { mediatorCallFunc } from '../../../SGMediator';
 import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
+import MineSpellGroupView from './spellGroup/components/MineSpellGroupView'
+import TimeModel from '../model/TimeModel';
 
 const {
     // mine_header_bg,
@@ -51,7 +53,7 @@ const {
     // mine_invite,
     mine_invite2,
     // mine_moreMoney,
-    // mine_icon_favorite_shop,
+    mine_icon_group,
     mine_icon_help_service,
     mine_icon_address,
     // mine_icon_mission,
@@ -101,7 +103,8 @@ export default class MinePage extends BasePage {
             hasFans: false,
             hasFansMSGNum: 0,
             modalId: false,
-            adArr: []
+            adArr: [],
+            groupData: {},
         };
 
     }
@@ -133,6 +136,7 @@ export default class MinePage extends BasePage {
                 const { state } = payload;
                 this.loadMessageCount();
                 this.loadAd();
+                this.loadGroupList();
                 this._needShowFans();
                 WhiteModel.saveWhiteType();
                 console.log('willFocusSubscriptionMine', state);
@@ -150,6 +154,7 @@ export default class MinePage extends BasePage {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.willBlurSubscription && this.willBlurSubscription.remove();
         this.listener && this.listener.remove();
+        TimeModel.stopMineTime()
     }
 
     handleBackPress = () => {
@@ -185,6 +190,19 @@ export default class MinePage extends BasePage {
             });
         });
 
+    };
+
+    /**
+     * @func 请求是否有参与拼团且拼团即将结束
+     */
+    loadGroupList = () => {
+        MineApi.getGroupList({page: 1, size: 10, groupStatus: 2}).then((result) => {
+            if (result.data&&!EmptyUtils.isEmpty(result.data.data)) {
+                this.setState({
+                    groupData: result.data.data[0]
+                });
+            }
+        }).catch((error) => {});
     };
 
     loadMessageCount = () => {
@@ -755,6 +773,11 @@ export default class MinePage extends BasePage {
         return (
             <View style={{ flex: 1, backgroundColor: '#F7F7F7' }}>
                 {this.orderRender()}
+                <MineSpellGroupView data={this.state.groupData}
+                                    itemClick={()=>{
+                                        this.$navigate(RouterMap.SpellGroupList);
+                                    }}
+                />
                 {this.activeRender()}
                 {this.utilsRender()}
                 {this.renderADView()}
@@ -884,37 +907,6 @@ export default class MinePage extends BasePage {
                 }
             }
         };
-        // let invite = {
-        //     text: '分享好友',
-        //     icon: mine_icon_invite,
-        //     onPress: () => {
-        //         this.$navigate(RouterMap.InviteFriendsPage);
-        //     }
-        // };
-        // let coupon = {
-        //     text: '我的优惠券',
-        //     icon: mine_coupon_icon,
-        //     onPress: () => {
-        //         TrackApi.ViewCoupon({ couponModuleSource: 1 });
-        //         this.$navigate(RouterMap.CouponsPage);
-        //     }
-        // };
-        // let data = {
-        //     text: '我的经验值',
-        //     icon: mine_icon_data,
-        //     onPress: () => {
-        //         TrackApi.ViewMyInfos();
-        //         this.$navigate(RouterMap.MyPromotionPage);
-        //     }
-        // };
-        // let shop = {
-        //     text: '收藏店铺',
-        //     icon: mine_icon_favorite_shop,
-        //     onPress: () => {
-        //         TrackApi.ViewMyPinCollection();
-        //         this.$navigate(RouterMap.MyCollectPage);
-        //     }
-        // };
         let service = {
             text: '帮助中心',
             icon: mine_icon_help_service,
@@ -966,8 +958,15 @@ export default class MinePage extends BasePage {
             }
         };
 
+        let spellGroup = {
+            text: '我的拼团',
+            icon: mine_icon_group,
+            onPress: () => {
+                this.$navigate(RouterMap.SpellGroupList);
+            }
+        };
 
-        let menu = [message, address, service, collect, setting];
+        let menu = [message, address, service, collect, setting, spellGroup];
 
 
         if (this.state.hasFans) {

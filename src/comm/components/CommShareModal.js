@@ -65,6 +65,7 @@ import {
     View
 } from 'react-native';
 import ShowShareImage from './ShowShareImage';
+import GroupShareImage from './GroupShareImage';
 
 import { MRText, UIImage, UIText } from '../../components/ui';
 
@@ -78,6 +79,7 @@ import user from '../../model/user';
 import { getSource } from '@mr/image-placeholder/oos';
 import ShareUtil from '../../utils/ShareUtil';
 import RouterMap, { routeNavigate } from '../../navigation/RouterMap';
+
 //const saveMarginBottom = ScreenUtils.saveMarginBottom;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
@@ -119,7 +121,7 @@ export default class CommShareModal extends React.Component {
     open() {
 
         if (user.isLogin) {
-            user.userShare();
+            // user.userShare();
         } else {
             Alert.alert('', '为了给您提供更完整的服务，\n请登录后操作',
                 [{
@@ -159,7 +161,7 @@ export default class CommShareModal extends React.Component {
         let name = user.nickname && user.nickname.length > 8 ? user.nickname.replace(/^(\d{3})\d*(\d{4})$/, '$1****$2') : user.nickname;
         params.shareMoney && (params.shareMoney = this.getMoneyText(params.shareMoney));
         params = { headerImage: user.headImg || '', userName: name || '', ...params };
-        if (type === 'promotionShare' || type === 'Image' || type === 'Show' || type === 'Invite') {
+        if (type === 'promotionShare' || type === 'Image' || type === 'Show' || type === 'Invite' ||type === 'GroupAD') {
             if (this.state.path.length === 0) {
                 if (type === 'promotionShare') {
                     bridge.createPromotionShareImage(params.webJson.linkUrl, (path) => {
@@ -169,7 +171,7 @@ export default class CommShareModal extends React.Component {
                             }, 350);
                         });
                     });
-                } else if (type === 'Image' || type === 'Show' || type === 'Invite') {
+                } else if (type === 'Image' || type === 'Show' || type === 'Invite'||type === 'GroupAD') {
                     let url = params && params.imageUrlStr;
                     this.props.imageJson && (params.imageUrlStr = getSource({ uri: url }, this.imageWidth, this.imageHeight, 'lfit').uri);
                     delete params.shareMoney;
@@ -243,7 +245,6 @@ export default class CommShareModal extends React.Component {
             track(this.props.trackEvent, { shareType: TrackShareType.saveImage, ...this.props.trackParmas });
         }
         bridge.saveImage(path);
-        this.close();
     }
 
     copyUrl() {
@@ -307,12 +308,13 @@ export default class CommShareModal extends React.Component {
         let arrayImage = [];
         let arrayWeb = [];
         let currentType = type === 'Image' || type === 'promotionShare' || type === 'Show' || type === 'Invite';
+        if(currentType || type === 'GroupAD'){
+            this.showImage();
+        }
         if (currentType) {
             //             this.saveImage(this.state.path); //下载图片
             // this.setState({ showToastImage: true},
             //                  () => {this.showImage();}); //网页切换为图片
-            this.showImage();
-
             arrayImage.push({
                 image: res.share.wechat, title: '微信好友', onPress: () => {
                     this.setState({ shareType: 0 }, () => {
@@ -405,182 +407,210 @@ export default class CommShareModal extends React.Component {
                     position: 'absolute'
                 }}
                 >
-                    <TouchableOpacity
-                        activeOpacity={0.7}
-                        style={{ flex: 1, justifyContent: 'flex-end' }}
-                        onPress={() => {
-                            this.close();
-                        }}>
-                        {
-                            currentType ?
-                                <Animated.View style={{
-                                    height: this.imageHeight,
-                                    width: this.imageWidth,
-                                    position: 'relative',
-                                    // bottom: 275 + ScreenUtils.safeBottom * 3 / 2,
-                                    bottom: 5,
-                                    left: (ScreenUtils.width - this.imageWidth) / 2,
-                                    borderRadius: 10,
-                                    borderColor: DesignRule.textColor_placeholder,
-                                    shadowOpacity: 0.3,
-                                    borderWidth: this.props.type === 'promotionShare' ? 0 : 0.5,
-                                    overflow: 'hidden',
-                                    shadowColor: DesignRule.textColor_placeholder,
-                                    transform: [{ scale: this.state.scale }]
+                    {type === 'GroupAD' ?
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            style={{flex: 1, justifyContent: 'center',alignItems:'center'}}
+                            onPress={() => {
+                                this.close();
+                            }}>
 
-                                }}>
-                                    {this.props.type === 'Image' || this.props.type === 'Invite' ?
-                                        <TouchableWithoutFeedback onLongPress={() => {
-                                            if (this.props.type === 'promotionShare') {
-                                                Linking.openURL(this.props.webJson.linkUrl);
-                                            }
-                                        }}>
-                                            <Image source={{ uri: this.state.path }}
-                                                   resizeMode={this.props.type === 'web' ? 'center' : 'contain'}
-                                                   style={{
-                                                       height: this.imageHeight,
-                                                       width: this.imageWidth,
-                                                       backgroundColor: 'white'
-                                                   }}/>
-                                        </TouchableWithoutFeedback> : null
-                                    }
-                                    {this.props.type === 'Show' ?
-                                        <ShowShareImage modalWidth={this.imageWidth}
-                                                        modalHeight={this.imageHeight * 2 / 3}
-                                                        data={this.props.imageJson} modal={this.modal}/> : null
-                                    }
-                                    {
-                                        this.state.path === '' && this.props.type !== 'Show' ? <ActivityIndicator
-                                            color="#aaaaaa"
-                                            style={{
-                                                position: 'absolute',
-                                                width: 10,
-                                                height: 10,
-                                                top: this.imageHeight / 2.0 - 5,
-                                                left: this.imageWidth / 2.0 - 5
-                                            }}/> : null
-                                    }
-                                    <TouchableWithoutFeedback onPress={() => {
-                                        this.close();
+                            <GroupShareImage data={this.props.imageJson}
+                                             download={() => {
+                                                 this.setState({shareType: 0}, () => {
+                                                     this.saveImage(this.state.path);
+                                                     this.close();
+                                                 });
+                                             }}/>
+
+                        </TouchableOpacity>
+                        : <TouchableOpacity
+                            activeOpacity={0.7}
+                            style={{flex: 1, justifyContent: 'flex-end'}}
+                            onPress={() => {
+                                this.close();
+                            }}>
+                            {
+                                currentType ?
+                                    <Animated.View style={{
+                                        height: this.imageHeight,
+                                        width: this.imageWidth,
+                                        position: 'relative',
+                                        // bottom: 275 + ScreenUtils.safeBottom * 3 / 2,
+                                        bottom: 5,
+                                        left: (ScreenUtils.width - this.imageWidth) / 2,
+                                        borderRadius: 10,
+                                        borderColor: DesignRule.textColor_placeholder,
+                                        shadowOpacity: 0.3,
+                                        borderWidth: this.props.type === 'promotionShare' ? 0 : 0.5,
+                                        overflow: 'hidden',
+                                        shadowColor: DesignRule.textColor_placeholder,
+                                        transform: [{scale: this.state.scale}]
+
                                     }}>
-                                        <Image style={styles.closeImgStyle}
-                                               source={res.share.close_black}/>
-                                    </TouchableWithoutFeedback>
-                                </Animated.View> : null
-                        }
-                        <Animated.View style={{
-                            transform: [{ translateY: this.state.y }],
-                            paddingBottom: ScreenUtils.safeBottom,
-                            backgroundColor: 'white',
-                            borderRadius: 10,
-                            marginLeft: 15,
-                            marginRight: 15,
-                            marginBottom: 15
+                                        {this.props.type === 'Image' || this.props.type === 'Invite' ?
+                                            <TouchableWithoutFeedback onLongPress={() => {
+                                                if (this.props.type === 'promotionShare') {
+                                                    Linking.openURL(this.props.webJson.linkUrl);
+                                                }
+                                            }}>
+                                                <Image source={{uri: this.state.path}}
+                                                       resizeMode={this.props.type === 'web' ? 'center' : 'contain'}
+                                                       style={{
+                                                           height: this.imageHeight,
+                                                           width: this.imageWidth,
+                                                           backgroundColor: 'white'
+                                                       }}/>
+                                            </TouchableWithoutFeedback> : null
+                                        }
+                                        {this.props.type === 'Show' ?
+                                            <ShowShareImage modalWidth={this.imageWidth}
+                                                            modalHeight={this.imageHeight * 2 / 3}
+                                                            data={this.props.imageJson} modal={this.modal}/> : null
+                                        }
+                                        {
+                                            this.state.path === '' && this.props.type !== 'Show' ? <ActivityIndicator
+                                                color="#aaaaaa"
+                                                style={{
+                                                    position: 'absolute',
+                                                    width: 10,
+                                                    height: 10,
+                                                    top: this.imageHeight / 2.0 - 5,
+                                                    left: this.imageWidth / 2.0 - 5
+                                                }}/> : null
+                                        }
+                                        <TouchableWithoutFeedback onPress={() => {
+                                            this.close();
+                                        }}>
+                                            <Image style={styles.closeImgStyle}
+                                                   source={res.share.close_black}/>
+                                        </TouchableWithoutFeedback>
+                                    </Animated.View> : null
+                            }
+                            <Animated.View style={{
+                                transform: [{translateY: this.state.y}],
+                                paddingBottom: ScreenUtils.safeBottom,
+                                backgroundColor: 'white',
+                                borderRadius: 10,
+                                marginLeft: 15,
+                                marginRight: 15,
+                                marginBottom: 15
 
-                        }}>
-                            <View
-                                style={[styles.contentContainer, { height: currentType ? autoSizeWidth(250) : autoSizeWidth(180) }]}>
-                                <View style={styles.header}>
-                                    <View style={{
-                                        flex: 1,
-                                        marginLeft: autoSizeWidth(25),
-                                        marginRight: 7,
-                                        height: 1,
-                                        backgroundColor: DesignRule.lineColor_inColorBg
-                                    }}/>
-                                    {icon}
-                                    {
-                                        shareMoneyText ?
+                            }}>
+                                <View
+                                    style={[styles.contentContainer, {height: currentType ? autoSizeWidth(250) : autoSizeWidth(180)}]}>
+                                    <View style={styles.header}>
+                                        <View style={{
+                                            flex: 1,
+                                            marginLeft: autoSizeWidth(25),
+                                            marginRight: 7,
+                                            height: 1,
+                                            backgroundColor: DesignRule.lineColor_inColorBg
+                                        }}/>
+                                        {icon}
+                                        {
+                                            shareMoneyText ?
+                                                <MRText style={{
+                                                    color: DesignRule.textColor_mainTitle,
+                                                    fontSize: autoSizeWidth(15),
+                                                    marginHorizontal: 7,
+                                                    fontWeight: '600'
+                                                }}>{'分享秀一秀 '}<MRText
+                                                    style={{color: DesignRule.mainColor}}>{shareMoneyText || ''}</MRText>{shareMoneyText ? '起' : ''}
+                                                </MRText>
+                                                :
+                                                <MRText style={{
+                                                    color: DesignRule.textColor_mainTitle,
+                                                    fontSize: autoSizeWidth(15),
+                                                    marginHorizontal: 7,
+                                                    fontWeight: '600'
+                                                }}>分享到</MRText>
+                                        }
+                                        <View style={{
+                                            flex: 1,
+                                            marginRight: autoSizeWidth(25),
+                                            height: 1,
+                                            backgroundColor: DesignRule.lineColor_inColorBg
+                                        }}/>
+                                    </View>
+
+                                    {currentType ?
+                                        <View style={{height: 20, alignItems: 'center', flexDirection: 'row'}}>
+                                            <View style={{
+                                                width: 2,
+                                                height: 10,
+                                                backgroundColor: '#FF0050',
+                                                marginLeft: 15
+                                            }}/>
                                             <MRText style={{
                                                 color: DesignRule.textColor_mainTitle,
-                                                fontSize: autoSizeWidth(15),
+                                                fontSize: autoSizeWidth(12),
                                                 marginHorizontal: 7,
                                                 fontWeight: '600'
-                                            }}>{'分享秀一秀 '}<MRText
-                                                style={{ color: DesignRule.mainColor }}>{shareMoneyText || ''}</MRText>{shareMoneyText ? '起' : ''}
-                                            </MRText>
-                                            :
-                                            <MRText style={{
-                                                color: DesignRule.textColor_mainTitle,
-                                                fontSize: autoSizeWidth(15),
-                                                marginHorizontal: 7,
-                                                fontWeight: '600'
-                                            }}>分享到</MRText>
-                                    }
-                                    <View style={{
-                                        flex: 1,
-                                        marginRight: autoSizeWidth(25),
-                                        height: 1,
-                                        backgroundColor: DesignRule.lineColor_inColorBg
-                                    }}/>
+                                            }}>分享图片至</MRText>
+                                        </View> : null}
+                                    {currentType ? <View style={{flex: 1, flexDirection: 'row'}}>
+                                        {
+                                            arrayImage.map((item, index) => {
+                                                return (
+                                                    <TouchableWithoutFeedback key={index + 'item'}
+                                                                              onPress={item.onPress}>
+                                                        <View style={styles.item}>
+                                                            <UIImage source={item.image} style={{
+                                                                height: autoSizeWidth(35),
+                                                                width: autoSizeWidth(35)
+                                                            }}/>
+                                                            <UIText value={item.title} style={{
+                                                                marginTop: 5,
+                                                                color: DesignRule.textColor_mainTitle,
+                                                                fontSize: autoSizeWidth(11)
+                                                            }}/>
+                                                        </View>
+                                                    </TouchableWithoutFeedback>
+                                                );
+                                            })
+                                        }
+                                    </View> : null}
+
+                                    <View style={{height: 20, alignItems: 'center', flexDirection: 'row'}}>
+                                        <View
+                                            style={{width: 2, height: 10, backgroundColor: '#FF0050', marginLeft: 15}}/>
+                                        <MRText style={{
+                                            color: DesignRule.textColor_mainTitle,
+                                            fontSize: autoSizeWidth(12),
+                                            marginHorizontal: 7,
+                                            fontWeight: '600'
+                                        }}>分享链接至</MRText>
+                                    </View>
+                                    <View
+                                        style={{flex: 1, flexDirection: 'row', borderRadius: 10, alignItems: 'center'}}>
+                                        {
+                                            arrayWeb.map((item, index) => {
+                                                return (
+                                                    <TouchableWithoutFeedback key={index + 'item'}
+                                                                              onPress={item.onPress}>
+                                                        <View style={styles.item}>
+                                                            <UIImage source={item.image} style={{
+                                                                height: autoSizeWidth(35),
+                                                                width: autoSizeWidth(35)
+                                                            }}/>
+                                                            <UIText value={item.title} style={{
+                                                                marginTop: 5,
+                                                                color: DesignRule.textColor_mainTitle,
+                                                                fontSize: autoSizeWidth(11)
+                                                            }}/>
+                                                        </View>
+                                                    </TouchableWithoutFeedback>
+                                                );
+                                            })
+                                        }
+                                    </View>
+
                                 </View>
 
-                                {currentType ? <View style={{ height: 20, alignItems: 'center', flexDirection: 'row' }}>
-                                    <View style={{ width: 2, height: 10, backgroundColor: '#FF0050', marginLeft: 15 }}/>
-                                    <MRText style={{
-                                        color: DesignRule.textColor_mainTitle,
-                                        fontSize: autoSizeWidth(12),
-                                        marginHorizontal: 7,
-                                        fontWeight: '600'
-                                    }}>分享图片至</MRText>
-                                </View> : null}
-                                {currentType ? <View style={{ flex: 1, flexDirection: 'row' }}>
-                                    {
-                                        arrayImage.map((item, index) => {
-                                            return (
-                                                <TouchableWithoutFeedback key={index + 'item'} onPress={item.onPress}>
-                                                    <View style={styles.item}>
-                                                        <UIImage source={item.image} style={{
-                                                            height: autoSizeWidth(35),
-                                                            width: autoSizeWidth(35)
-                                                        }}/>
-                                                        <UIText value={item.title} style={{
-                                                            marginTop: 5,
-                                                            color: DesignRule.textColor_mainTitle,
-                                                            fontSize: autoSizeWidth(11)
-                                                        }}/>
-                                                    </View>
-                                                </TouchableWithoutFeedback>
-                                            );
-                                        })
-                                    }
-                                </View> : null}
-
-                                <View style={{ height: 20, alignItems: 'center', flexDirection: 'row' }}>
-                                    <View style={{ width: 2, height: 10, backgroundColor: '#FF0050', marginLeft: 15 }}/>
-                                    <MRText style={{
-                                        color: DesignRule.textColor_mainTitle,
-                                        fontSize: autoSizeWidth(12),
-                                        marginHorizontal: 7,
-                                        fontWeight: '600'
-                                    }}>分享链接至</MRText>
-                                </View>
-                                <View style={{ flex: 1, flexDirection: 'row', borderRadius: 10, alignItems: 'center' }}>
-                                    {
-                                        arrayWeb.map((item, index) => {
-                                            return (
-                                                <TouchableWithoutFeedback key={index + 'item'} onPress={item.onPress}>
-                                                    <View style={styles.item}>
-                                                        <UIImage source={item.image} style={{
-                                                            height: autoSizeWidth(35),
-                                                            width: autoSizeWidth(35)
-                                                        }}/>
-                                                        <UIText value={item.title} style={{
-                                                            marginTop: 5,
-                                                            color: DesignRule.textColor_mainTitle,
-                                                            fontSize: autoSizeWidth(11)
-                                                        }}/>
-                                                    </View>
-                                                </TouchableWithoutFeedback>
-                                            );
-                                        })
-                                    }
-                                </View>
-
-                            </View>
-
-                        </Animated.View>
-                    </TouchableOpacity>
+                            </Animated.View>
+                        </TouchableOpacity>
+                    }
                 </View>
             </CommModal>
         );
