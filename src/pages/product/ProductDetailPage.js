@@ -48,6 +48,7 @@ import {
     GroupOpenPersonSView,
     GroupProductListView
 } from './components/promotionGroup/ProductGroupView';
+import StringUtils from '../../utils/StringUtils';
 
 /**
  * @author chenyangjun
@@ -119,9 +120,6 @@ export default class ProductDetailPage extends BasePage {
     _bottomViewAction = (type) => {
         const { productIsPromotionPrice, isHuaFei } = this.productDetailModel;
         switch (type) {
-            case 'jlj':
-                this.shareModal && this.shareModal.open();
-                break;
             case 'keFu':
                 if (!user.isLogin) {
                     this.gotoLoginPage();
@@ -142,7 +140,15 @@ export default class ProductDetailPage extends BasePage {
                     }
                 });
                 break;
+            case 'gwc':
+                this.state.goType = type;
+                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                    productIsPromotionPrice,
+                    isAreaSku: this.productDetailModel.type !== 3
+                });
+                break;
             case 'buy':
+            case 'pinGroup':
                 if (!user.isLogin) {
                     this.gotoLoginPage();
                     return;
@@ -155,24 +161,22 @@ export default class ProductDetailPage extends BasePage {
                     return;
                 }
                 this.state.goType = type;
+                this.groupId = null;
+                //productIsPromotionPrice  拼团需要注意 点击单独购买走普通逻辑
                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
-                    productIsPromotionPrice,
+                    productIsPromotionPrice: productIsPromotionPrice || type === 'pinGroup',
                     isAreaSku: this.productDetailModel.type !== 3
                 });
                 break;
-            case 'gwc':
-                this.state.goType = type;
-                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
-                    productIsPromotionPrice,
-                    isAreaSku: this.productDetailModel.type !== 3
-                });
+            case 'jlj'://分享秀一秀
+                this.shareModal && this.shareModal.open();
                 break;
         }
     };
 
     //选择规格确认
-    _selectionViewConfirm = (amount, skuCode, item) => {
-        const { prodCode, name, originalPrice, productIsPromotionPrice, isGroupIn, groupActivity } = this.productDetailModel;
+    _selectionViewConfirm = (amount, skuCode, item, productIsPromotionPrice) => {
+        const { prodCode, name, originalPrice, isGroupIn, groupActivity } = this.productDetailModel;
         const { goType } = this.state;
         if (goType === 'gwc') {
             shopCartCacheTool.addGoodItem({
@@ -221,27 +225,28 @@ export default class ProductDetailPage extends BasePage {
             }
             const { type, couponId } = this.params;
             const { specImg, promotionPrice, price, propertyValues } = item;
-            // let orderProducts = [{
-            //     productType: this.productDetailModel.type,
-            //     skuCode: skuCode,
-            //     quantity: amount,
-            //     productCode: prodCode,
-            //     activityCode: '',
-            //     batchNo: 1,
-            //     specImg,
-            //     productName: name,
-            //     unitPrice: productIsPromotionPrice ? promotionPrice : price,
-            //     spec: (propertyValues || '').replace(/@/g, '-')
-            // }];
-            // this.$navigate(RouterMap.ConfirOrderPage, {
-            //     orderParamVO: {
-            //         orderType: 99,
-            //         orderProducts: orderProducts,
-            //         source: parseInt(type) === 9 ? 4 : 2,
-            //         couponsId: parseInt(couponId)
-            //     }
-            // });
-
+            let orderProducts = [{
+                productType: this.productDetailModel.type,
+                skuCode: skuCode,
+                quantity: amount,
+                productCode: prodCode,
+                activityCode: '',
+                batchNo: 1,
+                specImg,
+                productName: name,
+                unitPrice: productIsPromotionPrice ? promotionPrice : price,
+                spec: (propertyValues || '').replace(/@/g, '-')
+            }];
+            this.$navigate(RouterMap.ConfirOrderPage, {
+                orderParamVO: {
+                    orderType: 99,
+                    orderProducts: orderProducts,
+                    source: parseInt(type) === 9 ? 4 : 2,
+                    couponsId: parseInt(couponId)
+                }
+            });
+        } else if (goType === 'pinGroup') {
+            const { specImg, promotionPrice, propertyValues } = item;
             const { singleActivity } = this.productDetailModel;
             const { code, activityTag } = singleActivity || {};
             let orderProducts = [{
@@ -251,20 +256,19 @@ export default class ProductDetailPage extends BasePage {
                 productCode: prodCode,
                 activityCode: code,
                 activityTag: activityTag,
-                batchNo: 1,
+                batchNo: this.groupId,
                 specImg,
                 productName: name,
-                unitPrice: productIsPromotionPrice ? promotionPrice : price,
+                unitPrice: promotionPrice,
                 spec: (propertyValues || '').replace(/@/g, '-')
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
                     bizTag: 'group',
-                    groupData: { isSponsor: true },
+                    groupData: { isSponsor: StringUtils.isEmpty(this.groupId) },
                     orderType: 99,
                     orderProducts: orderProducts,
-                    source: parseInt(type) === 9 ? 4 : 2,
-                    couponsId: parseInt(couponId)
+                    source: 2
                 }
             });
         }
@@ -345,7 +349,14 @@ export default class ProductDetailPage extends BasePage {
                 return <GroupIsOldView productGroupModel={productGroupModel}/>;
             }
             case productItemType.groupOpenPersonS: {
-                return <GroupOpenPersonSView productGroupModel={productGroupModel}/>;
+                return <GroupOpenPersonSView productGroupModel={productGroupModel} goToBuy={(id) => {
+                    this.state.goType = 'pinGroup';
+                    this.groupId = id;
+                    this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                        productIsPromotionPrice: true,
+                        isAreaSku: this.productDetailModel.type !== 3
+                    });
+                }}/>;
             }
             case productItemType.groupProductList: {
                 return <GroupProductListView productGroupModel={productGroupModel}/>;

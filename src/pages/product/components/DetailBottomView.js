@@ -34,7 +34,8 @@ export default class DetailBottomView extends Component {
         let { pData } = this.props;
         let {
             productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning,
-            orderOnProduct, isGroupIn, groupSubProductCanSell, upTime, isHuaFei
+            orderOnProduct, isGroupIn, groupSubProductCanSell, upTime, isHuaFei, isPinGroupIn,
+            minPrice, promotionMinPrice
         } = pData || {};
         //总库存
         let stock = 0;
@@ -109,7 +110,7 @@ export default class DetailBottomView extends Component {
                                                     <Text style={[styles.btnText, {
                                                         color: DesignRule.white,
                                                         fontSize: (isNoEmpty(selfReturning) && selfReturning > 0) ? 14 : 17
-                                                    }]}>立即购买</Text>
+                                                    }]}>{isPinGroupIn ? `￥${minPrice}起开团` : '立即购买'}</Text>
                                                     {(isNoEmpty(selfReturning) && selfReturning > 0) && < Text style={{
                                                         fontSize: 11, color: 'white', marginTop: -2
                                                     }}>返{selfReturning}</Text>}
@@ -117,12 +118,13 @@ export default class DetailBottomView extends Component {
                                         }
                                     </TouchableOpacity>
                                     <TouchableOpacity style={[styles.btn]}
-                                                      onPress={() => this.props.bottomViewAction('jlj')}>
+                                                      onPress={() => this.props.bottomViewAction(isPinGroupIn ? 'pinGroup' : 'jlj')}>
                                         <LinearGradient style={styles.LinearGradient}
                                                         start={{ x: 0, y: 0 }}
                                                         end={{ x: 1, y: 0 }}
                                                         colors={['#FC5D39', '#FF0050']}>
-                                            <Text style={styles.btnText}>分享秀一秀</Text>
+                                            <Text
+                                                style={styles.btnText}>{isPinGroupIn ? `￥${promotionMinPrice}起开团` : '分享秀一秀'}</Text>
                                         </LinearGradient>
                                     </TouchableOpacity>
                                 </View>
