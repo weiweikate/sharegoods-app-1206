@@ -34,28 +34,21 @@ export default class OrderDetailBottomButtonView extends Component {
                 <View style={styles.containerStyle}>
                     {this.renderKeBtn()}
                     <View style={{ flex: 1 }}/>
-                    <View style={{
-                        height: px2dp(48),
-                        marginRight: 6,
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
+
                         <View style={{
                             height: px2dp(30),
                             borderRadius: px2dp(15),
                             marginRight: px2dp(10),
                             justifyContent: 'center',
                             alignItems: 'center',
-                            width: px2dp(70)
                         }}>
-                            <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}
+                            <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 12 }}
                                     onPress={
                                         () => this.props.switchButton(nameArr.filter((item, i) => {
                                             return i <= (nameArr.length - 1 - 2);
                                         }))
                                     }/>
                         </View>
-                    </View>
                     {nameArr.filter((item, i) => {
                         return i > (nameArr.length - 1 - 2);
                     })
@@ -66,7 +59,7 @@ export default class OrderDetailBottomButtonView extends Component {
                                                     this.operationMenuClick(item);
                                                 }}>
                                 <Text
-                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}
+                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle, fontSize: px2dp(12)}}
                                     allowFontScaling={false}>{item.operation}</Text>
                             </NoMoreClick>;
                         })}
@@ -277,12 +270,12 @@ const styles = StyleSheet.create({
     },
     touchableStyle: {
         borderWidth: 1,
-        height: px2dp(30),
-        borderRadius: px2dp(15),
+        height: px2dp(24),
+        borderRadius: px2dp(12),
         marginRight: px2dp(10),
         justifyContent: 'center',
         alignItems: 'center',
-        width: px2dp(70),
+       paddingHorizontal: px2dp(10),
         borderColor: DesignRule.lineColor_inWhiteBg
     }
 });
