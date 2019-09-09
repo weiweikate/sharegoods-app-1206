@@ -52,7 +52,7 @@ class AfterSaleDetailModel {
             ( data.refundDetail.refundItemList || [] ).forEach(item => {
                 if (item.payType === 1){//余额
                     data.refundInfo.accountAmount = item.refundAmount
-                } else if (item.payType !==0){//不是0元支付
+                } else if (item.payType !== 0){//不是0元支付
                     data.refundInfo.cashAmount = item.refundAmount
                 }
             });

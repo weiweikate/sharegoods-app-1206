@@ -72,16 +72,16 @@ const LoginModular = {
             'signUpPlatform': 1
         }
     },
-    "LoginPage":{
-        "des":"登录也浏览",
-        "name":"LoginPage",
-        "params":{},
+    'LoginPage':{
+        'des':'登录也浏览',
+        'name':'LoginPage',
+        'params':{},
 
     },
-    "LoginClick":{
-        "des":"注册按钮点击",
-        "name":"LoginClick",
-        "params":{}
+    'LoginClick':{
+        'des':'注册按钮点击',
+        'name':'LoginClick',
+        'params':{}
     }
 };
 

@@ -156,7 +156,7 @@ export default class ShowMaterialView extends React.Component {
                                        onPressProduct={({ nativeEvent }) => {
                                            const detail = JSON.parse(nativeEvent.detail)
                                            const product = JSON.parse(nativeEvent.product)
-                                           const {showNo} = detail ||{};
+                                           const {showNo} = detail || {};
                                            track(trackEvent.XiuChangSpuClick, {
                                                xiuChangBtnLocation:'1',
                                                xiuChangListType:'2',

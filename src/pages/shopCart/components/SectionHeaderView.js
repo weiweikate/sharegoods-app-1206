@@ -204,7 +204,7 @@ export default class SectionHeaderView extends Component {
             bridge.$toast('活动不存在');
         }
     };
-};
+}
 
 SectionHeaderView.propTypes = {
     //cell 数据

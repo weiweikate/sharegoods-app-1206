@@ -101,7 +101,7 @@ export default class UserInfoView extends PureComponent {
                 }
 
             }}>
-                {relationType === 0?<LinearGradient
+                {relationType === 0 ? <LinearGradient
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                     colors={['#FFCB02', '#FF9502']}
                     style={{
@@ -115,7 +115,7 @@ export default class UserInfoView extends PureComponent {
                     <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle }}>
                         {text}
                     </Text>
-                </LinearGradient>:<View
+                </LinearGradient> : <View
                     style={{
                         width: px2dp(65),
                         height: px2dp(22),

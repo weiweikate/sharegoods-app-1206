@@ -78,7 +78,7 @@ export default class GoodsListItem extends React.Component {
                     cancelIndex = index;
                 }
             })
-            nameArr.splice(cancelIndex+1, 0, {
+            nameArr.splice(cancelIndex + 1, 0, {
                 id: 99,
                 operation: '申请售后',
                 isRed: false
@@ -135,7 +135,7 @@ export default class GoodsListItem extends React.Component {
             alignItems: 'center'
         }}>
             <View style={{ flexDirection: 'row' }}>
-                {moreArr.length > 0?
+                {moreArr.length > 0 ?
                     <NoMoreClick
                         style={{
                             height: ScreenUtils.autoSizeWidth(30),
@@ -176,7 +176,7 @@ export default class GoodsListItem extends React.Component {
             </View>
             {
                 this.state.isShow ?
-                    <View style={{bottom: ScreenUtils.autoSizeWidth(40), right: ScreenUtils.autoSizeWidth(95*3-10), position: 'absolute',alignItems: 'center'}}>
+                    <View style={{bottom: ScreenUtils.autoSizeWidth(40), right: ScreenUtils.autoSizeWidth(95 * 3 - 10), position: 'absolute',alignItems: 'center'}}>
                         {moreArr.map((item, i) => {
                                 return <NoMoreClick key={i} style={{
                                     backgroundColor: '#999999',

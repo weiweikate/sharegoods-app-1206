@@ -55,7 +55,7 @@ export default class TagSelectorPage extends BasePage {
             return;
         }
 
-        for(let i = 0;i<this.selectTags.length;i++){
+        for(let i = 0;i < this.selectTags.length;i++){
             if(item.tagId === this.selectTags[i].tagId){
                 this.$toastShow('您已经选过这个标签啦');
                 return;

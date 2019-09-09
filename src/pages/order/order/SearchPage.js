@@ -93,7 +93,7 @@ export default class SearchPage extends BasePage {
         this.setState({
             recentData: value || []
         });
-    };
+    }
 
     //根据是否有历史搜索数据展示历史搜索布局
     renderRecentSearch = () => {
