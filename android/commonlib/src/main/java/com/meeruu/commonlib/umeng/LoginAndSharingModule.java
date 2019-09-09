@@ -310,9 +310,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         if (bitmapBg1 != null && !bitmapBg1.isRecycled()) {
             bitmapBg1.recycle();
         }
-
-
-
+        
         int bg2W = 320*precision;
         int bg2H = 171*precision;
         Bitmap bitmapBg2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.group_header);
@@ -404,11 +402,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         canvas.drawText(text1,(375*precision-textWidth1)/2,504*precision,paint);
         canvas.drawText(text2,(375*precision-textWidth2)/2,523*precision,paint);
-
-
-
-
-
 
         String path = BitmapUtils.saveImageToCache(result, "groupImage.png", shareImageBean.toString());
         if (!TextUtils.isEmpty(path)) {
