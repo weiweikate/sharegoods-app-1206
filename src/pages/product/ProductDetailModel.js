@@ -634,7 +634,7 @@ export default class ProductDetailModel {
                 return;
             }
             const { code, activityTag } = singleActivity;
-            this.productGroupModel.requestCheckJoinUser({ prodCode: this.prodCode, activityCode: code, activityTag });
+            this.productGroupModel.requestCheckStartJoinUser({ prodCode: this.prodCode, activityCode: code, activityTag });
             this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
             this.productGroupModel.requestGroupProduct({ activityCode: code });
             this.productGroupModel.requestGroupDesc();

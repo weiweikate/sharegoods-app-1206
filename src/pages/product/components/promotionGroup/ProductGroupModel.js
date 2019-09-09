@@ -10,14 +10,17 @@ import { observable } from 'mobx';
 
 export default class ProductGroupModel {
 
-    @observable hasJoinGroup = false;
+    @observable hasOpenGroup = false;
+    @observable groupId = '';
     @observable groupList = [];
     @observable groupProducts = [];
     @observable groupDesc = '';
 
-    requestCheckJoinUser = ({ prodCode, activityCode, activityTag }) => {
-        ProductApi.promotion_group_checkJoinUser({ prodCode, activityCode, activityTag }).then((data) => {
-            this.hasJoinGroup = data.data;
+    requestCheckStartJoinUser = ({ prodCode, activityCode, activityTag }) => {
+        ProductApi.promotion_group_checkStartJoinUser({ prodCode, activityCode, activityTag }).then((data) => {
+            const { startGroupLeader, groupId } = data.data;
+            this.hasOpenGroup = startGroupLeader;
+            this.groupId = groupId;
         }).catch(e => {
         });
     };

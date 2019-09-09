@@ -16,7 +16,7 @@ const api = {
     getProductSpec: ['/product/getProductSpec', { method: 'get' }],
     /**拼团**/
     //是否参与当前商品团
-    promotion_group_checkJoinUser: ['/promotion/group/checkJoinUser', { method: 'get' }],
+    promotion_group_checkStartJoinUser: ['/promotion/group/checkStartJoinUser', { method: 'get' }],
     //商品团列表
     promotion_group_togetherJoin: ['/promotion/group/togetherJoin', { method: 'get' }],
     //团参与的人数
