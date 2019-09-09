@@ -145,8 +145,10 @@
   if ([[SensorsAnalyticsSDK sharedInstance] handleSchemeUrl:url]) {
     return YES;
   }
-  result = [RCTLinkingManager application:application openURL:url
-                        sourceApplication:nil annotation:nil];
+  //ios9机型 白色闪屏 延迟跳转
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8* NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [RCTLinkingManager application:application openURL:url sourceApplication:nil annotation:nil];
+  });
   return YES;
 }
 
@@ -166,7 +168,7 @@
   NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
   NSString *app_Name = [infoDictionary objectForKey:@"CFBundleDisplayName"];
   NSDictionary *superProperties = @{@"platform": @"iOS",
-                                    @"platformType": @"iOSApp",
+                                    @"platformType": @"iOS",
                                     @"product": [NSString stringWithFormat:@"%@-App", app_Name]
                                     };
   NSString *uuid = [BGKeychainTool getDeviceIDInKeychain];

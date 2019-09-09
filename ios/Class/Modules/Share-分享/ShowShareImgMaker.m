@@ -340,6 +340,151 @@
 }
 
 
+/**
+ *  拼团图片绘制
+ *  image: 网络图片下载到本地后存入数组
+ *  model: 数据model处理
+ */
++(NSDictionary *)getParamsWithGroupImages:(NSArray<UIImage *> *)images model:(ShareImageMakerModel *)model{
+  CGFloat i = 3;// 为了图片高清 图片尺寸375 * 667
+  NSMutableArray *nodes = [NSMutableArray new];
+  CGFloat imageHeght = 667*i;
+  CGFloat imageWidth =  375*i;
+  
+  NSString *titleStr = model.titleStr;
+  NSString *QRCodeStr = model.QRCodeStr;
+  NSString *groupPrice = model.priceStr?model.priceStr:@"0.0";
+  NSString *originalPrice = model.originalPrice?model.originalPrice:@"0.0";
+  NSString *nameStr = model.userName?model.userName:@"";
+  CGFloat sigle =  [@"1" getStringHeightWithfontSize:14*i viewWidth:200*i];
+  //模糊背景
+  UIImage *bgImage = [UIImage imageNamed:@"group_bg"];
+  
+  [nodes addObject:@{
+                     @"value": bgImage,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, imageWidth, imageHeght)]}
+   ];
+  
+  
+  //背景
+  UIImage *Imagebg = [UIImage imageNamed:@"group_img_bg"];
+  
+  [nodes addObject:@{
+                     @"value": Imagebg,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(28*i, 94*i, 320*i, 480*i)]}
+   ];
+  
+  //图片顶部
+  UIImage *imgHeader = [UIImage imageNamed:@"group_bg_header"];
+  
+  [nodes addObject:@{
+                     @"value": imgHeader,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(28*i, 94*i, 320*i, 172*i)]}
+   ];
+  
+  //图片内容背景
+  UIImage *contentImg = [UIImage imageNamed:@"group_bg_white"];
+  
+  [nodes addObject:@{
+                     @"value": contentImg,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(43*i, 229*i, 290*i, 320*i)]}
+   ];
+  
+  //头像
+  [nodes addObject:@{
+                     @"value": [images[1] creatRoundImagWithRadius:0.5 width:60*i height:60*i],
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(158*i, 206*i, 60*i, 60*i)]}
+   ];
+  
+  //商品
+  [nodes addObject:@{
+                     @"value": [images[0] creatRoundImagWithRadius:0.02 width: 80*i height: 80*i],
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(50*i, 291*i, 80*i, 80*i)]}
+   ];
+  
+  //商品文案
+  CGFloat strWidth = [@"秀" getWidthStringfontSize:14*i viewWidth:180*i];
+  NSInteger strLen = (180*i)/strWidth;
+  if(titleStr.length>strLen){
+    titleStr = [titleStr substringWithRange:NSMakeRange(0, strLen-1)];
+    titleStr = [NSString stringWithFormat:@"%@...",titleStr];
+  }
+  
+  NSAttributedString *titleAttrStr = [[NSAttributedString alloc]initWithString:titleStr
+                                                                    attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
+  [nodes addObject:@{
+                     @"value": titleAttrStr,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(140*i, 291*i, 180*i, sigle)]}
+   ];
+
+  //拼团标签
+  NSMutableAttributedString *groupSign = [[NSMutableAttributedString alloc]initWithString:@" 拼团 "                                           attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i],
+                                                                                          NSBackgroundColorAttributeName:[UIColor colorWithRed:255/255.0 green:0/255.0 blue:80/255.0 alpha:0.1],
+                                                                                          NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"]}];
+  [nodes addObject:@{
+                     @"value": groupSign,
+                     @"location": [NSValue valueWithCGPoint:CGPointMake(140*i, 319*i)]}
+   ];
+  
+  //拼团价
+  NSMutableAttributedString *groupPriceAtr = [[NSMutableAttributedString alloc]initWithString: [NSString stringWithFormat:@"¥%@",groupPrice]                                           attributes:@{
+                                                                                                                                                                                                    NSFontAttributeName: [UIFont systemFontOfSize:16*i],
+                                                                                                                                                                                                                                                  NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"]}];
+  [nodes addObject:@{
+                     @"value": groupPriceAtr,
+                     @"location": [NSValue valueWithCGPoint:CGPointMake(140*i, 349*i)]}
+   ];
+  
+  //原价
+  CGFloat groupPriceWidth = [groupPrice getWidthStringfontSize:22 viewWidth:200];
+  NSMutableAttributedString *originalPriceAtr = [[NSMutableAttributedString alloc]initWithString: [NSString stringWithFormat:@"¥%@",originalPrice]
+                                                                                      attributes: @{NSFontAttributeName: [UIFont systemFontOfSize: 11*i],
+                                                                                              NSForegroundColorAttributeName: [UIColor colorWithHexString:@"999999"],
+                                                            NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)
+                                                          }];
+  [nodes addObject:@{
+                     @"value": originalPriceAtr,
+                     @"location": [NSValue valueWithCGPoint:CGPointMake((145+groupPriceWidth)*i, 353*i)]}
+   ];
+  
+  
+  //二维码
+  UIImage *QRCodeImage = [UIImage QRCodeWithStr:QRCodeStr];
+  [nodes addObject:@{@"value": QRCodeImage,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake((375-70)*i/2, 409*i, 70*i, 70*i)]}
+   ];
+  
+  //广告词
+  NSMutableAttributedString *textAttr = [[NSMutableAttributedString alloc]initWithString:@"长按识别二维码"
+                                                                              attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
+  CGFloat textWidth = [@"长按识别二维码" getWidthStringfontSize:14 viewWidth:100];
+  
+  [nodes addObject:@{
+                     @"value": textAttr,
+                     @"location": [NSValue valueWithCGPoint:CGPointMake((375-textWidth)*i/2, 489*i)]}
+   ];
+  
+  NSMutableAttributedString *textAttr2 = [[NSMutableAttributedString alloc]initWithString:@"立即参团"
+                                                                              attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
+  
+  CGFloat textWidth2 = [@"立即参团" getWidthStringfontSize:14 viewWidth:100];
+  [nodes addObject:@{
+                     @"value": textAttr2,
+                     @"location": [NSValue valueWithCGPoint:CGPointMake((375-textWidth2)*i/2, 515*i)]}
+   ];
+  
+  
+  return @{@"width": @(imageWidth), @"height": @(imageHeght), @"nodes": nodes};
+}
+
 +(NSString *)getShowProductImageModelImages:(NSArray<UIImage *> *)images model:(ShareImageMakerModel *)model{
   CGFloat i = 3;// 为了图片高清 图片尺寸250 * 340
   NSMutableArray *nodes = [NSMutableArray new];

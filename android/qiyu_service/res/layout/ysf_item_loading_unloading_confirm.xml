@@ -23,15 +23,6 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:src="@drawable/ysf_leave_msg_add_back"/>
-        <TextView
-            android:id="@+id/ysf_tv_leave_msg_item_up_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:layout_marginTop="25dp"
-            android:layout_gravity="center"
-            android:textColor="@color/ysf_grey_666666"
-            android:text="@string/ysf_bot_form_upload_image"/>
         <ImageView
             android:id="@+id/ysf_iv_delete"
             android:layout_width="18dp"

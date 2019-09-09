@@ -65,6 +65,7 @@ class HomePage extends BasePage {
     }
 
     componentDidMount() {
+        homeModalManager.requestData();
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
@@ -112,7 +113,6 @@ class HomePage extends BasePage {
                             taskModel.getData();
                             limitGoModule.loadLimitGo(false);
                         }
-                        homeModalManager.requestData();
                         homeModalManager.refreshPrize();
                     });
                 }
