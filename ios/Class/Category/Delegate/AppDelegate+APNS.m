@@ -292,9 +292,10 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-//  if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
+  //处理打开的后台推送消息 在前台的暂不处理
+  if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
     [self showChatViewController:userInfo];
-//  }
+  }
 }
 
 //-(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
@@ -352,7 +353,10 @@
   if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
     [[UIApplication sharedApplication]openURL:[NSURL URLWithString:openURL] options:@{} completionHandler:nil];
   }else{
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:openURL]];
+    //openURL卡顿
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:openURL]];
+    });
   }
 }
 

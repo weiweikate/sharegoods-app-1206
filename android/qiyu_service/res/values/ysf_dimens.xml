@@ -2,7 +2,7 @@
 <resources>
     <!-- 通用 -->
     <dimen name="ysf_action_bar_height">48dp</dimen>
-    <dimen name="ysf_title_bar_height">48dp</dimen>
+    <dimen name="ysf_title_bar_height">44dp</dimen>
     <dimen name="ysf_title_bar_text_size">@dimen/ysf_text_size_18</dimen>
     <dimen name="ysf_title_bar_icon_size">22.5dp</dimen>
     <dimen name="ysf_avatar_size">50dp</dimen>
@@ -32,7 +32,7 @@
 
     <!-- message -->
     <dimen name="ysf_message_action_list_height">220dp</dimen>
-    <dimen name="ysf_message_action_list_height_modify">180dp</dimen>
+    <dimen name="ysf_message_action_list_height_modify">220dp</dimen>
     <dimen name="ysf_input_panel_image_margin_bottom">3dp</dimen>
     <dimen name="ysf_input_panel_image_margin_top">20dp</dimen>
     <dimen name="ysf_input_send_button_padding_ver">6dp</dimen>

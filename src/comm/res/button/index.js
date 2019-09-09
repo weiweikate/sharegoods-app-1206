@@ -31,6 +31,7 @@ const button = {
     back_black: require('./back_black.png'), // 黑色回退按钮
     back_white: require('./back_white.png'), // 白色回退按钮
     btn_close_white: require('./tongyong_btn_close_grey.png'),
-    inputtext_clear: require('./inputtext_clear.png')
+    inputtext_clear: require('./inputtext_clear.png'),
+    btn_group: require('./btn_icon_group.png'), //我的拼团列表页
 };
 export default button;

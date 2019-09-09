@@ -130,7 +130,10 @@ export class LimitGoModules {
                 }
                 this.spikeList = _spikeList;
                 this.currentGoodsList = (_spikeList[this.currentPage] && _spikeList[this.currentPage].goods) || [];
-                homeModule.changeHomeList(homeType.limitGo);
+                homeModule.changeHomeList(homeType.limitGo, [{
+                    id: 5,
+                    type: homeType.limitGo
+                }]);
             }
         } catch (error) {
             console.log(error);
@@ -162,7 +165,10 @@ export class LimitGoModules {
     @action changeLimitGo(index) {
         this.currentGoodsList = (this.spikeList[index] && this.spikeList[index].goods) || [];
         this.currentPage = index;
-        homeModule.changeHomeList(homeType.limitGo);
+        homeModule.changeHomeList(homeType.limitGo, [{
+            id: 5,
+            type: homeType.limitGo
+        }]);
     }
 }
 

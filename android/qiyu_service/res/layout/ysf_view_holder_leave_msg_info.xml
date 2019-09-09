@@ -56,10 +56,9 @@
         android:ellipsize="end"
         android:background="@null"
         android:layout_toLeftOf="@id/ysf_iv_leave_msg_info_arrow"
-        android:layout_toRightOf="@id/ysf_tv_leave_msg_info_label"
         android:layout_centerVertical="true"
         android:textColor="@color/ysf_black_333333"
         android:textSize="14sp"
-        tools:text="好好啊好啊好好啊好啊好好啊好啊好好啊好啊好好啊好啊好好啊好啊好好啊好啊好好啊好啊好好啊好啊好好啊好啊"/>
+        tools:text="好好啊好啊好好啊好啊好啊好好啊"/>
 
 </RelativeLayout>
