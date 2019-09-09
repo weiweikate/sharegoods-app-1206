@@ -24,6 +24,7 @@ import bridge from '../../../utils/bridge';
 import { getSource } from '@mr/image-placeholder/oos';
 import { getSize } from '../../../utils/OssHelper';
 import { SectionLineView } from './ProductDetailSectionView';
+import { GroupActivityInView, GroupActivityWillBeginView } from './promotionGroup/ProductGroupActivityView';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
@@ -114,6 +115,8 @@ export class HeaderItemView extends Component {
                 <DetailBanner data={productDetailModel} navigation={navigation}/>
                 {showWill && <ActivityWillBeginView productDetailModel={productDetailModel}/>}
                 {showIn && <ActivityDidBeginView productDetailModel={productDetailModel}/>}
+                <GroupActivityWillBeginView/>
+                <GroupActivityInView/>
                 {
                     showPrice && (verDownInSell ?
                         this._renderPriceView({

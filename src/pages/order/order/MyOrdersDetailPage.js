@@ -136,13 +136,13 @@ export default class MyOrdersDetailPage extends BasePage {
     };
 
     operationDelete() {
-        Alert.alert('', `确定删除此订单吗?`, [
+        Alert.alert('', '确定删除此订单吗?', [
             {
-                text: `取消`, onPress: () => {
+                text: '取消', onPress: () => {
                 }
             },
             {
-                text: `确定`, onPress: () => {
+                text: '确定', onPress: () => {
                     Toast.showLoading();
                     OrderApi.deleteOrder({ merchantOrderNo: orderDetailModel.merchantOrderNo}).then((response) => {
                         Toast.hiddenLoading();
@@ -188,9 +188,9 @@ export default class MyOrdersDetailPage extends BasePage {
                             let isPay = true;
                             if (!callBack) {
                                 isPay = false;
-                                callBack = ()=>{this.cancelModal&&this.cancelModal.open()}
+                                callBack = ()=>{this.cancelModal && this.cancelModal.open()}
                             }
-                            this.cancelProdectsModal&&this.cancelProdectsModal.open(orderDetailModel.platformOrderNo,callBack,isPay)
+                            this.cancelProdectsModal && this.cancelProdectsModal.open(orderDetailModel.platformOrderNo,callBack,isPay)
                         }}
                         switchButton={(moreData) => {
                             this.setState({ showDele: !this.state.showDele, moreData});
@@ -203,7 +203,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         <View style={{
                         position: 'absolute',
                         bottom: 45,
-                        right: ScreenUtils.autoSizeWidth(180)-100,
+                        right: ScreenUtils.autoSizeWidth(180) - 100,
                         backgroundColor: 'white',
                         borderRadius: 5,
                             borderWidth: 1,
@@ -218,7 +218,7 @@ export default class MyOrdersDetailPage extends BasePage {
                                }} onPress={() => {
                                  this.setState({ showDele: false });
                                  //与底部button点击用一套逻辑
-                                 this.btnView&&this.btnView.operationMenuClick(item);
+                                 this.btnView && this.btnView.operationMenuClick(item);
                                }}>
                                    <UIText value={item.operation} style={{ color: '#666666', fontSize: 13 }}/>
                                </NoMoreClick>)
@@ -303,7 +303,7 @@ export default class MyOrdersDetailPage extends BasePage {
         return (
             <View style={{marginBottom: 10}}>
                 {this.renderState()}
-                {orderDetailModel.isPhoneOrder?
+                {orderDetailModel.isPhoneOrder ?
                     <View style={{backgroundColor: 'white', height: ScreenUtils.autoSizeWidth(40), justifyContent: 'center'}}>
                         <MRText style={{color: DesignRule.textColor_mainTitle,
                             fontSize: DesignRule.fontSize_threeTitle_28,

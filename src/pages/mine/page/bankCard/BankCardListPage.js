@@ -145,7 +145,7 @@ export default class BankCardListPage extends BasePage {
                         <NoMoreClick onPress={() => {
                             let viewData = CommonUtils.deepClone(this.state.viewData);
                             let item = viewData[rowData.index];
-                            item.isShow=!item.isShow;
+                            item.isShow = !item.isShow;
                             this.setState({viewData})
                         }}>
                             <Image source={isShow ? bankCardShow : bankCardHide}

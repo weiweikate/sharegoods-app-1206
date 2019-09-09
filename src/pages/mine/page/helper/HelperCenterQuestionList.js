@@ -77,7 +77,7 @@ export default class HelperCenterQuestionTypeList extends BasePage {
     };
 
     renderItem = ({item,index})=>{
-        const data = this.helpList? this.helpList.getSourceData():[]
+        const data = this.helpList ? this.helpList.getSourceData() : []
         const {
             title
         } = item
@@ -87,8 +87,8 @@ export default class HelperCenterQuestionTypeList extends BasePage {
                          key={index}
                          style={[
                              styles.hotQuestionStyle,
-                             index==0? {borderTopLeftRadius:5,borderTopRightRadius:5}:{},
-                             index== data.length-1? {borderBottomLeftRadius:5,borderBottomRightRadius:5}:{},
+                             index == 0 ? {borderTopLeftRadius:5,borderTopRightRadius:5} : {},
+                             index == data.length - 1 ? {borderBottomLeftRadius:5,borderBottomRightRadius:5} : {},
                          ]}
             >
                 {
@@ -97,8 +97,7 @@ export default class HelperCenterQuestionTypeList extends BasePage {
                             borderBottomWidth: 0.5,
                             borderColor: '#dedede',
                         }}
-                        >
-                        </View>
+                         />
                         : null
                 }
                 <View style={styles.hotQuestionItemStyle}>

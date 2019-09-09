@@ -57,8 +57,7 @@ export class TopicImageAdView extends React.Component {
 
                                     }}
                                                       style={{ flex: 1 }}
-                                    >
-                                    </TouchableOpacity>
+                                     />
                                 );
                             })
                         }

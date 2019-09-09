@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor
     },
     img: {
-        width:ScreenUtils.width-108,
+        width:ScreenUtils.width - 108,
         height:140
     },
     container: {

@@ -65,7 +65,7 @@ export default class SearchPage extends BasePage {
         this.setState({
             recentData: value || []
         });
-    };
+    }
 
     //热门数据;
     getHotWordsListActive = () => {

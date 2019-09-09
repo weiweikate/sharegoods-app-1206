@@ -167,13 +167,13 @@ export default class OrderDetailBottomButtonView extends Component {
     };
 
     deleteOrder() {
-        Alert.alert('', `确定删除此订单吗?`, [
+        Alert.alert('', '确定删除此订单吗?', [
             {
-                text: `取消`, onPress: () => {
+                text: '取消', onPress: () => {
                 }
             },
             {
-                text: `确定`, onPress: () => {
+                text: '确定', onPress: () => {
                     Toast.showLoading();
                     OrderApi.deleteOrder({ merchantOrderNo: orderDetailModel.merchantOrderNo }).then((response) => {
                         Toast.hiddenLoading();

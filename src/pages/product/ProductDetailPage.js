@@ -43,6 +43,11 @@ import ProductDetailNavView from './components/ProductDetailNavView';
 import { IntervalMsgType, IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import ProductDetailCouponsView, { ProductDetailCouponsWindowView } from './components/ProductDetailCouponsView';
 import { ProductDetailSetAddressView } from './components/ProductDetailAddressView';
+import {
+    GroupIsOldView,
+    GroupOpenPersonSView,
+    GroupProductListView
+} from './components/promotionGroup/ProductGroupView';
 
 /**
  * @author chenyangjun
@@ -67,7 +72,7 @@ export default class ProductDetailPage extends BasePage {
         this.state = {
             goType: ''
         };
-        this.productDetailModel.prodCode = this.params.productCode;
+        this.productDetailModel.prodCode = 'SPU00000536';
         this.productDetailModel.trackCode = this.params.trackCode;
         this.productDetailModel.trackType = this.params.trackType;
     }
@@ -216,12 +221,36 @@ export default class ProductDetailPage extends BasePage {
             }
             const { type, couponId } = this.params;
             const { specImg, promotionPrice, price, propertyValues } = item;
+            // let orderProducts = [{
+            //     productType: this.productDetailModel.type,
+            //     skuCode: skuCode,
+            //     quantity: amount,
+            //     productCode: prodCode,
+            //     activityCode: '',
+            //     batchNo: 1,
+            //     specImg,
+            //     productName: name,
+            //     unitPrice: productIsPromotionPrice ? promotionPrice : price,
+            //     spec: (propertyValues || '').replace(/@/g, '-')
+            // }];
+            // this.$navigate(RouterMap.ConfirOrderPage, {
+            //     orderParamVO: {
+            //         orderType: 99,
+            //         orderProducts: orderProducts,
+            //         source: parseInt(type) === 9 ? 4 : 2,
+            //         couponsId: parseInt(couponId)
+            //     }
+            // });
+
+            const { singleActivity } = this.productDetailModel;
+            const { code, activityTag } = singleActivity || {};
             let orderProducts = [{
                 productType: this.productDetailModel.type,
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,
-                activityCode: '',
+                activityCode: code,
+                activityTag: activityTag,
                 batchNo: 1,
                 specImg,
                 productName: name,
@@ -230,6 +259,8 @@ export default class ProductDetailPage extends BasePage {
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
+                    bizTag: 'group',
+                    groupData: { isSponsor: true },
                     orderType: 99,
                     orderProducts: orderProducts,
                     source: parseInt(type) === 9 ? 4 : 2,
@@ -254,7 +285,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel, isGroupIn } = this.productDetailModel;
+        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel, isGroupIn, productGroupModel } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -309,6 +340,15 @@ export default class ProductDetailPage extends BasePage {
             }
             case productItemType.address: {
                 return <ProductDetailSetAddressView productDetailAddressModel={productDetailAddressModel}/>;
+            }
+            case productItemType.groupIsOld: {
+                return <GroupIsOldView productGroupModel={productGroupModel}/>;
+            }
+            case productItemType.groupOpenPersonS: {
+                return <GroupOpenPersonSView productGroupModel={productGroupModel}/>;
+            }
+            case productItemType.groupProductList: {
+                return <GroupProductListView productGroupModel={productGroupModel}/>;
             }
             case productItemType.comment: {
                 return <ProductDetailScoreView pData={this.productDetailModel}
@@ -380,7 +420,7 @@ export default class ProductDetailPage extends BasePage {
                          keyExtractor={(item, index) => {
                              return item + index;
                          }}
-                         initialNumToRender = {13}
+                         initialNumToRender={13}
                          sections={sectionDataList}
                          scrollEventThrottle={10}
                          showsVerticalScrollIndicator={false}/>

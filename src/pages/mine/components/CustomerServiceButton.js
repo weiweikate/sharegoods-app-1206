@@ -46,7 +46,7 @@ export default class CustomerServiceButton extends Component{
                             borderRadius: ScreenUtils.autoSizeWidth(20),
                             overflow: 'hidden',
                             borderWidth:ScreenUtils.autoSizeWidth(0.5),
-                            borderColor:"#CCCCCC",
+                            borderColor:'#CCCCCC',
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center',

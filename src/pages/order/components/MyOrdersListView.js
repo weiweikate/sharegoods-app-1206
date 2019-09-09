@@ -235,13 +235,13 @@ export default class MyOrdersListView extends Component {
                 break;
             case 7:
             case 9:
-                Alert.alert('', `确定删除此订单？`, [
+                Alert.alert('', '确定删除此订单？', [
                     {
-                        text: `取消`, onPress: () => {
+                        text: '取消', onPress: () => {
                         }
                     },
                     {
-                        text: `确定`, onPress: () => {
+                        text: '确定', onPress: () => {
                             Toast.showLoading();
                             OrderApi.deleteOrder({ merchantOrderNo: merchantOrderNo }).then((response) => {
                                 Toast.hiddenLoading();

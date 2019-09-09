@@ -124,8 +124,7 @@ export default class MyHelperCenter extends BasePage {
                             borderBottomWidth: 0.5,
                             borderColor: '#dedede'
                         }}
-                        >
-                        </View>
+                         />
                         : null
                 }
                 <NoMoreClick style={styles.hotQuestionItemStyle}

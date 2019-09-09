@@ -10,6 +10,7 @@ import TopicAPI from '../topic/api/TopicApi';
 import { ProductDetailCouponsViewModel } from './components/ProductDetailCouponsView';
 import { ProductDetailAddressModel } from './components/ProductDetailAddressView';
 import { ProductDetailSuitModel } from './components/ProductDetailSuitView';
+import ProductGroupModel from './components/promotionGroup/ProductGroupModel';
 
 const { width, height } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
@@ -26,17 +27,21 @@ export const productItemType = {
     address: 'address',
     comment: 'comment',
     content: 'content',
+    groupIsOld: 'groupIsOld',
+    groupOpenPersonS: 'groupOpenPersonS',
+    groupProductList: 'groupProductList',
     priceExplain: 'priceExplain'
 };
 
 export const sectionType = {
-    sectionHeader: 'section0',
-    sectionSuit: 'section1',
-    sectionPromotion: 'section2',
-    sectionSetting: 'section3',
-    sectionScore: 'section4',
-    sectionContent: 'section5',
-    sectionExPlain: 'section6'
+    sectionHeader: 'section0',//头部
+    sectionSuit: 'section1',//套餐
+    sectionPromotion: 'section2',//营销
+    sectionSetting: 'section3',//设置类 单行
+    sectionScore: 'section4',//晒单
+    sectionGroup: 'section41',//拼团
+    sectionContent: 'section5',//图片
+    sectionExPlain: 'section6'//价格说明
 };
 
 /**价格类型 2拼店价 3会员价**/
@@ -58,13 +63,14 @@ export const activity_status = {
     unBegin: 1,//未开始
     inSell: 2//在售
 };
-/*（0:秒杀;1:套餐;2:直降;3:满减;4:满折）*/
+/*（0:秒杀;1:套餐;2:直降;3:满减;4:满折,5拼团）*/
 export const activity_type = {
     skill: 0,
     group: 1,
     verDown: 2,
     fullDown: 3,
-    fullSale: 4
+    fullSale: 4,
+    pinGroup: 5
 };
 
 export default class ProductDetailModel {
@@ -72,6 +78,7 @@ export default class ProductDetailModel {
     productDetailCouponsViewModel = new ProductDetailCouponsViewModel();
     productDetailAddressModel = new ProductDetailAddressModel();
     productDetailSuitModel = new ProductDetailSuitModel();
+    productGroupModel = new ProductGroupModel();
 
     trackType;
     trackCode;
@@ -170,7 +177,7 @@ export default class ProductDetailModel {
 
     /**营销活动**/
     @observable promotionLimitNum;
-    /*0:秒杀;1:套餐;2:直降;3:满减;4:满折*/
+    /*0:秒杀;1:套餐;2:直降;3:满减;4:满折,5拼团*/
     @observable activityType;
     /*活动status 1未开始,2进行中,3已结束*/
     @observable activityStatus;
@@ -361,14 +368,18 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, type, isGroupIn, productDetailSuitModel, isHuaFei } = this;
+        const {
+            promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel,
+            type, isGroupIn, productDetailSuitModel, isHuaFei, singleActivity
+        } = this;
         const { couponsList } = productDetailCouponsViewModel;
         const { activityCode } = productDetailSuitModel;
+        const { activityTag } = singleActivity;
         /*头部*/
         let sectionArr = [
             { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
         ];
-        /*优惠套餐*/
+        /*套餐*/
         if (isGroupIn || activityCode) {
             !isHuaFei && sectionArr.push(
                 { key: sectionType.sectionSuit, data: [{ itemKey: productItemType.suit }] }
@@ -389,7 +400,13 @@ export default class ProductDetailModel {
         paramList.length !== 0 && settingList.push({ itemKey: productItemType.param });
         type !== 3 && settingList.push({ itemKey: productItemType.address });
         sectionArr.push({ key: sectionType.sectionSetting, data: settingList });
-        /*晒单,*/
+        /*拼团相关*/
+        let groupList = [];
+        (this.activityType === activity_type.pinGroup && activityTag === '100105') && groupList.push({ itemKey: productItemType.groupIsOld });
+        groupList.push({ itemKey: productItemType.groupOpenPersonS });
+        groupList.push({ itemKey: productItemType.groupProductList });
+        sectionArr.push({ key: sectionType.sectionGroup, data: groupList });
+        /*晒单,图片,价格说明*/
         sectionArr.push(
             { key: sectionType.sectionScore, data: [{ itemKey: productItemType.comment }] },
             { key: sectionType.sectionContent, data: contentArr.slice() },
@@ -599,6 +616,17 @@ export default class ProductDetailModel {
             if (tempData && tempData.type !== 3) {
                 this.productDetailAddressModel.prodCode = this.prodCode;
             }
+
+            //拼团
+            const { activityType, singleActivity } = this;
+            if (activityType !== activity_type.pinGroup) {
+                return;
+            }
+            const { code, activityTag } = singleActivity;
+            this.productGroupModel.requestCheckJoinUser({ prodCode: this.prodCode, activityCode: code, activityTag });
+            this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
+            this.productGroupModel.requestGroupProduct({ activityCode: code });
+            this.productGroupModel.requestGroupDesc();
         }).catch((e) => {
             this.productError(e);
         });
