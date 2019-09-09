@@ -62,7 +62,8 @@ export default class GoodsListItem extends React.Component {
 
         } = this.props;
         let orderStatus = merchantOrder.status;
-        let nameArr = [...GetViewOrderStatus(orderStatus,null, merchantOrder.isGroup).menuData];
+        //merchantOrder.isGroup)
+        let nameArr = [...GetViewOrderStatus(orderStatus,null, false).menuData];
         let hasAfterSaleService = checkOrderAfterSaleService(merchantOrder.productOrderList, orderStatus, baseInfo.nowTime)
         if (orderStatus === 4 && merchantOrder.commentStatus) {
             nameArr.push({

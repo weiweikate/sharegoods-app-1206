@@ -161,7 +161,12 @@ export default class OrderDetailBottomButtonView extends Component {
                 }).catch(e => {
                     Toast.$toast(e.msg);
                 });
+                beginChatType
 
+            case 19:
+                if (orderDetailModel.orderExt && orderDetailModel.orderExt.orderGroupExt) {
+                    routePush('HtmlPage', { uri: '/activity/groupBuyDetails/' + orderDetailModel.orderExt.orderGroupExt.id });
+                }
                 break;
         }
     };

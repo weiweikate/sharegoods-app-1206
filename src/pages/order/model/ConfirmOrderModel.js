@@ -119,6 +119,7 @@ class ConfirmOrderModel {
 
     getParams(filterFail) {
         let orderProducts = this.orderParamVO.orderProducts || [];
+        alert(this.orderParamVO.orderProducts);
         if (filterFail) {
             orderProducts = this.getAvailableProducts();
         }
@@ -127,8 +128,8 @@ class ConfirmOrderModel {
             // "quantity":, //int 购买数量
             // "activityCode":, //string 活动code
             // "batchNo": //string 活动批次  (拼团业务传递团id)
-            let { skuCode, quantity, activityCode, batchNo } = item;
-            return { skuCode, quantity, activityCode, batchNo };
+            let { skuCode, quantity, activityCode, batchNo, activityTag } = item;
+            return { skuCode, quantity, activityCode,batchNo, activityTag };
         });
         let { receiver, receiverPhone, province, city, area, street, address } = this.addressData;
         return {
