@@ -27,13 +27,12 @@
 @property (nonatomic, weak)UITableView *tableView;
 @property (nonatomic, strong)NSMutableArray *dataArr;
 @property (nonatomic, strong)NSMutableArray *callBackArr;
-@property (nonatomic, assign)NSInteger page;
 @property (nonatomic, strong)UIView *headerView;
 @property (nonatomic, assign)NSInteger errCode;
-@property(nonatomic, strong)UILabel *emptyLb;
+@property (nonatomic, strong)UILabel *emptyLb;
 @property (nonatomic, strong)UIView *emptyView;
 @property (nonatomic, assign)BOOL noMore;
-
+@property (nonatomic, copy)NSString* cursor;
 @end
 
 static NSString *ID = @"tabCell";
@@ -171,12 +170,11 @@ static NSString *IDType = @"TypeCell";
   if (self.onStartRefresh) {
     self.onStartRefresh(@{});
   }
-  self.page = 1;
   NSMutableDictionary *dic = [NSMutableDictionary new];
   if (self.params) {
     dic = [self.params mutableCopy];
   }
-  [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"10"}];
+  [dic addEntriesFromDictionary:@{@"size": @"10"}];
   __weak RecommendedView * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary * result) {
 
@@ -202,7 +200,6 @@ static NSString *IDType = @"TypeCell";
         self.tableView.mj_footer.hidden = NO;
       });
     }
-    weakSelf.noMore = model.isMore>0?NO:YES;
     weakSelf.errCode = 10000;
   } failure:^(NSString *msg, NSInteger code) {
     weakSelf.errCode = code;
@@ -216,16 +213,16 @@ static NSString *IDType = @"TypeCell";
  */
 - (void)getMoreData
 {
-  if(self.noMore){
-    [self.tableView.mj_footer endRefreshingWithNoMoreData];
-    return;
-  }
-  self.page++;
   NSMutableDictionary *dic = [NSMutableDictionary new];
+  NSString *cursor = [self.dataArr.lastObject valueForKey:@"cursor"];
+ 
   if (self.params) {
     dic = [self.params mutableCopy];
   }
-  [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"10"}];
+  if(cursor){
+    [dic addEntriesFromDictionary:@{@"cursor":cursor}];
+  }
+  [dic addEntriesFromDictionary:@{@"size": @"10"}];
     __weak  RecommendedView * weakSelf = self;
     [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary * result) {
 
@@ -241,7 +238,6 @@ static NSString *IDType = @"TypeCell";
     }else{
       [weakSelf.tableView.mj_footer endRefreshing];
     }
-      weakSelf.noMore = model.isMore>0?NO:YES;
       weakSelf.errCode = 10000;
   } failure:^(NSString *msg, NSInteger code) {
     weakSelf.errCode = code;

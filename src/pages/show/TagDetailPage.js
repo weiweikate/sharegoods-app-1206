@@ -22,6 +22,7 @@ import ShowApi from './ShowApi';
 import apiEnvironment from '../../api/ApiEnvironment';
 import TagDetailItemView from './components/TagDetailItemView';
 import CommShowShareModal from '../../comm/components/CommShowShareModal';
+import EmptyUtils from '../../utils/EmptyUtils';
 
 const { iconShowShare, dynamicEmpty } = res;
 const { px2dp } = ScreenUtils;
@@ -33,8 +34,8 @@ export default class TagDetailPage extends BasePage {
             isRefreshing: false,
             isLoadingMore: false
         };
-        this.page = 1;
         this.size = 10;
+        this.isLoadEnd = false;
     }
 
     $navigationBarOptions = {
@@ -62,15 +63,19 @@ export default class TagDetailPage extends BasePage {
             return;
         }
         this.setState({ isRefreshing: true });
-        this.size = 10;
-        this.page = 1;
-        ShowApi.getDynamicWithTag({ page: this.page, size: this.size, tagId: this.params.tagId }).then((data) => {
+        this.cursor = '';
+        ShowApi.getDynamicWithTag({size: this.size, tagId: this.params.tagId }).then((data) => {
             this.data = [];
             let realData = data.data.data || [];
             realData.map((item) => {
                 this.data.push(item);
             });
-            this.page++;
+
+            this.cursor = this.getLastCursor(realData);
+            if(EmptyUtils.isEmptyArr(realData) || realData.length < this.size){
+                this.isLoadEnd = true;
+            }
+
             this.setState({ isRefreshing: false });
         }).catch((error) => {
             this.$toastShow(error.msg);
@@ -78,19 +83,30 @@ export default class TagDetailPage extends BasePage {
         });
     };
 
+
+    getLastCursor = (data)=>{
+        if(EmptyUtils.isEmptyArr(data)){
+            return null;
+        }
+        let item = data[data.length-1];
+        return item.cursor || '';
+    }
+
     loadMore = () => {
-        if (this.state.isRefreshing || this.state.isLoadingMore) {
+        if (this.state.isRefreshing || this.state.isLoadingMore || this.isLoadEnd) {
             return;
         }
         this.setState({ isLoadingMore: true });
-        ShowApi.getDynamicWithTag({ page: this.page, size: this.size, tagId: this.params.tagId }).then((data) => {
+        ShowApi.getDynamicWithTag({ cursor: this.cursor, size: this.size, tagId: this.params.tagId }).then((data) => {
 
             let realData = data.data.data || [];
             realData.map((item) => {
                 this.data.push(item);
             });
-
-            this.page++;
+            if(EmptyUtils.isEmptyArr(realData) || realData.length < this.size){
+                this.isLoadEnd = true;
+            }
+            this.cursor = this.getLastCursor(realData);
             this.setState({ isLoadingMore: false });
         }).catch((error) => {
             this.$toastShow(error.msg);

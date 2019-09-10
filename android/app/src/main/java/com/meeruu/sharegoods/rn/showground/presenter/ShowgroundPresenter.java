@@ -1,5 +1,6 @@
 package com.meeruu.sharegoods.rn.showground.presenter;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
@@ -26,8 +27,8 @@ public class ShowgroundPresenter {
         showgroundModel.setParams(map);
     }
 
-    public void getShowList(final int page) {
-        showgroundModel.fetchRecommendList(page, 10, new BaseCallback<String>() {
+    public void getShowList(final String cursor) {
+        showgroundModel.fetchRecommendList(cursor, 10, new BaseCallback<String>() {
             @Override
             public void onErr(String errCode, String msg) {
                 IShowgroundView view = showgroundViewWeakReference.get();
@@ -43,7 +44,7 @@ public class ShowgroundPresenter {
                 if (showgroundViewWeakReference != null) {
                     IShowgroundView iShowgroundView = showgroundViewWeakReference.get();
                     if (iShowgroundView != null) {
-                        if (page > 1) {
+                        if (!TextUtils.isEmpty(cursor)) {
                             iShowgroundView.viewLoadMore(list);
                             if (list == null) {
                                 iShowgroundView.loadMoreEnd();
