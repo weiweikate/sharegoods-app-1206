@@ -29,35 +29,47 @@ export default class SelectionHeaderView extends Component {
         this.state = {};
     }
 
-    _seeBigImage = () => {
+    _seeBigImage = (imgUrlNow) => {
         const { closeSelectionPage } = this.props;
         const { imgUrl, skuList } = this.props.product || {};
         let imageUrls = [];
         for (const item of skuList || []) {
             let tempUrl = StringUtils.isNoEmpty(item.specImg) ? item.specImg : imgUrl;
-            if (imageUrls.indexOf(tempUrl) == -1) {
+            if (imageUrls.indexOf(tempUrl) === -1) {
                 imageUrls.push(tempUrl);
             }
         }
         if (imageUrls.length > 0) {
+            const imageIndex = imageUrls.indexOf(imgUrlNow);
             closeSelectionPage();
-            routeNavigate(RouterMap.CheckBigImagesView, { imageUrls: imageUrls });
+            routeNavigate(RouterMap.CheckBigImagesView, {
+                imageUrls: imageUrls,
+                index: imageIndex === -1 ? 0 : imageIndex
+            });
         }
     };
 
     render() {
         const { imgUrl, minPrice, promotionMinPrice, stockSysConfig } = this.props.product || {};
-        let isPromotion = this.props.productIsPromotionPrice;
-
-        let price = isPromotion ? promotionMinPrice : minPrice;
+        const { productIsPromotionPrice } = this.props;
         let stock = 0;
         let specImg;
         this.props.selectSpecList.forEach((item) => {
             //总库存库存遍历相加
-            stock = stock + (isPromotion ? item.promotionStockNum : item.sellStock);
+            stock = stock + (productIsPromotionPrice ? item.promotionStockNum : item.sellStock);
             specImg = item.specImg;
-            price = isPromotion ? item.promotionPrice : item.price;
         });
+        let price = productIsPromotionPrice ? promotionMinPrice : minPrice;
+        /*计算当前库存的区间金额*/
+        if (this.props.selectSpecList.length > 0) {
+            const priceArr = this.props.selectSpecList.map((item) => {
+                return productIsPromotionPrice ? item.promotionPrice : item.price;
+            });
+            const minPrice = Math.min.apply(null, priceArr);
+            const maxPrice = Math.max.apply(null, priceArr);
+            price = minPrice == maxPrice ? minPrice : `${minPrice}~${maxPrice}`;
+        }
+
         let goodsNumberText;
         for (let item of (stockSysConfig || [])) {
             const tempArr = (item.value && item.value.split('★')) || [];
@@ -74,24 +86,31 @@ export default class SelectionHeaderView extends Component {
 
         return (
             <View style={{ backgroundColor: 'transparent' }}>
-                <NoMoreClick style={styles.headerImg} onPress={this._seeBigImage}>
+                <NoMoreClick style={styles.headerImg} onPress={() => this._seeBigImage(specImg || imgUrl)}>
                     <UIImage style={styles.img} source={{ uri: specImg || imgUrl || '' }} borderRadius={5}/>
                 </NoMoreClick>
                 <View style={{ backgroundColor: 'white', marginTop: 20, height: 95 }}>
                     <View style={{ marginLeft: 132 }}>
-                        <View style = {{flexDirection:'row',alignItems:'center', marginTop: 14}}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 14 }}>
                             <Text style={{
                                 color: DesignRule.mainColor,
-                                fontSize: 16,
+                                fontSize: 16
                             }}>{`￥${price}`}</Text>
                             {
-                                StringUtils.isNoEmpty(this.props.priceDesc)&&
-                                    <View style = {{height:16,borderRadius:8,justifyContent:'center',borderColor:DesignRule.mainColor,borderWidth:1,marginLeft:5}}>
-                                        <Text style={{
-                                            color: DesignRule.mainColor,
-                                            fontSize: 10,paddingHorizontal:4
-                                        }}>{`${this.props.priceDesc}`}</Text>
-                                    </View>
+                                StringUtils.isNoEmpty(this.props.priceDesc) &&
+                                <View style={{
+                                    height: 16,
+                                    borderRadius: 8,
+                                    justifyContent: 'center',
+                                    borderColor: DesignRule.mainColor,
+                                    borderWidth: 1,
+                                    marginLeft: 5
+                                }}>
+                                    <Text style={{
+                                        color: DesignRule.mainColor,
+                                        fontSize: 10, paddingHorizontal: 4
+                                    }}>{`${this.props.priceDesc}`}</Text>
+                                </View>
                             }
                         </View>
                         <Text
