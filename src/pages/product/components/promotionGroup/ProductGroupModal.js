@@ -38,16 +38,13 @@ export default class ProductGroupModal extends Component {
         modalVisible: false
     };
 
-    show = ({ actionType, data, extraData, goToBuy }) => {
-        setTimeout(() => {
-            this.setState({
-                modalVisible: true,
-                actionType,
-                data,
-                extraData,
-                goToBuy
-            });
-        }, 500);
+    show = ({ actionType, data, extraData }) => {
+        this.setState({
+            modalVisible: true,
+            actionType,
+            data,
+            extraData
+        });
     };
 
     _close = () => {
@@ -57,7 +54,8 @@ export default class ProductGroupModal extends Component {
     };
 
     render() {
-        const { modalVisible, actionType, data, extraData, goToBuy } = this.state;
+        const { modalVisible, actionType, data, extraData } = this.state;
+        const { goToBuy } = this.props;
         if (!modalVisible) {
             return null;
         }
