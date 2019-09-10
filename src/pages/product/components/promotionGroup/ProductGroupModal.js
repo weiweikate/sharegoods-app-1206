@@ -170,11 +170,11 @@ export class GroupJoinView extends Component {
                                  isAvatar={true}
                                  style={[stylesJoin.icon, { marginLeft: index === 0 ? 0 : px2dp(20) }]}
                                  source={source ? source : { uri: userHeadImg }}>
-                            {startGroupLeader ? <View style={stylesJoin.leaderView}>
-                                <MRText style={stylesJoin.leaderText}>团长</MRText>
-                            </View> : null}
                         </UIImage>
                 }
+                {startGroupLeader ? <View style={stylesJoin.leaderView}>
+                    <MRText style={stylesJoin.leaderText}>团长</MRText>
+                </View> : null}
             </View>
 
         );
@@ -249,7 +249,8 @@ const stylesJoin = StyleSheet.create({
 
     leaderView: {
         width: 32, height: 15, borderRadius: 7.5, backgroundColor: DesignRule.mainColor,
-        justifyContent: 'center', alignItems: 'center'
+        justifyContent: 'center', alignItems: 'center',
+        position: 'absolute', bottom: 0, alignSelf: 'center'
     },
     leaderText: {
         fontSize: 11, color: 'white'
