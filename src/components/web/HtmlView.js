@@ -20,7 +20,6 @@ import LuckyIcon from '../../pages/guide/LuckyIcon';
 import GroupSelectModel from '../../pages/mine/page/spellGroup/components/GroupSelectModel'
 
 const moreIcon = res.button.message_three;
-const btn_group = res.button.btn_group;
 
 @SmoothPushHighComponent
 @observer
@@ -95,20 +94,6 @@ export default class RequestDetailPage extends BasePage {
                     justifyContent: 'center'
                 }}>
                     <Image source={moreIcon} style={{ width: 22 }}
-                           resizeMode={'contain'}/>
-                </TouchableOpacity>
-            );
-        } else if(this.state.hasRightItem === 'showGroupRightItem') {
-            return (
-                <TouchableOpacity onPress={()=>{
-                    this.$navigate(RouterMap.SpellGroupList);
-                }} style={{
-                    width: ScreenUtils.px2dp(40),
-                    height: ScreenUtils.px2dp(44),
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                    <Image source={btn_group} style={{ width: 22 }}
                            resizeMode={'contain'}/>
                 </TouchableOpacity>
             );
@@ -214,8 +199,8 @@ export default class RequestDetailPage extends BasePage {
             return;
         }
 
-        //拼团h5页面 导航栏右边按钮样式替换
-        if (msg.action === 'GroupNaviate') {
+        //拼团h5页面 点击跳转拼团列表
+        if (msg.action === 'GroupNavigate') {
             routeNavigate(RouterMap.SpellGroupList)
             return;
         }
