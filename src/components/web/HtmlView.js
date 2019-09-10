@@ -5,7 +5,7 @@ import { BackHandler, Image, Platform, TouchableOpacity, View } from 'react-nati
 import CommShareModal from '../../comm/components/CommShareModal';
 // import res from '../../comm/res';
 import apiEnvironment from '../../api/ApiEnvironment';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, {routeNavigate} from '../../navigation/RouterMap';
 import { autorun } from 'mobx';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
@@ -215,9 +215,8 @@ export default class RequestDetailPage extends BasePage {
         }
 
         //拼团h5页面 导航栏右边按钮样式替换
-        if (msg.action === 'showGroupRightItem') {
-            this.state.hasRightItem = 'showGroupRightItem';
-            this.$renderSuperView();//为了触发render
+        if (msg.action === 'GroupNaviate') {
+            routeNavigate(RouterMap.SpellGroupList)
             return;
         }
 

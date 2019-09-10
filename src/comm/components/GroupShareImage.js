@@ -1,6 +1,6 @@
 /**
  * @author zhoujianxin
- * @date on
+ * @date on 2019/9/6
  * @desc 拼团海报页面
  * @org  www.sharegoodsmall.com
  * @email zhoujianxin@meeruu.com
@@ -38,7 +38,7 @@ export default class GroupShareImage extends Component {
 
     componentDidMount() {
         const {data} = this.props;
-
+        //生成二维码图片路径
         bridge.creatQRCodeImage(data.QRCodeStr,(path)=>{
             this.setState({
                 path: Platform.OS === 'android' ? 'file://' + path : '' + path,
@@ -138,7 +138,10 @@ export default class GroupShareImage extends Component {
                         </TouchableWithoutFeedback>
 
                     </LinearGradient>
-                    <TouchableOpacity activeOpacity={0.8} onPress={()=>{download && download()}}>
+                    <TouchableOpacity activeOpacity={0.8} onPress={()=>{
+                        //下载图片到本地
+                        download && download()
+                    }}>
                         <ImageBackground style={styles.btnImagStyle} source={groupIcon.group_btn}>
                             <Text style={{fontSize:16, color:'#C73908',marginBottom:8}}>保存图片分享</Text>
                         </ImageBackground>

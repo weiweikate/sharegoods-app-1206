@@ -58,6 +58,7 @@ export default class GroupSelectModel extends Component {
                         <TouchableOpacity style={styles.btnTouchStyle}
                                           activeOpacity={0.7}
                                           onPress={() => {
+                                              //判断是否传入分享数据 存在type则为传入了分享数据 其他则没传入
                                               if (data && showParams['type']) {
                                                   showParams['type'] = 'Group';
                                               } else {
@@ -66,6 +67,7 @@ export default class GroupSelectModel extends Component {
                                               this.setState({
                                                   visible: false
                                               }, () => {
+                                                  // 唤起分享组件
                                                   inviteShare && inviteShare(showParams)
                                               });
                                           }}>
@@ -79,6 +81,7 @@ export default class GroupSelectModel extends Component {
                         <TouchableOpacity style={styles.btnTouchStyle}
                                           activeOpacity={0.7}
                                           onPress={() => {
+                                              //判断是否传入分享数据 存在type则为传入了分享数据 其他则没传入
                                               if (data && showParams['type']) {
                                                   showParams['type'] = 'GroupAD';
                                               } else {
@@ -88,6 +91,7 @@ export default class GroupSelectModel extends Component {
                                               this.setState({
                                                   visible: false
                                               }, () => {
+                                                  //生成海报
                                                   createAD && createAD(showParams);
                                               });
                                           }}>

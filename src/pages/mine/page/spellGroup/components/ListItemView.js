@@ -43,12 +43,14 @@ export default class ListItemView extends PureComponent {
 
     componentDidMount() {
         if (this.props.index === 0) {
+            //开启定时器触发 mobx
             TimeModel.getSpellGroupTime();
         }
     }
 
     render() {
         const {item, onClick} = this.props;
+        //对时间参数进行处理，返回倒计时数据，通过mobx 监听spellGroupDate，实时返回nowDate
         let backtime = DateUtils.getDateDiffFun(item.endTime, TimeModel.spellGroupDate);
 
         let color = item.groupStatus === ENUMSTATUS.GROUPSTATUS_SUCCESS ? '#333333' :
@@ -181,6 +183,7 @@ export default class ListItemView extends PureComponent {
             millisec: 0, 剩余毫秒
             allSecond:0  总秒数
         }
+     * return xx天 / xx小时xx分钟xx秒
      */
     timeFormat = (time)=>{
         if (!time) {
