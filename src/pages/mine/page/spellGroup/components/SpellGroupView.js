@@ -50,7 +50,6 @@ export default class SpellGroupView extends PureComponent {
                     url={MineApi.getGroupList}
                     renderItem = {this.renderItem}
                     params={{groupStatus: params}}
-                    renderError={this.renderEmpty}
                     renderEmpty={this.renderEmpty}
                 />
                 <GroupSelectModel
