@@ -76,7 +76,6 @@ export default class RecommendRow extends Component {
                             marginTop: 5
                         }} allowFontScaling={false}>{`${DateUtils.formatDate(createTime, 'yyyy-MM-dd')}日发起招募`}</Text>
                         <Text style={{
-                            fontFamily: 'PingFangSC-Medium',
                             fontSize: 13,
                             color: '#FFFFFF',
                             marginTop: 5

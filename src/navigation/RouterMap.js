@@ -12,8 +12,6 @@ let timeStamp = null;
 let errWebtimeStamp = null;
 let perRouteName = null;
 
-console.log(PageKey);
-
 const RouterMap = {
     Tab: 'Tab',
     HtmlPage: 'HtmlPage',
