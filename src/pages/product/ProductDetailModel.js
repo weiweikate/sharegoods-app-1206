@@ -247,7 +247,7 @@ export default class ProductDetailModel {
         }
     }
 
-    /*产品当前页是否使用活动价格  (直降 秒杀)进行中*/
+    /*产品当前页是否使用活动价格  (直降 秒杀)进行中 (拼团未计算在内,因为有存在正常单独购买流程)*/
     @computed get productIsPromotionPrice() {
         const { activityType, activityStatus } = this;
         let tempType = activityType === activity_type.skill || activityType === activity_type.verDown;

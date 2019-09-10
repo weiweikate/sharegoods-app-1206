@@ -119,7 +119,7 @@ export default class ProductDetailPage extends BasePage {
 
     //去购物车
     _bottomViewAction = (type) => {
-        const { productIsPromotionPrice, isHuaFei, isPinGroupIn, singleActivity } = this.productDetailModel;
+        const { productIsPromotionPrice, isHuaFei, isPinGroupIn, isGroupIn, singleActivity } = this.productDetailModel;
         const { groupNum } = singleActivity || {};
         switch (type) {
             case 'keFu':
@@ -166,6 +166,7 @@ export default class ProductDetailPage extends BasePage {
                 this.groupItem = null;
                 //productIsPromotionPrice  拼团需要注意 点击单独购买走普通逻辑
                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                    isOnlyBuyOne: isGroupIn || type === 'pinGroup',
                     productIsPromotionPrice: productIsPromotionPrice || type === 'pinGroup',
                     isAreaSku: this.productDetailModel.type !== 3,
                     priceDesc: isPinGroupIn ? (type === 'pinGroup' ? `${groupNum}人拼团价` : '单人购买价') : ''
@@ -362,6 +363,7 @@ export default class ProductDetailPage extends BasePage {
                     this.groupItem = item;
                     this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
                         productIsPromotionPrice: true,
+                        isOnlyBuyOne: true,
                         isAreaSku: this.productDetailModel.type !== 3,
                         priceDesc: `${groupNum}人拼团价`
                     });
