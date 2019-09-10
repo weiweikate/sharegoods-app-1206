@@ -128,7 +128,6 @@ class HomeModule {
      * @param list 对应的数组数据
      */
     @action changeHomeList = (type, list) => {
-        console.log('------' + type);
         if (list) {
             let startIndex = this.homeList.findIndex(item => {
                 return item.type == type;
@@ -139,8 +138,6 @@ class HomeModule {
                     len += 1;
                 }
             });
-            console.log('------***' + len);
-            console.log('------***' + list.length);
             if (startIndex > -1) {
                 this.homeList.splice(startIndex, len, ...list);
             }
@@ -152,6 +149,7 @@ class HomeModule {
         this.isEnd = false;
         this.isRefreshing = false;
         this.firstLoad = true;
+        limitGoModule.spikeList = [];
     }
 
     @action refreshHome = (type) => {

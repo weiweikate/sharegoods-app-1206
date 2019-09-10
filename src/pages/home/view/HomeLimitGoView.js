@@ -26,10 +26,12 @@ import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterM
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import productRes from '../../product/res/product';
 import XiuDouResultModal from './XiuDouResultModal';
+import { observer } from 'mobx-react';
 
 const { px2dp } = ScreenUtils;
 const { saleSmallSkill } = productRes.pSacle;
 
+@observer
 export default class HomeLimitGoView extends Component {
 
     _onChangeTab(number) {
@@ -216,7 +218,8 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                     :
                     (
                         promotionSaleRateS > 0.9 && promotionSaleRateS < 1 ?
-                            <ImageBackground style={styles.leaveView} source={resHome.home_limit_progress}>
+                            <ImageBackground style={styles.leaveView} source={resHome.home_limit_progress}
+                                             resizeMode={'contain'}>
                                 <UIText value={'即将售罄'}
                                         style={{ fontSize: px2dp(9), color: 'white', marginLeft: px2dp(5) }}/>
                             </ImageBackground>
@@ -261,6 +264,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
 };
 
 const GoodsItemButton = ({ data, activityCode, navigate }) => {
+    console.log('-----' + data.promotionAttention);
     if (data.promotionStatus === limitStatus.doing) {
         return <LinearGradient style={styles.button}
                                start={{ x: 0, y: 0 }}
