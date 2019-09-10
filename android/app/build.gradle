@@ -115,7 +115,7 @@ android {
             shrinkResources true
             zipAlignEnabled true
             signingConfig signingConfigs.release
-            buildConfigField "String", "CODEPUSH_KEY", '"94RNS0GDIN5Nz11zEuDHvFV0NXhY4ksvOXqog"'
+            buildConfigField "String", "CODEPUSH_KEY", '"mkJ7arPkmEFxQcosZQh1EQwsIl2N4ksvOXqog"'
             manifestPlaceholders = [
                     JPUSH_PKGNAME : "com.meeruu.sharegoods",
                     // 生产环境
@@ -139,7 +139,7 @@ android {
             zipAlignEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "CODEPUSH_KEY", '"6ZFHpKAvxdVykH8IMLL3aLRxwwFk4ksvOXqog"'
+            buildConfigField "String", "CODEPUSH_KEY", '"oINKVk36QLNtFykLGUBp6XL9VYJx4ksvOXqog"'
             manifestPlaceholders = [
                     JPUSH_PKGNAME : "com.meeruu.sharegoods",
                     // 生产环境
@@ -158,7 +158,6 @@ android {
             ]
         }
     }
-
 
     repositories {
         maven {
@@ -198,6 +197,7 @@ dependencies {
     api project(':react-native-linear-gradient')
     api project(':react-native-fetch-blob')
     api project(':@react-native-community_netinfo')
+    api project(':@react-native-community_slider')
     api project(':commonlib')
     api project(':qrcode')
     api project(':rn_deviceinfo')

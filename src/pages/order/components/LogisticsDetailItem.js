@@ -53,7 +53,7 @@ const LogisticsDetailItem = props => {
                     {this.renderMiddleImage()}
                 </View>
             }
-            <View style={{ paddingLeft: px2dp(20),paddingRight:px2dp(48), flexWrap: 'wrap',paddingTop:px2dp(15) }}>
+            <View style={{ paddingLeft: px2dp(20),paddingRight:px2dp(48),paddingTop:px2dp(15) }}>
                 <UIText value={content1} style={{ fontSize: px2dp(13), color: isTop ? DesignRule.textColor_mainTitle_222 : DesignRule.textColor_instruction }}/>
             </View>
         </View>

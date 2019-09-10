@@ -3,22 +3,21 @@
  */
 
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtil from '../../../utils/ScreenUtils';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
-
-const { px2dp, onePixel } = ScreenUtil;
 import { observer } from 'mobx-react';
 import { homeModule } from '../model/Modules';
-import { homeLinkType, homeRoute, homePoint } from '../HomeTypes';
+import { homeLinkType, homePoint, homeRoute } from '../HomeTypes';
 import { subjectModule } from '../model/HomeSubjectModel';
 import DesignRule from '../../../constants/DesignRule';
 import { getShowPrice, getTopicJumpPageParam } from '../../topic/model/TopicMudelTool';
 import ImageLoad from '@mr/image-placeholder';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import { MRText as Text } from '../../../components/ui/index';
-import HomeTitleView from './HomeTitleView';
 import res from '../res/index';
+
+const { px2dp, onePixel } = ScreenUtil;
 
 const MoneyItems = ({ money }) => {
     if (EmptyUtils.isEmpty(money)) {
@@ -49,7 +48,7 @@ const GoodItems = ({ img, title, money, press }) => {
 const MoreItem = ({ press }) => <TouchableOpacity style={styles.moreView} onPress={() => {
     press && press();
 }}>
-    <Image source={res.home_right}/>
+    <Image source={res.home_right} style={{ width: 18, height: 18 }}/>
     <View style={{ height: px2dp(10) }}/>
     <Text style={styles.seeMore} allowFontScaling={false}>查看更多</Text>
 </TouchableOpacity>;
@@ -74,7 +73,11 @@ const ActivityItem = ({ data, press, goodsPress }) => {
             />
         );
     });
-    return <View>
+    return <View style={{
+        backgroundColor: 'white', marginHorizontal: px2dp(15),
+        borderBottomRightRadius: px2dp(5),
+        borderBottomLeftRadius: px2dp(5)
+    }}>
         <TouchableWithoutFeedback onPress={() => {
             press && press();
         }}>
@@ -145,20 +148,16 @@ export default class HomeSubjectView extends Component {
         if (subjectList.length <= 0) {
             return null;
         }
-        let items = [];
-        subjectList.map((item, index) => {
-            items.push(<ActivityItem data={item} key={index} press={() => this._subjectActions(item, index)}
-                                     goodsPress={(good) => {
-                                         this._goodAction(good, item, index);
-                                     }}/>);
-        });
-        if (items.length === 0) {
+        let index = this.props.data && this.props.data.itemIndex;
+        let item = subjectList[index] && subjectList[index].itemData;
+        if (!item) {
             return null;
         }
-        return <View style={styles.container}>
-            <HomeTitleView title={'超值热卖'}/>
-            {items}
-        </View>;
+        return (<ActivityItem data={item} key={item.id}
+                              press={() => this._subjectActions(item, index)}
+                              goodsPress={(good) => {
+                                  this._goodAction(good, item, index);
+                              }}/>);
     }
 }
 

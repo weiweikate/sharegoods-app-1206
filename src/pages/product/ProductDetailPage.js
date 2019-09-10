@@ -43,6 +43,12 @@ import ProductDetailNavView from './components/ProductDetailNavView';
 import { IntervalMsgType, IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import ProductDetailCouponsView, { ProductDetailCouponsWindowView } from './components/ProductDetailCouponsView';
 import { ProductDetailSetAddressView } from './components/ProductDetailAddressView';
+import {
+    GroupIsOldView,
+    GroupOpenPersonSView,
+    GroupProductListView
+} from './components/promotionGroup/ProductGroupView';
+import StringUtils from '../../utils/StringUtils';
 
 /**
  * @author chenyangjun
@@ -112,11 +118,9 @@ export default class ProductDetailPage extends BasePage {
 
     //去购物车
     _bottomViewAction = (type) => {
-        const { productIsPromotionPrice, isHuaFei } = this.productDetailModel;
+        const { productIsPromotionPrice, isHuaFei, isPinGroupIn, singleActivity } = this.productDetailModel;
+        const { groupNum } = singleActivity || {};
         switch (type) {
-            case 'jlj':
-                this.shareModal && this.shareModal.open();
-                break;
             case 'keFu':
                 if (!user.isLogin) {
                     this.gotoLoginPage();
@@ -137,7 +141,15 @@ export default class ProductDetailPage extends BasePage {
                     }
                 });
                 break;
+            case 'gwc':
+                this.state.goType = type;
+                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                    productIsPromotionPrice,
+                    isAreaSku: this.productDetailModel.type !== 3
+                });
+                break;
             case 'buy':
+            case 'pinGroup':
                 if (!user.isLogin) {
                     this.gotoLoginPage();
                     return;
@@ -150,24 +162,23 @@ export default class ProductDetailPage extends BasePage {
                     return;
                 }
                 this.state.goType = type;
+                this.groupId = null;
+                //productIsPromotionPrice  拼团需要注意 点击单独购买走普通逻辑
                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
-                    productIsPromotionPrice,
-                    isAreaSku: this.productDetailModel.type !== 3
+                    productIsPromotionPrice: productIsPromotionPrice || type === 'pinGroup',
+                    isAreaSku: this.productDetailModel.type !== 3,
+                    priceDesc: isPinGroupIn ? (type === 'pinGroup' ? `${groupNum}人拼团价` : '单人购买价') : ''
                 });
                 break;
-            case 'gwc':
-                this.state.goType = type;
-                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
-                    productIsPromotionPrice,
-                    isAreaSku: this.productDetailModel.type !== 3
-                });
+            case 'jlj'://分享秀一秀
+                this.shareModal && this.shareModal.open();
                 break;
         }
     };
 
     //选择规格确认
-    _selectionViewConfirm = (amount, skuCode, item) => {
-        const { prodCode, name, originalPrice, productIsPromotionPrice, isGroupIn, groupActivity } = this.productDetailModel;
+    _selectionViewConfirm = (amount, skuCode, item, productIsPromotionPrice) => {
+        const { prodCode, name, originalPrice, isGroupIn, groupActivity } = this.productDetailModel;
         const { goType } = this.state;
         if (goType === 'gwc') {
             shopCartCacheTool.addGoodItem({
@@ -236,6 +247,32 @@ export default class ProductDetailPage extends BasePage {
                     couponsId: parseInt(couponId)
                 }
             });
+        } else if (goType === 'pinGroup') {
+            const { specImg, promotionPrice, propertyValues } = item;
+            const { singleActivity } = this.productDetailModel;
+            const { code, activityTag } = singleActivity || {};
+            let orderProducts = [{
+                productType: this.productDetailModel.type,
+                skuCode: skuCode,
+                quantity: amount,
+                productCode: prodCode,
+                activityCode: code,
+                activityTag: activityTag,
+                batchNo: this.groupId,
+                specImg,
+                productName: name,
+                unitPrice: promotionPrice,
+                spec: (propertyValues || '').replace(/@/g, '-')
+            }];
+            this.$navigate(RouterMap.ConfirOrderPage, {
+                orderParamVO: {
+                    bizTag: 'group',
+                    groupData: { isSponsor: StringUtils.isEmpty(this.groupId) },
+                    orderType: 99,
+                    orderProducts: orderProducts,
+                    source: 2
+                }
+            });
         }
     };
 
@@ -254,7 +291,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel, isGroupIn } = this.productDetailModel;
+        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel, isGroupIn, productGroupModel, singleActivity } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -309,6 +346,24 @@ export default class ProductDetailPage extends BasePage {
             }
             case productItemType.address: {
                 return <ProductDetailSetAddressView productDetailAddressModel={productDetailAddressModel}/>;
+            }
+            case productItemType.groupIsOld: {
+                return <GroupIsOldView productGroupModel={productGroupModel}/>;
+            }
+            case productItemType.groupOpenPersonS: {
+                const { groupNum } = singleActivity || {};
+                return <GroupOpenPersonSView productGroupModel={productGroupModel} goToBuy={(id) => {
+                    this.state.goType = 'pinGroup';
+                    this.groupId = id;
+                    this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                        productIsPromotionPrice: true,
+                        isAreaSku: this.productDetailModel.type !== 3,
+                        priceDesc: `${groupNum}人拼团价`
+                    });
+                }}/>;
+            }
+            case productItemType.groupProductList: {
+                return <GroupProductListView productGroupModel={productGroupModel}/>;
             }
             case productItemType.comment: {
                 return <ProductDetailScoreView pData={this.productDetailModel}
@@ -380,6 +435,7 @@ export default class ProductDetailPage extends BasePage {
                          keyExtractor={(item, index) => {
                              return item + index;
                          }}
+                         initialNumToRender={13}
                          sections={sectionDataList}
                          scrollEventThrottle={10}
                          showsVerticalScrollIndicator={false}/>

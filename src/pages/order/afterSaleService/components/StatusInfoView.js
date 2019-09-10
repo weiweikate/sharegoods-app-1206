@@ -72,12 +72,12 @@ export default class StatusInfoView extends React.Component {
                 <UIText value={titleStr}
                         style={styles.title}/>
                 {
-                    detialStr?<UIText value={detialStr}
-                                      style={styles.detail}/>: null
+                    detialStr ? <UIText value={detialStr}
+                                      style={styles.detail}/> : null
                 }
                 {
-                    remarkStr?<UIText value={'平台说明：' + remarkStr}
-                                      style={styles.detail}/>: null
+                    remarkStr ? <UIText value={'平台说明：' + remarkStr}
+                                      style={styles.detail}/> : null
                 }
 
             </View>
@@ -150,6 +150,7 @@ export default class StatusInfoView extends React.Component {
                 if (subStatus === WAIT_SENDBACK){
                     return{
                         titleStr: '平台已经同意申请，等待平台发货',
+                        remarkStr: remarks,
                     }
                 }
                 // return{
@@ -220,6 +221,7 @@ export default class StatusInfoView extends React.Component {
                 if (subStatus === WAIT_SENDBACK){
                     return{
                         titleStr: '平台已经同意申请，等待平台发货',
+                        remarkStr: remarks,
                     }
                 }
 

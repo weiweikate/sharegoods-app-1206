@@ -10,7 +10,7 @@ import connectStyle from './connectStyle';
 const UIImage = (props) => {
     const { themeStyle, style, onPress, ...imgProps } = props;
     return onPress ?
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
             <Image style={[themeStyle.img, style]}{...imgProps} />
         </TouchableOpacity> : <Image style={[themeStyle.img, style]}{...imgProps} />;
 

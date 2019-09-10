@@ -202,6 +202,7 @@ class Emoticons extends React.Component {
                     {
                         (this.state.currentDotTab[this.state.currentMainTab] == i)
                         || !this.props.asyncRender ? (<TouchableOpacity
+                            activeOpacity={0.7}
                             onPress={() => this._onBackspacePress()}
                             style={[styles.emojiTouch, styles.delete]}
                         >

@@ -11,6 +11,17 @@ import { recommendModule } from './HomeRecommendModel';
 import { limitGoModule } from './HomeLimitGoModel';
 import taskModel from './TaskModel';
 import { tabModel } from './HomeTabModel';
+import store from '@mr/rn-store';
+import { ImageAdViewGetHeight } from '../view/TopicImageAdView';
+import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
+import StringUtils from '../../../utils/StringUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import bridge from '../../../utils/bridge';
+
+const autoSizeWidth = ScreenUtils.autoSizeWidth;
+const kHomeTopTopic = '@home/topTopic';
+const kHomeBottomTopic = '@home/bottomTopic';
+const kHomeType = '@home/type';
 
 //首页modules
 class HomeModule {
@@ -27,7 +38,55 @@ class HomeModule {
     firstLoad = true;
     errorMsg = '';
     tabId = '';
-    refreshing = false;
+    fixedPartOne = [{
+        id: 0,
+        type: homeType.swiper
+    }, {
+        id: 1,
+        type: homeType.user
+    }, {
+        id: 2,
+        type: homeType.channel
+    }, {
+        id: 11,
+        type: homeType.task
+    }, {
+        id: 3,
+        type: homeType.expandBanner
+    }, {
+        id: 4,
+        type: homeType.focusGrid
+    }];
+    topTopice = [];
+    fixedPartTwo = [{
+        id: 5,
+        type: homeType.limitGo
+    }];
+    bottomTopice = [];
+    fixedPartThree = [{
+        id: 6,
+        type: homeType.star
+    }, {
+        id: 7,
+        type: homeType.today
+    }, {
+        id: 8,
+        type: homeType.fine
+    }, {
+        id: 12,
+        type: homeType.homeHotTitle
+    }, {
+        id: 9,
+        type: homeType.homeHot
+    }, {
+        id: 10,
+        type: homeType.goodsTitle
+    }];
+    goods = [];
+
+    type = 0;
+
+
     //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
@@ -67,17 +126,33 @@ class HomeModule {
         };
 
     };
-    @action changeHomeList = (type) => {
-        this.homeList = this.homeList.map((item) => {
-            return ({ ...item });
-        });
+
+    /**
+     * 替换占位list
+     * @param type view类型
+     * @param list 对应的数组数据
+     */
+    @action changeHomeList = (type, list) => {
+        if (list) {
+            let startIndex = this.homeList.findIndex(item => {
+                return item.type == type;
+            });
+            let len = 0;
+            this.homeList.map(item => {
+                if (item.type == type) {
+                    len += 1;
+                }
+            });
+            if (startIndex > -1) {
+                this.homeList.splice(startIndex, len, ...list);
+            }
+        }
     };
 
     @action initHomeParams() {
-        // this.homeList = [];
-        // this.page = 1;
         this.isFetching = false;
         this.isEnd = false;
+        this.isRefreshing = false;
         this.firstLoad = true;
     }
 
@@ -105,20 +180,62 @@ class HomeModule {
                 limitGoModule.loadLimitGo(false);
                 break;
             case homeType.homeHot:
-                subjectModule.loadSubjectList(this.firstLoad);
+                subjectModule.loadSubjectList();
                 break;
             default:
                 break;
         }
     };
 
-    //加载为你推荐列表
+
+    getHomeListData = (topic) => {
+        let home = [];
+        if (this.type === 0) {
+            home = [...this.fixedPartOne,
+                ...this.topTopice,
+                ...this.bottomTopice,
+                ...this.fixedPartTwo,
+                ...this.fixedPartThree,
+                ...this.goods
+            ];
+        } else if (this.type === 2) {
+            home = [...this.fixedPartOne,
+                ...this.fixedPartTwo,
+                ...this.topTopice,
+                ...this.bottomTopice,
+                ...this.fixedPartThree,
+                ...this.goods
+            ];
+        } else {
+            home = [...this.fixedPartOne,
+                ...this.topTopice,
+                ...this.fixedPartTwo,
+                ...this.bottomTopice,
+                ...this.fixedPartThree,
+                ...this.goods
+            ];
+        }
+        return home;
+    };
+
+    // 加载首页数据
     @action loadHomeList = flow(function* () {
         setTimeout(() => {
             this.isRefreshing = false;
         }, 1000);
 
-        // 首页类目
+        if (this.firstLoad) {
+            try {
+                this.type = yield store.get(kHomeType) || 0;
+                let topTopice = yield store.get(kHomeTopTopic);
+                this.topTopice = topTopice || [];
+                let bottomTopice = yield store.get(kHomeBottomTopic);
+                this.bottomTopice = bottomTopice || [];
+            } catch (error) {
+            }
+        }
+        this.getTopticData();
+        //首页类目
         tabModel.loadTabList(this.firstLoad);
         // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
@@ -135,65 +252,23 @@ class HomeModule {
         // 首页精品推荐
         recommendModule.loadRecommendList(this.firstLoad);
         // 超值热卖
-        subjectModule.loadSubjectList(this.firstLoad);
+        subjectModule.loadSubjectList();
 
         taskModel.getData();
 
+        this.firstLoad = false;
         this.page = 1;
         this.isEnd = false;
-        this.firstLoad = false;
-
-        let home = [{
-            id: 0,
-            type: homeType.category
-        }, {
-            id: 1,
-            type: homeType.swiper
-        }, {
-            id: 2,
-            type: homeType.user
-        }, {
-            id: 12,
-            type: homeType.task
-        }, {
-            id: 3,
-            type: homeType.channel
-        }, {
-            id: 4,
-            type: homeType.expandBanner
-        }, {
-            id: 5,
-            type: homeType.focusGrid
-        }, {
-            id: 6,
-            type: homeType.limitGo
-        }, {
-            id: 7,
-            type: homeType.star
-        }, {
-            id: 8,
-            type: homeType.today
-        }, {
-            id: 9,
-            type: homeType.fine
-        }, {
-            id: 10,
-            type: homeType.homeHot
-        }];
         if (this.isFetching === true) {
             return;
         }
-        this.homeList = home;
+        if (this.homeList.length === 0) {
+            this.homeList = this.getHomeListData();
+        }
         try {
-            this.refreshing = true;
             const tabData = yield HomeApi.getTabList();
             this.tabList = tabData.data || [];
             if (this.tabList.length > 0) {
-                home.push({
-                    id: 11,
-                    type: homeType.goodsTitle
-                });
-                this.homeList = [...home];
                 if (this.tabId) {
                     let tabId = this.tabList[0].id;
                     let tabName = this.tabList[0].name;
@@ -211,7 +286,6 @@ class HomeModule {
                 } else {
                     this.tabId = this.tabList[0].id;
                     this.tabName = this.tabList[0].name;
-                    ;
                     this.tabListIndex = 0;
                 }
                 this.getGoods();
@@ -226,74 +300,64 @@ class HomeModule {
 
     @action getGoods() {
         this.isEnd = false;
-        this.refreshing = true;
-        HomeApi.getRecommendList({ tabId: this.tabId, 'page': 1, 'pageSize': 10 }).then(data => {
-            this.page = 1;
-            let list = data.data.data || [];
-            if (!data.data.isMore) {
-                this.isEnd = true;
-            }
+            HomeApi.getRecommendList({ tabId: this.tabId, 'page': 1, 'pageSize': 10 }).then(data => {
+                let list = data.data.data || [];
+                if (!data.data.isMore) {
+                    this.isEnd = true;
+                }
+                let itemData = [];
+                let home = [];
+                for (let i = 0, len = list.length; i < len; i++) {
+                    if (i % 2 === 1) {
+                        let good = list[i];
+                        itemData.push(good);
+                        home.push({
+                            itemData: itemData,
+                            type: homeType.goods,
+                            id: 'goods' + good.recommendId + good.id
+                        });
+                        itemData = [];
+                    } else {
+                        itemData.push(list[i]);
+                    }
+                }
 
-            let itemData = [];
-            let home = [];
-            for (let i = 0, len = list.length; i < len; i++) {
-                if (i % 2 === 1) {
-                    let good = list[i];
-                    itemData.push(good);
+                if (itemData.length > 0) {
                     home.push({
                         itemData: itemData,
                         type: homeType.goods,
-                        id: 'goods' + i
+                        id: 'goods'
                     });
-                    itemData = [];
-                } else {
-                    itemData.push(list[i]);
                 }
-            }
-
-            if (itemData.length > 0) {
-                home.push({
-                    itemData: itemData,
-                    type: homeType.goods,
-                    id: 'goods'
-                });
-            }
-            let temp = this.homeList.filter((item) => {
-                return item.type !== homeType.goods;
+                let temp = this.homeList.filter((item) => {
+                    return item.type !== homeType.goods;
+                })
+                this.goodsOtherLen = temp.length;
+                this.homeList = [...temp, ...home];
+                this.goods = home;
+                this.isRefreshing = false;
+                this.page = 1;
+                this.errorMsg = '';
+            }).catch(err => {
+                this.isRefreshing = false;
+                this.errorMsg = err.msg;
             });
-            this.goodsOtherLen = temp.length;
-            this.homeList = [...temp, ...home];
-            this.isFetching = false;
-            this.isRefreshing = false;
-            this.refreshing = false;
-            this.page = 1;
-            this.errorMsg = '';
-        }).catch(err => {
-            this.isFetching = false;
-            this.isRefreshing = false;
-            this.errorMsg = err.msg;
-            this.refreshing = false;
-        });
-
-
     }
 
-    //加载为你推荐列表
+    // 加载为你推荐列表
     @action loadMoreHomeList = flow(function* () {
-        if (this.isFetching || this.refreshing) {
+        if (this.isFetching || this.isRefreshing) {
             return;
         }
         if (this.isEnd) {
             return;
         }
-        if (this.firstLoad) {
+        if (StringUtils.isEmpty(this.tabId)) {
             return;
         }
         try {
-            const timeStamp = new Date().getTime();
             this.isFetching = true;
-            let page = this.page + 1;
-            const result = yield HomeApi.getRecommendList({ page: page, tabId: this.tabId, pageSize: 10 });
+            const result = yield HomeApi.getRecommendList({ page: this.page+1, tabId: this.tabId, pageSize: 10 });
             this.isFetching = false;
             let list = result.data.data || [];
             if (!result.data.isMore) {
@@ -308,7 +372,7 @@ class HomeModule {
                     home.push({
                         itemData: itemData,
                         type: homeType.goods,
-                        id: 'goods' + good.linkTypeCode + i + timeStamp
+                        id: 'goods' + good.recommendId + good.id
                     });
                     itemData = [];
                 } else {
@@ -323,9 +387,11 @@ class HomeModule {
                 });
             }
             this.homeList = this.homeList.concat(home);
-            this.page++;
+            this.goods = this.goods.concat(home);
+            this.page += 1;
             this.isFetching = false;
             this.errorMsg = '';
+            this.isRefreshing = false;
         } catch (error) {
             this.isFetching = false;
             this.isRefreshing = false;
@@ -354,6 +420,113 @@ class HomeModule {
         this.tabName = tabName;
         this.getGoods();
     }
+
+    @action getTopticData() {
+        HomeApi.getHomeCustom({}).then((data) => {
+            data = data.data || [];
+            let i = 0;
+            let top = true;
+            let bottom = true;
+            data.forEach((item, index) => {
+                let code = item.code;
+                if (code === 'placeholder') {
+                    this.type = 2 - index;
+                    store.save(kHomeType, this.type);
+                    return;
+                }
+                i++;
+                let isTop = i === 1;
+                if (isTop) {
+                    top = false;
+                } else {
+                    bottom = false;
+                }
+                HomeApi.getCustomTopic({ topicCode: code, page: 1, pageSize: 10 }).then((data) => {
+                    if (isTop) {
+                        this.topTopice = this.handleData(data, isTop);
+                        store.save(kHomeTopTopic, this.topTopice);
+                    } else {
+                        this.bottomTopice = this.handleData(data);
+                        store.save(kHomeBottomTopic, this.bottomTopice);
+                    }
+                    this.homeList = this.getHomeListData(true);
+                });
+            });
+
+            if (top) {
+                this.topTopice = [];
+                store.save(kHomeBottomTopic, this.bottomTopice);
+            }
+            if (bottom) {
+                this.bottomTopice = [];
+                store.save(kHomeBottomTopic, this.bottomTopice);
+            }
+
+            if (top || bottom) {
+                this.homeList = this.getHomeListData(true);
+            }
+        });
+
+    }
+
+    @action handleData = (data, isTop) => {
+        if (!data.data || !data.data.widgets) {
+            return [];
+        }
+        data = data.data.widgets.data || [];
+        data = [...data];
+        let p = [];
+        let count = data.length;
+        for (let index = 0; index < count; index++) {
+            let item = data[index];
+            if (item.type === homeType.custom_goods) {
+                item.itemHeight = GoodsCustomViewGetHeight(item);
+                item.marginBottom = ScreenUtils.autoSizeWidth(0);
+                if (count - 1 > index) {
+                    let type = data[index + 1].type;
+                    if (type === homeType.custom_imgAD || type === homeType.custom_text) {
+                        item.marginBottom = ScreenUtils.autoSizeWidth(15);
+                    }
+                }
+                item.itemHeight += item.marginBottom;
+            }
+
+            if (item.type === homeType.custom_imgAD) {
+                item.itemHeight = ImageAdViewGetHeight(item);
+            }
+
+            if (item.type === homeType.custom_text) {
+                item.detailHeight = 0;
+                item.textHeight = 0;
+                item.itemHeight = 0;
+                if (item.text) {
+                    p.push(bridge.getTextHeightWithWidth(item.text, autoSizeWidth(14), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
+                        item.textHeight = r.height;
+                        item.itemHeight = r.height + item.detailHeight + autoSizeWidth(20);
+                    }));
+                }
+                if (item.subText) {
+                    p.push(bridge.getTextHeightWithWidth(item.subText, autoSizeWidth(12), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
+                        item.detailHeight = r.height;
+                        item.itemHeight = r.height + item.textHeight + autoSizeWidth(20);
+                    }));
+                }
+            }
+        }
+
+
+        Promise.all(p).then(() => {
+            if (isTop) {
+                this.topTopice = data;
+                store.save(kHomeTopTopic, this.topTopice);
+            } else {
+                this.bottomTopice = data;
+                store.save(kHomeBottomTopic, this.bottomTopice);
+            }
+            this.homeList = this.getHomeListData(true);
+        });
+
+    };
 }
 
 export const homeModule = new HomeModule();

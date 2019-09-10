@@ -5,7 +5,7 @@ import { BackHandler, Image, Platform, TouchableOpacity, View } from 'react-nati
 import CommShareModal from '../../comm/components/CommShareModal';
 // import res from '../../comm/res';
 import apiEnvironment from '../../api/ApiEnvironment';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, {routeNavigate} from '../../navigation/RouterMap';
 import { autorun } from 'mobx';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
@@ -17,8 +17,11 @@ import SmoothPushHighComponent from '../../comm/components/SmoothPushHighCompone
 import ShareUtil from '../../utils/ShareUtil';
 import { homeType } from '../../pages/home/HomeTypes';
 import LuckyIcon from '../../pages/guide/LuckyIcon';
+import GroupSelectModel from '../../pages/mine/page/spellGroup/components/GroupSelectModel'
 
 const moreIcon = res.button.message_three;
+const btn_group = res.button.btn_group;
+const share_group = res.button.share_group;
 
 @SmoothPushHighComponent
 @observer
@@ -96,7 +99,36 @@ export default class RequestDetailPage extends BasePage {
                            resizeMode={'contain'}/>
                 </TouchableOpacity>
             );
-        } else {
+        }else if(this.state.hasRightItem === 'showGroupRightItem') {
+            return (
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => {routeNavigate(RouterMap.SpellGroupList)}}
+                        style={{
+                        width: ScreenUtils.px2dp(40),
+                        height: ScreenUtils.px2dp(44),
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <Image source={btn_group} style={{width: 22 ,height: ScreenUtils.px2dp(44)}}
+                               resizeMode={'contain'}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={this.showMore}
+                        style={{
+                        width: ScreenUtils.px2dp(40),
+                        height: ScreenUtils.px2dp(44),
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <Image source={share_group} style={{width: 22 ,height: ScreenUtils.px2dp(44)}}
+                               resizeMode={'contain'}/>
+                    </TouchableOpacity>
+                </View>
+            );
+        }else{
             return <View/>;
         }
 
@@ -166,10 +198,19 @@ export default class RequestDetailPage extends BasePage {
     _postMessage = (msg) => {
         if (msg.action === 'share') {
             // this.webJson = msg.shareParmas;
-            this.setState({ shareParmas: msg.shareParams || msg.shareParmas }, () => {
-                this.shareModal && this.shareModal.open();
-            });
-            return;
+            if ((msg.shareParams && msg.shareParams.type && msg.shareParams.type === 'Group') ||
+                (msg.shareParmas && msg.shareParmas.type && msg.shareParmas.type === 'Group')) {
+
+                this.setState({shareParmas: msg.shareParams || msg.shareParmas}, () => {
+                    this.SelectModel && this.SelectModel.onOpen();
+                });
+                return;
+            } else {
+                this.setState({shareParmas: msg.shareParams || msg.shareParmas}, () => {
+                    this.shareModal && this.shareModal.open();
+                });
+                return;
+            }
         }
 
         if (msg.action === 'onShare') {
@@ -186,6 +227,19 @@ export default class RequestDetailPage extends BasePage {
         if (msg.action === 'showRightItem') {
             this.state.hasRightItem = true;
             this.$renderSuperView();//为了触发render
+            return;
+        }
+
+        //拼团h5页面 导航栏右边按钮样式替换
+        if (msg.action === 'showGroupRightItem') {
+            this.state.hasRightItem = 'showGroupRightItem';
+            this.$renderSuperView();//为了触发render
+            return;
+        }
+
+        //拼团h5页面 点击跳转拼团列表
+        if (msg.action === 'GroupNavigate') {
+            routeNavigate(RouterMap.SpellGroupList)
             return;
         }
 
@@ -257,6 +311,29 @@ export default class RequestDetailPage extends BasePage {
                         }
                     }}
                     postMessage={msg => this._postMessage(msg)}
+                />
+                <GroupSelectModel
+                    ref={(ref) => {
+                        this.SelectModel = ref
+                    }}
+                    data={this.state.shareParmas}
+                    createAD={(data) => {
+                        console.log('createAD',data)
+                        this.setState({
+                            shareParmas: data
+                        }, () => {
+                            this.shareModal && this.shareModal.open();
+                        });
+                    }}
+                    inviteShare={(data) => {
+                        console.log('inviteShare',data)
+                        this.setState({
+                            shareParmas: data
+                        }, () => {
+                            this.shareModal && this.shareModal.open();
+                        })
+                    }}
+
                 />
                 <CommShareModal
                     ref={(ref) => this.shareModal = ref}

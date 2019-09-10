@@ -9,7 +9,7 @@ import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import RouterMap, { routePop } from '../../../../navigation/RouterMap';
 
-const arrow_right = res.button.arrow_right;
+const arrow_right = res.button.arrow_right_black;
 export default class SelectAreaPage extends BasePage {
 
     // 导航配置
@@ -57,7 +57,8 @@ export default class SelectAreaPage extends BasePage {
     _renderItem = (item) => {
         return <NoMoreClick style={styles.container} onPress={() => this._onItemClick(item.item)}>
             <UIText value={item.item.name} style={styles.blackText}/>
-            <Image source={arrow_right} style={{ marginRight: 18, width: 10, height: 15 }} resizeMode={'contain'}/>
+            <Image source={arrow_right} style={{ marginRight: 18, height: 12 }}
+                   resizeMode={'contain'}/>
         </NoMoreClick>;
     };
 

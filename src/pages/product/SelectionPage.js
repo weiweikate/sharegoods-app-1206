@@ -239,8 +239,9 @@ export default class SelectionPage extends Component {
         if (!itemData) {
             return;
         }
+        const { productIsPromotionPrice } = this.state.propData;
         this.setState({ modalVisible: false }, () => {
-            this.state.callBack(this.state.amount, itemData.skuCode, itemData);
+            this.state.callBack(this.state.amount, itemData.skuCode, itemData, productIsPromotionPrice);
         });
     };
 
@@ -261,7 +262,7 @@ export default class SelectionPage extends Component {
         if (!this.state.modalVisible) {
             return null;
         }
-        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku, isGroupIn } = this.state.propData;
+        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku, isGroupIn, priceDesc } = this.state.propData;
         const { productDetailAddressModel } = this.state.data;
         return (
             <View style={styles.bgView}>
@@ -275,6 +276,7 @@ export default class SelectionPage extends Component {
                                          productIsPromotionPrice={productIsPromotionPrice}
                                          selectStrList={this.state.selectStrList}
                                          selectSpecList={this.state.selectSpecList}
+                                         priceDesc={priceDesc}
                                          closeSelectionPage={() => this.setState({ modalVisible: false }, () => {
                                              this.props.closeCallBack && this.props.closeCallBack();
                                          })}/>

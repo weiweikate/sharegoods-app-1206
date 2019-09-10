@@ -56,7 +56,7 @@ export default class RefreshList extends Component {
         } else {
             if (this.state.isError) {
                 return (
-                    <TouchableOpacity onPress={() => this.errorReLoadPress()}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => this.errorReLoadPress()}>
                         <View style={styles.footer_container}>
                             <Text style={styles.footer_text}>加载失败，点击重新加载</Text>
                         </View>
@@ -142,7 +142,9 @@ export default class RefreshList extends Component {
                     />
                     {topBtn ?
                         <View style={styles.topbtnStyle}>
-                            <TouchableOpacity onPress={() => this.scrollToIndex({ viewPosition: 0, index: 0 })}>
+                            <TouchableOpacity
+                                activeOpacity={0.7}
+                                onPress={() => this.scrollToIndex({ viewPosition: 0, index: 0 })}>
                                 <Image source={res.other.top_Icon}
                                        style={{
                                            width: ScreenUtils.px2dp(45),

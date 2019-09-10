@@ -121,7 +121,7 @@ function backToShow(index = -1) {
 // 跳转到拼店tab
 function navigateBackToStore() {
     GoToTabItem(2);
-};
+}
 
 // 跳转到首页指定的tab
 function GoToTabItem(index) {

@@ -382,11 +382,11 @@ export default class SignInPage extends BasePage {
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    marginBottom: px2dp(12),
+                    marginBottom: px2dp(10),
                     marginTop: px2dp(15),
                     marginLeft: DesignRule.margin_page
                 }}>
-                    <View style={{ width: 2, height: 8, backgroundColor: DesignRule.mainColor }}/>
+                    <View style={{ width: 2, height: 8, borderRadius: 2, backgroundColor: DesignRule.mainColor }}/>
                     <Text
                         style={{
                             marginLeft: px2dp(10),

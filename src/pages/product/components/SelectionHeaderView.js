@@ -79,11 +79,21 @@ export default class SelectionHeaderView extends Component {
                 </NoMoreClick>
                 <View style={{ backgroundColor: 'white', marginTop: 20, height: 95 }}>
                     <View style={{ marginLeft: 132 }}>
-                        <Text style={{
-                            color: DesignRule.mainColor,
-                            fontSize: 16,
-                            marginTop: 14
-                        }} allowFontScaling={false}>{`￥${price}`}</Text>
+                        <View style = {{flexDirection:'row',alignItems:'center', marginTop: 14}}>
+                            <Text style={{
+                                color: DesignRule.mainColor,
+                                fontSize: 16,
+                            }}>{`￥${price}`}</Text>
+                            {
+                                StringUtils.isNoEmpty(this.props.priceDesc)&&
+                                    <View style = {{height:16,borderRadius:8,justifyContent:'center',borderColor:DesignRule.mainColor,borderWidth:1,marginLeft:5}}>
+                                        <Text style={{
+                                            color: DesignRule.mainColor,
+                                            fontSize: 10,paddingHorizontal:4
+                                        }}>{`${this.props.priceDesc}`}</Text>
+                                    </View>
+                            }
+                        </View>
                         <Text
                             style={{
                                 color: DesignRule.textColor_mainTitle,

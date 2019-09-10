@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     imgBg: {
         position: 'absolute',
         left: 0, top: 0,
-        width: ScreenUtils.width
+        width: ScreenUtils.width, height: px2dp(227)
     },
     whiteBg: {
         marginTop: px2dp(25),

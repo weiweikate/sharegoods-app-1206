@@ -13,7 +13,6 @@ const button = {
     arrow_top: require('./arrow_top.png'),//朝上、灰色箭头
     close_gray_circle: require('./close_gray_circle.png'),//灰色圆形关闭按钮
     delete_picture: require('./delete_picture.png'),//三角形 红色 删除图片的按钮
-    arrow_right: require('./arrow_right.png'),// 向右灰色箭头
     arrow_right_black: require('./arrow_right_black.png'),// 向右黑色色箭头
     open_eye: require('./open_eye.png'),// 灰色眼睛
     close_eye: require('./close_eye.png'),//灰色喝上4眼睛
@@ -32,6 +31,9 @@ const button = {
     back_black: require('./back_black.png'), // 黑色回退按钮
     back_white: require('./back_white.png'), // 白色回退按钮
     btn_close_white: require('./tongyong_btn_close_grey.png'),
-    inputtext_clear: require('./inputtext_clear.png')
+    inputtext_clear: require('./inputtext_clear.png'),
+    btn_group: require('./btn_icon_group.png'), //我的拼团列表页
+    share_group: require('./share_icon_group.png'), //我的拼团列表页
+
 };
 export default button;

@@ -24,6 +24,7 @@ import bridge from '../../../utils/bridge';
 import { getSource } from '@mr/image-placeholder/oos';
 import { getSize } from '../../../utils/OssHelper';
 import { SectionLineView } from './ProductDetailSectionView';
+import { GroupActivityInView, GroupActivityWillBeginView } from './promotionGroup/ProductGroupActivityView';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
@@ -90,7 +91,7 @@ export class HeaderItemView extends Component {
                 <View style={styles.shopSubView}>
                     <View style={styles.shopSubLineView}/>
                     <Text style={styles.shopSubText}>加入拼店</Text>
-                    <Image source={arrow_right_red}/>
+                    <Image resizeMode={'contain'} source={arrow_right_red} style={{ height: 12 }}/>
                 </View>
             </NoMoreClick>
         );
@@ -102,30 +103,30 @@ export class HeaderItemView extends Component {
             freight, monthSaleCount, originalPrice, minPrice, groupPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
             secondName, levelText, priceType, activityType, activityStatus, type, isHuaFei
         } = productDetailModel;
-        let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
-        let showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
-        let showPrice = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
-        /*秒杀||话费 || 兑换 不显示拼店*/
-        let showShop = (activityType === activity_type.skill && activityStatus === activity_status.inSell) || isHuaFei || this.props.paramsType === '9';
+        const showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
+        const showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
+        const showPinWill = activityType === activity_type.pinGroup && activityStatus === activity_status.unBegin;
+        const showPinIn = activityType === activity_type.pinGroup && activityStatus === activity_status.inSell;
+        const showPrice = !(activityType === (activity_type.skill || activity_type.pinGroup) && activityStatus === activity_status.inSell);
+        /*秒杀||拼团||话费 || 兑换 不显示拼店*/
+        const showShop = (activityType === (activity_type.skill || activity_type.pinGroup) && activityStatus === activity_status.inSell) || isHuaFei || this.props.paramsType === '9';
         /*直降中显示活动价 价格区间*/
-        let verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
+        const verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
         return (
             <View style={styles.bgView}>
                 <DetailBanner data={productDetailModel} navigation={navigation}/>
                 {showWill && <ActivityWillBeginView productDetailModel={productDetailModel}/>}
                 {showIn && <ActivityDidBeginView productDetailModel={productDetailModel}/>}
-                {
-                    showPrice && (verDownInSell ?
-                        this._renderPriceView({
-                            minPrice: promotionMinPrice,
-                            maxPrice: promotionMaxPrice,
-                            originalPrice,
-                            levelText,
-                            monthSaleCount
-                        })
-                        :
-                        this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText, monthSaleCount }))
-                }
+                {showPinWill && <GroupActivityWillBeginView productDetailModel={productDetailModel}/>}
+                {showPinIn && <GroupActivityInView productDetailModel={productDetailModel}/>}
+                {showPrice &&
+                this._renderPriceView({
+                    minPrice: verDownInSell ? promotionMinPrice : minPrice,
+                    maxPrice: verDownInSell ? promotionMaxPrice : maxPrice,
+                    originalPrice,
+                    levelText,
+                    monthSaleCount
+                })}
                 {!showShop && this._renderShop({ priceType, shopAction, groupPrice })}
                 <NoMoreClick onPress={() => {
                 }} onLongPress={() => {
@@ -253,7 +254,7 @@ export class PromoteItemView extends Component {
                         })
                     }
                 </View>
-                <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>
+                <Image resizeMode={'contain'} source={arrow_right_black} style={{ height: 10 }}/>
             </NoMoreClick>
         );
     }
@@ -293,7 +294,7 @@ const PromoteItemViewStyles = StyleSheet.create({
 export class ServiceItemView extends Component {
     _imgText = (text) => {
         return <View style={ServiceItemViewStyles.itemView}>
-            <Image source={service_true}/>
+            <Image source={service_true} style={{ width: 8, height: 8 }}/>
             <Text style={ServiceItemViewStyles.serviceValueText}>{text}</Text>
         </View>;
     };
@@ -309,7 +310,7 @@ export class ServiceItemView extends Component {
                     {this._imgText('48小时发货')}
                     {afterSaleLimit ? this._imgText('仅支持换货') : (sevenDayReturn ? this._imgText('7天退换') : null)}
                 </View>
-                <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>
+                <Image resizeMode={'contain'} source={arrow_right_black} style={{ height: 10 }}/>
             </NoMoreClick>
         );
     }
@@ -356,7 +357,7 @@ export class ParamItemView extends Component {
                             fontSize: 13
                         }}>{paramNames.join(' ')}</Text>
                     </View>
-                    <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>
+                    <Image resizeMode={'contain'} source={arrow_right_black} style={{ height: 10 }}/>
                 </NoMoreClick>
             </View>
 

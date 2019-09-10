@@ -13,9 +13,14 @@ const deepLinkPath = {
     /*售后申请*/
     'AfterSaleServicePage': 'path/AfterSaleServicePage/:orderProductNo/:pageType',
     /*物流详情*/
-    'LogisticsDetailsPage': 'path/LogisticsDetailsPage/:expressNo/:expressCode/:expressName',
+    'LogisticsDetailsPage': 'path/LogisticsDetailsPage/:expressNo/:expressCode',
     /*订单列表*/
-    'MyOrdersListPage': 'path/MyOrdersListPage'
+    'MyOrdersListPage': 'path/MyOrdersListPage',
+    'MyOrdersDetailPage': 'path/MyOrdersDetailPage/:merchantOrderNo',
+    /* 个人中心 */
+    'mine': 'path/mine',
+    /* 我的拼团 */
+    'SpellGroupList': 'path/SpellGroupList',
 };
 
 export default deepLinkPath;

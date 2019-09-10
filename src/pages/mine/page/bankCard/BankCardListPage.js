@@ -28,6 +28,7 @@ import BankCardIconModel from './BankCardIconModel';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import bridge from '../../../../utils/bridge';
 import { formatCardWithSpace } from './AddBankCardPage';
+import CommonUtils from '../../../../utils/CommonUtils';
 
 const {
     bankcard_empty,
@@ -126,7 +127,7 @@ export default class BankCardListPage extends BasePage {
     };
 
     _renderValidItem = (rowData) => {
-        const { bankName, type, cardNo } = rowData.item || {};
+        const { bankName, type, cardNo,isShow } = rowData.item || {};
         const { defaultBankIconBg, defaultBankIcon, bankCardIconBg_type, bankCardIcon_type } = BankCardIconModel;
         const bankIcon = bankCardIcon_type[bankName] || defaultBankIcon;
         const bankIconBg = bankCardIconBg_type[bankName] || defaultBankIconBg;
@@ -142,10 +143,12 @@ export default class BankCardListPage extends BasePage {
                                     style={{ fontSize: 17, color: 'white', paddingLeft: 10, fontWeight: '500' }}/>
                         </View>
                         <NoMoreClick onPress={() => {
-                            rowData.isShow = !rowData.isShow;
-                            this.forceUpdate();
+                            let viewData = CommonUtils.deepClone(this.state.viewData);
+                            let item = viewData[rowData.index];
+                            item.isShow = !item.isShow;
+                            this.setState({viewData})
                         }}>
-                            <Image source={rowData.isShow ? bankCardShow : bankCardHide}
+                            <Image source={isShow ? bankCardShow : bankCardHide}
                                    style={{ width: 20, height: 20 }}/>
                         </NoMoreClick>
                     </View>
@@ -153,7 +156,7 @@ export default class BankCardListPage extends BasePage {
                             style={{ fontSize: 13, color: 'white', paddingLeft: 50 }}/>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
                         <UIText
-                            value={rowData.isShow ? formatCardWithSpace(cardNo) : StringUtils.formatBankCardNum(cardNo)}
+                            value={isShow ? formatCardWithSpace(cardNo) : StringUtils.formatBankCardNum(cardNo)}
                             style={{
                                 fontSize: 20, color: 'white', paddingLeft: 50, fontWeight: '500'
                             }}/>

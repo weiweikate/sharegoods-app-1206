@@ -157,29 +157,23 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 }
             }
         });
-        ProductsAdapter.AddCartListener addCartListener = new ProductsAdapter.AddCartListener() {
-            @Override
-            public void onAddCart(String product, String detail) {
-                addCartEvent.init(view.getId());
-                WritableMap map = Arguments.createMap();
-                map.putString("product", product);
-                map.putString("detail", detail);
-                addCartEvent.setData(map);
-                eventDispatcher.dispatchEvent(addCartEvent);
-            }
+        ProductsAdapter.AddCartListener addCartListener = (product, detail) -> {
+            addCartEvent.init(view.getId());
+            WritableMap map = Arguments.createMap();
+            map.putString("product", product);
+            map.putString("detail", detail);
+            addCartEvent.setData(map);
+            eventDispatcher.dispatchEvent(addCartEvent);
         };
 
-        ProductsAdapter.PressProductListener pressProductListener = new ProductsAdapter.PressProductListener() {
-            @Override
-            public void onPressProduct(String product, String detail) {
-                onPressProductEvent onPressProductEvent = new onPressProductEvent();
-                onPressProductEvent.init(view.getId());
-                WritableMap writableMap = Arguments.createMap();
-                writableMap.putString("product", product);
-                writableMap.putString("detail", detail);
-                onPressProductEvent.setData(writableMap);
-                eventDispatcher.dispatchEvent(onPressProductEvent);
-            }
+        ProductsAdapter.PressProductListener pressProductListener = (product, detail) -> {
+            onPressProductEvent onPressProductEvent = new onPressProductEvent();
+            onPressProductEvent.init(view.getId());
+            WritableMap writableMap = Arguments.createMap();
+            writableMap.putString("product", product);
+            writableMap.putString("detail", detail);
+            onPressProductEvent.setData(writableMap);
+            eventDispatcher.dispatchEvent(onPressProductEvent);
         };
 
         NineGridView.clickL clickL = new NineGridView.clickL() {
@@ -213,12 +207,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 presenter.getShowList(cursor);
             }
         }, recyclerView);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
-                toDetail(position, view);
-            }
-        });
+        adapter.setOnItemClickListener((adapter, view1, position) -> toDetail(position, view));
         adapter.setLoadMoreView(new CustomLoadMoreView());
         setRecyclerViewItemEvent(view);
         adapter.setHasStableIds(true);

@@ -4,9 +4,9 @@
         android:drawable="@drawable/ysf_evaluation_star_disabled_dark"
         android:maxLevel="0" />
     <item
-        android:drawable="@drawable/ysf_evaluation_star_enabled_dark"
+        android:drawable="@drawable/ysf_evaluation_star_enabled_dark1"
         android:maxLevel="1" />
     <item
-        android:drawable="@drawable/ysf_evaluation_star_complete_dark"
+        android:drawable="@drawable/ysf_evaluation_star_complete_dark1"
         android:maxLevel="2" />
 </level-list>

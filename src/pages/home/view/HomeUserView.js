@@ -57,8 +57,7 @@ let styles = StyleSheet.create({
         height: px2dp(44),
         width: ScreenUtil.width,
         paddingLeft: px2dp(15),
-        paddingRight: px2dp(15),
-        backgroundColor: '#fff'
+        paddingRight: px2dp(15)
     },
     inContainer: {
         flexDirection: 'row',

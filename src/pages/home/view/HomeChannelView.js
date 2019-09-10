@@ -69,11 +69,8 @@ export default class HomeChannelView extends Component {
         track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeIcon, index));
     };
 
-    renderItems = () => {
-        const { channelList } = channelModules;
-        if (channelList.length === 0) {
-            return null;
-        }
+    renderItems = (channelList) => {
+
         let itemViews = [];
         // 最多两排
         channelList.map((value, index) => {
@@ -85,8 +82,13 @@ export default class HomeChannelView extends Component {
     };
 
     render() {
+        const { channelList } = channelModules;
+        if (channelList.length === 0) {
+            return null;
+        }
+        let data = channelList[0];
         return (<View style={[styles.container, { height: channelModules.channelHeight }]}>
-                {this.renderItems()}
+                {this.renderItems(data.itemData)}
             </View>
         );
     }
@@ -104,7 +106,6 @@ const styles = StyleSheet.create({
         paddingRight: px2dp(16),
         paddingTop: px2dp(8),
         justifyContent: 'space-between',
-        backgroundColor: 'white',
         width: ScreenUtils.width
     },
     item: {

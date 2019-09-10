@@ -13,6 +13,7 @@ class NoMoreClick extends Component {
         const { ...attributes } = this.props;
         return (
             <TouchableOpacity
+                activeOpacity={0.7}
                 onPress={this.debouncePress(this.props.onPress)}
                 {...attributes}>
                 {this.props.children}

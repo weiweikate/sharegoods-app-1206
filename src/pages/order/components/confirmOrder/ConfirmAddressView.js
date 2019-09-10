@@ -137,14 +137,13 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     arrowRightStyle: {
-        width: ScreenUtils.autoSizeWidth(10),
-        height: ScreenUtils.autoSizeWidth(14),
+        height: ScreenUtils.autoSizeWidth(12),
         marginRight: ScreenUtils.autoSizeWidth(15)
     },
 
     receiverAddressStyle: {
-        fontSize: ScreenUtils.px2dp(13),
-        color: DesignRule.textColor_mainTitle,
+        fontSize: ScreenUtils.px2dp(12),
+        color: DesignRule.textColor_instruction,
         marginTop: ScreenUtils.autoSizeWidth(5)
     },
     giftOutStyle: {

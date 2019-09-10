@@ -63,7 +63,7 @@
   ASOverlayLayoutSpec *OverlayLayoutSpec =  [ASOverlayLayoutSpec overlayLayoutSpecWithChild:ImageSpec overlay:textInsetSpec];
   
   _headerNode.style.spacingBefore = 10;
-  _headerNode.style.preferredSize = CGSizeMake(30, 30);
+  _headerNode.style.preferredSize = CGSizeMake(20, 20);
   _headerNode.style.spacingAfter = 5;
   _userNameNode.style.flexShrink = 1.0;
   _userNameNode.style.flexGrow = 1.0;
@@ -120,7 +120,7 @@
     _titleNode.maximumNumberOfLines = 2;
     if(_model.pureContent_1){
     _titleNode.attributedText = [[NSAttributedString alloc]initWithString:_model.pureContent_1 attributes:@{
-                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:12],
+                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:14],
                                                                                                             NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]
                                                                                                             }];
       }
@@ -133,7 +133,7 @@
   if (!_headerNode) {
      NSString *urlStr = @"";
     if(_model.userInfoVO && [_model.userInfoVO valueForKey:@"userImg"]){
-      urlStr = [[_model.userInfoVO valueForKey:@"userImg"] getUrlAndWidth:30 height:30];
+      urlStr = [[_model.userInfoVO valueForKey:@"userImg"] getUrlAndWidth:20 height:20];
     }
     if (_index < SGNetworkImageNodeNum) {
       SGNetworkImageNode * imageNode = [SGNetworkImageNode new];
@@ -146,7 +146,7 @@
       imageNode.defaultImage = [UIImage imageNamed:@"default_avatar"];
       _headerNode = imageNode;
     }
-    _headerNode.cornerRadius = 15;
+    _headerNode.cornerRadius = 10;
     _headerNode.clipsToBounds = YES;
   }
   return _headerNode;

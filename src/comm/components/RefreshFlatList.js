@@ -79,9 +79,11 @@ export default class RefreshFlatList extends React.Component {
         defaultEmptyImage: res.placeholder.no_data,
         defaultEmptyText: '暂无数据~',
         defaultData: [],
-        renderHeader: ()=>{return null},
+        renderHeader: () => {
+            return null;
+        },
         componentDidMountRefresh: true,
-        emptyHeight: ScreenUtils.height - ScreenUtils.headerHeight,
+        emptyHeight: ScreenUtils.height - ScreenUtils.headerHeight
     };
 
     constructor(props) {
@@ -94,7 +96,7 @@ export default class RefreshFlatList extends React.Component {
             loadingMore: false,
             footerStatus: 'idle',
             data: [],
-            error: null,
+            error: null
         };
         this.page = props.defaultPage;
         this.allLoadCompleted = false;
@@ -106,32 +108,32 @@ export default class RefreshFlatList extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.componentDidMountRefresh){
+        if (this.props.componentDidMountRefresh) {
             this._onRefresh(false);
         }
-        if(this.props.cache){
-            store.get(cache).then(data=>{
-                if(data){
-                    this.setState({data:data});
+        if (this.props.cache) {
+            store.get(cache).then(data => {
+                if (data) {
+                    this.setState({ data: data });
                 }
 
-            })
+            });
         }
     }
 
-    scrollToTop = (animated = true)=> {
-        this.list && this.list.scrollToOffset({y: 0, animated: animated});
-    }
+    scrollToTop = (animated = true) => {
+        this.list && this.list.scrollToOffset({ y: 0, animated: animated });
+    };
 
-    changeData = (data)=>{
+    changeData = (data) => {
         this.setState({
             data: data
-        })
-    }
+        });
+    };
 
-    getSourceData = ()=>{
+    getSourceData = () => {
         return this.state.data;
-    }
+    };
 
     _renderEmpty() {
         if (this.props.renderEmpty) {
@@ -174,7 +176,7 @@ export default class RefreshFlatList extends React.Component {
         }
 
         return (
-            <View style={{ height: 70 }}>
+            <View>
                 {loadMoreComponent}
                 {footer}
             </View>
@@ -188,14 +190,14 @@ export default class RefreshFlatList extends React.Component {
         }
         this.setState({ refreshing: refreshing, footerStatus: 'idle' });
         this.allLoadCompleted = false;
-        let { onStartRefresh, url, params, defaultPage, onEndRefresh ,paramsFunc} = this.props;
-        if(paramsFunc){
+        let { onStartRefresh, url, params, defaultPage, onEndRefresh, paramsFunc } = this.props;
+        if (paramsFunc) {
             params = paramsFunc();
         }
         this.page = defaultPage;
         onStartRefresh && onStartRefresh();
-        if (!refreshing){
-            bridge.showLoading()
+        if (!refreshing) {
+            bridge.showLoading();
         }
         delete params.cursor;
         if (url) {
@@ -210,10 +212,10 @@ export default class RefreshFlatList extends React.Component {
             return;
         }
         this.setState({ footerStatus: 'idle' });
-        this.list && this.list.scrollToOffset({y: 0, animated: false});
+        this.list && this.list.scrollToOffset({ y: 0, animated: false });
         this.allLoadCompleted = false;
         let { onStartRefresh, url, params, defaultPage, onEndRefresh, paramsFunc } = this.props;
-        if(paramsFunc){
+        if (paramsFunc) {
             params = paramsFunc();
         }
         this.page = defaultPage;
@@ -256,7 +258,7 @@ export default class RefreshFlatList extends React.Component {
             params[sizeKey] = pageSize;
         }
         url(params).then((result => {
-            bridge.hiddenLoading()
+            bridge.hiddenLoading();
             let netData = [];
             let allLoadCompleted = false;
             this.isNetLoading = false;
@@ -297,7 +299,7 @@ export default class RefreshFlatList extends React.Component {
                 error: null
             });
         })).catch((error) => {
-            bridge.hiddenLoading()
+            bridge.hiddenLoading();
             if (isRefresh === false) {
                 onEndLoadMore && onEndLoadMore();
             } else {
@@ -318,20 +320,24 @@ export default class RefreshFlatList extends React.Component {
 
 
     render() {
-        if (this.state.data.length === 0 && this.state.error && this.props.renderError){
+        if (this.state.data.length === 0 && this.state.error && this.props.renderError) {
             return this.props.renderError(this.state.error || {});
         }
         return (
             <FlatList
                 {...this.props}
-                ref={(ref) => {this.list = ref}}
+                ref={(ref) => {
+                    this.list = ref;
+                }}
                 data={this.state.data}
                 ListEmptyComponent={this._renderEmpty.bind(this)}
                 ListFooterComponent={this._renderFooter.bind(this)}
                 renderItem={this.props.renderItem}
                 onEndReached={this._onLoadMore.bind(this)}
                 onEndReachedThreshold={0.1}
-                ListHeaderComponent={()=> { return   this.props.renderHeader(this.state.data)}}
+                ListHeaderComponent={() => {
+                    return this.props.renderHeader(this.state.data);
+                }}
                 // onRefresh={this._onRefresh.bind(this)}
                 // refreshing={this.state.refreshing}
                 //onLayout={this.onLayout.bind(this)}
@@ -373,7 +379,7 @@ export class BaseLoadMoreComponent extends React.Component {
             case 'noMoreData':
                 return this.renderLoadCompleted();
             default:
-                return <View />
+                return <View/>;
         }
     }
 }
@@ -391,7 +397,7 @@ export class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
 
     renderLoadingMore() {
         return (
-             <View style={styles.footer}>
+            <View style={styles.footer}>
                 <ActivityIndicator style={{ marginRight: 6 }} color={DesignRule.mainColor} size='small'/>
                 <Text style={styles.footerText} allowFontScaling={false}>正在加载中...</Text>
             </View>

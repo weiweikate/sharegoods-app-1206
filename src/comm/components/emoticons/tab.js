@@ -69,6 +69,7 @@ class TabBar extends React.Component {
                         if(tab === 'plus'){
                             return <TouchableOpacity ref={(component) => this.tabComponent.push(component)}
                                                      key={tab} onPress={() => this._getMore()}
+                                                     activeOpacity={0.7}
                                                      style={[styles.tab,{backgroundColor: (this.props.activeTab === i ? '#f1f1f1' : '#fff')}]}>
                                 <Image
                                     resizeMode={'contain'}
@@ -79,6 +80,7 @@ class TabBar extends React.Component {
 
                         if(tab === 'history'){
                             return <TouchableOpacity ref={(component) => this.tabComponent.push(component)}
+                                                     activeOpacity={0.7}
                                                      key={tab} onPress={() => this._onIconPress(i)}
                                                      style={[styles.tab,{backgroundColor: (this.props.activeTab === i ? '#f1f1f1' : '#fff')}]}>
                                 <Image
@@ -89,6 +91,7 @@ class TabBar extends React.Component {
                         }
 
                         return <TouchableOpacity ref={(component) => this.tabComponent.push(component)}
+                                                 activeOpacity={0.7}
                                                  key={tab} onPress={() => this._onIconPress(i)}
                                                  style={[styles.tab,{backgroundColor: (this.props.activeTab === i ? '#f1f1f1' : '#fff')}]}>
                             <Text style={styles.emoji }>{this.props.tabs[i]}</Text>

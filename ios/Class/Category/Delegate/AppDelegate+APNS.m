@@ -276,10 +276,12 @@
     [JPUSHService handleRemoteNotification:userInfo];
   }
   // 用户点击通知栏打开消息，使用神策分析记录 "App 打开消息" 事件
-  [[SensorsAnalyticsSDK sharedInstance] track:@"AppOpenNotification" withProperties:@{
-                                                                                      @"msg_title":[NSString stringWithFormat:@"%@",userInfo[@"aps"][@"alert"]],
-                                                                                      @"msg_id":[NSString stringWithFormat:@"%@",userInfo[@"_j_msgid"]]
-                                                                                      }];
+  NSMutableDictionary *prop = [NSMutableDictionary dictionary];
+  [prop setValue:userInfo[@"aps"][@"alert"] forKey:@"msg_title"];
+  [prop setValue:userInfo[@"_j_msgid"] forKey:@"msg_id"];
+  [prop setValue:userInfo[@"bizId"] forKey:@"bizId"];
+  [prop setValue:userInfo[@"bizType"] forKey:@"bizType"];
+  [[SensorsAnalyticsSDK sharedInstance] track:@"AppOpenNotification" withProperties:prop];
   
   // 直接上报数据
   [[SensorsAnalyticsSDK sharedInstance] flush];
@@ -290,9 +292,10 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-//  if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
+  //处理打开的后台推送消息 在前台的暂不处理
+  if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
     [self showChatViewController:userInfo];
-//  }
+  }
 }
 
 //-(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
@@ -350,7 +353,10 @@
   if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
     [[UIApplication sharedApplication]openURL:[NSURL URLWithString:openURL] options:@{} completionHandler:nil];
   }else{
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:openURL]];
+    //openURL卡顿
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:openURL]];
+    });
   }
 }
 

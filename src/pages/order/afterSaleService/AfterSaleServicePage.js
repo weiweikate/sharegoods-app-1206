@@ -94,7 +94,7 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + (this.state.productData.merchantOrderNo||'')}
+                <UIText value={'订单编号：' + (this.state.productData.merchantOrderNo || '')}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
@@ -242,7 +242,7 @@ class AfterSaleServicePage extends BasePage {
                             fontSize: 13,
                             marginRight: 5
                         }} value={StringUtils.isNoEmpty(this.state.returnReason) ? this.state.returnReason : '请选择'}/>
-                        <UIImage source={arrow_right} style={{ height: 10, width: 7, marginRight: 15 }}/>
+                        <UIImage resizeMode={'contain'} source={arrow_right} style={{ height: 12, marginRight: 15 }}/>
                     </View>
                 </TouchableOpacity>
                 {this.refundAndExchangeType()}
@@ -409,7 +409,7 @@ class AfterSaleServicePage extends BasePage {
         OrderApi.getReturnReason({ code: ['JTK', 'THTK', 'HH', 'WFH'][pageType] }).then((result) => {
             let returnReasons = result.data || [];
             if (sevenDayReturn) {
-                let returnReason = '七天无理由'+['退款','退货','换货','退款'][pageType];
+                let returnReason = '七天无理由' + ['退款','退货','换货','退款'][pageType];
                 returnReasons = [{value: returnReason}, ...returnReasons]
             }
             that.setState({ returnReasons: returnReasons });

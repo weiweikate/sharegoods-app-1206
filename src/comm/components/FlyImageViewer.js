@@ -5,7 +5,6 @@
  */
 
 import React, { Component } from 'react';
-import { ImageCacheManager } from 'react-native-cached-image';
 import {
     ActionSheetIOS,
     ActivityIndicator,
@@ -672,7 +671,8 @@ export default class FlyImageViewer extends Component {
                                        onLongPress={this.handleLongPress.bind(this, image)}
                                        onClick={this.handleClick.bind(this)}
                                        onDoubleClick={this.handleDoubleClick.bind(this)}>
-                                <TouchableOpacity key={index}
+                                <TouchableOpacity activeOpacity={0.7}
+                                                  key={index}
                                                   style={this.styles.failContainer}>
                                     <ImageLoad source={this.props.failImageSource}
                                                style={this.styles.failImage}/>
@@ -714,7 +714,7 @@ export default class FlyImageViewer extends Component {
 
                 {this.props.imageUrls[this.state.currentShowIndex] && this.props.imageUrls[this.state.currentShowIndex].originSizeKb && this.props.imageUrls[this.state.currentShowIndex].originUrl &&
                 <View style={this.styles.watchOrigin}>
-                    <TouchableOpacity style={this.styles.watchOriginTouchable}>
+                    <TouchableOpacity activeOpacity={0.7} style={this.styles.watchOriginTouchable}>
                         <Text style={this.styles.watchOriginText} allowFontScaling={false}>查看原图(2M)</Text>
                     </TouchableOpacity>
                 </View>
@@ -732,27 +732,13 @@ export default class FlyImageViewer extends Component {
         if (!this.props.onSave) {
             bridge.$toast('图片保存中...');
             let that = this;
-            if (Platform.OS === 'ios') {
-                CameraRoll.saveToCameraRoll(that.props.imageUrls[that.state.currentShowIndex])
-                    .then(() => {
-                        that.props.onSaveToCamera(that.state.currentShowIndex);
-                    });
-            } else {
-                ImageCacheManager().downloadAndCacheUrl(that.props.imageUrls[this.state.currentShowIndex]).then(((path) => {
-                    CameraRoll.saveToCameraRoll(path)
-                        .then(() => {
-                            that.props.onSaveToCamera(that.state.currentShowIndex);
-                        });
-                }));
-            }
-
+            CameraRoll.saveToCameraRoll(that.props.imageUrls[that.state.currentShowIndex])
+                .then(() => {
+                    that.props.onSaveToCamera(that.state.currentShowIndex);
+                });
         } else {
             this.props.onSave(this.props.imageUrls[this.state.currentShowIndex]);
         }
-
-        // this.setState({
-        //     isShowMenu: false
-        // });
     }
 
     getMenu() {

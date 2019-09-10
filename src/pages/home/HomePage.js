@@ -31,11 +31,12 @@ import taskModel from './model/TaskModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
 import { routePush } from '../../navigation/RouterMap';
-import HomeNormalList from './view/HomeNormalList';
-import DIYTopicList from './view/DIYTopicList';
 import { tabModel } from './model/HomeTabModel';
-import HomeFirstTabView from './view/HomeFirstTabView';
+import HomeFirstTabView from './view/List/HomeFirstTabView';
+import HomeNormalList from './view/List/HomeNormalList';
+import DIYTopicList from './view/List/DIYTopicList';
 import { observer } from 'mobx-react';
+import ImageLoader from '@mr/image-placeholder';
 
 
 /**
@@ -45,6 +46,7 @@ import { observer } from 'mobx-react';
  * @org www.sharegoodsmall.com
  * @email zhangjian@meeruu.com
  */
+
 
 @observer
 class HomePage extends BasePage {
@@ -62,8 +64,8 @@ class HomePage extends BasePage {
         };
     }
 
-
     componentDidMount() {
+        homeModalManager.requestData();
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
@@ -111,7 +113,6 @@ class HomePage extends BasePage {
                             taskModel.getData();
                             limitGoModule.loadLimitGo(false);
                         }
-                        homeModalManager.requestData();
                         homeModalManager.refreshPrize();
                     });
                 }
@@ -201,8 +202,7 @@ class HomePage extends BasePage {
         return (
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
                 <HomeSearchView navigation={routePush}
-                                hasMessage={this.state.hasMessage}
-                />
+                                hasMessage={this.state.hasMessage}/>
                 <ScrollableTabView
                     onChangeTab={(obj) => {
                         let i = obj.i;
@@ -235,7 +235,7 @@ class HomePage extends BasePage {
         let itemWidth = 60;
         let tabBarHeight = 42;
         return (
-            <View style={{ backgroundColor: 'white', height: tabBarHeight, width: ScreenUtils.width }}>
+            <View style={{ height: tabBarHeight, width: ScreenUtils.width, backgroundColor: 'white' }}>
                 <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
@@ -257,15 +257,32 @@ class HomePage extends BasePage {
                             borderRadius: 2
                         }}
                         renderTab={(name, page, isTabActive) => {
+                            let item = {}
+                            let showType, navIcon, bottomNavIcon;
+                            if (page === 0){
+
+                            } else {
+                                item = tabModel.tabList[page-1] || {};
+                                showType = item.showType;
+                                navIcon = item.navIcon;
+                                bottomNavIcon = item.bottomNavIcon;
+                            }
                             return (
                                 <TouchableOpacity style={{
                                     height: 36,
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     width: itemWidth
-                                }} onPress={() => p.goToPage(page)}>
+                                }} onPress={() => {p.goToPage(page)}}>
+                                    {showType === 2?   <ImageLoader source={{uri: isTabActive ? navIcon : bottomNavIcon}}
+                                                 style={{
+                                                     height: 36,
+                                                     width: itemWidth
+                                                 }}
+                                    />:
                                     <Text style={isTabActive ? styles.tabSelect : styles.tabNomal}
                                           numberOfLines={1}>{name}</Text>
+                                    }
                                 </TouchableOpacity>
                             );
                         }}

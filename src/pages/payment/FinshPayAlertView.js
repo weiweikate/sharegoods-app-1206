@@ -9,7 +9,7 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
 import { MRText } from '../../components/ui';
-import LinearGradient from "react-native-linear-gradient";
+import LinearGradient from 'react-native-linear-gradient';
 
 const {
     finsh_pay_alertbg,
@@ -61,8 +61,7 @@ export default class FinshPayAlertView extends Component {
                                 width: px2dp(21),
                                 height: px2dp(21)
                             }}
-                                   source={payClose}>
-                            </Image>
+                                   source={payClose} />
                         </TouchableOpacity>
                             <View style={{
                                 marginTop: px2dp(300),
@@ -72,7 +71,7 @@ export default class FinshPayAlertView extends Component {
                                 justifyContent:'center'
                             }}>
                                 <TouchableOpacity onPress={()=>{
-                                    btnClick&&btnClick();
+                                    btnClick && btnClick();
                                 }}>
                                     <LinearGradient colors={['rgba(255, 0, 80, 1)', 'rgba(252, 93, 57, 1)']}
                                                     style={{width:px2dp(180),height:px2dp(40),alignItems:'center',justifyContent:'center',borderRadius:px2dp(20)}}

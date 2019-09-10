@@ -14,8 +14,8 @@ const AddressItem = props => {
     this.defaultPress = () => {
         let { name = '',
             phone = '',
-            address = ''} =props;
-        Clipboard.setString(name +'；手机号：'+ phone + '；收件人地址:'+address);
+            address = ''} = props;
+        Clipboard.setString(name + '；手机号：' + phone + '；收件人地址:' + address);
         NativeModules.commModule.toast('已复制地址');
     };
     const {
@@ -34,7 +34,7 @@ const AddressItem = props => {
     } = props;
     this.renderRightImage = () => {
         return (isRightArrow ?
-                <UIImage source={arrow_right} style={{ width: 10, height: 14, marginLeft: 17, marginRight: 17 }}/> :
+                <UIImage resizeMode={'contain'} source={arrow_right} style={{ height: 12, marginLeft: 17, marginRight: 17 }}/> :
                 <UIText value={''}/>
         );
     };

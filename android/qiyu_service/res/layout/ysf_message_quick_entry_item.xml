@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
     android:orientation="horizontal"
-    android:paddingBottom="3dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="3dp">
+    android:layout_gravity="center_vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
     <ImageView
         android:id="@+id/ysf_quick_entry_icon"
@@ -15,6 +15,7 @@
         android:layout_height="14dp"
         android:layout_marginRight="4dp"
         android:contentDescription="@null"
+        android:layout_gravity="center_vertical"
         android:scaleType="centerCrop"
         android:visibility="gone" />
 
@@ -23,6 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
         android:textColor="@color/ysf_blue_4F82AE"
-        android:textSize="@dimen/ysf_text_size_12" />
+        android:textSize="12sp"
+        tools:text="234234234234"/>
 </LinearLayout>

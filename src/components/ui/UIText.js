@@ -34,7 +34,7 @@ const MRText = (props) => {
     return (
         <RNText {...attributes}
                 allowFontScaling={false}
-                style={[props.style, { includeFontPadding: false }, size > 0 ? { lineHeight: size } : null]}>
+                style={[size > 0 ? { lineHeight: size } : null, { includeFontPadding: false }, props.style]}>
             {props.children}
         </RNText>
     );
@@ -75,7 +75,7 @@ class MRTextInputWithCancel extends React.Component {
                                onFocus && onFocus(nativeEvent);
                            }}
                            {...attributes}/>
-                {showCancel && <TouchableOpacity onPress={() => {
+                {showCancel && <TouchableOpacity activeOpacity={0.7} onPress={() => {
                     this.onChangeText('', onChangeText);
                 }}>
                     <Image style={{ width: 16, height: 16 }} source={UITextInputCancel}/>

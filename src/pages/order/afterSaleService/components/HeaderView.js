@@ -9,25 +9,25 @@
  *
  */
 
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 
 import {
     StyleSheet,
     View,
-    ImageBackground,
     Platform
-} from "react-native";
+} from 'react-native';
 
 import {
     UIImage, MRText
-} from "../../../../components/ui";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import res from "../../res";
+} from '../../../../components/ui';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import res from '../../res';
 const  autoSizeWidth = ScreenUtils.autoSizeWidth;
 import {AfterStatus, SubStatus, PageType, isRefundFail} from '../AfterType'
 import DottedLine from '../../../../comm/components/DottedLine';
+import LinearGradient from 'react-native-linear-gradient';
 
 const {
     PAGE_AREFUND,
@@ -54,7 +54,6 @@ const {
 
 const {
     afterSaleService: {
-        exchangeGoodsDetailBg,
         white_triangular
     }
 } = res;
@@ -70,15 +69,19 @@ export default class HeaderView extends React.Component {
     render() {
         let { status, pageType, subStatus, refundStatus} = this.props;
         return (
-            <ImageBackground source={exchangeGoodsDetailBg} style={styles.container}>
+            <LinearGradient start={{x: 0, y: 0}}
+                            end={{x: 1, y: 0}}
+                            colors={['#FF0050', '#FC5D39']}
+                            style={styles.container}
+            >
                 <View style={{marginHorizontal: autoSizeWidth(34), height: 55, marginBottom: autoSizeWidth(20)}}>
                     {this.renderTimerLine(status, pageType, subStatus, refundStatus)}
                 </View>
-            </ImageBackground>
+            </LinearGradient>
         );
     }
 
-    renderDashedLine(style={}){
+    renderDashedLine(style = {}){
         if (Platform.OS === 'ios'){
             return <View style={[styles.dashedLine, style]}/>
         } else {
@@ -385,17 +388,15 @@ export default class HeaderView extends React.Component {
 
     // type: 1、实心的圆 2、空心的圆 3、三角型
     renderItem(type = 1, topText = '', bottomText = '', color = 'white'){
-        let width = type === 3 ? 6: 10;
+        let width = type === 3 ? 6 : 10;
         let middleView = () => {};
         if (type === 1){
             middleView = () => {return(
-                <View style={{height:10 ,width:10 ,backgroundColor: color, borderRadius: 5, overflow: 'hidden'}}>
-                </View>
+                <View style={{height:10 ,width:10 ,backgroundColor: color, borderRadius: 5, overflow: 'hidden'}} />
             )};
         } else if (type === 2){
             middleView = () => {return(
-                <View style={{height:10 ,width:10 ,borderColor: color, borderRadius: 5, overflow: 'hidden', borderWidth: 1}}>
-                </View>
+                <View style={{height:10 ,width:10 ,borderColor: color, borderRadius: 5, overflow: 'hidden', borderWidth: 1}} />
             )};
 
         }else if (type === 3){
@@ -422,7 +423,7 @@ export default class HeaderView extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: autoSizeWidth(110) + ScreenUtils.headerHeight,
+        height: autoSizeWidth(110),
         width: autoSizeWidth(375),
         justifyContent: 'flex-end',
     },

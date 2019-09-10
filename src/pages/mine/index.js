@@ -18,6 +18,7 @@ import GroupShowFansPage from './page/showFans/GroupShowFansPage';
 import MainShowFansPage from './page/showFans/MainShowFansPage';
 import ExpDetailPage from './page/myData/ExpDetailPage';
 import SetMentorPage from './page/mentor/SetMentorPage';
+import SpellGroupList from './page/spellGroup/SpellGroupList'
 
 export default {
     moduleName: 'mine',    //模块名称
@@ -41,6 +42,7 @@ export default {
         SetMentorPage,
         MainShowFansPage,
         GroupShowFansPage,
-        SearchShowFansPage
+        SearchShowFansPage,
+        SpellGroupList
     }
 };

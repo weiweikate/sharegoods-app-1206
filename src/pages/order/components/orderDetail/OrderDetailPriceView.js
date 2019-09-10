@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     View,
-} from "react-native";
-import { orderDetailModel } from "../../model/OrderDetailModel";
-import { observer } from "mobx-react";
-import StringUtils from "../../../../utils/StringUtils";
-import UserSingleItem from "../UserSingleItem";
+} from 'react-native';
+import { orderDetailModel } from '../../model/OrderDetailModel';
+import { observer } from 'mobx-react';
+import StringUtils from '../../../../utils/StringUtils';
+import UserSingleItem from '../UserSingleItem';
 import DesignRule from '../../../../constants/DesignRule';
 
 @observer
@@ -18,7 +18,7 @@ export default class OrderDetailPriceView extends Component {
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 20, backgroundColor: DesignRule.bgColor }}/>
+            <View style={{ height: 2, backgroundColor: DesignRule.bgColor }}/>
         );
     };
     render(){
@@ -48,10 +48,10 @@ export default class OrderDetailPriceView extends Component {
                 }
 
                 {
-                    promotionAmount !== 0?
+                    promotionAmount !== 0 ?
                         <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'组合优惠'}
                                         leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                        rightText={promotionAmount>=0?('-¥'+promotionAmount):('+¥'+ Math.abs(promotionAmount))}
+                                        rightText={promotionAmount >= 0 ? ('-¥' + promotionAmount) : ('+¥' + Math.abs(promotionAmount))}
                                         rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                         isLine={false}/>
                         : null
@@ -68,7 +68,7 @@ export default class OrderDetailPriceView extends Component {
                                 rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                 isLine={false}/>
                 {this.renderWideLine()}
-                <UserSingleItem itemHeightStyle={{ height: 45 }} leftText={`${status > 1 ? '实付款' : '需付款'}`}
+                <UserSingleItem itemHeightStyle={{ height: 50 }} leftText={`${status > 1 ? '实付款' : '需付款'}`}
                                 leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
                                 rightText={StringUtils.formatMoneyString(payAmount)}
                                 rightTextStyle={{ color: DesignRule.mainColor, fontSize: 15 }} isArrow={false}

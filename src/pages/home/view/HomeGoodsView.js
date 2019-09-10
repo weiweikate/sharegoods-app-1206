@@ -12,7 +12,7 @@ import { MRText as Text } from '../../../components/ui/index';
 import StringUtils from '../../../utils/StringUtils';
 import { topicAdOnPress } from '../HomeTypes';
 
-export const kHomeGoodsViewHeight = px2dp(246);
+export const kHomeGoodsViewHeight = px2dp(247);
 const goodsWidth = (ScreenUtils.width - px2dp(35)) / 2;
 
 const MoneyItems = ({ money }) => {
@@ -29,9 +29,9 @@ export const Goods = ({ goods, press }) => {
     if (goods.linkType === 2) {
         return <TouchableOpacity onPress={() => press && press()}>
             <ReuserImage style={styles.container} source={{ uri: goods.topicImage ? goods.topicImage : '' }}/>
-        </TouchableOpacity>
+        </TouchableOpacity>;
     }
-    return   <TouchableWithoutFeedback onPress={() => press && press()}>
+    return <TouchableWithoutFeedback onPress={() => press && press()}>
 
         <View style={styles.container}>
             <View style={styles.image}>
@@ -52,16 +52,18 @@ export const Goods = ({ goods, press }) => {
             <MoneyItems money={goods.promotionMinPrice ? goods.promotionMinPrice : goods.price}/>
         </View>
     </TouchableWithoutFeedback>;
-}
+};
 
 export default class GoodsCell extends Component {
     _goodsAction(data, index) {
-        track(trackEvent.HomeRecommendClick, {homeRecArea: 2,contentKey: data.linkCode, contentValue: data.title, contentIndex: index, tabName: homeModule.tabName});
-        // let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
-        topicAdOnPress(data.linkType, data.linkCode);
-        // const { navigate } = this.props;
-        // let params = homeModule.paramsNavigate(data);
-        // navigate(route, params);
+        track(trackEvent.HomeRecommendClick, {
+            homeRecArea: 2,
+            contentKey: data.linkCode,
+            contentValue: data.title,
+            contentIndex: index,
+            tabName: homeModule.tabName
+        });
+        topicAdOnPress({},{linkType: data.linkType, linkValue: [data.linkCode]});
     }
 
     render() {
@@ -126,7 +128,7 @@ class ReuserImage extends Component {
 
 let styles = StyleSheet.create({
     container: {
-        height: px2dp(240),
+        height: px2dp(241),
         width: goodsWidth,
         backgroundColor: 'white',
         borderRadius: px2dp(5),
@@ -156,7 +158,7 @@ let styles = StyleSheet.create({
     cell: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: px2dp(240),
+        height: kHomeGoodsViewHeight,
         width: ScreenUtils.width,
         flexDirection: 'row'
     },

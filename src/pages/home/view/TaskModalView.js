@@ -65,7 +65,7 @@ export default class TaskModalView extends React.Component {
         super(props);
 
         this.state = {};
-        this.model = this.props.type === 'home'? taskModel : mineTaskModel
+        this.model = this.props.type === 'home' ? taskModel : mineTaskModel
 
     }
 
@@ -99,7 +99,8 @@ export default class TaskModalView extends React.Component {
                 if (item.parameter){
                     let params =  JSON.parse(item.parameter);
                     item.parameter = params.url;
-                    item.detail = params.name;
+                    item.name = params.name;
+                    item.detail = '';
                 }
             }else {
                 item.detail =  item.total + item.unit + item.name
@@ -109,14 +110,14 @@ export default class TaskModalView extends React.Component {
         return(
             <View style={styles.modal}>
                 <Image source={taskModal_light} style={{
-                    width: ScreenUtils.autoSizeWidth(839/2),
-                    height: ScreenUtils.autoSizeWidth(551/2),
-                    bottom: ScreenUtils.height/2.0 + ScreenUtils.autoSizeWidth(51*alertData.length)/2,
+                    width: ScreenUtils.autoSizeWidth(839 / 2),
+                    height: ScreenUtils.autoSizeWidth(551 / 2),
+                    bottom: ScreenUtils.height / 2.0 + ScreenUtils.autoSizeWidth(51 * alertData.length) / 2,
                     position: 'absolute'
                 }}/>
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
                                     colors={[ '#FEF5D7','#FEDB98']}
-                                    style={{ alignItems: "center", width: ScreenUtils.autoSizeWidth(250),borderRadius: 10, overflow: 'hidden'}}
+                                    style={{ alignItems: 'center', width: ScreenUtils.autoSizeWidth(250),borderRadius: 10, overflow: 'hidden'}}
                     >
                         <View style={{height:ScreenUtils.autoSizeWidth(80), alignItems: 'center', justifyContent: 'center'}}>
                             <MRText style={{fontSize: 14, color: DesignRule.mainColor, marginTop:ScreenUtils.autoSizeWidth(40)}}>恭喜您获得奖励</MRText>
@@ -125,14 +126,14 @@ export default class TaskModalView extends React.Component {
                             alertData.map((item) => {
                                 let {code} = item;
                                 return(
-                                    <ImageBackground source={bgs[GiftType[code]-1]} style={{
+                                    <ImageBackground source={bgs[GiftType[code] - 1]} style={{
                                         height: ScreenUtils.autoSizeWidth(51),
                                         width: ScreenUtils.autoSizeWidth(220),
                                         marginTop: ScreenUtils.autoSizeWidth(8),
                                         alignItems: 'center',
                                         flexDirection: 'row'
                                     }}>
-                                        <Image source={images[GiftType[code]-1]} style={{
+                                        <Image source={images[GiftType[code] - 1]} style={{
                                             width: ScreenUtils.autoSizeWidth(45),
                                             height: ScreenUtils.autoSizeWidth(45),
                                             marginLeft: ScreenUtils.autoSizeWidth(10)
@@ -150,14 +151,14 @@ export default class TaskModalView extends React.Component {
                         }
                         <TouchableOpacity onPress={()=> {this.onPress(lottery)}}>
                             <ImageBackground source={taskModal_btn} style={styles.btn}>
-                                <MRText style={styles.btnText}>{lottery?'查看': '确定'}</MRText>
+                                <MRText style={styles.btnText}>{lottery ? (lottery.parameter ? '查看' : '关闭') : '确定'}</MRText>
                             </ImageBackground>
                         </TouchableOpacity>
                     </LinearGradient>
                 <Image source={taskModal_title} style={{
-                    width: ScreenUtils.autoSizeWidth(544/2),
-                    height: ScreenUtils.autoSizeWidth(230/2),
-                    top: ScreenUtils.height/2.0 - ScreenUtils.autoSizeWidth(80+51*alertData.length+83)/2 -ScreenUtils.autoSizeWidth(40) ,
+                    width: ScreenUtils.autoSizeWidth(544 / 2),
+                    height: ScreenUtils.autoSizeWidth(230 / 2),
+                    top: ScreenUtils.height / 2.0 - ScreenUtils.autoSizeWidth(80 + 51 * alertData.length + 83) / 2 - ScreenUtils.autoSizeWidth(40) ,
                     position: 'absolute',
                 }}/>
             </View>
@@ -165,9 +166,8 @@ export default class TaskModalView extends React.Component {
     }
 
     onPress(item){
-        if (item)  {
+        if (item && item.parameter)  {
             routePush('HtmlPage', {uri: item.parameter})
-            alert(item.parameter)
         }
         this.model.closeAlert()
     }
@@ -264,8 +264,8 @@ const styles = StyleSheet.create({
         height: ScreenUtils.autoSizeWidth(50),
     },
     btn: {
-        height: ScreenUtils.autoSizeWidth(108/2),
-        width: ScreenUtils.autoSizeWidth(370/2),
+        height: ScreenUtils.autoSizeWidth(108 / 2),
+        width: ScreenUtils.autoSizeWidth(370 / 2),
         alignItems: 'center',
         justifyContent: 'center' ,
         marginBottom: ScreenUtils.autoSizeWidth(23),

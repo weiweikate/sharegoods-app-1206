@@ -48,8 +48,8 @@
   if (_aspectRatio !=0) {
     return _aspectRatio;
   }
-  CGFloat width = 1.0;
-  CGFloat height = 1.0;
+  CGFloat width = 167.0;
+  CGFloat height = 120.0;
   if(self.showType&&self.showType == 3){
     for(int i=0;i<self.resource.count;i++){
       if(self.resource[i].type==5 && [self.resource[i] valueForKey:@"baseUrl"]){
