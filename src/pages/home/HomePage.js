@@ -232,6 +232,7 @@ class HomePage extends BasePage {
     }
 
     _renderTabBar(p) {
+        console.log('----' + JSON.stringify(p));
         let itemWidth = 60;
         let tabBarHeight = 42;
         return (
@@ -257,12 +258,12 @@ class HomePage extends BasePage {
                             borderRadius: 2
                         }}
                         renderTab={(name, page, isTabActive) => {
-                            let item = {}
+                            let item = {};
                             let showType, navIcon, bottomNavIcon;
-                            if (page === 0){
+                            if (page === 0) {
 
                             } else {
-                                item = tabModel.tabList[page-1] || {};
+                                item = tabModel.tabList[page - 1] || {};
                                 showType = item.showType;
                                 navIcon = item.navIcon;
                                 bottomNavIcon = item.bottomNavIcon;
@@ -273,15 +274,18 @@ class HomePage extends BasePage {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     width: itemWidth
-                                }} onPress={() => {p.goToPage(page)}}>
-                                    {showType === 2?   <ImageLoader source={{uri: isTabActive ? navIcon : bottomNavIcon}}
-                                                 style={{
-                                                     height: 36,
-                                                     width: itemWidth
-                                                 }}
-                                    />:
-                                    <Text style={isTabActive ? styles.tabSelect : styles.tabNomal}
-                                          numberOfLines={1}>{name}</Text>
+                                }} onPress={() => {
+                                    p.goToPage(page);
+                                }}>
+                                    {showType === 2 ?
+                                        <ImageLoader source={{ uri: isTabActive ? navIcon : bottomNavIcon }}
+                                                     style={{
+                                                         height: 36,
+                                                         width: itemWidth
+                                                     }}
+                                        /> :
+                                        <Text style={isTabActive ? styles.tabSelect : styles.tabNomal}
+                                              numberOfLines={1}>{name}</Text>
                                     }
                                 </TouchableOpacity>
                             );

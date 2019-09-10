@@ -264,7 +264,6 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
 };
 
 const GoodsItemButton = ({ data, activityCode, navigate }) => {
-    console.log('-----' + data.promotionAttention);
     if (data.promotionStatus === limitStatus.doing) {
         return <LinearGradient style={styles.button}
                                start={{ x: 0, y: 0 }}
