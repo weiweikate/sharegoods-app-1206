@@ -77,13 +77,13 @@ export class GroupOpenPersonSView extends Component {
                     })
                 }
                 <NoMoreClick style={stylesPerson.bottomView} onPress={() => {
-                    this.ProductGroupModal.show({ actionType: action_type.desc, data: groupDesc, goToBuy });
+                    this.ProductGroupModal.show({ actionType: action_type.desc, data: groupDesc });
                 }}>
                     <MRText style={stylesPerson.bottomText}>玩法<MRText
                         style={stylesPerson.bottomText1}> 支付开团邀请1人参团，人数不足自动退款</MRText></MRText>
                     <Image source={arrow_right_black} resizeMode={'contain'} style={{ height: 10 }}/>
                 </NoMoreClick>
-                <ProductGroupModal ref={e => this.ProductGroupModal = e}/>
+                <ProductGroupModal ref={e => this.ProductGroupModal = e} goToBuy={goToBuy}/>
             </View>
         );
     }
