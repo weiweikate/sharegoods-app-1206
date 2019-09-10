@@ -425,7 +425,7 @@ const styles = StyleSheet.create({
     },
     leaveView: {
         marginTop: px2dp(5),
-        width: px2dp(118),
+        width: px2dp(121),
         height: px2dp(12),
         justifyContent: 'center'
     }

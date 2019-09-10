@@ -38,6 +38,7 @@ class HomeModule {
     firstLoad = true;
     errorMsg = '';
     tabId = '';
+    // id数字不要轻易改，model有对应
     fixedPartOne = [{
         id: 0,
         type: homeType.swiper
@@ -65,21 +66,15 @@ class HomeModule {
     bottomTopice = [];
     fixedPartThree = [{
         id: 7,
-        type: homeType.star
-    }, {
-        id: 8,
         type: homeType.today
     }, {
-        id: 9,
+        id: 8,
         type: homeType.fine
     }, {
-        id: 10,
-        type: homeType.homeHotTitle
-    }, {
-        id: 11,
+        id: 9,
         type: homeType.homeHot
     }, {
-        id: 12,
+        id: 10,
         type: homeType.goodsTitle
     }];
     goods = [];
@@ -133,6 +128,7 @@ class HomeModule {
      * @param list 对应的数组数据
      */
     @action changeHomeList = (type, list) => {
+        console.log('------' + type);
         if (list) {
             let startIndex = this.homeList.findIndex(item => {
                 return item.type == type;
@@ -143,6 +139,8 @@ class HomeModule {
                     len += 1;
                 }
             });
+            console.log('------***' + len);
+            console.log('------***' + list.length);
             if (startIndex > -1) {
                 this.homeList.splice(startIndex, len, ...list);
             }
@@ -300,48 +298,48 @@ class HomeModule {
 
     @action getGoods() {
         this.isEnd = false;
-            HomeApi.getRecommendList({ tabId: this.tabId, 'page': 1, 'pageSize': 10 }).then(data => {
-                let list = data.data.data || [];
-                if (!data.data.isMore) {
-                    this.isEnd = true;
-                }
-                let itemData = [];
-                let home = [];
-                for (let i = 0, len = list.length; i < len; i++) {
-                    if (i % 2 === 1) {
-                        let good = list[i];
-                        itemData.push(good);
-                        home.push({
-                            itemData: itemData,
-                            type: homeType.goods,
-                            id: 'goods' + good.recommendId + good.id
-                        });
-                        itemData = [];
-                    } else {
-                        itemData.push(list[i]);
-                    }
-                }
-
-                if (itemData.length > 0) {
+        HomeApi.getRecommendList({ tabId: this.tabId, 'page': 1, 'pageSize': 10 }).then(data => {
+            let list = data.data.data || [];
+            if (!data.data.isMore) {
+                this.isEnd = true;
+            }
+            let itemData = [];
+            let home = [];
+            for (let i = 0, len = list.length; i < len; i++) {
+                if (i % 2 === 1) {
+                    let good = list[i];
+                    itemData.push(good);
                     home.push({
                         itemData: itemData,
                         type: homeType.goods,
-                        id: 'goods'
+                        id: 'goods' + good.recommendId + good.id
                     });
+                    itemData = [];
+                } else {
+                    itemData.push(list[i]);
                 }
-                let temp = this.homeList.filter((item) => {
-                    return item.type !== homeType.goods;
-                })
-                this.goodsOtherLen = temp.length;
-                this.homeList = [...temp, ...home];
-                this.goods = home;
-                this.isRefreshing = false;
-                this.page = 1;
-                this.errorMsg = '';
-            }).catch(err => {
-                this.isRefreshing = false;
-                this.errorMsg = err.msg;
+            }
+
+            if (itemData.length > 0) {
+                home.push({
+                    itemData: itemData,
+                    type: homeType.goods,
+                    id: 'goods'
+                });
+            }
+            let temp = this.homeList.filter((item) => {
+                return item.type !== homeType.goods;
             });
+            this.goodsOtherLen = temp.length;
+            this.homeList = [...temp, ...home];
+            this.goods = home;
+            this.isRefreshing = false;
+            this.page = 1;
+            this.errorMsg = '';
+        }).catch(err => {
+            this.isRefreshing = false;
+            this.errorMsg = err.msg;
+        });
     }
 
     // 加载为你推荐列表
@@ -357,7 +355,7 @@ class HomeModule {
         }
         try {
             this.isFetching = true;
-            const result = yield HomeApi.getRecommendList({ page: this.page+1, tabId: this.tabId, pageSize: 10 });
+            const result = yield HomeApi.getRecommendList({ page: this.page + 1, tabId: this.tabId, pageSize: 10 });
             this.isFetching = false;
             let list = result.data.data || [];
             if (!result.data.isMore) {

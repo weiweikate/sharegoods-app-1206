@@ -131,7 +131,7 @@ export class LimitGoModules {
                 this.spikeList = _spikeList;
                 this.currentGoodsList = (_spikeList[this.currentPage] && _spikeList[this.currentPage].goods) || [];
                 homeModule.changeHomeList(homeType.limitGo, [{
-                    id: 5,
+                    id: 6,
                     type: homeType.limitGo
                 }]);
             }
