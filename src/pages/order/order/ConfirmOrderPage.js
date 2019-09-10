@@ -40,7 +40,7 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '确认订单',
+        title: '提交订单',
         show: true // false则隐藏导航
     };
     //**********************************ViewPart******************************************
