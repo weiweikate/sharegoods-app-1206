@@ -73,7 +73,7 @@ export default class ProductDetailPage extends BasePage {
         this.state = {
             goType: ''
         };
-        this.productDetailModel.prodCode = 'SPU00000536';
+        this.productDetailModel.prodCode = this.params.productCode;
         this.productDetailModel.trackCode = this.params.trackCode;
         this.productDetailModel.trackType = this.params.trackType;
     }
@@ -118,7 +118,8 @@ export default class ProductDetailPage extends BasePage {
 
     //去购物车
     _bottomViewAction = (type) => {
-        const { productIsPromotionPrice, isHuaFei } = this.productDetailModel;
+        const { productIsPromotionPrice, isHuaFei, isPinGroupIn, singleActivity } = this.productDetailModel;
+        const { groupNum } = singleActivity || {};
         switch (type) {
             case 'keFu':
                 if (!user.isLogin) {
@@ -165,7 +166,8 @@ export default class ProductDetailPage extends BasePage {
                 //productIsPromotionPrice  拼团需要注意 点击单独购买走普通逻辑
                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
                     productIsPromotionPrice: productIsPromotionPrice || type === 'pinGroup',
-                    isAreaSku: this.productDetailModel.type !== 3
+                    isAreaSku: this.productDetailModel.type !== 3,
+                    priceDesc: isPinGroupIn ? (type === 'pinGroup' ? `${groupNum}人拼团价` : '单人购买价') : ''
                 });
                 break;
             case 'jlj'://分享秀一秀
@@ -289,7 +291,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel, isGroupIn, productGroupModel } = this.productDetailModel;
+        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel, isGroupIn, productGroupModel, singleActivity } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -349,12 +351,14 @@ export default class ProductDetailPage extends BasePage {
                 return <GroupIsOldView productGroupModel={productGroupModel}/>;
             }
             case productItemType.groupOpenPersonS: {
+                const { groupNum } = singleActivity || {};
                 return <GroupOpenPersonSView productGroupModel={productGroupModel} goToBuy={(id) => {
                     this.state.goType = 'pinGroup';
                     this.groupId = id;
                     this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
                         productIsPromotionPrice: true,
-                        isAreaSku: this.productDetailModel.type !== 3
+                        isAreaSku: this.productDetailModel.type !== 3,
+                        priceDesc: `${groupNum}人拼团价`
                     });
                 }}/>;
             }

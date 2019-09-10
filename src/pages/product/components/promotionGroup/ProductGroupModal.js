@@ -21,6 +21,8 @@ import StringUtils from '../../../../utils/StringUtils';
 import { observer } from 'mobx-react';
 import whoAreYou from './whoAreYou.png';
 import morePerson from './morePerson.png';
+import bridge from '../../../../utils/bridge';
+import user from '../../../../model/user';
 
 const { px2dp } = ScreenUtils;
 
@@ -170,11 +172,11 @@ export class GroupJoinView extends Component {
                                  isAvatar={true}
                                  style={[stylesJoin.icon, { marginLeft: index === 0 ? 0 : px2dp(20) }]}
                                  source={source ? source : { uri: userHeadImg }}>
-                            {startGroupLeader ? <View style={stylesJoin.leaderView}>
-                                <MRText style={stylesJoin.leaderText}>团长</MRText>
-                            </View> : null}
                         </UIImage>
                 }
+                {startGroupLeader ? <View style={stylesJoin.leaderView}>
+                    <MRText style={stylesJoin.leaderText}>团长</MRText>
+                </View> : null}
             </View>
 
         );
@@ -182,7 +184,7 @@ export class GroupJoinView extends Component {
 
     render() {
         const { extraData, data, goToBuy, close } = this.props;
-        const { groupNum, endTime, id } = extraData;
+        const { groupNum, endTime, id, activityTag } = extraData;
         let leaderName;
         for (const item of data) {
             if (item.startGroupLeader) {
@@ -207,6 +209,10 @@ export class GroupJoinView extends Component {
                            source={whoAreYou}/>
                 </View>
                 <NoMoreClick onPress={() => {
+                    if (activityTag === 101106 && user.newUser !== null && !user.newUser) {
+                        bridge.$toast('该团仅支持新用户参加，可以开个新团，立享优惠哦~');
+                        return;
+                    }
                     close();
                     goToBuy && goToBuy(id);
                 }}>
@@ -249,7 +255,8 @@ const stylesJoin = StyleSheet.create({
 
     leaderView: {
         width: 32, height: 15, borderRadius: 7.5, backgroundColor: DesignRule.mainColor,
-        justifyContent: 'center', alignItems: 'center'
+        justifyContent: 'center', alignItems: 'center',
+        position: 'absolute', bottom: 0, alignSelf: 'center'
     },
     leaderText: {
         fontSize: 11, color: 'white'

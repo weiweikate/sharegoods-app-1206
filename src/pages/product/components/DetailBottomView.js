@@ -137,7 +137,7 @@ export default class DetailBottomView extends Component {
                                                         end={{ x: 1, y: 0 }}
                                                         colors={['#FC5D39', '#FF0050']}>
                                             <Text
-                                                style={styles.btnText}>{isPinGroupIn ? (hasOpenGroup ? `￥${promotionMinPrice}起开团` : '查看我的团') : '分享秀一秀'}</Text>
+                                                style={styles.btnText}>{isPinGroupIn ? (!hasOpenGroup ? `￥${promotionMinPrice}起开团` : '查看我的团') : '分享秀一秀'}</Text>
                                         </LinearGradient>
                                     </TouchableOpacity>
                                 </View>
