@@ -14,12 +14,15 @@
 
 import { IntervalMsgType } from '../../../comm/components/IntervalMsgView';
 
+
+
+
+
 const BoxStatusClose = 0;
 const BoxStatusCanOpen = 1;
 const BoxStatusOpen = 2;
 
 const TaskStatusUndone = 0;
-// const TaskStatusWaitFinish = 1;
 const TaskStatusFinish = 2;
 
 import React from 'react';
