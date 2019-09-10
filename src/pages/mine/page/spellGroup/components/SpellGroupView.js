@@ -58,6 +58,7 @@ export default class SpellGroupView extends PureComponent {
                         this.SelectModel = ref
                     }}
                     createAD={(data) => {
+                        //选中拼团数据，触发弹出分享modal ，生成海报
                         this.setState({
                             shareType: data
                         }, () => {
@@ -65,6 +66,7 @@ export default class SpellGroupView extends PureComponent {
                         });
                     }}
                     inviteShare={(data) => {
+                        //选中拼团数据，触发弹出分享modal
                         this.setState({
                             shareType: data
                         }, () => {
@@ -97,6 +99,9 @@ export default class SpellGroupView extends PureComponent {
         );
     }
 
+    /**
+    * @func 网络错误/暂无数据
+    */
     renderEmpty = ()=>{
         return (
             <View style={styles.errContainer}>
