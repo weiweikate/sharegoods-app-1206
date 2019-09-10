@@ -47,7 +47,7 @@ class SettingModel {
 
     //帐号与安全页 短信开关控制
     @observable
-    messageState = false;
+    messageState = 0;
 
     @action
     getLocationState() {
@@ -57,7 +57,6 @@ class SettingModel {
                 this.WXChatState = data.WXChatState;
             }
         });
-
         this.messageState = userModel.showPhone;
 
          store.get(mineKey).then((data) => {
