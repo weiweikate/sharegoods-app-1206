@@ -199,6 +199,10 @@ class User {
     @observable
     weChatNumber = null;
 
+    //用户是否开启短信通道
+    @observable
+    showPhone = false
+
     // 全局记录商品详情页是否是首次加载
     isProdFirstLoad = true;
 
@@ -316,6 +320,8 @@ class User {
         //用户靓号
         this.perfectNumberCode = info.perfectNumberCode;
         this.weChatNumber = info.weChatNumber; //微信号
+
+        this.showPhone = info.showPhone;
 
         if (this.levelRemark && this.levelRemark !== info.levelRemark) {
             // mediatorCallFunc()
@@ -447,6 +453,7 @@ class User {
         this.historicalScore = null; //总积分
         this.historicalBalance = null;
         this.blockedUserScore = null;
+        this.showPhone = false;
 
 
         return store.deleted(USERINFOCACHEKEY).catch(e => {

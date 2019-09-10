@@ -58,6 +58,8 @@ class SettingModel {
             }
         });
 
+        this.messageState = userModel.showPhone;
+
          store.get(mineKey).then((data) => {
                 console.log('dataMineKey',data)
                 if (data) {
