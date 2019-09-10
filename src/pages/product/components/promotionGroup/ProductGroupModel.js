@@ -16,6 +16,8 @@ export default class ProductGroupModel {
     @observable groupProducts = [];
     @observable groupDesc = '';
 
+    @observable showAlert = true;
+
     requestCheckStartJoinUser = ({ prodCode, activityCode, activityTag }) => {
         ProductApi.promotion_group_checkStartJoinUser({ prodCode, activityCode, activityTag }).then((data) => {
             const { startGroupLeader, groupId } = data.data;

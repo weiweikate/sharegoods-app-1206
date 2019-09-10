@@ -46,7 +46,8 @@ import { ProductDetailSetAddressView } from './components/ProductDetailAddressVi
 import {
     GroupIsOldView,
     GroupOpenPersonSView,
-    GroupProductListView
+    GroupProductListView,
+    GroupShowAlertView
 } from './components/promotionGroup/ProductGroupView';
 import StringUtils from '../../utils/StringUtils';
 
@@ -417,7 +418,7 @@ export default class ProductDetailPage extends BasePage {
         const {
             name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionMinPrice,
             shareMoney, sectionDataList, productIsPromotionPrice, isSkillIn, nameShareText, productDetailCouponsViewModel,
-            priceTypeTextList, monthSaleCount
+            priceTypeTextList, monthSaleCount, productGroupModel
         } = this.productDetailModel;
         const { couponId } = this.params;
         const isDuiHuang = this.params.type === '9';
@@ -444,6 +445,7 @@ export default class ProductDetailPage extends BasePage {
             <ShowTopView productDetailModel={this.productDetailModel}
                          toTopAction={this._onPressToTop}/>
             <IntervalMsgView pageType={IntervalType.productDetail}/>
+            <GroupShowAlertView productGroupModel={productGroupModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}

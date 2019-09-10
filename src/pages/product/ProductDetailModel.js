@@ -275,11 +275,7 @@ export default class ProductDetailModel {
         return activityType === activity_type.group && activityStatus === activity_status.inSell && (groupActivity.subProductList || []).length > 0;
     }
 
-    @computed get isPinGroupIn() {
-        const { activityType, activityStatus } = this;
-        return activityType === activity_type.pinGroup && activityStatus === activity_status.inSell;
-    }
-
+    //老礼包还要计算子商品能不能买
     @computed get groupSubProductCanSell() {
         const { subProductList } = this.groupActivity;
         for (const subProduct of (subProductList || [])) {
@@ -291,6 +287,11 @@ export default class ProductDetailModel {
             }
         }
         return true;
+    }
+
+    @computed get isPinGroupIn() {
+        const { activityType, activityStatus } = this;
+        return activityType === activity_type.pinGroup && activityStatus === activity_status.inSell;
     }
 
     /*秒杀倒计时显示*/
@@ -634,7 +635,11 @@ export default class ProductDetailModel {
                 return;
             }
             const { code, activityTag } = singleActivity;
-            this.productGroupModel.requestCheckStartJoinUser({ prodCode: this.prodCode, activityCode: code, activityTag });
+            this.productGroupModel.requestCheckStartJoinUser({
+                prodCode: this.prodCode,
+                activityCode: code,
+                activityTag
+            });
             this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
             this.productGroupModel.requestGroupProduct({ activityCode: code });
             this.productGroupModel.requestGroupDesc();

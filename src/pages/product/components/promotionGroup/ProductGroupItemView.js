@@ -109,6 +109,7 @@ export class GroupPersonItem extends Component {
             <View style={[stylesPerson.container, this.props.style]}>
                 <View style={stylesPerson.nameView}>
                     <UIImage style={stylesPerson.nameImg}
+                             isAvatar={true}
                              source={{ uri: initiatorUserImg }}/>
                     <MRText style={stylesPerson.nameText}>{initiatorUserName}</MRText>
                 </View>

@@ -629,4 +629,5 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
     public void deleteFail(String err) {
 
     }
+
 }

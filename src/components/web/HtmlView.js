@@ -20,6 +20,8 @@ import LuckyIcon from '../../pages/guide/LuckyIcon';
 import GroupSelectModel from '../../pages/mine/page/spellGroup/components/GroupSelectModel'
 
 const moreIcon = res.button.message_three;
+const btn_group = res.button.btn_group;
+const share_group = res.button.share_group;
 
 @SmoothPushHighComponent
 @observer
@@ -96,6 +98,35 @@ export default class RequestDetailPage extends BasePage {
                     <Image source={moreIcon} style={{ width: 22 }}
                            resizeMode={'contain'}/>
                 </TouchableOpacity>
+            );
+        }else if(this.state.hasRightItem === 'showGroupRightItem') {
+            return (
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => {routeNavigate(RouterMap.SpellGroupList)}}
+                        style={{
+                        width: ScreenUtils.px2dp(40),
+                        height: ScreenUtils.px2dp(44),
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <Image source={btn_group} style={{width: 22 ,height: ScreenUtils.px2dp(44)}}
+                               resizeMode={'contain'}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={this.showMore}
+                        style={{
+                        width: ScreenUtils.px2dp(40),
+                        height: ScreenUtils.px2dp(44),
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <Image source={share_group} style={{width: 22 ,height: ScreenUtils.px2dp(44)}}
+                               resizeMode={'contain'}/>
+                    </TouchableOpacity>
+                </View>
             );
         }else{
             return <View/>;
@@ -195,6 +226,13 @@ export default class RequestDetailPage extends BasePage {
 
         if (msg.action === 'showRightItem') {
             this.state.hasRightItem = true;
+            this.$renderSuperView();//为了触发render
+            return;
+        }
+
+        //拼团h5页面 导航栏右边按钮样式替换
+        if (msg.action === 'showGroupRightItem') {
+            this.state.hasRightItem = 'showGroupRightItem';
             this.$renderSuperView();//为了触发render
             return;
         }

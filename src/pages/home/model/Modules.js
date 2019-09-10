@@ -300,18 +300,13 @@ class HomeModule {
 
     @action getGoods() {
         this.isEnd = false;
-        if (this.page === 1) {
-            HomeApi.getRecommendList({ tabId: this.tabId, 'page': this.page, 'pageSize': 10 }).then(data => {
+            HomeApi.getRecommendList({ tabId: this.tabId, 'page': 1, 'pageSize': 10 }).then(data => {
                 let list = data.data.data || [];
                 if (!data.data.isMore) {
                     this.isEnd = true;
                 }
                 let itemData = [];
                 let home = [];
-                home.push({
-                    id: 10,
-                    type: homeType.goodsTitle
-                });
                 for (let i = 0, len = list.length; i < len; i++) {
                     if (i % 2 === 1) {
                         let good = list[i];
@@ -336,20 +331,17 @@ class HomeModule {
                 }
                 let temp = this.homeList.filter((item) => {
                     return item.type !== homeType.goods;
-                }).filter((item) => {
-                    return item.type !== homeType.goodsTitle;
-                });
+                })
                 this.goodsOtherLen = temp.length;
                 this.homeList = [...temp, ...home];
                 this.goods = home;
                 this.isRefreshing = false;
-                this.page += 1;
+                this.page = 1;
                 this.errorMsg = '';
             }).catch(err => {
                 this.isRefreshing = false;
                 this.errorMsg = err.msg;
             });
-        }
     }
 
     // 加载为你推荐列表
@@ -365,7 +357,7 @@ class HomeModule {
         }
         try {
             this.isFetching = true;
-            const result = yield HomeApi.getRecommendList({ page: this.page, tabId: this.tabId, pageSize: 10 });
+            const result = yield HomeApi.getRecommendList({ page: this.page+1, tabId: this.tabId, pageSize: 10 });
             this.isFetching = false;
             let list = result.data.data || [];
             if (!result.data.isMore) {
@@ -373,12 +365,6 @@ class HomeModule {
             }
             let itemData = [];
             let home = [];
-            if (this.page === 1) {
-                home.push({
-                    id: 10,
-                    type: homeType.goodsTitle
-                });
-            }
             for (let i = 0, len = list.length; i < len; i++) {
                 if (i % 2 === 1) {
                     let good = list[i];

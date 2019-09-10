@@ -692,10 +692,10 @@ export function GoodsCustomViewGetHeight(data) {
             count++;
             return height * count + itemPadding * (count - 1) + autoSizeWidth(15)
         case  2 :
-            count = Math.ceil(count / 2);
+            count = Math.floor(count / 2)+1;
             return  height * count + itemPadding * (count - 1) + autoSizeWidth(15)
         case  3 :
-            count = Math.ceil(count / 3);
+            count = Math.floor(count / 3)+1;
             return  height * count + itemPadding * (count - 1) + autoSizeWidth(15)
         case  8 :
             return height  + autoSizeWidth(15)

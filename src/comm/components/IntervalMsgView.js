@@ -241,7 +241,8 @@ export function IntervalMsgNavigate(forwardType, keyCode, openShareModal) {
                 code: keyCode,
                 id: keyCode,
                 uri: keyCode,
-                openShareModal
+                openShareModal,
+                isFromTask: true
             });
         } else {
             // navigate('HtmlPage', {

@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, Image } from 'react-native';
+import { View, StyleSheet, FlatList, Image ,ScrollView} from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
@@ -38,16 +38,13 @@ export default class ProductGroupModal extends Component {
         modalVisible: false
     };
 
-    show = ({ actionType, data, extraData, goToBuy }) => {
-        setTimeout(() => {
-            this.setState({
-                modalVisible: true,
-                actionType,
-                data,
-                extraData,
-                goToBuy
-            });
-        }, 500);
+    show = ({ actionType, data, extraData }) => {
+        this.setState({
+            modalVisible: true,
+            actionType,
+            data,
+            extraData
+        });
     };
 
     _close = () => {
@@ -57,7 +54,8 @@ export default class ProductGroupModal extends Component {
     };
 
     render() {
-        const { modalVisible, actionType, data, extraData, goToBuy } = this.state;
+        const { modalVisible, actionType, data, extraData } = this.state;
+        const { goToBuy } = this.props;
         if (!modalVisible) {
             return null;
         }
@@ -112,7 +110,7 @@ class GroupPersonAllList extends Component {
             <View style={stylesAll.container}>
                 <View style={stylesAll.topView}>
                     <MRText style={stylesAll.topLText}>正在凑团</MRText>
-                    <MRText style={stylesAll.topRText}>仅显示10个正在拼团的人</MRText>
+                    <MRText style={stylesAll.topRText}>{this.props.data.length === 10 ? '仅显示10个正在拼团的人' : ''}</MRText>
                 </View>
                 <FlatList
                     style={stylesAll.flatList}
@@ -243,7 +241,7 @@ const stylesJoin = StyleSheet.create({
         alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'center', marginVertical: 33
     },
     icon: {
-        width: px2dp(40), height: px2dp(40), borderRadius: px2dp(20)
+        width: px2dp(40), height: px2dp(40), borderRadius: px2dp(20), overflow: 'hidden'
     },
     linearGradient: {
         justifyContent: 'center', alignItems: 'center', marginBottom: 25,
@@ -273,10 +271,12 @@ class GroupDescView extends Component {
                 <View style={stylesDesc.topView}>
                     <MRText style={stylesDesc.topText}>拼团玩法</MRText>
                 </View>
-                <HTML html={this.props.data}
-                      imagesMaxWidth={ScreenUtils.width}
-                      imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
-                      containerStyle={{ backgroundColor: '#fff' }}/>
+                <ScrollView>
+                    <HTML html={this.props.data}
+                          imagesMaxWidth={ScreenUtils.width}
+                          imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
+                          containerStyle={{ backgroundColor: '#fff' }}/>
+                </ScrollView>
             </View>
         );
     }

@@ -16,6 +16,7 @@ import { GroupPersonItem, GroupProductItem } from './ProductGroupItemView';
 import RES from '../../res/product';
 import ProductGroupModal, { action_type } from './ProductGroupModal';
 import { observer } from 'mobx-react';
+import ScreenUtils from '../../../../utils/ScreenUtils';
 
 const { arrow_right_black } = RES.button;
 
@@ -58,6 +59,7 @@ export class GroupOpenPersonSView extends Component {
         const { groupList, groupDesc } = productGroupModel;
         return (
             <View style={stylesPerson.container}>
+                {groupList.length !== 0 &&
                 <NoMoreClick style={stylesPerson.topBtn} onPress={() => {
                     this.ProductGroupModal.show({ actionType: action_type.persons, data: groupList });
                 }}>
@@ -67,8 +69,9 @@ export class GroupOpenPersonSView extends Component {
                         <Image source={arrow_right_black} resizeMode={'contain'} style={{ height: 10 }}/>
                     </View>
                 </NoMoreClick>
+                }
                 {
-                    (groupList || []).map((item, index) => {
+                    groupList.length !== 0 && (groupList || []).map((item, index) => {
                         if (index > 1) {
                             return null;
                         }
@@ -76,14 +79,15 @@ export class GroupOpenPersonSView extends Component {
                                                 showModal={this.showModal}/>;
                     })
                 }
+
                 <NoMoreClick style={stylesPerson.bottomView} onPress={() => {
-                    this.ProductGroupModal.show({ actionType: action_type.desc, data: groupDesc, goToBuy });
+                    this.ProductGroupModal.show({ actionType: action_type.desc, data: groupDesc });
                 }}>
                     <MRText style={stylesPerson.bottomText}>玩法<MRText
                         style={stylesPerson.bottomText1}> 支付开团邀请1人参团，人数不足自动退款</MRText></MRText>
                     <Image source={arrow_right_black} resizeMode={'contain'} style={{ height: 10 }}/>
                 </NoMoreClick>
-                <ProductGroupModal ref={e => this.ProductGroupModal = e}/>
+                <ProductGroupModal ref={e => this.ProductGroupModal = e} goToBuy={goToBuy}/>
             </View>
         );
     }
@@ -132,6 +136,9 @@ export class GroupProductListView extends Component {
     render() {
         const { productGroupModel } = this.props;
         const { groupList } = productGroupModel;
+        if (groupList.length === 0) {
+            return null;
+        }
         return (
             <View style={stylesProduct.bgView}>
                 <View style={stylesProduct.tittleView}>
@@ -166,3 +173,39 @@ const stylesProduct = StyleSheet.create({
         marginLeft: 15, marginBottom: 15
     }
 });
+
+@observer
+export class GroupShowAlertView extends Component {
+    render() {
+        const { showAlert } = this.props.productGroupModel;
+        if (!showAlert) {
+            return null;
+        }
+        return (
+            <NoMoreClick style={{ position: 'absolute', bottom: ScreenUtils.safeBottom + 40.5, right: 15 }}
+                         onPress={() => {
+                             this.props.productGroupModel.showAlert = false;
+                         }}>
+                <View style={{
+                    borderRadius: 16,
+                    height: 32,
+                    justifyContent: 'center',
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)'
+                }}>
+                    <MRText style={{ paddingHorizontal: 15, fontSize: 13, color: 'white' }}>人满发货 人不满自动退款 x</MRText>
+                </View>
+                <View style={{
+                    alignSelf: 'flex-end', marginRight: 25,
+                    width: 5,
+                    height: 5,
+                    borderColor: 'transparent',
+                    borderTopColor: 'rgba(0, 0, 0, 0.7)',
+                    borderTopWidth: 5,
+                    borderBottomWidth: 5,
+                    borderRightWidth: 5,
+                    borderLeftWidth: 5
+                }}/>
+            </NoMoreClick>
+        );
+    }
+}

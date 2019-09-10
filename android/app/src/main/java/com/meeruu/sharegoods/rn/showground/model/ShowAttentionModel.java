@@ -70,4 +70,9 @@ public class ShowAttentionModel  implements IShowgroundModel {
     public void unCollection(String showNo, BaseCallback callback) {
 
     }
+
+    @Override
+    public void fetchRecommendList(String cursor, int size, BaseCallback callback) {
+
+    }
 }
