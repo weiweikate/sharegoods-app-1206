@@ -184,9 +184,9 @@ class SettingModel {
 
     @action
     messageClick(type) {
-        // type 是否展示联系方式 1:是 2:否
+        // type 是否展示联系方式 1:是 0:否
         MineAPI.setMessageStatus({showPhone:type}).then(()=>{
-            this.messageState = type === 1;
+            this.messageState = type;
         }).catch(error=>{
             bridge.$toast(error.msg);
         })

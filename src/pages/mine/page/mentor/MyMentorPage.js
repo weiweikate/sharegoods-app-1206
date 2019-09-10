@@ -41,7 +41,7 @@ export default class MyMentorPage extends BasePage {
             phone: '',
             profile: '',
             weChatNumber: null,
-            showPhone:false
+            showPhone:0
         };
     }
 

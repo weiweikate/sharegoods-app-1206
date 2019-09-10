@@ -201,7 +201,7 @@ class User {
 
     //用户是否开启短信通道
     @observable
-    showPhone = false
+    showPhone = 0;
 
     // 全局记录商品详情页是否是首次加载
     isProdFirstLoad = true;
@@ -453,7 +453,7 @@ class User {
         this.historicalScore = null; //总积分
         this.historicalBalance = null;
         this.blockedUserScore = null;
-        this.showPhone = false;
+        this.showPhone = 0;
 
 
         return store.deleted(USERINFOCACHEKEY).catch(e => {

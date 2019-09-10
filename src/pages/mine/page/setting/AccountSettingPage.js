@@ -118,7 +118,7 @@ export default class AccountSettingPage extends BasePage {
                                         },
                                             {
                                                 text: '确定', onPress: () => {
-                                                    SettingModel.messageClick(2);
+                                                    SettingModel.messageClick(0);
                                                 }
                                             }
                                         ]
