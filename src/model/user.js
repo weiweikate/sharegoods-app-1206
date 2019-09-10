@@ -199,6 +199,8 @@ class User {
     @observable
     weChatNumber = null;
 
+    @observable newUser = null;
+
     // 全局记录商品详情页是否是首次加载
     isProdFirstLoad = true;
 
@@ -316,6 +318,7 @@ class User {
         //用户靓号
         this.perfectNumberCode = info.perfectNumberCode;
         this.weChatNumber = info.weChatNumber; //微信号
+        this.newUser = info.newUser;
 
         if (this.levelRemark && this.levelRemark !== info.levelRemark) {
             // mediatorCallFunc()
