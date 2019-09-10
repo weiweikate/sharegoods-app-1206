@@ -21,6 +21,7 @@ import ListItemView from './ListItemView';
 import GroupSelectModel from './GroupSelectModel';
 import MineApi from '../../../api/MineApi';
 import res from '../../../../show/res';
+import minRes from '../../../res';
 import DesignRule from '../../../../../constants/DesignRule';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import apiEnvironment from '../../../../../api/ApiEnvironment';
@@ -49,7 +50,6 @@ export default class SpellGroupView extends PureComponent {
                     url={MineApi.getGroupList}
                     renderItem = {this.renderItem}
                     params={{groupStatus: params}}
-                    renderError={this.renderEmpty}
                     renderEmpty={this.renderEmpty}
                 />
                 <GroupSelectModel
@@ -57,6 +57,7 @@ export default class SpellGroupView extends PureComponent {
                         this.SelectModel = ref
                     }}
                     createAD={(data) => {
+                        //选中拼团数据，触发弹出分享modal ，生成海报
                         this.setState({
                             shareType: data
                         }, () => {
@@ -64,6 +65,7 @@ export default class SpellGroupView extends PureComponent {
                         });
                     }}
                     inviteShare={(data) => {
+                        //选中拼团数据，触发弹出分享modal
                         this.setState({
                             shareType: data
                         }, () => {
@@ -96,6 +98,9 @@ export default class SpellGroupView extends PureComponent {
         );
     }
 
+    /**
+    * @func 网络错误/暂无数据
+    */
     renderEmpty = ()=>{
         return (
             <View style={styles.errContainer}>
@@ -109,14 +114,17 @@ export default class SpellGroupView extends PureComponent {
                                 end={{x: 1, y: 1}}
                                 colors={['#FC5D39', '#FF0050']}
                 >
-                    <TouchableOpacity activeOpacity={0.5} style={{alignItems: 'center'}}
+                    <TouchableOpacity activeOpacity={0.7} style={{alignItems: 'center'}}
                                       onPress={() => {
-
+                                          this.props.navigate(RouterMap.HtmlPage, {
+                                              uri: `/activity/groupBuyHot`
+                                          });
                                       }}>
                         <View style={styles.btnStyle}>
                             <Text style={{color: 'white', fontSize: 15}} allowFontScaling={false}>
-                                去拼团首页<Text style={{fontSize:17}}> ></Text>
+                                去拼团首页
                             </Text>
+                            <Image source={minRes.groupIcon.arrow_right_white} style={{width:15,height:15}}/>
                         </View>
                     </TouchableOpacity>
                 </LinearGradient>
@@ -140,7 +148,7 @@ export default class SpellGroupView extends PureComponent {
                         this.SelectModel.onOpen && this.SelectModel.onOpen();
                     } else {
                         this.props.navigate(RouterMap.HtmlPage, {
-                            uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${item.id}`
+                            uri: `/activity/groupBuyDetails/${item.id}`
                         });
                     }
                 }}
@@ -160,11 +168,12 @@ const styles = StyleSheet.create({
     errContainer: {
         flex: 1,
         height: ScreenUtils.height-ScreenUtils.headerHeight-40,
-        justifyContent: 'center',
+        marginTop: 85,
         alignItems: 'center',
         backgroundColor: '#f5f5f5'
     },
     btnStyle:{
+        flexDirection: 'row',
         alignItems:'center',
         justifyContent:'center',
         marginHorizontal:20,

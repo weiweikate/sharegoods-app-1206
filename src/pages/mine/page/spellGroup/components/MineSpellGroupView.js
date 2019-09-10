@@ -37,6 +37,7 @@ export default class MineSpellGroupView extends PureComponent {
     componentWillReceiveProps() {
         const {data} = this.props;
         if(!EmptyUtils.isEmpty(data)) {
+            //判断是否有即将结束的参团，存在则触发定时器
             TimeModel.getCurrentTime();
         }
     }

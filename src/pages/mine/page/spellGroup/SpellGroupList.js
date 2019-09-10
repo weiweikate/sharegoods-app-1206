@@ -100,6 +100,11 @@ export default class SpellGroupList extends BasePage {
         );
     };
 
+    /**
+    * @func
+    * @param {currentItem | Object} 当前点击项
+    * @return {Object}
+    */
     _renderTabBar = () => {
         return <DefaultTabBar
             backgroundColor={'white'}
