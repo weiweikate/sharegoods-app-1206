@@ -96,7 +96,6 @@ export class GroupPersonItem extends Component {
                 actionType: action_type.join,
                 data: data.data,
                 extraData: itemData,
-                goToBuy: this.props.goToBuy
             });
         }).catch(e => {
         });
