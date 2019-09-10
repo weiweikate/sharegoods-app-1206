@@ -33,5 +33,7 @@ const button = {
     btn_close_white: require('./tongyong_btn_close_grey.png'),
     inputtext_clear: require('./inputtext_clear.png'),
     btn_group: require('./btn_icon_group.png'), //我的拼团列表页
+    share_group: require('./share_icon_group.png'), //我的拼团列表页
+
 };
 export default button;
