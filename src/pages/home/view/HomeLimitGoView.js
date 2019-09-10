@@ -190,6 +190,8 @@ export default class HomeLimitGoView extends Component {
 
 const GoodsItem = ({ item, activityCode, navigate }) => {
     const promotionSaleRateS = item.promotionSaleRate || 0;
+    const discountString = (item.promotionPrice / item.originalPrice * 10) + '';
+    let discountNum = discountString.substring(0, discountString.indexOf('.') + 2);
     return <View style={styles.goodsItem}>
         <ImageLoader
             source={{ uri: item.imgUrl }}
@@ -221,19 +223,38 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                             : null
                     )
             }
-            <View style={styles.moneyView}>
-                {
-                    item.promotionPrice
-                        ?
-                        <Text style={styles.money}>¥<Text
-                            style={styles.moneyText}>{item.promotionPrice + ' '}</Text>
-                            <Text style={styles.originMoneyText}>¥{item.originalPrice}</Text>
-                        </Text>
-                        :
-                        null
-                }
-                <View style={{ flex: 1 }}/>
-                <GoodsItemButton data={item} activityCode={activityCode} navigate={navigate}/>
+            <View style={{
+                flexDirection: 'column',
+                flex: 1
+            }}>
+                <View style={{
+                    justifyContent: 'flex-end',
+                    flex: 1
+                }}>
+                    <ImageBackground source={resHome.discount} style={{
+                        height: px2dp(14),
+                        width: px2dp(33),
+                        marginBottom: px2dp(-8),
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <UIText value={discountNum + '折'} style={{ fontSize: px2dp(9), color: 'white' }}/>
+                    </ImageBackground>
+                </View>
+                <View style={styles.moneyView}>
+                    {
+                        item.promotionPrice
+                            ?
+                            <Text style={styles.money}>¥<Text
+                                style={styles.moneyText}>{item.promotionPrice + ' '}</Text>
+                                <Text style={styles.originMoneyText}>¥{item.originalPrice}</Text>
+                            </Text>
+                            :
+                            null
+                    }
+                    <View style={{ flex: 1 }}/>
+                    <GoodsItemButton data={item} activityCode={activityCode} navigate={navigate}/>
+                </View>
             </View>
         </View>
     </View>;
@@ -343,7 +364,6 @@ const styles = StyleSheet.create({
         lineHeight: 20
     },
     moneyView: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'flex-end',
         paddingRight: px2dp(5)
@@ -405,8 +425,6 @@ const styles = StyleSheet.create({
     },
     leaveView: {
         marginTop: px2dp(5),
-        backgroundColor: 'rgba(255,0,80,0.1)',
-        borderRadius: px2dp(6),
         width: px2dp(118),
         height: px2dp(12),
         justifyContent: 'center'
