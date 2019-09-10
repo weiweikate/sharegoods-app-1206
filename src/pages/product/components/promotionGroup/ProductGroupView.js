@@ -178,7 +178,8 @@ const stylesProduct = StyleSheet.create({
 export class GroupShowAlertView extends Component {
     render() {
         const { showAlert } = this.props.productGroupModel;
-        if (!showAlert) {
+        const { isPinGroupIn } = this.props.productDetailModel;
+        if (!showAlert || !isPinGroupIn) {
             return null;
         }
         return (

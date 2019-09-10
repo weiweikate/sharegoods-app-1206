@@ -80,7 +80,7 @@ export class TimeLabelText extends Component {
     };
 
     render() {
-        return <MRText style={stylesPerson.midTimeText}>剩余{this.state.timeOutTime}</MRText>;
+        return <MRText style={stylesPerson.midTimeText}>{this.state.timeOutTime}</MRText>;
     }
 }
 
@@ -95,8 +95,7 @@ export class GroupPersonItem extends Component {
             this.props.showModal({
                 actionType: action_type.join,
                 data: data.data,
-                extraData: itemData,
-                goToBuy: this.props.goToBuy
+                extraData: itemData
             });
         }).catch(e => {
         });
@@ -119,7 +118,7 @@ export class GroupPersonItem extends Component {
                     <View>
                         <MRText style={stylesPerson.midNumText}>还差<MRText
                             style={{ color: DesignRule.textColor_redWarn }}>{surplusPerson}</MRText>人成团</MRText>
-                        <TimeLabelText endTime={endTime}/>
+                        <MRText style={stylesPerson.midTimeText}>剩余<TimeLabelText endTime={endTime}/></MRText>
                     </View>
                     <LinearGradient style={stylesPerson.linearGradient}
                                     start={{ x: 0, y: 0 }}
