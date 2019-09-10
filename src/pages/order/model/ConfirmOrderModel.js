@@ -119,7 +119,6 @@ class ConfirmOrderModel {
 
     getParams(filterFail) {
         let orderProducts = this.orderParamVO.orderProducts || [];
-        alert(this.orderParamVO.orderProducts);
         if (filterFail) {
             orderProducts = this.getAvailableProducts();
         }
@@ -129,7 +128,12 @@ class ConfirmOrderModel {
             // "activityCode":, //string 活动code
             // "batchNo": //string 活动批次  (拼团业务传递团id)
             let { skuCode, quantity, activityCode, batchNo, activityTag } = item;
-            return { skuCode, quantity, activityCode,batchNo, activityTag };
+            if (batchNo){
+                return { skuCode, quantity, activityCode,batchNo, activityTag };
+            }else {
+                return { skuCode, quantity, activityCode, activityTag };
+            }
+
         });
         let { receiver, receiverPhone, province, city, area, street, address } = this.addressData;
         return {
@@ -176,6 +180,10 @@ class ConfirmOrderModel {
 
     @action
     makeSureProduct_selectDefaltCoupon(couponsId) {
+        if (this.orderParamVO.bizTag === 'group') {
+            this.makeSureProduct();
+            return;
+        }
             API.listAvailable(this.getCouponParams()).then((data) => {
                 // couponConfigId	Integer	823
                 data = data.data || {};
@@ -207,6 +215,7 @@ class ConfirmOrderModel {
 
     @action makeSureProduct() {
         this.isNoAddress = false;
+        console.log(this.getParams())
         bridge.showLoading();
         OrderApi.makeSureOrder(this.getParams()).then(response => {
             bridge.hiddenLoading();
@@ -276,12 +285,14 @@ class ConfirmOrderModel {
         if (this.payInfo.couponAmount === 0) {
             this.userCouponCode = '';
         }
-        let canUseCou = false;
-        this.productOrderList.forEach(item => {
-            if (item.canCoupon === true) {
-                canUseCou = true;
-            }
-        });
+        let canUseCou = false;//拼团优惠券不可用
+        if (this.orderParamVO.bizTag !== 'group') {
+            this.productOrderList.forEach(item => {
+                if (item.canCoupon === true) {
+                    canUseCou = true;
+                }
+            });
+        }
         this.canUseCou = canUseCou;
         //遍历出失效对应商品信息
         let failProductList = [];
