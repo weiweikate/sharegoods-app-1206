@@ -216,6 +216,18 @@ export default class ProductDetailModel {
     @observable promotionMinPrice;
     @observable promotionMaxPrice;
 
+    @computed get isSingleSpec() {
+        let isSingle = true;
+        /*是否单规格*/
+        for (const item of (this.specifyList || [])) {
+            if (item.specValues.length > 1) {
+                isSingle = false;
+                break;
+            }
+        }
+        return isSingle;
+    }
+
     @computed get nameShareText() {
         const { activityType, activityStatus, promotionDecreaseAmount, secondName } = this;
         if (activityType === activity_type.skill && activityStatus === activity_status.inSell) {
