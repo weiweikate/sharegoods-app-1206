@@ -10,18 +10,20 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res/product';
 import { MRText as Text } from '../../../components/ui/index';
-import { product_status } from '../ProductDetailModel';
+import { activity_status, activity_type, product_status } from '../ProductDetailModel';
 import LinearGradient from 'react-native-linear-gradient';
 import StringUtils from '../../../utils/StringUtils';
 import { formatDate } from '../../../utils/DateUtils';
 import { routePush } from '../../../navigation/RouterMap';
 import RouterMap from '../../../navigation/RouterMap';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import { observer } from 'mobx-react';
 
 const { xiangqing_btn_gouwuche_nor, jiarugouwuche_no, me_bangzu_kefu_icon } = res;
 const { px2dp } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
 
+@observer
 export default class DetailBottomView extends Component {
 
     static propTypes = {
@@ -34,13 +36,19 @@ export default class DetailBottomView extends Component {
     }
 
     render() {
-        const { orderOnProduct } = this.props.pData || {};
+        const { orderOnProduct, activityType, activityStatus } = this.props.pData || {};
         return (
             <View style={{ backgroundColor: 'white' }}>
                 {
                     orderOnProduct === 0 &&
                     <View style={styles.toastView}>
                         <Text style={styles.toastText}>该商品不支持单独购买</Text>
+                    </View>
+                }
+                {
+                    activityType === activity_type.pinGroup && activityStatus === activity_status.unBegin &&
+                    <View style={styles.toastView1}>
+                        <Text style={styles.toastText1}>活动即将开始</Text>
                     </View>
                 }
                 <View style={styles.container}>
@@ -195,6 +203,14 @@ const styles = StyleSheet.create({
     },
     toastText: {
         color: DesignRule.textColor_redWarn, fontSize: 12
+    },
+
+    toastView1: {
+        justifyContent: 'center', alignItems: 'center',
+        height: 30, backgroundColor: '#FEF2DD'
+    },
+    toastText1: {
+        color: '#FF9502', fontSize: 13
     },
 
     container: {
