@@ -30,6 +30,7 @@ const resHome = {
     arrow_top: require('./arrow_top.png'),
     tabBg: require('./tabBg.png'),
     icon_shopCar: require('./icon_shopCar.png'),
+    home_limit_progress: require('./home_limit_progress.png'),
     signIn: {
         ...signIn
     },

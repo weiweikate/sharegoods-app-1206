@@ -48,38 +48,38 @@ class HomeModule {
         id: 2,
         type: homeType.channel
     }, {
-        id: 11,
+        id: 3,
         type: homeType.task
     }, {
-        id: 3,
+        id: 4,
         type: homeType.expandBanner
     }, {
-        id: 4,
+        id: 5,
         type: homeType.focusGrid
     }];
     topTopice = [];
     fixedPartTwo = [{
-        id: 5,
+        id: 6,
         type: homeType.limitGo
     }];
     bottomTopice = [];
     fixedPartThree = [{
-        id: 6,
+        id: 7,
         type: homeType.star
     }, {
-        id: 7,
+        id: 8,
         type: homeType.today
     }, {
-        id: 8,
+        id: 9,
         type: homeType.fine
     }, {
-        id: 12,
+        id: 10,
         type: homeType.homeHotTitle
     }, {
-        id: 9,
+        id: 11,
         type: homeType.homeHot
     }, {
-        id: 10,
+        id: 12,
         type: homeType.goodsTitle
     }];
     goods = [];

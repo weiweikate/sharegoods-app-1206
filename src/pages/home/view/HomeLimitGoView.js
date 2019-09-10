@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import {
     Image,
     ImageBackground,
+    Platform,
     StyleSheet,
     Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    View, Platform
+    View
 } from 'react-native';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -18,7 +19,7 @@ import DesignRule from '../../../constants/DesignRule';
 import resHome from '../res';
 import res from '../res';
 import { homeLinkType, homeRoute } from '../HomeTypes';
-import { MRText } from '../../../components/ui';
+import { MRText, UIText } from '../../../components/ui';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import user from '../../../model/user';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
@@ -189,16 +190,12 @@ export default class HomeLimitGoView extends Component {
 
 const GoodsItem = ({ item, activityCode, navigate }) => {
     const promotionSaleRateS = item.promotionSaleRate || 0;
-    let ratePercentText = promotionSaleRateS > 0.9 ? '即将售罄' : `还剩${Math.ceil((1 - promotionSaleRateS) * 100)}%`;
-    ratePercentText = promotionSaleRateS >= 1 ? '已抢光' : ratePercentText;
-    let progressWidthS = promotionSaleRateS * px2dp(120);
-    progressWidthS = progressWidthS < px2dp(12) ? px2dp(12) : progressWidthS;
     return <View style={styles.goodsItem}>
         <ImageLoader
             source={{ uri: item.imgUrl }}
             showPlaceholder={false}
-            width={px2dp(120)}
-            height={px2dp(120)}
+            width={px2dp(130)}
+            height={px2dp(130)}
             style={styles.goodsImage}>
             {item.promotionStatus === limitStatus.end ?
                 <Image source={resHome.home_sallout}
@@ -206,18 +203,23 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
             <Image source={saleSmallSkill} style={{ width: 50, height: 18, top: 5, left: 0, position: 'absolute' }}/>
         </ImageLoader>
         <View style={styles.goodsContent}>
-            <Text style={styles.goodsTitle} numberOfLines={2}>{item.name}</Text>
+            <Text style={styles.goodsTitle} numberOfLines={1}>{item.name}</Text>
             <Text style={styles.text} numberOfLines={1}>{item.secondName}</Text>
             {
                 item.promotionStatus === limitStatus.noBegin ?
-                    <Text style={styles.text}>已有{item.promotionAttentionNum}人关注了</Text>
+                    <Text style={[styles.text, {
+                        color: '#999',
+                        fontSize: px2dp(10)
+                    }]}>已有{item.promotionAttentionNum}人关注了</Text>
                     :
-                    <View style={styles.leaveView}>
-                        <View style={[styles.progressView, { width: progressWidthS }]}/>
-                        <View style={styles.leaveAmountView}>
-                            <MRText style={styles.leaveAmountText}>{ratePercentText}</MRText>
-                        </View>
-                    </View>
+                    (
+                        promotionSaleRateS > 0.9 && promotionSaleRateS < 1 ?
+                            <ImageBackground style={styles.leaveView} source={resHome.home_limit_progress}>
+                                <UIText value={'即将售罄'}
+                                        style={{ fontSize: px2dp(9), color: 'white', marginLeft: px2dp(5) }}/>
+                            </ImageBackground>
+                            : null
+                    )
             }
             <View style={styles.moneyView}>
                 {
@@ -243,9 +245,8 @@ const GoodsItemButton = ({ data, activityCode, navigate }) => {
                                start={{ x: 0, y: 0 }}
                                end={{ x: 1, y: 0 }}
                                colors={['#FF0050', '#FC5D39']}>
-            <Text style={styles.buttonTitle}>
-                马上抢
-            </Text>
+            <UIText value={'马上抢'} style={styles.buttonTitle}/>
+            <Image source={res.button.white_go} style={{ width: 7, height: 13, marginLeft: 3, marginTop: 1.5 }}/>
         </LinearGradient>;
     } else if (data.promotionStatus === limitStatus.noBegin) {
         return <NoMoreClick onPress={() => {
@@ -304,17 +305,17 @@ const styles = StyleSheet.create({
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
         borderRadius: px2dp(5),
-        height: px2dp(140),
+        height: px2dp(130),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white'
     },
     goodsImage: {
-        width: px2dp(120),
-        height: px2dp(120),
-        borderRadius: px2dp(5),
-        marginLeft: px2dp(10),
+        width: px2dp(130),
+        height: px2dp(130),
+        borderTopLeftRadius: px2dp(5),
+        borderBottomLeftRadius: px2dp(5),
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden'
@@ -330,14 +331,15 @@ const styles = StyleSheet.create({
         flex: 1
     },
     text: {
-        color: '#999',
+        color: DesignRule.mainColor,
         fontSize: px2dp(12),
         lineHeight: 20
     },
     goodsTitle: {
         color: '#333',
-        fontSize: px2dp(14),
+        fontSize: px2dp(15),
         marginRight: px2dp(10),
+        fontWeight: '600',
         lineHeight: 20
     },
     moneyView: {
@@ -361,9 +363,11 @@ const styles = StyleSheet.create({
         textDecorationLine: 'line-through'
     },
     button: {
-        width: px2dp(82),
-        height: px2dp(28),
-        borderRadius: px2dp(14),
+        flexDirection: 'row',
+        width: px2dp(70),
+        height: px2dp(32),
+        marginRight: px2dp(4),
+        borderRadius: px2dp(10),
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -372,22 +376,25 @@ const styles = StyleSheet.create({
         fontSize: px2dp(14)
     },
     buttonWill: {
-        width: px2dp(82),
-        height: px2dp(28),
-        borderRadius: px2dp(14),
+        width: px2dp(70),
+        height: px2dp(32),
+        marginRight: px2dp(4),
+        borderRadius: px2dp(10),
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: ScreenUtils.onePixel,
-        borderColor: DesignRule.mainColor
+        borderWidth: 1,
+        borderColor: DesignRule.mainColor,
+        backgroundColor: 'rgba(255,0,80,0.1)'
     },
     buttonWillTitle: {
         color: DesignRule.mainColor,
         fontSize: px2dp(14)
     },
     disbutton: {
-        width: px2dp(82),
-        height: px2dp(28),
-        borderRadius: px2dp(14),
+        width: px2dp(70),
+        height: px2dp(32),
+        marginRight: px2dp(4),
+        borderRadius: px2dp(10),
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: DesignRule.textColor_placeholder
@@ -398,16 +405,10 @@ const styles = StyleSheet.create({
     },
     leaveView: {
         marginTop: px2dp(5),
-        backgroundColor: 'rgba(255,0,80,0.1)', borderRadius: px2dp(6), width: px2dp(120), height: px2dp(12)
-    },
-    progressView: {
-        backgroundColor: DesignRule.mainColor, borderRadius: px2dp(6), height: px2dp(12)
-    },
-    leaveAmountView: {
-        justifyContent: 'center', marginLeft: px2dp(8),
-        position: 'absolute', top: 0, bottom: 0, left: 0, right: 0
-    },
-    leaveAmountText: {
-        fontSize: 10, color: DesignRule.textColor_white
+        backgroundColor: 'rgba(255,0,80,0.1)',
+        borderRadius: px2dp(6),
+        width: px2dp(118),
+        height: px2dp(12),
+        justifyContent: 'center'
     }
 });

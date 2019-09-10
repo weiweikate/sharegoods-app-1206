@@ -59,7 +59,6 @@ public class MainActivity extends BaseActivity {
     private boolean needGo = false;
     private boolean isFirst = true;
     private boolean hasGo = false;
-    private String adUrl;
     private CountDownTimer countDownTimer = null;
     private boolean showLoading = true;
 
@@ -109,12 +108,13 @@ public class MainActivity extends BaseActivity {
                     JSONArray array = JSON.parseArray(result);
                     if (array != null && array.size() > 0) {
                         JSONObject object = array.getJSONObject(0);
-                        adUrl = object.getString("linkTypeCode");
                         SPCacheUtils.put("adBgImg", object.getString("image"));
                         SPCacheUtils.put("adImg", object.getString("assistantImage"));
+                        SPCacheUtils.put("adUrl", object.getString("linkTypeCode"));
                     } else {
                         SPCacheUtils.put("adBgImg", "");
                         SPCacheUtils.put("adImg", "");
+                        SPCacheUtils.put("adUrl", "");
                     }
                 }
             });
@@ -210,6 +210,7 @@ public class MainActivity extends BaseActivity {
         ivAdv.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                String adUrl = (String) SPCacheUtils.get("adUrl", "");
                 if (!TextUtils.isEmpty(adUrl)) {
                     hasGo = true;
                     goIndex();
