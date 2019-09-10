@@ -312,7 +312,7 @@ export default class ProductDetailModel {
         //秒
         let second = Math.floor(leave3 / 1000);
         //mill
-        let leave4 = Math.floor(leave3 % 1000 / 100);
+        let leave4 = Math.floor(leave3 % 1000 / 10);
 
         hours = days * 24 + hours;
         hours = hours >= 10 ? hours : hours === 0 ? '00' : `0${hours}`;
