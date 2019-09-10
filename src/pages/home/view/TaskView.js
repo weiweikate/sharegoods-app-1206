@@ -256,7 +256,7 @@ class TaskItem extends React.Component {
 }
 
 @observer
-export default class TaskVIew extends React.Component {
+export default class TaskView extends React.Component {
 
     constructor(props) {
         super(props);

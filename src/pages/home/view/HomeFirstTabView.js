@@ -30,7 +30,7 @@ import {
 } from 'react-native';
 import { routePush } from '../../../navigation/RouterMap';
 import HomeUserView from './HomeUserView';
-import TaskVIew from './TaskVIew';
+import TaskView from './TaskView';
 import HomeChannelView from './HomeChannelView';
 import HomeExpandBannerView from './HomeExpandBannerView';
 import HomeFocusAdView from './HomeFocusAdView';
@@ -142,7 +142,7 @@ export default class HomeFirstTabView extends Component {
         } else if (type === homeType.user) {
             return <HomeUserView navigate={routePush}/>;
         } else if (type === homeType.task) {
-            return <TaskVIew type={'home'} style={{ marginTop: ScreenUtils.autoSizeWidth(10) }}/>;
+            return <TaskView type={'home'} style={{ marginTop: ScreenUtils.autoSizeWidth(10) }}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={routePush}/>;
         } else if (type === homeType.expandBanner) {
