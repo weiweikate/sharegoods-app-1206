@@ -234,6 +234,6 @@ const styles = StyleSheet.create({
     detail: {
         fontSize: autoSizeWidth(10),
         color: DesignRule.textColor_placeholder,
-        lineHeight: autoSizeWidth(8),
+        lineHeight: autoSizeWidth(11),
     }
 });
