@@ -197,6 +197,7 @@ dependencies {
     api project(':react-native-linear-gradient')
     api project(':react-native-fetch-blob')
     api project(':@react-native-community_netinfo')
+    api project(':@react-native-community_slider')
     api project(':commonlib')
     api project(':qrcode')
     api project(':rn_deviceinfo')
