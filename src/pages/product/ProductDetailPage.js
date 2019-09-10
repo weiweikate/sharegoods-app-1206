@@ -449,7 +449,7 @@ export default class ProductDetailPage extends BasePage {
             <ShowTopView productDetailModel={this.productDetailModel}
                          toTopAction={this._onPressToTop}/>
             <IntervalMsgView pageType={IntervalType.productDetail}/>
-            <GroupShowAlertView productGroupModel={productGroupModel}/>
+            <GroupShowAlertView productGroupModel={productGroupModel} productDetailModel={this.productDetailModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}
