@@ -17,11 +17,13 @@ import { formatDate } from '../../../utils/DateUtils';
 import { routePush } from '../../../navigation/RouterMap';
 import RouterMap from '../../../navigation/RouterMap';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import { observer } from 'mobx-react';
 
 const { xiangqing_btn_gouwuche_nor, jiarugouwuche_no, me_bangzu_kefu_icon } = res;
 const { px2dp } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
 
+@observer
 export default class DetailBottomView extends Component {
 
     static propTypes = {
