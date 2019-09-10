@@ -203,7 +203,6 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor_btn
     },
     joinText: {
-        fontFamily: 'PingFangSC-Medium',
         color: 'white',
         fontSize: 10,
         paddingHorizontal: 8
@@ -229,12 +228,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     containTop: {
-        fontFamily: 'PingFangSC-Light',
         color: DesignRule.textColor_secondTitle,
         fontSize: 10
     },
     containBottom: {
-        fontFamily: 'PingFangSC-Medium',
         marginTop: 7,
         color: DesignRule.textColor_secondTitle,
         fontSize: 11

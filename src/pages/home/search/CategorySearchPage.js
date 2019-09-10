@@ -316,7 +316,9 @@ export default class CategorySearchPage extends BasePage {
                 }],
                 swiperShow: !StringUtils.isEmpty(datas.img)
             }, () => {
-                this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
+                if (this.state.sectionArr.length > 0) {
+                    this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
+                }
             });
         }).catch((err) => {
             bridge.hiddenLoading();
