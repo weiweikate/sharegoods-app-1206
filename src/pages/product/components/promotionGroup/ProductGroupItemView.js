@@ -21,6 +21,7 @@ import { action_type } from './ProductGroupModal';
 import ProductApi from '../../api/ProductApi';
 import { routePush } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
+import bridge from '../../../../utils/bridge';
 
 const { px2dp } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
@@ -91,13 +92,17 @@ export class TimeLabelText extends Component {
 export class GroupPersonItem extends Component {
 
     requestGroupPerson = ({ groupId, itemData }) => {
+        bridge.showLoading();
         ProductApi.promotion_group_joinUser({ groupId }).then((data) => {
+            bridge.hiddenLoading();
             this.props.showModal({
                 actionType: action_type.join,
                 data: data.data,
                 extraData: itemData
             });
         }).catch(e => {
+            bridge.hiddenLoading();
+            bridge.$toast(e.msg);
         });
     };
 
