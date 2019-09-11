@@ -7,7 +7,7 @@ import {Platform} from 'react-native';
 function ListHeaderLoading(props) {
   const { isRefreshing, onRefresh, ...others } = props;
   const headerHeight = DesignRule.width/750*120;
-  const source = Platform.OS !== 'ios' ?  require('./pull3.json') :  require('./pull_step2.json')
+  const source = Platform.OS !== 'ios' ?  require('./pull3.json') :  require('./pullnoline.json')
   return (
     <RefreshAnimateHeader
       refreshing={isRefreshing}
