@@ -45,6 +45,11 @@ export default class LoadMoreDataUtil{
         if (this.isLoadMore || this.isRefreshing){
             return;
         }
+
+        setTimeout(()=> {
+            this.refreshing = false;
+            this.isRefreshing = false;
+        }, 1000)
         this.refreshing = true;
         this.isRefreshing = true;
         let params = this.paramsFunc();
@@ -52,8 +57,6 @@ export default class LoadMoreDataUtil{
         params[this.pageSizeKey] = this.pageSize;
 
         this.API(params).then((result)=> {
-            this.refreshing = false;
-            this.isRefreshing = false;
             this.page = this.defaultPage;
             if (this.asyncHandleData){
                 this.asyncHandleData(result).then((r)=>{
@@ -64,8 +67,6 @@ export default class LoadMoreDataUtil{
             }
             this.footerStatus = this.isMoreFunc(result) ? 'idle' : 'noMoreData'
         }).catch((err) => {
-            this.refreshing = false;
-            this.isRefreshing = false;
             bridge.$toast(err.msg);
         })
 
