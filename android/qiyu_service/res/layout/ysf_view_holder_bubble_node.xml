@@ -48,6 +48,6 @@
         android:layout_height="40dp"
         android:gravity="center"
         android:textSize="14sp"
-        android:textColor="#337EFF"
+        android:textColor="@color/ysf_blue_337EFF"
         android:text="查看更多"/>
 </LinearLayout>

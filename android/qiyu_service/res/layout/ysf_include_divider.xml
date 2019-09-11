@@ -2,4 +2,4 @@
 <View xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/ysf_divider_height"
-    android:background="@color/ysf_grey_dbdbdb" />
+    android:background="@color/ysf_line_color_E9E9E9" />

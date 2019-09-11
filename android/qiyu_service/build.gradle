@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 56
-        versionName '5.0.0'
+        versionCode 62
+        versionName '5.2.1'
     }
 
     buildTypes {
@@ -40,5 +40,5 @@ dependencies {
     api rootProject.ext.dependencies.eventbus
     implementation rootProject.ext.dependencies.androidx
     api project(':statusbar')
-    api files('libs/qiyu-sdk-5.0.0.jar')
+    api files('libs/qiyu-sdk-5.2.1.jar')
 }

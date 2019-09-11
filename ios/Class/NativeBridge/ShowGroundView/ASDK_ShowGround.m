@@ -36,7 +36,6 @@
 @property (nonatomic, strong) ASCollectionNode * collectionNode;
 @property (nonatomic, strong)NSMutableArray<ShowQuery_dataModel *> *dataArr;
 @property (nonatomic, strong)NSMutableArray *callBackArr;
-@property (nonatomic, assign)NSInteger page;
 @property (nonatomic, strong)UIView *headerView;
 @property (nonatomic, assign)NSInteger errCode;
 @property (nonatomic, strong)UILabel *emptyLb;
@@ -195,12 +194,11 @@
   if (self.onStartRefresh) {
     self.onStartRefresh(@{});
   }
-  self.page = 1;
   NSMutableDictionary *dic = [NSMutableDictionary new];
   if (self.params) {
     dic = [self.params mutableCopy];
   }
-  [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
+  [dic addEntriesFromDictionary:@{@"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
   [NetWorkTool requestWithURL:[self getCurrentUrl] params:dic  toModel:nil success:^(NSDictionary* result) {
     if(![self.type isEqualToString:@"MyDynamic"]){
@@ -241,12 +239,23 @@
  */
 - (void)getMoreData
 {
-  self.page++;
   NSMutableDictionary *dic = [NSMutableDictionary new];
+  NSString *cursor = [self.dataArr.lastObject valueForKey:@"cursor"];
+
+  if(!cursor){
+    [self.collectionNode.view.mj_footer endRefreshingWithNoMoreData];
+    return;
+  }
+  
   if (self.params) {
     dic = [self.params mutableCopy];
   }
-  [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
+  
+  if(cursor){
+    [dic addEntriesFromDictionary:@{@"cursor":cursor}];
+  }
+  
+  [dic addEntriesFromDictionary:@{@"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
   [NetWorkTool requestWithURL:[self getCurrentUrl] params:dic toModel:nil success:^(NSDictionary* result) {
     

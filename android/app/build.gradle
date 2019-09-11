@@ -25,8 +25,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 2101
-        versionName "2.1.1"
+        versionCode 2102
+        versionName "2.1.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -159,7 +159,6 @@ android {
         }
     }
 
-
     repositories {
         maven {
             url "http://maven.aliyun.com/nexus/content/repositories/releases"
@@ -199,6 +198,7 @@ dependencies {
     api project(':react-native-fetch-blob')
     api project(':react-native-refresh')
     api project(':@react-native-community_netinfo')
+    api project(':@react-native-community_slider')
     api project(':commonlib')
     api project(':qrcode')
     api project(':rn_deviceinfo')

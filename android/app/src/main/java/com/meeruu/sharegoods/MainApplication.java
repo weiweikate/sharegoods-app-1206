@@ -29,6 +29,7 @@ import com.reactlibrary.RNGeolocationPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
+import com.reactnativecommunity.slider.ReactSliderPackage;
 import com.request.MRNetStatePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
@@ -111,6 +112,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new RNCWebViewPackage(),
                     new AsyncStoragePackage(),
                     new RNGestureHandlerPackage(),
+                    new ReactSliderPackage(),
                     new RCTRefreshLayoutPackage()
             );
         }

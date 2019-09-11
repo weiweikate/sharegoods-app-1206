@@ -54,7 +54,6 @@ export default class ShopCartPage extends BasePage {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 this.pageFocus = true;
                 shopCartCacheTool.getShopCartGoodsListData();
-                shopCartEmptyModel.getRecommendProducts(true);
             }
         );
         this.willBlurSubscription = this.props.navigation.addListener(

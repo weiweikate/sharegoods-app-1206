@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableWithoutFeedback, View, Image } from 'react-native';
+import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { homeModule } from '../model/Modules';
 import { homeExpandBnnerModel } from '../model/HomeExpandBnnerModel';
@@ -29,12 +29,13 @@ export default class HomeExpandBannerView extends Component {
     }
 
     _renderBanner() {
-        const { banner, adHeights } = homeExpandBnnerModel;
-        if (banner.length === 0) {
+        const { expBannerList, adHeights } = homeExpandBnnerModel;
+        if (expBannerList.length === 0) {
             return null;
         }
+        let data = expBannerList[0];
         let items = [];
-        banner.map((val, index) => {
+        data.itemData.map((val, index) => {
             let url = val.image;
             let imgHeight = adHeights.get(url);
             if (imgHeight) {
@@ -51,7 +52,7 @@ export default class HomeExpandBannerView extends Component {
     }
 
     render() {
-        return <View style={{ width: ScreenUtils.width,height: homeExpandBnnerModel.bannerHeight}}>
+        return <View style={styles.container}>
             {this._renderBanner()}
         </View>;
     }
