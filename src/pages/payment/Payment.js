@@ -142,12 +142,12 @@ export class Payment {
     @action checkOrderStatus = flow(function* (pOrderNo, bizType = 0, modeType = 0, payAmount, tradeDesc = 'APP支付', paySignResult) {
         try {
             /*不能通过接口查询支付签名的,需要外面传进来 拼店支付*/
-            // if (bizType === 0) {
-            //     Toast.showLoading();
-            //     paySignResult = yield PaymentApi.queryPaySign({ platformOrderNo: pOrderNo || this.platformOrderNo });
-            //     paySignResult = paySignResult.data;
-            //     Toast.hiddenLoading();
-            // }
+            if (bizType === 0) {
+                Toast.showLoading();
+                paySignResult = yield PaymentApi.queryPaySign({ platformOrderNo: pOrderNo || this.platformOrderNo });
+                paySignResult = paySignResult.data;
+                Toast.hiddenLoading();
+            }
 
             Toast.showLoading();
             let checkParams = {
