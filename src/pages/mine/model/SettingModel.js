@@ -6,6 +6,8 @@
 import { observable, action, autorun } from 'mobx';
 import store from '@mr/rn-store';
 import userModel from '../../../model/user';
+import MineAPI from '../api/MineApi';
+import bridge from '../../../utils/bridge';
 
 
 const mineKey = '@mr/msgmine';
@@ -43,8 +45,9 @@ class SettingModel {
     @observable
     WXChatState = true;
 
+    //帐号与安全页 短信开关控制
     @observable
-    messageState = true;
+    messageState = 0;
 
     @action
     getLocationState() {
@@ -54,13 +57,8 @@ class SettingModel {
                 this.WXChatState = data.WXChatState;
             }
         });
+        this.messageState = userModel.showPhone;
 
-        store.get('@mr/settingMSGState').then((data) => {
-            console.log('data',data)
-            if (data) {
-                this.messageState = data.messageState;
-            }
-        });
          store.get(mineKey).then((data) => {
                 console.log('dataMineKey',data)
                 if (data) {
@@ -185,10 +183,15 @@ class SettingModel {
     }
 
     @action
-    messageClick() {
-        this.messageState = !this.messageState;
-        store.save('@mr/settingMSGState', { messageState: this.messageState });
+    messageClick(type) {
+        // type 是否展示联系方式 1:是 0:否
+        MineAPI.setMessageStatus({showPhone:type}).then(()=>{
+            this.messageState = type;
+        }).catch(error=>{
+            bridge.$toast(error.msg);
+        })
     }
+
 
 }
 

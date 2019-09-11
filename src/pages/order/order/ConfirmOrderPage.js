@@ -36,7 +36,6 @@ export default class ConfirmOrderPage extends BasePage {
         confirmOrderModel.clearData();
         confirmOrderModel.orderParamVO = this.params.orderParamVO;
         confirmOrderModel.judgeIsAllVirtual(this.params.orderParamVO.orderProducts);
-
     }
 
     $navigationBarOptions = {
@@ -151,11 +150,11 @@ export default class ConfirmOrderPage extends BasePage {
 
     renderGroupSponsor(){
         if (this.params.orderParamVO.bizTag !== 'group') {return null}
-        let gourpData = this.params.orderParamVO.gourpData || {}
-        if (gourpData.isSponsor) {
+        let groupData = this.params.orderParamVO.groupData || {}
+        if (!groupData.isSponsor) {
             return(
                 <View style={{backgroundColor: 'white', marginBottom: 1, justifyContent: 'center', height: ScreenUtils.autoSizeWidth(40), paddingLeft: ScreenUtils.autoSizeWidth(15)}}>
-                    <MRText style={{fontSize: ScreenUtils.autoSizeWidth(13), color: DesignRule.textColor_instruction}}>{'团长:'+ gourpData.sponsor}</MRText>
+                    <MRText style={{fontSize: ScreenUtils.autoSizeWidth(13), color: DesignRule.textColor_instruction}}>{'团长:'+ (groupData.sponsor|| '')}</MRText>
                 </View>
             )
         }

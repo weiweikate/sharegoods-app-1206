@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, Image ,ScrollView} from 'react-native';
+import { View, StyleSheet, FlatList, Image, ScrollView } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
@@ -23,6 +23,8 @@ import whoAreYou from './whoAreYou.png';
 import morePerson from './morePerson.png';
 import bridge from '../../../../utils/bridge';
 import user from '../../../../model/user';
+import { routeNavigate } from '../../../../navigation/RouterMap';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 
@@ -182,7 +184,7 @@ export class GroupJoinView extends Component {
 
     render() {
         const { extraData, data, goToBuy, close } = this.props;
-        const { groupNum, endTime, id, activityTag } = extraData;
+        const { groupNum, endTime, activityTag } = extraData;
         let leaderName;
         for (const item of data) {
             if (item.startGroupLeader) {
@@ -208,11 +210,15 @@ export class GroupJoinView extends Component {
                 </View>
                 <NoMoreClick onPress={() => {
                     if (activityTag === 101106 && user.newUser !== null && !user.newUser) {
-                        bridge.$toast('该团仅支持新用户参加，可以开个新团，立享优惠哦~');
+                        bridge.$toast('该团仅支持新用户参加，可以开个\n新团，立享优惠哦~');
                         return;
                     }
                     close();
-                    goToBuy && goToBuy(id);
+                    if (!user.isLogin) {
+                        routeNavigate(RouterMap.LoginPage);
+                        return;
+                    }
+                    goToBuy && goToBuy(extraData);
                 }}>
                     <LinearGradient style={stylesJoin.linearGradient}
                                     start={{ x: 0, y: 0 }}

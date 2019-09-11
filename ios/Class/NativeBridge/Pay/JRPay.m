@@ -86,7 +86,7 @@ static JRPay *_singleton;
         }
       [[AlipaySDK defaultService] payOrder:orderString fromScheme:self.apliayCallBackSchema?:@"jure" callback:^(NSDictionary *resultDic) {
         /*没有安装支付宝客户端,在webview里面支付的回调*/
-        [self checkAliPayResult:resultDic];
+        [self checkAliPayResult:resultDic isWeb:YES];
       }];
     }else if (type == WXPayMothod){
       
@@ -132,11 +132,11 @@ static JRPay *_singleton;
 
 
 #pragma mark - 支付宝支付后的回调
-- (void)checkAliPayResult:(NSDictionary *)result{
+- (void)checkAliPayResult:(NSDictionary *)result isWeb:(BOOL)isWeb{
 	
     if ([result[@"resultStatus"] integerValue] == 9000){
 		
-      [self payEndWithDesc:@"支付成功" andPayResult:0 andOriginCode:9000 andResult:result];
+      [self payEndWithDesc:@"支付成功" andPayResult:isWeb?1:0 andOriginCode:9000 andResult:result];
     
     } else if([result[@"resultStatus"] integerValue] == 4000){
         
@@ -191,7 +191,7 @@ static JRPay *_singleton;
     if ([openUrl.host isEqualToString:@"safepay"]) {
         //跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:openUrl standbyCallback:^(NSDictionary *resultDic) {
-            [self checkAliPayResult:resultDic];
+            [self checkAliPayResult:resultDic isWeb:NO];
         }];
     }else{
         [WXApi handleOpenURL:openUrl delegate:self];

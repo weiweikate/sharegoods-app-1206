@@ -49,9 +49,11 @@ export class TopicImageAdView extends React.Component {
                         <ImageLoader style={{ height, width: ScreenUtils.width, flexDirection: 'row' }}
                                      source={{ uri: data.imgs[0].src }}
                         >{
-                            links.map((item) => {
+                            links.map((item,index) => {
                                 return (
-                                    <TouchableOpacity onPress={() => {
+                                    <TouchableOpacity
+                                        key={data.imgs[0].src + '_' + index}
+                                        onPress={() => {
                                             topicAdOnPress(data,item, this.props.p);
 
 
@@ -69,11 +71,11 @@ export class TopicImageAdView extends React.Component {
                     return value.src || '';
                 });
                 return (
-                    <View style={{ height: height - ScreenUtils.autoSizeWidth(10), width: ScreenUtils.width, marginTop: ScreenUtils.autoSizeWidth(10) }}>
+                    <View style={{ height: height - ScreenUtils.autoSizeWidth(0), width: ScreenUtils.width, marginTop: ScreenUtils.autoSizeWidth(0) }}>
                         <MRBannerViewComponent
                             itemRadius={5}
                             imgUrlArray={imgs}
-                            bannerHeight={height - ScreenUtils.autoSizeWidth(10)}
+                            bannerHeight={height - ScreenUtils.autoSizeWidth(0)}
                             modeStyle={1}
                             autoLoop={true}
                             onDidSelectItemAtIndex={(i) => {
@@ -113,7 +115,7 @@ export function ImageAdViewGetHeight(data) {
         case '4':
             return viewHeight || ScreenUtils.autoSizeWidth(100);
         case 'carousel':
-            return viewHeight? (viewHeight+ScreenUtils.autoSizeWidth(10)): ScreenUtils.autoSizeWidth(170);
+            return viewHeight? (viewHeight+ScreenUtils.autoSizeWidth(0)): ScreenUtils.autoSizeWidth(160);
     }
     return 0;
 }

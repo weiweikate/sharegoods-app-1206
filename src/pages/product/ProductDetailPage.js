@@ -119,7 +119,7 @@ export default class ProductDetailPage extends BasePage {
 
     //去购物车
     _bottomViewAction = (type) => {
-        const { productIsPromotionPrice, isHuaFei, isPinGroupIn, singleActivity } = this.productDetailModel;
+        const { productIsPromotionPrice, isHuaFei, isPinGroupIn, isGroupIn, singleActivity } = this.productDetailModel;
         const { groupNum } = singleActivity || {};
         switch (type) {
             case 'keFu':
@@ -163,9 +163,10 @@ export default class ProductDetailPage extends BasePage {
                     return;
                 }
                 this.state.goType = type;
-                this.groupId = null;
+                this.groupItem = null;
                 //productIsPromotionPrice  拼团需要注意 点击单独购买走普通逻辑
                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                    isOnlyBuyOne: isGroupIn || type === 'pinGroup',
                     productIsPromotionPrice: productIsPromotionPrice || type === 'pinGroup',
                     isAreaSku: this.productDetailModel.type !== 3,
                     priceDesc: isPinGroupIn ? (type === 'pinGroup' ? `${groupNum}人拼团价` : '单人购买价') : ''
@@ -252,6 +253,7 @@ export default class ProductDetailPage extends BasePage {
             const { specImg, promotionPrice, propertyValues } = item;
             const { singleActivity } = this.productDetailModel;
             const { code, activityTag } = singleActivity || {};
+            const { id, initiatorUserName } = this.groupItem || {};
             let orderProducts = [{
                 productType: this.productDetailModel.type,
                 skuCode: skuCode,
@@ -259,7 +261,7 @@ export default class ProductDetailPage extends BasePage {
                 productCode: prodCode,
                 activityCode: code,
                 activityTag: activityTag,
-                batchNo: this.groupId,
+                batchNo: id,
                 specImg,
                 productName: name,
                 unitPrice: promotionPrice,
@@ -268,7 +270,10 @@ export default class ProductDetailPage extends BasePage {
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
                     bizTag: 'group',
-                    groupData: { isSponsor: StringUtils.isEmpty(this.groupId) },
+                    groupData: {
+                        isSponsor: StringUtils.isEmpty(this.groupItem),
+                        sponsor: initiatorUserName
+                    },
                     orderType: 99,
                     orderProducts: orderProducts,
                     source: 2
@@ -353,11 +358,12 @@ export default class ProductDetailPage extends BasePage {
             }
             case productItemType.groupOpenPersonS: {
                 const { groupNum } = singleActivity || {};
-                return <GroupOpenPersonSView productGroupModel={productGroupModel} goToBuy={(id) => {
+                return <GroupOpenPersonSView productGroupModel={productGroupModel} goToBuy={(item) => {
                     this.state.goType = 'pinGroup';
-                    this.groupId = id;
+                    this.groupItem = item;
                     this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
                         productIsPromotionPrice: true,
+                        isOnlyBuyOne: true,
                         isAreaSku: this.productDetailModel.type !== 3,
                         priceDesc: `${groupNum}人拼团价`
                     });
@@ -445,7 +451,7 @@ export default class ProductDetailPage extends BasePage {
             <ShowTopView productDetailModel={this.productDetailModel}
                          toTopAction={this._onPressToTop}/>
             <IntervalMsgView pageType={IntervalType.productDetail}/>
-            <GroupShowAlertView productGroupModel={productGroupModel}/>
+            <GroupShowAlertView productGroupModel={productGroupModel} productDetailModel={this.productDetailModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}

@@ -63,7 +63,7 @@ export default class GoodsListItem extends React.Component {
         } = this.props;
         let orderStatus = merchantOrder.status;
         //merchantOrder.isGroup)
-        let nameArr = [...GetViewOrderStatus(orderStatus,null, false).menuData];
+        let nameArr = [...GetViewOrderStatus(orderStatus,null, merchantOrder.isGroup).menuData];
         let hasAfterSaleService = checkOrderAfterSaleService(merchantOrder.productOrderList, orderStatus, baseInfo.nowTime)
         if (orderStatus === 4 && merchantOrder.commentStatus) {
             nameArr.push({
@@ -247,7 +247,7 @@ export default class GoodsListItem extends React.Component {
                     <UIText value={'订单提交时间：' + DateUtils.getFormatDate(baseInfo.orderTime / 1000)}
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 18 }}/>
                     <UIText
-                        value={ GetViewOrderStatus(merchantOrder.status, merchantOrder.subStatus).status}
+                        value={ GetViewOrderStatus(merchantOrder.status, merchantOrder.subStatus, merchantOrder.isGroup).status}
                         style={{ fontSize: 13, color: DesignRule.mainColor, marginRight: 13 }}/>
                 </View>
             </View>

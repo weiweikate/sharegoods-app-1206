@@ -5,7 +5,7 @@ import { BackHandler, Image, Platform, TouchableOpacity, View } from 'react-nati
 import CommShareModal from '../../comm/components/CommShareModal';
 // import res from '../../comm/res';
 import apiEnvironment from '../../api/ApiEnvironment';
-import RouterMap, {routeNavigate} from '../../navigation/RouterMap';
+import RouterMap, {routeNavigate,GoToTabItem} from '../../navigation/RouterMap';
 import { autorun } from 'mobx';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
@@ -237,11 +237,6 @@ export default class RequestDetailPage extends BasePage {
             return;
         }
 
-        //拼团h5页面 点击跳转拼团列表
-        if (msg.action === 'GroupNavigate') {
-            routeNavigate(RouterMap.SpellGroupList)
-            return;
-        }
 
         if (msg.action === 'exitShowAlert') {
             this.webType = 'exitShowAlert';
@@ -280,6 +275,13 @@ export default class RequestDetailPage extends BasePage {
                         if (r.length > 0) {
                             let routerKey = r.split('/').pop();
                             r = RouterMap[routerKey] || r;
+                            if (routerKey === 'Mine') {
+                                GoToTabItem(4);
+                                return;
+                            } else if (routerKey === 'SpellGroupList') {
+                                routeNavigate(r);
+                                return;
+                            }
                         }
                         this.$navigate(r, p);
                     }}

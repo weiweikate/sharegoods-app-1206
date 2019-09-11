@@ -216,6 +216,18 @@ export default class ProductDetailModel {
     @observable promotionMinPrice;
     @observable promotionMaxPrice;
 
+    @computed get isSingleSpec() {
+        let isSingle = true;
+        /*是否单规格*/
+        for (const item of (this.specifyList || [])) {
+            if (item.specValues.length > 1) {
+                isSingle = false;
+                break;
+            }
+        }
+        return isSingle;
+    }
+
     @computed get nameShareText() {
         const { activityType, activityStatus, promotionDecreaseAmount, secondName } = this;
         if (activityType === activity_type.skill && activityStatus === activity_status.inSell) {
@@ -247,7 +259,7 @@ export default class ProductDetailModel {
         }
     }
 
-    /*产品当前页是否使用活动价格  (直降 秒杀)进行中*/
+    /*产品当前页是否使用活动价格  (直降 秒杀)进行中 (拼团未计算在内,因为有存在正常单独购买流程)*/
     @computed get productIsPromotionPrice() {
         const { activityType, activityStatus } = this;
         let tempType = activityType === activity_type.skill || activityType === activity_type.verDown;
@@ -312,7 +324,7 @@ export default class ProductDetailModel {
         //秒
         let second = Math.floor(leave3 / 1000);
         //mill
-        let leave4 = Math.floor(leave3 % 1000 / 100);
+        let leave4 = Math.floor(leave3 % 1000 / 10);
 
         hours = days * 24 + hours;
         hours = hours >= 10 ? hours : hours === 0 ? '00' : `0${hours}`;

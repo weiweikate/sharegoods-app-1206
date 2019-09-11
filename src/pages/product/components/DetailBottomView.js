@@ -10,18 +10,20 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res/product';
 import { MRText as Text } from '../../../components/ui/index';
-import { product_status } from '../ProductDetailModel';
+import { activity_status, activity_type, product_status } from '../ProductDetailModel';
 import LinearGradient from 'react-native-linear-gradient';
 import StringUtils from '../../../utils/StringUtils';
 import { formatDate } from '../../../utils/DateUtils';
 import { routePush } from '../../../navigation/RouterMap';
 import RouterMap from '../../../navigation/RouterMap';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import { observer } from 'mobx-react';
 
 const { xiangqing_btn_gouwuche_nor, jiarugouwuche_no, me_bangzu_kefu_icon } = res;
 const { px2dp } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
 
+@observer
 export default class DetailBottomView extends Component {
 
     static propTypes = {
@@ -34,13 +36,19 @@ export default class DetailBottomView extends Component {
     }
 
     render() {
-        const { orderOnProduct } = this.props.pData || {};
+        const { orderOnProduct, activityType, activityStatus } = this.props.pData || {};
         return (
             <View style={{ backgroundColor: 'white' }}>
                 {
                     orderOnProduct === 0 &&
                     <View style={styles.toastView}>
                         <Text style={styles.toastText}>该商品不支持单独购买</Text>
+                    </View>
+                }
+                {
+                    activityType === activity_type.pinGroup && activityStatus === activity_status.unBegin &&
+                    <View style={styles.toastView1}>
+                        <Text style={styles.toastText1}>活动即将开始</Text>
                     </View>
                 }
                 <View style={styles.container}>
@@ -117,7 +125,7 @@ export default class DetailBottomView extends Component {
     _renderBuy = () => {
         const {
             productStatus, selfReturning, orderOnProduct, isGroupIn,
-            groupSubProductCanSell, upTime, isPinGroupIn, minPrice
+            groupSubProductCanSell, upTime, isPinGroupIn, minPrice, isSingleSpec
         } = this.props.pData || {};
         //不能购买(不是上架状态||不能单独购买||(isGroupIn&&子商品不够买))
         const cantBuy = productStatus !== product_status.on || orderOnProduct === 0 || (isGroupIn && !groupSubProductCanSell);
@@ -149,7 +157,7 @@ export default class DetailBottomView extends Component {
                             <Text style={[styles.btnText, {
                                 color: DesignRule.white,
                                 fontSize: (isNoEmpty(selfReturning) && selfReturning > 0) ? 14 : 17
-                            }]}>{isPinGroupIn ? `￥${minPrice}起单买` : '立即购买'}</Text>
+                            }]}>{isPinGroupIn ? `￥${minPrice}${!isSingleSpec ? '起' : ''}单买` : '立即购买'}</Text>
                             {(isNoEmpty(selfReturning) && selfReturning > 0) && < Text style={{
                                 fontSize: 11, color: 'white', marginTop: -2
                             }}>返{selfReturning}</Text>}
@@ -161,7 +169,7 @@ export default class DetailBottomView extends Component {
 
     _renderShow = () => {
         const {
-            isPinGroupIn, promotionMinPrice, productGroupModel
+            isPinGroupIn, promotionMinPrice, productGroupModel, isSingleSpec
         } = this.props.pData || {};
         const { hasOpenGroup, groupId } = productGroupModel;
         return (
@@ -180,7 +188,7 @@ export default class DetailBottomView extends Component {
                                 end={{ x: 1, y: 0 }}
                                 colors={['#FC5D39', '#FF0050']}>
                     <Text
-                        style={styles.btnText}>{isPinGroupIn ? (!hasOpenGroup ? `￥${promotionMinPrice}起开团` : '查看我的团') : '分享秀一秀'}</Text>
+                        style={styles.btnText}>{isPinGroupIn ? (!hasOpenGroup ? `￥${promotionMinPrice}${!isSingleSpec ? '起' : ''}开团` : '查看我的团') : '分享秀一秀'}</Text>
                 </LinearGradient>
             </TouchableOpacity>
         );
@@ -195,6 +203,14 @@ const styles = StyleSheet.create({
     },
     toastText: {
         color: DesignRule.textColor_redWarn, fontSize: 12
+    },
+
+    toastView1: {
+        justifyContent: 'center', alignItems: 'center',
+        height: 30, backgroundColor: '#FEF2DD'
+    },
+    toastText1: {
+        color: '#FF9502', fontSize: 13
     },
 
     container: {

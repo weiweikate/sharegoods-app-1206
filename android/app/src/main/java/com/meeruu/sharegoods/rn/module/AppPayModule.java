@@ -1,5 +1,9 @@
 package com.meeruu.sharegoods.rn.module;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -70,7 +74,7 @@ public class AppPayModule extends ReactContextBaseJavaModule {
                         String resultStatus = payResult.getResultStatus();
                         // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                         if (TextUtils.equals(resultStatus, "9000")) {
-                            event.setCode(0);
+                            event.setCode(isAliPayInstalled(getCurrentActivity()) ? 0:1);
                             event.setMsg("支付成功");
                             event.setSdkCode(9000);
                             event.setAliPayResult(null);
@@ -169,4 +173,17 @@ public class AppPayModule extends ReactContextBaseJavaModule {
         Thread payThread = new Thread(payRunnable);
         payThread.start();
     }
+
+    /**
+     * 检测是否安装支付宝
+     * @param context
+     * @return
+     */
+    public static boolean isAliPayInstalled(Context context) {
+        Uri uri = Uri.parse("alipays://platformapi/startApp");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+        return componentName != null;
+    }
+
 }

@@ -52,7 +52,7 @@ class HomeExpandBnnerModel {
         if (bannerList.length > 0) {
             let expBanner = {
                 itemData: bannerList,
-                id: 3,
+                id: 4,
                 type: homeType.expandBanner
             };
             this.expBannerList = [];

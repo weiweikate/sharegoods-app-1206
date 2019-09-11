@@ -135,7 +135,9 @@ const api = {
     //提现记录
     queryWithdrawRecord:['/user/withdraw/query',{method:'post'}],
     //获取我的拼团列表数据
-    getGroupList:['/promotion/group/us',{method:'get'}]
+    getGroupList:['/promotion/group/us',{method:'get'}],
+    //设置页面短信开关
+    setMessageStatus:['/user/setContactInformationStatus',{method:'post'}],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 
