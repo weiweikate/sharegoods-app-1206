@@ -194,6 +194,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
     const promotionSaleRateS = item.promotionSaleRate || 0;
     const discountString = (item.promotionPrice / item.originalPrice * 10) + '';
     let discountNum = discountString.substring(0, discountString.indexOf('.') + 2);
+    discountNum = discountNum < 0.1 ? '0.1' : discountNum;
     return <View style={styles.goodsItem}>
         <ImageLoader
             source={{ uri: item.imgUrl }}
