@@ -116,6 +116,7 @@ export default class MineSpellGroupView extends PureComponent {
      */
     timeFormat = (time)=>{
         if (!time) {
+            this.props.timeEnd&&this.props.timeEnd();
             return '00:00:00';
         }
         let format = '';
