@@ -94,12 +94,13 @@ const stylesWill = StyleSheet.create({
 export class GroupActivityWillBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { showTimeText, promotionMinPrice, isSingleSpec } = productDetailModel;
+        const { showTimeText, promotionMinPrice, isSingleSpec, singleActivity } = productDetailModel;
+        const { groupNum } = singleActivity || {};
         return (
             <View style={stylesIn.container}>
                 <MRText style={stylesIn.price}>¥{promotionMinPrice}{!isSingleSpec ? '起' : ''}</MRText>
                 <View style={stylesIn.groupView}>
-                    <MRText style={stylesIn.groupText}>拼团价</MRText>
+                    <MRText style={stylesIn.groupText}>{groupNum}人拼团价</MRText>
                 </View>
                 <View style={{ flex: 1 }}/>
                 <MRText style={stylesIn.timeText}>{showTimeText}</MRText>
@@ -118,11 +119,11 @@ const stylesIn = StyleSheet.create({
         fontWeight: '500'
     },
     groupView: {
-        width: 40, height: 16, borderRadius: 2, backgroundColor: DesignRule.bgColor_green,
+        height: 16, borderRadius: 2, backgroundColor: DesignRule.bgColor_green,
         alignItems: 'center', justifyContent: 'center'
     },
     groupText: {
-        fontSize: 11, color: 'white'
+        fontSize: 11, color: 'white', paddingHorizontal: 4
     },
     timeText: {
         fontSize: 12, color: DesignRule.textColor_mainTitle, marginRight: 15
