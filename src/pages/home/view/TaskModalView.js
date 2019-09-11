@@ -9,6 +9,7 @@
  *
  */
 
+
 'use strict';
 
 import React from 'react';
@@ -33,6 +34,7 @@ import DesignRule from '../../../constants/DesignRule';
 import taskModel, { mineTaskModel } from '../model/TaskModel';
 import LinearGradient from 'react-native-linear-gradient';
 import HomeModalManager from '../manager/HomeModalManager';
+import CommonUtils from '../../../utils/CommonUtils';
 const {
     taskModal_dou,
     taskModal_btn,
@@ -75,7 +77,7 @@ export default class TaskModalView extends React.Component {
 
     renderContent() {
 
-        let alertData = this.model.alertData || []
+        let alertData = CommonUtils.deepClone(this.model.alertData) || []
         let images = [taskModal_exp,taskModal_dou,taskModal_h, taskModal_chou, taskModal_chou, taskModal_chou];
         let bgs = [exp_bg, dou_bg, h_bg, chou_bg,chou_bg, chou_bg]
         let lottery = null;
