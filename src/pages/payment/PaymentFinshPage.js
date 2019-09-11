@@ -146,6 +146,7 @@ export default class PaymentFinshPage extends BasePage {
      * @returns {*}
      */
     renderTopSuccessView = () => {
+        const { group } = this.state.groupShareData || {};
         return (
             <View style={Styles.topSuccessBgStyle}>
                 <View style={{ justifyContent: 'center', alignItems: 'center', height: px2dp(180) }}>
@@ -159,8 +160,13 @@ export default class PaymentFinshPage extends BasePage {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                         <TouchableOpacity style={{ width: px2dp(100), height: px2dp(34) }} onPress={() => {
-
-                            this._gotoHome();
+                            if (group) {
+                                replaceRoute(RouterMap.HtmlPage, {
+                                    uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyHot`
+                                });
+                            } else {
+                                this._gotoHome();
+                            }
                         }}>
                             <View style={{
                                 borderWidth: px2dp(0.5),
@@ -173,7 +179,7 @@ export default class PaymentFinshPage extends BasePage {
                                 justifyContent: 'center'
                             }}>
                                 <MRText style={{ color: DesignRule.textColor_instruction, fontSize: px2dp(15) }}>
-                                    返回首页
+                                    {group ? '返回首页' : '拼团首页'}
                                 </MRText>
                             </View>
                         </TouchableOpacity>

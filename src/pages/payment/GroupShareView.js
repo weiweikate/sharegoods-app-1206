@@ -20,14 +20,15 @@ import ScreenUtils from '../../utils/ScreenUtils';
 export class GroupShareView extends Component {
 
     _onPress = (text) => {
-        const { groupId, groupNum, surplusPerson } = this.props.groupShareData || {};
+        const { groupId, groupNum, surplusPerson, groupItem } = this.props.groupShareData || {};
+        const { activityAmount, goodsName, goodsImg } = groupItem || {};
         ShareUtil.onShare({
             platformType: text === '微信' ? 0 : (text === '朋友圈' ? 1 : 2),
             shareType: 1,
-            title: `【仅剩${surplusPerson}个名额】我元带走了`,
-            dec: `我买了，该商品已拼${StringUtils.sub(groupNum, surplusPerson)}件了，快来参团吧！`,
+            title: `【仅剩${surplusPerson}个名额】我${activityAmount}元带走了${goodsName || ''}`,
+            dec: `我买了${goodsName || ''}，该商品已拼${StringUtils.sub(groupNum, surplusPerson)}件了，快来参团吧！`,
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${groupId}`,
-            thumImage: `${apiEnvironment.getCurrentOssHost()}/sharegoods/h5/resource/icon/shareIcon.png`
+            thumImage: `${goodsImg}`
         });
     };
 
