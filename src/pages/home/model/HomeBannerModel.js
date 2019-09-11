@@ -1,4 +1,4 @@
-import { observable, action, flow } from 'mobx';
+import { action, flow, observable } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import store from '@mr/rn-store';
@@ -15,18 +15,24 @@ export class BannerModules {
             if (isCache) {
                 const storeRes = yield store.get(kHomeTopBannerStore);
                 if (storeRes) {
-                    this.bannerList = storeRes || [];
+                    this.assembleList(storeRes || []);
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.swiper });
-            this.bannerList = res.data || [];
-            homeModule.changeHomeList(homeType.swiper);
+            this.assembleList(res.data || []);
             store.save(kHomeTopBannerStore, res.data);
         } catch (error) {
-            console.log(error);
             bridge.$toast(error.msg);
         }
     });
+
+    assembleList(data) {
+        this.bannerList = data;
+        homeModule.changeHomeList(homeType.swiper, [{
+            id: 0,
+            type: homeType.swiper
+        }]);
+    }
 }
 
 export const bannerModule = new BannerModules();

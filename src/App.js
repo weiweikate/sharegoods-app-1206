@@ -84,7 +84,8 @@ class App extends Component {
         // code push
         codePush.sync({
             updateDialog: false,
-            installMode: codePush.InstallMode.ON_NEXT_RESUME
+            installMode: codePush.InstallMode.ON_NEXT_RESUME,
+            mandatoryInstallMode: codePush.InstallMode.ON_NEXT_RESUME
         });
         netStatus.startMonitorNetworkStatus();
         // 环境配置

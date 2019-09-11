@@ -48,13 +48,13 @@ export default class DIYTopicList extends React.Component {
             data = [...data];
             let p = []
             let count = data.length;
-            for (let index = 0; index < count; index ++){
+            for (let index = 0; index < count; index++){
                 let item = data[index];
                 if (item.type === homeType.custom_goods) {
                     item.itemHeight = GoodsCustomViewGetHeight(item);
                     item.marginBottom = ScreenUtils.autoSizeWidth(0);
-                    if (count-1 > index) {
-                        let type = data[index+1].type;
+                    if (count - 1 > index) {
+                        let type = data[index + 1].type;
                         if (type  === homeType.custom_imgAD || type === homeType.custom_text) {
                             item.marginBottom = ScreenUtils.autoSizeWidth(15);
                         }
@@ -73,7 +73,7 @@ export default class DIYTopicList extends React.Component {
                     if (item.text) {
                         p.push(bridge.getTextHeightWithWidth(item.text, autoSizeWidth(14), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
                             item.textHeight = r.height;
-                            item.itemHeight = r.height + item.detailHeight+ autoSizeWidth(20)
+                            item.itemHeight = r.height + item.detailHeight + autoSizeWidth(20)
                         }));
                     }
                     if (item.subText) {

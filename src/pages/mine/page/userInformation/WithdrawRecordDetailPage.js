@@ -30,7 +30,7 @@ export default class WithdrawRecordDetailPage extends BasePage {
         show: true // false则隐藏导航
     };
 
-    _renderRow=(key,value,top=1)=>{
+    _renderRow=(key,value,top = 1)=>{
         return(
             <View style={[styles.rowWrapper,{ marginTop: top}]}>
                 <MRText style={styles.keyStyle}>
@@ -57,7 +57,7 @@ export default class WithdrawRecordDetailPage extends BasePage {
     };
 
     _render() {
-        const  {applyTime,cardNo,withdrawBalance,withdrawRemark,bankName,withdrawNum}  =this.params;
+        const  {applyTime,cardNo,withdrawBalance,withdrawRemark,bankName,withdrawNum}  = this.params;
         return (
             <View style={{ flex: 1 }}>
                 <View style={styles.headerWrapper}>

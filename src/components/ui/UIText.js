@@ -34,7 +34,7 @@ const MRText = (props) => {
     return (
         <RNText {...attributes}
                 allowFontScaling={false}
-                style={[props.style, { includeFontPadding: false }, size > 0 ? { lineHeight: size } : null]}>
+                style={[size > 0 ? { lineHeight: size } : null, { includeFontPadding: false }, props.style]}>
             {props.children}
         </RNText>
     );

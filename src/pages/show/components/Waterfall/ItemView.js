@@ -44,15 +44,15 @@ export default class WaterfallItemView extends Component{
   //     }).start()
   // }
   _renderContent(){
-    var {item, idx, renderContent, parent} = this.props;
+    let {item, idx, renderContent, parent} = this.props;
     return renderContent && renderContent(item,idx,this,parent);
   }
   setNativeProps(...args){
-    var { root } = this.refs
+    let { root } = this.refs
     root && root.setNativeProps(...args);
   }
   _onLayout = (e)=>{
-    var {parent} = this.props;
+    let {parent} = this.props;
     this.props.onLayout && this.props.onLayout(e)
     this.width = e.nativeEvent.layout.width;
     this.height = e.nativeEvent.layout.height;
@@ -70,9 +70,9 @@ export default class WaterfallItemView extends Component{
   render(){
     return (
       <View ref={'root'} {...this.props} style={this.props.style} onLayout={this._onLayout}>
-        {  this.hidden?
+        {  this.hidden ?
             <View style={{height: this.height}}/>
-            :this._renderContent()
+            : this._renderContent()
         }
       </View>
     );

@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     title: {
-        fontFamily: 'PingFangSC-Medium',
         fontSize: 13
     }
 });

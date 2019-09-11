@@ -62,7 +62,7 @@ export default class LoadMoreDataUtil{
             } else {
                 this.data = this.handleData(result);
             }
-            this.footerStatus = this.isMoreFunc(result) ? 'idle': 'noMoreData'
+            this.footerStatus = this.isMoreFunc(result) ? 'idle' : 'noMoreData'
         }).catch((err) => {
             this.refreshing = false;
             this.isRefreshing = false;
@@ -95,7 +95,7 @@ export default class LoadMoreDataUtil{
             } else {
                 this.data = this.data.concat(this.handleData(result));
             }
-            this.footerStatus = this.isMoreFunc(result) ? 'idle': 'noMoreData'
+            this.footerStatus = this.isMoreFunc(result) ? 'idle' : 'noMoreData'
         }).catch((err) => {
             this.footerStatus = 'idle'
             this.isLoadMore = false;

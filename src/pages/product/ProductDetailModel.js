@@ -10,6 +10,7 @@ import TopicAPI from '../topic/api/TopicApi';
 import { ProductDetailCouponsViewModel } from './components/ProductDetailCouponsView';
 import { ProductDetailAddressModel } from './components/ProductDetailAddressView';
 import { ProductDetailSuitModel } from './components/ProductDetailSuitView';
+import ProductGroupModel from './components/promotionGroup/ProductGroupModel';
 
 const { width, height } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
@@ -26,17 +27,21 @@ export const productItemType = {
     address: 'address',
     comment: 'comment',
     content: 'content',
+    groupIsOld: 'groupIsOld',
+    groupOpenPersonS: 'groupOpenPersonS',
+    groupProductList: 'groupProductList',
     priceExplain: 'priceExplain'
 };
 
 export const sectionType = {
-    sectionHeader: 'section0',
-    sectionSuit: 'section1',
-    sectionPromotion: 'section2',
-    sectionSetting: 'section3',
-    sectionScore: 'section4',
-    sectionContent: 'section5',
-    sectionExPlain: 'section6'
+    sectionHeader: 'section0',//头部
+    sectionSuit: 'section1',//套餐
+    sectionPromotion: 'section2',//营销
+    sectionSetting: 'section3',//设置类 单行
+    sectionScore: 'section4',//晒单
+    sectionGroup: 'section41',//拼团
+    sectionContent: 'section5',//图片
+    sectionExPlain: 'section6'//价格说明
 };
 
 /**价格类型 2拼店价 3会员价**/
@@ -58,13 +63,14 @@ export const activity_status = {
     unBegin: 1,//未开始
     inSell: 2//在售
 };
-/*（0:秒杀;1:套餐;2:直降;3:满减;4:满折）*/
+/*（0:秒杀;1:套餐;2:直降;3:满减;4:满折,5拼团）*/
 export const activity_type = {
     skill: 0,
     group: 1,
     verDown: 2,
     fullDown: 3,
-    fullSale: 4
+    fullSale: 4,
+    pinGroup: 5
 };
 
 export default class ProductDetailModel {
@@ -72,6 +78,7 @@ export default class ProductDetailModel {
     productDetailCouponsViewModel = new ProductDetailCouponsViewModel();
     productDetailAddressModel = new ProductDetailAddressModel();
     productDetailSuitModel = new ProductDetailSuitModel();
+    productGroupModel = new ProductGroupModel();
 
     trackType;
     trackCode;
@@ -170,7 +177,7 @@ export default class ProductDetailModel {
 
     /**营销活动**/
     @observable promotionLimitNum;
-    /*0:秒杀;1:套餐;2:直降;3:满减;4:满折*/
+    /*0:秒杀;1:套餐;2:直降;3:满减;4:满折,5拼团*/
     @observable activityType;
     /*活动status 1未开始,2进行中,3已结束*/
     @observable activityStatus;
@@ -209,6 +216,18 @@ export default class ProductDetailModel {
     @observable promotionMinPrice;
     @observable promotionMaxPrice;
 
+    @computed get isSingleSpec() {
+        let isSingle = true;
+        /*是否单规格*/
+        for (const item of (this.specifyList || [])) {
+            if (item.specValues.length > 1) {
+                isSingle = false;
+                break;
+            }
+        }
+        return isSingle;
+    }
+
     @computed get nameShareText() {
         const { activityType, activityStatus, promotionDecreaseAmount, secondName } = this;
         if (activityType === activity_type.skill && activityStatus === activity_status.inSell) {
@@ -240,7 +259,7 @@ export default class ProductDetailModel {
         }
     }
 
-    /*产品当前页是否使用活动价格  (直降 秒杀)进行中*/
+    /*产品当前页是否使用活动价格  (直降 秒杀)进行中 (拼团未计算在内,因为有存在正常单独购买流程)*/
     @computed get productIsPromotionPrice() {
         const { activityType, activityStatus } = this;
         let tempType = activityType === activity_type.skill || activityType === activity_type.verDown;
@@ -268,6 +287,7 @@ export default class ProductDetailModel {
         return activityType === activity_type.group && activityStatus === activity_status.inSell && (groupActivity.subProductList || []).length > 0;
     }
 
+    //老礼包还要计算子商品能不能买
     @computed get groupSubProductCanSell() {
         const { subProductList } = this.groupActivity;
         for (const subProduct of (subProductList || [])) {
@@ -279,6 +299,11 @@ export default class ProductDetailModel {
             }
         }
         return true;
+    }
+
+    @computed get isPinGroupIn() {
+        const { activityType, activityStatus } = this;
+        return activityType === activity_type.pinGroup && activityStatus === activity_status.inSell;
     }
 
     /*秒杀倒计时显示*/
@@ -299,13 +324,16 @@ export default class ProductDetailModel {
         //秒
         let second = Math.floor(leave3 / 1000);
         //mill
-        let leave4 = Math.floor(leave3 % 1000 / 100);
+        let leave4 = Math.floor(leave3 % 1000 / 10);
 
         hours = days * 24 + hours;
         hours = hours >= 10 ? hours : hours === 0 ? '00' : `0${hours}`;
         minutes = minutes >= 10 ? minutes : minutes === 0 ? '00' : `0${minutes}`;
         second = second >= 10 ? second : second === 0 ? '00' : `0${second}`;
         if (activityStatus === activity_status.unBegin) {
+            if (this.activityType === activity_type.pinGroup) {
+                return `距开始${hours}:${minutes}:${second}:${leave4}`;
+            }
             //'yyyy-MM-dd HH:mm:ss';
             //小于一小时
             if (skillTimeout < 3600 * 1000) {
@@ -321,6 +349,9 @@ export default class ProductDetailModel {
             }
             return DateUtils.formatDate(this.startTime, 'dd号HH:mm') + '开抢';
         } else if (activityStatus === activity_status.inSell) {
+            if (this.activityType === activity_type.pinGroup) {
+                return `${hours}:${minutes}:${second}:${leave4}`;
+            }
             if (days < 1) {
                 return `距结束${hours}:${minutes}:${second}:${leave4}`;
             } else {
@@ -361,14 +392,18 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, type, isGroupIn, productDetailSuitModel, isHuaFei } = this;
+        const {
+            promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel,
+            type, isGroupIn, productDetailSuitModel, isHuaFei, isPinGroupIn, singleActivity
+        } = this;
         const { couponsList } = productDetailCouponsViewModel;
         const { activityCode } = productDetailSuitModel;
+        const { activityTag } = singleActivity;
         /*头部*/
         let sectionArr = [
             { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
         ];
-        /*优惠套餐*/
+        /*套餐*/
         if (isGroupIn || activityCode) {
             !isHuaFei && sectionArr.push(
                 { key: sectionType.sectionSuit, data: [{ itemKey: productItemType.suit }] }
@@ -389,7 +424,13 @@ export default class ProductDetailModel {
         paramList.length !== 0 && settingList.push({ itemKey: productItemType.param });
         type !== 3 && settingList.push({ itemKey: productItemType.address });
         sectionArr.push({ key: sectionType.sectionSetting, data: settingList });
-        /*晒单,*/
+        /*拼团相关*/
+        let groupList = [];
+        activityTag === 101106 && groupList.push({ itemKey: productItemType.groupIsOld });
+        groupList.push({ itemKey: productItemType.groupOpenPersonS });
+        groupList.push({ itemKey: productItemType.groupProductList });
+        isPinGroupIn && sectionArr.push({ key: sectionType.sectionGroup, data: groupList });
+        /*晒单,图片,价格说明*/
         sectionArr.push(
             { key: sectionType.sectionScore, data: [{ itemKey: productItemType.comment }] },
             { key: sectionType.sectionContent, data: contentArr.slice() },
@@ -599,6 +640,21 @@ export default class ProductDetailModel {
             if (tempData && tempData.type !== 3) {
                 this.productDetailAddressModel.prodCode = this.prodCode;
             }
+
+            //拼团
+            const { activityType, singleActivity } = this;
+            if (activityType !== activity_type.pinGroup) {
+                return;
+            }
+            const { code, activityTag } = singleActivity;
+            this.productGroupModel.requestCheckStartJoinUser({
+                prodCode: this.prodCode,
+                activityCode: code,
+                activityTag
+            });
+            this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
+            this.productGroupModel.requestGroupProduct({ activityCode: code });
+            this.productGroupModel.requestGroupDesc();
         }).catch((e) => {
             this.productError(e);
         });

@@ -94,7 +94,7 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + (this.state.productData.merchantOrderNo||'')}
+                <UIText value={'订单编号：' + (this.state.productData.merchantOrderNo || '')}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
@@ -409,7 +409,7 @@ class AfterSaleServicePage extends BasePage {
         OrderApi.getReturnReason({ code: ['JTK', 'THTK', 'HH', 'WFH'][pageType] }).then((result) => {
             let returnReasons = result.data || [];
             if (sevenDayReturn) {
-                let returnReason = '七天无理由'+['退款','退货','换货','退款'][pageType];
+                let returnReason = '七天无理由' + ['退款','退货','换货','退款'][pageType];
                 returnReasons = [{value: returnReason}, ...returnReasons]
             }
             that.setState({ returnReasons: returnReasons });

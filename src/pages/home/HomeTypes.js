@@ -32,7 +32,7 @@ export const homeType = {
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
     custom_goods: 'WIDGET-GOODS',
-    placeholder: 'placeholder',
+    homeHotTitle: 'homeHotTitle'
 };
 
 export const homeLinkType = {
@@ -84,7 +84,7 @@ export const homePoint = {
     homeExpand: 9,// app通用广告位
 // 21：拼店首页banner推荐位
     homeCategory: 31,// 类目搜索banner广告位
-    homeDiy: 13,//自定义模块
+    homeDiy: 13//自定义模块
 // 32：秀场banner推荐
 // 41：签到广告位
 // 51：登录/注册页面广告位
@@ -93,7 +93,7 @@ export const homePoint = {
 
 export const ContentType = {
     none: 0, //  6：限时购 7：抽奖 8：直降商品 9：优惠券 10：文本 11：tab导航
-    good:1 ,//：商品
+    good: 1,//：商品
     zt: 3,//专题
     show: 4, //秀场
     gift: 5, //礼包
@@ -101,56 +101,59 @@ export const ContentType = {
     good_coupon: 8,//直降商品
     coupon: 9,//
     text: 10,//文本
-    tab: 11,//tab导航
-}
+    tab: 11//tab导航
+};
 
 
 export function topicAdOnPress(data, item, p, title) {
-    let p2 = {}
+    let p2 = {};
     let linkValues = item.linkValue;
     let linkType = item.linkType;
-    let linkValue = ''
-    if (  linkValues ){
-        if (linkValues.length > 1){
+    let linkValue = '';
+    if (linkValues) {
+        if (linkValues.length > 1) {
             linkType = 99;
         }
-        if (linkValues.length > 0){
+        if (linkValues.length > 0) {
             linkValue = linkValues[0];
         }
 
     }
-    switch (linkType){
-        case 1:
-            p2.contentType = 1
-            p2.contentKey = linkValue
-            routePush(RouterMap.ProductDetailPage,{productCode: linkValue})
-        case 4:
-            p2.contentType = 8
-            p2.contentKey = linkValue
-            routePush(RouterMap.ProductDetailPage,{productCode: linkValue})
-            break
-        case 2:
-            p2.contentType = 3
-            p2.contentKey = linkValue
-            if (linkValue &&  linkValue.indexOf("ZT") === 0) {
-                routePush('HtmlPage', {uri: '/subject/'+linkValue})
-            }else if (linkValue &&  linkValue.indexOf("ST") === 0) {
-                routePush('HtmlPage', {uri: '/topic/temp/'+linkValue})
-            }else {
-                routePush('HtmlPage', {uri: '/custom/'+linkValue})
+    switch (linkType) {
+        case 1://商品
+            p2.contentType = 1;
+            p2.contentKey = linkValue;
+            routePush(RouterMap.ProductDetailPage, { productCode: linkValue });
+        case 4://商品
+            p2.contentType = 8;
+            p2.contentKey = linkValue;
+            routePush(RouterMap.ProductDetailPage, { productCode: linkValue });
+            break;
+        case 2://专题
+            p2.contentType = 3;
+            p2.contentKey = linkValue;
+            if (linkValue && linkValue.indexOf('ZT') === 0) {
+                routePush('HtmlPage', { uri: '/subject/' + linkValue });
+            } else if (linkValue && linkValue.indexOf('ST') === 0) {
+                routePush('HtmlPage', { uri: '/topic/temp/' + linkValue });
+            } else {
+                routePush('HtmlPage', { uri: '/custom/' + linkValue });
             }
-            break
+            break;
         case 3:
-            p2.contentType = 6
-            p2.contentKey = '/spike'
-            routePush('HtmlPage', {uri: '/spike'})
-            break
-        case 99:
-            routePush('HtmlPage', {uri: `/search?c=${data.code + item.linkId}`})
-            break
+            p2.contentType = 6;
+            p2.contentKey = '/spike';
+            routePush('HtmlPage', { uri: '/spike' });
+            break;
+        case 6://跳转网页
+            routePush('HtmlPage', { uri: linkValue });
+            break;
+        case 99://商品列表
+            routePush('HtmlPage', { uri: `/search?c=${data.code + item.linkId}` });
+            break;
     }
-    if (p){
+    if (p) {
         p.contentValue = title || '';
-        track(trackEvent.SpecialTopicBtnClick, {...p});
+        track(trackEvent.SpecialTopicBtnClick, { ...p });
     }
 }

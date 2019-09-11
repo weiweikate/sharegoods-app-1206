@@ -7,7 +7,7 @@ function mediatorAddFunc(name, callBack) {
 }
 
 function mediatorCallFunc(name, params = {}) {
-   if ( typeof Mediator[name] ==='function') {
+   if ( typeof Mediator[name] === 'function') {
        Mediator[name](params);
     }
 

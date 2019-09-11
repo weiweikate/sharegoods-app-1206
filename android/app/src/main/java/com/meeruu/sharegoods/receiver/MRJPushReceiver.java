@@ -155,7 +155,7 @@ public class MRJPushReceiver extends JPushMessageReceiver {
 
             if(objExtra != null && objExtra.has(BIZ_TYPE)){
                 String type = objExtra.getString(BIZ_TYPE);
-                jsonObject.put(type, type);
+                jsonObject.put(BIZ_TYPE, type);
             }
 
             SensorsUtils.trackCustomeEvent(APP_OPENN_OTIFICATION, jsonObject);

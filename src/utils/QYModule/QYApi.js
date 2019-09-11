@@ -1,4 +1,4 @@
-const api={
+const api = {
     judgeVip: '/user/judgeUserVip',
 }
 import ApiUtils from '../../api/network/ApiUtils';

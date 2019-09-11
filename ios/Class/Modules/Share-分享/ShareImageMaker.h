@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 @interface ShareImageMakerModel : NSObject
-@property(nonatomic, copy)NSString * imageType;// product\web\show
+@property(nonatomic, copy)NSString * imageType;// product\web\show\group
 @property(nonatomic, copy)NSString * imageUrlStr;
 @property(nonatomic, copy)NSString * titleStr;
 @property(nonatomic, strong)NSArray * priceType;

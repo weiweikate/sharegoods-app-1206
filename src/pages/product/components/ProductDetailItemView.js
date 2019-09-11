@@ -24,6 +24,7 @@ import bridge from '../../../utils/bridge';
 import { getSource } from '@mr/image-placeholder/oos';
 import { getSize } from '../../../utils/OssHelper';
 import { SectionLineView } from './ProductDetailSectionView';
+import { GroupActivityInView, GroupActivityWillBeginView } from './promotionGroup/ProductGroupActivityView';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
@@ -102,30 +103,30 @@ export class HeaderItemView extends Component {
             freight, monthSaleCount, originalPrice, minPrice, groupPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
             secondName, levelText, priceType, activityType, activityStatus, type, isHuaFei
         } = productDetailModel;
-        let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
-        let showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
-        let showPrice = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
-        /*秒杀||话费 || 兑换 不显示拼店*/
-        let showShop = (activityType === activity_type.skill && activityStatus === activity_status.inSell) || isHuaFei || this.props.paramsType === '9';
+        const showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
+        const showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
+        const showPinWill = activityType === activity_type.pinGroup && activityStatus === activity_status.unBegin;
+        const showPinIn = activityType === activity_type.pinGroup && activityStatus === activity_status.inSell;
+        const showPrice = !(activityType === (activity_type.skill || activity_type.pinGroup) && activityStatus === activity_status.inSell);
+        /*秒杀||拼团||话费 || 兑换 不显示拼店*/
+        const showShop = (activityType === (activity_type.skill || activity_type.pinGroup) && activityStatus === activity_status.inSell) || isHuaFei || this.props.paramsType === '9';
         /*直降中显示活动价 价格区间*/
-        let verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
+        const verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
         return (
             <View style={styles.bgView}>
                 <DetailBanner data={productDetailModel} navigation={navigation}/>
                 {showWill && <ActivityWillBeginView productDetailModel={productDetailModel}/>}
                 {showIn && <ActivityDidBeginView productDetailModel={productDetailModel}/>}
-                {
-                    showPrice && (verDownInSell ?
-                        this._renderPriceView({
-                            minPrice: promotionMinPrice,
-                            maxPrice: promotionMaxPrice,
-                            originalPrice,
-                            levelText,
-                            monthSaleCount
-                        })
-                        :
-                        this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText, monthSaleCount }))
-                }
+                {showPinWill && <GroupActivityWillBeginView productDetailModel={productDetailModel}/>}
+                {showPinIn && <GroupActivityInView productDetailModel={productDetailModel}/>}
+                {showPrice &&
+                this._renderPriceView({
+                    minPrice: verDownInSell ? promotionMinPrice : minPrice,
+                    maxPrice: verDownInSell ? promotionMaxPrice : maxPrice,
+                    originalPrice,
+                    levelText,
+                    monthSaleCount
+                })}
                 {!showShop && this._renderShop({ priceType, shopAction, groupPrice })}
                 <NoMoreClick onPress={() => {
                 }} onLongPress={() => {

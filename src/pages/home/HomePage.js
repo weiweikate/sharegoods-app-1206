@@ -36,6 +36,7 @@ import HomeFirstTabView from './view/List/HomeFirstTabView';
 import HomeNormalList from './view/List/HomeNormalList';
 import DIYTopicList from './view/List/DIYTopicList';
 import { observer } from 'mobx-react';
+import ImageLoader from '@mr/image-placeholder';
 
 
 /**
@@ -64,6 +65,7 @@ class HomePage extends BasePage {
     }
 
     componentDidMount() {
+        homeModalManager.requestData();
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
@@ -111,7 +113,6 @@ class HomePage extends BasePage {
                             taskModel.getData();
                             limitGoModule.loadLimitGo(false);
                         }
-                        homeModalManager.requestData();
                         homeModalManager.refreshPrize();
                     });
                 }
@@ -231,6 +232,7 @@ class HomePage extends BasePage {
     }
 
     _renderTabBar(p) {
+        console.log('----' + JSON.stringify(p));
         let itemWidth = 60;
         let tabBarHeight = 42;
         return (
@@ -256,15 +258,35 @@ class HomePage extends BasePage {
                             borderRadius: 2
                         }}
                         renderTab={(name, page, isTabActive) => {
+                            let item = {};
+                            let showType, navIcon, bottomNavIcon;
+                            if (page === 0) {
+
+                            } else {
+                                item = tabModel.tabList[page - 1] || {};
+                                showType = item.showType;
+                                navIcon = item.navIcon;
+                                bottomNavIcon = item.bottomNavIcon;
+                            }
                             return (
                                 <TouchableOpacity style={{
                                     height: 36,
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     width: itemWidth
-                                }} onPress={() => p.goToPage(page)}>
-                                    <Text style={isTabActive ? styles.tabSelect : styles.tabNomal}
-                                          numberOfLines={1}>{name}</Text>
+                                }} onPress={() => {
+                                    p.goToPage(page);
+                                }}>
+                                    {showType === 2 ?
+                                        <ImageLoader source={{ uri: isTabActive ? navIcon : bottomNavIcon }}
+                                                     style={{
+                                                         height: 36,
+                                                         width: itemWidth
+                                                     }}
+                                        /> :
+                                        <Text style={isTabActive ? styles.tabSelect : styles.tabNomal}
+                                              numberOfLines={1}>{name}</Text>
+                                    }
                                 </TouchableOpacity>
                             );
                         }}
