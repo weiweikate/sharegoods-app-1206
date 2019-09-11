@@ -63,11 +63,11 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
 @observer
 export default class HomeFirstTabView extends Component {
     dataProvider = new DataProvider((r1, r2) => {
-        return r1.id !== r2.id;
+        return r1 !== r2;
     });
 
     layoutProvider = new LayoutProvider((i) => {
-        return homeModule.homeList[i] || {};
+        return this.dataProvider.getDataForIndex(i) || {};
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
         const { todayList } = todayModule;
