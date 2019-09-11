@@ -130,14 +130,14 @@ function GetViewOrderStatus(status, subStatus, isGroup) {
             if (status === OrderType.PAID){
                 data.status = '未成团' ;
                 data.menu_orderDetail = [{ id:19, operation:'查看拼团', isRed:false}];
-                data.menuData = [{ id:19, operation:'查看拼团', isRed:false}];
+                // data.menuData = [{ id:19, operation:'查看拼团', isRed:false}];
             }
             if (status === OrderType.WAIT_DELIVER ||
                 status === OrderType.DELIVERED ||
                 status === OrderType.COMPLETED
             ){
                 data.menu_orderDetail = [...data.menu_orderDetail, { id:19, operation:'查看拼团', isRed:false}];
-                data.menuData = [...data.menuData, { id:19, operation:'查看拼团', isRed:false}];
+                // data.menuData = [...data.menuData, { id:19, operation:'查看拼团', isRed:false}];
             }
         }
         return data;
