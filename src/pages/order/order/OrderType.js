@@ -73,7 +73,8 @@ const ViewOrderStatus = {
 // 返回订单详情售后按钮list
 function GetAfterBtns(product) {
     if (product.status === OrderType.WAIT_PAY ||
-        product.status === OrderType.DELETED
+        product.status === OrderType.DELETED  ||
+        product.status === OrderType.PAID
     ) {
         return [];
     }

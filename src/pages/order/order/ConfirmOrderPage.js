@@ -154,7 +154,7 @@ export default class ConfirmOrderPage extends BasePage {
         if (!groupData.isSponsor) {
             return(
                 <View style={{backgroundColor: 'white', marginBottom: 1, justifyContent: 'center', height: ScreenUtils.autoSizeWidth(40), paddingLeft: ScreenUtils.autoSizeWidth(15)}}>
-                    <MRText style={{fontSize: ScreenUtils.autoSizeWidth(13), color: DesignRule.textColor_instruction}}>{'团长:'+ groupData.sponsor|| ''}</MRText>
+                    <MRText style={{fontSize: ScreenUtils.autoSizeWidth(13), color: DesignRule.textColor_instruction}}>{'团长:'+ (groupData.sponsor|| '')}</MRText>
                 </View>
             )
         }

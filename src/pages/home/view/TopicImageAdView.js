@@ -49,9 +49,11 @@ export class TopicImageAdView extends React.Component {
                         <ImageLoader style={{ height, width: ScreenUtils.width, flexDirection: 'row' }}
                                      source={{ uri: data.imgs[0].src }}
                         >{
-                            links.map((item) => {
+                            links.map((item,index) => {
                                 return (
-                                    <TouchableOpacity onPress={() => {
+                                    <TouchableOpacity
+                                        key={data.imgs[0].src + '_' + index}
+                                        onPress={() => {
                                             topicAdOnPress(data,item, this.props.p);
 
 
