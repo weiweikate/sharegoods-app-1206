@@ -208,22 +208,23 @@ export class GroupJoinView extends Component {
                                 return;
                             }
                             if (activityTag === 101106 && user.newUser !== null && !user.newUser) {
-                                Alert.alert(
-                                    '无法参团',
-                                    '该团仅支持新用户参加，可以开个新团，\n立享优惠哦~',
-                                    [
-                                        {
-                                            text: '知道了', onPress: () => {
+                                setTimeout(() => {
+                                    Alert.alert(
+                                        '无法参团',
+                                        '该团仅支持新用户参加，可以开个新团，\n立享优惠哦~',
+                                        [
+                                            {
+                                                text: '知道了', onPress: () => {
+                                                }
+                                            },
+                                            {
+                                                text: '开新团', onPress: () => {
+                                                    goToBuy && goToBuy(null);
+                                                }
                                             }
-                                        },
-                                        {
-                                            text: '开新团', onPress: () => {
-                                                goToBuy && goToBuy(null);
-                                            }
-                                        }
-                                    ],
-                                    { cancelable: false }
-                                );
+                                        ]
+                                    );
+                                }, 500);
                                 return;
                             }
                             goToBuy && goToBuy(itemData);
