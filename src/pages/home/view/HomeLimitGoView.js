@@ -221,7 +221,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                             <ImageBackground style={styles.leaveView} source={resHome.home_limit_progress}
                                              resizeMode={'contain'}>
                                 <UIText value={'即将售罄'}
-                                        style={{ fontSize: px2dp(9), color: 'white', marginLeft: px2dp(5) }}/>
+                                        style={{ fontSize: px2dp(9), color: 'white', marginLeft: px2dp(6) }}/>
                             </ImageBackground>
                             : null
                     )
@@ -237,7 +237,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                     <ImageBackground source={resHome.discount} style={{
                         height: px2dp(14),
                         width: px2dp(33),
-                        marginBottom: px2dp(-8),
+                        marginBottom: px2dp(-6),
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>
