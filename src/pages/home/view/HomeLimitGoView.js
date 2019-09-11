@@ -165,7 +165,8 @@ export default class HomeLimitGoView extends Component {
                             this.openModal();
                         }}>
                             <Image source={res.limitGoHeader}
-                                   style={{ height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-10) }}/>
+                                   resizeMode={'contain'}
+                                   style={{ height: px2dp(50), width: ScreenUtils.width }}/>
                         </TouchableOpacity> : null
                 }
 
@@ -306,7 +307,8 @@ const styles = StyleSheet.create({
     },
     tabBar: {
         width: ScreenUtils.width,
-        borderWidth: 0
+        borderWidth: 0,
+        height: px2dp(51)
     },
     underline: {
         height: 0
