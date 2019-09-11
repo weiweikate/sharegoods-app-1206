@@ -8,6 +8,9 @@ import {
     RefreshState,
 } from 'react-native-refresh';
 
+// const RereshStatus = {
+//
+// }
 
 function RefreshAnimateHeader(props) {
     const {refreshing, onRefresh, source, headerHeight = 50} = props;
@@ -22,7 +25,7 @@ function RefreshAnimateHeader(props) {
 
     const onRefreshCallBack = useCallback(
         (state) => {
-            lottieRef.current.play(16, 100);
+            lottieRef.current.play(24, 150);
             onRefresh && onRefresh(state);
             currentState.current = state;
         },
@@ -35,7 +38,7 @@ function RefreshAnimateHeader(props) {
 
     const onIdleRefreshCallBack = useCallback((state) => {
         if (currentState.current === RefreshState.End) {
-            lottieRef.current.play(0, 16);
+            lottieRef.current.play(0, 24);
             lottieRef.current.reset();
         }
         currentState.current = state;
@@ -68,13 +71,13 @@ function RefreshAnimateHeader(props) {
                     loop={false}
                     autoSize={false}
                     autoPlay={false}
-                    speed={2}
+                    speed={3}
                     source={source}
                     hardwareAccelerationAndroid={true}
                     cacheStrategy={'strong'}
                     progress={progressRef.current.interpolate({
-                        inputRange: [0, headerHeight * 1.2, headerHeight * 3],
-                        outputRange: [0, 0.12, 0.12],
+                        inputRange: [0, headerHeight, headerHeight * 3],
+                        outputRange: [0, 0.10, 0.10],
                         extrapolate: 'clamp',
                     })}
                 />
