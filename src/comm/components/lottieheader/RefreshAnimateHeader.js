@@ -8,6 +8,7 @@ import {
     RefreshState,
 } from 'react-native-refresh';
 import {MRText} from '../../../components/ui';
+import DesignRule from '../../../constants/DesignRule';
 
 const RefreshStatus = {
     PULLDOWN:'下拉刷新',
@@ -74,7 +75,7 @@ function RefreshAnimateHeader(props) {
             onEndRefresh={onEndRefreshCallBack}
             onIdleRefresh={onIdleRefreshCallBack}
         >
-            <RefreshHeader style={[styles.container, {height: headerHeight+20}]}>
+            <RefreshHeader style={[styles.container, {height: headerHeight+30}]}>
                 <LottieView
                     ref={lottieRef}
                     style={[styles.lottery, {height: headerHeight}]}
@@ -87,12 +88,12 @@ function RefreshAnimateHeader(props) {
                     hardwareAccelerationAndroid={true}
                     cacheStrategy={'strong'}
                     progress={progressRef.current.interpolate({
-                        inputRange: [0, headerHeight+20, headerHeight * 3],
+                        inputRange: [0, headerHeight+30, headerHeight * 3],
                         outputRange: [0, 0.10, 0.10],
                         extrapolate: 'clamp',
                     })}
                 />
-                <MRText style={{height:20}}>{status}</MRText>
+                <MRText style={{height:20,color:DesignRule.textColor_instruction,fontSize:DesignRule.fontSize_threeTitle,marginBottom:10}}>{status}</MRText>
             </RefreshHeader>
             {props.children}
         </RefreshLayout>
