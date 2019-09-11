@@ -121,7 +121,7 @@ export default class PaymentFinshPage extends BasePage {
                 {/*<RenderSeparator title={'你还有兑换券即将过期，快来使用吧'}/>*/}
                 {this.renderCouponList()}
                 {this.state.showShareView ? this._renderShareView() : null}
-                <RecommendProductView/>
+                <RecommendProductView recommendScene={2}/>
                 <FinshPayAlertView btnClick={() => {
                     this._clickAlertView();
                 }} isShow={this.state.isShow}/>

@@ -4,6 +4,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 const cell_width = (ScreenUtils.width - px2dp(35)) / 2;
@@ -14,7 +15,7 @@ export default class ShopCartEmptyCell extends Component {
     }
 
     render() {
-        const { itemData, onClick } = this.props;
+        const { itemData, onClick, selectedIndex, recommendScene } = this.props;
         const { height, imageHeight, imgUrl, name, promotionMinPrice, minPrice } = itemData;
         return (
             <View style={{
@@ -26,6 +27,16 @@ export default class ShopCartEmptyCell extends Component {
                 overflow: 'hidden'
             }}>
                 <TouchableOpacity onPress={() => {
+                    const { prodCode, name, similarity, mark, strategy } = itemData;
+                    TrackApi.RecommendSpuClick({
+                        spuCode: prodCode,
+                        spuName: name,
+                        spuRelationIndex: selectedIndex,
+                        strategy,
+                        mark,
+                        similarity,
+                        recommendScene
+                    });
                     onClick();
                 }} activeOpacity={0.7}>
                     <ImageLoad
