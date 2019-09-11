@@ -1,5 +1,5 @@
 'use strict';
-import React, {useRef, useCallback} from 'react';
+import React, {useRef, useCallback,useState} from 'react';
 import {StyleSheet, Animated} from 'react-native';
 import LottieView from 'lottie-react-native';
 import {
@@ -7,10 +7,14 @@ import {
     RefreshHeader,
     RefreshState,
 } from 'react-native-refresh';
+import {MRText} from '../../../components/ui';
 
-// const RereshStatus = {
-//
-// }
+const RefreshStatus = {
+    PULLDOWN:'下拉刷新',
+    LOOSEN:'松开刷新',
+    REFRESHING:'刷新中...',
+    REFRESHED:'刷新完成'
+}
 
 function RefreshAnimateHeader(props) {
     const {refreshing, onRefresh, source, headerHeight = 50} = props;
@@ -18,9 +22,11 @@ function RefreshAnimateHeader(props) {
     const lottieRef = useRef(React.createRef());
     const progressRef = useRef(new Animated.Value(1));
     const currentState = useRef(RefreshState.Idle);
+    const [status,setStatus] = useState(RefreshStatus.PULLDOWN);
 
     const onPullingRefreshCallBack = useCallback((state) => {
         currentState.current = state;
+        setStatus(RefreshStatus.LOOSEN);
     }, []);
 
     const onRefreshCallBack = useCallback(
@@ -28,12 +34,15 @@ function RefreshAnimateHeader(props) {
             lottieRef.current.play(24, 150);
             onRefresh && onRefresh(state);
             currentState.current = state;
+            setStatus(RefreshStatus.REFRESHING);
+
         },
         [onRefresh],
     );
 
     const onEndRefreshCallBack = useCallback((state) => {
         currentState.current = state;
+        setStatus(RefreshStatus.REFRESHED);
     }, []);
 
     const onIdleRefreshCallBack = useCallback((state) => {
@@ -41,7 +50,9 @@ function RefreshAnimateHeader(props) {
             lottieRef.current.play(0, 24);
             lottieRef.current.reset();
         }
+        setStatus(RefreshStatus.PULLDOWN);
         currentState.current = state;
+
     }, []);
 
     const onChangeOffsetCallBack = useCallback((event) => {
@@ -52,7 +63,7 @@ function RefreshAnimateHeader(props) {
         ) {
             progressRef.current.setValue(offset);
         }
-    }, []);
+        }, []);
 
     return (
         <RefreshLayout
@@ -63,7 +74,7 @@ function RefreshAnimateHeader(props) {
             onEndRefresh={onEndRefreshCallBack}
             onIdleRefresh={onIdleRefreshCallBack}
         >
-            <RefreshHeader style={[styles.container, {height: headerHeight}]}>
+            <RefreshHeader style={[styles.container, {height: headerHeight+20}]}>
                 <LottieView
                     ref={lottieRef}
                     style={[styles.lottery, {height: headerHeight}]}
@@ -76,11 +87,12 @@ function RefreshAnimateHeader(props) {
                     hardwareAccelerationAndroid={true}
                     cacheStrategy={'strong'}
                     progress={progressRef.current.interpolate({
-                        inputRange: [0, headerHeight, headerHeight * 3],
+                        inputRange: [0, headerHeight+20, headerHeight * 3],
                         outputRange: [0, 0.10, 0.10],
                         extrapolate: 'clamp',
                     })}
                 />
+                <MRText style={{height:20}}>{status}</MRText>
             </RefreshHeader>
             {props.children}
         </RefreshLayout>
