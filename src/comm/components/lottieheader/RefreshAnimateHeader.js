@@ -1,6 +1,6 @@
 'use strict';
 import React, {useRef, useCallback,useState} from 'react';
-import {StyleSheet, Animated} from 'react-native';
+import {StyleSheet, Animated,Platform} from 'react-native';
 import LottieView from 'lottie-react-native';
 import {
     RefreshLayout,
@@ -32,11 +32,10 @@ function RefreshAnimateHeader(props) {
 
     const onRefreshCallBack = useCallback(
         (state) => {
-            lottieRef.current.play(24, 150);
+            Platform.OS === 'ios' ? lottieRef.current.play():lottieRef.current.play(24, 150);
             onRefresh && onRefresh(state);
             currentState.current = state;
             setStatus(RefreshStatus.REFRESHING);
-
         },
         [onRefresh],
     );
@@ -47,7 +46,7 @@ function RefreshAnimateHeader(props) {
     }, []);
 
     const onIdleRefreshCallBack = useCallback((state) => {
-        if (currentState.current === RefreshState.End) {
+        if (currentState.current === RefreshState.End && Platform.OS === 'android') {
             lottieRef.current.play(0, 24);
             lottieRef.current.reset();
         }
@@ -66,6 +65,36 @@ function RefreshAnimateHeader(props) {
         }
         }, []);
 
+    const lottie = Platform.OS === 'ios' ? <LottieView
+        ref={lottieRef}
+        style={[styles.lottery, {height: headerHeight}]}
+        resizeMode={'cover'}
+        loop={false}
+        autoSize={false}
+        autoPlay={false}
+        speed={1}
+        source={source}
+        hardwareAccelerationAndroid={true}
+        cacheStrategy={'strong'}
+    /> :  <LottieView
+        ref={lottieRef}
+        style={[styles.lottery, {height: headerHeight}]}
+        resizeMode={'cover'}
+        loop={false}
+        autoSize={false}
+        autoPlay={false}
+        speed={3}
+        source={source}
+        hardwareAccelerationAndroid={true}
+        cacheStrategy={'strong'}
+        progress={progressRef.current.interpolate({
+            inputRange: [0, headerHeight+30, headerHeight * 3],
+            outputRange: [0, 0.10, 0.10],
+            extrapolate: 'clamp',
+        })}
+    />
+
+
     return (
         <RefreshLayout
             refreshing={refreshing}
@@ -76,24 +105,8 @@ function RefreshAnimateHeader(props) {
             onIdleRefresh={onIdleRefreshCallBack}
         >
             <RefreshHeader style={[styles.container, {height: headerHeight+30}]}>
-                <LottieView
-                    ref={lottieRef}
-                    style={[styles.lottery, {height: headerHeight}]}
-                    resizeMode={'cover'}
-                    loop={false}
-                    autoSize={false}
-                    autoPlay={false}
-                    speed={3}
-                    source={source}
-                    hardwareAccelerationAndroid={true}
-                    cacheStrategy={'strong'}
-                    progress={progressRef.current.interpolate({
-                        inputRange: [0, headerHeight+30, headerHeight * 3],
-                        outputRange: [0, 0.10, 0.10],
-                        extrapolate: 'clamp',
-                    })}
-                />
-                <MRText style={{height:20,color:DesignRule.textColor_instruction,fontSize:DesignRule.fontSize_threeTitle,marginBottom:10}}>{status}</MRText>
+                {lottie}
+                <MRText style={{height:20,color:DesignRule.textColor_instruction,fontSize:DesignRule.fontSize_20,marginBottom:10}}>{status}</MRText>
             </RefreshHeader>
             {props.children}
         </RefreshLayout>

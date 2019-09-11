@@ -13,13 +13,13 @@
   if (self = [super init]) {
     _leftLine = [CAShapeLayer new];
     _leftLine.strokeStart = 0;
-    _leftLine.strokeEnd = 0;
+    _leftLine.strokeEnd = 1;
     [self.layer addSublayer:_leftLine];
     _leftLine.strokeColor = [UIColor colorWithHexString:@"FF0050"].CGColor;
     
     _rightLine = [CAShapeLayer new];
     _rightLine.strokeStart = 0;
-    _rightLine.strokeEnd = 0;
+    _rightLine.strokeEnd = 1;
     [self.layer addSublayer:_rightLine];
     _rightLine.strokeColor = [UIColor colorWithHexString:@"FF0050"].CGColor;
   
@@ -30,6 +30,9 @@
 -(void)layoutSubviews
 {
   [super layoutSubviews];
+  if (self.width == _leftLine.width*2 && self.height == _leftLine.height ) {
+    return;
+  }
   _leftLine.frame = CGRectMake(0, 0, self.width/2.0, self.height);
   UIBezierPath *path = [UIBezierPath new];
   [path moveToPoint:CGPointMake(0, self.height/2.0)];
