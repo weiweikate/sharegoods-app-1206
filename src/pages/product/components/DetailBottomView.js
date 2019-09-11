@@ -90,11 +90,11 @@ export default class DetailBottomView extends Component {
     };
 
     _renderAllBtn = () => {
-        const { isGroupIn } = this.props.pData || {};
+        const { isGroupIn, isPinGroupIn } = this.props.pData || {};
         return (
             <View style={styles.btnContainer}>
                 {this._renderShop()}
-                <View style={[styles.btnView, { width: !isGroupIn ? px2dp(260) : px2dp(292) }]}>
+                <View style={[styles.btnView, { width: (isGroupIn || isPinGroupIn) ? px2dp(292) : px2dp(260) }]}>
                     {this._renderBuy()}
                     {this._renderShow()}
                 </View>
@@ -103,9 +103,9 @@ export default class DetailBottomView extends Component {
     };
 
     _renderShop = () => {
-        const { orderOnProduct, isGroupIn, isHuaFei } = this.props.pData || {};
+        const { orderOnProduct, isGroupIn, isHuaFei, isPinGroupIn } = this.props.pData || {};
         //老礼包不显示购物车
-        if (isGroupIn) {
+        if (isGroupIn || isPinGroupIn) {
             return null;
         }
         //不能加购

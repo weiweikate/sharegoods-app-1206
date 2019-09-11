@@ -93,7 +93,10 @@ export default class PaymentCheckPage extends BasePage {
             let resultData = result.data;
             if (parseInt(resultData.status) === payStatus.paySuccess) {
                 if (bizType !== 1) {
-                    replaceRoute(RouterMap.PaymentFinshPage, { payResult: PaymentResult.success });
+                    replaceRoute(RouterMap.PaymentFinshPage, {
+                        payResult: PaymentResult.success,
+                        platformOrderNo: payment.platformOrderNo
+                    });
                 } else {
                     replaceRoute(RouterMap.AddCapacitySuccessPage, { payResult: PaymentResult.success });
                 }

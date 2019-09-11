@@ -115,7 +115,7 @@ export function ImageAdViewGetHeight(data) {
         case '4':
             return viewHeight || ScreenUtils.autoSizeWidth(100);
         case 'carousel':
-            return viewHeight? (viewHeight+ScreenUtils.autoSizeWidth(0)): ScreenUtils.autoSizeWidth(160);
+            return ScreenUtils.autoSizeWidth(160);
     }
     return 0;
 }

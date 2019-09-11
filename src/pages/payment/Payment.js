@@ -268,7 +268,10 @@ export class Payment {
                     payAmount: result.unpaidAmount
                 });
                 this.platformPay('', this.fundsTradingNo, detailList, title).then(result => {
-                    replaceRoute(RouterMap.PaymentFinshPage, { payResult: PaymentResult.success });
+                    replaceRoute(RouterMap.PaymentFinshPage, {
+                        payResult: PaymentResult.success,
+                        platformOrderNo: platformOrderNo
+                    });
                 }).catch(error => {
                     Toast.$toast(error.msg);
                 });

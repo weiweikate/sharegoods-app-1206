@@ -23,6 +23,7 @@ import { replaceRoute } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
 import FinshPayAlertView from './FinshPayAlertView';
 import RecommendProductView from '../product/productScore/components/RecommendProductView';
+import { GroupShareView } from './GroupShareView';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -62,7 +63,9 @@ export default class PaymentFinshPage extends BasePage {
             showShareView: false,
             couponIdList: [],
             shareCode: '',
-            isShow: false
+            isShow: false,
+
+            groupShareData: {}
         };
         //orderPayResultPageType 有券无劵
         TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
@@ -74,30 +77,33 @@ export default class PaymentFinshPage extends BasePage {
     }
 
     componentDidMount() {
-        PaymentApi.getUserCouponAmount(
-            {
-                couponIdList: 81
+        PaymentApi.queryOrderGroupData({ platformOrderNo: this.params.platformOrderNo }).then((data) => {
+            const { group } = data.data || {};
+            if (group) {
+                this.setState({
+                    groupShareData: data.data
+                });
+            } else {
+                PaymentApi.getUserCouponAmount({ couponIdList: 81 }).then(result => {
+                    this.setState({
+                        couponIdList: result.data || []
+                    });
+                });
+                PaymentApi.judgeShare().then(result => {
+                    let isShare = result.data && result.data.isShare;
+                    let shareCode = result.data && result.data.shareCode;
+                    this.setState({
+                        showShareView: isShare,
+                        shareCode: shareCode
+                    });
+                }).catch(error => {
+                    this.setState({
+                        showShareView: false
+                    });
+                });
             }
-        ).then(result => {
-            console.log(result);
-            this.setState({
-                couponIdList: result.data || []
-            });
         });
-        PaymentApi.judgeShare().then(result => {
-            console.log(result);
 
-            let isShare = result.data && result.data.isShare;
-            let shareCode = result.data && result.data.shareCode;
-            this.setState({
-                showShareView: isShare,
-                shareCode: shareCode
-            });
-        }).catch(error => {
-            this.setState({
-                showShareView: false
-            });
-        });
         PaymentApi.jumpCheckIsAlter().then(result => {
             console.log(result);
             this.setState({
@@ -111,10 +117,11 @@ export default class PaymentFinshPage extends BasePage {
         return (
             <ScrollView style={Styles.contentStyle}>
                 {this.renderTopSuccessView()}
+                <GroupShareView groupShareData={this.state.groupShareData}/>
                 {/*<RenderSeparator title={'你还有兑换券即将过期，快来使用吧'}/>*/}
                 {this.renderCouponList()}
                 {this.state.showShareView ? this._renderShareView() : null}
-                <RecommendProductView/>
+                <RecommendProductView recommendScene={2}/>
                 <FinshPayAlertView btnClick={() => {
                     this._clickAlertView();
                 }} isShow={this.state.isShow}/>
@@ -139,6 +146,7 @@ export default class PaymentFinshPage extends BasePage {
      * @returns {*}
      */
     renderTopSuccessView = () => {
+        const { group } = this.state.groupShareData || {};
         return (
             <View style={Styles.topSuccessBgStyle}>
                 <View style={{ justifyContent: 'center', alignItems: 'center', height: px2dp(180) }}>
@@ -152,8 +160,13 @@ export default class PaymentFinshPage extends BasePage {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                         <TouchableOpacity style={{ width: px2dp(100), height: px2dp(34) }} onPress={() => {
-
-                            this._gotoHome();
+                            if (group) {
+                                replaceRoute(RouterMap.HtmlPage, {
+                                    uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyHot`
+                                });
+                            } else {
+                                this._gotoHome();
+                            }
                         }}>
                             <View style={{
                                 borderWidth: px2dp(0.5),
@@ -166,7 +179,7 @@ export default class PaymentFinshPage extends BasePage {
                                 justifyContent: 'center'
                             }}>
                                 <MRText style={{ color: DesignRule.textColor_instruction, fontSize: px2dp(15) }}>
-                                    返回首页
+                                    {group ? '返回首页' : '拼团首页'}
                                 </MRText>
                             </View>
                         </TouchableOpacity>

@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, FlatList, Image, ScrollView, Alert } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
@@ -21,31 +21,23 @@ import StringUtils from '../../../../utils/StringUtils';
 import { observer } from 'mobx-react';
 import whoAreYou from './whoAreYou.png';
 import morePerson from './morePerson.png';
-import bridge from '../../../../utils/bridge';
 import user from '../../../../model/user';
 import { routeNavigate } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 
-export const action_type = {
-    persons: 0,
-    join: 1,
-    desc: 2
-};
-
-export default class ProductGroupModal extends Component {
-
+/*
+* 正在凑团
+* */
+export class GroupPersonAllList extends Component {
     state = {
         modalVisible: false
     };
 
-    show = ({ actionType, data, extraData }) => {
+    show = () => {
         this.setState({
-            modalVisible: true,
-            actionType,
-            data,
-            extraData
+            modalVisible: true
         });
     };
 
@@ -55,79 +47,53 @@ export default class ProductGroupModal extends Component {
         });
     };
 
+    _renderItem = ({ item }) => {
+        const { goToBuy, showGroupJoinView, requestGroupProduct } = this.props;
+        return <GroupPersonItem style={stylesAll.itemView} itemData={item} goToBuy={goToBuy}
+                                requestGroupProduct={requestGroupProduct}
+                                close={this._close}
+                                showGroupJoinView={showGroupJoinView}/>;
+    };
+
     render() {
-        const { modalVisible, actionType, data, extraData } = this.state;
-        const { goToBuy } = this.props;
+        const { modalVisible } = this.state;
         if (!modalVisible) {
             return null;
         }
+        const { groupList } = this.props;
         return (
             <CommModal onRequestClose={this._close}
                        visible={this.state.modalVisible}
                        transparent={true}>
-                {actionType === action_type.persons &&
-                <View style={styles.containerView}>
+                <View style={stylesAll.containerView}>
                     <NoMoreClick style={{ flex: 1 }} onPress={this._close} activeOpacity={1}/>
-                    <GroupPersonAllList data={data} goToBuy={goToBuy} showModal={this.show}/>
-                </View>}
-                {actionType === action_type.join &&
-                <NoMoreClick onPress={this._close} activeOpacity={1} style={styles.containerView1}>
-                    <GroupJoinView data={data} extraData={extraData} goToBuy={goToBuy} close={this._close}/>
-                </NoMoreClick>}
-                {actionType === action_type.desc &&
-                <View style={styles.containerView}>
-                    <NoMoreClick style={{ flex: 1 }} onPress={this._close} activeOpacity={1}/>
-                    <GroupDescView data={data}/>
-                </View>}
+                    <View style={stylesAll.container}>
+                        <View style={stylesAll.topView}>
+                            <MRText style={stylesAll.topLText}>正在凑团</MRText>
+                            <MRText
+                                style={stylesAll.topRText}>{groupList.length === 10 ? '仅显示10个正在拼团的人' : ''}</MRText>
+                        </View>
+                        <FlatList
+                            style={stylesAll.flatList}
+                            data={groupList || []}
+                            keyExtractor={(item) => item.id + ''}
+                            renderItem={this._renderItem}
+                            showsHorizontalScrollIndicator={false}
+                            initialNumToRender={5}
+                        />
+                    </View>
+                </View>
             </CommModal>
         );
     }
 }
 
-const styles = StyleSheet.create({
+const stylesAll = StyleSheet.create({
     containerView: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.5)',
         width: ScreenUtils.width
     },
-    containerView1: {
-        flex: 1, justifyContent: 'center', alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        width: ScreenUtils.width
-    }
-});
-
-/*
-* 正在凑团
-* */
-class GroupPersonAllList extends Component {
-
-    _renderItem = ({ item }) => {
-        return <GroupPersonItem itemData={item} style={stylesAll.itemView} goToBuy={this.props.goToBuy}
-                                showModal={this.props.showModal}/>;
-    };
-
-    render() {
-        return (
-            <View style={stylesAll.container}>
-                <View style={stylesAll.topView}>
-                    <MRText style={stylesAll.topLText}>正在凑团</MRText>
-                    <MRText style={stylesAll.topRText}>{this.props.data.length === 10 ? '仅显示10个正在拼团的人' : ''}</MRText>
-                </View>
-                <FlatList
-                    style={stylesAll.flatList}
-                    data={this.props.data || []}
-                    keyExtractor={(item) => item.id + ''}
-                    renderItem={this._renderItem}
-                    showsHorizontalScrollIndicator={false}
-                    initialNumToRender={5}
-                />
-            </View>
-        );
-    }
-}
-
-const stylesAll = StyleSheet.create({
     container: {
         height: ScreenUtils.autoSizeHeight(405),
         borderTopLeftRadius: 10, borderTopRightRadius: 10,
@@ -153,6 +119,24 @@ const stylesAll = StyleSheet.create({
 * */
 @observer
 export class GroupJoinView extends Component {
+
+    state = {
+        modalVisible: false
+    };
+
+    show = ({ itemData, joinList }) => {
+        this.setState({
+            modalVisible: true,
+            itemData,
+            joinList
+        });
+    };
+
+    _close = () => {
+        this.setState({
+            modalVisible: false
+        });
+    };
 
     renderItem = (item, index, length) => {
         if (index > 4) {
@@ -183,56 +167,88 @@ export class GroupJoinView extends Component {
     };
 
     render() {
-        const { extraData, data, goToBuy, close } = this.props;
-        const { groupNum, endTime, activityTag } = extraData;
+        const { modalVisible } = this.state;
+        if (!modalVisible) {
+            return null;
+        }
+        const { itemData, joinList } = this.state;
+        const { goToBuy } = this.props;
+        const { groupNum, endTime, activityTag } = itemData || {};
         let leaderName;
-        for (const item of data) {
+        for (const item of (joinList || [])) {
             if (item.startGroupLeader) {
                 leaderName = item.nickName;
                 break;
             }
         }
         return (
-            <NoMoreClick style={stylesJoin.container} onPress={() => {
-            }} activeOpacity={1}>
-                <MRText style={stylesJoin.topText}>参与{leaderName}的拼单</MRText>
-                <MRText
-                    style={stylesJoin.topText1}>仅剩{StringUtils.sub(groupNum, data.length)}个名额，<TimeLabelText
-                    endTime={endTime}/>后结束</MRText>
-                <View style={stylesJoin.iconView}>
-                    {
-                        (data || []).map((item, index) => {
-                            return this.renderItem(item, index, data.length);
-                        })
-                    }
-                    <Image style={[stylesJoin.icon, { marginLeft: px2dp(20) }]}
-                           source={whoAreYou}/>
-                </View>
-                <NoMoreClick onPress={() => {
-                    if (activityTag === 101106 && user.newUser !== null && !user.newUser) {
-                        bridge.$toast('该团仅支持新用户参加，可以开个\n新团，立享优惠哦~');
-                        return;
-                    }
-                    close();
-                    if (!user.isLogin) {
-                        routeNavigate(RouterMap.LoginPage);
-                        return;
-                    }
-                    goToBuy && goToBuy(extraData);
-                }}>
-                    <LinearGradient style={stylesJoin.linearGradient}
-                                    start={{ x: 0, y: 0 }}
-                                    end={{ x: 1, y: 0 }}
-                                    colors={['#FC5D39', '#FF0050']}>
-                        <MRText style={stylesJoin.btnText}>一键参团</MRText>
-                    </LinearGradient>
+            <CommModal onRequestClose={this._close}
+                       visible={this.state.modalVisible}
+                       transparent={true}>
+                <NoMoreClick onPress={this._close} activeOpacity={1} style={stylesJoin.containerView1}>
+                    <NoMoreClick style={stylesJoin.container} onPress={() => {
+                    }} activeOpacity={1}>
+                        <MRText style={stylesJoin.topText}>参与{leaderName}的拼单</MRText>
+                        <MRText
+                            style={stylesJoin.topText1}>仅剩{StringUtils.sub(groupNum, joinList.length)}个名额，<TimeLabelText
+                            endTime={endTime}/>后结束</MRText>
+                        <View style={stylesJoin.iconView}>
+                            {
+                                (joinList || []).map((item, index) => {
+                                    return this.renderItem(item, index, joinList.length);
+                                })
+                            }
+                            <Image style={[stylesJoin.icon, { marginLeft: px2dp(20) }]}
+                                   source={whoAreYou}/>
+                        </View>
+                        <NoMoreClick onPress={() => {
+                            this._close();
+                            if (!user.isLogin) {
+                                routeNavigate(RouterMap.LoginPage);
+                                return;
+                            }
+                            if (activityTag === 101106 && user.newUser !== null && !user.newUser) {
+                                setTimeout(() => {
+                                    Alert.alert(
+                                        '无法参团',
+                                        '该团仅支持新用户参加，可以开个新团，\n立享优惠哦~',
+                                        [
+                                            {
+                                                text: '知道了', onPress: () => {
+                                                }
+                                            },
+                                            {
+                                                text: '开新团', onPress: () => {
+                                                    goToBuy && goToBuy(null);
+                                                }
+                                            }
+                                        ]
+                                    );
+                                }, 500);
+                                return;
+                            }
+                            goToBuy && goToBuy(itemData);
+                        }}>
+                            <LinearGradient style={stylesJoin.linearGradient}
+                                            start={{ x: 0, y: 0 }}
+                                            end={{ x: 1, y: 0 }}
+                                            colors={['#FC5D39', '#FF0050']}>
+                                <MRText style={stylesJoin.btnText}>一键参团</MRText>
+                            </LinearGradient>
+                        </NoMoreClick>
+                    </NoMoreClick>
                 </NoMoreClick>
-            </NoMoreClick>
+            </CommModal>
         );
     }
 }
 
 const stylesJoin = StyleSheet.create({
+    containerView1: {
+        flex: 1, justifyContent: 'center', alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        width: ScreenUtils.width
+    },
     container: {
         alignItems: 'center',
         width: px2dp(310), height: px2dp(225), backgroundColor: 'white', borderRadius: 10
@@ -270,25 +286,58 @@ const stylesJoin = StyleSheet.create({
 /*
 * 活动玩法
 * */
-class GroupDescView extends Component {
+export class GroupDescView extends Component {
+    state = {
+        modalVisible: false
+    };
+
+    show = () => {
+        this.setState({
+            modalVisible: true
+        });
+    };
+
+    _close = () => {
+        this.setState({
+            modalVisible: false
+        });
+    };
+
     render() {
+        const { modalVisible } = this.state;
+        if (!modalVisible) {
+            return null;
+        }
+        const { groupDesc } = this.props;
         return (
-            <View style={stylesDesc.container}>
-                <View style={stylesDesc.topView}>
-                    <MRText style={stylesDesc.topText}>拼团玩法</MRText>
+            <CommModal onRequestClose={this._close}
+                       visible={this.state.modalVisible}
+                       transparent={true}>
+                <View style={stylesDesc.containerView}>
+                    <NoMoreClick style={{ flex: 1 }} onPress={this._close} activeOpacity={1}/>
+                    <View style={stylesDesc.container}>
+                        <View style={stylesDesc.topView}>
+                            <MRText style={stylesDesc.topText}>拼团玩法</MRText>
+                        </View>
+                        <ScrollView>
+                            <HTML html={groupDesc}
+                                  imagesMaxWidth={ScreenUtils.width - 30}
+                                  imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
+                                  containerStyle={{ backgroundColor: '#fff', paddingHorizontal: 15 }}/>
+                        </ScrollView>
+                    </View>
                 </View>
-                <ScrollView>
-                    <HTML html={this.props.data}
-                          imagesMaxWidth={ScreenUtils.width}
-                          imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
-                          containerStyle={{ backgroundColor: '#fff' }}/>
-                </ScrollView>
-            </View>
+            </CommModal>
         );
     }
 }
 
 const stylesDesc = StyleSheet.create({
+    containerView: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        width: ScreenUtils.width
+    },
     container: {
         height: ScreenUtils.autoSizeHeight(405),
         borderTopLeftRadius: 10, borderTopRightRadius: 10,
@@ -300,5 +349,10 @@ const stylesDesc = StyleSheet.create({
     },
     topText: {
         fontSize: 17, color: DesignRule.textColor_mainTitle, fontWeight: '500'
+    },
+    containerView1: {
+        flex: 1, justifyContent: 'center', alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        width: ScreenUtils.width
     }
 });

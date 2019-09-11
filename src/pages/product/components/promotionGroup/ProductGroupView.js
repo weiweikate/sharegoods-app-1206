@@ -14,7 +14,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import { GroupPersonItem, GroupProductItem } from './ProductGroupItemView';
 import RES from '../../res/product';
-import ProductGroupModal, { action_type } from './ProductGroupModal';
+import { GroupPersonAllList, GroupJoinView, GroupDescView } from './ProductGroupModal';
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 
@@ -50,18 +50,18 @@ const stylesOld = StyleSheet.create({
 /*商详发起拼团的人*/
 @observer
 export class GroupOpenPersonSView extends Component {
-    showModal = (data) => {
-        this.ProductGroupModal.show(data);
+    showGroupJoinView = ({ itemData, joinList }) => {
+        this.GroupJoinView.show({ itemData, joinList });
     };
 
     render() {
         const { productGroupModel, goToBuy } = this.props;
-        const { groupList, groupDesc } = productGroupModel;
+        const { groupList, groupDesc, requestGroupProduct } = productGroupModel;
         return (
             <View style={stylesPerson.container}>
                 {groupList.length !== 0 &&
                 <NoMoreClick style={stylesPerson.topBtn} onPress={() => {
-                    this.ProductGroupModal.show({ actionType: action_type.persons, data: groupList });
+                    this.GroupPersonAllList.show();
                 }}>
                     <MRText style={stylesPerson.topLeftText}>以下小伙伴正在发起拼团，你可以直接参加</MRText>
                     <View style={stylesPerson.topRightView}>
@@ -75,19 +75,28 @@ export class GroupOpenPersonSView extends Component {
                         if (index > 1) {
                             return null;
                         }
-                        return <GroupPersonItem key={index} itemData={item} goToBuy={goToBuy}
-                                                showModal={this.showModal}/>;
+                        return <GroupPersonItem key={index}
+                                                itemData={item}
+                                                goToBuy={goToBuy}
+                                                requestGroupProduct={requestGroupProduct}
+                                                showGroupJoinView={this.showGroupJoinView}/>;
                     })
                 }
 
                 <NoMoreClick style={stylesPerson.bottomView} onPress={() => {
-                    this.ProductGroupModal.show({ actionType: action_type.desc, data: groupDesc });
+                    this.GroupDescView.show();
                 }}>
                     <MRText style={stylesPerson.bottomText}>玩法<MRText
                         style={stylesPerson.bottomText1}> 支付开团邀请1人参团，人数不足自动退款</MRText></MRText>
                     <Image source={arrow_right_black} resizeMode={'contain'} style={{ height: 10 }}/>
                 </NoMoreClick>
-                <ProductGroupModal ref={e => this.ProductGroupModal = e} goToBuy={goToBuy}/>
+                <GroupPersonAllList ref={e => this.GroupPersonAllList = e}
+                                    groupList={groupList}
+                                    goToBuy={goToBuy}
+                                    requestGroupProduct={requestGroupProduct}
+                                    showGroupJoinView={this.showGroupJoinView}/>
+                <GroupJoinView ref={e => this.GroupJoinView = e} goToBuy={goToBuy}/>
+                <GroupDescView ref={e => this.GroupDescView = e} groupDesc={groupDesc}/>
             </View>
         );
     }
