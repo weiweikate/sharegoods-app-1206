@@ -61,6 +61,8 @@ public class MainActivity extends BaseActivity {
     private boolean hasGo = false;
     private CountDownTimer countDownTimer = null;
     private boolean showLoading = true;
+    private String imgUrl;
+    private String adUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,14 +116,12 @@ public class MainActivity extends BaseActivity {
                     } else {
                         SPCacheUtils.put("adBgImg", "");
                         SPCacheUtils.put("adImg", "");
-                        SPCacheUtils.put("adUrl", "");
                     }
                 }
             });
         }
         if (isFirst) {
             isFirst = false;
-            String imgUrl = (String) SPCacheUtils.get("adBgImg", "");
             if (!TextUtils.isEmpty(imgUrl)) {
                 //有广告时延迟时间增加
                 mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
@@ -153,7 +153,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewAndData() {
-        String imgUrl = (String) SPCacheUtils.get("adBgImg", "");
+        imgUrl = (String) SPCacheUtils.get("adBgImg", "");
+        adUrl = (String) SPCacheUtils.get("adUrl", "");
         String url = (String) SPCacheUtils.get("adImg", "");
         if (!TextUtils.isEmpty(imgUrl) && Fresco.hasBeenInitialized()) {
             ((ViewStub) findViewById(R.id.vs_adv)).inflate();
@@ -210,7 +211,6 @@ public class MainActivity extends BaseActivity {
         ivAdv.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                String adUrl = (String) SPCacheUtils.get("adUrl", "");
                 if (!TextUtils.isEmpty(adUrl)) {
                     hasGo = true;
                     goIndex();

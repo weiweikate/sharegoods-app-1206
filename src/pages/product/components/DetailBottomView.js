@@ -125,7 +125,7 @@ export default class DetailBottomView extends Component {
     _renderBuy = () => {
         const {
             productStatus, selfReturning, orderOnProduct, isGroupIn,
-            groupSubProductCanSell, upTime, isPinGroupIn, minPrice
+            groupSubProductCanSell, upTime, isPinGroupIn, minPrice, isSingleSpec
         } = this.props.pData || {};
         //不能购买(不是上架状态||不能单独购买||(isGroupIn&&子商品不够买))
         const cantBuy = productStatus !== product_status.on || orderOnProduct === 0 || (isGroupIn && !groupSubProductCanSell);
@@ -157,7 +157,7 @@ export default class DetailBottomView extends Component {
                             <Text style={[styles.btnText, {
                                 color: DesignRule.white,
                                 fontSize: (isNoEmpty(selfReturning) && selfReturning > 0) ? 14 : 17
-                            }]}>{isPinGroupIn ? `￥${minPrice}起单买` : '立即购买'}</Text>
+                            }]}>{isPinGroupIn ? `￥${minPrice}${!isSingleSpec ? '起' : ''}单买` : '立即购买'}</Text>
                             {(isNoEmpty(selfReturning) && selfReturning > 0) && < Text style={{
                                 fontSize: 11, color: 'white', marginTop: -2
                             }}>返{selfReturning}</Text>}
@@ -169,7 +169,7 @@ export default class DetailBottomView extends Component {
 
     _renderShow = () => {
         const {
-            isPinGroupIn, promotionMinPrice, productGroupModel
+            isPinGroupIn, promotionMinPrice, productGroupModel, isSingleSpec
         } = this.props.pData || {};
         const { hasOpenGroup, groupId } = productGroupModel;
         return (
@@ -188,7 +188,7 @@ export default class DetailBottomView extends Component {
                                 end={{ x: 1, y: 0 }}
                                 colors={['#FC5D39', '#FF0050']}>
                     <Text
-                        style={styles.btnText}>{isPinGroupIn ? (!hasOpenGroup ? `￥${promotionMinPrice}起开团` : '查看我的团') : '分享秀一秀'}</Text>
+                        style={styles.btnText}>{isPinGroupIn ? (!hasOpenGroup ? `￥${promotionMinPrice}${!isSingleSpec ? '起' : ''}开团` : '查看我的团') : '分享秀一秀'}</Text>
                 </LinearGradient>
             </TouchableOpacity>
         );

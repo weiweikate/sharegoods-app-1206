@@ -201,6 +201,10 @@ export default class MinePage extends BasePage {
                 this.setState({
                     groupData: result.data.data[0]
                 });
+            }else {
+                this.setState({
+                    groupData: []
+                });
             }
         }).catch((error) => {});
     };
@@ -774,6 +778,7 @@ export default class MinePage extends BasePage {
             <View style={{ flex: 1, backgroundColor: '#F7F7F7' }}>
                 {this.orderRender()}
                 <MineSpellGroupView data={this.state.groupData}
+                                    timeEnd={this.loadGroupList}
                                     itemClick={()=>{
                                         this.$navigate(RouterMap.SpellGroupList);
                                     }}

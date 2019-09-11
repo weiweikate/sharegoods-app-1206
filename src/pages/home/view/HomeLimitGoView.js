@@ -165,7 +165,8 @@ export default class HomeLimitGoView extends Component {
                             this.openModal();
                         }}>
                             <Image source={res.limitGoHeader}
-                                   style={{ height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-10) }}/>
+                                   resizeMode={'contain'}
+                                   style={{ height: px2dp(50), width: ScreenUtils.width }}/>
                         </TouchableOpacity> : null
                 }
 
@@ -194,6 +195,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
     const promotionSaleRateS = item.promotionSaleRate || 0;
     const discountString = (item.promotionPrice / item.originalPrice * 10) + '';
     let discountNum = discountString.substring(0, discountString.indexOf('.') + 2);
+    discountNum = discountNum < 0.1 ? '0.1' : discountNum;
     return <View style={styles.goodsItem}>
         <ImageLoader
             source={{ uri: item.imgUrl }}
@@ -221,7 +223,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                             <ImageBackground style={styles.leaveView} source={resHome.home_limit_progress}
                                              resizeMode={'contain'}>
                                 <UIText value={'即将售罄'}
-                                        style={{ fontSize: px2dp(9), color: 'white', marginLeft: px2dp(5) }}/>
+                                        style={{ fontSize: px2dp(9), color: 'white', marginLeft: px2dp(6) }}/>
                             </ImageBackground>
                             : null
                     )
@@ -237,7 +239,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                     <ImageBackground source={resHome.discount} style={{
                         height: px2dp(14),
                         width: px2dp(33),
-                        marginBottom: px2dp(-8),
+                        marginBottom: px2dp(-6),
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>
@@ -305,7 +307,8 @@ const styles = StyleSheet.create({
     },
     tabBar: {
         width: ScreenUtils.width,
-        borderWidth: 0
+        borderWidth: 0,
+        height: px2dp(51)
     },
     underline: {
         height: 0

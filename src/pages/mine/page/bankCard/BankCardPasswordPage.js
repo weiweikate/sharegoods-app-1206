@@ -41,7 +41,7 @@ export default class BankCardPasswordPage extends BasePage {
 
     finishedAction = (password) => {
         if (this.params.type === 'delete') {
-            let id = this.params.selectBankCard.id;
+            let id = this.params.selectBankCard.item.id;
             MineApi.deleteUserBank({ id: id, password: password }).then((data) => {
                 DeviceEventEmitter.emit('unbindBank', id);
                 this.props.navigation.goBack();

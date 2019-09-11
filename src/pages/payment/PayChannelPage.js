@@ -6,7 +6,7 @@ import {
     TouchableWithoutFeedback,
     AppState,
     ActivityIndicator,
-    Platform,
+    Platform
     // Alert
 } from 'react-native';
 import res from './res';
@@ -17,11 +17,11 @@ import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
 import { payment, paymentType, payStatus, payStatusMsg } from './Payment';
 import { PaymentResult } from './PaymentResultPage';
-import {  TrackApi } from '../../utils/SensorsTrack';
+import { TrackApi } from '../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge';
-import RouterMap  from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 import StringUtils from '../../utils/StringUtils';
 
 @observer
@@ -113,6 +113,11 @@ export default class ChannelPage extends BasePage {
                                             return;
                                         }
                                         this._goToOrder();
+                                    }).then((result) => {
+                                        //网页支付成功  需要回调
+                                        if (result.code === 1) {
+                                            this._handleAppStateChange('active');
+                                        }
                                     });
                                 } else {
                                     Toast.$toast('请点选支付方式');
@@ -173,7 +178,7 @@ export default class ChannelPage extends BasePage {
         if (payment.isGoToPay === false && Platform.OS === 'android') {
             return;
         }
-        if (Platform.OS === 'android' &&  selctedPayType === paymentType.alipay  && !this.isBack){
+        if (Platform.OS === 'android' && selctedPayType === paymentType.alipay && !this.isBack) {
             this.isBack = true;
         } else if (payment.platformOrderNo && selctedPayType !== paymentType.none && this.canShowAlter) {
             this.isBack = false;

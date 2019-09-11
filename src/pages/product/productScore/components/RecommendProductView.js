@@ -37,6 +37,7 @@ export default class RecommendProductView extends React.Component {
 
     render() {
         const { dataList } = this.state;
+        const { recommendScene } = this.props;
         if (dataList.length === 0) {
             return null;
         }
@@ -49,7 +50,8 @@ export default class RecommendProductView extends React.Component {
                 <View style={styles.container}>
                     {
                         dataList.map((item, index) => {
-                            return <ShopCartEmptyCell key={index} itemData={item} onClick={() => {
+                            return <ShopCartEmptyCell key={index} recommendScene={recommendScene} selectedIndex={index}
+                                                      itemData={item} onClick={() => {
                                 routePush(RouterMap.ProductDetailPage, { productCode: item.prodCode });
                             }}/>;
                         })

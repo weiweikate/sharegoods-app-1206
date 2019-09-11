@@ -489,7 +489,7 @@ export default class GoodsCustomView extends React.Component {
                     paddingHorizontal: autoSizeWidth(14),
                     height: autoSizeWidth(28),
                     position: 'absolute',
-                    right: autoSizeWidth(5),
+                    right: autoSizeWidth(0),
                     bottom: autoSizeWidth(10),
                     justifyContent: 'center'
                 }
