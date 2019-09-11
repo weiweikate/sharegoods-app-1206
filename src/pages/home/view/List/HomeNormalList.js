@@ -14,7 +14,7 @@
 
 import React from 'react';
 
-import { Image, RefreshControl, SectionList, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, SectionList, TouchableWithoutFeedback, View } from 'react-native';
 
 import { MRText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
@@ -25,6 +25,7 @@ import { DefaultLoadMoreComponent } from '../../../../comm/components/RefreshFla
 import RouterMap, { routePush } from '../../../../navigation/RouterMap';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
 import res from '../../res';
+import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
@@ -171,7 +172,7 @@ export default class HomeNormalList extends React.Component {
         };
     }
 
-    refreshData(first) {
+    refreshData=(first) =>{
         if (!first) {
             if (this.isRefreshing || this.isLoadMore) {
                 return;
@@ -275,9 +276,10 @@ export default class HomeNormalList extends React.Component {
                         { type: 'icon', data: [{ data: this.state.itemData }] },
                         { type: 'header', data: this.state.goods }
                     ]}
-                    refreshControl={<RefreshControl refreshing={this.state.refreshing}
-                                                    onRefresh={this.refreshData.bind(this)}
-                                                    colors={[DesignRule.mainColor]}/>}
+                    refreshControl={<HeaderLoading
+                        isRefreshing={this.state.refreshing}
+                        onRefresh={()=> this.refreshData()}
+                    />}
                     keyExtractor={(item, index) => item + index}
                     stickySectionHeadersEnabled={true}
                     showsVerticalScrollIndicator={false}

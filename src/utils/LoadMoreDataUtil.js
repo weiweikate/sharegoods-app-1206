@@ -23,7 +23,7 @@ export default class LoadMoreDataUtil{
     @observable
     data = []
 
-    isRefreshing = true
+    isRefreshing = false
     isLoadMore = false
     page = 1
     /** 下面值可以外面传入*/
@@ -42,7 +42,7 @@ export default class LoadMoreDataUtil{
         if (!this.API){
             return;
         }
-        if (this.isLoadMore || this.refreshing){
+        if (this.isLoadMore || this.isRefreshing){
             return;
         }
         this.refreshing = true;

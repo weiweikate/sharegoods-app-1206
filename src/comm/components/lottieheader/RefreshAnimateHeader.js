@@ -6,7 +6,7 @@ import {
     RefreshLayout,
     RefreshHeader,
     RefreshState,
-} from 'react-native-refresh';
+} from '@mr/react-native-refresh';
 import {MRText} from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 

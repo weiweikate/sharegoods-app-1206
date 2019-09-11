@@ -229,8 +229,7 @@ export default class HomeFirstTabView extends Component {
     renderRefreshLoading = () => {
         return (
             <HeaderLoading
-                refreshing={homeModule.isRefreshing}
-                // source={require('../../../../comm/components/lottieheader/lottie2.json')}
+                isRefreshing={homeModule.isRefreshing}
                 onRefresh={this._onRefresh.bind(this)}
             />
         );
