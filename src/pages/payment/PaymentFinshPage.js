@@ -179,7 +179,7 @@ export default class PaymentFinshPage extends BasePage {
                                 justifyContent: 'center'
                             }}>
                                 <MRText style={{ color: DesignRule.textColor_instruction, fontSize: px2dp(15) }}>
-                                    {group ? '返回首页' : '拼团首页'}
+                                    {group ? '拼团首页' : '返回首页'}
                                 </MRText>
                             </View>
                         </TouchableOpacity>
