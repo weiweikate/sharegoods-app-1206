@@ -246,8 +246,6 @@ export default class HomeNormalList extends React.Component {
         if (data.length === 0 || this.state.goods.length === 0) {
             return this.state.goods;
         }
-
-
         let arr = [...this.state.goods];
         let temp = arr.pop();
         data.forEach((item) => {
