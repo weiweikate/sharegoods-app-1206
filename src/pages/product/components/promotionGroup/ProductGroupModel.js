@@ -31,7 +31,7 @@ export default class ProductGroupModel {
     };
 
     requestGroupList = ({ prodCode, activityCode }) => {
-        if (!activityCode && !prodCode) {
+        if (activityCode && prodCode) {
             this.activityCode = activityCode;//调用后赋值   以便后续不传参数刷新用
             this.prodCode = prodCode;
         }
