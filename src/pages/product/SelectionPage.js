@@ -43,6 +43,7 @@ export default class SelectionPage extends Component {
             this.state.selectStrList = [];
             this.state.selectSpecList = [];
             this.maxStock = 0;
+            this.state.amount = 1;
 
             let skuListTemp = JSON.parse(JSON.stringify(skuListByArea));
             skuListTemp.forEach((item) => {

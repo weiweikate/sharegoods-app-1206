@@ -25,7 +25,6 @@ import res from '../res';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { homeModule } from '../../home/model/Modules';
 import RouterMap from '../../../navigation/RouterMap';
-import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 const { shopCartNoGoods } = res;
@@ -76,15 +75,8 @@ export default class ShopCartEmptyView extends Component {
         if (type === EmptyViewTypes.topEmptyItem) {
             return this._renderHeaderView();
         } else {
-            return <ShopCartEmptyCell itemData={itemData} onClick={() => {
+            return <ShopCartEmptyCell selectedIndex={index} recommendScene={1} itemData={itemData} onClick={() => {
                 navigateToHome(RouterMap.ProductDetailPage, { productCode: itemData.prodCode, trackType: 4 });
-                TrackApi.RecommendSpuClick({
-                    strategyId: itemData.strategyId,
-                    spuRelationValue: itemData.spuRelationValue,
-                    spuRelationIndex: index - 1,
-                    spuCode: itemData.prodCode,
-                    spuName: itemData.name
-                });
             }}/>;
         }
     };

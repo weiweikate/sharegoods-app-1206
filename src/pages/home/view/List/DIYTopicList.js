@@ -14,14 +14,11 @@
 
 import React from 'react';
 
-import {
-    View,
-    RefreshControl
-} from 'react-native';
+import { RefreshControl, View } from 'react-native';
 
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
-import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { homeType } from '../../HomeTypes';
 import { ImageAdViewGetHeight, TopicImageAdView } from '../TopicImageAdView';
 import GoodsCustomView, { GoodsCustomViewGetHeight } from '../GoodsCustomView';
@@ -31,6 +28,7 @@ import LoadMoreDataUtil from '../../../../utils/LoadMoreDataUtil';
 import { DefaultLoadMoreComponent } from '../../../../comm/components/RefreshFlatList';
 import { observer } from 'mobx-react';
 import bridge from '../../../../utils/bridge';
+
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 @observer
 export default class DIYTopicList extends React.Component {
@@ -39,23 +37,25 @@ export default class DIYTopicList extends React.Component {
         super(props);
         this.state = {};
 
-        this.loadMoreDataUtil = new LoadMoreDataUtil()
+        this.loadMoreDataUtil = new LoadMoreDataUtil();
         this.loadMoreDataUtil.API = HomeAPI.getCustomTopic;
-        this.loadMoreDataUtil.paramsFunc = () => {return{topicCode: (this.props.data || {}).linkCode}};
+        this.loadMoreDataUtil.paramsFunc = () => {
+            return { topicCode: (this.props.data || {}).linkCode };
+        };
         this.loadMoreDataUtil.asyncHandleData = (data) => {
-            data = data.data.widgets.data || []
+            data = data.data.widgets.data || [];
 
             data = [...data];
-            let p = []
+            let p = [];
             let count = data.length;
-            for (let index = 0; index < count; index++){
+            for (let index = 0; index < count; index++) {
                 let item = data[index];
                 if (item.type === homeType.custom_goods) {
                     item.itemHeight = GoodsCustomViewGetHeight(item);
                     item.marginBottom = ScreenUtils.autoSizeWidth(0);
                     if (count - 1 > index) {
                         let type = data[index + 1].type;
-                        if (type  === homeType.custom_imgAD || type === homeType.custom_text) {
+                        if (type === homeType.custom_imgAD || type === homeType.custom_text) {
                             item.marginBottom = ScreenUtils.autoSizeWidth(15);
                         }
                     }
@@ -73,23 +73,26 @@ export default class DIYTopicList extends React.Component {
                     if (item.text) {
                         p.push(bridge.getTextHeightWithWidth(item.text, autoSizeWidth(14), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
                             item.textHeight = r.height;
-                            item.itemHeight = r.height + item.detailHeight + autoSizeWidth(20)
+                            item.itemHeight = r.height + item.detailHeight + autoSizeWidth(20);
                         }));
                     }
                     if (item.subText) {
                         p.push(bridge.getTextHeightWithWidth(item.subText, autoSizeWidth(12), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
                             item.detailHeight = r.height;
-                            item.itemHeight = r.height + item.textHeight + autoSizeWidth(20)
+                            item.itemHeight = r.height + item.textHeight + autoSizeWidth(20);
                         }));
                     }
                 }
             }
-           return Promise.all(p).then(()=> {
-               return data
-            })
-        } ;
-        this.loadMoreDataUtil.isMoreFunc = (data) => {return data.data.widgets.isMore}
+            return Promise.all(p).then(() => {
+                return data;
+            });
+        };
+        this.loadMoreDataUtil.isMoreFunc = (data) => {
+            return data.data.widgets.isMore;
+        };
     }
+
     dataProvider = new DataProvider((r1, r2) => {
         return r1 !== r2;
     });
@@ -99,10 +102,10 @@ export default class DIYTopicList extends React.Component {
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
         switch (type.type) {
-           case homeType.custom_goods:
+            case homeType.custom_goods:
             case homeType.custom_imgAD:
-                case homeType.custom_text:
-               dim.height = type.itemHeight;
+            case homeType.custom_text:
+                dim.height = type.itemHeight;
                 break;
             default:
                 dim.height = 0;
@@ -112,14 +115,14 @@ export default class DIYTopicList extends React.Component {
     _keyExtractor = (item, index) => index + item.type;
 
     _renderItem = (type, item, index) => {
-        type = type.type
-        let p = {specialTopicId:  this.props.data.linkCode}
+        type = type.type;
+        let p = { specialTopicId: this.props.data.linkCode };
         if (type === homeType.custom_text) {
             p.specialTopicArea = 6;
             return <TextCustomView data={item} p={p}/>;
         } else if (type === homeType.custom_imgAD) {
             p.specialTopicArea = 1;
-            return <TopicImageAdView data={item}  p={p}/>;
+            return <TopicImageAdView data={item} p={p}/>;
         } else if (type === homeType.custom_goods) {
             p.specialTopicArea = 3;
             return <GoodsCustomView data={item} p={p}/>;
@@ -136,7 +139,7 @@ export default class DIYTopicList extends React.Component {
         this.dataProvider = this.dataProvider.cloneWithRows(this.loadMoreDataUtil.data);
         return (
             <RecyclerListView
-                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0}}
+                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0 }}
                 refreshControl={<RefreshControl refreshing={this.loadMoreDataUtil.refreshing}
                                                 onRefresh={this.loadMoreDataUtil.onRefresh}
                                                 colors={[DesignRule.mainColor]}/>}
@@ -148,7 +151,6 @@ export default class DIYTopicList extends React.Component {
                 showsVerticalScrollIndicator={false}
                 removeClippedSubviews={false}
                 canChangeSize={false}
-                // forceNonDeterministicRendering={true}
                 renderFooter={() => <DefaultLoadMoreComponent status={this.loadMoreDataUtil.footerStatus}/>
                 }
             />
