@@ -182,17 +182,17 @@ const stylesPerson = StyleSheet.create({
 @observer
 export class GroupProductItem extends Component {
     render() {
-        const { image, goodsName, skuPrice, prodCode } = this.props.itemData;
+        const { goodsImg, goodsName, activityAmount, prodCode } = this.props.itemData;
         return (
             <NoMoreClick style={[stylesProduct.container, this.props.style]} onPress={() => {
                 routePush(RouterMap.ProductDetailPage, { productCode: prodCode });
             }}>
                 <UIImage style={stylesProduct.img}
                          borderRadius={5}
-                         source={{ uri: image }}/>
+                         source={{ uri: goodsImg }}/>
                 <MRText style={stylesProduct.nameText} numberOfLines={1}>{goodsName}</MRText>
                 <View style={stylesProduct.bottomView}>
-                    <MRText style={stylesProduct.bottomText} numberOfLines={1}>¥{skuPrice}</MRText>
+                    <MRText style={stylesProduct.bottomText} numberOfLines={1}>¥{activityAmount}</MRText>
                     <LinearGradient style={stylesProduct.bottomBtn}
                                     start={{ x: 0, y: 0 }}
                                     end={{ x: 1, y: 0 }}

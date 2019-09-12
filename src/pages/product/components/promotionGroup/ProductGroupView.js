@@ -144,8 +144,8 @@ export class GroupProductListView extends Component {
 
     render() {
         const { productGroupModel } = this.props;
-        const { groupList } = productGroupModel;
-        if (groupList.length === 0) {
+        const { groupProducts } = productGroupModel;
+        if (groupProducts.length === 0) {
             return null;
         }
         return (
@@ -155,7 +155,7 @@ export class GroupProductListView extends Component {
                 </View>
                 <FlatList
                     style={stylesProduct.flatList}
-                    data={groupList || []}
+                    data={groupProducts || []}
                     keyExtractor={(item) => item.id + ''}
                     renderItem={this._renderItem}
                     horizontal={true}
