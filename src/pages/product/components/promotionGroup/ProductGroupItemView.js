@@ -108,7 +108,7 @@ export class GroupPersonItem extends Component {
     };
 
     render() {
-        const { itemData, requestGroupProduct } = this.props;
+        const { itemData, requestGroupList } = this.props;
         const { initiatorUserImg, initiatorUserName, surplusPerson, id, endTime } = itemData || {};
         return (
             <View style={[stylesPerson.container, this.props.style]}>
@@ -125,7 +125,7 @@ export class GroupPersonItem extends Component {
                         <MRText style={stylesPerson.midNumText}>还差<MRText
                             style={{ color: DesignRule.textColor_redWarn }}>{surplusPerson}</MRText>人成团</MRText>
                         <MRText style={stylesPerson.midTimeText}>剩余<TimeLabelText endTime={endTime}
-                                                                                  endCallBack={requestGroupProduct}/></MRText>
+                                                                                  endCallBack={requestGroupList}/></MRText>
                     </View>
                     <LinearGradient style={stylesPerson.linearGradient}
                                     start={{ x: 0, y: 0 }}

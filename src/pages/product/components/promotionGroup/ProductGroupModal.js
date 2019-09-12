@@ -48,9 +48,9 @@ export class GroupPersonAllList extends Component {
     };
 
     _renderItem = ({ item }) => {
-        const { goToBuy, showGroupJoinView, requestGroupProduct } = this.props;
+        const { goToBuy, showGroupJoinView, requestGroupList } = this.props;
         return <GroupPersonItem style={stylesAll.itemView} itemData={item} goToBuy={goToBuy}
-                                requestGroupProduct={requestGroupProduct}
+                                requestGroupList={requestGroupList}
                                 close={this._close}
                                 showGroupJoinView={showGroupJoinView}/>;
     };
