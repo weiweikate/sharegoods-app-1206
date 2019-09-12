@@ -24,6 +24,8 @@ import morePerson from './morePerson.png';
 import user from '../../../../model/user';
 import { routeNavigate } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
+import ProductApi from '../../api/ProductApi';
+import bridge from '../../../../utils/bridge';
 
 const { px2dp } = ScreenUtils;
 
@@ -168,14 +170,54 @@ export class GroupJoinView extends Component {
         );
     };
 
+    checkGroup = () => {
+        const { itemData } = this.state;
+        const { activityTag } = itemData || {};
+        const { goToBuy } = this.props;
+        ProductApi.checkGroupCanJoin({ groupId: '' }).then((data) => {
+            const { canJoinGroup, queueNum } = data.data || {};
+            if (!canJoinGroup) {
+                bridge.$toast(`目前有${queueNum}人排队支付中，暂无法操作〜`);
+                return;
+            }
+            this._close();
+            if (!user.isLogin) {
+                routeNavigate(RouterMap.LoginPage);
+                return;
+            }
+            if (activityTag === 101106 && user.newUser !== null && !user.newUser) {
+                setTimeout(() => {
+                    Alert.alert(
+                        '无法参团',
+                        '该团仅支持新用户参加，可以开个新团，\n立享优惠哦~',
+                        [
+                            {
+                                text: '知道了', onPress: () => {
+                                }
+                            },
+                            {
+                                text: '开新团', onPress: () => {
+                                    goToBuy && goToBuy(null);
+                                }
+                            }
+                        ]
+                    );
+                }, 500);
+                return;
+            }
+            goToBuy && goToBuy(itemData);
+        }).catch(e => {
+            bridge.$toast(e.msg);
+        });
+    };
+
     render() {
         const { modalVisible } = this.state;
         if (!modalVisible) {
             return null;
         }
         const { itemData, joinList } = this.state;
-        const { goToBuy } = this.props;
-        const { groupNum, endTime, activityTag } = itemData || {};
+        const { groupNum, endTime } = itemData || {};
         let leaderName;
         for (const item of (joinList || [])) {
             if (item.startGroupLeader) {
@@ -203,34 +245,7 @@ export class GroupJoinView extends Component {
                             <Image style={[stylesJoin.icon, { marginLeft: px2dp(20) }]}
                                    source={whoAreYou}/>
                         </View>
-                        <NoMoreClick onPress={() => {
-                            this._close();
-                            if (!user.isLogin) {
-                                routeNavigate(RouterMap.LoginPage);
-                                return;
-                            }
-                            if (activityTag === 101106 && user.newUser !== null && !user.newUser) {
-                                setTimeout(() => {
-                                    Alert.alert(
-                                        '无法参团',
-                                        '该团仅支持新用户参加，可以开个新团，\n立享优惠哦~',
-                                        [
-                                            {
-                                                text: '知道了', onPress: () => {
-                                                }
-                                            },
-                                            {
-                                                text: '开新团', onPress: () => {
-                                                    goToBuy && goToBuy(null);
-                                                }
-                                            }
-                                        ]
-                                    );
-                                }, 500);
-                                return;
-                            }
-                            goToBuy && goToBuy(itemData);
-                        }}>
+                        <NoMoreClick onPress={this.checkGroup}>
                             <LinearGradient style={stylesJoin.linearGradient}
                                             start={{ x: 0, y: 0 }}
                                             end={{ x: 1, y: 0 }}
