@@ -43,6 +43,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import intervalMsgModel from '../../../../comm/components/IntervalMsgView';
 import { MRText as Text } from '../../../../components/ui/index';
 import TextCustomView from '../TextCustomView';
+import { tabModel } from '../../model/HomeTabModel';
 
 
 const { JSPushBridge } = NativeModules;
@@ -229,6 +230,9 @@ export default class HomeFirstTabView extends Component {
 
 
     render() {
+        if (Math.abs(tabModel.tabIndex) > 1){
+            return null;
+        }
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (

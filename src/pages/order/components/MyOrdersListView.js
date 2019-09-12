@@ -287,7 +287,7 @@ export default class MyOrdersListView extends Component {
                 OrderApi.getGroupInfoByOrderNum({merchantOrderNo}).then((data)=> {
                     let orderGroupExt = data.data || {}
                     ShareUtil.onShare({shareType: 1,
-                        platformType:1,
+                        platformType:0,
                         title: `[仅剩${orderGroupExt.surplusPerson}个名额] 我${orderGroupExt.activityAmount || ''}元带走了${orderGroupExt.goodsName || ''}`,
                         dec:  `我买了${orderGroupExt.goodsName || ''}，该商品已拼${orderGroupExt.alreadySaleNum || ''}件了，快来参团吧!`,
                         linkUrl:  `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${orderGroupExt.id ? orderGroupExt.id : ''}`,thumImage: 'logo.png' });

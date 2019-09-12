@@ -43,7 +43,7 @@ export class GroupShareView extends Component {
 
     render() {
         const { groupId, surplusPerson } = this.props.groupShareData || {};
-        if (!groupId) {
+        if (!groupId || surplusPerson === 0) {
             return null;
         }
         return (
