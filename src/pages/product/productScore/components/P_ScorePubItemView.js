@@ -98,7 +98,7 @@ class ImgVideoView extends Component {
                              onPress={() => {
                                  deleteVideo(index);
                              }}>
-                    <Image source={p_score_delete}/>
+                    <Image source={p_score_delete} style={{ width: 20, height: 20 }}/>
                 </NoMoreClick>
             </NoMoreClick> : null}
             {
@@ -111,7 +111,7 @@ class ImgVideoView extends Component {
                                      onPress={() => {
                                          deleteImg(index, index1);
                                      }}>
-                            <Image source={p_score_delete}/>
+                            <Image source={p_score_delete} style={{ width: 20, height: 20 }}/>
                         </NoMoreClick>
                     </NoMoreClick>;
                 })
@@ -209,6 +209,6 @@ const styles = StyleSheet.create({
         width: img_w_h, height: img_w_h, backgroundColor: DesignRule.bgColor
     },
     deleteImg: {
-        position: 'absolute', right: 0, top: 0, width: 20, height: 20
+        position: 'absolute', right: 0, top: 0
     }
 });

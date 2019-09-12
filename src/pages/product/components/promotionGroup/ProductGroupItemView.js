@@ -182,9 +182,11 @@ const stylesPerson = StyleSheet.create({
 @observer
 export class GroupProductItem extends Component {
     render() {
+        const { productDetailBtnClick } = this.props;
         const { goodsImg, goodsName, activityAmount, prodCode } = this.props.itemData;
         return (
             <NoMoreClick style={[stylesProduct.container, this.props.style]} onPress={() => {
+                productDetailBtnClick && productDetailBtnClick('大家都在拼');
                 routePush(RouterMap.ProductDetailPage, { productCode: prodCode });
             }}>
                 <UIImage style={stylesProduct.img}
