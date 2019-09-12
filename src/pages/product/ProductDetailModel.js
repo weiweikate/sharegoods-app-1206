@@ -654,7 +654,7 @@ export default class ProductDetailModel {
                 activityTag
             });
             this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
-            this.productGroupModel.requestGroupProduct({ activityCode: code });
+            this.productGroupModel.requestGroupProduct({ activityCode: code, prodCode: this.prodCode });
             this.productGroupModel.requestGroupDesc();
         }).catch((e) => {
             this.productError(e);

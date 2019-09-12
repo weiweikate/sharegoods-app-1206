@@ -65,9 +65,10 @@ const ViewOrderStatus = {
     },
     6:  {
         status: '已付款',
-        menuData:[{ id:1, operation:'取消订单', isRed:false}],
-        menu_orderDetail: [{ id:1, operation:'取消订单', isRed:false}]
+        menuData:[],
+        menu_orderDetail: []
     },
+
 }
 
 // 返回订单详情售后按钮list
@@ -128,17 +129,33 @@ function GetViewOrderStatus(status, subStatus, isGroup) {
         }
         if (isGroup) {
             if (status === OrderType.PAID){
-                data.status = '未成团' ;
-                data.menu_orderDetail = [{ id:19, operation:'查看拼团', isRed:false}];
-                // data.menuData = [{ id:19, operation:'查看拼团', isRed:false}];
+                data.status = '待成团' ;
+                data.menu_orderDetail = [{ id:19, operation:'查看拼团', isRed:false},{ id:20, operation:'邀请好友', isRed:true}];
+                data.menuData = [{ id:19, operation:'查看拼团', isRed:false},{ id:20, operation:'邀请好友', isRed:true}];
             }
             if (status === OrderType.WAIT_DELIVER ||
                 status === OrderType.DELIVERED ||
                 status === OrderType.COMPLETED
             ){
                 data.menu_orderDetail = [...data.menu_orderDetail, { id:19, operation:'查看拼团', isRed:false}];
-                // data.menuData = [...data.menuData, { id:19, operation:'查看拼团', isRed:false}];
+                data.menuData = [...data.menuData, { id:19, operation:'查看拼团', isRed:false}];
             }
+
+            data.menu_orderDetail = data.menu_orderDetail.filter((item) => {
+
+                if ( item.operation === '再次购买') {
+                    return false;
+                }
+                return true;
+            })
+
+            data.menuData = data.menuData.filter((item) => {
+
+                if ( item.operation === '再次购买') {
+                    return false;
+                }
+                return true;
+            })
         }
         return data;
     }

@@ -48,9 +48,9 @@ export class GroupPersonAllList extends Component {
     };
 
     _renderItem = ({ item }) => {
-        const { goToBuy, showGroupJoinView, requestGroupProduct } = this.props;
+        const { goToBuy, showGroupJoinView, requestGroupList } = this.props;
         return <GroupPersonItem style={stylesAll.itemView} itemData={item} goToBuy={goToBuy}
-                                requestGroupProduct={requestGroupProduct}
+                                requestGroupList={requestGroupList}
                                 close={this._close}
                                 showGroupJoinView={showGroupJoinView}/>;
     };
@@ -61,13 +61,16 @@ export class GroupPersonAllList extends Component {
             return null;
         }
         const { groupList } = this.props;
+        const maxHeight = ScreenUtils.autoSizeHeight(405);
+        const autoHeight = groupList.length * 64 + 54 + 15;
+        const viewHeight = autoHeight > maxHeight ? maxHeight : autoHeight;
         return (
             <CommModal onRequestClose={this._close}
                        visible={this.state.modalVisible}
                        transparent={true}>
                 <View style={stylesAll.containerView}>
                     <NoMoreClick style={{ flex: 1 }} onPress={this._close} activeOpacity={1}/>
-                    <View style={stylesAll.container}>
+                    <View style={[stylesAll.container, { height: viewHeight }]}>
                         <View style={stylesAll.topView}>
                             <MRText style={stylesAll.topLText}>正在凑团</MRText>
                             <MRText
@@ -95,7 +98,6 @@ const stylesAll = StyleSheet.create({
         width: ScreenUtils.width
     },
     container: {
-        height: ScreenUtils.autoSizeHeight(405),
         borderTopLeftRadius: 10, borderTopRightRadius: 10,
         backgroundColor: DesignRule.bgColor
     },

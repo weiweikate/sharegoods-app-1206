@@ -22,6 +22,7 @@ class OrderDetailModel {
     @observable isAllVirtual = true;
     @observable isPhoneOrder = false;
     @observable loadingState = PageLoadingState.loading
+    orderExt = {}
 
     productsList() {
         return this.merchantOrder.productOrderList || []
@@ -57,6 +58,7 @@ class OrderDetailModel {
         this.stopTimer();
         //判空
         this.baseInfo = data.baseInfo || {}
+        this.orderExt = data.orderExt || {}
         this.merchantOrder = data.merchantOrder || {}
         this.payInfo = data.payInfo || {}
         this.receiveInfo = data.receiveInfo || {}

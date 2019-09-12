@@ -26,6 +26,9 @@ import DesignRule from '../../../../../constants/DesignRule';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import apiEnvironment from '../../../../../api/ApiEnvironment';
 import RouterMap from '../../../../../navigation/RouterMap';
+import {track, trackEvent} from '../../../../../utils/SensorsTrack';
+
+
 
 export default class SpellGroupView extends PureComponent {
 
@@ -65,6 +68,18 @@ export default class SpellGroupView extends PureComponent {
                         });
                     }}
                     inviteShare={(data) => {
+                        //点击去邀请好友按钮 埋点
+                        if(selectData){
+                            this.groupBtnTrackEvent({
+                                groupbuyId: selectData.id,
+                                groupbuyStatus: selectData.groupStatus,
+                                spuName: selectData.goodsName,
+                                spuCode: selectData.prodCode,
+                                myGroupbuyBtnName: '邀请好友',
+
+                            });
+                        }
+
                         //选中拼团数据，触发弹出分享modal
                         this.setState({
                             shareType: data
@@ -93,6 +108,14 @@ export default class SpellGroupView extends PureComponent {
                         thumImage: selectData.image || 'logo.png',//(分享图标小图(https链接)图文分享使用)
                         dec: `我买了${selectData.goodsName || ''}，该商品已拼${selectData.alreadySaleNum || ''}件了，快来参团吧!`
                     }}
+                    trackEvent={trackEvent.ShareGroupbuy} //分享埋点
+                    trackParmas={{
+                        shareSource: 3,
+                        groupbuyId:selectData.id,
+                        groupbuyStatus: selectData.groupStatus,
+                        spuName: selectData.goodsName,
+                        spuCode: selectData.prodCode,
+                    }}
                 />
             </View>
         );
@@ -116,6 +139,11 @@ export default class SpellGroupView extends PureComponent {
                 >
                     <TouchableOpacity activeOpacity={0.7} style={{alignItems: 'center'}}
                                       onPress={() => {
+                                          //点击跳转拼团首页  埋点
+                                          this.groupBtnTrackEvent({
+                                              myGroupbuyBtnName: '拼团首页',
+                                          });
+
                                           this.props.navigate(RouterMap.HtmlPage, {
                                               uri: `/activity/groupBuyHot`
                                           });
@@ -134,7 +162,6 @@ export default class SpellGroupView extends PureComponent {
 
     renderItem = ({item,index}) => {
         const {title } = this.props;
-        console.log('item',item)
         return(
             <ListItemView
                 item={item}
@@ -147,6 +174,15 @@ export default class SpellGroupView extends PureComponent {
                             });
                         this.SelectModel.onOpen && this.SelectModel.onOpen();
                     } else {
+                        //点击跳转拼团详情  埋点
+                        this.groupBtnTrackEvent({
+                            groupbuyId: item.id,
+                            groupbuyStatus: item.groupStatus,
+                            spuName: item.goodsName,
+                            spuCode: item.prodCode,
+                            myGroupbuyBtnName: '拼团详情',
+
+                        });
                         this.props.navigate(RouterMap.HtmlPage, {
                             uri: `/activity/groupBuyDetails/${item.id}`
                         });
@@ -157,7 +193,9 @@ export default class SpellGroupView extends PureComponent {
 
     };
 
-
+    groupBtnTrackEvent=(params)=>{
+        track(trackEvent.MyGroupbuyBtnClick, params);
+    };
 }
 
 const styles = StyleSheet.create({

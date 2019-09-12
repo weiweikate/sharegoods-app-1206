@@ -297,7 +297,10 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel, isGroupIn, productGroupModel, singleActivity } = this.productDetailModel;
+        const {
+            productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel, isGroupIn,
+            productGroupModel, singleActivity
+        } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -358,16 +361,17 @@ export default class ProductDetailPage extends BasePage {
             }
             case productItemType.groupOpenPersonS: {
                 const { groupNum } = singleActivity || {};
-                return <GroupOpenPersonSView productGroupModel={productGroupModel} goToBuy={(item) => {
-                    this.state.goType = 'pinGroup';
-                    this.groupItem = item;
-                    this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
-                        productIsPromotionPrice: true,
-                        isOnlyBuyOne: true,
-                        isAreaSku: this.productDetailModel.type !== 3,
-                        priceDesc: `${groupNum}人拼团价`
-                    });
-                }}/>;
+                return <GroupOpenPersonSView productGroupModel={productGroupModel} groupNum={groupNum}
+                                             goToBuy={(item) => {
+                                                 this.state.goType = 'pinGroup';
+                                                 this.groupItem = item;
+                                                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                                                     productIsPromotionPrice: true,
+                                                     isOnlyBuyOne: true,
+                                                     isAreaSku: this.productDetailModel.type !== 3,
+                                                     priceDesc: `${groupNum}人拼团价`
+                                                 });
+                                             }}/>;
             }
             case productItemType.groupProductList: {
                 return <GroupProductListView productGroupModel={productGroupModel}/>;

@@ -12,6 +12,8 @@ import { MRText as Text, NoMoreClick, UIText } from '../../../../components/ui';
 import { clickOrderAgain, clickOrderConfirmReceipt, clickOrderLogistics } from '../../order/CommonOrderHandle';
 import res from '../../res';
 import { beginChatType, QYChatTool } from '../../../../utils/QYModule/QYChatTool';
+import ShareUtil from '../../../../utils/ShareUtil';
+import apiEnvironment from '../../../../api/ApiEnvironment';
 
 const kefu_icon = res.kefu_icon;
 
@@ -35,20 +37,20 @@ export default class OrderDetailBottomButtonView extends Component {
                     {this.renderKeBtn()}
                     <View style={{ flex: 1 }}/>
 
-                        <View style={{
-                            height: px2dp(30),
-                            borderRadius: px2dp(15),
-                            marginRight: px2dp(10),
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}>
-                            <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 12 }}
-                                    onPress={
-                                        () => this.props.switchButton(nameArr.filter((item, i) => {
-                                            return i <= (nameArr.length - 1 - 2);
-                                        }))
-                                    }/>
-                        </View>
+                    <View style={{
+                        height: px2dp(30),
+                        borderRadius: px2dp(15),
+                        marginRight: px2dp(10),
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 12 }}
+                                onPress={
+                                    () => this.props.switchButton(nameArr.filter((item, i) => {
+                                        return i <= (nameArr.length - 1 - 2);
+                                    }))
+                                }/>
+                    </View>
                     {nameArr.filter((item, i) => {
                         return i > (nameArr.length - 1 - 2);
                     })
@@ -161,11 +163,32 @@ export default class OrderDetailBottomButtonView extends Component {
                 }).catch(e => {
                     Toast.$toast(e.msg);
                 });
-                beginChatType
-
+                break;
             case 19:
                 if (orderDetailModel.orderExt && orderDetailModel.orderExt.orderGroupExt) {
                     routePush('HtmlPage', { uri: '/activity/groupBuyDetails/' + orderDetailModel.orderExt.orderGroupExt.id });
+                }
+                break;
+            case 20:
+                // shareType : 0图片分享 1 图文链接分享 2小程序
+                // platformType: 0 朋友圈 1 会话
+                // title:分享标题(当为图文分享时候使用)
+                // dec:内容(当为图文分享时候使用)
+                // linkUrl:(图文分享下的链接)
+                // thumImage:(分享图标小图(http链接)图文分享使用)
+                if (orderDetailModel.orderExt && orderDetailModel.orderExt.orderGroupExt) {
+                    let  orderGroupExt = orderDetailModel.orderExt.orderGroupExt;
+                    if (orderDetailModel.productsList().length === 0){
+                        return;
+                    }
+                    let goodsName = orderDetailModel.productsList()[0].productName;
+                    let activityAmount = orderDetailModel.productsList()[0].unitPrice;
+                    ShareUtil.onShare({shareType: 1,
+                        platformType:1,
+                        title: `[仅剩${orderGroupExt.surplusPerson}个名额] 我${activityAmount || ''}元带走了${goodsName || ''}`,
+                        dec:  `我买了${goodsName || ''}，该商品已拼${orderGroupExt.groupNum -  orderGroupExt.surplusPerson}件了，快来参团吧!`,
+                        linkUrl:  `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${orderGroupExt.id ? orderGroupExt.id : ''}`,
+                        thumImage: 'logo.png' });
                 }
                 break;
         }
@@ -280,7 +303,7 @@ const styles = StyleSheet.create({
         marginRight: px2dp(10),
         justifyContent: 'center',
         alignItems: 'center',
-       paddingHorizontal: px2dp(10),
+        paddingHorizontal: px2dp(10),
         borderColor: DesignRule.lineColor_inWhiteBg
     }
 });
