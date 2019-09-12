@@ -174,7 +174,9 @@ export class GroupJoinView extends Component {
         const { itemData } = this.state;
         const { activityTag } = itemData || {};
         const { goToBuy } = this.props;
-        ProductApi.checkGroupCanJoin({ groupId: '' }).then((data) => {
+        bridge.showLoading();
+        ProductApi.checkGroupCanJoin({ groupId: itemData.id }).then((data) => {
+            bridge.hiddenLoading();
             const { canJoinGroup, queueNum } = data.data || {};
             if (!canJoinGroup) {
                 bridge.$toast(`目前有${queueNum}人排队支付中，暂无法操作〜`);
@@ -207,6 +209,7 @@ export class GroupJoinView extends Component {
             }
             goToBuy && goToBuy(itemData);
         }).catch(e => {
+            bridge.hiddenLoading();
             bridge.$toast(e.msg);
         });
     };
