@@ -55,7 +55,7 @@ export class GroupOpenPersonSView extends Component {
     };
 
     render() {
-        const { productGroupModel, goToBuy } = this.props;
+        const { productGroupModel, goToBuy, groupNum } = this.props;
         const { groupList, groupDesc, requestGroupList } = productGroupModel;
         return (
             <View style={stylesPerson.container}>
@@ -87,7 +87,7 @@ export class GroupOpenPersonSView extends Component {
                     this.GroupDescView.show();
                 }}>
                     <MRText style={stylesPerson.bottomText}>玩法<MRText
-                        style={stylesPerson.bottomText1}> 支付开团邀请1人参团，人数不足自动退款</MRText></MRText>
+                        style={stylesPerson.bottomText1}> 支付开团邀请{groupNum - 1}人参团，人数不足自动退款</MRText></MRText>
                     <Image source={arrow_right_black} resizeMode={'contain'} style={{ height: 10 }}/>
                 </NoMoreClick>
                 <GroupPersonAllList ref={e => this.GroupPersonAllList = e}
