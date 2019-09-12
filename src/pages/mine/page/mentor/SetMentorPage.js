@@ -113,7 +113,7 @@ export default class SetMentorPage extends BasePage {
                 TimerMixin.setTimeout(()=>{
                     bridge.hiddenLoading();
                     this.$navigateBack();
-                },300);
+                },1000);
             }else {
                 this.$navigateBack();
             }
