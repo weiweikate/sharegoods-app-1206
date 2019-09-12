@@ -209,6 +209,6 @@ const styles = StyleSheet.create({
         width: img_w_h, height: img_w_h, backgroundColor: DesignRule.bgColor
     },
     deleteImg: {
-        position: 'absolute', right: 0, top: 0
+        position: 'absolute', right: 0, top: 0, width: 20, height: 20
     }
 });
