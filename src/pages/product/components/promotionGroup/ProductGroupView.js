@@ -56,7 +56,7 @@ export class GroupOpenPersonSView extends Component {
 
     render() {
         const { productGroupModel, goToBuy } = this.props;
-        const { groupList, groupDesc, requestGroupProduct } = productGroupModel;
+        const { groupList, groupDesc, requestGroupList } = productGroupModel;
         return (
             <View style={stylesPerson.container}>
                 {groupList.length !== 0 &&
@@ -78,7 +78,7 @@ export class GroupOpenPersonSView extends Component {
                         return <GroupPersonItem key={index}
                                                 itemData={item}
                                                 goToBuy={goToBuy}
-                                                requestGroupProduct={requestGroupProduct}
+                                                requestGroupList={requestGroupList}
                                                 showGroupJoinView={this.showGroupJoinView}/>;
                     })
                 }
@@ -93,7 +93,7 @@ export class GroupOpenPersonSView extends Component {
                 <GroupPersonAllList ref={e => this.GroupPersonAllList = e}
                                     groupList={groupList}
                                     goToBuy={goToBuy}
-                                    requestGroupProduct={requestGroupProduct}
+                                    requestGroupList={requestGroupList}
                                     showGroupJoinView={this.showGroupJoinView}/>
                 <GroupJoinView ref={e => this.GroupJoinView = e} goToBuy={goToBuy}/>
                 <GroupDescView ref={e => this.GroupDescView = e} groupDesc={groupDesc}/>
