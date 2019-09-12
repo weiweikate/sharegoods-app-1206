@@ -196,6 +196,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
     const discountString = (item.promotionPrice / item.originalPrice * 10) + '';
     let discountNum = discountString.substring(0, discountString.indexOf('.') + 2);
     discountNum = discountNum < 0.1 ? '0.1' : discountNum;
+    let progressW = px2dp(110) + px2dp((promotionSaleRateS - 0.9) * 100);
     return <View style={styles.goodsItem}>
         <ImageLoader
             source={{ uri: item.imgUrl }}
@@ -220,11 +221,20 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                     :
                     (
                         promotionSaleRateS > 0.9 && promotionSaleRateS < 1 ?
-                            <ImageBackground style={styles.leaveView} source={resHome.home_limit_progress}
-                                             resizeMode={'contain'}>
-                                <UIText value={'即将售罄'}
-                                        style={{ fontSize: px2dp(9), color: 'white', marginLeft: px2dp(6) }}/>
-                            </ImageBackground>
+                            <View style={{
+                                width: px2dp(120),
+                                height: px2dp(12),
+                                marginTop: px2dp(5),
+                                borderRadius: px2dp(6),
+                                backgroundColor: 'rgba(255,0,80,0.1)'
+                            }}>
+                                <ImageBackground style={[styles.leaveView, { width: progressW }]}
+                                                 source={resHome.home_limit_progress}
+                                                 resizeMode={'stretch'}>
+                                    <UIText value={'即将售罄'}
+                                            style={{ fontSize: px2dp(9), color: 'white', marginLeft: px2dp(6) }}/>
+                                </ImageBackground>
+                            </View>
                             : null
                     )
             }
@@ -430,8 +440,6 @@ const styles = StyleSheet.create({
         fontSize: px2dp(14)
     },
     leaveView: {
-        marginTop: px2dp(5),
-        width: px2dp(121),
         height: px2dp(12),
         justifyContent: 'center'
     }

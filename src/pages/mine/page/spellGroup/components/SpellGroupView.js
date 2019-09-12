@@ -129,7 +129,7 @@ export default class SpellGroupView extends PureComponent {
             <View style={styles.errContainer}>
 
                 <Image source={res.placeholder.no_data}
-                       style={{width: DesignRule.autoSizeWidth(275), height: DesignRule.autoSizeWidth(150)}}
+                       style={{marginTop: 85, width: DesignRule.autoSizeWidth(275), height: DesignRule.autoSizeWidth(150)}}
                        resizeMode={'contain'}/>
                 <Text style={{marginTop:6,marginBottom: 20,fontSize:13,color:'#999999'}}> 暂无拼团 </Text>
                 <LinearGradient style={{borderRadius: 17}}
@@ -204,9 +204,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F7F7F7'
     },
     errContainer: {
-        flex: 1,
         height: ScreenUtils.height-ScreenUtils.headerHeight-40,
-        marginTop: 85,
         alignItems: 'center',
         backgroundColor: '#f5f5f5'
     },
