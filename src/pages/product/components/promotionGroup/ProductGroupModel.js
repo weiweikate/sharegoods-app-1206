@@ -44,8 +44,8 @@ export default class ProductGroupModel {
         });
     };
 
-    requestGroupProduct = ({ activityCode }) => {
-        ProductApi.promotion_group_itemJoinList({ activityCode }).then((data) => {
+    requestGroupProduct = ({ activityCode, prodCode }) => {
+        ProductApi.promotion_group_itemJoinList({ activityCode, prodCode }).then((data) => {
             this.groupProducts = data.data;
         }).catch(e => {
         });
