@@ -188,14 +188,16 @@ class HomePage extends BasePage {
                 this.luckyIcon.close();
             }}
         />);
-        tabList.map((item) => {
+        tabList.map((item, index) => {
             if (item.navType === 2) {
                 viewItems.push(<DIYTopicList tabLabel={item.navName}
                                              key={'id' + item.id}
+                                             index={index+1}
                                              data={item}/>);
             } else if (item.navType === 1) {
                 viewItems.push(<HomeNormalList tabLabel={item.navName}
                                                data={item}
+                                               index={index+1}
                                                key={'id' + item.id}/>);
             }
         });
@@ -205,7 +207,9 @@ class HomePage extends BasePage {
                                 hasMessage={this.state.hasMessage}/>
                 <ScrollableTabView
                     onChangeTab={(obj) => {
+
                         let i = obj.i;
+                        tabModel.changeTabIndex(i);
                         //首页回顶部
                         this.homeList && this.homeList.scrollToTop();
                         //埋点

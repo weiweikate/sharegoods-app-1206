@@ -171,7 +171,7 @@ export default class OrderDetailBottomButtonView extends Component {
                 break;
             case 20:
                 // shareType : 0图片分享 1 图文链接分享 2小程序
-                // platformType: 0 朋友圈 1 会话
+                // platformType: 1 朋友圈 0 会话
                 // title:分享标题(当为图文分享时候使用)
                 // dec:内容(当为图文分享时候使用)
                 // linkUrl:(图文分享下的链接)
@@ -184,7 +184,7 @@ export default class OrderDetailBottomButtonView extends Component {
                     let goodsName = orderDetailModel.productsList()[0].productName;
                     let activityAmount = orderDetailModel.productsList()[0].unitPrice;
                     ShareUtil.onShare({shareType: 1,
-                        platformType:1,
+                        platformType:0,
                         title: `[仅剩${orderGroupExt.surplusPerson}个名额] 我${activityAmount || ''}元带走了${goodsName || ''}`,
                         dec:  `我买了${goodsName || ''}，该商品已拼${orderGroupExt.groupNum -  orderGroupExt.surplusPerson}件了，快来参团吧!`,
                         linkUrl:  `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${orderGroupExt.id ? orderGroupExt.id : ''}`,

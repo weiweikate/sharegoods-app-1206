@@ -28,6 +28,7 @@ import LoadMoreDataUtil from '../../../../utils/LoadMoreDataUtil';
 import { DefaultLoadMoreComponent } from '../../../../comm/components/RefreshFlatList';
 import { observer } from 'mobx-react';
 import bridge from '../../../../utils/bridge';
+import { tabModel } from '../../model/HomeTabModel';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 @observer
@@ -136,6 +137,9 @@ export default class DIYTopicList extends React.Component {
     }
 
     render() {
+        if (tabModel.tabIndex!== this.props.index){
+            return null;
+        }
         this.dataProvider = this.dataProvider.cloneWithRows(this.loadMoreDataUtil.data);
         return (
             <RecyclerListView
