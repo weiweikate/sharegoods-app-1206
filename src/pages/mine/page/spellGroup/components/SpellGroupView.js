@@ -74,6 +74,7 @@ export default class SpellGroupView extends PureComponent {
                                 groupbuyId: selectData.id,
                                 groupbuyStatus: selectData.groupStatus,
                                 spuName: selectData.goodsName,
+                                spuCode: selectData.prodCode,
                                 myGroupbuyBtnName: '邀请好友',
 
                             });
@@ -113,6 +114,7 @@ export default class SpellGroupView extends PureComponent {
                         groupbuyId:selectData.id,
                         groupbuyStatus: selectData.groupStatus,
                         spuName: selectData.goodsName,
+                        spuCode: selectData.prodCode,
                     }}
                 />
             </View>
@@ -177,6 +179,7 @@ export default class SpellGroupView extends PureComponent {
                             groupbuyId: item.id,
                             groupbuyStatus: item.groupStatus,
                             spuName: item.goodsName,
+                            spuCode: item.prodCode,
                             myGroupbuyBtnName: '拼团详情',
 
                         });
