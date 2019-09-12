@@ -464,7 +464,7 @@ export default class HomeNormalList extends React.Component {
 
 
     render() {
-        if (tabModel.tabIndex!== this.props.index){
+        if (Math.abs(tabModel.tabIndex - this.props.index) > 1){
             return null;
         }
         this.dataProvider = this.dataProvider.cloneWithRows(this.state.data);

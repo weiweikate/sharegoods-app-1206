@@ -279,6 +279,7 @@ class HomePage extends BasePage {
                                     justifyContent: 'center',
                                     width: itemWidth
                                 }} onPress={() => {
+                                    tabModel.changeTabIndex(page)
                                     p.goToPage(page);
                                 }}>
                                     {showType === 2 ?
