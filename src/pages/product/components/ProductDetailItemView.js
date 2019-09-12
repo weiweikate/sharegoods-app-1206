@@ -107,9 +107,10 @@ export class HeaderItemView extends Component {
         const showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
         const showPinWill = activityType === activity_type.pinGroup && activityStatus === activity_status.unBegin;
         const showPinIn = activityType === activity_type.pinGroup && activityStatus === activity_status.inSell;
-        const showPrice = !(activityType === (activity_type.skill || activity_type.pinGroup) && activityStatus === activity_status.inSell);
+        //秒杀或者拼团  不显示价格
+        const showPrice = !((activityType === activity_type.skill || activity_type.pinGroup) && activityStatus === activity_status.inSell);
         /*秒杀||拼团||话费 || 兑换 不显示拼店*/
-        const showShop = (activityType === (activity_type.skill || activity_type.pinGroup) && activityStatus === activity_status.inSell) || isHuaFei || this.props.paramsType === '9';
+        const showShop = ((activityType === activity_type.skill || activity_type.pinGroup) && activityStatus === activity_status.inSell) || isHuaFei || this.props.paramsType === '9';
         /*直降中显示活动价 价格区间*/
         const verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
         return (
