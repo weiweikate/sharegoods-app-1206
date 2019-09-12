@@ -27,6 +27,7 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import productRes from '../../product/res/product';
 import XiuDouResultModal from './XiuDouResultModal';
 import { observer } from 'mobx-react';
+import { autorun } from 'mobx';
 
 const { px2dp } = ScreenUtils;
 const { saleSmallSkill } = productRes.pSacle;
@@ -37,6 +38,16 @@ export default class HomeLimitGoView extends Component {
     _onChangeTab(number) {
         this._selectedLimit(number);
     }
+
+    selectPage = autorun(() => {
+        const { currentPage } = limitGoModule;
+        setTimeout(() => {
+            this.scrollView && this.scrollView.scrollTo({
+                x: px2dp(67) * (currentPage + 0.5) - DesignRule.width / 2,
+                animated: true
+            });
+        }, 200);
+    });
 
     _selectedLimit(number) {
         let index = number !== -1 ? number : this.state.page;
@@ -157,6 +168,9 @@ export default class HomeLimitGoView extends Component {
                         </TouchableOpacity> : null
                 }
                 <ScrollView
+                    ref={(e) => {
+                        this.scrollView = e;
+                    }}
                     style={{ alignSelf: 'center', height: px2dp(55) }}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}>
