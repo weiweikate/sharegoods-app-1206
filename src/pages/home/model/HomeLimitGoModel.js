@@ -28,9 +28,9 @@ export class LimitGoModules {
         const len = (this.currentGoodsList && this.currentGoodsList.length) || 0;
         let height = 0;
         if (len > 0) {
-            height = px2dp(93) + len * px2dp(130) + (len - 1) * px2dp(10);
+            height = px2dp(97) + len * px2dp(130) + (len - 1) * px2dp(10);
         } else {
-            height = px2dp(93);
+            height = px2dp(97);
         }
 
         if (this.isShowFreeOrder) {

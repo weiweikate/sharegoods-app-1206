@@ -76,7 +76,7 @@ export default class HomeLimitGoView extends Component {
             <View>
                 <GoodsItem key={index} item={data || {}} activityCode={activityData.activityCode}
                            navigate={this.props.navigate}/>
-                <View style={{ height: px2dp(index === len - 1 ? 4.3 : 10) }}/>
+                <View style={{ height: px2dp(index === len - 1 ? 4.1 : 10) }}/>
             </View>
         </TouchableWithoutFeedback>);
     }
@@ -156,7 +156,10 @@ export default class HomeLimitGoView extends Component {
                                    style={{ height: px2dp(50), width: ScreenUtils.width }}/>
                         </TouchableOpacity> : null
                 }
-                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                <ScrollView
+                    style={{ alignSelf: 'center', height: px2dp(55) }}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
                     {tabViews}
                 </ScrollView>
                 {goodsViews}
