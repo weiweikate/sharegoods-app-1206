@@ -51,11 +51,15 @@ const stylesOld = StyleSheet.create({
 @observer
 export class GroupOpenPersonSView extends Component {
     showGroupJoinView = ({ itemData, joinList }) => {
+        const { productDetailModel } = this.props;
+        const { productDetailBtnClick } = productDetailModel;
+        productDetailBtnClick && productDetailBtnClick('去凑团');
         this.GroupJoinView.show({ itemData, joinList });
     };
 
     render() {
-        const { productGroupModel, goToBuy, groupNum } = this.props;
+        const { productGroupModel, goToBuy, groupNum, productDetailModel } = this.props;
+        const { productDetailBtnClick } = productDetailModel;
         const { groupList, groupDesc, requestGroupList } = productGroupModel;
         return (
             <View style={stylesPerson.container}>
@@ -84,6 +88,7 @@ export class GroupOpenPersonSView extends Component {
                 }
 
                 <NoMoreClick style={stylesPerson.bottomView} onPress={() => {
+                    productDetailBtnClick && productDetailBtnClick('玩法详情');
                     this.GroupDescView.show();
                 }}>
                     <MRText style={stylesPerson.bottomText}>玩法<MRText
@@ -139,7 +144,9 @@ const stylesPerson = StyleSheet.create({
 @observer
 export class GroupProductListView extends Component {
     _renderItem = ({ item }) => {
-        return <GroupProductItem itemData={item}/>;
+        const { productDetailModel } = this.props;
+        const { productDetailBtnClick } = productDetailModel;
+        return <GroupProductItem itemData={item} productDetailBtnClick={productDetailBtnClick}/>;
     };
 
     render() {

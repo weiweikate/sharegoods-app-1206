@@ -34,6 +34,7 @@ const productTrack = {
     ProductListClick:'ProductListClick',//搜索页-商品列表页点击
     Search:'Search',//搜索
     ProductDetail:'productDetail',//浏览商品详情页,
+    productDetailBtnClick:'productDetailBtnClick',//按钮点击
     AddToShoppingcart:'AddToShoppingcart',//加入购物车
     Share:'Share',//分享商品
     SpikeTimeClick:'FlashSaleTimeRangeClick',// 限时购tab

@@ -544,33 +544,47 @@ export default class ProductDetailModel {
                 }, upTime - now + 500);
             }
 
-            /**
-             * 0：未知1：普通商品2：秒杀商品3：套餐商品4：直降商品 7：礼包商品
-             */
-            let productType = 1;
-            if (this.activityStatus === activity_status.inSell) {
-                if (this.activityType === activity_type.skill) {
-                    productType = 2;
-                }
-                if (this.activityType === activity_type.verDown) {
-                    productType = 4;
-                }
-                if (this.activityType === activity_type.group) {
-                    productType = 3;
-                }
-            }
             /*商品详情埋点*/
             track(trackEvent.ProductDetail, {
                 productShowSource: this.trackType || 0,
                 sourceAttributeCode: this.trackCode || 0,
                 spuCode: this.prodCode,
                 spuName: name,
-                productType: productType,
+                productType: this.trackProductStatus(),
                 priceShareStore: groupPrice,
+                productStatus: this.activityStatus || 0,
                 priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : minPrice,
                 priceType: priceType === price_type.shop ? '100' : user.levelRemark
             });
         }
+    };
+
+    trackProductStatus = () => {
+        let productType = 1;
+        /**
+         * 0：未知1：普通商品2：秒杀商品3：套餐商品4：直降商品5:拼团 7：礼包商品
+         */
+        if (this.activityType === activity_type.skill) {
+            productType = 2;
+        } else if (this.activityType === activity_type.verDown) {
+            productType = 4;
+        } else if (this.activityType === activity_type.group) {
+            productType = 3;
+        } else if (this.activityType = activity_type.pinGroup) {
+            productType = 5;
+        }
+        return productType;
+    };
+
+    //按钮埋点
+    productDetailBtnClick = (text) => {
+        const { prodCode, name } = this;
+        track(trackEvent.productDetailBtnClick, {
+            spuCode: prodCode, spuName: name,
+            productType: this.trackProductStatus(),
+            productStatus: this.activityStatus || 0,
+            productDetailBtnName: text
+        });
     };
 
     @action productError = (error) => {
