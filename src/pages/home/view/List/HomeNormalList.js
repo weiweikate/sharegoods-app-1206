@@ -14,7 +14,8 @@
 
 import React from 'react';
 
-import { Image, RefreshControl, SectionList, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, RefreshControl, TouchableWithoutFeedback, View } from 'react-native';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 
 import { MRText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
@@ -25,10 +26,149 @@ import { DefaultLoadMoreComponent } from '../../../../comm/components/RefreshFla
 import RouterMap, { routePush } from '../../../../navigation/RouterMap';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
 import res from '../../res';
+import { observer } from 'mobx-react';
+import { tabModel } from '../../model/HomeTabModel';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
-class HeaderView extends React.Component {
+class GoodView extends React.PureComponent {
+
+    render(){
+        let item = this.props.data;
+        return (
+            <View style={{
+                flexDirection: 'row',
+                paddingLeft: ScreenUtils.autoSizeWidth(10),
+                marginTop: ScreenUtils.autoSizeWidth(4)
+            }}>
+                {item.map(good => {
+                    return (
+                        <TouchableWithoutFeedback
+                            onPress={() => {
+                                routePush(RouterMap.ProductDetailPage, { productCode: good.prodCode });
+                                track(trackEvent.CategoryBtnClick, {
+                                    firstCategoryId: this.props.data.firstCategoryId,
+                                    firstCategoryName: this.props.data.navName,
+                                    contentValue: good.name,
+                                    contentType: 3,
+                                    contentKey: good.prodCode
+                                });
+                            }}
+
+                        >
+                            <View style={{
+                                width: ScreenUtils.autoSizeWidth(170),
+                                height: ScreenUtils.autoSizeWidth(246),
+                                backgroundColor: 'white',
+                                borderRadius: 4,
+                                overflow: 'hidden',
+                                marginLeft: ScreenUtils.autoSizeWidth(5)
+                            }}>
+                                <Image style={{
+                                    width: ScreenUtils.autoSizeWidth(170),
+                                    height: ScreenUtils.autoSizeWidth(170)
+                                }}
+                                       source={{ uri: good.imgUrl }}
+                                />
+                                <MRText style={{
+                                    fontSize: ScreenUtils.autoSizeWidth(12),
+                                    color: DesignRule.textColor_mainTitle,
+                                    marginTop: ScreenUtils.autoSizeWidth(10),
+                                    marginHorizontal: ScreenUtils.autoSizeWidth(10)
+                                }}
+                                        numberOfLines={2}
+                                >{good.name}</MRText>
+                                <MRText style={{
+                                    fontSize: autoSizeWidth(12),
+                                    color: DesignRule.mainColor,
+                                    marginLeft: autoSizeWidth(10),
+                                    marginTop: autoSizeWidth(3)
+                                }}>
+                                    ¥<MRText style={{
+                                    fontSize: autoSizeWidth(14),
+                                    color: DesignRule.mainColor, fontWeight: '600'
+                                }}>{good.promotionMinPrice || good.minPrice}</MRText>起
+                                </MRText>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    );
+                })}
+            </View>
+        );
+    }
+}
+
+
+class IconView extends React.PureComponent {
+
+    render(){
+        let item = this.props.data;
+        return(
+            <View style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                alignItems: 'flex-start',
+                paddingLeft: ScreenUtils.autoSizeWidth(10),
+                backgroundColor: 'white'
+            }}>
+                {item.map((icon) => {
+                    return (
+                        <TouchableWithoutFeedback onPress={() => {
+                            let p = {};
+                            if (icon.linkType === 'all') {
+                                routePush(RouterMap.CategorySearchPage, { typeId: this.props.data.firstCategoryId });
+                                p = { contentType: 10, contentKey: '' };
+                            }
+
+                            if (icon.linkType === 1) {
+                                routePush(RouterMap.SearchResultPage, { categoryId: icon.linkCode });
+                                p = { contentType: 12, contentKey: icon.linkCode };
+                            }
+                            if (icon.linkType === 2) {
+                                routePush('HtmlPage', { uri: '/custom/' + icon.linkCode });
+                                p = { contentType: 3, contentKey: icon.linkCode };
+
+                            }
+                            track(trackEvent.CategoryBtnClick, {
+                                firstCategoryId: this.props.data.firstCategoryId,
+                                firstCategoryName: this.props.data.navName,
+                                contentValue: icon.iconName,
+                                ...p
+                            });
+                        }}>
+                            <View style={{
+                                alignItems: 'center',
+                                height: ScreenUtils.autoSizeWidth(93),
+                                width: ScreenUtils.autoSizeWidth(73) - 0.5
+                            }}>
+                                {typeof (icon.iconImage) === 'string' ? <ImageLoader style={{
+                                        width: ScreenUtils.autoSizeWidth(60),
+                                        height: ScreenUtils.autoSizeWidth(60)
+                                    }}
+                                                                                     source={{ uri: icon.iconImage }}
+                                    /> :
+                                    <Image style={{
+                                        width: ScreenUtils.autoSizeWidth(60),
+                                        height: ScreenUtils.autoSizeWidth(60)
+                                    }}
+                                           source={icon.iconImage}/>}
+                                <MRText style={{
+                                    fontSize: ScreenUtils.autoSizeWidth(12),
+                                    height: ScreenUtils.autoSizeWidth(20),
+                                    color: '#333333',
+                                    marginTop: ScreenUtils.autoSizeWidth(5)
+                                }}>{icon.iconName}</MRText>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    );
+                })}
+            </View>
+        )
+    }
+
+}
+
+class HeaderView extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -92,17 +232,21 @@ class HeaderView extends React.Component {
     }
 }
 
+@observer
 export default class HomeNormalList extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            itemData: [],
+            data: [{type: 'header'}],
             footerStatus: 'hidden',
             refreshing: false,
-            goods: []
         };
+        this.itemData = [];
+        this.header = [{type: 'header'}]
+        this.goods = [];
+
         this.index = 0;
         this.isRefreshing = true;
         this.isLoadMore = false;
@@ -117,7 +261,7 @@ export default class HomeNormalList extends React.Component {
         this.refreshData(true);
     }
 
-    handleItemData(itemData) {
+    handleItemData=(itemData)=> {
         let count = itemData.length;
         if (count === 0) {
             itemData = [];
@@ -137,7 +281,12 @@ export default class HomeNormalList extends React.Component {
                 'linkType': 'all'
             });
         }
-        this.setState({ itemData });
+        this.itemData = [{type: 'icon', data: itemData}];
+        this.changeData();
+    }
+
+    changeData= ()=>{
+        this.setState({data: [...this.itemData,...this.header, ...this.goods]})
     }
 
     changeIndex(index) {
@@ -160,6 +309,54 @@ export default class HomeNormalList extends React.Component {
         }
         this.refreshData(true);
     }
+
+    dataProvider = new DataProvider((r1, r2) => {
+        if (r1.type === 'header' && r2.type === 'header') {
+            return false;
+        }
+        return r1 !== r2;
+    });
+
+    layoutProvider = new LayoutProvider((i) => {
+        return this.dataProvider.getDataForIndex(i) || {};
+    }, (type, dim) => {
+        dim.width = ScreenUtils.width;
+        switch (type.type) {
+            case 'icon':
+                if (type.data.length === 0){
+                    dim.height = 0;
+                } else {
+                    dim.height =  type.data.length> 5? ScreenUtils.autoSizeWidth(93)*2: ScreenUtils.autoSizeWidth(93);
+                }
+                break;
+            case 'goods':
+                dim.height =  ScreenUtils.autoSizeWidth(174+60+20);
+                break;
+            case 'header':
+                dim.height = 50;
+                break;
+            default:
+                dim.height = 0;
+        }
+    });
+
+
+    _renderItem = (type, item, index) => {
+        type = type.type;
+        if (type === 'icon') {
+            return <IconView data={item.data}/>
+        } else if (type === 'goods') {
+            return <GoodView data = {item.data}/>
+        } else if (type === 'header') {
+            return <HeaderView
+                onPress={(index) => {
+                    this.changeIndex(index);
+                }}
+                index={this.index}
+            />
+        }
+        return <View/>;
+    };
 
     getParams() {
         let data = this.props.data || {};
@@ -190,8 +387,9 @@ export default class HomeNormalList extends React.Component {
             let dataArr = data.data || [];
             let footerStatus = data.isMore ? 'idle' : 'noMoreData';
             dataArr = this.handleData(dataArr);
+            this.goods = dataArr;
+            this.changeData();
             this.setState({
-                goods: dataArr,
                 footerStatus,
                 refreshing: false
             });
@@ -215,7 +413,9 @@ export default class HomeNormalList extends React.Component {
             let dataArr = data.data || [];
             let footerStatus = data.isMore ? 'idle' : 'noMoreData';
             dataArr = this.handleMoreData(dataArr);
-            this.setState({ footerStatus, goods: dataArr });
+            this.goods = dataArr;
+            this.changeData();
+            this.setState({ footerStatus});
 
         }).catch((e) => {
             this.page--;
@@ -230,7 +430,7 @@ export default class HomeNormalList extends React.Component {
 
         data.forEach((item) => {
             if (temp.length === 2) {
-                arr.push(temp);
+                arr.push({type: 'goods', data: temp});
                 temp = [];
             }
             temp.push(item);
@@ -243,16 +443,14 @@ export default class HomeNormalList extends React.Component {
     }
 
     handleMoreData(data) {
-        if (data.length === 0 || this.state.goods.length === 0) {
-            return this.state.goods;
+        if (data.length === 0 || this.goods.length === 0) {
+            return this.goods;
         }
-
-
-        let arr = [...this.state.goods];
+        let arr = [...this.goods];
         let temp = arr.pop();
         data.forEach((item) => {
             if (temp.length === 2) {
-                arr.push(temp);
+                arr.push({type: 'goods', data: temp});
                 temp = [];
             }
             temp.push(item);
@@ -266,165 +464,29 @@ export default class HomeNormalList extends React.Component {
 
 
     render() {
+        if (Math.abs(tabModel.tabIndex - this.props.index) > 1){
+            return null;
+        }
+        this.dataProvider = this.dataProvider.cloneWithRows(this.state.data);
         return (
             <View style={[DesignRule.style_container, { marginTop: 0 }]}>
-                <SectionList
-                    renderItem={(item) => this.renderItem(item)}
-                    renderSectionHeader={(s) => this.renderSectionHeader(s)}
-                    sections={[
-                        { type: 'icon', data: [{ data: this.state.itemData }] },
-                        { type: 'header', data: this.state.goods }
-                    ]}
+                <RecyclerListView
                     refreshControl={<RefreshControl refreshing={this.state.refreshing}
                                                     onRefresh={this.refreshData.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
-                    keyExtractor={(item, index) => item + index}
-                    stickySectionHeadersEnabled={true}
-                    showsVerticalScrollIndicator={false}
+
+                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0 }}
                     onEndReached={this.getMoreData.bind(this)}
-                    ListFooterComponent={() => <DefaultLoadMoreComponent status={this.state.footerStatus}/>}
-                />
+                    onEndReachedThreshold={ScreenUtils.height / 3}
+                    dataProvider={this.dataProvider}
+                    rowRenderer={this._renderItem.bind(this)}
+                    layoutProvider={this.layoutProvider}
+                    showsVerticalScrollIndicator={false}
+                    removeClippedSubviews={false}
+                    canChangeSize={false}
+                    renderFooter={() => <DefaultLoadMoreComponent status={this.state.footerStatus}/>}
+                        />
             </View>
         );
-    }
-
-    renderSectionHeader({ section }) {
-        if (section.type === 'icon') {
-            return <View/>;
-        } else {
-            return <HeaderView
-                onPress={(index) => {
-                    this.changeIndex(index);
-                }}
-                index={this.index}
-            />;
-        }
-    }
-
-    renderItem({ item, index, section }) {
-        if (section.type === 'icon') {
-            return (
-                <View style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    alignItems: 'flex-start',
-                    paddingLeft: ScreenUtils.autoSizeWidth(10),
-                    backgroundColor: 'white'
-                }}>
-                    {item.data.map((icon) => {
-                        return (
-                            <TouchableWithoutFeedback onPress={() => {
-                                let p = {};
-                                if (icon.linkType === 'all') {
-                                    routePush(RouterMap.CategorySearchPage, { typeId: this.props.data.firstCategoryId });
-                                    p = { contentType: 10, contentKey: '' };
-                                }
-
-                                if (icon.linkType === 1) {
-                                    routePush(RouterMap.SearchResultPage, { categoryId: icon.linkCode });
-                                    p = { contentType: 12, contentKey: icon.linkCode };
-                                }
-                                if (icon.linkType === 2) {
-                                    routePush('HtmlPage', { uri: '/custom/' + icon.linkCode });
-                                    p = { contentType: 3, contentKey: icon.linkCode };
-
-                                }
-                                track(trackEvent.CategoryBtnClick, {
-                                    firstCategoryId: this.props.data.firstCategoryId,
-                                    firstCategoryName: this.props.data.navName,
-                                    contentValue: icon.iconName,
-                                    ...p
-                                });
-                            }}>
-                                <View style={{
-                                    alignItems: 'center',
-                                    height: ScreenUtils.autoSizeWidth(93),
-                                    width: ScreenUtils.autoSizeWidth(73) - 0.5
-                                }}>
-                                    {typeof (icon.iconImage) === 'string' ? <ImageLoader style={{
-                                            width: ScreenUtils.autoSizeWidth(60),
-                                            height: ScreenUtils.autoSizeWidth(60)
-                                        }}
-                                                                                         source={{ uri: icon.iconImage }}
-                                        /> :
-                                        <Image style={{
-                                            width: ScreenUtils.autoSizeWidth(60),
-                                            height: ScreenUtils.autoSizeWidth(60)
-                                        }}
-                                               source={icon.iconImage}/>}
-                                    <MRText style={{
-                                        fontSize: ScreenUtils.autoSizeWidth(12),
-                                        height: ScreenUtils.autoSizeWidth(20),
-                                        color: '#333333',
-                                        marginTop: ScreenUtils.autoSizeWidth(5)
-                                    }}>{icon.iconName}</MRText>
-                                </View>
-                            </TouchableWithoutFeedback>
-                        );
-                    })}
-                </View>
-            );
-        } else {//商品
-            return (
-                <View style={{
-                    flexDirection: 'row',
-                    paddingLeft: ScreenUtils.autoSizeWidth(10),
-                    marginTop: ScreenUtils.autoSizeWidth(4)
-                }}>
-                    {item.map(good => {
-                        return (
-                            <TouchableWithoutFeedback
-                                onPress={() => {
-                                    routePush(RouterMap.ProductDetailPage, { productCode: good.prodCode });
-                                    track(trackEvent.CategoryBtnClick, {
-                                        firstCategoryId: this.props.data.firstCategoryId,
-                                        firstCategoryName: this.props.data.navName,
-                                        contentValue: good.name,
-                                        contentType: 3,
-                                        contentKey: good.prodCode
-                                    });
-                                }}
-
-                            >
-                                <View style={{
-                                    width: ScreenUtils.autoSizeWidth(170),
-                                    height: ScreenUtils.autoSizeWidth(246),
-                                    backgroundColor: 'white',
-                                    borderRadius: 4,
-                                    overflow: 'hidden',
-                                    marginLeft: ScreenUtils.autoSizeWidth(5)
-                                }}>
-                                    <ImageLoader style={{
-                                        width: ScreenUtils.autoSizeWidth(170),
-                                        height: ScreenUtils.autoSizeWidth(170)
-                                    }}
-                                                 source={{ uri: good.imgUrl }}
-                                    />
-                                    <MRText style={{
-                                        fontSize: ScreenUtils.autoSizeWidth(12),
-                                        color: DesignRule.textColor_mainTitle,
-                                        marginTop: ScreenUtils.autoSizeWidth(10),
-                                        marginHorizontal: ScreenUtils.autoSizeWidth(10)
-                                    }}
-                                            numberOfLines={2}
-                                    >{good.name}</MRText>
-                                    <MRText style={{
-                                        fontSize: autoSizeWidth(12),
-                                        color: DesignRule.mainColor,
-                                        marginLeft: autoSizeWidth(10),
-                                        marginTop: autoSizeWidth(3)
-                                    }}>
-                                        ¥<MRText style={{
-                                        fontSize: autoSizeWidth(14),
-                                        color: DesignRule.mainColor, fontWeight: '600'
-                                    }}>{good.promotionMinPrice || good.minPrice}</MRText>起
-                                    </MRText>
-                                </View>
-                            </TouchableWithoutFeedback>
-                        );
-                    })}
-                </View>
-            );
-        }
     }
 }

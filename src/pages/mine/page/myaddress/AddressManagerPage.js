@@ -130,19 +130,19 @@ export default class AddressManagerPage extends BasePage {
                         flex: 1,
                         fontSize: 15,
                         color: DesignRule.textColor_mainTitle
-                    }}>{item.item.receiver+ '     ' + item.item.receiverPhone}</Text>
+                    }}>{item.item.receiver + '     ' + item.item.receiverPhone}</Text>
                     {item.item.defaultStatus === 1 ? <View style={{backgroundColor: 'rgba(255,0,80,0.1)', justifyContent: 'center', paddingHorizontal: 3, height: 16, borderRadius: 4, overflow: 'hidden'}}>
                         <Text style={{color: '#FF0050', fontSize: 10}}>默认</Text>
-                    </View>: null}
+                    </View> : null}
                 </View>
                 <Text
                     numberOfLines={2}
                     ellipsizeMode={'tail'}
                     style={styles.cell_addr}>{province + city + area + street + address}</Text>
             {
-                addressStatus === 0? <Text
+                addressStatus === 0 ? <Text
                     ellipsizeMode={'tail'}
-                    style={[styles.cell_addr,{color: DesignRule.mainColor, fontSize: 10}]}>{'该地址已变更'}</Text>:null
+                    style={[styles.cell_addr,{color: DesignRule.mainColor, fontSize: 10}]}>{'该地址已变更'}</Text> : null
             }
             <View style={{flex: 1}}/>
             <View style={{ flexDirection: 'row', alignItems: 'center',height: DesignRule.autoSizeWidth(38), borderTopWidth: 1, borderTopColor: DesignRule.bgColor}}>
@@ -177,7 +177,7 @@ export default class AddressManagerPage extends BasePage {
         // 地址列表点击
         if (this.params.from === 'order') {
             if (item.addressStatus === 0){
-                bridge.$toast("该地址已变更,请重新选择地址");
+                bridge.$toast('该地址已变更,请重新选择地址');
                 return;
             }
             let callBack = this.params.callBack;
@@ -188,7 +188,7 @@ export default class AddressManagerPage extends BasePage {
 
     _onSelectImgClick = (item, index) => {
         if (item.addressStatus === 0){
-            bridge.$toast("该地址已变更");
+            bridge.$toast('该地址已变更');
             return;
         }
         // 设置默认地址

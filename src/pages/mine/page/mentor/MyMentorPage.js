@@ -40,7 +40,8 @@ export default class MyMentorPage extends BasePage {
             code: '',
             phone: '',
             profile: '',
-            weChatNumber: null
+            weChatNumber: null,
+            showPhone:0
         };
     }
 
@@ -67,7 +68,8 @@ export default class MyMentorPage extends BasePage {
                     levelName: `${info.levelName}品鉴官`,
                     code: info.code,
                     phone: info.phone,
-                    profile: info.profile ? info.profile : ''
+                    profile: info.profile ? info.profile : '',
+                    showPhone: info.showPhone
                 });
                 this.imageCacheManager.downloadAndCacheUrl(info.headImg).then((data) => {
                     this.setState({
@@ -97,7 +99,7 @@ export default class MyMentorPage extends BasePage {
                 {this._profileRender(this.state.profile)}
                 {this._navRender()}
 
-                {SettingModel.messageState ? <View style={styles.btnBgStyle}>
+                {this.state.showPhone ? <View style={styles.btnBgStyle}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.state.phone && Linking.openURL(`sms:${this.state.phone}`);
                     }}>

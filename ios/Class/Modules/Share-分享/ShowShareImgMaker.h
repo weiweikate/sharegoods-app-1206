@@ -27,5 +27,11 @@
 
 + (NSString *)getShowProductImageModelImages:(NSArray<UIImage *> *)images
                                            model:(ShareImageMakerModel *)model;
+
+/**
+ *  拼团图片绘制
+ */
++ (NSDictionary *)getParamsWithGroupImages:(NSArray<UIImage *> *)images
+                                   model:(ShareImageMakerModel *)model;
 @end
 

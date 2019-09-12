@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
     },
 
     receiverAddressStyle: {
-        fontSize: ScreenUtils.px2dp(13),
-        color: DesignRule.textColor_mainTitle,
+        fontSize: ScreenUtils.px2dp(12),
+        color: DesignRule.textColor_instruction,
         marginTop: ScreenUtils.autoSizeWidth(5)
     },
     giftOutStyle: {

@@ -155,7 +155,10 @@ export default class PaymentPage extends BasePage {
                 //如何为拼店扩容来的支付，支付结果跳转拼店扩容结果页
                 replaceRoute(RouterMap.AddCapacitySuccessPage, { payResult: PaymentResult.success });
             } else {
-                replaceRoute(RouterMap.PaymentFinshPage, { payResult: PaymentResult.success });
+                replaceRoute(RouterMap.PaymentFinshPage, {
+                    payResult: PaymentResult.success,
+                    platformOrderNo: payment.platformOrderNo
+                });
             }
             payment.resetPayment();
         }).catch(err => {

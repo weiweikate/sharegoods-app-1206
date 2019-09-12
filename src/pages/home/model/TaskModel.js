@@ -246,7 +246,7 @@ class TaskModel {
         if (homeHeight !== this.homeHeight) {
             this.homeHeight = homeHeight;
             homeModule.changeHomeList(homeType.task, [{
-                id: 11,
+                id: 3,
                 type: homeType.task
             }]);
         }

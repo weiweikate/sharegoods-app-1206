@@ -25,7 +25,6 @@ import DesignRule from '../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../components/ui';
 import res from '../res';
-import bridge from '../../utils/bridge';
 import { getSize } from '../../utils/OssHelper';
 
 const { down_icon, close_icon } = res.button;
@@ -730,7 +729,6 @@ export default class FlyImageViewer extends Component {
      */
     saveToLocal() {
         if (!this.props.onSave) {
-            bridge.$toast('图片保存中...');
             let that = this;
             CameraRoll.saveToCameraRoll(that.props.imageUrls[that.state.currentShowIndex])
                 .then(() => {

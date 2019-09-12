@@ -95,10 +95,10 @@ export default class GoodsGrayItem extends React.Component {
                                 <UIText value={category}
                                         style={[styles.detail, { textAlign: 'left' }]} numberOfLines={3}/>
                             </View>
-                            <UIText value={goodsNum?('x' + goodsNum): ''} style={styles.detail}/>
+                            <UIText value={goodsNum ? ('x' + goodsNum) : ''} style={styles.detail}/>
                         </View>
                         {this._renderTips(tips)}
-                        {this.props.renderExtraView&&this.props.renderExtraView()}
+                        {this.props.renderExtraView && this.props.renderExtraView()}
                     </View>
                 </View>
             </TouchableWithoutFeedback>

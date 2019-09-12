@@ -28,9 +28,9 @@ export class LimitGoModules {
         const len = (this.currentGoodsList && this.currentGoodsList.length) || 0;
         let height = 0;
         if (len > 0) {
-            height = px2dp(93) + len * px2dp(140) + (len - 1) * px2dp(10) + 0.8;
+            height = px2dp(97) + len * px2dp(130) + (len - 1) * px2dp(10);
         } else {
-            height = px2dp(93) + 0.8;
+            height = px2dp(97);
         }
 
         if (this.isShowFreeOrder) {
@@ -131,7 +131,7 @@ export class LimitGoModules {
                 this.spikeList = _spikeList;
                 this.currentGoodsList = (_spikeList[this.currentPage] && _spikeList[this.currentPage].goods) || [];
                 homeModule.changeHomeList(homeType.limitGo, [{
-                    id: 5,
+                    id: 6,
                     type: homeType.limitGo
                 }]);
             }
@@ -166,7 +166,7 @@ export class LimitGoModules {
         this.currentGoodsList = (this.spikeList[index] && this.spikeList[index].goods) || [];
         this.currentPage = index;
         homeModule.changeHomeList(homeType.limitGo, [{
-            id: 5,
+            id: 6,
             type: homeType.limitGo
         }]);
     }

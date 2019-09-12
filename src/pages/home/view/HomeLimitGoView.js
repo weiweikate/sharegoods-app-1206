@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import {
     Image,
     ImageBackground,
+    Platform,
+    ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    View, Platform
+    View
 } from 'react-native';
-import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LinearGradient from 'react-native-linear-gradient';
 import HomeTitleView from './HomeTitleView';
@@ -18,22 +19,35 @@ import DesignRule from '../../../constants/DesignRule';
 import resHome from '../res';
 import res from '../res';
 import { homeLinkType, homeRoute } from '../HomeTypes';
-import { MRText } from '../../../components/ui';
+import { MRText, UIText } from '../../../components/ui';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import user from '../../../model/user';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import productRes from '../../product/res/product';
 import XiuDouResultModal from './XiuDouResultModal';
+import { observer } from 'mobx-react';
+import { autorun } from 'mobx';
 
 const { px2dp } = ScreenUtils;
 const { saleSmallSkill } = productRes.pSacle;
 
+@observer
 export default class HomeLimitGoView extends Component {
 
     _onChangeTab(number) {
-        this._selectedLimit(number.i);
+        this._selectedLimit(number);
     }
+
+    selectPage = autorun(() => {
+        const { currentPage } = limitGoModule;
+        setTimeout(() => {
+            this.scrollView && this.scrollView.scrollTo({
+                x: px2dp(67) * (currentPage + 0.5) - DesignRule.width / 2,
+                animated: true
+            });
+        }, 200);
+    });
 
     _selectedLimit(number) {
         let index = number !== -1 ? number : this.state.page;
@@ -50,34 +64,32 @@ export default class HomeLimitGoView extends Component {
         }
     }
 
-    _renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
+    _tabItem(item, index, isTabActive) {
         const textColor = isTabActive ? 'white' : '#666';
-        const selectedValue = (value) => value.id === name;
-        const { spikeList } = limitGoModule;
-        const selectedModels = spikeList.filter(selectedValue);
-        let selected = null;
-        if (selectedModels && selectedModels.length > 0) {
-            selected = selectedModels[0];
-        }
-        if (!selected) {
-            return <View/>;
-        }
-        const { time, title } = selected;
-        return <TouchableOpacity
-            key={`${name}_${page}`}
-            onPress={() => onPressHandler(page)}
-            onLayout={onLayoutHandler}
-        >
+        return (<TouchableOpacity onPress={() => {
+            this._onChangeTab(index);
+        }}>
             <ImageBackground style={styles.tab}
                              source={isTabActive ? res.tabBg : null}>
                 <Text style={[styles.time, { color: textColor }]}>
-                    {time}
+                    {item.time}
                 </Text>
                 <Text style={[styles.title, { color: textColor }]}>
-                    {title}
+                    {item.title}
                 </Text>
             </ImageBackground>
-        </TouchableOpacity>;
+        </TouchableOpacity>);
+    }
+
+    _goodsItem(len, data, index, activityData) {
+        return (<TouchableWithoutFeedback key={index}
+                                          onPress={() => this._goToDetail(index, data || {}, activityData)}>
+            <View>
+                <GoodsItem key={index} item={data || {}} activityCode={activityData.activityCode}
+                           navigate={this.props.navigate}/>
+                <View style={{ height: px2dp(index === len - 1 ? 4.1 : 10) }}/>
+            </View>
+        </TouchableWithoutFeedback>);
     }
 
     _goToDetail(index, value, activityData) {
@@ -100,24 +112,6 @@ export default class HomeLimitGoView extends Component {
             });
     }
 
-    _renderGoodsList(activityData) {
-        let goodsItems = [];
-        let goods = activityData.goods || [];
-        goods.map((data, index) => {
-            goodsItems.push(
-                <TouchableWithoutFeedback key={index}
-                                          onPress={() => this._goToDetail(index, data || {}, activityData)}>
-                    <View>
-                        <GoodsItem key={index} item={data || {}} activityCode={activityData.activityCode}
-                                   navigate={this.props.navigate}/>
-                        {index === goods.length - 1 ? null : <View style={{ height: px2dp(10) }}/>}
-                    </View>
-                </TouchableWithoutFeedback>
-            );
-        });
-        return goodsItems.length > 0 ? goodsItems : null;
-    }
-
     openModal() {
         this.modal && this.modal.open();
         track(trackEvent.HomePagePopShow, { homePagePopType: 1 });
@@ -125,24 +119,31 @@ export default class HomeLimitGoView extends Component {
 
     seeMore() {
         routePush('HtmlPage', {
-            uri: `/spike`
+            uri: '/spike'
         });
     }
 
     render() {
-        let viewItems = [];
-        const { spikeList } = limitGoModule;
+        const { spikeList, currentGoodsList, currentPage } = limitGoModule;
+        // tab视图
+        let tabViews = [];
         spikeList.map((data, index) => {
-            viewItems.push(
-                <View key={index}
-                      tabLabel={data.id}>
-                    {this._renderGoodsList(data || {})}
-                </View>
+            tabViews.push(
+                this._tabItem(data, index, index === currentPage)
             );
         });
-
-        if (viewItems.length === 0) {
+        if (tabViews.length === 0) {
             return null;
+        }
+        // 商品视图
+        let goodsViews = [];
+        if (spikeList && spikeList[currentPage]) {
+            let activityData = spikeList[currentPage];
+            currentGoodsList.map((data, index) => {
+                goodsViews.push(
+                    this._goodsItem(currentGoodsList.length, data, index, activityData)
+                );
+            });
         }
 
         return (
@@ -162,24 +163,20 @@ export default class HomeLimitGoView extends Component {
                             this.openModal();
                         }}>
                             <Image source={res.limitGoHeader}
-                                   style={{ height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-10) }}/>
+                                   resizeMode={'contain'}
+                                   style={{ height: px2dp(50), width: ScreenUtils.width }}/>
                         </TouchableOpacity> : null
                 }
-
-                <ScrollableTabView
-                    style={styles.tabBar}
-                    page={limitGoModule.currentPage !== -1 ? limitGoModule.currentPage : limitGoModule.initialPage}
-                    renderTabBar={() => <ScrollableTabBar style={styles.scrollTab} underlineStyle={styles.underline}
-                                                          renderTab={this._renderTab.bind(this)}/>}
-                    tabBarUnderlineStyle={styles.underline}
-                    locked={true}
-                    scrollWithoutAnimation={true}
-                    onChangeTab={(index) => this._onChangeTab(index)}
-                    showsVerticalScrollIndicator={false}
-                    initialPage={limitGoModule.initialPage}
-                >
-                    {viewItems}
-                </ScrollableTabView>
+                <ScrollView
+                    ref={(e) => {
+                        this.scrollView = e;
+                    }}
+                    style={{ alignSelf: 'center', height: px2dp(55) }}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+                    {tabViews}
+                </ScrollView>
+                {goodsViews}
                 <XiuDouResultModal ref={(ref) => {
                     this.modal = ref;
                 }}/>
@@ -189,16 +186,16 @@ export default class HomeLimitGoView extends Component {
 
 const GoodsItem = ({ item, activityCode, navigate }) => {
     const promotionSaleRateS = item.promotionSaleRate || 0;
-    let ratePercentText = promotionSaleRateS > 0.9 ? '即将售罄' : `还剩${Math.ceil((1 - promotionSaleRateS) * 100)}%`;
-    ratePercentText = promotionSaleRateS >= 1 ? '已抢光' : ratePercentText;
-    let progressWidthS = promotionSaleRateS * px2dp(120);
-    progressWidthS = progressWidthS < px2dp(12) ? px2dp(12) : progressWidthS;
+    const discountString = (item.promotionPrice / item.originalPrice * 10) + '';
+    let discountNum = discountString.substring(0, discountString.indexOf('.') + 2);
+    discountNum = discountNum < 0.1 ? '0.1' : discountNum;
+    let progressW = px2dp(110) + px2dp((promotionSaleRateS - 0.9) * 100);
     return <View style={styles.goodsItem}>
         <ImageLoader
             source={{ uri: item.imgUrl }}
             showPlaceholder={false}
-            width={px2dp(120)}
-            height={px2dp(120)}
+            width={px2dp(130)}
+            height={px2dp(130)}
             style={styles.goodsImage}>
             {item.promotionStatus === limitStatus.end ?
                 <Image source={resHome.home_sallout}
@@ -206,32 +203,66 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
             <Image source={saleSmallSkill} style={{ width: 50, height: 18, top: 5, left: 0, position: 'absolute' }}/>
         </ImageLoader>
         <View style={styles.goodsContent}>
-            <Text style={styles.goodsTitle} numberOfLines={2}>{item.name}</Text>
+            <Text style={styles.goodsTitle} numberOfLines={1}>{item.name}</Text>
             <Text style={styles.text} numberOfLines={1}>{item.secondName}</Text>
             {
                 item.promotionStatus === limitStatus.noBegin ?
-                    <Text style={styles.text}>已有{item.promotionAttentionNum}人关注了</Text>
+                    <Text style={[styles.text, {
+                        color: '#999',
+                        fontSize: px2dp(10)
+                    }]}>已有{item.promotionAttentionNum}人关注了</Text>
                     :
-                    <View style={styles.leaveView}>
-                        <View style={[styles.progressView, { width: progressWidthS }]}/>
-                        <View style={styles.leaveAmountView}>
-                            <MRText style={styles.leaveAmountText}>{ratePercentText}</MRText>
-                        </View>
-                    </View>
+                    (
+                        promotionSaleRateS > 0.9 && promotionSaleRateS < 1 ?
+                            <View style={{
+                                width: px2dp(120),
+                                height: px2dp(12),
+                                marginTop: px2dp(5),
+                                borderRadius: px2dp(6),
+                                backgroundColor: 'rgba(255,0,80,0.1)'
+                            }}>
+                                <ImageBackground style={[styles.leaveView, { width: progressW }]}
+                                                 source={resHome.home_limit_progress}
+                                                 resizeMode={'stretch'}>
+                                    <UIText value={'即将售罄'}
+                                            style={{ fontSize: px2dp(9), color: 'white', marginLeft: px2dp(6) }}/>
+                                </ImageBackground>
+                            </View>
+                            : null
+                    )
             }
-            <View style={styles.moneyView}>
-                {
-                    item.promotionPrice
-                        ?
-                        <Text style={styles.money}>¥<Text
-                            style={styles.moneyText}>{item.promotionPrice + ' '}</Text>
-                            <Text style={styles.originMoneyText}>¥{item.originalPrice}</Text>
-                        </Text>
-                        :
-                        null
-                }
-                <View style={{ flex: 1 }}/>
-                <GoodsItemButton data={item} activityCode={activityCode} navigate={navigate}/>
+            <View style={{
+                flexDirection: 'column',
+                flex: 1
+            }}>
+                <View style={{
+                    justifyContent: 'flex-end',
+                    flex: 1
+                }}>
+                    <ImageBackground source={resHome.discount} style={{
+                        height: px2dp(14),
+                        width: px2dp(33),
+                        marginBottom: px2dp(-6),
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <UIText value={discountNum + '折'} style={{ fontSize: px2dp(9), color: 'white' }}/>
+                    </ImageBackground>
+                </View>
+                <View style={styles.moneyView}>
+                    {
+                        item.promotionPrice
+                            ?
+                            <Text style={styles.money}>¥<Text
+                                style={styles.moneyText}>{item.promotionPrice + ' '}</Text>
+                                <Text style={styles.originMoneyText}>¥{item.originalPrice}</Text>
+                            </Text>
+                            :
+                            null
+                    }
+                    <View style={{ flex: 1 }}/>
+                    <GoodsItemButton data={item} activityCode={activityCode} navigate={navigate}/>
+                </View>
             </View>
         </View>
     </View>;
@@ -243,9 +274,8 @@ const GoodsItemButton = ({ data, activityCode, navigate }) => {
                                start={{ x: 0, y: 0 }}
                                end={{ x: 1, y: 0 }}
                                colors={['#FF0050', '#FC5D39']}>
-            <Text style={styles.buttonTitle}>
-                马上抢
-            </Text>
+            <UIText value={'马上抢'} style={styles.buttonTitle}/>
+            <Image source={res.button.white_go} style={{ width: 7, height: 13, marginLeft: 3, marginTop: 1.5 }}/>
         </LinearGradient>;
     } else if (data.promotionStatus === limitStatus.noBegin) {
         return <NoMoreClick onPress={() => {
@@ -278,10 +308,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: px2dp(51)
     },
-    tabBar: {
-        width: ScreenUtils.width,
-        borderWidth: 0
-    },
     underline: {
         height: 0
     },
@@ -296,25 +322,21 @@ const styles = StyleSheet.create({
         fontSize: 11,
         marginTop: Platform.OS === 'ios' ? 4 : 2
     },
-    scrollTab: {
-        borderWidth: 0,
-        height: px2dp(51)
-    },
     goodsItem: {
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
         borderRadius: px2dp(5),
-        height: px2dp(140),
+        height: px2dp(130),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white'
     },
     goodsImage: {
-        width: px2dp(120),
-        height: px2dp(120),
-        borderRadius: px2dp(5),
-        marginLeft: px2dp(10),
+        width: px2dp(130),
+        height: px2dp(130),
+        borderTopLeftRadius: px2dp(5),
+        borderBottomLeftRadius: px2dp(5),
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden'
@@ -330,18 +352,18 @@ const styles = StyleSheet.create({
         flex: 1
     },
     text: {
-        color: '#999',
+        color: DesignRule.mainColor,
         fontSize: px2dp(12),
         lineHeight: 20
     },
     goodsTitle: {
         color: '#333',
-        fontSize: px2dp(14),
+        fontSize: px2dp(15),
         marginRight: px2dp(10),
+        fontWeight: '600',
         lineHeight: 20
     },
     moneyView: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'flex-end',
         paddingRight: px2dp(5)
@@ -361,9 +383,11 @@ const styles = StyleSheet.create({
         textDecorationLine: 'line-through'
     },
     button: {
-        width: px2dp(82),
-        height: px2dp(28),
-        borderRadius: px2dp(14),
+        flexDirection: 'row',
+        width: px2dp(70),
+        height: px2dp(32),
+        marginRight: px2dp(4),
+        borderRadius: px2dp(10),
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -372,22 +396,25 @@ const styles = StyleSheet.create({
         fontSize: px2dp(14)
     },
     buttonWill: {
-        width: px2dp(82),
-        height: px2dp(28),
-        borderRadius: px2dp(14),
+        width: px2dp(70),
+        height: px2dp(32),
+        marginRight: px2dp(4),
+        borderRadius: px2dp(10),
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: ScreenUtils.onePixel,
-        borderColor: DesignRule.mainColor
+        borderWidth: 1,
+        borderColor: DesignRule.mainColor,
+        backgroundColor: 'rgba(255,0,80,0.1)'
     },
     buttonWillTitle: {
         color: DesignRule.mainColor,
         fontSize: px2dp(14)
     },
     disbutton: {
-        width: px2dp(82),
-        height: px2dp(28),
-        borderRadius: px2dp(14),
+        width: px2dp(70),
+        height: px2dp(32),
+        marginRight: px2dp(4),
+        borderRadius: px2dp(10),
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: DesignRule.textColor_placeholder
@@ -397,17 +424,7 @@ const styles = StyleSheet.create({
         fontSize: px2dp(14)
     },
     leaveView: {
-        marginTop: px2dp(5),
-        backgroundColor: 'rgba(255,0,80,0.1)', borderRadius: px2dp(6), width: px2dp(120), height: px2dp(12)
-    },
-    progressView: {
-        backgroundColor: DesignRule.mainColor, borderRadius: px2dp(6), height: px2dp(12)
-    },
-    leaveAmountView: {
-        justifyContent: 'center', marginLeft: px2dp(8),
-        position: 'absolute', top: 0, bottom: 0, left: 0, right: 0
-    },
-    leaveAmountText: {
-        fontSize: 10, color: DesignRule.textColor_white
+        height: px2dp(12),
+        justifyContent: 'center'
     }
 });

@@ -199,6 +199,7 @@ export default class RefreshFlatList extends React.Component {
         if (!refreshing) {
             bridge.showLoading();
         }
+        delete params.cursor;
         if (url) {
             this._getData(url, params, true);
         } else {
@@ -219,7 +220,7 @@ export default class RefreshFlatList extends React.Component {
         }
         this.page = defaultPage;
         onStartRefresh && onStartRefresh();
-
+        delete params.cursor;
         if (url) {
             this._getData(url, params, true);
         } else {
@@ -229,12 +230,14 @@ export default class RefreshFlatList extends React.Component {
 
 
     _onLoadMore() {
-        let { onStartLoadMore, url, params, isSupportLoadingMore, paramsFunc } = this.props;
-        if (paramsFunc) {
-            params = paramsFunc();
-        }
-        if (isSupportLoadingMore === false || this.allLoadCompleted === true || this.isNetLoading === true) {
+        let { onStartLoadMore, url, params, isSupportLoadingMore ,paramsFunc} = this.props;
+
+        if (!isSupportLoadingMore || this.allLoadCompleted || this.isNetLoading) {
             return;
+        }
+
+        if(paramsFunc){
+            params = paramsFunc();
         }
         this.page++;
         this.setState({ footerStatus: 'loading', loadingMore: true });
@@ -279,7 +282,9 @@ export default class RefreshFlatList extends React.Component {
                 onEndLoadMore && onEndLoadMore();
             } else {
                 data = netData;
-                store.save(cache, netData);
+                if(this.props.cache) {
+                    store.save(cache, netData);
+                }
                 onEndRefresh && onEndRefresh();
 
             }
@@ -306,7 +311,7 @@ export default class RefreshFlatList extends React.Component {
             that.setState({
                 refreshing: false,
                 loadingMore: false,
-                footerStatus: 'idle',
+                footerStatus: 'noMoreData',
                 error: error
             });
         })

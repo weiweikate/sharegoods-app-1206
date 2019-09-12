@@ -20,7 +20,7 @@ class HomeFocusAdModel {
                 this.focusAdList = [];
                 let focusData = {
                     itemData: data,
-                    id: 4,
+                    id: 5,
                     type: homeType.focusGrid
                 };
                 this.focusAdList.push(focusData);

@@ -120,16 +120,16 @@ export function topicAdOnPress(data, item, p, title) {
 
     }
     switch (linkType) {
-        case 1:
+        case 1://商品
             p2.contentType = 1;
             p2.contentKey = linkValue;
             routePush(RouterMap.ProductDetailPage, { productCode: linkValue });
-        case 4:
+        case 4://商品
             p2.contentType = 8;
             p2.contentKey = linkValue;
             routePush(RouterMap.ProductDetailPage, { productCode: linkValue });
             break;
-        case 2:
+        case 2://专题
             p2.contentType = 3;
             p2.contentKey = linkValue;
             if (linkValue && linkValue.indexOf('ZT') === 0) {
@@ -145,7 +145,10 @@ export function topicAdOnPress(data, item, p, title) {
             p2.contentKey = '/spike';
             routePush('HtmlPage', { uri: '/spike' });
             break;
-        case 99:
+        case 6://跳转网页
+            routePush('HtmlPage', { uri: linkValue });
+            break;
+        case 99://商品列表
             routePush('HtmlPage', { uri: `/search?c=${data.code + item.linkId}` });
             break;
     }

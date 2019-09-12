@@ -24,7 +24,6 @@ import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import { shopCartEmptyModel } from '../model/ShopCartEmptyModel';
 import ShopCartEmptyCell from './ShopCartEmptyCell';
-import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 const section_width = ScreenUtils.width - px2dp(30);
@@ -34,11 +33,11 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={{
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
-    width:section_width
+    width: section_width
 }}>
     {
-        (!errorMsg && !isEnd)?<ActivityIndicator style={{ marginRight: 6 }} animating={true} size={'small'}
-                                                 color={DesignRule.mainColor}/>:null
+        (!errorMsg && !isEnd) ? <ActivityIndicator style={{ marginRight: 6 }} animating={true} size={'small'}
+                                                   color={DesignRule.mainColor}/> : null
     }
 
     <Text style={{
@@ -79,15 +78,8 @@ export default class SectionHeaderView extends Component {
         let viewItemList = [];
         const recommdListData = shopCartEmptyModel.emptyViewList;
         viewItemList = recommdListData.map((itemData, index) => {
-            return (<ShopCartEmptyCell haveShopCartGoods={true} itemData={itemData} onClick={() => {
+            return (<ShopCartEmptyCell recommendScene={1} selectedIndex={index} itemData={itemData} onClick={() => {
                 routePush(RouterMap.ProductDetailPage, { productCode: itemData.prodCode });
-                TrackApi.RecommendSpuClick({
-                    strategyId: itemData.strategyId,
-                    spuRelationValue: itemData.spuRelationValue,
-                    spuRelationIndex: index,
-                    spuCode: itemData.prodCode,
-                    spuName: itemData.name
-                });
             }}/>);
         });
         //删除头部视图
@@ -111,7 +103,7 @@ export default class SectionHeaderView extends Component {
                         borderRadius: px2dp(1),
                         backgroundColor: '#FF0050'
                     }}/>
-                    <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16),fontWeight: '600' }}>为你推荐</MRText>
+                    <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16), fontWeight: '600' }}>为你推荐</MRText>
                 </View>
                 {viewItemList}
                 <Footer isFetching={shopCartEmptyModel.isFetching}
@@ -208,7 +200,7 @@ export default class SectionHeaderView extends Component {
             bridge.$toast('活动不存在');
         }
     };
-};
+}
 
 SectionHeaderView.propTypes = {
     //cell 数据

@@ -45,7 +45,7 @@ export default class HelperCenterQuestionDetail extends BasePage {
         return (
             <Text style={[
                     styles.buttonText,
-                    { color: hasFeedBackUseHelp? 'white': DesignRule.mainColor}
+                    { color: hasFeedBackUseHelp ? 'white' : DesignRule.mainColor}
                   ]}
                   allowFontScaling={false}>
                 有用
@@ -66,7 +66,7 @@ export default class HelperCenterQuestionDetail extends BasePage {
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}
                             style={{
-                                backgroundColor:"transparent",
+                                backgroundColor:'transparent',
                                 borderRadius:px2dp(5),
                                 overflow:'hidden'
                             }}
@@ -74,7 +74,7 @@ export default class HelperCenterQuestionDetail extends BasePage {
                     <View style={{
                             paddingTop:10,
                             borderRadius:px2dp(5),
-                            backgroundColor:"#fff",
+                            backgroundColor:'#fff',
                             paddingHorizontal:px2dp(12),
                           }}
                     >
@@ -92,7 +92,7 @@ export default class HelperCenterQuestionDetail extends BasePage {
                         </View>
                         {content ?
                             <View>
-                                <HTML html={content} imagesMaxWidth={ScreenUtils.width-px2dp(54)}
+                                <HTML html={content} imagesMaxWidth={ScreenUtils.width - px2dp(54)}
                                       baseFontStyle={{
                                           lineHeight: 20,
                                           fontSize:13,
@@ -116,12 +116,12 @@ export default class HelperCenterQuestionDetail extends BasePage {
                                          style={[
                                              styles.btn,
                                              {marginRight:25},
-                                             hasFeedBackNoHelp? styles.btnLeftActive:styles.btnLeft
+                                             hasFeedBackNoHelp ? styles.btnLeftActive : styles.btnLeft
                                          ]}
                             >
                                 <Text style={[
                                     styles.buttonText,
-                                    {color: !hasFeedBackNoHelp? '#999999' : 'white'}
+                                    {color: !hasFeedBackNoHelp ? '#999999' : 'white'}
                                 ]}
                                       allowFontScaling={false}
                                 >
@@ -133,11 +133,11 @@ export default class HelperCenterQuestionDetail extends BasePage {
                                          onPress={() => this.feedbackClick(2)}
                                          style={[
                                              styles.btn,
-                                             hasFeedBackUseHelp? styles.rightActiveButton:styles.btnRight
+                                             hasFeedBackUseHelp ? styles.rightActiveButton : styles.btnRight
                                          ]}
                             >
                                 {
-                                    hasFeedBackUseHelp?
+                                    hasFeedBackUseHelp ?
                                         <LinearGradient  start={{x: 0, y: 0}}
                                                          end={{x: 1, y: 0}}
                                                          colors={['#FC5D39', '#FF0050']}
@@ -151,7 +151,7 @@ export default class HelperCenterQuestionDetail extends BasePage {
                                                          }}
                                         >
                                             {this.renderRightButton()}
-                                        </LinearGradient>:
+                                        </LinearGradient> :
                                         <View>
                                             {this.renderRightButton()}
                                         </View>
@@ -181,24 +181,24 @@ export default class HelperCenterQuestionDetail extends BasePage {
             title,
             content,
             voteResult,
-            useful=0,
-            useless=0
+            useful = 0,
+            useless = 0
         } = (this.params.detail || {})
         this.setState({
             useless,
             useful,
-            hasFeedBackNoHelp:vote && ( voteResult==0 ),
-            hasFeedBackUseHelp:vote && ( voteResult==1 ),
+            hasFeedBackNoHelp:vote && ( voteResult == 0 ),
+            hasFeedBackUseHelp:vote && ( voteResult == 1 ),
             content,
             title,
         })
     }
 
-    feedbackClick = (type=2)=>{
+    feedbackClick = (type = 2)=>{
         // hadHelp 0为没有用 1为有用
         MineApi.addHelpCenterResponse({
             helpDetailId: this.params.detail.id,
-            type: type==1? 0:1
+            type: type == 1 ? 0 : 1
         }).then(res => {
             this.$toastShow('感谢您的反馈');
             this.params.refreshList()
@@ -245,11 +245,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     btnLeft: {
-        borderColor:"#979797",
+        borderColor:'#979797',
         backgroundColor:'#fff'
     },
     btnLeftActive:{
-        borderColor:"#ccc",
+        borderColor:'#ccc',
         backgroundColor:'#ccc'
     },
     btnRight: {

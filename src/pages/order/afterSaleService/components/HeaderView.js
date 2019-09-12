@@ -9,21 +9,21 @@
  *
  */
 
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 
 import {
     StyleSheet,
     View,
     Platform
-} from "react-native";
+} from 'react-native';
 
 import {
     UIImage, MRText
-} from "../../../../components/ui";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import res from "../../res";
+} from '../../../../components/ui';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import res from '../../res';
 const  autoSizeWidth = ScreenUtils.autoSizeWidth;
 import {AfterStatus, SubStatus, PageType, isRefundFail} from '../AfterType'
 import DottedLine from '../../../../comm/components/DottedLine';
@@ -81,7 +81,7 @@ export default class HeaderView extends React.Component {
         );
     }
 
-    renderDashedLine(style={}){
+    renderDashedLine(style = {}){
         if (Platform.OS === 'ios'){
             return <View style={[styles.dashedLine, style]}/>
         } else {
@@ -388,17 +388,15 @@ export default class HeaderView extends React.Component {
 
     // type: 1、实心的圆 2、空心的圆 3、三角型
     renderItem(type = 1, topText = '', bottomText = '', color = 'white'){
-        let width = type === 3 ? 6: 10;
+        let width = type === 3 ? 6 : 10;
         let middleView = () => {};
         if (type === 1){
             middleView = () => {return(
-                <View style={{height:10 ,width:10 ,backgroundColor: color, borderRadius: 5, overflow: 'hidden'}}>
-                </View>
+                <View style={{height:10 ,width:10 ,backgroundColor: color, borderRadius: 5, overflow: 'hidden'}} />
             )};
         } else if (type === 2){
             middleView = () => {return(
-                <View style={{height:10 ,width:10 ,borderColor: color, borderRadius: 5, overflow: 'hidden', borderWidth: 1}}>
-                </View>
+                <View style={{height:10 ,width:10 ,borderColor: color, borderRadius: 5, overflow: 'hidden', borderWidth: 1}} />
             )};
 
         }else if (type === 3){

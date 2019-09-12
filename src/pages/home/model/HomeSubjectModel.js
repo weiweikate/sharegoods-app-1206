@@ -15,16 +15,21 @@ const bannerHeight = bannerWidth * (240 / 650);
 //专题
 class SubjectModule {
     @observable subjectList = [];
-    subBannerHeight = bannerHeight;
-
+    @observable subjectHeight = 0;
     //记载专题
     @action
-    loadSubjectList = flow(function* () {
+    loadSubjectList = flow(function* (isCache) {
         try {
+            if (isCache) {
+                const storeRes = yield store.get(kHomeHotStore);
+                if (storeRes) {
+                    this.computeHeight(storeRes || []);
+                }
+            }
             const res = yield HomeApi.getHomeData({ type: homeType.homeHot });
             let list = res.data || [];
             this.computeHeight(list);
-            store.save(kHomeHotStore, res.data);
+            store.save(kHomeHotStore, list);
         } catch (error) {
             console.log(error);
         }
@@ -32,21 +37,23 @@ class SubjectModule {
 
     computeHeight = (data) => {
         if (data.length > 0) {
-            this.subjectList = [];
-            let subList = [];
-            data.map((value, index) => {
-                subList.push({
-                    itemData: value,
-                    type: homeType.homeHot,
-                    id: value.id + '' + index,
-                    itemIndex: index
-                });
+            let height = px2dp(60);
+            data.map(value => {
+                const { topicBannerProductDTOList } = value;
+                if (topicBannerProductDTOList && topicBannerProductDTOList.length > 0) {
+                    height += px2dp(185);
+                } else {
+                    height += px2dp(15);
+                }
+                height += bannerHeight;
             });
-            this.subjectList = subList;
-        } else {
-            this.subjectList = [];
+            this.subjectHeight = height;
         }
-        homeModule.changeHomeList(homeType.homeHot, this.subjectList);
+        this.subjectList = data;
+        homeModule.changeHomeList(homeType.homeHot, [{
+            id: 9,
+            type: homeType.homeHot
+        }]);
     };
 }
 

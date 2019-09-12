@@ -43,7 +43,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import intervalMsgModel from '../../../../comm/components/IntervalMsgView';
 import { MRText as Text } from '../../../../components/ui/index';
 import TextCustomView from '../TextCustomView';
-import HomeHotTitleView from '../HomeHotTitleView';
+import { tabModel } from '../../model/HomeTabModel';
 
 
 const { JSPushBridge } = NativeModules;
@@ -64,16 +64,16 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
 @observer
 export default class HomeFirstTabView extends Component {
     dataProvider = new DataProvider((r1, r2) => {
-        return r1.id !== r2.id;
+        return r1 !== r2;
     });
 
     layoutProvider = new LayoutProvider((i) => {
-        return homeModule.homeList[i] || {};
+        return this.dataProvider.getDataForIndex(i) || {};
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
         const { todayList } = todayModule;
         const { recommendList } = recommendModule;
-        const { subjectList } = subjectModule;
+        const { subjectHeight, subjectList } = subjectModule;
         const { foucusHeight } = homeFocusAdModel;
 
         switch (type.type) {
@@ -104,11 +104,8 @@ export default class HomeFirstTabView extends Component {
             case homeType.fine:
                 dim.height = recommendList.length > 0 ? recommendHeight : 0;
                 break;
-            case homeType.homeHotTitle:
-                dim.height = subjectList.length > 0 ? px2dp(60) : 0;
-                break;
             case homeType.homeHot:
-                dim.height = subjectList.length > 0 ? (subjectModule.subBannerHeight + px2dp(185)) : 0;
+                dim.height = subjectList.length > 0 ? subjectHeight : 0;
                 break;
             case homeType.goodsTitle:
                 dim.height = homeModule.tabList.length > 0 ? px2dp(66) : 0;
@@ -123,6 +120,7 @@ export default class HomeFirstTabView extends Component {
                 break;
             default:
                 dim.height = 0;
+                break;
         }
     });
 
@@ -160,8 +158,6 @@ export default class HomeFirstTabView extends Component {
             return <HomeTodayView navigate={routePush}/>;
         } else if (type === homeType.fine) {
             return <HomeRecommendView navigate={routePush}/>;
-        } else if (type === homeType.homeHotTitle) {
-            return <HomeHotTitleView title={'超值热卖'}/>;
         } else if (type === homeType.homeHot) {
             return <HomeSubjectView navigate={routePush} data={item}/>;
         } else if (type === homeType.goods) {
@@ -234,6 +230,9 @@ export default class HomeFirstTabView extends Component {
 
 
     render() {
+        if (Math.abs(tabModel.tabIndex) > 1){
+            return null;
+        }
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (

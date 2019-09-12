@@ -38,6 +38,7 @@ class HomeModule {
     firstLoad = true;
     errorMsg = '';
     tabId = '';
+    // id数字不要轻易改，model有对应
     fixedPartOne = [{
         id: 0,
         type: homeType.swiper
@@ -48,33 +49,27 @@ class HomeModule {
         id: 2,
         type: homeType.channel
     }, {
-        id: 11,
+        id: 3,
         type: homeType.task
     }, {
-        id: 3,
+        id: 4,
         type: homeType.expandBanner
     }, {
-        id: 4,
+        id: 5,
         type: homeType.focusGrid
     }];
     topTopice = [];
     fixedPartTwo = [{
-        id: 5,
+        id: 6,
         type: homeType.limitGo
     }];
     bottomTopice = [];
     fixedPartThree = [{
-        id: 6,
-        type: homeType.star
-    }, {
         id: 7,
         type: homeType.today
     }, {
         id: 8,
         type: homeType.fine
-    }, {
-        id: 12,
-        type: homeType.homeHotTitle
     }, {
         id: 9,
         type: homeType.homeHot
@@ -154,6 +149,7 @@ class HomeModule {
         this.isEnd = false;
         this.isRefreshing = false;
         this.firstLoad = true;
+        limitGoModule.spikeList = [];
     }
 
     @action refreshHome = (type) => {
@@ -300,56 +296,48 @@ class HomeModule {
 
     @action getGoods() {
         this.isEnd = false;
-        if (this.page === 1) {
-            HomeApi.getRecommendList({ tabId: this.tabId, 'page': this.page, 'pageSize': 10 }).then(data => {
-                let list = data.data.data || [];
-                if (!data.data.isMore) {
-                    this.isEnd = true;
-                }
-                let itemData = [];
-                let home = [];
-                home.push({
-                    id: 10,
-                    type: homeType.goodsTitle
-                });
-                for (let i = 0, len = list.length; i < len; i++) {
-                    if (i % 2 === 1) {
-                        let good = list[i];
-                        itemData.push(good);
-                        home.push({
-                            itemData: itemData,
-                            type: homeType.goods,
-                            id: 'goods' + good.recommendId + good.id
-                        });
-                        itemData = [];
-                    } else {
-                        itemData.push(list[i]);
-                    }
-                }
-
-                if (itemData.length > 0) {
+        HomeApi.getRecommendList({ tabId: this.tabId, 'page': 1, 'pageSize': 10 }).then(data => {
+            let list = data.data.data || [];
+            if (!data.data.isMore) {
+                this.isEnd = true;
+            }
+            let itemData = [];
+            let home = [];
+            for (let i = 0, len = list.length; i < len; i++) {
+                if (i % 2 === 1) {
+                    let good = list[i];
+                    itemData.push(good);
                     home.push({
                         itemData: itemData,
                         type: homeType.goods,
-                        id: 'goods'
+                        id: 'goods' + good.recommendId + good.id
                     });
+                    itemData = [];
+                } else {
+                    itemData.push(list[i]);
                 }
-                let temp = this.homeList.filter((item) => {
-                    return item.type !== homeType.goods;
-                }).filter((item) => {
-                    return item.type !== homeType.goodsTitle;
+            }
+
+            if (itemData.length > 0) {
+                home.push({
+                    itemData: itemData,
+                    type: homeType.goods,
+                    id: 'goods'
                 });
-                this.goodsOtherLen = temp.length;
-                this.homeList = [...temp, ...home];
-                this.goods = home;
-                this.isRefreshing = false;
-                this.page += 1;
-                this.errorMsg = '';
-            }).catch(err => {
-                this.isRefreshing = false;
-                this.errorMsg = err.msg;
+            }
+            let temp = this.homeList.filter((item) => {
+                return item.type !== homeType.goods;
             });
-        }
+            this.goodsOtherLen = temp.length;
+            this.homeList = [...temp, ...home];
+            this.goods = home;
+            this.isRefreshing = false;
+            this.page = 1;
+            this.errorMsg = '';
+        }).catch(err => {
+            this.isRefreshing = false;
+            this.errorMsg = err.msg;
+        });
     }
 
     // 加载为你推荐列表
@@ -365,7 +353,7 @@ class HomeModule {
         }
         try {
             this.isFetching = true;
-            const result = yield HomeApi.getRecommendList({ page: this.page, tabId: this.tabId, pageSize: 10 });
+            const result = yield HomeApi.getRecommendList({ page: this.page + 1, tabId: this.tabId, pageSize: 10 });
             this.isFetching = false;
             let list = result.data.data || [];
             if (!result.data.isMore) {
@@ -373,12 +361,6 @@ class HomeModule {
             }
             let itemData = [];
             let home = [];
-            if (this.page === 1) {
-                home.push({
-                    id: 10,
-                    type: homeType.goodsTitle
-                });
-            }
             for (let i = 0, len = list.length; i < len; i++) {
                 if (i % 2 === 1) {
                     let good = list[i];

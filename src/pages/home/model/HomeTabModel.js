@@ -8,7 +8,11 @@ const kHomeTabStore = '@home/kHomeTabStore';
 //专题
 class HomeTabModel {
     @observable tabList = [];
-
+    @observable tabIndex = 0;
+    @action
+    changeTabIndex(tabIndex){
+        this.tabIndex = tabIndex;
+    }
     //记载专题
     @action
     loadTabList = flow(function* (isCache) {

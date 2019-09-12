@@ -10,16 +10,18 @@ import {
 import res from '../../res';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 
-const { autoSizeWidth } = ScreenUtils;
+const {autoSizeWidth} = ScreenUtils;
 
 import DesignRule from '../../../../constants/DesignRule';
-import { MRText as Text, MRTextInput  as TextInput } from '../../../../components/ui';
+import {MRText as Text, MRTextInput  as TextInput} from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
 import StringUtils from '../../../../utils/StringUtils';
 import user from '../../../../model/user';
 import RouterMap from '../../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
+import TimerMixin from 'react-timer-mixin';
+import bridge from '../../../../utils/bridge';
 
 const {
     mentor_error_icon,
@@ -91,12 +93,14 @@ export default class SetMentorPage extends BasePage {
         let params = {
             tutorCode: this.state.nowSearch
         };
+        this.params.isFromTask ? bridge.showLoading('绑定中') : null;
         MineAPI.bindTutor(params).then(data => {
             this.$toastShow('服务顾问设置成功');
             this._saveUser();
 
         }).catch((error) => {
             this.$toastShow(error.msg);
+            bridge.hiddenLoading();
         });
     };
 
@@ -105,8 +109,16 @@ export default class SetMentorPage extends BasePage {
         MineAPI.getUser().then(res => {
             let data = res.data;
             user.saveUserInfo(data);
-            this.$navigateBack();
+            if(this.params.isFromTask){
+                TimerMixin.setTimeout(()=>{
+                    bridge.hiddenLoading();
+                    this.$navigateBack();
+                },300);
+            }else {
+                this.$navigateBack();
+            }
         }).catch(err => {
+            bridge.hiddenLoading();
         });
     };
     _mentorResult = () => {
@@ -162,7 +174,7 @@ export default class SetMentorPage extends BasePage {
     };
 
     _buttonRender = () => {
-        let canCommit = ((this.state.searchCode === this.state.nowSearch )&& this.state.hasSearch && !this.state.hasError && this.state.canSet);
+        let canCommit = ((this.state.searchCode === this.state.nowSearch) && this.state.hasSearch && !this.state.hasError && this.state.canSet);
         let color = canCommit ? DesignRule.textColor_btnText : DesignRule.textColor_placeholder;
         return (
             <TouchableWithoutFeedback disabled={!canCommit} onPress={() => {
@@ -170,24 +182,24 @@ export default class SetMentorPage extends BasePage {
                     `你确定要将"${this.state.mentorNickName}"设置为您的服务顾问？`,
                     null,
                     [
-                        { text: '取消', onPress: () => console.log('取消'), style: 'cancel' },
-                        { text: '确定', onPress: () => this._bindTutor() }
+                        {text: '取消', onPress: () => console.log('取消'), style: 'cancel'},
+                        {text: '确定', onPress: () => this._bindTutor()}
                     ],
-                    { cancelable: false }
+                    {cancelable: false}
                 );
             }}>
                 {
-                    canCommit ? <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
-                                        colors={['#FF1C89', '#FD0128']}
-                                        style={styles.buttonStyle}>
-                            <Text style={styles.buttonTextStyle}>
-                                设置他为我的服务顾问
-                            </Text>
-                        </LinearGradient> : <View style={[styles.buttonStyle, { backgroundColor: color }]}>
-                            <Text style={styles.buttonTextStyle}>
-                                设置他为我的服务顾问
-                            </Text>
-                        </View>
+                    canCommit ? <LinearGradient start={{x: 0, y: 0}} end={{x: 0, y: 1}}
+                                                colors={['#FF1C89', '#FD0128']}
+                                                style={styles.buttonStyle}>
+                        <Text style={styles.buttonTextStyle}>
+                            设置他为我的服务顾问
+                        </Text>
+                    </LinearGradient> : <View style={[styles.buttonStyle, {backgroundColor: color}]}>
+                        <Text style={styles.buttonTextStyle}>
+                            设置他为我的服务顾问
+                        </Text>
+                    </View>
                 }
             </TouchableWithoutFeedback>
         );
