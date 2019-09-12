@@ -236,7 +236,6 @@ class HomePage extends BasePage {
     }
 
     _renderTabBar(p) {
-        console.log('----' + JSON.stringify(p));
         let itemWidth = 60;
         let tabBarHeight = 42;
         return (
