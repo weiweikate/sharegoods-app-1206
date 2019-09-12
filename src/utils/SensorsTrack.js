@@ -83,6 +83,13 @@ const showEvent = {
     XiuChangSpuClick:'XiuChangSpuClick',//点击商品
 }
 
+/** 拼团相关的埋点事件名称*/
+const groupEvent = {
+    ViewMyGroupbuy:'ViewMyGroupbuy',//浏览我的拼团页
+    MyGroupbuyBtnClick: 'MyGroupbuyBtnClick',//我的拼团页按钮点击
+    ShareGroupbuy: 'ShareGroupbuy',//拼团页分享
+}
+
 const mineEvent = {
     ClickModifyAvatar: 'ClickModifyAvatar', //点击修改头像
     ModifuAvatarSuccess: 'ModifuAvatarSuccess', // 修改头像成功
@@ -141,7 +148,8 @@ const trackEvent = {
     ...afterEvent,
     ...commonEvent,
     ...homeEvent,
-    ...showEvent
+    ...showEvent,
+    ...groupEvent
 };
 
 function track(event_name,parmas) {
