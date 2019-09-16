@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MRText as Text } from '../../../../components/ui/index';
 import DesignRule from '../../../../constants/DesignRule';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -27,12 +27,15 @@ export default class XpDetailBottomView extends Component {
                 <View style={styles.containerView}>
                     <View style={styles.bgView}>
                         <TouchableOpacity
+                            activeOpacity={0.7}
                             style={styles.gwcBtn}
                             onPress={() => this.props.bottomViewAction('keFu')}>
                             <Image source={me_bangzu_kefu_icon}/>
                             <Text style={styles.gwcText}>客服</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.gwcBtn} onPress={() => bottomViewAction('goGwc')}>
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            style={styles.gwcBtn} onPress={() => bottomViewAction('goGwc')}>
                             <Image source={gwc}/>
                             <Text style={styles.gwcText}>购物车</Text>
                             {shopNumber === 0 ? null :
@@ -41,7 +44,9 @@ export default class XpDetailBottomView extends Component {
                                 </View>}
                         </TouchableOpacity>
                         <View style={styles.btnView}>
-                            <TouchableOpacity style={styles.btn} onPress={() => bottomViewAction('joinCart')}>
+                            <TouchableOpacity
+                                activeOpacity={0.7} style={styles.btn}
+                                onPress={() => bottomViewAction('joinCart')}>
                                 <LinearGradient style={styles.LinearGradient}
                                                 start={{ x: 0, y: 0 }}
                                                 end={{ x: 1, y: 0 }}
@@ -49,8 +54,10 @@ export default class XpDetailBottomView extends Component {
                                     <Text style={styles.btnText}>加入购物车</Text>
                                 </LinearGradient>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.btn} onPress={() => bottomViewAction('buy')}
-                                              disabled={pCantBuy}>
+                            <TouchableOpacity
+                                activeOpacity={0.7} style={styles.btn}
+                                onPress={() => bottomViewAction('buy')}
+                                disabled={pCantBuy}>
                                 <LinearGradient style={styles.LinearGradient}
                                                 start={{ x: 0, y: 0 }}
                                                 end={{ x: 1, y: 0 }}

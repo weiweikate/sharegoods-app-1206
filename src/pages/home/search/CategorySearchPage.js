@@ -114,7 +114,7 @@ export default class CategorySearchPage extends BasePage {
         return (
             <TouchableOpacity onPress={() => {
                 this.clickBanner(item);
-            }}>
+            }} activeOpacity={0.7}>
                 <ImageLoad
                     source={{ uri: item.img }}
                     borderRadius={5}
@@ -141,7 +141,7 @@ export default class CategorySearchPage extends BasePage {
 
             <View style={{ flexDirection: 'column' }}>
                 <View style={{ height: 56, alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={styles.searchBox} activeOpacity={0.5} onPress={() => this.go2SearchPage()}>
+                    <TouchableOpacity style={styles.searchBox} activeOpacity={0.7} onPress={() => this.go2SearchPage()}>
                         <Image source={icon_search}
                                style={{ width: 22, height: 21, marginLeft: 20 }}/>
                         <View style={styles.inputText}/>
@@ -227,7 +227,7 @@ export default class CategorySearchPage extends BasePage {
 
     _categoryItem = (item) => {
         return (
-            <TouchableOpacity style={{ height: 45, flexDirection: 'row' }}
+            <TouchableOpacity style={{ height: 45, flexDirection: 'row' }} activeOpacity={0.7}
                               onPress={() => this._onCategoryClick(item.item, item.index)}>
                 <View style={{
                     height: 45,
@@ -335,7 +335,7 @@ export default class CategorySearchPage extends BasePage {
                 marginLeft: (item.index % 3 === 1 || item.index % 3 === 2) ? 15 : 10,
                 alignItems: 'center'
             }}>
-                <TouchableOpacity onPress={() => this.go2ResultPage(item.item.id, item.item.name)}>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => this.go2ResultPage(item.item.id, item.item.name)}>
                     <ImageLoad source={{ uri: item.item.img }}
                                style={{
                                    height: itemImgW,

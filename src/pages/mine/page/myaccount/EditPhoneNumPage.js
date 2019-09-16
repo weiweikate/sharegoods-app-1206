@@ -82,7 +82,7 @@ export default class EditPhoneNumPage extends BasePage {
                            }}
                            value={this.state.code}
                            keyboardType={'numeric'}/>
-                <TouchableOpacity onPress={() => this._onGetCode(oldNum)}
+                <TouchableOpacity activeOpacity={0.7} onPress={() => this._onGetCode(oldNum)}
                                   disabled={this.state.vertifyCodeTime > 0 ? true : false}>
                     <UIText value={this.state.vertifyCodeTime > 0 ? this.state.vertifyCodeTime + '秒后重新获取' : '获取验证码'}
                             style={{ color: '#D85674', fontSize: 13, marginRight: 15 }}/>
@@ -95,7 +95,7 @@ export default class EditPhoneNumPage extends BasePage {
                         marginTop: 15,
                         marginLeft: 16
                     }}/>
-            <TouchableOpacity style={{
+            <TouchableOpacity activeOpacity={0.7} style={{
                 marginTop: 42,
                 backgroundColor: this.state.code.length === 0 ? '#E3E3E3' : DesignRule.mainColor,
                 width: ScreenUtils.width - 84,

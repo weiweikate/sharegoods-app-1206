@@ -46,6 +46,7 @@ export default class CheckLogisticsPage extends BasePage {
                     return (
                         <View>
                             <TouchableOpacity
+                                activeOpacity={0.7}
                                 style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}
                                 onPress={() => {
                                     this.show(item.expressNo, item.expressCode, item.expressName);
@@ -79,6 +80,7 @@ export default class CheckLogisticsPage extends BasePage {
                     return (
                         <View>
                             <TouchableOpacity
+                                activeOpacity={0.7}
                                 style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}>
                                 <View style={styles.expStyle}>
                                     <Text style={{

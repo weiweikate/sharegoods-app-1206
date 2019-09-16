@@ -41,7 +41,7 @@ export default class ProtocolView extends Component {
             <View style={
                 ProtocolViewStyle.bgContent
             }>
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity activeOpacity={0.7} onPress={() => {
                     selectImageClick && selectImageClick(!this.state.isSelect);
                     this.setState({
                         isSelect: !this.state.isSelect
@@ -54,7 +54,7 @@ export default class ProtocolView extends Component {
                 <Text style={ProtocolViewStyle.readTextStyle}>
                     登录代表你已同意
                 </Text>
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity activeOpacity={0.7} onPress={() => {
                     textClick && textClick(htmlUrl);
                 }}>
                     <Text style={ProtocolViewStyle.protocolClickTextStyle}>

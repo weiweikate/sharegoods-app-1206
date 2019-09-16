@@ -143,6 +143,7 @@ export default class PhoneLoginPage extends BasePage {
                             maxLength={11}
                         />
                         <TouchableOpacity
+                            activeOpacity={0.7}
                             style={{ justifyContent: 'center', width: px2dp(30) }} onPress={() => {
                             if (this.state.phoneNum.length > 0) {
                                 this.setState({
@@ -161,6 +162,7 @@ export default class PhoneLoginPage extends BasePage {
                                                 marginTop: px2dp(15)
                                             }]}>
                                 <TouchableOpacity
+                                    activeOpacity={0.7}
                                     style={Styles.touchableStyle}
                                     onPress={() => {
                                         // 发送验证码，跳转到验证码页面
@@ -197,7 +199,7 @@ export default class PhoneLoginPage extends BasePage {
                         <CommSpaceLine style={{ width: this.params.needBottom ? px2dp(102) : 0 }}/>
                     </View>
                     <View style={{ flexDirection: 'row', marginHorizontal: px2dp(30), marginTop: px2dp(20) }}>
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             // 微信登录
                             if (!loginModel.isSelectProtocol) {
                                 this.$toastShow('请先勾选用户协议');
@@ -231,7 +233,7 @@ export default class PhoneLoginPage extends BasePage {
                                 color: DesignRule.textColor_instruction
                             }} value={this.params.needBottom ? '微信登录' : ''}/>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             // 密码
                             replaceRoute(RouterMap.PwdLoginPage, { ...this.params });
                         }}>

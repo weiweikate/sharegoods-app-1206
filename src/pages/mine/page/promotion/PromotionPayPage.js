@@ -103,14 +103,14 @@ export default class PromotionPayPage extends BasePage<Props> {
                         includeFontPadding: false
                     }} value={`（共发放${this.params.count}个红包）`}/>
                     <View style={{ flex: 1 }}/>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.setState({ isSelected: !this.state.isSelected });
                     }}>
                         {this.state.isSelected ? isSelectedView : unSelectView}
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1 }}/>
-                <TouchableOpacity onPress={() => this.pay()} disabled={!this.state.isSelected}>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => this.pay()} disabled={!this.state.isSelected}>
                     <View style={[styles.buttonWrapper, this.state.isSelected ? { opacity: 1 } : { opacity: 0.5 }]}>
                         <UIText value={'提交支付'} style={{ color: 'white', fontSize: px2dp(16) }}/>
                     </View>

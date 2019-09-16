@@ -66,7 +66,7 @@ export default class SearchBar extends Component {
                                                onSubmitEditing={(event) => this.onSubmitEditing(event.nativeEvent.text)}/>
 
                     </View>
-                    <TouchableOpacity onPress={this.props.cancel}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={this.props.cancel}>
                         <Text style={{ paddingRight: 15, color: DesignRule.textColor_instruction }}
                               allowFontScaling={false}>取消</Text>
                     </TouchableOpacity>

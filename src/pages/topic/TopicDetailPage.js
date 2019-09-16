@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    View,
-    StyleSheet,
-    SectionList,
-    TouchableOpacity,
-    FlatList
-} from 'react-native';
+import { FlatList, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
@@ -21,9 +15,7 @@ import TopicDetailShowModal from './components/TopicDetailShowModal';
 import DetailNavShowModal from '../product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import DesignRule from '../../constants/DesignRule';
-import {
-    MRText as Text
-} from '../../components/ui';
+import { MRText as Text } from '../../components/ui';
 
 import EmptyUtils from '../../utils/EmptyUtils';
 import DetailNavView from '../product/components/DetailNavView';
@@ -36,8 +28,7 @@ import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceM
 import ProductApi from '../product/api/ProductApi';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
-import { routeNavigate } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../navigation/RouterMap';
 import { price_type } from '../product/ProductDetailModel';
 
 /*
@@ -300,7 +291,7 @@ export default class TopicDetailPage extends BasePage {
                 quantity: amount,
                 productCode: item.prodCode,
                 activityCode: this.params.activityCode,
-                batchNo: 1,
+                batchNo: 1
             });
         });
 
@@ -624,12 +615,15 @@ export default class TopicDetailPage extends BasePage {
                               allowFontScaling={false}>商品已经下架啦~</Text>
                     </View> : null}
                     {/*正常购买按钮 colorType === 2红  1蓝  0灰*/}
-                    <TouchableOpacity style={{
-                        height: 49,
-                        backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? DesignRule.mainColor : '#CCCCCC'),
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }} onPress={() => this._bottomAction(colorType)} disabled={!(colorType === 1 || colorType === 2)}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={{
+                            height: 49,
+                            backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? DesignRule.mainColor : '#CCCCCC'),
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }} onPress={() => this._bottomAction(colorType)}
+                        disabled={!(colorType === 1 || colorType === 2)}>
                         <Text style={{
                             color: 'white',
                             fontSize: 14, textAlign: 'center'

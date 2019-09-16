@@ -63,6 +63,7 @@ export default class TopicDetailShowModal extends Component {
                 }}>
                     <View style={{ top: ScreenUtils.px2dp(115) }}>
                         <TouchableOpacity
+                            activeOpacity={0.7}
                             style={{ alignSelf: 'flex-end', height: 40 }}
                             onPress={this._onPress}>
                             <Image source={topicShowClose}/>

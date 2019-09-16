@@ -143,21 +143,25 @@ export default class CancelProdectsModal extends React.Component {
                     <ScrollView style={{ marginTop: 20 }}>
                         {this.renderItems()}
                     </ScrollView>
-                    <TouchableOpacity style={{
-                        height: 45,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: DesignRule.mainColor
-                    }}
-                                      onPress={() => {
-                                          this.clickSure();
-                                      }}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={{
+                            height: 45,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: DesignRule.mainColor
+                        }}
+                        onPress={() => {
+                            this.clickSure();
+                        }}>
                         <UIText value={title + '订单'} style={{ color: 'white', fontSize: 16 }}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ right: 15, width: 50, top: 0, height: 50, position: 'absolute' }}
-                                      onPress={() => {
-                                          this.close();
-                                      }}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={{ right: 15, width: 50, top: 0, height: 50, position: 'absolute' }}
+                        onPress={() => {
+                            this.close();
+                        }}>
                         <UIText value={'x'}
                                 style={{ color: DesignRule.textColor_hint, fontSize: 24, textAlign: 'right' }}/>
                     </TouchableOpacity>

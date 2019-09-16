@@ -177,6 +177,7 @@ export default class BankCardListPage extends BasePage {
                 )}
                 renderHiddenItem={(data, rowMap) => (
                     <TouchableOpacity
+                        activeOpacity={0.7}
                         style={styles.standaloneRowBack}
                         onPress={() => {
                             let rowKey = data.item.key;

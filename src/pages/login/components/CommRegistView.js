@@ -186,7 +186,7 @@ export default class CommRegistView extends Component {
                         placeholderTextColor={DesignRule.textColor_placeholder}
                     />
 
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         dismissKeyboard();
                         this.registModel.isSecuret = !this.registModel.isSecuret;
                     }}>
@@ -197,7 +197,7 @@ export default class CommRegistView extends Component {
                 </View>
                 <TouchableOpacity
                     onPress={this.loginClick}
-                    activeOpacity={this.registModel.isCanClick ? 0.6 : 1}
+                    activeOpacity={this.registModel.isCanClick ? 0.7 : 1}
                 >
                     <View style={
                         [{

@@ -46,7 +46,7 @@ const GoodItems = ({ img, title, money, press }) => {
     </TouchableWithoutFeedback>;
 };
 
-const MoreItem = ({ press }) => <TouchableOpacity style={styles.moreView} onPress={() => {
+const MoreItem = ({ press }) => <TouchableOpacity activeOpacity={0.7} style={styles.moreView} onPress={() => {
     press && press();
 }}>
     <Image source={res.home_right} style={{ width: 18, height: 18 }}/>

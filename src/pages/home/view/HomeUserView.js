@@ -42,7 +42,7 @@ export default class HomeUserView extends Component {
                 <Text style={styles.text} allowFontScaling={false}>品鉴官，</Text>
                 <Text style={styles.title} allowFontScaling={false}>您好</Text>
                 <View style={{ flex: 1 }}/>
-                <TouchableOpacity style={styles.acount} onPress={() => this._goToPromotionPage()}>
+                <TouchableOpacity activeOpacity={0.7} style={styles.acount} onPress={() => this._goToPromotionPage()}>
                     <Text style={styles.see} allowFontScaling={false}>查看账户</Text>
                     <Image source={res.button.arrow_right_black} style={{ width: 6, height: 10 }}/>
                     <View style={{ width: 10 }}/>

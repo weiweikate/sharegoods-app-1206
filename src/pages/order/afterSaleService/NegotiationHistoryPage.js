@@ -12,16 +12,9 @@
 
 'use strict';
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-    Image,
-    TouchableOpacity, Clipboard,
-} from 'react-native';
+import { Clipboard, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../BasePage';
-import {
-    MRText
-} from '../../../components/ui';
+import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import RefreshFlatList from '../../../comm/components/RefreshFlatList';
 import user from '../../../model/user';
@@ -30,14 +23,13 @@ import res from '../res';
 import OrderApi from '../api/orderApi';
 import ImageLoader from '@mr/image-placeholder';
 import bridge from '../../../utils/bridge';
-import { routePush } from '../../../navigation/RouterMap';
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap, { routePush } from '../../../navigation/RouterMap';
 
 const OperatorType = {
     USER: 'USER',//用户
     MERCHANT: 'MERCHANT',//商家
     OPERATOR: 'OPERATOR'//运营人员
-}
+};
 export default class NegotiationHistoryPage extends BasePage {
     constructor(props) {
         super(props);
@@ -54,57 +46,71 @@ export default class NegotiationHistoryPage extends BasePage {
 
     }
 
-    renderItem({item}){
-        let header = () => {}
-        let name = ''
-        if (item.operatorType === OperatorType.USER){
-            name = '自己'
-            header = () => {return  <ImageLoader source={{uri: user.headImg}} style={styles.headerImg} isAvatar={true}/>}
-        }else if (item.operatorType === OperatorType.MERCHANT){
-            name = '商家'
-            header = () => {return  <ImageLoader source={{uri: ''}} style={styles.headerImg} isAvatar={true}/>}
-        }else {
-            name = '秀购平台'
-            header = () => {return  <Image source={res.other.tongyong_logo_nor} style={styles.headerImg} />}
+    renderItem({ item }) {
+        let header = () => {
+        };
+        let name = '';
+        if (item.operatorType === OperatorType.USER) {
+            name = '自己';
+            header = () => {
+                return <ImageLoader source={{ uri: user.headImg }} style={styles.headerImg} isAvatar={true}/>;
+            };
+        } else if (item.operatorType === OperatorType.MERCHANT) {
+            name = '商家';
+            header = () => {
+                return <ImageLoader source={{ uri: '' }} style={styles.headerImg} isAvatar={true}/>;
+            };
+        } else {
+            name = '秀购平台';
+            header = () => {
+                return <Image source={res.other.tongyong_logo_nor} style={styles.headerImg}/>;
+            };
         }
 
-        return(
-            <View style={{paddingBottom: 10, backgroundColor: 'white'}}>
-                <View style={{height: 10, backgroundColor: DesignRule.bgColor}}/>
+        return (
+            <View style={{ paddingBottom: 10, backgroundColor: 'white' }}>
+                <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
                 <View style={styles.headerContainer}>
                     {header()}
                     <MRText style={styles.name}>{name}</MRText>
-                    <MRText style={styles.time}>{ DateUtils.formatDate(item.createTime)}</MRText>
+                    <MRText style={styles.time}>{DateUtils.formatDate(item.createTime)}</MRText>
                 </View>
                 <MRText style={styles.title}>{item.operation}</MRText>
                 {this.renderDetail(item)}
             </View>
-        )
+        );
     }
 
-    renderDetail(item){
-        if (item.operation === '提交售后申请' || item.operation === '修改售后申请'){
+    renderDetail(item) {
+        if (item.operation === '提交售后申请' || item.operation === '修改售后申请') {
             let content = item.content || '{}';
-            let {applyQuantity, imgList, description, reason, applyRefundAmount, createTime, merchantOrderNo, serviceNo, type} = JSON.parse(content) || {};
-            return(
+            let { applyQuantity, imgList, description, reason, applyRefundAmount, createTime, merchantOrderNo, serviceNo, type } = JSON.parse(content) || {};
+            return (
                 <View>
                     <MRText style={styles.detail}>{'申请售后理由：' + reason}</MRText>
                     <MRText style={styles.detail}>{'申请数量：' + applyQuantity}</MRText>
-                    {type != 3 ?  <MRText style={styles.detail}>{'退款金额：¥' + applyRefundAmount}</MRText> : null}
+                    {type != 3 ? <MRText style={styles.detail}>{'退款金额：¥' + applyRefundAmount}</MRText> : null}
                     <MRText style={styles.detail}>{'问题描述：' + (description || '/')}</MRText>
                     <MRText style={styles.detail}>{'申请时间：' + DateUtils.formatDate(createTime || '')}</MRText>
-                    <View style={{flexDirection: 'row'}}>
+                    <View style={{ flexDirection: 'row' }}>
                         <MRText style={styles.detail}>{'订单号：' + merchantOrderNo}</MRText>
-                        <TouchableOpacity style={styles.copyBtn}
-                                          onPress={()=>{this.copyText(merchantOrderNo)}}
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            style={styles.copyBtn}
+                            onPress={() => {
+                                this.copyText(merchantOrderNo);
+                            }}
                         >
                             <MRText style={styles.copyBtnText}>复制</MRText>
                         </TouchableOpacity>
                     </View>
-                    <View style={{flexDirection: 'row'}}>
+                    <View style={{ flexDirection: 'row' }}>
                         <MRText style={styles.detail}>{'申请单号：' + serviceNo}</MRText>
-                        <TouchableOpacity style={styles.copyBtn}
-                                          onPress={()=>{this.copyText(serviceNo)}}>
+                        <TouchableOpacity
+                            activeOpacity={0.7} style={styles.copyBtn}
+                            onPress={() => {
+                                this.copyText(serviceNo);
+                            }}>
                             <MRText style={styles.copyBtnText}>复制</MRText>
                         </TouchableOpacity>
                     </View>
@@ -118,27 +124,26 @@ export default class NegotiationHistoryPage extends BasePage {
                         {this.renderCertificateImage(imgList)}
                     </View>
                 </View>
-            )
+            );
 
-        }else {
+        } else {
             let content = item.content || '';
-            content = content.replace(/;/g, '；')
-            content = content.replace(/:/g, '：')
-            return  <MRText style={styles.detail}>{content}</MRText>
+            content = content.replace(/;/g, '；');
+            content = content.replace(/:/g, '：');
+            return <MRText style={styles.detail}>{content}</MRText>;
         }
     }
 
-    copyText(str){
-        if (str){
+    copyText(str) {
+        if (str) {
             Clipboard.setString(str);
-            bridge.$toast('复制成功')
+            bridge.$toast('复制成功');
         }
     }
 
-    imgClick(imageUrls, index){
-        routePush(RouterMap.CheckBigImagesView,{imageUrls, index})
+    imgClick(imageUrls, index) {
+        routePush(RouterMap.CheckBigImagesView, { imageUrls, index });
     }
-
 
 
     /** 图片*/
@@ -147,16 +152,18 @@ export default class NegotiationHistoryPage extends BasePage {
         imgList = imgList || '';
         imgList = imgList.split(',');
         for (let i = 0; i < imgList.length; i++) {
-            if (imgList[i].length > 0){
+            if (imgList[i].length > 0) {
                 arr.push(
-                    <TouchableOpacity onPress={()=> {this.imgClick(imgList,i)}}>
-                    <ImageLoader source={{ uri: imgList[i] }}
-                                 style={{
-                                     height: 50,
-                                     width: 50,
-                                     marginLeft: i ? 10 : 15,
-                                     marginTop: 5
-                                 }}/>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                        this.imgClick(imgList, i);
+                    }}>
+                        <ImageLoader source={{ uri: imgList[i] }}
+                                     style={{
+                                         height: 50,
+                                         width: 50,
+                                         marginLeft: i ? 10 : 15,
+                                         marginTop: 5
+                                     }}/>
                     </TouchableOpacity>
                 );
             }
@@ -165,14 +172,15 @@ export default class NegotiationHistoryPage extends BasePage {
     };
 
 
-
     _render() {
         return (
             <RefreshFlatList
                 url={OrderApi.consultation}
-                params={{serviceNo: this.params.serviceNo}}
+                params={{ serviceNo: this.params.serviceNo }}
                 isSupportLoadingMore={false}
-                handleRequestResult={(result) => {return result.data}}
+                handleRequestResult={(result) => {
+                    return result.data;
+                }}
                 renderItem={this.renderItem.bind(this)}
             />
         );
@@ -185,7 +193,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderBottomColor: DesignRule.lineColor_inWhiteBg,
-        borderBottomWidth: DesignRule.lineHeight,
+        borderBottomWidth: DesignRule.lineHeight
     },
     headerImg: {
         height: 30,
@@ -221,10 +229,10 @@ const styles = StyleSheet.create({
     copyBtn: {
         marginTop: 5,
         justifyContent: 'center',
-        width: 40,
+        width: 40
     },
     copyBtnText: {
         fontSize: 11,
-        color: DesignRule.mainColor,
+        color: DesignRule.mainColor
     }
 });

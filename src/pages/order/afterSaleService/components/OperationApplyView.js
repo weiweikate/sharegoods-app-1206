@@ -12,15 +12,9 @@
 
 import React from 'react';
 
-import {
-    StyleSheet,
-    View,
-    TouchableOpacity
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import {
-    UIText
-} from '../../../../components/ui';
+import { UIText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
 
 export default class OperationApplyView extends React.Component {
@@ -32,7 +26,7 @@ export default class OperationApplyView extends React.Component {
     }
 
     render() {
-        let {cancelPress} = this.props;
+        let { cancelPress } = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.title}>
@@ -48,8 +42,10 @@ export default class OperationApplyView extends React.Component {
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                    <TouchableOpacity onPress={cancelPress}
-                                      style={styles.borderButton}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={cancelPress}
+                        style={styles.borderButton}>
                         <UIText value={'撤销申请'}
                                 style={{
                                     fontSize: 12,
@@ -65,7 +61,7 @@ export default class OperationApplyView extends React.Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        height: 95,
+        height: 95
     },
     title: {
         height: 50,

@@ -96,13 +96,13 @@ export default class PaymentResultPage extends BasePage {
                         <Text style={styles.title}>支付成功</Text>
                         <View style={{ marginTop: autoSizeWidth(50), flexDirection: 'row' }}>
                             <View style={{ flex: 1 }}/>
-                            <TouchableOpacity style={styles.gary_border} onPress={() => {
+                            <TouchableOpacity activeOpacity={0.7} style={styles.gary_border} onPress={() => {
                                 this.$navigateBackToHome();
                             }}>
                                 <Text style={styles.gary_btn_text}>返回首页</Text>
                             </TouchableOpacity>
                             <View style={{ width: 20 }}/>
-                            <TouchableOpacity style={styles.red_border} onPress={() => {
+                            <TouchableOpacity activeOpacity={0.7} style={styles.red_border} onPress={() => {
                                 this.goToOrder();
                             }}>
                                 <Text style={styles.red_btn_text}>查看订单</Text>
@@ -121,7 +121,7 @@ export default class PaymentResultPage extends BasePage {
                         <Text
                             style={[styles.detail_66, { marginTop: autoSizeWidth(10) }]}>{`原因: ${this.state.payMsg}`}</Text>
                         <View style={{ marginTop: autoSizeWidth(50), flexDirection: 'row' }}>
-                            <TouchableOpacity style={styles.red_border} onPress={() => {
+                            <TouchableOpacity activeOpacity={0.7} style={styles.red_border} onPress={() => {
                                 this.payAgain();
                             }}>
                                 <Text style={styles.red_btn_text}>重新支付</Text>
@@ -138,13 +138,13 @@ export default class PaymentResultPage extends BasePage {
                         <Text style={styles.detail_33}>订单支付超时，下单金额已原路返回</Text>
                         <View style={{ marginTop: autoSizeWidth(50), flexDirection: 'row' }}>
                             <View style={{ flex: 1 }}/>
-                            <TouchableOpacity style={styles.gary_border} onPress={() => {
+                            <TouchableOpacity activeOpacity={0.7} style={styles.gary_border} onPress={() => {
                                 this.$navigateBackToHome();
                             }}>
                                 <Text style={styles.gary_btn_text}>返回首页</Text>
                             </TouchableOpacity>
                             <View style={{ width: 20 }}/>
-                            <TouchableOpacity style={styles.red_border} onPress={() => {
+                            <TouchableOpacity activeOpacity={0.7} style={styles.red_border} onPress={() => {
                                 this.goToOrder();
                             }}>
                                 <Text style={styles.red_btn_text}>查看订单</Text>

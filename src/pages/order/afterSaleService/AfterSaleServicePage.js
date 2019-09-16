@@ -227,7 +227,7 @@ class AfterSaleServicePage extends BasePage {
                 {/*style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>*/}
                 {/*</View>*/}
                 {/*{this.renderWideLine()}*/}
-                <TouchableOpacity style={{
+                <TouchableOpacity activeOpacity={0.7} style={{
                     height: 48,
                     backgroundColor: 'white',
                     justifyContent: 'space-between',
@@ -321,6 +321,7 @@ class AfterSaleServicePage extends BasePage {
     renderCommit = () => {
         return (
             <TouchableOpacity
+                activeOpacity={0.7}
                 style={{
                     backgroundColor: DesignRule.mainColor,
                     justifyContent: 'center',

@@ -94,7 +94,7 @@ export default class RequestDetailPage extends BasePage {
                     height: ScreenUtils.px2dp(44),
                     alignItems: 'center',
                     justifyContent: 'center'
-                }}>
+                }} activeOpacity={0.7}>
                     <Image source={moreIcon} style={{ width: 22 }}
                            resizeMode={'contain'}/>
                 </TouchableOpacity>

@@ -82,7 +82,7 @@ export default class XiuDouResultModal extends React.Component {
                             </MRText>
                         </ScrollView>
                     </View>
-                    <TouchableOpacity style={{position: 'absolute',
+                    <TouchableOpacity activeOpacity={0.7} style={{position: 'absolute',
                         top: 0,
                         right: 0,
                         width: ScreenUtils.autoSizeWidth(40),

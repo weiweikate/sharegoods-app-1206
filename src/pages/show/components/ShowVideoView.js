@@ -104,7 +104,7 @@ export default class VideoView extends Component {
                        resizeMode={'cover'}/>
                 <TouchableOpacity style={{
                     position: 'absolute', top: '50%', left: '50%', marginTop: -25, marginLeft: -25
-                }} activeOpacity={0.3} onPress={() => {
+                }} activeOpacity={0.7} onPress={() => {
                     this.onControlPlayPress();
                 }}>
                     <Image style={{ width: 50, height: 50 }} source={icon_video_play}/>
@@ -153,7 +153,7 @@ export default class VideoView extends Component {
                         justifyContent: 'center'
                     }}>
                     {
-                        <TouchableOpacity activeOpacity={0.3} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             this.onControlPlayPress();
                         }}>
                             {
@@ -183,7 +183,7 @@ export default class VideoView extends Component {
                             }}
                         />
                         <Text style={styles.time}>{formatTime(this.state.duration)}</Text>
-                        <TouchableOpacity activeOpacity={0.3} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             this.onControlShrinkPress();
                         }}>
                             <View

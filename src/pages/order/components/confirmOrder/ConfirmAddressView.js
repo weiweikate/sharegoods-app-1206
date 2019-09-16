@@ -52,6 +52,7 @@ export default class ConfirmAddressView extends Component {
         address = address || '';
         return (StringUtils.isNoEmpty(id) ?
                 <TouchableOpacity
+                    activeOpacity={0.7}
                     style={styles.addressSelectStyle}
                     onPress={this.props.selectAddress}>
                     <UIImage source={position} style={{
@@ -84,6 +85,7 @@ export default class ConfirmAddressView extends Component {
                     <Image source={arrow_right} style={styles.arrowRightStyle} resizeMode={'contain'}/>
                 </TouchableOpacity> :
                 <TouchableOpacity
+                    activeOpacity={0.7}
                     style={{
                         height: ScreenUtils.autoSizeWidth(87),
                         backgroundColor: 'white',

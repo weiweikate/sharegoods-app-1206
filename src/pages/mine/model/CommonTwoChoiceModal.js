@@ -71,7 +71,7 @@ export default class CommonTwoChoiceModal extends Component {
                 marginLeft: 25,
                 marginRight: 25
             }}>
-                <TouchableOpacity style={{
+                <TouchableOpacity activeOpacity={0.7} style={{
                     width: 110,
                     height: 35,
                     backgroundColor: DesignRule.mainColor,
@@ -80,7 +80,7 @@ export default class CommonTwoChoiceModal extends Component {
                 }} onPress={() => this.props.yes()}>
                     <Text style={{ color: 'white', textAlign: 'center' }}>{this.props.detail.yes}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{
+                <TouchableOpacity activeOpacity={0.7} style={{
                     width: 110,
                     height: 35,
                     backgroundColor: DesignRule.lineColor_inColorBg,
@@ -100,7 +100,7 @@ export default class CommonTwoChoiceModal extends Component {
                 marginLeft: 25,
                 marginRight: 25
             }}>
-                <TouchableOpacity style={{
+                <TouchableOpacity activeOpacity={0.7} style={{
                     width: 110,
                     height: 35,
                     backgroundColor: DesignRule.lineColor_inColorBg,
@@ -112,7 +112,7 @@ export default class CommonTwoChoiceModal extends Component {
                         textAlign: 'center'
                     }}>{this.props.detail.no}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{
+                <TouchableOpacity activeOpacity={0.7} style={{
                     width: 110,
                     height: 35,
                     backgroundColor: DesignRule.mainColor,

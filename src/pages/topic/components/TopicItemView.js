@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ImageLoad from '@mr/image-placeholder';
 import PropTypes from 'prop-types';
@@ -23,7 +19,8 @@ export default class TopicItemView extends Component {
         const mainWidth = ScreenUtils.width - 20;
         const contentWidth = (mainWidth - (16 * (numOfColum - 1))) / numOfColum;
         return (
-            <TouchableOpacity onPress={() => {
+            <TouchableOpacity
+                activeOpacity={0.7} onPress={() => {
                 this.props.itemClickAction && this.props.itemClickAction();
             }}>
                 <View style={

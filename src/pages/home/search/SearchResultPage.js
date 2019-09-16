@@ -493,11 +493,11 @@ export default class SearchResultPage extends BasePage {
                 {this._renderContainer()}
 
                 <View style={{ position: 'absolute', right: 15, bottom: 15 }}>
-                    <TouchableOpacity onPress={this._onPressToGwc}>
+                    <TouchableOpacity onPress={this._onPressToGwc} activeOpacity={0.7}>
                         <Image source={toGwc} style={{ width: 40, height: 40 }}/>
                         <ShopCartRedNumView/>
                     </TouchableOpacity>
-                    {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop.bind(this)}>
+                    {this.state.showTop ? <TouchableOpacity activeOpacity={0.7} onPress={this._onPressToTop.bind(this)}>
                         <Image style={{ marginTop: 5, width: 40, height: 40 }} source={toTop}/>
                     </TouchableOpacity> : null}
 

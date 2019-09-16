@@ -74,10 +74,11 @@ export default class MyShopPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity style={{ width: 40, justifyContent: 'center' }}
-                                          onPress={() => {
-                                              this.$navigateBack();
-                                          }}>
+                        <TouchableOpacity
+                            activeOpacity={0.7} style={{ width: 40, justifyContent: 'center' }}
+                            onPress={() => {
+                                this.$navigateBack();
+                            }}>
                             <Image source={NavLeft} style={{ width: 30, height: 30 }}/>
                         </TouchableOpacity> : null}
                 </View>
@@ -94,12 +95,16 @@ export default class MyShopPage extends BasePage {
         if (userStatus === 1) {
             return (
                 <View style={styles.rightBarItemContainer}>
-                    <TouchableOpacity onPress={() => {
-                        this.$navigate(RouterMap.RecommendPage);
-                    }}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => {
+                            this.$navigate(RouterMap.RecommendPage);
+                        }}>
                         <Image style={{ marginRight: 10, width: 18, height: 18 }} source={icons8_Shop_50px}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this._clickSettingItem}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={this._clickSettingItem}>
                         <Image source={myStore ? shezhi : my_Shop_gengduo} style={{ width: 18, height: 18 }}/>
                     </TouchableOpacity>
                 </View>
@@ -391,17 +396,19 @@ export default class MyShopPage extends BasePage {
             btnText = '店铺已关闭';
         }
 
-        return <TouchableOpacity onPress={this._joinBtnAction}
-                                 disabled={!canJoin}
-                                 style={{
-                                     height: 40,
-                                     width: 150,
-                                     backgroundColor: canJoin ? DesignRule.mainColor : 'rgb(221,109,140)',
-                                     borderRadius: 20,
-                                     marginTop: 30,
-                                     marginBottom: 30,
-                                     alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
-                                 }}>
+        return <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={this._joinBtnAction}
+            disabled={!canJoin}
+            style={{
+                height: 40,
+                width: 150,
+                backgroundColor: canJoin ? DesignRule.mainColor : 'rgb(221,109,140)',
+                borderRadius: 20,
+                marginTop: 30,
+                marginBottom: 30,
+                alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
+            }}>
             <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>{btnText}</Text>
         </TouchableOpacity>;
     };

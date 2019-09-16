@@ -26,7 +26,7 @@ export default class CouponNormalItem extends Component {
         let stateImg = item.status === 1 ? res.couponsImg.youhuiquan_icon_yishiyong :
             (item.status === 2 ? res.couponsImg.youhuiquan_icon_yishixiao : item.status === 3 ? (res.couponsImg.youhuiquan_icon_daijihuo) : null);
         return(
-            <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 }}
+            <TouchableOpacity activeOpacity={0.7} style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 }}
                               onPress={() => {console.log('item',item);this.props.ticketClickItem && this.props.ticketClickItem()}}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),

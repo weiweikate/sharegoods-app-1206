@@ -72,7 +72,7 @@ class AfterSaleServiceHomePage extends BasePage {
         for (let i = 0; i < image.length; i++) {
             if (((restrictions & status[i]) === status[i]) || !restrictions) {
             arr.push(
-                <TouchableOpacity style={{
+                <TouchableOpacity activeOpacity={0.7} style={{
                     flexDirection: 'row',
                     height: 79,
                     alignItems: 'center',

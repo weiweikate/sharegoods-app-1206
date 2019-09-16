@@ -1,30 +1,26 @@
 import React from 'react';
 import {
-    ScrollView,
-    Image,
-    TouchableOpacity,
-    View,
-    StyleSheet,
-    NativeModules,
     Alert,
-    TouchableWithoutFeedback
+    Image,
+    NativeModules,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import LinearGradient from 'react-native-linear-gradient';
-
-const { px2dp } = ScreenUtils;
 import { ShowDetail } from './Show';
 import { observer } from 'mobx-react';
 import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 import BasePage from '../../BasePage';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
-import {
-    MRText as Text
-} from '../../components/ui';
+import { MRText as Text } from '../../components/ui';
 import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
@@ -38,14 +34,16 @@ import NoMoreClick from '../../components/ui/NoMoreClick';
 import AddCartModel from './model/AddCartModel';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
-import RouterMap, { routePop, routeNavigate,routePush } from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePop, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 import ShowVideoView from './components/ShowVideoView';
 import WhiteModel from './model/WhiteModel';
 import CommShowShareModal from '../../comm/components/CommShowShareModal';
 import ShareUtil from '../../utils/ShareUtil';
 
-const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare, dynamicEmpty,collected,uncollected } = res;
+const { px2dp } = ScreenUtils;
+
+const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare, dynamicEmpty, collected, uncollected } = res;
 @observer
 export default class ShowDetailPage extends BasePage {
 
@@ -269,35 +267,35 @@ export default class ShowDetailPage extends BasePage {
     _renderNormalTitle() {
         let { detail } = this.showDetailModule;
         if (!detail) {
-            detail = { imgs: '', products: [], click: 0, content: '' ,userInfoVO:{}};
+            detail = { imgs: '', products: [], click: 0, content: '', userInfoVO: {} };
         }
 
         let userImage = (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : '';
         let userName = (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '';
 
         let attentionText = '';
-        if(detail.attentionStatus === 0){
+        if (detail.attentionStatus === 0) {
             attentionText = '关注';
-        }else if(detail.attentionStatus === 1){
+        } else if (detail.attentionStatus === 1) {
             attentionText = '已关注';
-        }else if(detail.attentionStatus === 2){
+        } else if (detail.attentionStatus === 2) {
             attentionText = '相互关注';
         }
 
         return (
 
             <View style={styles.navTitle}>
-                <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
-                    <Image source={res.button.back_black} style={{width: 30, height: 30}}/>
+                <TouchableOpacity activeOpacity={0.7} style={styles.backView} onPress={() => this._goBack()}>
+                    <Image source={res.button.back_black} style={{ width: 30, height: 30 }}/>
                 </TouchableOpacity>
                 <View style={styles.profileRow}>
                     <View style={styles.profileLeft}>
                         <TouchableWithoutFeedback onPress={() => {
                             let userNo = detail.userInfoVO.userNo;
-                            if(user.code === userNo){
+                            if (user.code === userNo) {
                                 routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
-                            }else {
-                                routePush(RouterMap.MyDynamicPage,{userType:'others',userInfo:detail.userInfoVO});
+                            } else {
+                                routePush(RouterMap.MyDynamicPage, { userType: 'others', userInfo: detail.userInfoVO });
                             }
                         }}>
                             <View>
@@ -313,16 +311,16 @@ export default class ShowDetailPage extends BasePage {
                 </View>
                 {detail.userInfoVO ?
                     <TouchableWithoutFeedback onPress={() => {
-                        if(detail.attentionStatus === 0){
-                            ShowApi.userFollow({ userNo: detail.userInfoVO.userNo }).then(()=>{
+                        if (detail.attentionStatus === 0) {
+                            ShowApi.userFollow({ userNo: detail.userInfoVO.userNo }).then(() => {
                                 this.showDetailModule.setAttentionStatus(1);
-                            }).catch((err)=>{
+                            }).catch((err) => {
                                 this.$toastShow(err.msg);
                             });
-                        }else {
-                            ShowApi.cancelFollow({ userNo: detail.userInfoVO.userNo }).then(()=>{
+                        } else {
+                            ShowApi.cancelFollow({ userNo: detail.userInfoVO.userNo }).then(() => {
                                 this.showDetailModule.setAttentionStatus(0);
-                            }).catch((err)=>{
+                            }).catch((err) => {
                                 this.$toastShow(err.msg);
                             });
                         }
@@ -357,11 +355,11 @@ export default class ShowDetailPage extends BasePage {
 
                     </TouchableWithoutFeedback> : null
                 }
-                {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
-                    this.setState({showText:false},this._goToShare)
+                {detail.status === 1 ? <TouchableOpacity activeOpacity={0.7} style={styles.shareView} onPress={() => {
+                    this.setState({ showText: false }, this._goToShare);
 
                 }}>
-                    <Image style={{width:20,height:20}} source={iconShowShare}/>
+                    <Image style={{ width: 20, height: 20 }} source={iconShowShare}/>
                 </TouchableOpacity> : null}
 
             </View>
@@ -425,7 +423,7 @@ export default class ShowDetailPage extends BasePage {
             return;
         }
         let { detail } = this.showDetailModule;
-        let callback = ()=>{
+        let callback = () => {
             detail.downloadCount += 1;
             this.incrCountByType(4);
             this.showDetailModule.setDetail(detail);
@@ -437,9 +435,9 @@ export default class ShowDetailPage extends BasePage {
                 articleCode: showNo,
                 author: userNo
             });
-            this.setState({showText:true},this._goToShare)
-        }
-        DownloadUtils.downloadShow(detail,callback);
+            this.setState({ showText: true }, this._goToShare);
+        };
+        DownloadUtils.downloadShow(detail, callback);
 
     };
 
@@ -792,7 +790,7 @@ export default class ShowDetailPage extends BasePage {
             {detail ?
                 <CommShowShareModal ref={(ref) => this.shareModal = ref}
                                     shareName={detail && detail.userInfoVO && detail.userInfoVO.userName}
-                                    type={ShareUtil.showSharedetailDataType(detail && detail.showType,this.state.showText)}
+                                    type={ShareUtil.showSharedetailDataType(detail && detail.showType, this.state.showText)}
                                     trackEvent={trackEvent.XiuChangShareClick}
                                     trackParmas={{
                                         articleCode: detail.code,
@@ -817,7 +815,7 @@ export default class ShowDetailPage extends BasePage {
                                     webJson={{
                                         title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                         linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                        thumImage:ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
+                                        thumImage: ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
                                         dec: '好物不独享，内有惊喜福利~'
                                     }}
                 /> : null}
@@ -1004,7 +1002,7 @@ let styles = StyleSheet.create({
         height: px2dp(44),
         alignItems: 'flex-end',
         justifyContent: 'center',
-        marginRight:px2dp(15)
+        marginRight: px2dp(15)
     },
     titleView: {
         flex: 1,
@@ -1095,7 +1093,7 @@ let styles = StyleSheet.create({
     emptyTip: {
         color: DesignRule.textColor_secondTitle,
         fontSize: DesignRule.fontSize_threeTitle
-    },
+    }
 
 });
 

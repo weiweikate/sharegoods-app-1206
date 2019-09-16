@@ -126,7 +126,7 @@ export default class SelectionHeaderView extends Component {
                         }} numberOfLines={1}
                               allowFontScaling={false}>{selectStrListTemp.join(',').replace(/@/g, '')}</Text>
                     </View>
-                    <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
+                    <TouchableOpacity activeOpacity={0.7} style={{ position: 'absolute', top: 16, right: 16 }}
                                       onPress={this.props.closeSelectionPage}>
                         <Image source={icon_close} style={{ width: 22, height: 22 }}/>
                     </TouchableOpacity>

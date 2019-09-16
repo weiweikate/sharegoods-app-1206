@@ -84,7 +84,7 @@ export default class ShopCartCell extends Component {
                             <View style={styles.priceBgView}>
                                 <UIText value={'￥' + itemData.price} style={styles.priceText}/>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <TouchableOpacity style={styles.rectangle} onPress={() => {
+                                    <TouchableOpacity activeOpacity={0.7} style={styles.rectangle} onPress={() => {
                                         this._reduceProductNum(itemData, rowId);
                                     }}>
                                         <Image style={styles.addOrReduceBtnStyle} source={(itemData.sellStock === 0 ||
@@ -140,6 +140,7 @@ export default class ShopCartCell extends Component {
                                         />
                                     </View>
                                     <TouchableOpacity
+                                        activeOpacity={0.7}
                                         style={styles.rectangle}
                                         onPress={() => {
                                             this._addProductNum(itemData, rowId);

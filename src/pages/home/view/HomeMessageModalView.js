@@ -205,7 +205,7 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
                                 </View>
                             </TouchableWithoutFeedback>
                             <View style={{ flex: 1 }}>
-                                <TouchableOpacity onPress={() => {
+                                <TouchableOpacity activeOpacity={0.7} onPress={() => {
                                     this.close();
                                 }} style={{ marginTop: autoSizeWidth(25) }}>
                                     <Image source={closeImg}
