@@ -1,5 +1,7 @@
 package com.meeruu.sharegoods.rn.showground.model;
 
+import android.text.TextUtils;
+
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.config.BaseRequestConfig;
 import com.meeruu.commonlib.server.RequestManager;
@@ -23,12 +25,19 @@ public class OtherModel  implements IShowgroundModel{
     }
 
     @Override
-    public void fetchRecommendList(int page, int size, final BaseCallback callback) {
+    public void fetchRecommendList(int page, int size, BaseCallback callback) {
+
+    }
+
+    @Override
+    public void fetchRecommendList(String cursor, int size, final BaseCallback callback) {
         OthersRequestConfig showgroundRequestConfig = new OthersRequestConfig();
         HashMap params = new HashMap();
         params.put("size", size + "");
-        params.put("page", page + "");
         params.put("userCode",userCode);
+        if(!TextUtils.isEmpty(cursor)){
+            params.put("cursor",cursor);
+        }
         params.putAll(this.rnParams);
         showgroundRequestConfig.setParams(params);
         switch (this.requestType){

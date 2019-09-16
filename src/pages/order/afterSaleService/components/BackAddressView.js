@@ -55,10 +55,10 @@ export default class BackAddressView extends React.Component {
         let detail_num = null;
         let detail_company = '';
         if (manyLogistics){
-            detail_num = '该订单被拆成'+ express.length +'个包裹发出，点击“查看物流信息”查看详情'
+            detail_num = '该订单被拆成' + express.length + '个包裹发出，点击“查看物流信息”查看详情'
         } else {
-                detail_num = '物流单号：'+expressNo
-                detail_company = '物流公司：'+expressName
+                detail_num = '物流单号：' + expressNo
+                detail_company = '物流公司：' + expressName
         }
         return (
             <View style={styles.container}>
@@ -67,7 +67,7 @@ export default class BackAddressView extends React.Component {
                 </View>
                 <View style={styles.detailContainer}>
                   <UIText value={detail_num} style={styles.detail}/>
-                    {detail_company? <UIText value={detail_company} style={styles.detail}/> : null}
+                    {detail_company ? <UIText value={detail_company} style={styles.detail}/> : null}
                     <View style={{marginTop: 5, flexDirection: 'row'}}>
                         <UIText value={'寄回信息：'} style={styles.title}/>
                         <View style={{flex: 1, marginRight: 15}}>

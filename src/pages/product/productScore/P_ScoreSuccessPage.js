@@ -77,7 +77,7 @@ export default class P_ScoreSuccessPage extends BasePage {
     };
 
     _renderListFooter = () => {
-        return <RecommendProductView/>;
+        return <RecommendProductView recommendScene={3}/>;
     };
 
     _renderItem = ({ item, index }) => {

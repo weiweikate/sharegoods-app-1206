@@ -4,16 +4,12 @@
     android:layout_width="@dimen/ysf_bubble_content_max_width"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:orientation="vertical"
-    android:paddingBottom="12dp"
-    android:paddingTop="12dp">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/ysf_tv_msg_event_base_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
         android:gravity="left"
         android:textColor="@color/ysf_black_333333"
         android:textSize="@dimen/ysf_text_size_16sp"
@@ -31,8 +27,6 @@
         android:id="@+id/ysf_btn_msg_event_base"
         android:layout_width="match_parent"
         android:layout_height="32dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/ysf_holder_event_btn_bg"
         android:gravity="center"

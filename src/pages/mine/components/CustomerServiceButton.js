@@ -46,7 +46,7 @@ export default class CustomerServiceButton extends Component{
                             borderRadius: ScreenUtils.autoSizeWidth(20),
                             overflow: 'hidden',
                             borderWidth:ScreenUtils.autoSizeWidth(0.5),
-                            borderColor:"#CCCCCC",
+                            borderColor:'#CCCCCC',
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -56,7 +56,6 @@ export default class CustomerServiceButton extends Component{
                         <Image source={icon_kefu_2} style={{height: 23, width: 23}} resizeMode={'contain'}/>
 
                         <Text style={{
-                            fontFamily: 'PingFangSC-Regular',
                             fontSize: 13,
                             color: DesignRule.textColor_instruction,
                             marginLeft: 4

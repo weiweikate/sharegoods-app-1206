@@ -72,12 +72,12 @@ export default class StatusInfoView extends React.Component {
                 <UIText value={titleStr}
                         style={styles.title}/>
                 {
-                    detialStr?<UIText value={detialStr}
-                                      style={styles.detail}/>: null
+                    detialStr ? <UIText value={detialStr}
+                                      style={styles.detail}/> : null
                 }
                 {
-                    remarkStr?<UIText value={'平台说明：' + remarkStr}
-                                      style={styles.detail}/>: null
+                    remarkStr ? <UIText value={'平台说明：' + remarkStr}
+                                      style={styles.detail}/> : null
                 }
 
             </View>

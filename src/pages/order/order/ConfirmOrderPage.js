@@ -3,7 +3,8 @@ import {
     StyleSheet,
     View,
     ScrollView,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Image
 } from 'react-native';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -21,6 +22,8 @@ import SelectOneTicketModel from '../components/confirmOrder/SelectOneTicketMode
 import SelectTicketModel from '../components/confirmOrder/SelectTicketModel';
 import { MRText } from '../../../components/ui';
 import RouterMap from '../../../navigation/RouterMap';
+import res from '../res';
+const step_header = res.step_header;
 
 @observer
 export default class ConfirmOrderPage extends BasePage {
@@ -33,11 +36,10 @@ export default class ConfirmOrderPage extends BasePage {
         confirmOrderModel.clearData();
         confirmOrderModel.orderParamVO = this.params.orderParamVO;
         confirmOrderModel.judgeIsAllVirtual(this.params.orderParamVO.orderProducts);
-
     }
 
     $navigationBarOptions = {
-        title: '确认订单',
+        title: '提交订单',
         show: true // false则隐藏导航
     };
     //**********************************ViewPart******************************************
@@ -48,9 +50,11 @@ export default class ConfirmOrderPage extends BasePage {
                     ref={(e) => this.listView = e}
                     style={{ flex: 1 }}
                     showsVerticalScrollIndicator={false}>
+                    {this.renderHeaderImage()}
                     {
-                        !confirmOrderModel.isAllVirtual?  <ConfirmAddressView selectAddress={() => this.selectAddress()}/>:null
+                        !confirmOrderModel.isAllVirtual ?  <ConfirmAddressView selectAddress={() => this.selectAddress()}/> : null
                     }
+                    {this.renderGroupSponsor()}
                     {
                         confirmOrderModel.productOrderList.map((item, index) => {
                             return this._renderItem(item, index)
@@ -80,9 +84,9 @@ export default class ConfirmOrderPage extends BasePage {
                         confirmOrderModel.failProductList.length > 0 ?
                             confirmOrderModel.failProductList.map((item, index) => {
                                return <GoodsItem
-                                   key={'failProductList'+index}
+                                   key={'failProductList' + index}
                                    uri={item.specImg}
-                                   activityCodes={item.failReason?[item.failReason]:[]}
+                                   activityCodes={item.failReason ? [item.failReason] : []}
                                    goodsName={item.productName}
                                    salePrice={item.unitPrice}
                                    category={item.spec}
@@ -120,6 +124,42 @@ export default class ConfirmOrderPage extends BasePage {
             }}
         />);
     };
+
+    /**
+     * 渲染顶部图片
+     */
+    renderHeaderImage(){
+        if (this.params.orderParamVO.bizTag !== 'group') {return null}
+        return(
+            <View style={{backgroundColor: 'white', marginBottom: 1}}>
+                <Image source={step_header}
+                       style={{width: ScreenUtils.autoSizeWidth(280),
+                           marginLeft: ScreenUtils.autoSizeWidth(47.5),
+                           height:  ScreenUtils.autoSizeWidth(83.5),
+                           marginTop: ScreenUtils.autoSizeWidth(10),
+                       }}/>
+                <View style={{flexDirection: 'row', marginTop: 3}}>
+                    <MRText style={styles.text}>选择商品开团/参团</MRText>
+                    <MRText style={[styles.text,{marginLeft: ScreenUtils.autoSizeWidth(10)}]}>邀请好友参团</MRText>
+                    <MRText style={[styles.text,{marginLeft: ScreenUtils.autoSizeWidth(10)}]}>人满成团</MRText>
+                </View>
+            </View>
+        )
+
+    }
+
+    renderGroupSponsor(){
+        if (this.params.orderParamVO.bizTag !== 'group') {return null}
+        let groupData = this.params.orderParamVO.groupData || {}
+        if (!groupData.isSponsor) {
+            return(
+                <View style={{backgroundColor: 'white', marginBottom: 1, justifyContent: 'center', height: ScreenUtils.autoSizeWidth(40), paddingLeft: ScreenUtils.autoSizeWidth(15)}}>
+                    <MRText style={{fontSize: ScreenUtils.autoSizeWidth(13), color: DesignRule.textColor_instruction}}>{'团长:'+ (groupData.sponsor|| '')}</MRText>
+                </View>
+            )
+        }
+        return null
+    }
 
     componentWillUnmount() {
         confirmOrderModel.clearData();
@@ -199,5 +239,12 @@ export default class ConfirmOrderPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: DesignRule.bgColor
+    },
+    text:{
+        width: ScreenUtils.autoSizeWidth(100),
+        marginLeft: ScreenUtils.autoSizeWidth(45-20),
+        fontSize: ScreenUtils.autoSizeWidth(12),
+        color: DesignRule.textColor_instruction,
+        textAlign: 'center'
     }
 });

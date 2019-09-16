@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
     Image,
-    Slider,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -12,10 +11,9 @@ import Video from '@mr/react-native-video';
 // import Orientation from 'react-native-orientation';
 import icon_video_play from './icon_video_play.png';
 import icon_video_pause from './icon_video_pause.png';
-import icon_control_slider from './icon_control_slider.png';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
-
+import Slider from '@react-native-community/slider'
 // import icon_control_full_screen from './icon_control_full_screen.png';
 // import icon_control_shrink_screen from './icon_control_shrink_screen.png';
 
@@ -158,7 +156,6 @@ export default class VideoView extends Component {
                             style={{ flex: 1 }}
                             maximumTrackTintColor={DesignRule.textColor_instruction}
                             minimumTrackTintColor={'#00c06d'}
-                            thumbImage={icon_control_slider}
                             value={this.state.currentTime}
                             minimumValue={0}
                             maximumValue={this.state.duration}

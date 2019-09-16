@@ -48,7 +48,7 @@ export default class WithdrawRecordPage extends BasePage {
         }
 
         let showLine = true;
-        if (index === this.data.length-1) {
+        if (index === this.data.length - 1) {
             showLine = false;
         } else if (this.data[index + 1].app_record_header) {
             showLine = false;

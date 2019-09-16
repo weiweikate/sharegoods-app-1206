@@ -279,19 +279,23 @@ export default class IDVertify2Page extends BasePage {
         };
         this.$loadingShow();
         MineApi.addUserCertification(params).then((response) => {
-            this.$loadingDismiss();
             NativeModules.commModule.toast('实名认证成功');
             MineApi.getUser().then(resp => {
+                this.$loadingDismiss();
                 let data = resp.data;
                 track(trackEvent.ReadCodeentityVerifySuccss, {});
                 user.saveUserInfo(data);
+                this.params.from !== 'salePwd' ? this.$navigateBack():null;
             }).catch(err => {
+                this.$loadingDismiss();
+                this.params.from !== 'salePwd' ? this.$navigateBack():null;
                 if (err.code === 10009) {
                     routeNavigate(RouterMap.LoginPage);
                 }
             });
-            this.$navigateBack();
             if (this.params.from === 'salePwd') {
+                this.$loadingDismiss();
+                this.$navigateBack();
                 this.$navigate(RouterMap.SetOrEditPayPwdPage, {
                     userName: this.state.name,
                     cardNum: this.state.idNumber,

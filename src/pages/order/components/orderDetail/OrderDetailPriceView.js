@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     View,
-} from "react-native";
-import { orderDetailModel } from "../../model/OrderDetailModel";
-import { observer } from "mobx-react";
-import StringUtils from "../../../../utils/StringUtils";
-import UserSingleItem from "../UserSingleItem";
+} from 'react-native';
+import { orderDetailModel } from '../../model/OrderDetailModel';
+import { observer } from 'mobx-react';
+import StringUtils from '../../../../utils/StringUtils';
+import UserSingleItem from '../UserSingleItem';
 import DesignRule from '../../../../constants/DesignRule';
 
 @observer
@@ -48,10 +48,10 @@ export default class OrderDetailPriceView extends Component {
                 }
 
                 {
-                    promotionAmount !== 0?
+                    promotionAmount !== 0 ?
                         <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'组合优惠'}
                                         leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                        rightText={promotionAmount>=0?('-¥'+promotionAmount):('+¥'+ Math.abs(promotionAmount))}
+                                        rightText={promotionAmount >= 0 ? ('-¥' + promotionAmount) : ('+¥' + Math.abs(promotionAmount))}
                                         rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                         isLine={false}/>
                         : null

@@ -65,15 +65,17 @@ const ViewOrderStatus = {
     },
     6:  {
         status: '已付款',
-        menuData:[{ id:1, operation:'取消订单', isRed:false}],
+        menuData:[],
         menu_orderDetail: []
     },
+
 }
 
 // 返回订单详情售后按钮list
 function GetAfterBtns(product) {
     if (product.status === OrderType.WAIT_PAY ||
-        product.status === OrderType.DELETED
+        product.status === OrderType.DELETED  ||
+        product.status === OrderType.PAID
     ) {
         return [];
     }
@@ -119,11 +121,41 @@ function GetAfterBtns(product) {
     }
 }
 
-function GetViewOrderStatus(status, subStatus) {
+function GetViewOrderStatus(status, subStatus, isGroup) {
     if (status){
         let data = {...ViewOrderStatus[status]} || {menuData:[], menu_orderDetail:[]}
         if (status === OrderType.DELIVERED && subStatus === 3){
             data.status = '部分发货'
+        }
+        if (isGroup) {
+            if (status === OrderType.PAID){
+                data.status = '待成团' ;
+                data.menu_orderDetail = [{ id:19, operation:'查看拼团', isRed:false},{ id:20, operation:'邀请好友', isRed:true}];
+                data.menuData = [{ id:19, operation:'查看拼团', isRed:false},{ id:20, operation:'邀请好友', isRed:true}];
+            }
+            if (status === OrderType.WAIT_DELIVER ||
+                status === OrderType.DELIVERED ||
+                status === OrderType.COMPLETED
+            ){
+                data.menu_orderDetail = [...data.menu_orderDetail, { id:19, operation:'查看拼团', isRed:false}];
+                data.menuData = [...data.menuData, { id:19, operation:'查看拼团', isRed:false}];
+            }
+
+            data.menu_orderDetail = data.menu_orderDetail.filter((item) => {
+
+                if ( item.operation === '再次购买') {
+                    return false;
+                }
+                return true;
+            })
+
+            data.menuData = data.menuData.filter((item) => {
+
+                if ( item.operation === '再次购买') {
+                    return false;
+                }
+                return true;
+            })
         }
         return data;
     }
@@ -134,7 +166,8 @@ function GetViewOrderStatus(status, subStatus) {
 function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast) {
     if (status === OrderType.WAIT_PAY ||
         status === OrderType.DELETED ||
-        status === OrderType.CLOSED
+        status === OrderType.CLOSED ||
+        status === OrderType.PAID
     ) {//待付款、无售后
         return false;
     }
@@ -164,14 +197,14 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
             }
 
             if (status === OrderType.WAIT_DELIVER || status === OrderType.PAID)
-                if ((restrictions & 4) !== 4) {
+                {if ((restrictions & 4) !== 4) {
                     if (isShowToast) {
                         bridge.$toast('该商品不能退款');
                     }
                     return;
-                }
+                }}
         }
-        if (status === OrderType.COMPLETED && nowTime && afterSaleEndTime && afterSaleEndTime < nowTime && !(afterStaus<7 && afterStaus>=1)) {
+        if (status === OrderType.COMPLETED && nowTime && afterSaleEndTime && afterSaleEndTime < nowTime && !(afterStaus < 7 && afterStaus >= 1)) {
             if (isShowToast){
                 bridge.$toast('该商品售后已过期');
             }
@@ -190,8 +223,8 @@ function judgeProduceIsContainActivityTypes(product, containActivitys = []) {
         return item.activityType;
     });
     //判断是否有2数组是否有交集
-    for (let i = 0; i< activityTypes.length; i++){
-        for (let j = 0; j < containActivitys.length; j ++){
+    for (let i = 0; i < activityTypes.length; i++){
+        for (let j = 0; j < containActivitys.length; j++){
             if (activityTypes[i] === containActivitys[j]) {
                 return activityList[i];
             }

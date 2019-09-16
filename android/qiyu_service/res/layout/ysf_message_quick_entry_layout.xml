@@ -14,8 +14,8 @@
         <LinearLayout
             android:id="@+id/ysf_message_quick_entry_container"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:gravity="center_vertical"
+            android:layout_height="36dp"
+            android:gravity="bottom"
             android:orientation="horizontal" />
     </HorizontalScrollView>
 </LinearLayout>

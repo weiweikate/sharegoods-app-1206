@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import SelectionHeaderView from './components/SelectionHeaderView';
 import SelectionSectionView from './components/SelectionSectionView';
@@ -11,6 +11,9 @@ import { MRText as Text } from '../../components/ui/index';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
 import { ProductDetailSkuAddressView } from './components/ProductDetailAddressView';
+
+const { height, autoSizeHeight } = ScreenUtils;
+const translateYValue = height - autoSizeHeight(175) + 50;//多来点
 
 @observer
 export default class SelectionPage extends Component {
@@ -31,7 +34,8 @@ export default class SelectionPage extends Component {
             maxStock: 0,//最大库存
             promotionLimit: null,//没值不限购
 
-            amount: 1
+            amount: 1,
+            translateY: new Animated.Value(translateYValue)
         };
     }
 
@@ -43,6 +47,7 @@ export default class SelectionPage extends Component {
             this.state.selectStrList = [];
             this.state.selectSpecList = [];
             this.maxStock = 0;
+            this.state.amount = 1;
 
             let skuListTemp = JSON.parse(JSON.stringify(skuListByArea));
             skuListTemp.forEach((item) => {
@@ -89,7 +94,10 @@ export default class SelectionPage extends Component {
             tittleList: tittleList
         }, () => {
             this._indexCanSelectedItems();
-
+            Animated.timing(
+                this.state.translateY,
+                { toValue: 0, duration: 250, useNativeDriver: true }
+            ).start();
         });
     };
 
@@ -239,8 +247,9 @@ export default class SelectionPage extends Component {
         if (!itemData) {
             return;
         }
+        const { productIsPromotionPrice } = this.state.propData;
         this.setState({ modalVisible: false }, () => {
-            this.state.callBack(this.state.amount, itemData.skuCode, itemData);
+            this.state.callBack(this.state.amount, itemData.skuCode, itemData, productIsPromotionPrice);
         });
     };
 
@@ -261,7 +270,7 @@ export default class SelectionPage extends Component {
         if (!this.state.modalVisible) {
             return null;
         }
-        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku, isGroupIn } = this.state.propData;
+        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku, isOnlyBuyOne, priceDesc } = this.state.propData;
         const { productDetailAddressModel } = this.state.data;
         return (
             <View style={styles.bgView}>
@@ -270,11 +279,12 @@ export default class SelectionPage extends Component {
                 })}>
                     <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
                 </TouchableWithoutFeedback>
-                <View style={{ flex: 1 }}>
+                <Animated.View style={{ flex: 1, transform: [{ translateY: this.state.translateY }] }}>
                     <SelectionHeaderView product={this.state.data}
                                          productIsPromotionPrice={productIsPromotionPrice}
                                          selectStrList={this.state.selectStrList}
                                          selectSpecList={this.state.selectSpecList}
+                                         priceDesc={priceDesc}
                                          closeSelectionPage={() => this.setState({ modalVisible: false }, () => {
                                              this.props.closeCallBack && this.props.closeCallBack();
                                          })}/>
@@ -292,7 +302,7 @@ export default class SelectionPage extends Component {
                                                  maxCount={this.state.maxStock}
                                                  afterAmount={afterAmount}
                                                  promotionLimit={this.state.promotionLimit}
-                                                 isGroupIn={isGroupIn}
+                                                 isOnlyBuyOne={isOnlyBuyOne}
                                                  type={type}/>}
                         </ScrollView>
                         <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
@@ -307,7 +317,7 @@ export default class SelectionPage extends Component {
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
-                </View>
+                </Animated.View>
             </View>
         );
     }

@@ -1,5 +1,7 @@
 package com.meeruu.sharegoods.rn.showground.model;
 
+import android.text.TextUtils;
+
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.config.BaseRequestConfig;
 import com.meeruu.commonlib.server.RequestManager;
@@ -18,11 +20,13 @@ public class DynamicModel implements IShowgroundModel {
     private String requestType = GET;
 
     @Override
-    public void fetchRecommendList(int page, int size, final BaseCallback callback) {
+    public void fetchRecommendList(String cursor, int size, final BaseCallback callback) {
         DynamicModel.ShowgroundRequestConfig showgroundRequestConfig = new DynamicModel.ShowgroundRequestConfig();
         HashMap params = new HashMap();
         params.put("size", size + "");
-        params.put("page", page + "");
+        if(!TextUtils.isEmpty(cursor)){
+            params.put("cursor",cursor);
+        }
         params.putAll(this.rnParams);
         showgroundRequestConfig.setParams(params);
         switch (this.requestType) {
@@ -93,6 +97,11 @@ public class DynamicModel implements IShowgroundModel {
 
     @Override
     public void unCollection(String showNo, BaseCallback callback) {
+
+    }
+
+    @Override
+    public void fetchRecommendList(int page, int size, BaseCallback callback) {
 
     }
 }

@@ -12,6 +12,8 @@ import { MRText as Text, NoMoreClick, UIText } from '../../../../components/ui';
 import { clickOrderAgain, clickOrderConfirmReceipt, clickOrderLogistics } from '../../order/CommonOrderHandle';
 import res from '../../res';
 import { beginChatType, QYChatTool } from '../../../../utils/QYModule/QYChatTool';
+import ShareUtil from '../../../../utils/ShareUtil';
+import apiEnvironment from '../../../../api/ApiEnvironment';
 
 const kefu_icon = res.kefu_icon;
 
@@ -34,27 +36,20 @@ export default class OrderDetailBottomButtonView extends Component {
                 <View style={styles.containerStyle}>
                     {this.renderKeBtn()}
                     <View style={{ flex: 1 }}/>
+
                     <View style={{
-                        height: px2dp(48),
-                        marginRight: 6,
+                        height: px2dp(30),
+                        borderRadius: px2dp(15),
+                        marginRight: px2dp(10),
+                        justifyContent: 'center',
                         alignItems: 'center',
-                        justifyContent: 'center'
                     }}>
-                        <View style={{
-                            height: px2dp(30),
-                            borderRadius: px2dp(15),
-                            marginRight: px2dp(10),
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: px2dp(70)
-                        }}>
-                            <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}
-                                    onPress={
-                                        () => this.props.switchButton(nameArr.filter((item, i) => {
-                                            return i <= (nameArr.length - 1 - 2);
-                                        }))
-                                    }/>
-                        </View>
+                        <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 12 }}
+                                onPress={
+                                    () => this.props.switchButton(nameArr.filter((item, i) => {
+                                        return i <= (nameArr.length - 1 - 2);
+                                    }))
+                                }/>
                     </View>
                     {nameArr.filter((item, i) => {
                         return i > (nameArr.length - 1 - 2);
@@ -66,7 +61,7 @@ export default class OrderDetailBottomButtonView extends Component {
                                                     this.operationMenuClick(item);
                                                 }}>
                                 <Text
-                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}
+                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle, fontSize: px2dp(12)}}
                                     allowFontScaling={false}>{item.operation}</Text>
                             </NoMoreClick>;
                         })}
@@ -168,19 +163,45 @@ export default class OrderDetailBottomButtonView extends Component {
                 }).catch(e => {
                     Toast.$toast(e.msg);
                 });
-
+                break;
+            case 19:
+                if (orderDetailModel.orderExt && orderDetailModel.orderExt.orderGroupExt) {
+                    routePush('HtmlPage', { uri: '/activity/groupBuyDetails/' + orderDetailModel.orderExt.orderGroupExt.id });
+                }
+                break;
+            case 20:
+                // shareType : 0图片分享 1 图文链接分享 2小程序
+                // platformType: 1 朋友圈 0 会话
+                // title:分享标题(当为图文分享时候使用)
+                // dec:内容(当为图文分享时候使用)
+                // linkUrl:(图文分享下的链接)
+                // thumImage:(分享图标小图(http链接)图文分享使用)
+                if (orderDetailModel.orderExt && orderDetailModel.orderExt.orderGroupExt) {
+                    let  orderGroupExt = orderDetailModel.orderExt.orderGroupExt;
+                    if (orderDetailModel.productsList().length === 0){
+                        return;
+                    }
+                    let goodsName = orderDetailModel.productsList()[0].productName;
+                    let activityAmount = orderDetailModel.productsList()[0].unitPrice;
+                    ShareUtil.onShare({shareType: 1,
+                        platformType:0,
+                        title: `[仅剩${orderGroupExt.surplusPerson}个名额] 我${activityAmount || ''}元带走了${goodsName || ''}`,
+                        dec:  `我买了${goodsName || ''}，该商品已拼${orderGroupExt.groupNum -  orderGroupExt.surplusPerson}件了，快来参团吧!`,
+                        linkUrl:  `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${orderGroupExt.id ? orderGroupExt.id : ''}`,
+                        thumImage: 'logo.png' });
+                }
                 break;
         }
     };
 
     deleteOrder() {
-        Alert.alert('', `确定删除此订单吗?`, [
+        Alert.alert('', '确定删除此订单吗?', [
             {
-                text: `取消`, onPress: () => {
+                text: '取消', onPress: () => {
                 }
             },
             {
-                text: `确定`, onPress: () => {
+                text: '确定', onPress: () => {
                     Toast.showLoading();
                     OrderApi.deleteOrder({ merchantOrderNo: orderDetailModel.merchantOrderNo }).then((response) => {
                         Toast.hiddenLoading();
@@ -277,12 +298,12 @@ const styles = StyleSheet.create({
     },
     touchableStyle: {
         borderWidth: 1,
-        height: px2dp(30),
-        borderRadius: px2dp(15),
+        height: px2dp(24),
+        borderRadius: px2dp(12),
         marginRight: px2dp(10),
         justifyContent: 'center',
         alignItems: 'center',
-        width: px2dp(70),
+        paddingHorizontal: px2dp(10),
         borderColor: DesignRule.lineColor_inWhiteBg
     }
 });

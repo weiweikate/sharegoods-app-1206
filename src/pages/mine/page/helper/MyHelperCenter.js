@@ -124,8 +124,7 @@ export default class MyHelperCenter extends BasePage {
                             borderBottomWidth: 0.5,
                             borderColor: '#dedede'
                         }}
-                        >
-                        </View>
+                         />
                         : null
                 }
                 <NoMoreClick style={styles.hotQuestionItemStyle}
@@ -173,7 +172,7 @@ export default class MyHelperCenter extends BasePage {
                                             flex: 1
                                         }}
                         >
-                            <UIText value={'你好,\n我们为你提供更多帮助...'}
+                            <UIText value={'您好,\n我们为你提供更多帮助...'}
                                     numberOfLines={2}
                                     style={{
                                         fontSize: 18,

@@ -26,6 +26,8 @@ const api = {
     //支付成功后的相关接口 参数 popupBoxType: 2
     getUserPopupBoxByType: ['/popup/getPopupBoxByType', { method: 'get' }],
 
+    //是否是拼团订单
+    queryOrderGroupData: ['/orderV2/queryOrderGroupData', { method: 'get' }],
     getUserCouponAmount: ['/user/coupon/getUserCouponAmount', { method: 'get' }],
     //支付成功后判断是否可以分享
     judgeShare: ['/user/share/judgeShare'],
