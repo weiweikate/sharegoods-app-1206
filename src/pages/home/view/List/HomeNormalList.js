@@ -98,7 +98,6 @@ class GoodView extends React.PureComponent {
     }
 }
 
-
 class IconView extends React.PureComponent {
 
     render(){
