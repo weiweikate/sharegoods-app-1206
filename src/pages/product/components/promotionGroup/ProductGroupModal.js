@@ -80,6 +80,7 @@ export class GroupPersonAllList extends Component {
                         </View>
                         <FlatList
                             style={stylesAll.flatList}
+                            nestedScrollEnabled={true}
                             data={groupList || []}
                             keyExtractor={(item) => item.id + ''}
                             renderItem={this._renderItem}
