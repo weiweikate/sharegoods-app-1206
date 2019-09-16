@@ -1,4 +1,4 @@
-import { observable, flow, action } from 'mobx';
+import { action, flow, observable } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -11,7 +11,7 @@ const bannerWidth = ScreenUtils.width;
 const kHomeExpandStore = '@home/kHomeExpandStore';
 
 class HomeExpandBnnerModel {
-    @observable banner = [];
+    @observable expBannerList = [];
     @observable adHeights = new Map();
     @observable bannerHeight = 0;
 
@@ -28,7 +28,7 @@ class HomeExpandBnnerModel {
             h -= px2dp(15);
         }
         this.bannerHeight = h;
-        homeModule.changeHomeList(homeType.expandBanner);
+        homeModule.changeHomeList(homeType.expandBanner, this.expBannerList);
     }
 
     @action loadBannerList = flow(function* (isCache) {
@@ -36,33 +36,40 @@ class HomeExpandBnnerModel {
             if (isCache) {
                 const storeRes = yield store.get(kHomeExpandStore);
                 if (storeRes) {
-                    this.banner = storeRes || [];
-                    this.handleExpnadHeight();
+                    this.handleExpnadHeight(storeRes || []);
                 }
             }
             const bannerRes = yield HomeApi.getHomeData({ type: homeType.expandBanner });
-            this.banner = bannerRes.data || [];
-            this.handleExpnadHeight();
-            store.save(kHomeExpandStore, this.banner);
+            this.handleExpnadHeight(bannerRes.data || []);
+            store.save(kHomeExpandStore, bannerRes.data || []);
         } catch (error) {
             console.log(error);
         }
     });
 
-    handleExpnadHeight = () => {
+    handleExpnadHeight = (bannerList) => {
         this.imgUrls = [];
-        if (this.banner.length > 0) {
-            this.banner.map((val, index) => {
+        if (bannerList.length > 0) {
+            let expBanner = {
+                itemData: bannerList,
+                id: 4,
+                type: homeType.expandBanner
+            };
+            this.expBannerList = [];
+            this.expBannerList.push(expBanner);
+            bannerList.map((val, index) => {
                 let url = val.image;
                 this.imgUrls.push(url);
                 if (!this.adHeights.has(url)) {
-                    getSize(url,(width, height)=> {
+                    getSize(url, (width, height) => {
                         let h = (bannerWidth * height) / width;
                         this.adHeights.set(url, h);
                         this.getBannerHeight();
-                    })
+                    });
                 }
             });
+        } else {
+            this.expBannerList = [];
         }
         this.getBannerHeight();
     };

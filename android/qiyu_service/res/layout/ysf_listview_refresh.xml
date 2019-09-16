@@ -10,11 +10,11 @@
         android:id="@+id/refresh_loading_indicator"
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_height="12dp"
         android:visibility="gone"/>
     <ImageView
         android:id="@+id/ysf_iv_refresh_loading_anim"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="12dp"
         tools:src="@drawable/ysf_photograph_close"/>
 </LinearLayout>

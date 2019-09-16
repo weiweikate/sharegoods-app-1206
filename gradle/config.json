@@ -42,5 +42,9 @@
     "rn-netInfo": {
         "content": "apply from: '../../../../android/rn-netInfo.gradle'",
         "bulid_path": "../node_modules/@react-native-community/netinfo/android/build.gradle"
+    },
+    "rn-slider": {
+        "content": "apply from: '../../../../android/rn-slider.gradle'",
+        "bulid_path": "../node_modules/@react-native-community/slider/android/build.gradle"
     }
 }

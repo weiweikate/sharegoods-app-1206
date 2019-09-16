@@ -22,6 +22,7 @@ class OrderDetailModel {
     @observable isAllVirtual = true;
     @observable isPhoneOrder = false;
     @observable loadingState = PageLoadingState.loading
+    orderExt = {}
 
     productsList() {
         return this.merchantOrder.productOrderList || []
@@ -57,13 +58,17 @@ class OrderDetailModel {
         this.stopTimer();
         //判空
         this.baseInfo = data.baseInfo || {}
+        this.orderExt = data.orderExt || {}
         this.merchantOrder = data.merchantOrder || {}
         this.payInfo = data.payInfo || {}
         this.receiveInfo = data.receiveInfo || {}
+        let orderExt = data.orderExt || {}
+        let orderGroupExt = orderExt.orderGroupExt || {}
         let {cancelTime, nowTime, receiveTime, cancelReason} = this.baseInfo
         orderDetailModel.loadingState=PageLoadingState.success
+        let isGroup = this.merchantOrder.isGroup;
         this.platformOrderNo = this.merchantOrder.platformOrderNo || '';
-        let menu =  [...GetViewOrderStatus(this.merchantOrder.status).menu_orderDetail];
+        let menu =  [...GetViewOrderStatus(this.merchantOrder.status,null,isGroup).menu_orderDetail];
         let hasAfterSaleService = checkOrderAfterSaleService(this.merchantOrder.productOrderList, this.merchantOrder.status, this.baseInfo.nowTime);
         let isAllVirtual = true;
         let isPhoneOrder = true;
@@ -100,6 +105,9 @@ class OrderDetailModel {
                 if (isPhoneOrder){
                     this.buyState = '等待发货';
                     this.moreDetail = '注:充值1个工作日未到账，订单金额会原路退回';
+                }
+                if (isGroup){
+                    this.buyState = '已成团，等待商家发货';
                 }
                 break;
             }
@@ -155,6 +163,23 @@ class OrderDetailModel {
                 }
                 break;
             }
+            case OrderType.PAID:
+            {
+                this.moreDetail = '';
+                this.sellerState = '';
+                this.buyState = '买家已付款';
+                if (isPhoneOrder){
+                    this.buyState = '等待发货';
+                    this.moreDetail = '注:充值1个工作日未到账，订单金额会原路退回';
+                }
+                if (isGroup){
+                    this.buyState = '买家已付款，等待成团';
+                    if (orderGroupExt.endTime - nowTime > 0){
+                        this.startTimer((orderGroupExt.endTime - nowTime)/1000, orderGroupExt);
+                    }
+                }
+                break;
+            }
             default:
                 this.moreDetail = '';
                 this.sellerState = '';
@@ -162,10 +187,14 @@ class OrderDetailModel {
                 break;
         }
         menu = menu.filter((item) => {
+
+            if (!this.merchantOrderNo.existLogistics && item.operation === '查看物流') {
+                return false;
+            }
             if (!isAllVirtual) {
                 return true;
             }
-            if (item.operation === '查看物流' || item.operation === '确认收货') {
+            if (item.operation === '确认收货') {
                 return false;
             }
 
@@ -188,7 +217,7 @@ class OrderDetailModel {
      * return 如果当前时间大于 out_time 返回 null
      */
     @action
-    getRemainingTime(remainingTime) {
+    getRemainingTime(remainingTime, orderGroupExt) {
         if (remainingTime <= 0) {
             return '已超时';
         }
@@ -200,33 +229,37 @@ class OrderDetailModel {
         remainingTime = (remainingTime - H) / 24;
         let d = remainingTime;
 
-        let time =  d + '天' + H + '小时' + m + '分' + s + '秒';
+        let time =  d + '天' + H + '时' + m + '分' + s + '秒';
         if (d === 0){
-            time =  H + '小时' + m + '分' + s + '秒';
+            time =  H + '时' + m + '分' + s + '秒';
             if (H === 0){
                 time = m + '分' + s + '秒';
             }
         }
-        if (this.merchantOrder.status ===  OrderType.WAIT_PAY){
-            return '还剩'+ time + '时间自动关闭订单'
-        }else {
-            return '还剩'+ time + '时间自动确认收货'
+        if (orderGroupExt){
+            return '拼团单需在'+ time +'内邀请'+ orderGroupExt.surplusPerson +'位好友参团'
+        } else {
+            if (this.merchantOrder.status ===  OrderType.WAIT_PAY){
+                return '还剩'+ time + '时间自动关闭订单'
+            }else {
+                return '还剩'+ time + '时间自动确认收货'
+            }
         }
 
     }
 
     @action
-    startTimer(remainingTime) {
+    startTimer(remainingTime, orderGroupExt) {
         remainingTime = parseInt(remainingTime)
         this.stopTimer();
         if (remainingTime === null || remainingTime === undefined) {
             return;
         }
         /** 当前的时间已经超出，不开启定时器*/
-        this.moreDetail = this.getRemainingTime(remainingTime);
+        this.moreDetail = this.getRemainingTime(remainingTime, orderGroupExt);
         this.timer = setInterval(() => {
             remainingTime--;
-            this.moreDetail = this.getRemainingTime(remainingTime);
+            this.moreDetail = this.getRemainingTime(remainingTime, orderGroupExt);
             if (this.moreDetail === '已超时') {
                 this.stopTimer();
                 this.loadDetailInfo(this.merchantOrderNo);

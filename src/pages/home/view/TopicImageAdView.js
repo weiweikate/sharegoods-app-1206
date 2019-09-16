@@ -49,16 +49,17 @@ export class TopicImageAdView extends React.Component {
                         <ImageLoader style={{ height, width: ScreenUtils.width, flexDirection: 'row' }}
                                      source={{ uri: data.imgs[0].src }}
                         >{
-                            links.map((item) => {
+                            links.map((item,index) => {
                                 return (
-                                    <TouchableOpacity onPress={() => {
+                                    <TouchableOpacity
+                                        key={data.imgs[0].src + '_' + index}
+                                        onPress={() => {
                                             topicAdOnPress(data,item, this.props.p);
 
 
                                     }}
                                                       style={{ flex: 1 }}
-                                    >
-                                    </TouchableOpacity>
+                                     />
                                 );
                             })
                         }
@@ -70,11 +71,11 @@ export class TopicImageAdView extends React.Component {
                     return value.src || '';
                 });
                 return (
-                    <View style={{ height: height - ScreenUtils.autoSizeWidth(10), width: ScreenUtils.width, marginTop: ScreenUtils.autoSizeWidth(10) }}>
+                    <View style={{ height: height - ScreenUtils.autoSizeWidth(0), width: ScreenUtils.width, marginTop: ScreenUtils.autoSizeWidth(0) }}>
                         <MRBannerViewComponent
                             itemRadius={5}
                             imgUrlArray={imgs}
-                            bannerHeight={height - ScreenUtils.autoSizeWidth(10)}
+                            bannerHeight={height - ScreenUtils.autoSizeWidth(0)}
                             modeStyle={1}
                             autoLoop={true}
                             onDidSelectItemAtIndex={(i) => {
@@ -99,17 +100,22 @@ export function ImageAdViewGetHeight(data) {
     if (!data || !data.imgs || data.imgs.length === 0) {
         return 0;
     }
+    let {width, height} = data.imgs[0];
+    let viewHeight = 0;
+    if (typeof width === 'number' && typeof height === 'number') {
+        viewHeight = ScreenUtils.width / width * height;
+    }
     switch (data.layout) {
         case '1':
-            return ScreenUtils.autoSizeWidth(160);
+            return viewHeight || ScreenUtils.autoSizeWidth(160);
         case '2':
-            return ScreenUtils.autoSizeWidth(120);
+            return viewHeight || ScreenUtils.autoSizeWidth(120);
         case '3':
-            return ScreenUtils.autoSizeWidth(100);
+            return viewHeight || ScreenUtils.autoSizeWidth(100);
         case '4':
-            return ScreenUtils.autoSizeWidth(100);
+            return viewHeight || ScreenUtils.autoSizeWidth(100);
         case 'carousel':
-            return ScreenUtils.autoSizeWidth(170);
+            return ScreenUtils.autoSizeWidth(160);
     }
     return 0;
 }

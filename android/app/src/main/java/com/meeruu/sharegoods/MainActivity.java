@@ -59,9 +59,10 @@ public class MainActivity extends BaseActivity {
     private boolean needGo = false;
     private boolean isFirst = true;
     private boolean hasGo = false;
-    private String adUrl;
     private CountDownTimer countDownTimer = null;
     private boolean showLoading = true;
+    private String imgUrl;
+    private String adUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,9 +110,9 @@ public class MainActivity extends BaseActivity {
                     JSONArray array = JSON.parseArray(result);
                     if (array != null && array.size() > 0) {
                         JSONObject object = array.getJSONObject(0);
-                        adUrl = object.getString("linkTypeCode");
                         SPCacheUtils.put("adBgImg", object.getString("image"));
                         SPCacheUtils.put("adImg", object.getString("assistantImage"));
+                        SPCacheUtils.put("adUrl", object.getString("linkTypeCode"));
                     } else {
                         SPCacheUtils.put("adBgImg", "");
                         SPCacheUtils.put("adImg", "");
@@ -121,7 +122,6 @@ public class MainActivity extends BaseActivity {
         }
         if (isFirst) {
             isFirst = false;
-            String imgUrl = (String) SPCacheUtils.get("adBgImg", "");
             if (!TextUtils.isEmpty(imgUrl)) {
                 //有广告时延迟时间增加
                 mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
@@ -153,7 +153,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewAndData() {
-        String imgUrl = (String) SPCacheUtils.get("adBgImg", "");
+        imgUrl = (String) SPCacheUtils.get("adBgImg", "");
+        adUrl = (String) SPCacheUtils.get("adUrl", "");
         String url = (String) SPCacheUtils.get("adImg", "");
         if (!TextUtils.isEmpty(imgUrl) && Fresco.hasBeenInitialized()) {
             ((ViewStub) findViewById(R.id.vs_adv)).inflate();

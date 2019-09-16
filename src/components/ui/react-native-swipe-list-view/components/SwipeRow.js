@@ -77,7 +77,7 @@ class SwipeRow extends Component {
             this._translateX.addListener(({ value }) => {
                 if(!this.isForceClosing && (Dimensions.get('window').width + value) < this.props.forceCloseToRightThreshold) {
                     this.isForceClosing = true;
-                    this.forceCloseRow("right");
+                    this.forceCloseRow('right');
                     if(this.props.onForceCloseToRight) {
                         this.props.onForceCloseToRight();
                     }
@@ -89,7 +89,7 @@ class SwipeRow extends Component {
             this._translateX.addListener(({ value }) => {
                 if(!this.isForceClosing && (Dimensions.get('window').width - value) < this.props.forceCloseToLeftThreshold) {
                     this.isForceClosing = true;
-                    this.forceCloseRow("left");
+                    this.forceCloseRow('left');
                     if(this.props.onForceCloseToLeft) {
                         this.props.onForceCloseToLeft();
                     }
@@ -229,24 +229,24 @@ class SwipeRow extends Component {
         if (this._translateX._value >= 0) {
             // trying to swipe right
             if (this.swipeInitialX < this._translateX._value) {
-                if ((this._translateX._value - projectedExtraPixels) > this.props.leftOpenValue * (this.props.swipeToOpenPercent/100)) {
+                if ((this._translateX._value - projectedExtraPixels) > this.props.leftOpenValue * (this.props.swipeToOpenPercent / 100)) {
                     // we're more than halfway
                     toValue = this.props.leftOpenValue;
                 }
             } else {
-                if ((this._translateX._value - projectedExtraPixels) > this.props.leftOpenValue * (1 - (this.props.swipeToClosePercent/100))) {
+                if ((this._translateX._value - projectedExtraPixels) > this.props.leftOpenValue * (1 - (this.props.swipeToClosePercent / 100))) {
                     toValue = this.props.leftOpenValue;
                 }
             }
         } else {
             // trying to swipe left
             if (this.swipeInitialX > this._translateX._value) {
-                if ((this._translateX._value - projectedExtraPixels) < this.props.rightOpenValue * (this.props.swipeToOpenPercent/100)) {
+                if ((this._translateX._value - projectedExtraPixels) < this.props.rightOpenValue * (this.props.swipeToOpenPercent / 100)) {
                     // we're more than halfway
                     toValue = this.props.rightOpenValue;
                 }
             } else {
-                if ((this._translateX._value - projectedExtraPixels) < this.props.rightOpenValue * (1 - (this.props.swipeToClosePercent/100))) {
+                if ((this._translateX._value - projectedExtraPixels) < this.props.rightOpenValue * (1 - (this.props.swipeToClosePercent / 100))) {
                     toValue = this.props.rightOpenValue;
                 }
             }
@@ -268,10 +268,10 @@ class SwipeRow extends Component {
      */
     forceCloseRow(direction) {
         this.manuallySwipeRow(0, () => {
-            if(direction === "right" && this.props.onForceCloseToRightEnd) {
+            if(direction === 'right' && this.props.onForceCloseToRightEnd) {
                 this.props.onForceCloseToRightEnd();
             }
-            else if(direction === "left" && this.props.onForceCloseToLeftEnd) {
+            else if(direction === 'left' && this.props.onForceCloseToLeftEnd) {
                 this.props.onForceCloseToLeftEnd();
             }
         });

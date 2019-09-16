@@ -14,6 +14,18 @@ const api = {
     getProductSkuStockByAreaCode: ['/product/getProductSkuStockByAreaCode', { method: 'get' }],
     // 获取产品规格信息
     getProductSpec: ['/product/getProductSpec', { method: 'get' }],
+    /**拼团**/
+    //是否参与当前商品团
+    promotion_group_checkStartJoinUser: ['/promotion/group/checkStartJoinUser', { method: 'get' }],
+    //正在开团列表
+    promotion_group_togetherJoin: ['/promotion/group/togetherJoin', { method: 'get' }],
+    //团参与的人数
+    promotion_group_joinUser: ['/promotion/group/joinUser', { method: 'get' }],
+    checkGroupCanJoin: ['/promotion/group/checkGroupCanJoin', { method: 'get' }],
+    //大家都在拼
+    promotion_group_itemJoinList: ['/promotion/group/itemJoinList', { method: 'get' }],
+    //拼团玩法描述
+    promotion_group_activityDesc: ['/promotion/group/activityDesc', { method: 'get' }],
     /**评论**/
     //发布评论
     appraise_publish: ['/appraise/publish'],

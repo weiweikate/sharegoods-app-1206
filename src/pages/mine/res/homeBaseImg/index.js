@@ -23,6 +23,7 @@ const index = {
     mine_icon_mentor: require('./mine_icon_mentor.png'),
     mine_icon_fans: require('./mine_icon_fans.png'),
     mine_icon_show: require('./mine_icon_showCollection.png'),
+    mine_icon_group: require('./mine_icon_group.png'),
     bg_fans_item: require('./bg_fans_item.png'),
     mine_icon_message: require('./mine_icon_message.png'),
     mine_showOrder: require('./me_icon_shaidan_nor.png'),

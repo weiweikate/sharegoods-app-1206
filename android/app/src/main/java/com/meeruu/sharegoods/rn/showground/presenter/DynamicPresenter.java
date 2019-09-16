@@ -1,5 +1,7 @@
 package com.meeruu.sharegoods.rn.showground.presenter;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
@@ -25,8 +27,8 @@ public class DynamicPresenter {
         showgroundModel.setParams(map);
     }
 
-    public void getShowList(final int page) {
-        showgroundModel.fetchRecommendList(page, 10, new BaseCallback<String>() {
+    public void getShowList(final String cursor) {
+        showgroundModel.fetchRecommendList(cursor, 10, new BaseCallback<String>() {
             @Override
             public void onErr(String errCode, String msg) {
                 IShowgroundView view = showgroundViewWeakReference.get();
@@ -42,7 +44,7 @@ public class DynamicPresenter {
                 if (showgroundViewWeakReference != null) {
                     IShowgroundView iShowgroundView = showgroundViewWeakReference.get();
                     if (iShowgroundView != null) {
-                        if (page > 1) {
+                        if (!TextUtils.isEmpty(cursor)) {
                             iShowgroundView.viewLoadMore(list);
                             if (list == null) {
                                 iShowgroundView.loadMoreEnd();

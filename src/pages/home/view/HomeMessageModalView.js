@@ -197,7 +197,7 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
                                     <Image style={{
                                         width: autoSizeWidth(310),
                                         height: autoSizeWidth(410),
-                                        backgroundColor: this.state.img.length > 0 ? null: '#F4F4F4'
+                                        backgroundColor: this.state.img.length > 0 ? null : '#F4F4F4'
                                     }}
                                            source={{ uri: this.state.img }}
                                            resizeMode={'contain'}

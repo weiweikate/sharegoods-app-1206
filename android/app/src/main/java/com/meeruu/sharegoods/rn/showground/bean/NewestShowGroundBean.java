@@ -129,6 +129,15 @@ public class NewestShowGroundBean {
         private String coverType;
         private boolean owner;
         private int createSource;
+        private String cursor;
+
+        public String getCursor() {
+            return cursor;
+        }
+
+        public void setCursor(String cursor) {
+            this.cursor = cursor;
+        }
 
         public int getAttentionStatus() {
             return attentionStatus;

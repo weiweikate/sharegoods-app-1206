@@ -98,7 +98,7 @@ class ImgVideoView extends Component {
                              onPress={() => {
                                  deleteVideo(index);
                              }}>
-                    <Image source={p_score_delete}/>
+                    <Image source={p_score_delete} style={{ width: 20, height: 20 }}/>
                 </NoMoreClick>
             </NoMoreClick> : null}
             {
@@ -111,7 +111,7 @@ class ImgVideoView extends Component {
                                      onPress={() => {
                                          deleteImg(index, index1);
                                      }}>
-                            <Image source={p_score_delete}/>
+                            <Image source={p_score_delete} style={{ width: 20, height: 20 }}/>
                         </NoMoreClick>
                     </NoMoreClick>;
                 })

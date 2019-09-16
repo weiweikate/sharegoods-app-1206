@@ -73,7 +73,7 @@ export default class  RefundDetailView extends React.Component {
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: 13
                             }}
-                            rightText={'x' + parseInt(xiuDou||0)}
+                            rightText={'x' + parseInt(xiuDou || 0)}
                             rightTextStyle={{
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: 13,

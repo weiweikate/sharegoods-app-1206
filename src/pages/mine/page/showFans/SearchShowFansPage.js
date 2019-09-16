@@ -110,7 +110,7 @@ export default class SearchShowFansPage extends BasePage<Props> {
                                source={res.showFans.fans_WXChat}/>
                     </TouchableWithoutFeedback> : null) : null}
 
-                    {SettingModel.messageState ? <TouchableWithoutFeedback onPress={() => {
+                    {item.showPhone ? <TouchableWithoutFeedback onPress={() => {
                         item.phone && Linking.openURL(`sms:${item.phone}`);
                     }}>
                         <Image style={[styles.btnIcon, { marginRight: 5 }]} source={res.showFans.messageIcon}/>

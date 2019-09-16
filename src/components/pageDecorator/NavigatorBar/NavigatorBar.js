@@ -189,10 +189,12 @@ export default class NavigatorBar extends Component {
         }
 
         if (this.props.renderRight) {
-            return <View
-                style={styles.right}>
+            return <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles.right}
+                onPress={this._onRightPressed}>
                 {this.props.renderRight()}
-            </View>;
+            </TouchableOpacity>;
         }
 
         const { rightNavImage } = this.props;

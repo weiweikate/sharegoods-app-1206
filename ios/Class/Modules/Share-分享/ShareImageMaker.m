@@ -27,7 +27,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   NSArray * defaultImages = @[];
   __weak ShareImageMaker * weakSelf = self;
 
-  if ([imageType isEqualToString:@"show"]||[imageType isEqualToString:@"webActivity"]) {
+  if ([imageType isEqualToString:@"show"]||[imageType isEqualToString:@"webActivity"]||[imageType isEqualToString:@"group"]) {
     URLs = @[model.imageUrlStr,model.headerImage];
     defaultImages = @[[UIImage imageNamed:@"logo.png"], [UIImage imageNamed:@"default_avatar.png"]];
   }else if ([imageType isEqualToString:@"web"]){
@@ -76,7 +76,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     return YES;
   }
 
-  if ([imageType isEqualToString:@"webActivity"]) {
+  if ([imageType isEqualToString:@"webActivity"]||[imageType isEqualToString:@"group"]) {
     if (model.imageUrlStr == nil) {
       completion(nil, @"图片URL（imageUrlStr）不能为nil");
       return NO;
@@ -164,6 +164,15 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     NSNumber* width = dataDic[@"width"];
     imageWidth = width.floatValue;
 
+  }else if ([imageType isEqualToString:@"group"]){
+    NSDictionary * dataDic = [ShowShareImgMaker getParamsWithGroupImages:images
+                                                              model:model];
+    nodes = dataDic[@"nodes"];
+    NSNumber* height = dataDic[@"height"];
+    imageHeght = height.floatValue;
+    NSNumber* width = dataDic[@"width"];
+    imageWidth = width.floatValue;
+    
   }else{
     imageHeght = 667*i;
     imageWidth =  375*i;

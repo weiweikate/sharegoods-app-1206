@@ -44,14 +44,18 @@ export default class HomeFocusAdView extends Component {
 
 
     _renderAd() {
-        const { ad } = homeFocusAdModel;
-        let len = ad.length > 4 ? 4 : ad.length;
+        const { focusAdList } = homeFocusAdModel;
+        if (focusAdList.length === 0) {
+            return null;
+        }
+        let data = focusAdList[0].itemData;
+        let len = data.length > 4 ? 4 : data.length;
         let items = [];
         for (let i = 0; i < len; i++) {
-            items.push(<TouchableWithoutFeedback key={i} onPress={() => this._adAction(ad[i], i)}>
+            items.push(<TouchableWithoutFeedback key={i} onPress={() => this._adAction(data[i], i)}>
                 <View
-                    style={[styles.ad, { marginTop: homeExpandBnnerModel.banner.length === 0 ? px2dp(5) : ((i === 0 || i === 1) ? px2dp(15) : px2dp(5)) }, this.adRadius[i]]}>
-                    <ImageLoad source={{ uri: ad[i] ? ad[i].image : '' }}
+                    style={[styles.ad, { marginTop: homeExpandBnnerModel.expBannerList.length === 0 ? px2dp(5) : ((i === 0 || i === 1) ? px2dp(15) : px2dp(5)) }, this.adRadius[i]]}>
+                    <ImageLoad source={{ uri: data[i] ? data[i].image : '' }}
                                showPlaceholder={false}
                                type={'mfit'}
                                style={styles.ad}/>

@@ -279,31 +279,6 @@ export default class TaskView extends React.Component {
         this.model = this.props.type === 'home' ? taskModel : mineTaskModel;
     }
 
-    componentDidMount() {
-    }
-
-    renderHeader(type) {
-        if (type !== 'home') {
-            return null;
-        }
-        return (
-            <View style={styles.header}>
-                <View style={styles.redLine}/>
-                <MRText style={{
-                    fontSize: px2dp(16),
-                    color: DesignRule.textColor_secondTitle,
-                    fontWeight: '600',
-                    marginLeft: px2dp(10)
-                }}>{this.model.name}</MRText>
-                <MRText style={{
-                    fontSize: autoSizeWidth(10),
-                    color: '#999999',
-                    marginLeft: 5
-                }}>{this.model.advMsg}</MRText>
-            </View>
-        );
-    }
-
     renderTitle(type) {
         return (
             <View style={[styles.header, { height: autoSizeWidth(40), paddingRight: 15 }]}>
@@ -450,9 +425,7 @@ export default class TaskView extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row'
-            }}
-                              onPress={() => this.model.expandedClick()}
-            >
+            }} onPress={() => this.model.expandedClick()}>
                 <MRText style={{ fontSize: autoSizeWidth(10), color: DesignRule.mainColor }}>{this.model.expanded ?
                     '收起任务列表' : '做任务赚活跃值'}</MRText>
                 <UIImage source={this.model.expanded ? arrow_red_top : arrow_red_bottom}
@@ -473,8 +446,7 @@ export default class TaskView extends React.Component {
                 }}>
                     <ScrollView
                         nestedScrollEnabled={true}
-                        showsVerticalScrollIndicator={false}
-                    >
+                        showsVerticalScrollIndicator={false}>
                         {
                             this.model.tasks.map((item, index) => {
                                 return <TaskItem key={'TaskItem_' + item.no}
@@ -484,7 +456,6 @@ export default class TaskView extends React.Component {
                                 />;
                             })
                         }
-
                     </ScrollView>
                 </View>
             </View>
@@ -531,7 +502,6 @@ export default class TaskView extends React.Component {
                     <TaskModalView type={type}/>
                 </View>
             );
-
         }
         return (
             <View style={[{
@@ -540,24 +510,24 @@ export default class TaskView extends React.Component {
             }, this.props.style]}>
                 <View style={{
                     backgroundColor: 'white', borderRadius: 8,
-                    overflow: 'hidden',
-                    marginTop: 5
+                    overflow: 'hidden'
                 }}>
                     {this.renderTitle(type)}
                     {this.renderProgressView()}
                     {this.renderTaskView()}
                     {this.renderBtn()}
                 </View>
-                <ImageBackground source={current_p}
-                                 style={{
-                                     width: autoSizeWidth(90),
-                                     height: autoSizeWidth(45),
-                                     right: 23,
-                                     top: type === 'home' ? autoSizeWidth(10) : autoSizeWidth(10),
-                                     position: 'absolute',
-                                     alignItems: 'center',
-                                     justifyContent: 'center'
-                                 }}>
+                <ImageBackground
+                    source={current_p}
+                    style={{
+                        width: autoSizeWidth(90),
+                        height: autoSizeWidth(45),
+                        right: 23,
+                        top: type === 'home' ? autoSizeWidth(10) : autoSizeWidth(10),
+                        position: 'absolute',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
                     <MRText style={{
                         color: '#FF0050',
                         fontSize: fontSize,

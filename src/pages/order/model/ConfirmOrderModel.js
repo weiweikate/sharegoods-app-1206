@@ -126,9 +126,14 @@ class ConfirmOrderModel {
             // "skuCode":, //string 平台skuCode
             // "quantity":, //int 购买数量
             // "activityCode":, //string 活动code
-            // "batchNo": //string 活动批次号
-            let { skuCode, quantity, activityCode, batchNo } = item;
-            return { skuCode, quantity, activityCode, batchNo };
+            // "batchNo": //string 活动批次  (拼团业务传递团id)
+            let { skuCode, quantity, activityCode, batchNo, activityTag } = item;
+            if (batchNo){
+                return { skuCode, quantity, activityCode,batchNo, activityTag };
+            }else {
+                return { skuCode, quantity, activityCode, activityTag };
+            }
+
         });
         let { receiver, receiverPhone, province, city, area, street, address } = this.addressData;
         return {
@@ -149,7 +154,8 @@ class ConfirmOrderModel {
             productList: productList,
             invokeInfo: { //接口请求信息
                 source: this.orderParamVO.source,  //int 订单来源: 1.购物车 2.直接下单
-                channel: 2//int 渠道来源: 1.小程序 2.APP 3.H5
+                channel: 2,//int 渠道来源: 1.小程序 2.APP 3.H5
+                bizTag:  this.orderParamVO.bizTag,//"bizTag": //String 订单标记 group-拼团 非拼团不需要传  －－－－－－－－－－－－0917拼团业务新增
             },
             ext: { //扩展信息
                 userMessage: this.message// string 买家留言
@@ -174,6 +180,10 @@ class ConfirmOrderModel {
 
     @action
     makeSureProduct_selectDefaltCoupon(couponsId) {
+        if (this.orderParamVO.bizTag === 'group') {
+            this.makeSureProduct();
+            return;
+        }
             API.listAvailable(this.getCouponParams()).then((data) => {
                 // couponConfigId	Integer	823
                 data = data.data || {};
@@ -205,6 +215,7 @@ class ConfirmOrderModel {
 
     @action makeSureProduct() {
         this.isNoAddress = false;
+        console.log(this.getParams())
         bridge.showLoading();
         OrderApi.makeSureOrder(this.getParams()).then(response => {
             bridge.hiddenLoading();
@@ -274,12 +285,14 @@ class ConfirmOrderModel {
         if (this.payInfo.couponAmount === 0) {
             this.userCouponCode = '';
         }
-        let canUseCou = false;
-        this.productOrderList.forEach(item => {
-            if (item.canCoupon === true) {
-                canUseCou = true;
-            }
-        });
+        let canUseCou = false;//拼团优惠券不可用
+        if (this.orderParamVO.bizTag !== 'group') {
+            this.productOrderList.forEach(item => {
+                if (item.canCoupon === true) {
+                    canUseCou = true;
+                }
+            });
+        }
         this.canUseCou = canUseCou;
         //遍历出失效对应商品信息
         let failProductList = [];

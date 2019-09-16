@@ -41,7 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
-    private int page = 1;
+    private String cursor = null;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RnRecyclerView recyclerView;
     private StaggeredGridLayoutManager layoutManager;
@@ -123,8 +123,7 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                page++;
-                presenter.getShowList(page);
+                presenter.getShowList(cursor);
             }
         }, recyclerView);
         adapter.setLoadMoreView(new CustomLoadMoreView());
@@ -260,8 +259,8 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
             }
         }
         adapter.setEnableLoadMore(false);
-        page = 1;
-        presenter.getShowList(page);
+        cursor = null;
+        presenter.getShowList(cursor);
     }
 
     @Override
@@ -275,7 +274,7 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (TextUtils.equals(code, "9999") && page == 1) {
+                if (TextUtils.equals(code, "9999") && TextUtils.isEmpty(cursor)) {
                     errView.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setVisibility(View.INVISIBLE);
                 } else {
@@ -289,7 +288,9 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
     @Override
     public void viewLoadMore(final List data) {
         showList();
-        if (data != null) {
+        if (data != null && data.size() > 0) {
+            NewestShowGroundBean.DataBean dataBean =(NewestShowGroundBean.DataBean) data.get(data.size()-1);
+            this.cursor = dataBean.getCursor();
             adapter.addData(resolveData(data));
         }
     }
@@ -297,6 +298,10 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
     @Override
     public void refreshShowground(final List data) {
         if (adapter != null) {
+            if(data != null &&  data.size() > 0 ){
+                NewestShowGroundBean.DataBean dataBean =(NewestShowGroundBean.DataBean) data.get(data.size()-1);
+                this.cursor = dataBean.getCursor();
+            }
             adapter.setEnableLoadMore(true);
             adapter.setNewData(resolveData(data));
             swipeRefreshLayout.setRefreshing(false);
@@ -450,4 +455,5 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
             ToastUtils.showToast(err);
         }
     }
+
 }

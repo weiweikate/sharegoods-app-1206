@@ -62,7 +62,8 @@ export default class GoodsListItem extends React.Component {
 
         } = this.props;
         let orderStatus = merchantOrder.status;
-        let nameArr = [...GetViewOrderStatus(orderStatus).menuData];
+        //merchantOrder.isGroup)
+        let nameArr = [...GetViewOrderStatus(orderStatus,null, merchantOrder.isGroup).menuData];
         let hasAfterSaleService = checkOrderAfterSaleService(merchantOrder.productOrderList, orderStatus, baseInfo.nowTime)
         if (orderStatus === 4 && merchantOrder.commentStatus) {
             nameArr.push({
@@ -129,37 +130,38 @@ export default class GoodsListItem extends React.Component {
         }
         return <View style={{
             flexDirection: 'row',
-            height: ScreenUtils.autoSizeWidth(48),
+            height: ScreenUtils.autoSizeWidth(40),
             width: '100%',
             justifyContent: 'flex-end',
             alignItems: 'center'
         }}>
-            <View style={{ flexDirection: 'row' }}>
                 {moreArr.length > 0?
                     <NoMoreClick
                         style={{
-                            height: ScreenUtils.autoSizeWidth(30),
-                            width: ScreenUtils.autoSizeWidth(68),
+                            height: ScreenUtils.autoSizeWidth(40),
+                            width: ScreenUtils.autoSizeWidth(60),
                             justifyContent: 'center',
                             alignItems: 'center',
-                            marginRight: -ScreenUtils.autoSizeWidth(10)
+                            position: 'absolute',
+                            left: 0,
+
                         }}
                         onPress={() => {
                             this.setState({isShow: !this.state.isShow})
                         }}
                     >
-                        <Text style={{color: '#666666', fontSize: 13}}>更多</Text>
+                        <Text style={{color: '#666666', fontSize: 12}}>更多</Text>
                     </NoMoreClick> : null}
                 {nameArr.map((item, i) => {
                         return <NoMoreClick key={i} style={{
                             borderWidth: 1,
                             borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd,
-                            height: ScreenUtils.autoSizeWidth(30),
-                            borderRadius: ScreenUtils.autoSizeWidth(15),
+                            height: ScreenUtils.autoSizeWidth(24),
+                            borderRadius: ScreenUtils.autoSizeWidth(12),
                             marginRight: ScreenUtils.autoSizeWidth(15),
                             justifyContent: 'center',
                             alignItems: 'center',
-                            width: ScreenUtils.autoSizeWidth(80)
+                            paddingHorizontal:  ScreenUtils.autoSizeWidth(10)
                         }} onPress={() => {
                             this.setState({isShow: false})
                             operationMenuClick(item);
@@ -167,13 +169,12 @@ export default class GoodsListItem extends React.Component {
                             <Text
                                 style={{
                                     color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle,
-                                    fontSize: ScreenUtils.autoSizeWidth(13)
+                                    fontSize: ScreenUtils.autoSizeWidth(12)
                                 }}>{item.operation}</Text>
                         </NoMoreClick>;
 
                     }
                 )}
-            </View>
             {
                 this.state.isShow ?
                     <View style={{bottom: ScreenUtils.autoSizeWidth(40), right: ScreenUtils.autoSizeWidth(95*3-10), position: 'absolute',alignItems: 'center'}}>
@@ -246,7 +247,7 @@ export default class GoodsListItem extends React.Component {
                     <UIText value={'订单提交时间：' + DateUtils.getFormatDate(baseInfo.orderTime / 1000)}
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 18 }}/>
                     <UIText
-                        value={ GetViewOrderStatus(merchantOrder.status, merchantOrder.subStatus).status}
+                        value={ GetViewOrderStatus(merchantOrder.status, merchantOrder.subStatus, merchantOrder.isGroup).status}
                         style={{ fontSize: 13, color: DesignRule.mainColor, marginRight: 13 }}/>
                 </View>
             </View>

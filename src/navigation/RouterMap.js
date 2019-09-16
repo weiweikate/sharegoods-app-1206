@@ -12,8 +12,6 @@ let timeStamp = null;
 let errWebtimeStamp = null;
 let perRouteName = null;
 
-console.log(PageKey);
-
 const RouterMap = {
     Tab: 'Tab',
     HtmlPage: 'HtmlPage',
@@ -121,7 +119,7 @@ function backToShow(index = -1) {
 // 跳转到拼店tab
 function navigateBackToStore() {
     GoToTabItem(2);
-};
+}
 
 // 跳转到首页指定的tab
 function GoToTabItem(index) {

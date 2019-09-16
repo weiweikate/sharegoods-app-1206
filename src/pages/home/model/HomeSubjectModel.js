@@ -1,16 +1,16 @@
-import { observable, flow, action } from 'mobx';
+import { action, flow, observable } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import store from '@mr/rn-store';
+import ScreenUtil from '../../../utils/ScreenUtils';
+import { homeModule } from './Modules';
 
 const kHomeHotStore = '@home/kHomeHotStore';
-import ScreenUtil from '../../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtil;
 
 const bannerWidth = ScreenUtil.width - px2dp(50);
 const bannerHeight = bannerWidth * (240 / 650);
-import { homeModule } from './Modules';
 
 //专题
 class SubjectModule {
@@ -23,16 +23,13 @@ class SubjectModule {
             if (isCache) {
                 const storeRes = yield store.get(kHomeHotStore);
                 if (storeRes) {
-                    this.computeHeight(storeRes);
-                    this.subjectList = storeRes || [];
+                    this.computeHeight(storeRes || []);
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.homeHot });
             let list = res.data || [];
             this.computeHeight(list);
-            this.subjectList = list;
-            homeModule.changeHomeList(homeType.homeHot);
-            store.save(kHomeHotStore, res.data);
+            store.save(kHomeHotStore, list);
         } catch (error) {
             console.log(error);
         }
@@ -52,6 +49,11 @@ class SubjectModule {
             });
             this.subjectHeight = height;
         }
+        this.subjectList = data;
+        homeModule.changeHomeList(homeType.homeHot, [{
+            id: 9,
+            type: homeType.homeHot
+        }]);
     };
 }
 
