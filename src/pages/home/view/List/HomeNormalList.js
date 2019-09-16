@@ -47,8 +47,8 @@ class GoodView extends React.PureComponent {
                             onPress={() => {
                                 routePush(RouterMap.ProductDetailPage, { productCode: good.prodCode });
                                 track(trackEvent.CategoryBtnClick, {
-                                    firstCategoryId: this.props.data.firstCategoryId,
-                                    firstCategoryName: this.props.data.navName,
+                                    firstCategoryId: this.props.p.firstCategoryId,
+                                    firstCategoryName: this.props.p.navName,
                                     contentValue: good.name,
                                     contentType: 3,
                                     contentKey: good.prodCode
@@ -116,7 +116,7 @@ class IconView extends React.PureComponent {
                         <TouchableWithoutFeedback onPress={() => {
                             let p = {};
                             if (icon.linkType === 'all') {
-                                routePush(RouterMap.CategorySearchPage, { typeId: this.props.data.firstCategoryId });
+                                routePush(RouterMap.CategorySearchPage, { typeId: this.props.p.firstCategoryId });
                                 p = { contentType: 10, contentKey: '' };
                             }
 
@@ -130,8 +130,8 @@ class IconView extends React.PureComponent {
 
                             }
                             track(trackEvent.CategoryBtnClick, {
-                                firstCategoryId: this.props.data.firstCategoryId,
-                                firstCategoryName: this.props.data.navName,
+                                firstCategoryId: this.props.p.firstCategoryId,
+                                firstCategoryName: this.props.p.navName,
                                 contentValue: icon.iconName,
                                 ...p
                             });
@@ -343,10 +343,11 @@ export default class HomeNormalList extends React.Component {
 
     _renderItem = (type, item, index) => {
         type = type.type;
+        let p = {firstCategoryId: this.props.data.firstCategoryId, navName: this.props.data.navName};
         if (type === 'icon') {
-            return <IconView data={item.data}/>
+            return <IconView data={item.data} p = {p}/>
         } else if (type === 'goods') {
-            return <GoodView data = {item.data}/>
+            return <GoodView data = {item.data} p = {p}/>
         } else if (type === 'header') {
             return <HeaderView
                 onPress={(index) => {
@@ -485,7 +486,7 @@ export default class HomeNormalList extends React.Component {
                     removeClippedSubviews={false}
                     canChangeSize={false}
                     renderFooter={() => <DefaultLoadMoreComponent status={this.state.footerStatus}/>}
-                        />
+                />
             </View>
         );
     }
