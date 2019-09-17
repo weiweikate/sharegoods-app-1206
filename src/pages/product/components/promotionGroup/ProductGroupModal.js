@@ -48,9 +48,9 @@ export class GroupPersonAllList extends Component {
         });
     };
 
-    _renderItem = ({item}) => {
+    _renderItem = ({item},index) => {
         const {goToBuy, showGroupJoinView, requestGroupList} = this.props;
-        return <GroupPersonItem style={stylesAll.itemView} itemData={item} goToBuy={goToBuy}
+        return <GroupPersonItem key={`GroupPersonItem${index}`} style={stylesAll.itemView} itemData={item} goToBuy={goToBuy}
                                 requestGroupList={requestGroupList}
                                 close={this._close}
                                 showGroupJoinView={showGroupJoinView}/>;
@@ -77,8 +77,8 @@ export class GroupPersonAllList extends Component {
                                 style={stylesAll.topRText}>{groupList.length === 10 ? '仅显示10个正在拼团的人' : ''}</MRText>
                         </View>
                         <ScrollView showsVerticalScrollIndicator={false}>
-                            {(groupList || []).map((item)=>{
-                                return this._renderItem({item});
+                            {(groupList || []).map((item,index)=>{
+                                return this._renderItem({item},index);
                             })}
                         </ScrollView>
                     </View>
