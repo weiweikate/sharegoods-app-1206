@@ -132,7 +132,7 @@ export default class SpellGroupView extends PureComponent {
                        style={{marginTop: 85, width: DesignRule.autoSizeWidth(275), height: DesignRule.autoSizeWidth(150)}}
                        resizeMode={'contain'}/>
                 <Text style={{marginTop:6,marginBottom: 20,fontSize:13,color:'#999999'}}> 暂无拼团 </Text>
-                <LinearGradient style={{borderRadius: 17}}
+                <LinearGradient style={{borderRadius: 17,width: 125, height: 34}}
                                 start={{x: 0, y: 0}}
                                 end={{x: 1, y: 1}}
                                 colors={['#FC5D39', '#FF0050']}
@@ -212,9 +212,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems:'center',
         justifyContent:'center',
-        marginHorizontal:20,
-        marginVertical:6,
-        borderRadius: 17
+        borderRadius: 17,
+        width: 125,
+        height: 34
     }
 
 });
