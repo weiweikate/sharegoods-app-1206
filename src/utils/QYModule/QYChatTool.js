@@ -12,7 +12,8 @@ const beginChatType = {
     BEGIN_FROM_OTHER: 0,//从我的地方发起客服 会直接对接平台客服
     BEGIN_FROM_PRODUCT: 1,//从产品详情发起客服
     BEGIN_FROM_ORDER: 2,//从订单发起客服
-    BEGIN_FROM_MESSAGE: 3//从消息列表发起客服
+    BEGIN_FROM_MESSAGE: 3,//从消息列表发起客服
+    BEGIN_FROM_AFTER: 4,
 };
 
 
@@ -83,6 +84,7 @@ const QYChatTool = {
         } else {
             chatModel.preProductUrl = '';
         }
+        params.sourceTitle = {0: '帮助中心' ,1: '商品详情',2: '订单详情',3 : '消息中心', 4: '售后详情'}[params.chatType] || '其他'
         JRQYService.beginQYChat(params);
     },
     /**
