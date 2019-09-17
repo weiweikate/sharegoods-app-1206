@@ -23,6 +23,7 @@ import SelectTicketModel from '../components/confirmOrder/SelectTicketModel';
 import { MRText } from '../../../components/ui';
 import RouterMap from '../../../navigation/RouterMap';
 import res from '../res';
+import ActivateTicketView from '../components/confirmOrder/ActivateTicketView';
 const step_header = res.step_header;
 
 @observer
@@ -116,6 +117,7 @@ export default class ConfirmOrderPage extends BasePage {
                             inputFocus={() => {
                             }}/>
                     </KeyboardAvoidingView>
+                    <ActivateTicketView />
                 </ScrollView>
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
                 <SelectOneTicketModel ref={(ref)=>{this.oneTicketModel = ref}}/>
