@@ -14,7 +14,7 @@
 
 import React from 'react';
 
-import { Image, SectionList, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, TouchableWithoutFeedback, View } from 'react-native';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 
 import { MRText } from '../../../../components/ui';
