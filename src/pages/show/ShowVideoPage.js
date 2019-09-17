@@ -304,7 +304,8 @@ export default class ShowVideoPage extends BasePage {
                                                                          this.$navigate(RouterMap.ProductDetailPage, {
                                                                              productCode: prodCode,
                                                                              trackType: 3,
-                                                                             trackCode: detail.showNo
+                                                                             trackCode: detail.showNo,
+                                                                             sgscm:`2.${detail.showNo}.none.none`
                                                                          });
                                                                      }}
                                                                      addCart={this.addCart}
