@@ -26,6 +26,7 @@ class ShopCartEmptyModel {
 
     @action
     getRecommendProducts = (isRefresh = true) => {
+        this.isRefreshing = true;
         if (isRefresh) {
             this.page = 1;
         } else {
