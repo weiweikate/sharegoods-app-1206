@@ -5,7 +5,8 @@ import {
     Image,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    RefreshControl
+    RefreshControl,
+    BackHandler
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ResultSearchNav from './components/ResultSearchNav';
@@ -76,7 +77,17 @@ export default class SearchResultPage extends BasePage {
     }
 
     componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
         this._productList(true);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    handleBackPress=()=>{
+        this.params.isFromSearch ? this.$navigateBack(2) : this.$navigateBack();
+        return true;
     }
 
     _getPageStateOptions = () => {
@@ -477,9 +488,7 @@ export default class SearchResultPage extends BasePage {
             <View style={{ flex: 1 }}>
                 <ResultSearchNav changeLayout={this._changeLayout}
                                  ref={(ref) => this.ResultSearchNav = ref}
-                                 goBack={() => {
-                                     this.$navigateBack();
-                                 }}
+                                 goBack={this.handleBackPress}
                                  isHorizontal={this.state.isHorizontal}
                                  defaultValue={this.state.textInput}
                                  onFocus={() => {

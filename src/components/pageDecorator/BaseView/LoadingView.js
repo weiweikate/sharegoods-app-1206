@@ -6,20 +6,14 @@
  * <LoadingView style={'这里是style，可以自定义'} source={GifImg} imgStyle={{width: 100, height: 100}}/>
  */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
     StyleSheet,
-    // ActivityIndicator,
-    Easing, Animated
 } from 'react-native';
 import DesignRule from '../../../constants/DesignRule';
-// import res from '../../../comm/res';
-import UIImage from '@mr/image-placeholder';
-import MRLoadingView from '../../../comm/components/MRLoadingView';
-
-// const { loading_bar } = res.other;
+import LottieView from 'lottie-react-native';
 
 export default class LoadingView extends Component {
 
@@ -29,47 +23,15 @@ export default class LoadingView extends Component {
         imgStyle: PropTypes.any // gif样式
     };
 
-    constructor(props) {
-        super(props);
-    }
 
-    componentDidMount() {
-        if (!this.props.source) {
-            this.state = {
-                rotateValue: new Animated.Value(0)
-            };
-            this.startLoading();
-        }
-    }
-
-
-    // 渲染Gif图片或者系统自带的loading图片
-    _renderLoading = (source, imgStyle) => {
-        if (source) {
-            return (<UIImage style={imgStyle} source={source}/>);
-        } else {
-            return (
-                <View style={{ overflow: 'hidden', borderRadius: 5 }}>
-                    <MRLoadingView style={{
-                        width: 70,
-                        height: 70,
-                        backgroundColor: 'rgba(0,0,0,0.6)',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}/>
-                </View>);
-        }
-    };
-
-    // 开始动画
-    startLoading = () => {
-        const animate = Animated.timing(this.state.rotateValue, {
-            toValue: 1,      //角度从0变1
-            duration: 2500,  //从0到1的时间
-            easing: Easing.linear
-        });
-
-        Animated.loop(animate, { useNativeDriver: true }).start();
+    _renderLoading = () => {
+        return (
+            <LottieView
+                style={{width: 50, height: 50, justifyContent: 'center', alignItems: 'center'}}
+                loop={true}
+                autoPlay={true}
+                source={require('../../../comm/components/lottieheader/loading.json')}/>
+        );
     };
 
     render() {

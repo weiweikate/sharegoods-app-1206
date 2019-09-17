@@ -14,7 +14,7 @@
 
 import React from 'react';
 
-import { Image, RefreshControl, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, SectionList, TouchableWithoutFeedback, View } from 'react-native';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 
 import { MRText } from '../../../../components/ui';
@@ -26,6 +26,7 @@ import { DefaultLoadMoreComponent } from '../../../../comm/components/RefreshFla
 import RouterMap, { routePush } from '../../../../navigation/RouterMap';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
 import res from '../../res';
+import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
 import { observer } from 'mobx-react';
 import { tabModel } from '../../model/HomeTabModel';
 
@@ -368,7 +369,7 @@ export default class HomeNormalList extends React.Component {
         };
     }
 
-    refreshData(first) {
+    refreshData=(first) =>{
         if (!first) {
             if (this.isRefreshing || this.isLoadMore) {
                 return;
@@ -471,10 +472,10 @@ export default class HomeNormalList extends React.Component {
         return (
             <View style={[DesignRule.style_container, { marginTop: 0 }]}>
                 <RecyclerListView
-                    refreshControl={<RefreshControl refreshing={this.state.refreshing}
-                                                    onRefresh={this.refreshData.bind(this)}
-                                                    colors={[DesignRule.mainColor]}/>}
-
+                    refreshControl={<HeaderLoading
+                        isRefreshing={this.state.refreshing}
+                        onRefresh={()=> this.refreshData()}
+                    />}
                     style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0 }}
                     onEndReached={this.getMoreData.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 3}

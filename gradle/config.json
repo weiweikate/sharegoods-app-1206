@@ -11,6 +11,10 @@
         "content": "apply from: '../../../../android/rn-cookies.gradle'",
         "bulid_path": "../node_modules/@mr/cookies/android/build.gradle"
     },
+    "@mr/refresh": {
+        "content": "apply from: '../../../../android/rn-refresh.gradle'",
+        "bulid_path": "../node_modules/@mr/react-native-refresh/android/build.gradle"
+    },
     "fetch-blob": {
         "content": "apply from: '../../../../android/rn-fetch-blob.gradle'",
         "bulid_path": "../node_modules/@mr/rn-fetch-blob/android/build.gradle"

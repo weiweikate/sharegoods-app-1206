@@ -2,7 +2,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { BackHandler, Image, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { BackHandler, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -18,6 +18,7 @@ import { TrackApi } from '../../../utils/SensorsTrack';
 import BottomMenu from '../components/BottomMenu';
 import { shopCartEmptyModel } from '../model/ShopCartEmptyModel';
 import res from '../res';
+import HeaderLoading from '../../../comm/components/lottieheader/ListHeaderLoading';
 
 const { px2dp } = ScreenUtils;
 const { shopCartNoGoods } = res;
@@ -116,7 +117,6 @@ export default class ShopCartPage extends BasePage {
         if (!this.pageFocus) {
             return;
         }
-        const { statusBarHeight } = ScreenUtils;
         return (
             <View style={styles.listBgContent}>
                 <SwipeListView
@@ -139,20 +139,11 @@ export default class ShopCartPage extends BasePage {
                     listViewRef={(listView) => this.contentList = listView}
                     rightOpenValue={-75}
                     showsVerticalScrollIndicator={false}
-                    swipeRefreshControl={
-                        <RefreshControl
-                            refreshing={shopCartStore.isRefresh}
-                            onRefresh={() => {
-                                this._refreshFun();
-                            }
-                            }
-                            progressViewOffset={statusBarHeight + 44}
-                            colors={[DesignRule.mainColor]}
-                            title="下拉刷新"
-                            tintColor={DesignRule.textColor_instruction}
-                            titleColor={DesignRule.textColor_instruction}
-                        />
-                    }
+                    swipeRefreshControl={<HeaderLoading
+                        refreshing={shopCartStore.isRefresh}
+                        onRefresh={this._refreshFun}
+                    />}
+
                 />
             </View>
         );

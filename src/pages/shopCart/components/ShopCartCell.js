@@ -266,7 +266,6 @@ const styles = StyleSheet.create({
         height: Cell_Height,
         width: ScreenUtils.width - px2dp(30),
         flexDirection: 'row',
-        marginRight: px2dp(15),
         borderRadius: px2dp(5)
     },
     itemSelectImg: { marginLeft: px2dp(10), width: px2dp(18), height: px2dp(18) },

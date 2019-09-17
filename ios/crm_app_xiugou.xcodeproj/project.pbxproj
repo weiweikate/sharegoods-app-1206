@@ -328,6 +328,11 @@
 		CD89B1D1224B1A30006CCEF7 /* ShowCellNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CD89B1D0224B1A30006CCEF7 /* ShowCellNode.m */; };
 		CD89B1F2224B4C54006CCEF7 /* SGNetworkImageNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CD89B1F1224B4C54006CCEF7 /* SGNetworkImageNode.m */; };
 		CD89B3F4224C9F8F006CCEF7 /* ASCollectionNode+ReloadIndexPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = CD89B3F3224C9F8F006CCEF7 /* ASCollectionNode+ReloadIndexPaths.m */; };
+		CD8FA23B2328C5FE00535B8D /* RCTRefreshLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8FA2312328C5FE00535B8D /* RCTRefreshLayout.m */; };
+		CD8FA23C2328C5FE00535B8D /* RCTRefreshHeaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8FA2362328C5FE00535B8D /* RCTRefreshHeaderManager.m */; };
+		CD8FA23D2328C5FE00535B8D /* RCTRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8FA2382328C5FE00535B8D /* RCTRefreshHeader.m */; };
+		CD8FA23E2328C5FE00535B8D /* RefreshLineVIew.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8FA2392328C5FE00535B8D /* RefreshLineVIew.m */; };
+		CD8FA23F2328C5FE00535B8D /* RCTRefreshLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8FA23A2328C5FE00535B8D /* RCTRefreshLayoutManager.m */; };
 		CD908FAB2253492700E348B4 /* UINavigationController+Autorotate.m in Sources */ = {isa = PBXBuildFile; fileRef = CD908FAA2253492700E348B4 /* UINavigationController+Autorotate.m */; };
 		CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */; };
 		CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5342171D90E005FD4B3 /* NSObject+Util.m */; };
@@ -1392,6 +1397,16 @@
 		CD89B1F1224B4C54006CCEF7 /* SGNetworkImageNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SGNetworkImageNode.m; sourceTree = "<group>"; };
 		CD89B3F2224C9F8F006CCEF7 /* ASCollectionNode+ReloadIndexPaths.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ASCollectionNode+ReloadIndexPaths.h"; sourceTree = "<group>"; };
 		CD89B3F3224C9F8F006CCEF7 /* ASCollectionNode+ReloadIndexPaths.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ASCollectionNode+ReloadIndexPaths.m"; sourceTree = "<group>"; };
+		CD8FA2312328C5FE00535B8D /* RCTRefreshLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTRefreshLayout.m; sourceTree = "<group>"; };
+		CD8FA2322328C5FE00535B8D /* RCTRefreshHeaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTRefreshHeaderManager.h; sourceTree = "<group>"; };
+		CD8FA2332328C5FE00535B8D /* RCTRefreshHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTRefreshHeader.h; sourceTree = "<group>"; };
+		CD8FA2342328C5FE00535B8D /* RCTRefreshLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTRefreshLayoutManager.h; sourceTree = "<group>"; };
+		CD8FA2352328C5FE00535B8D /* RefreshLineVIew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefreshLineVIew.h; sourceTree = "<group>"; };
+		CD8FA2362328C5FE00535B8D /* RCTRefreshHeaderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTRefreshHeaderManager.m; sourceTree = "<group>"; };
+		CD8FA2372328C5FE00535B8D /* RCTRefreshLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTRefreshLayout.h; sourceTree = "<group>"; };
+		CD8FA2382328C5FE00535B8D /* RCTRefreshHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTRefreshHeader.m; sourceTree = "<group>"; };
+		CD8FA2392328C5FE00535B8D /* RefreshLineVIew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RefreshLineVIew.m; sourceTree = "<group>"; };
+		CD8FA23A2328C5FE00535B8D /* RCTRefreshLayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTRefreshLayoutManager.m; sourceTree = "<group>"; };
 		CD908F6C2253492600E348B4 /* UINavigationController+Autorotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Autorotate.h"; sourceTree = "<group>"; };
 		CD908FAA2253492700E348B4 /* UINavigationController+Autorotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Autorotate.m"; sourceTree = "<group>"; };
 		CDA2F5302171D8D2005FD4B3 /* UIViewController+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Util.h"; sourceTree = "<group>"; };
@@ -2288,6 +2303,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				CD8FA2302328C5FE00535B8D /* RNRefresh */,
 				03D474DF2320FCEF00C74562 /* RNCSlider.xcodeproj */,
 				03D474762320F34000C74562 /* RCTVideo.xcodeproj */,
 				031D5432230E992D00F8349C /* Lottie.xcodeproj */,
@@ -2977,6 +2993,23 @@
 				CD67429821E43F5F00464549 /* libimageCropPicker.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CD8FA2302328C5FE00535B8D /* RNRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				CD8FA2312328C5FE00535B8D /* RCTRefreshLayout.m */,
+				CD8FA2322328C5FE00535B8D /* RCTRefreshHeaderManager.h */,
+				CD8FA2332328C5FE00535B8D /* RCTRefreshHeader.h */,
+				CD8FA2342328C5FE00535B8D /* RCTRefreshLayoutManager.h */,
+				CD8FA2352328C5FE00535B8D /* RefreshLineVIew.h */,
+				CD8FA2362328C5FE00535B8D /* RCTRefreshHeaderManager.m */,
+				CD8FA2372328C5FE00535B8D /* RCTRefreshLayout.h */,
+				CD8FA2382328C5FE00535B8D /* RCTRefreshHeader.m */,
+				CD8FA2392328C5FE00535B8D /* RefreshLineVIew.m */,
+				CD8FA23A2328C5FE00535B8D /* RCTRefreshLayoutManager.m */,
+			);
+			path = RNRefresh;
 			sourceTree = "<group>";
 		};
 		CDA2F5062171D780005FD4B3 /* NSObject */ = {
@@ -3967,6 +4000,7 @@
 				CD3A8A0A21F05E17003B9803 /* MRLoadingViewManager.m in Sources */,
 				0157967222FAB01400122524 /* MBScrollView.m in Sources */,
 				C4F2E46522BE303100FF6213 /* IJSIImputTextView.m in Sources */,
+				CD8FA23B2328C5FE00535B8D /* RCTRefreshLayout.m in Sources */,
 				CD24240F21F837A9008C7FF4 /* NSDictionary+Util.m in Sources */,
 				C4F2E44B22BE303100FF6213 /* UIBarButtonItem+IJSUUIBarBtItem.m in Sources */,
 				5068363821379B78001AB175 /* SGQRCodeHelperTool.m in Sources */,
@@ -3986,6 +4020,7 @@
 				5068363E21379B78001AB175 /* QYChatModule.m in Sources */,
 				C4F2E47722BE303100FF6213 /* IJS3DTouchController.m in Sources */,
 				017FB50422FBAF8F003677B4 /* AlivcEditUIConfig.m in Sources */,
+				CD8FA23F2328C5FE00535B8D /* RCTRefreshLayoutManager.m in Sources */,
 				017FB50822FBAF8F003677B4 /* AlivcRecordUIConfig.m in Sources */,
 				C4F2E46322BE303100FF6213 /* IJSIImputTextExportView.m in Sources */,
 				01E48F9422708B960038BEE6 /* JXHeaderView.m in Sources */,
@@ -4097,6 +4132,7 @@
 				017FB44A22FBAE8C003677B4 /* PagingViewController.m in Sources */,
 				CD288A9D230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m in Sources */,
 				017FB44D22FBAE8C003677B4 /* TestListBaseView.m in Sources */,
+				CD8FA23E2328C5FE00535B8D /* RefreshLineVIew.m in Sources */,
 				C4F2E46C22BE303100FF6213 /* IJSImageManager.m in Sources */,
 				017FB44E22FBAE8C003677B4 /* JXPagerListContainerView.m in Sources */,
 				C4F2E47022BE303100FF6213 /* IJSPhotoPickerCell.m in Sources */,
@@ -4104,6 +4140,7 @@
 				CD5EB082221D46E3007AAEE0 /* ShowCell.m in Sources */,
 				C4F2E43B22BE303100FF6213 /* WAVideoBox.m in Sources */,
 				C4F2E44D22BE303100FF6213 /* CALayer+IJSULayer.m in Sources */,
+				CD8FA23C2328C5FE00535B8D /* RCTRefreshHeaderManager.m in Sources */,
 				CD89B1CE224B1010006CCEF7 /* MosaicCollectionLayoutDelegate.m in Sources */,
 				017FB50C22FBAF8F003677B4 /* HYFVideoPreviewView.m in Sources */,
 				C44F2CDA2252483B00334776 /* SuspensionBtn.m in Sources */,
@@ -4132,6 +4169,7 @@
 				017FB51122FBB147003677B4 /* UIScrollView+EmptyDataSet.m in Sources */,
 				CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */,
 				CD5EB146221EA148007AAEE0 /* WHCWaterfallFlowLayout.m in Sources */,
+				CD8FA23D2328C5FE00535B8D /* RCTRefreshHeader.m in Sources */,
 				C4F2E46B22BE303100FF6213 /* IJSVideoTrimView.m in Sources */,
 				C4F2E46922BE303100FF6213 /* IJSImageNavigationView.m in Sources */,
 				033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */,
