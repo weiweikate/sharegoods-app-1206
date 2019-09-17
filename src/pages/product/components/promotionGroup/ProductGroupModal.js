@@ -26,7 +26,7 @@ import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 import ProductApi from '../../api/ProductApi';
 import bridge from '../../../../utils/bridge';
 
-const { px2dp } = ScreenUtils;
+const { px2dp, width } = ScreenUtils;
 
 /*
 * 正在凑团
@@ -70,7 +70,7 @@ export class GroupPersonAllList extends Component {
                        visible={this.state.modalVisible}
                        transparent={true}>
                 <View style={stylesAll.containerView}>
-                    <View style={[stylesAll.container, { height: viewHeight }]}>
+                    <View style={[stylesAll.container, { height: viewHeight, width }]}>
                         <View style={stylesAll.topView}>
                             <MRText style={stylesAll.topLText}>正在凑团</MRText>
                             <MRText
@@ -78,12 +78,12 @@ export class GroupPersonAllList extends Component {
                         </View>
                         <View style={{ flex: 1 }}>
                             <FlatList
-                                nestedScrollEnabled={true}
+                                style={stylesAll.flatList}
                                 data={groupList || []}
                                 keyExtractor={(item) => item.id + ''}
                                 renderItem={this._renderItem}
                                 showsHorizontalScrollIndicator={false}
-                                initialNumToRender={5}
+                                // initialNumToRender={5}
                             />
                         </View>
                     </View>
@@ -95,13 +95,13 @@ export class GroupPersonAllList extends Component {
 
 const stylesAll = StyleSheet.create({
     containerView: {
-        backgroundColor: 'rgba(0,0,0,0.5)',
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        justifyContent: 'flex-start'
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'flex-end'
     },
     container: {
         borderTopLeftRadius: 10, borderTopRightRadius: 10,
