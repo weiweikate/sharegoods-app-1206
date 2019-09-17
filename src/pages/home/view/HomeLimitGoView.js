@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
         marginTop: px2dp(3)
     },
     tab: {
-        minWidth: px2dp(67),
+        minWidth: px2dp(68),
         alignItems: 'center',
         height: px2dp(51)
     },
@@ -312,13 +312,11 @@ const styles = StyleSheet.create({
         height: 0
     },
     time: {
-        color: '#666',
-        fontWeight: '400',
+        fontWeight: 'bold',
         fontSize: 17,
         marginTop: Platform.OS === 'ios' ? 3 : 0
     },
     title: {
-        color: '#666',
         fontSize: 11,
         marginTop: Platform.OS === 'ios' ? 4 : 2
     },

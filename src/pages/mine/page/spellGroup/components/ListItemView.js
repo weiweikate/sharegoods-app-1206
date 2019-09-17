@@ -132,6 +132,7 @@ export default class ListItemView extends PureComponent {
                                                 <Text
                                                     style={{
                                                         marginHorizontal: 4,
+                                                        marginVertical: 2,
                                                         color: 'white',
                                                         fontSize: 10,
                                                     }}>团长</Text>
@@ -148,6 +149,7 @@ export default class ListItemView extends PureComponent {
                                                 color: '#FF0050',
                                                 fontSize: 10,
                                                 marginHorizontal: 4,
+                                                marginVertical: 2,
                                             }}>{item.groupNum}人团</Text>
                                         </View>
                                         : null

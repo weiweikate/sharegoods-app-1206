@@ -111,7 +111,7 @@ export default class SpellGroupList extends BasePage {
         return <DefaultTabBar
             backgroundColor={'white'}
             activeTextColor={DesignRule.mainColor}
-            inactiveTextColor={DesignRule.textColor_instruction}
+            inactiveTextColor={DesignRule.textColor_secondTitle}
             textStyle={styles.tabBarText}
             underlineStyle={styles.tabBarUnderline}
             style={styles.tabBar}
@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingRight: DesignRule.margin_page,
         marginTop: ScreenUtils.statusBarHeight,
         height: 44,
     },
@@ -144,7 +143,7 @@ const styles = StyleSheet.create({
         paddingBottom: 0
     },
     tabBarText: {
-        fontSize: 15
+        fontSize: 16
     },
     tabBarUnderline: {
         width: 48,
