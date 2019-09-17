@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Alert, FlatList, Image, ScrollView, StyleSheet, View} from 'react-native';
+import {Alert, Image, ScrollView, StyleSheet, View} from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
@@ -48,9 +48,9 @@ export class GroupPersonAllList extends Component {
         });
     };
 
-    _renderItem = ({item}) => {
+    _renderItem = ({item},index) => {
         const {goToBuy, showGroupJoinView, requestGroupList} = this.props;
-        return <GroupPersonItem style={stylesAll.itemView} itemData={item} goToBuy={goToBuy}
+        return <GroupPersonItem key={`GroupPersonItem${index}`} style={stylesAll.itemView} itemData={item} goToBuy={goToBuy}
                                 requestGroupList={requestGroupList}
                                 close={this._close}
                                 showGroupJoinView={showGroupJoinView}/>;
@@ -77,13 +77,9 @@ export class GroupPersonAllList extends Component {
                                 style={stylesAll.topRText}>{groupList.length === 10 ? '仅显示10个正在拼团的人' : ''}</MRText>
                         </View>
                         <ScrollView showsVerticalScrollIndicator={false}>
-                            <FlatList
-                                data={groupList || []}
-                                keyExtractor={(item) => item.id + ''}
-                                renderItem={this._renderItem}
-                                showsHorizontalScrollIndicator={false}
-                                // initialNumToRender={5}
-                            />
+                            {(groupList || []).map((item,index)=>{
+                                return this._renderItem({item},index);
+                            })}
                         </ScrollView>
                     </View>
                 </View>
