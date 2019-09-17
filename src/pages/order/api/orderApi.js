@@ -30,6 +30,7 @@ const api = {
     paySuccess: '/order/paySuccess',
     //继续去支付
     continueToPay:['/order/payRecord/continueToPay',{method:'get'}],
+    getGroupInfoByOrderNum: ['/promotion/group/orderGroupDetail',{method:'get'}],
     /**  售后模块相关接口 huchao */
     findAllExpress: ['/express/query', {method: 'get'}],
     getReturnReason: ['/config/sysDictionary/queryDictionaryTypeList', {method: 'get'}],

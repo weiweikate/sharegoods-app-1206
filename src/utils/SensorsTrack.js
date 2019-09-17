@@ -34,6 +34,7 @@ const productTrack = {
     ProductListClick:'ProductListClick',//搜索页-商品列表页点击
     Search:'Search',//搜索
     ProductDetail:'productDetail',//浏览商品详情页,
+    productDetailBtnClick:'productDetailBtnClick',//按钮点击
     AddToShoppingcart:'AddToShoppingcart',//加入购物车
     Share:'Share',//分享商品
     SpikeTimeClick:'FlashSaleTimeRangeClick',// 限时购tab
@@ -81,6 +82,13 @@ const showEvent = {
     XiuChangShareClick:'XiuChangShareClick',//秀场分享按钮点击,
     XiuChangAddToCart:'XiuChangAddToCart',//加入购物车点击确认
     XiuChangSpuClick:'XiuChangSpuClick',//点击商品
+}
+
+/** 拼团相关的埋点事件名称*/
+const groupEvent = {
+    ViewMyGroupbuy:'ViewMyGroupbuy',//浏览我的拼团页
+    MyGroupbuyBtnClick: 'MyGroupbuyBtnClick',//我的拼团页按钮点击
+    ShareGroupbuy: 'ShareGroupbuy',//拼团页分享
 }
 
 const mineEvent = {
@@ -141,7 +149,8 @@ const trackEvent = {
     ...afterEvent,
     ...commonEvent,
     ...homeEvent,
-    ...showEvent
+    ...showEvent,
+    ...groupEvent
 };
 
 function track(event_name,parmas) {

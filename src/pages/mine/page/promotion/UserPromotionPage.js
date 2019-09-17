@@ -68,7 +68,7 @@ export default class UserPromotionPage extends BasePage<Props> {
 
     $NavBarRenderRightItem = () => {
         return (
-            <TouchableOpacity onPress={this.goExplicationPage}>
+            <TouchableOpacity activeOpacity={0.7} onPress={this.goExplicationPage}>
                 <Text style={{ color: DesignRule.textColor_secondTitle, fontSize: px2dp(12) }}>
                     推广说明
                 </Text>

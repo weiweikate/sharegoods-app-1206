@@ -152,6 +152,7 @@ export default class LoginPage extends BasePage {
                     <LinearGradient colors={['#FF1C89', '#FD0129']}
                                     style={[Styles.loginButton, { marginTop: px2dp(15) }]}>
                         <TouchableOpacity
+                            activeOpacity={0.7}
                             style={Styles.touchableStyle}
                             onPress={() => {
                                 this.wxLogin();
@@ -174,7 +175,7 @@ export default class LoginPage extends BasePage {
                         <CommSpaceLine style={{ width: px2dp(102) }}/>
                     </View>
                     <View style={{ flexDirection: 'row', marginHorizontal: px2dp(30), marginTop: px2dp(20) }}>
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             // 手机号登录
                             replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
                         }}>
@@ -187,7 +188,7 @@ export default class LoginPage extends BasePage {
                             }} value={'手机号登录'}/>
                         </TouchableOpacity>
                         {loginModel.authPhone ?
-                            <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                            <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                                 // 一键登录
                                 this.justLogin();
                             }}>
@@ -200,7 +201,7 @@ export default class LoginPage extends BasePage {
                                 }} value={'一键登录'}/>
                             </TouchableOpacity> : null
                         }
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             replaceRoute(RouterMap.PwdLoginPage, { ...this.params });
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}

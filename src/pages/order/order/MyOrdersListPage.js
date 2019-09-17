@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, TouchableOpacity, DeviceEventEmitter } from 'react-native';
+import { DeviceEventEmitter, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import BasePage from '../../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import MyOrdersListView from './../components/MyOrdersListView';
@@ -41,7 +41,7 @@ class MyOrdersListPage extends BasePage {
 
     $NavBarRenderRightItem = () => {
         return (
-            <TouchableOpacity onPress={this.gotoSearchPage}>
+            <TouchableOpacity activeOpacity={0.7} onPress={this.gotoSearchPage}>
                 <Image source={search} style={{ width: 22, height: 22, marginRight: 10 }}/>
             </TouchableOpacity>
         );

@@ -112,14 +112,12 @@ export default class ProductDetailPage extends BasePage {
     }
 
     componentWillUnmount() {
-        this.isLoad = false;
         this.productDetailModel.clearTime();
-        this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     //去购物车
     _bottomViewAction = (type) => {
-        const { productIsPromotionPrice, isHuaFei, isPinGroupIn, isGroupIn, singleActivity } = this.productDetailModel;
+        const { productIsPromotionPrice, isHuaFei, isPinGroupIn, isGroupIn, singleActivity, productDetailBtnClick } = this.productDetailModel;
         const { groupNum } = singleActivity || {};
         switch (type) {
             case 'keFu':
@@ -171,6 +169,7 @@ export default class ProductDetailPage extends BasePage {
                     isAreaSku: this.productDetailModel.type !== 3,
                     priceDesc: isPinGroupIn ? (type === 'pinGroup' ? `${groupNum}人拼团价` : '单人购买价') : ''
                 });
+                isPinGroupIn && productDetailBtnClick && productDetailBtnClick(type === 'pinGroup' ? '开团' : '单买');
                 break;
             case 'jlj'://分享秀一秀
                 this.shareModal && this.shareModal.open();
@@ -297,7 +296,10 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel, isGroupIn, productGroupModel, singleActivity } = this.productDetailModel;
+        const {
+            productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel, isGroupIn,
+            productGroupModel, singleActivity
+        } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -358,19 +360,22 @@ export default class ProductDetailPage extends BasePage {
             }
             case productItemType.groupOpenPersonS: {
                 const { groupNum } = singleActivity || {};
-                return <GroupOpenPersonSView productGroupModel={productGroupModel} goToBuy={(item) => {
-                    this.state.goType = 'pinGroup';
-                    this.groupItem = item;
-                    this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
-                        productIsPromotionPrice: true,
-                        isOnlyBuyOne: true,
-                        isAreaSku: this.productDetailModel.type !== 3,
-                        priceDesc: `${groupNum}人拼团价`
-                    });
-                }}/>;
+                return <GroupOpenPersonSView productDetailModel={this.productDetailModel}
+                                             productGroupModel={productGroupModel} groupNum={groupNum}
+                                             goToBuy={(item) => {
+                                                 this.state.goType = 'pinGroup';
+                                                 this.groupItem = item;
+                                                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                                                     productIsPromotionPrice: true,
+                                                     isOnlyBuyOne: true,
+                                                     isAreaSku: this.productDetailModel.type !== 3,
+                                                     priceDesc: `${groupNum}人拼团价`
+                                                 });
+                                             }}/>;
             }
             case productItemType.groupProductList: {
-                return <GroupProductListView productGroupModel={productGroupModel}/>;
+                return <GroupProductListView productGroupModel={productGroupModel}
+                                             productDetailModel={this.productDetailModel}/>;
             }
             case productItemType.comment: {
                 return <ProductDetailScoreView pData={this.productDetailModel}

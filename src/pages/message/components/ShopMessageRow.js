@@ -54,7 +54,7 @@ export default class ShopMessageRow extends Component {
                     style={{ height: StyleSheet.hairlineWidth, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
                 {
                     item.type === 1 ? <View style={{ height: 41, backgroundColor: 'white' }}>
-                        <TouchableOpacity activeOpacity={0.5} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             this.props.pushShop && this.props.pushShop(item);
                         }}
                                           style={{
@@ -81,7 +81,7 @@ export default class ShopMessageRow extends Component {
                     justifyContent: 'space-around',
                     backgroundColor: 'white', height: 60
                 }}>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.props.rejectAction && this.props.rejectAction(item);
                     }}
                                       style={[styles.selectText, { borderWidth: 0.5, borderColor: DesignRule.mainColor }]}>
@@ -90,7 +90,7 @@ export default class ShopMessageRow extends Component {
                             color: DesignRule.mainColor
                         }}>拒绝</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.props.allowAction && this.props.allowAction(item);
                     }}
                                       style={[styles.selectText, { backgroundColor: DesignRule.mainColor }]}>
@@ -180,7 +180,7 @@ export default class ShopMessageRow extends Component {
                 </View>
                 {
                     this.props.item.type === 4 && <View style={{ height: 41, backgroundColor: 'white' }}>
-                        <TouchableOpacity activeOpacity={0.5} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             this.props.pushShop && this.props.pushShop(item);
                         }}
                                           style={{

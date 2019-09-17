@@ -24,6 +24,7 @@ import { observer } from 'mobx-react';
 import TimeModel from '../../model/TimeModel';
 import user from '../../../../model/user';
 import RouterMap from '../../../../navigation/RouterMap';
+import {track, trackEvent} from '../../../../utils/SensorsTrack';
 
 @observer
 export default class SpellGroupList extends BasePage {
@@ -39,6 +40,7 @@ export default class SpellGroupList extends BasePage {
     }
 
     componentDidMount() {
+        track(trackEvent.ViewMyGroupbuy);
         if(!user.isLogin){
             this.$navigate(RouterMap.LoginPage);
         }

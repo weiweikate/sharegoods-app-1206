@@ -17,7 +17,6 @@ import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
 import StringUtils from '../../../../utils/StringUtils';
-import { action_type } from './ProductGroupModal';
 import ProductApi from '../../api/ProductApi';
 import { routePush } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
@@ -37,7 +36,7 @@ export class TimeLabelText extends Component {
     }
 
     timeAutorun = autorun(() => {
-        const { endTime } = this.props;
+        const { endTime, endCallBack } = this.props;
         if (!isNoEmpty(endTime)) {
             return;
         }
@@ -47,6 +46,7 @@ export class TimeLabelText extends Component {
             if (timeOut <= 0) {
                 timeOut = 0;
                 this.timeInterval && clearInterval(this.timeInterval);
+                endCallBack && endCallBack();
             }
             this.setState({
                 timeOutTime: this.getDataText(timeOut)
@@ -91,14 +91,15 @@ export class TimeLabelText extends Component {
 
 export class GroupPersonItem extends Component {
 
-    requestGroupPerson = ({ groupId, itemData }) => {
+    requestGroupPerson = ({ groupId }) => {
+        const { showGroupJoinView, itemData, close } = this.props;
         bridge.showLoading();
         ProductApi.promotion_group_joinUser({ groupId }).then((data) => {
             bridge.hiddenLoading();
-            this.props.showModal({
-                actionType: action_type.join,
-                data: data.data,
-                extraData: itemData
+            close && close();
+            showGroupJoinView && showGroupJoinView({
+                itemData,
+                joinList: data.data
             });
         }).catch(e => {
             bridge.hiddenLoading();
@@ -107,7 +108,7 @@ export class GroupPersonItem extends Component {
     };
 
     render() {
-        const { itemData } = this.props;
+        const { itemData, requestGroupList } = this.props;
         const { initiatorUserImg, initiatorUserName, surplusPerson, id, endTime } = itemData || {};
         return (
             <View style={[stylesPerson.container, this.props.style]}>
@@ -118,12 +119,13 @@ export class GroupPersonItem extends Component {
                     <MRText style={stylesPerson.nameText}>{initiatorUserName}</MRText>
                 </View>
                 <NoMoreClick style={stylesPerson.rightView} onPress={() => {
-                    this.requestGroupPerson({ groupId: id, itemData });
+                    this.requestGroupPerson({ groupId: id });
                 }}>
                     <View>
                         <MRText style={stylesPerson.midNumText}>还差<MRText
                             style={{ color: DesignRule.textColor_redWarn }}>{surplusPerson}</MRText>人成团</MRText>
-                        <MRText style={stylesPerson.midTimeText}>剩余<TimeLabelText endTime={endTime}/></MRText>
+                        <MRText style={stylesPerson.midTimeText}>剩余<TimeLabelText endTime={endTime}
+                                                                                  endCallBack={requestGroupList}/></MRText>
                     </View>
                     <LinearGradient style={stylesPerson.linearGradient}
                                     start={{ x: 0, y: 0 }}
@@ -180,17 +182,19 @@ const stylesPerson = StyleSheet.create({
 @observer
 export class GroupProductItem extends Component {
     render() {
-        const { image, goodsName, skuPrice, prodCode } = this.props.itemData;
+        const { productDetailBtnClick } = this.props;
+        const { goodsImg, goodsName, activityAmount, prodCode } = this.props.itemData;
         return (
             <NoMoreClick style={[stylesProduct.container, this.props.style]} onPress={() => {
+                productDetailBtnClick && productDetailBtnClick('大家都在拼');
                 routePush(RouterMap.ProductDetailPage, { productCode: prodCode });
             }}>
                 <UIImage style={stylesProduct.img}
                          borderRadius={5}
-                         source={{ uri: image }}/>
+                         source={{ uri: goodsImg }}/>
                 <MRText style={stylesProduct.nameText} numberOfLines={1}>{goodsName}</MRText>
                 <View style={stylesProduct.bottomView}>
-                    <MRText style={stylesProduct.bottomText} numberOfLines={1}>¥{skuPrice}</MRText>
+                    <MRText style={stylesProduct.bottomText} numberOfLines={1}>¥{activityAmount}</MRText>
                     <LinearGradient style={stylesProduct.bottomBtn}
                                     start={{ x: 0, y: 0 }}
                                     end={{ x: 1, y: 0 }}

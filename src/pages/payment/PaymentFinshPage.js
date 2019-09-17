@@ -1,12 +1,6 @@
 import React from 'react';
 import BasePage from '../../BasePage';
-import {
-    View,
-    StyleSheet,
-    ScrollView,
-    Image,
-    TouchableOpacity
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
@@ -19,8 +13,7 @@ import PaymentApi from './PaymentApi';
 import apiEnvironment from '../../api/ApiEnvironment';
 import bridge from '../../utils/bridge';
 // import FinshPayAlertView from './FinshPayAlertView';
-import { replaceRoute } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import FinshPayAlertView from './FinshPayAlertView';
 import RecommendProductView from '../product/productScore/components/RecommendProductView';
 import { GroupShareView } from './GroupShareView';
@@ -159,15 +152,17 @@ export default class PaymentFinshPage extends BasePage {
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <TouchableOpacity style={{ width: px2dp(100), height: px2dp(34) }} onPress={() => {
-                            if (group) {
-                                replaceRoute(RouterMap.HtmlPage, {
-                                    uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyHot`
-                                });
-                            } else {
-                                this._gotoHome();
-                            }
-                        }}>
+                        <TouchableOpacity
+                            activeOpacity={0.7} style={{ width: px2dp(100), height: px2dp(34) }}
+                            onPress={() => {
+                                if (group) {
+                                    replaceRoute(RouterMap.HtmlPage, {
+                                        uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyHot`
+                                    });
+                                } else {
+                                    this._gotoHome();
+                                }
+                            }}>
                             <View style={{
                                 borderWidth: px2dp(0.5),
                                 color: DesignRule.textColor_instruction,
@@ -179,15 +174,16 @@ export default class PaymentFinshPage extends BasePage {
                                 justifyContent: 'center'
                             }}>
                                 <MRText style={{ color: DesignRule.textColor_instruction, fontSize: px2dp(15) }}>
-                                    {group ? '返回首页' : '拼团首页'}
+                                    {group ? '拼团首页' : '返回首页'}
                                 </MRText>
                             </View>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <TouchableOpacity style={{ width: px2dp(100), height: px2dp(34) }} onPress={() => {
-                            this._toOrder();
-                        }}>
+                        <TouchableOpacity activeOpacity={0.7} style={{ width: px2dp(100), height: px2dp(34) }}
+                                          onPress={() => {
+                                              this._toOrder();
+                                          }}>
                             <View style={{
                                 borderWidth: px2dp(0.5),
                                 color: DesignRule.mainColor,
@@ -266,7 +262,7 @@ export default class PaymentFinshPage extends BasePage {
                         </MRText>
                     </View>
                     <View style={{ width: px2dp(90), alignItems: 'center', justifyContent: 'center' }}>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             this._couponItemClick(itemData);
                         }}>
                             <LinearGradient colors={['#FC5D39', '#FF0050']}
@@ -314,7 +310,7 @@ export default class PaymentFinshPage extends BasePage {
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <RenderSeparator title={'分享给好友，即可获得三张券'}/>
                 <MRText style={{ color: '#AD4604', SizeSize: px2dp(14), marginTop: px2dp(10) }}>立即分享至</MRText>
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity activeOpacity={0.7} onPress={() => {
                     this._shareToWX();
                 }}>
                     <LinearGradient colors={['#FF2100', '#FF6947', '#FF2100']}
@@ -336,7 +332,7 @@ export default class PaymentFinshPage extends BasePage {
                     </LinearGradient>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity activeOpacity={0.7} onPress={() => {
                     this._shareToFriendCircle();
                 }}>
                     <View style={{

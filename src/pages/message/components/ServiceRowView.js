@@ -21,7 +21,7 @@ export default class ServiceRowView extends Component {
         const { item, index, beginChat } = this.props;
         return (
             <View key={index} style={{ width: ScreenUtils.width, height: px2dp(60), marginTop: 11 }}>
-                <TouchableOpacity style={{
+                <TouchableOpacity activeOpacity={0.7} style={{
                     flex: 1,
                     justifyContent: 'space-between',
                     alignItems: 'center',

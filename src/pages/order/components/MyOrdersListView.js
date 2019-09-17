@@ -7,7 +7,7 @@ import OrderApi from '../api/orderApi';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import { MRText as Text } from '../../../components/ui';
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap, { routePush } from '../../../navigation/RouterMap';
 import { payment } from '../../payment/Payment';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 import RefreshFlatList from '../../../comm/components/RefreshFlatList';
@@ -16,6 +16,8 @@ import CancelProdectsModal from './orderDetail/CancelProdectsModal';
 import { orderDetailModel } from '../model/OrderDetailModel';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { OrderType } from '../order/OrderType';
+import ShareUtil from '../../../utils/ShareUtil';
+import apiEnvironment from '../../../api/ApiEnvironment';
 
 const emptyIcon = res.kongbeuye_dingdan;
 
@@ -122,7 +124,7 @@ export default class MyOrdersListView extends Component {
                     <Text style={styles.titleStyle} allowFontScaling={false}>
                         {error.msg}
                     </Text>
-                    <TouchableOpacity activeOpacity={0.5} style={styles.btnStyle}
+                    <TouchableOpacity activeOpacity={0.7} style={styles.btnStyle}
                                       onPress={() => this.onRefresh()}>
                         <Text style={{
                             color: DesignRule.bgColor_btn,
@@ -269,6 +271,26 @@ export default class MyOrdersListView extends Component {
                         Toast.$toast('该商品已晒过单！');
                     }
 
+                }).catch(e => {
+                    Toast.$toast(e.msg);
+                });
+                break;
+            case 19://查看拼团
+                OrderApi.getGroupInfoByOrderNum({merchantOrderNo}).then((data)=> {
+                    data = data.data || {}
+                    routePush('HtmlPage', { uri: '/activity/groupBuyDetails/' + data.id });
+                }).catch(e => {
+                    Toast.$toast(e.msg);
+                });
+                break;
+            case 20://邀请好友
+                OrderApi.getGroupInfoByOrderNum({merchantOrderNo}).then((data)=> {
+                    let orderGroupExt = data.data || {}
+                    ShareUtil.onShare({shareType: 1,
+                        platformType:0,
+                        title: `[仅剩${orderGroupExt.surplusPerson}个名额] 我${orderGroupExt.activityAmount || ''}元带走了${orderGroupExt.goodsName || ''}`,
+                        dec:  `我买了${orderGroupExt.goodsName || ''}，该商品已拼${orderGroupExt.alreadySaleNum || ''}件了，快来参团吧!`,
+                        linkUrl:  `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${orderGroupExt.id ? orderGroupExt.id : ''}`,thumImage: 'logo.png' });
                 }).catch(e => {
                     Toast.$toast(e.msg);
                 });

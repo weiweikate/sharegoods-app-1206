@@ -1,21 +1,13 @@
-import {
-    View,
-    Image,
-    TouchableOpacity,
-    StyleSheet,
-    SectionList
-
-} from 'react-native';
+import { Image, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import React, { Component } from 'react';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import { SbSectiontHeaderView, ActivityOneView } from './SbSectiontHeaderView';
+import { ActivityOneView, SbSectiontHeaderView } from './SbSectiontHeaderView';
 import PropTypes from 'prop-types';
 import DesignRule from '../../../constants/DesignRule';
-import {
-    MRText as Text
-} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
 import RouterMap from '../../../navigation/RouterMap';
+
 export default class TwoColumnListView extends Component {
 
     constructor(props) {
@@ -103,7 +95,8 @@ export default class TwoColumnListView extends Component {
     };
     _renderRowView = (item) => {
         return (
-            <TouchableOpacity onPress={() => this._itemClickAction(item)} key={item.key}>
+            <TouchableOpacity
+                activeOpacity={0.7} onPress={() => this._itemClickAction(item)} key={item.key}>
                 <View style={Styles.itemBgStyle}>
                     <View style={Styles.itemContentStyle}>
                         {/*头部image*/}

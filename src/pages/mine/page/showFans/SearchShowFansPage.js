@@ -136,7 +136,7 @@ export default class SearchShowFansPage extends BasePage<Props> {
                                 this.list && this.list._onRefresh();
                             });
                         }} style={styles.textInputStyle}/>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.setState({
                             fanName: ''
                         });

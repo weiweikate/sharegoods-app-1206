@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    Image
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res/product';
@@ -14,8 +9,7 @@ import { activity_status, activity_type, product_status } from '../ProductDetail
 import LinearGradient from 'react-native-linear-gradient';
 import StringUtils from '../../../utils/StringUtils';
 import { formatDate } from '../../../utils/DateUtils';
-import { routePush } from '../../../navigation/RouterMap';
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap, { routePush } from '../../../navigation/RouterMap';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { observer } from 'mobx-react';
 
@@ -61,7 +55,7 @@ export default class DetailBottomView extends Component {
 
     _renderKeFu = () => {
         return (
-            <TouchableOpacity style={styles.leftBtn}
+            <TouchableOpacity activeOpacity={0.7} style={styles.leftBtn}
                               onPress={() => this.props.bottomViewAction('keFu')}>
                 <Image style={styles.leftImage} source={me_bangzu_kefu_icon}/>
                 <Text style={styles.leftText}>客服</Text>
@@ -90,11 +84,11 @@ export default class DetailBottomView extends Component {
     };
 
     _renderAllBtn = () => {
-        const { isGroupIn } = this.props.pData || {};
+        const { isGroupIn, isPinGroupIn } = this.props.pData || {};
         return (
             <View style={styles.btnContainer}>
                 {this._renderShop()}
-                <View style={[styles.btnView, { width: !isGroupIn ? px2dp(260) : px2dp(292) }]}>
+                <View style={[styles.btnView, { width: (isGroupIn || isPinGroupIn) ? px2dp(292) : px2dp(260) }]}>
                     {this._renderBuy()}
                     {this._renderShow()}
                 </View>
@@ -103,15 +97,15 @@ export default class DetailBottomView extends Component {
     };
 
     _renderShop = () => {
-        const { orderOnProduct, isGroupIn, isHuaFei } = this.props.pData || {};
+        const { orderOnProduct, isGroupIn, isHuaFei, isPinGroupIn } = this.props.pData || {};
         //老礼包不显示购物车
-        if (isGroupIn) {
+        if (isGroupIn || isPinGroupIn) {
             return null;
         }
         //不能加购
         const cantJoin = orderOnProduct === 0 || isHuaFei;
         return (
-            <TouchableOpacity style={styles.leftBtn}
+            <TouchableOpacity activeOpacity={0.7} style={styles.leftBtn}
                               onPress={() => this.props.bottomViewAction('gwc')}
                               disabled={cantJoin}>
                 <Image style={styles.leftImage}
@@ -131,6 +125,7 @@ export default class DetailBottomView extends Component {
         const cantBuy = productStatus !== product_status.on || orderOnProduct === 0 || (isGroupIn && !groupSubProductCanSell);
         return (
             <TouchableOpacity
+                activeOpacity={0.7}
                 style={[styles.btn, { backgroundColor: cantBuy ? DesignRule.textColor_placeholder : DesignRule.mainColor }]}
                 onPress={() => this.props.bottomViewAction('buy')} disabled={cantBuy}>
                 {
@@ -173,16 +168,18 @@ export default class DetailBottomView extends Component {
         } = this.props.pData || {};
         const { hasOpenGroup, groupId } = productGroupModel;
         return (
-            <TouchableOpacity style={[styles.btn]}
-                              onPress={() => {
-                                  if (isPinGroupIn && hasOpenGroup) {
-                                      routePush(RouterMap.HtmlPage, {
-                                          uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${groupId}`
-                                      });
-                                      return;
-                                  }
-                                  this.props.bottomViewAction(isPinGroupIn ? 'pinGroup' : 'jlj');
-                              }}>
+            <TouchableOpacity
+                activeOpacity={0.7}
+                style={[styles.btn]}
+                onPress={() => {
+                    if (isPinGroupIn && hasOpenGroup) {
+                        routePush(RouterMap.HtmlPage, {
+                            uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${groupId}`
+                        });
+                        return;
+                    }
+                    this.props.bottomViewAction(isPinGroupIn ? 'pinGroup' : 'jlj');
+                }}>
                 <LinearGradient style={styles.LinearGradient}
                                 start={{ x: 0, y: 0 }}
                                 end={{ x: 1, y: 0 }}

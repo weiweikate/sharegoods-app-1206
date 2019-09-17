@@ -594,6 +594,7 @@ export default class WithdrawCashPage extends BasePage {
     renderBankView = () => {
         return (
             <TouchableOpacity
+                activeOpacity={0.7}
                 style={{
                     height: 70,
                     backgroundColor: 'white',
@@ -623,6 +624,7 @@ export default class WithdrawCashPage extends BasePage {
     renderEmptyBankView = () => {
         return (
             <TouchableOpacity
+                activeOpacity={0.7}
                 style={{
                     height: 70,
                     backgroundColor: 'white',

@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import {
-    StyleSheet,
-    View,
-    Image,
-    TouchableOpacity,
-    TextInput as RNTextInput, Keyboard
-} from 'react-native';
-import {
-    UIText
-} from '../../../../components/ui';
+import { Image, Keyboard, StyleSheet, TextInput as RNTextInput, TouchableOpacity, View } from 'react-native';
+import { UIText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { confirmOrderModel } from '../../model/ConfirmOrderModel';
@@ -95,10 +87,11 @@ export default class ConfirmPriceView extends Component {
                     </View>
                 </View> : null}
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
-                <TouchableOpacity style={styles.couponsStyle}
-                                  activeOpacity={0.5}
-                                  disabled={!confirmOrderModel.canUseCou}
-                                  onPress={this.props.jumpToCouponsPage}>
+                <TouchableOpacity
+                    style={styles.couponsStyle}
+                    activeOpacity={0.7}
+                    disabled={!confirmOrderModel.canUseCou}
+                    onPress={this.props.jumpToCouponsPage}>
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
@@ -108,9 +101,10 @@ export default class ConfirmPriceView extends Component {
                     </View>
                 </TouchableOpacity>
                 {this.renderLine()}
-                <TouchableOpacity style={styles.couponsStyle}
-                                  activeOpacity={0.5}
-                                  onPress={() => this.props.jumpToCouponsPage('justOne')}>
+                <TouchableOpacity
+                    style={styles.couponsStyle}
+                    activeOpacity={0.7}
+                    onPress={() => this.props.jumpToCouponsPage('justOne')}>
                     <UIText value={'1元现金券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
@@ -120,12 +114,15 @@ export default class ConfirmPriceView extends Component {
                     </View>
                 </TouchableOpacity>
                 {this.renderLine()}
-                <TouchableOpacity style={styles.couponsStyle} onPress={() => {
-                    if (this.input.isFocused()) {
-                        this.input.blur();
-                        Keyboard.dismiss();
-                    }
-                }}>
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={styles.couponsStyle}
+                    onPress={() => {
+                        if (this.input.isFocused()) {
+                            this.input.blur();
+                            Keyboard.dismiss();
+                        }
+                    }}>
                     <UIText value={'买家留言'} style={styles.blackText}/>
                     <RNTextInput
                         ref={(e) => this.input = e}

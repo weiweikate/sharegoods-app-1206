@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    TouchableWithoutFeedback
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import DesignRule from '../../../constants/DesignRule';
 import { MRText as Text } from '../../../components/ui/index';
 
@@ -45,13 +40,14 @@ export default class SelectionSectionView extends Component {
             tagList.push(
                 <View key={index}>
                     <TouchableOpacity
+                        activeOpacity={0.7}
                         style={[styles.btn, { backgroundColor: isSelected ? DesignRule.mainColor : DesignRule.lineColor_inColorBg }]}
                         onPress={() => {
                             this._clickItemAction(index);
                         }}>
                         <Text
                             style={[styles.btnText, { color: canSelected ? (isSelected ? DesignRule.white : DesignRule.textColor_secondTitle) : DesignRule.color_ddd }]}
-                            allowFontScaling={false} numberOfLines = {1}>{this.props.listData[index].specValue}</Text>
+                            allowFontScaling={false} numberOfLines={1}>{this.props.listData[index].specValue}</Text>
                     </TouchableOpacity>
                 </View>
             );

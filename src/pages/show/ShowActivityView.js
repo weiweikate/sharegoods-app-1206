@@ -99,7 +99,7 @@ export default class ShowActivityView extends Component {
         return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.errContainer}>
-                    <TouchableOpacity activeOpacity={0.5} style={{ alignItems: 'center' }}
+                    <TouchableOpacity activeOpacity={0.7} style={{ alignItems: 'center' }}
                                       onPress={() => {
                                           this.List && this.List._onRefresh();
                                       }}>

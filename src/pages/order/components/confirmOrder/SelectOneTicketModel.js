@@ -14,25 +14,19 @@
 
 import React from 'react';
 
-import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    Image
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import {
-    MRText as Text,
-} from '../../../../components/ui';
-import CommModal from '../../../../comm/components/CommModal'
-import orderApi from '../../api/orderApi'
+import { MRText as Text } from '../../../../components/ui';
+import CommModal from '../../../../comm/components/CommModal';
+import orderApi from '../../api/orderApi';
 import bridge from '../../../../utils/bridge';
 import user from '../../../../model/user';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
-import res1 from '../../res'
+import res1 from '../../res';
+
 const emptyIcon = res1.empty_icon;
-let {autoSizeWidth, safeBottom} = ScreenUtils
+let { autoSizeWidth, safeBottom } = ScreenUtils;
 export default class SelectOneTicketModel extends React.Component {
 
     constructor(props) {
@@ -41,74 +35,78 @@ export default class SelectOneTicketModel extends React.Component {
         this.state = {
             modalVisible: false,
             num: 0,
-            max:0,
+            max: 0,
             tokenCoin: user.tokenCoin  //优惠券数量
         };
     }
 
-    close = ()=>{
-        this.setState({modalVisible: false});
-    }
+    close = () => {
+        this.setState({ modalVisible: false });
+    };
 
     open = (orderAmount, callBack) => {
         this.callBack = callBack;
-        this.setState({modalVisible: true});
+        this.setState({ modalVisible: true });
         this.orderAmount = orderAmount || 0;
         this._getnum(this.state.tokenCoin, orderAmount);
-        orderApi.getUser({}).then((data)=> {
+        orderApi.getUser({}).then((data) => {
             if (data && data.tokenCoin) {
                 this.tokenCoin = parseInt(data.tokenCoin);
                 this._getnum(data.tokenCoin, this.orderAmount);
             }
-        }).catch((err)=> {
+        }).catch((err) => {
             bridge.$toast(err.msg);
-        })
-    }
+        });
+    };
 
-    _select= ()=> {
+    _select = () => {
         this.close();
-        let {tokenCoin, num} = this.state;
+        let { tokenCoin, num } = this.state;
         if (tokenCoin > 0) {
-            this.callBack && this.callBack(num)
+            this.callBack && this.callBack(num);
         }
-    }
+    };
 
     _getnum = (tokenCoin, orderAmount) => {
         if (orderAmount > tokenCoin) {
-            this.setState({num: parseInt(tokenCoin), max: parseInt(tokenCoin), tokenCoin});
-        }else {
-            this.setState({num: parseInt(orderAmount), max: parseInt(orderAmount), tokenCoin});
+            this.setState({ num: parseInt(tokenCoin), max: parseInt(tokenCoin), tokenCoin });
+        } else {
+            this.setState({ num: parseInt(orderAmount), max: parseInt(orderAmount), tokenCoin });
         }
-    }
+    };
 
     componentDidMount() {
     }
 
     _renderItem = () => {
-        if (this.state.tokenCoin > 0){
-            return(
-                <View style={{flex: 1, alignItems: 'center'}}>
+        if (this.state.tokenCoin > 0) {
+            return (
+                <View style={{ flex: 1, alignItems: 'center' }}>
                     <View
-                                     style={{width: autoSizeWidth(345),
-                                         height: autoSizeWidth(94),
-                                         top: autoSizeWidth(10),
-                                         backgroundColor: 'white',
-                                     alignItems: 'center',
-                                     flexDirection: 'row'}}>
+                        style={{
+                            width: autoSizeWidth(345),
+                            height: autoSizeWidth(94),
+                            top: autoSizeWidth(10),
+                            backgroundColor: 'white',
+                            alignItems: 'center',
+                            flexDirection: 'row'
+                        }}>
                         <Text style={{
                             color: DesignRule.mainColor,
                             fontSize: autoSizeWidth(14),
                             marginLeft: autoSizeWidth(26)
                         }}>
                             ¥
-                            <Text style={{fontWeight: '400',
+                            <Text style={{
+                                fontWeight: '400',
                                 color: DesignRule.mainColor,
-                            fontSize: DesignRule.autoSizeWidth(20)}}>
+                                fontSize: DesignRule.autoSizeWidth(20)
+                            }}>
                                 1
                             </Text>
                         </Text>
-                        <View style={{flex: 1, marginLeft: autoSizeWidth(30)}}>
-                            <Text style={{color: '#222222', fontSize: autoSizeWidth(13)}}>
+                        <View style={{ flex: 1, marginLeft: autoSizeWidth(30) }}>
+                            <Text style={{ color: '#222222', fontSize: autoSizeWidth(13) }}>
                                 {'1元现金券'}
                             </Text>
                             <Text style={styles.detail}>
@@ -118,56 +116,92 @@ export default class SelectOneTicketModel extends React.Component {
                         <Text style={{
                             marginRight: autoSizeWidth(15),
                             fontSize: autoSizeWidth(13),
-                            color: '#333333'}}>
+                            color: '#333333'
+                        }}>
                             {'x' + this.state.tokenCoin}
                         </Text>
                     </View>
-                    <View style={{marginTop: autoSizeWidth(20), alignItems: 'center', flexDirection: 'row' , width: autoSizeWidth(345)}}>
-                        <Text style={{fontSize: autoSizeWidth(13), color: '#666666'}}>请选择券数</Text>
-                        <View style={{flex: 1}}/>
-                        <View style={{borderRadius: 5, borderColor: '#E4E4E4', borderWidth: 1, width: autoSizeWidth(105), height: autoSizeWidth(30),flexDirection: 'row'}}>
-                            <TouchableOpacity style={{flex: 3, alignItems: 'center', justifyContent: 'center',borderRightColor: '#E4E4E4', borderRightWidth: 1}}
-                                              disabled={this.state.num <= 0 }
-                                              onPress={()=>{this.setState({num: this.state.num - 1})}}
+                    <View style={{
+                        marginTop: autoSizeWidth(20),
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        width: autoSizeWidth(345)
+                    }}>
+                        <Text style={{ fontSize: autoSizeWidth(13), color: '#666666' }}>请选择券数</Text>
+                        <View style={{ flex: 1 }}/>
+                        <View style={{
+                            borderRadius: 5,
+                            borderColor: '#E4E4E4',
+                            borderWidth: 1,
+                            width: autoSizeWidth(105),
+                            height: autoSizeWidth(30),
+                            flexDirection: 'row'
+                        }}>
+                            <TouchableOpacity
+                                activeOpacity={0.7}
+                                style={{
+                                    flex: 3,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    borderRightColor: '#E4E4E4',
+                                    borderRightWidth: 1
+                                }}
+                                disabled={this.state.num <= 0}
+                                onPress={() => {
+                                    this.setState({ num: this.state.num - 1 });
+                                }}
                             >
                                 <Text style={{
                                     fontSize: autoSizeWidth(15),
-                                    color: this.state.num <= 0 ? '#CCCCCC' : '#666666'}}>
-                                   -
+                                    color: this.state.num <= 0 ? '#CCCCCC' : '#666666'
+                                }}>
+                                    -
                                 </Text>
                             </TouchableOpacity>
-                            <View style={{flex: 4, alignItems: 'center', justifyContent: 'center'}} >
+                            <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center' }}>
                                 <Text style={{
                                     fontSize: autoSizeWidth(15),
-                                    color: '#666666'}}>
+                                    color: '#666666'
+                                }}>
                                     {this.state.num}
                                 </Text>
                             </View>
-                            <TouchableOpacity style={{flex: 3, alignItems: 'center', justifyContent: 'center',borderLeftColor: '#E4E4E4', borderLeftWidth: 1}}
-                                              disabled={this.state.num >= this.state.max}
-                                              onPress={()=>{this.setState({num: this.state.num + 1})}}
+                            <TouchableOpacity
+                                activeOpacity={0.7}
+                                style={{
+                                    flex: 3,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    borderLeftColor: '#E4E4E4',
+                                    borderLeftWidth: 1
+                                }}
+                                disabled={this.state.num >= this.state.max}
+                                onPress={() => {
+                                    this.setState({ num: this.state.num + 1 });
+                                }}
                             >
                                 <Text style={{
                                     fontSize: autoSizeWidth(15),
-                                    color: this.state.num >= this.state.max ? '#CCCCCC' : '#666666'}}>
+                                    color: this.state.num >= this.state.max ? '#CCCCCC' : '#666666'
+                                }}>
                                     +
                                 </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
-            )
+            );
 
         } else {
-            return(
-                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                    <Image source={emptyIcon} style={{height: autoSizeWidth(140), width: autoSizeWidth(244)}}/>
-                    <Text style={{color: '#666666', fontSize: autoSizeWidth(13)}}>无可用券</Text>
+            return (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={emptyIcon} style={{ height: autoSizeWidth(140), width: autoSizeWidth(244) }}/>
+                    <Text style={{ color: '#666666', fontSize: autoSizeWidth(13) }}>无可用券</Text>
                 </View>
-            )
+            );
 
         }
-    }
+    };
     // name: '1元现金券',
     // timeStr: '无时间限制',
     // value: 1,
@@ -191,21 +225,28 @@ export default class SelectOneTicketModel extends React.Component {
                     position: 'absolute'
                 }}
                 >
-                    <TouchableOpacity style={{flex: 1}} onPress={()=>{this.close()}}/>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={{ flex: 1 }} onPress={() => {
+                        this.close();
+                    }}/>
                     <View style={styles.bg}>
                         <View style={styles.header}>
                             <Text style={{
                                 fontSize: DesignRule.fontSize_secondTitle,
-                                color: DesignRule.textColor_secondTitle}}>
+                                color: DesignRule.textColor_secondTitle
+                            }}>
                                 选择一元现金券
                             </Text>
                         </View>
-                        <View style={{flex: 1, backgroundColor: DesignRule.bgColor}}>
+                        <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
                             {this._renderItem()}
                         </View>
-                        <View style={{height: autoSizeWidth(50) + safeBottom}}>
-                            <TouchableOpacity style={[DesignRule.style_bigRedRadiusBtn,{height: autoSizeWidth(40)}]}
-                                              onPress={()=>this._select()}
+                        <View style={{ height: autoSizeWidth(50) + safeBottom }}>
+                            <TouchableOpacity
+                                activeOpacity={0.7}
+                                style={[DesignRule.style_bigRedRadiusBtn, { height: autoSizeWidth(40) }]}
+                                onPress={() => this._select()}
                             >
                                 <Text style={DesignRule.style_btnWhiteText}>确认</Text>
                             </TouchableOpacity>
@@ -234,6 +275,6 @@ const styles = StyleSheet.create({
     detail: {
         fontSize: autoSizeWidth(10),
         color: DesignRule.textColor_placeholder,
-        lineHeight: autoSizeWidth(11),
+        lineHeight: autoSizeWidth(11)
     }
 });

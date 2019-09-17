@@ -140,12 +140,14 @@ export default class MyCouponsItems extends Component {
                 </View>
                 <View style={{ width: '100%', height: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
                 <View style={{ height: px2dp(43), flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+                    <TouchableOpacity activeOpacity={0.7}
+                                      style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                                       onPress={this.quitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
                     </TouchableOpacity>
                     <View style={{ height: '100%', width: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+                    <TouchableOpacity activeOpacity={0.7}
+                                      style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                                       onPress={() => this.commitTokenCoin(invokeData)}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>
                             {canInvoke ? '确定' : '去使用'}
@@ -198,6 +200,7 @@ export default class MyCouponsItems extends Component {
                     <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
                           allowFontScaling={false}>快去商城逛逛吧</Text>
                     <TouchableOpacity
+                        activeOpacity={0.7}
                         onPress={() => {
                             this._gotoLookAround();
                         }}>

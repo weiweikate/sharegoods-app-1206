@@ -43,6 +43,7 @@ import intervalMsgModel from '../../../../comm/components/IntervalMsgView';
 import { MRText as Text } from '../../../../components/ui/index';
 import TextCustomView from '../TextCustomView';
 import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
+import { tabModel } from '../../model/HomeTabModel';
 
 
 const { JSPushBridge } = NativeModules;
@@ -63,11 +64,11 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
 @observer
 export default class HomeFirstTabView extends Component {
     dataProvider = new DataProvider((r1, r2) => {
-        return r1.id !== r2.id;
+        return r1 !== r2;
     });
 
     layoutProvider = new LayoutProvider((i) => {
-        return homeModule.homeList[i] || {};
+        return this.dataProvider.getDataForIndex(i) || {};
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
         const { todayList } = todayModule;
@@ -119,6 +120,7 @@ export default class HomeFirstTabView extends Component {
                 break;
             default:
                 dim.height = 0;
+                break;
         }
     });
 
@@ -237,6 +239,9 @@ export default class HomeFirstTabView extends Component {
 
 
     render() {
+        if (Math.abs(tabModel.tabIndex) > 1){
+            return null;
+        }
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (

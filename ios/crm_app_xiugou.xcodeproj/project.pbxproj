@@ -80,7 +80,6 @@
 		03A568E621DEFA1E00D6A770 /* libRNGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A568E121DEFA0C00D6A770 /* libRNGeolocation.a */; };
 		03BD77F222F1BE1D00FBEFAD /* UIButton+ImageText.m in Sources */ = {isa = PBXBuildFile; fileRef = 03BD77F122F1BE1D00FBEFAD /* UIButton+ImageText.m */; };
 		03D474BC2320F37900C74562 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D474992320F34000C74562 /* libRCTVideo.a */; };
-		03D475242320FE2600C74562 /* libRNCSlider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D4751A2320FCEF00C74562 /* libRNCSlider.a */; };
 		101157BA219AB489001F5E99 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157B9219AB489001F5E99 /* SystemConfiguration.framework */; };
 		101157C4219AB6FD001F5E99 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157C3219AB6FD001F5E99 /* ExternalAccessory.framework */; };
 		101157C6219AB715001F5E99 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157C5219AB715001F5E99 /* libc++.tbd */; };
@@ -155,6 +154,7 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8FEF9F2832D98C9091C3A80D /* libPods-crm_app_xiugou.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2067021C430F882483438A36 /* libPods-crm_app_xiugou.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		BF0998DA232915DD00614E6E /* libRNCSlider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D4751A2320FCEF00C74562 /* libRNCSlider.a */; };
 		BF2A519322B9EBC300A80506 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF2A516922B9EB6C00A80506 /* libRNGestureHandler.a */; };
 		BF2CCECE229F6D1600A5AD0D /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0409D91E222F7706003A53EC /* libRNCWebView.a */; };
 		BF2CCF8C22A5160500A5AD0D /* home_tab_1.png in Resources */ = {isa = PBXBuildFile; fileRef = BF2CCF8A22A5160500A5AD0D /* home_tab_1.png */; };
@@ -1442,7 +1442,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03D475242320FE2600C74562 /* libRNCSlider.a in Frameworks */,
+				BF0998DA232915DD00614E6E /* libRNCSlider.a in Frameworks */,
 				03D474BC2320F37900C74562 /* libRCTVideo.a in Frameworks */,
 				031D5431230E991900F8349C /* libLottieReactNative.a in Frameworks */,
 				031D5369230D374F00F8349C /* libRNCNetInfo.a in Frameworks */,

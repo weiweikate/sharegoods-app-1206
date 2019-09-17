@@ -116,7 +116,7 @@ export default class LuckyIcon extends React.Component {
                     bottom: 40,
                     transform: [{ translateX: this.state.x }]
                 }}>
-                <TouchableOpacity onPress={this._onPress}>
+                <TouchableOpacity onPress={this._onPress} activeOpacity={0.7}>
                     <Image
                         style={styles.image}
                         source={{ uri: this.state.data.image }}

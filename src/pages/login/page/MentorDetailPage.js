@@ -103,6 +103,7 @@ export default class MentorDetailPage extends BasePage {
                     style={styles.bottomBgViewStyle}
                 >
                     <TouchableOpacity
+                        activeOpacity={0.7}
                         onPress={
                             () => {
                                 this._selectMentor();

@@ -3,13 +3,13 @@ import {
     Image,
     ImageBackground,
     Platform,
+    ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
     View
 } from 'react-native';
-import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LinearGradient from 'react-native-linear-gradient';
 import HomeTitleView from './HomeTitleView';
@@ -27,6 +27,7 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import productRes from '../../product/res/product';
 import XiuDouResultModal from './XiuDouResultModal';
 import { observer } from 'mobx-react';
+import { autorun } from 'mobx';
 
 const { px2dp } = ScreenUtils;
 const { saleSmallSkill } = productRes.pSacle;
@@ -35,8 +36,18 @@ const { saleSmallSkill } = productRes.pSacle;
 export default class HomeLimitGoView extends Component {
 
     _onChangeTab(number) {
-        this._selectedLimit(number.i);
+        this._selectedLimit(number);
     }
+
+    selectPage = autorun(() => {
+        const { currentPage } = limitGoModule;
+        setTimeout(() => {
+            this.scrollView && this.scrollView.scrollTo({
+                x: px2dp(67) * (currentPage + 0.5) - DesignRule.width / 2,
+                animated: true
+            });
+        }, 200);
+    });
 
     _selectedLimit(number) {
         let index = number !== -1 ? number : this.state.page;
@@ -53,34 +64,32 @@ export default class HomeLimitGoView extends Component {
         }
     }
 
-    _renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
+    _tabItem(item, index, isTabActive) {
         const textColor = isTabActive ? 'white' : '#666';
-        const selectedValue = (value) => value.id === name;
-        const { spikeList } = limitGoModule;
-        const selectedModels = spikeList.filter(selectedValue);
-        let selected = null;
-        if (selectedModels && selectedModels.length > 0) {
-            selected = selectedModels[0];
-        }
-        if (!selected) {
-            return <View/>;
-        }
-        const { time, title } = selected;
-        return <TouchableOpacity
-            key={`${name}_${page}`}
-            onPress={() => onPressHandler(page)}
-            onLayout={onLayoutHandler}
-        >
+        return (<TouchableOpacity activeOpacity={0.7} onPress={() => {
+            this._onChangeTab(index);
+        }}>
             <ImageBackground style={styles.tab}
                              source={isTabActive ? res.tabBg : null}>
                 <Text style={[styles.time, { color: textColor }]}>
-                    {time}
+                    {item.time}
                 </Text>
                 <Text style={[styles.title, { color: textColor }]}>
-                    {title}
+                    {item.title}
                 </Text>
             </ImageBackground>
-        </TouchableOpacity>;
+        </TouchableOpacity>);
+    }
+
+    _goodsItem(len, data, index, activityData) {
+        return (<TouchableWithoutFeedback key={index}
+                                          onPress={() => this._goToDetail(index, data || {}, activityData)}>
+            <View>
+                <GoodsItem key={index} item={data || {}} activityCode={activityData.activityCode}
+                           navigate={this.props.navigate}/>
+                <View style={{ height: px2dp(index === len - 1 ? 4.1 : 10) }}/>
+            </View>
+        </TouchableWithoutFeedback>);
     }
 
     _goToDetail(index, value, activityData) {
@@ -103,24 +112,6 @@ export default class HomeLimitGoView extends Component {
             });
     }
 
-    _renderGoodsList(activityData) {
-        let goodsItems = [];
-        let goods = activityData.goods || [];
-        goods.map((data, index) => {
-            goodsItems.push(
-                <TouchableWithoutFeedback key={index}
-                                          onPress={() => this._goToDetail(index, data || {}, activityData)}>
-                    <View>
-                        <GoodsItem key={index} item={data || {}} activityCode={activityData.activityCode}
-                                   navigate={this.props.navigate}/>
-                        {index === goods.length - 1 ? null : <View style={{ height: px2dp(10) }}/>}
-                    </View>
-                </TouchableWithoutFeedback>
-            );
-        });
-        return goodsItems.length > 0 ? goodsItems : null;
-    }
-
     openModal() {
         this.modal && this.modal.open();
         track(trackEvent.HomePagePopShow, { homePagePopType: 1 });
@@ -133,19 +124,26 @@ export default class HomeLimitGoView extends Component {
     }
 
     render() {
-        let viewItems = [];
-        const { spikeList } = limitGoModule;
+        const { spikeList, currentGoodsList, currentPage } = limitGoModule;
+        // tab视图
+        let tabViews = [];
         spikeList.map((data, index) => {
-            viewItems.push(
-                <View key={index}
-                      tabLabel={data.id}>
-                    {this._renderGoodsList(data || {})}
-                </View>
+            tabViews.push(
+                this._tabItem(data, index, index === currentPage)
             );
         });
-
-        if (viewItems.length === 0) {
+        if (tabViews.length === 0) {
             return null;
+        }
+        // 商品视图
+        let goodsViews = [];
+        if (spikeList && spikeList[currentPage]) {
+            let activityData = spikeList[currentPage];
+            currentGoodsList.map((data, index) => {
+                goodsViews.push(
+                    this._goodsItem(currentGoodsList.length, data, index, activityData)
+                );
+            });
         }
 
         return (
@@ -153,7 +151,7 @@ export default class HomeLimitGoView extends Component {
                 <View style={{ paddingHorizontal: px2dp(15), flexDirection: 'row', alignItems: 'center' }}>
                     <HomeTitleView title={'限时购'}/>
                     <View style={{ flex: 1 }}/>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.seeMore();
                     }}>
                         <MRText style={{ color: DesignRule.textColor_placeholder, fontSize: px2dp(12) }}>更多></MRText>
@@ -161,7 +159,7 @@ export default class HomeLimitGoView extends Component {
                 </View>
                 {
                     limitGoModule.isShowFreeOrder ?
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             this.openModal();
                         }}>
                             <Image source={res.limitGoHeader}
@@ -169,21 +167,16 @@ export default class HomeLimitGoView extends Component {
                                    style={{ height: px2dp(50), width: ScreenUtils.width }}/>
                         </TouchableOpacity> : null
                 }
-
-                <ScrollableTabView
-                    style={styles.tabBar}
-                    page={limitGoModule.currentPage !== -1 ? limitGoModule.currentPage : limitGoModule.initialPage}
-                    renderTabBar={() => <ScrollableTabBar style={styles.scrollTab} underlineStyle={styles.underline}
-                                                          renderTab={this._renderTab.bind(this)}/>}
-                    tabBarUnderlineStyle={styles.underline}
-                    locked={true}
-                    scrollWithoutAnimation={true}
-                    onChangeTab={(index) => this._onChangeTab(index)}
-                    showsVerticalScrollIndicator={false}
-                    initialPage={limitGoModule.initialPage}
-                >
-                    {viewItems}
-                </ScrollableTabView>
+                <ScrollView
+                    ref={(e) => {
+                        this.scrollView = e;
+                    }}
+                    style={{ alignSelf: 'center', height: px2dp(55) }}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+                    {tabViews}
+                </ScrollView>
+                {goodsViews}
                 <XiuDouResultModal ref={(ref) => {
                     this.modal = ref;
                 }}/>
@@ -196,6 +189,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
     const discountString = (item.promotionPrice / item.originalPrice * 10) + '';
     let discountNum = discountString.substring(0, discountString.indexOf('.') + 2);
     discountNum = discountNum < 0.1 ? '0.1' : discountNum;
+    let progressW = px2dp(110) + px2dp((promotionSaleRateS - 0.9) * 100);
     return <View style={styles.goodsItem}>
         <ImageLoader
             source={{ uri: item.imgUrl }}
@@ -220,11 +214,20 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                     :
                     (
                         promotionSaleRateS > 0.9 && promotionSaleRateS < 1 ?
-                            <ImageBackground style={styles.leaveView} source={resHome.home_limit_progress}
-                                             resizeMode={'contain'}>
-                                <UIText value={'即将售罄'}
-                                        style={{ fontSize: px2dp(9), color: 'white', marginLeft: px2dp(6) }}/>
-                            </ImageBackground>
+                            <View style={{
+                                width: px2dp(120),
+                                height: px2dp(12),
+                                marginTop: px2dp(5),
+                                borderRadius: px2dp(6),
+                                backgroundColor: 'rgba(255,0,80,0.1)'
+                            }}>
+                                <ImageBackground style={[styles.leaveView, { width: progressW }]}
+                                                 source={resHome.home_limit_progress}
+                                                 resizeMode={'stretch'}>
+                                    <UIText value={'即将售罄'}
+                                            style={{ fontSize: px2dp(9), color: 'white', marginLeft: px2dp(6) }}/>
+                                </ImageBackground>
+                            </View>
                             : null
                     )
             }
@@ -305,11 +308,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: px2dp(51)
     },
-    tabBar: {
-        width: ScreenUtils.width,
-        borderWidth: 0,
-        height: px2dp(51)
-    },
     underline: {
         height: 0
     },
@@ -323,10 +321,6 @@ const styles = StyleSheet.create({
         color: '#666',
         fontSize: 11,
         marginTop: Platform.OS === 'ios' ? 4 : 2
-    },
-    scrollTab: {
-        borderWidth: 0,
-        height: px2dp(51)
     },
     goodsItem: {
         marginLeft: px2dp(15),
@@ -430,8 +424,6 @@ const styles = StyleSheet.create({
         fontSize: px2dp(14)
     },
     leaveView: {
-        marginTop: px2dp(5),
-        width: px2dp(121),
         height: px2dp(12),
         justifyContent: 'center'
     }

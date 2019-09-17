@@ -155,7 +155,7 @@ export default class ShopCartPage extends BasePage {
                 onPress={() => {
                     rowMap[data.item.key].closeRow();
                     this._deleteFromShoppingCartByProductId(data);
-                }}>
+                }} activeOpacity={0.7} >
                 <View style={[styles.hideBgView, { marginTop: data.item.topSpace }]}>
                     <View style={styles.hideTextBgView}>
                         <UIText style={styles.backUITextWhite} value='删除'/>

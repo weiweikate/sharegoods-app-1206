@@ -188,14 +188,16 @@ class HomePage extends BasePage {
                 this.luckyIcon.close();
             }}
         />);
-        tabList.map((item) => {
+        tabList.map((item, index) => {
             if (item.navType === 2) {
                 viewItems.push(<DIYTopicList tabLabel={item.navName}
                                              key={'id' + item.id}
+                                             index={index+1}
                                              data={item}/>);
             } else if (item.navType === 1) {
                 viewItems.push(<HomeNormalList tabLabel={item.navName}
                                                data={item}
+                                               index={index+1}
                                                key={'id' + item.id}/>);
             }
         });
@@ -205,7 +207,9 @@ class HomePage extends BasePage {
                                 hasMessage={this.state.hasMessage}/>
                 <ScrollableTabView
                     onChangeTab={(obj) => {
+
                         let i = obj.i;
+                        tabModel.changeTabIndex(i);
                         //首页回顶部
                         this.homeList && this.homeList.scrollToTop();
                         //埋点
@@ -232,7 +236,6 @@ class HomePage extends BasePage {
     }
 
     _renderTabBar(p) {
-        console.log('----' + JSON.stringify(p));
         let itemWidth = 60;
         let tabBarHeight = 42;
         return (
@@ -275,8 +278,9 @@ class HomePage extends BasePage {
                                     justifyContent: 'center',
                                     width: itemWidth
                                 }} onPress={() => {
+                                    tabModel.changeTabIndex(page)
                                     p.goToPage(page);
-                                }}>
+                                }} activeOpacity={0.7}>
                                     {showType === 2 ?
                                         <ImageLoader source={{ uri: isTabActive ? navIcon : bottomNavIcon }}
                                                      style={{

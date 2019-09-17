@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-    View,
-    ImageBackground,
-    TouchableOpacity,
-    FlatList,
-    Platform,
-    Image
-} from 'react-native';
+import { FlatList, Image, ImageBackground, Platform, TouchableOpacity, View } from 'react-native';
 import { MRText as Text } from '../../../components/ui/index';
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -94,6 +87,7 @@ export default class DetailNavShowModal extends Component {
     _renderItem = ({ item }) => {
         const messageCount = this.state.messageCount + QYChatModel.unreadCount;
         return <TouchableOpacity
+            activeOpacity={0.7}
             style={{
                 flexDirection: 'row',
                 alignItems: 'center',

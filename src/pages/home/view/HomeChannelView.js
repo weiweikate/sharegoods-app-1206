@@ -30,7 +30,7 @@ class Item extends Component {
         const { onPress, data, index } = this.props;
         const { image, title } = this.props.data;
         let source = { uri: image };
-        return <TouchableOpacity style={[styles.item, {
+        return <TouchableOpacity activeOpacity={0.7} style={[styles.item, {
             marginLeft: index % 5 === 0 ? 0 : this.itemSpace,
             marginRight: index % 5 === 4 ? 0 : this.itemSpace,
             marginTop: index > 4 ? px2dp(-6) : 0

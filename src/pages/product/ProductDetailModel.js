@@ -330,6 +330,7 @@ export default class ProductDetailModel {
         hours = hours >= 10 ? hours : hours === 0 ? '00' : `0${hours}`;
         minutes = minutes >= 10 ? minutes : minutes === 0 ? '00' : `0${minutes}`;
         second = second >= 10 ? second : second === 0 ? '00' : `0${second}`;
+        leave4 = leave4 >= 10 ? leave4 : leave4 === 0 ? '00' : `0${leave4}`;
         if (activityStatus === activity_status.unBegin) {
             if (this.activityType === activity_type.pinGroup) {
                 return `距开始${hours}:${minutes}:${second}:${leave4}`;
@@ -543,33 +544,47 @@ export default class ProductDetailModel {
                 }, upTime - now + 500);
             }
 
-            /**
-             * 0：未知1：普通商品2：秒杀商品3：套餐商品4：直降商品 7：礼包商品
-             */
-            let productType = 1;
-            if (this.activityStatus === activity_status.inSell) {
-                if (this.activityType === activity_type.skill) {
-                    productType = 2;
-                }
-                if (this.activityType === activity_type.verDown) {
-                    productType = 4;
-                }
-                if (this.activityType === activity_type.group) {
-                    productType = 3;
-                }
-            }
             /*商品详情埋点*/
             track(trackEvent.ProductDetail, {
                 productShowSource: this.trackType || 0,
                 sourceAttributeCode: this.trackCode || 0,
                 spuCode: this.prodCode,
                 spuName: name,
-                productType: productType,
+                productType: this.trackProductStatus(),
                 priceShareStore: groupPrice,
+                productStatus: this.activityStatus || 0,
                 priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : minPrice,
                 priceType: priceType === price_type.shop ? '100' : user.levelRemark
             });
         }
+    };
+
+    trackProductStatus = () => {
+        let productType = 1;
+        /**
+         * 0：未知1：普通商品2：秒杀商品3：套餐商品4：直降商品5:拼团 7：礼包商品
+         */
+        if (this.activityType === activity_type.skill) {
+            productType = 2;
+        } else if (this.activityType === activity_type.verDown) {
+            productType = 4;
+        } else if (this.activityType === activity_type.group) {
+            productType = 3;
+        } else if (this.activityType = activity_type.pinGroup) {
+            productType = 5;
+        }
+        return productType;
+    };
+
+    //按钮埋点
+    productDetailBtnClick = (text) => {
+        const { prodCode, name } = this;
+        track(trackEvent.productDetailBtnClick, {
+            spuCode: prodCode, spuName: name,
+            productType: this.trackProductStatus(),
+            productStatus: this.activityStatus || 0,
+            productDetailBtnName: text
+        });
     };
 
     @action productError = (error) => {
@@ -653,7 +668,7 @@ export default class ProductDetailModel {
                 activityTag
             });
             this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
-            this.productGroupModel.requestGroupProduct({ activityCode: code });
+            this.productGroupModel.requestGroupProduct({ activityCode: code, prodCode: this.prodCode });
             this.productGroupModel.requestGroupDesc();
         }).catch((e) => {
             this.productError(e);

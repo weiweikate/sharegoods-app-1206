@@ -27,7 +27,7 @@ const MoneyItems = ({ money }) => {
 
 export const Goods = ({ goods, press }) => {
     if (goods.linkType === 2) {
-        return <TouchableOpacity onPress={() => press && press()}>
+        return <TouchableOpacity activeOpacity={0.7} onPress={() => press && press()}>
             <ReuserImage style={styles.container} source={{ uri: goods.topicImage ? goods.topicImage : '' }}/>
         </TouchableOpacity>;
     }

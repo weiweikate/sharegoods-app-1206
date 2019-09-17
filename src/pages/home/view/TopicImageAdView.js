@@ -52,6 +52,7 @@ export class TopicImageAdView extends React.Component {
                             links.map((item,index) => {
                                 return (
                                     <TouchableOpacity
+                                        activeOpacity={0.7}
                                         key={data.imgs[0].src + '_' + index}
                                         onPress={() => {
                                             topicAdOnPress(data,item, this.props.p);
@@ -115,7 +116,7 @@ export function ImageAdViewGetHeight(data) {
         case '4':
             return viewHeight || ScreenUtils.autoSizeWidth(100);
         case 'carousel':
-            return viewHeight? (viewHeight+ScreenUtils.autoSizeWidth(0)): ScreenUtils.autoSizeWidth(160);
+            return ScreenUtils.autoSizeWidth(160);
     }
     return 0;
 }

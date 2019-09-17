@@ -1,16 +1,10 @@
 //拼店页面，店铺行数据
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import DesignRule from '../../../../constants/DesignRule';
 import UIImage from '@mr/image-placeholder';
-import {
-    MRText as Text
-} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
 
 export default class ShopInfoRow extends Component {
 
@@ -23,7 +17,7 @@ export default class ShopInfoRow extends Component {
     };
 
     render() {
-        return (<TouchableOpacity onPress={() => {
+        return (<TouchableOpacity activeOpacity={0.7} onPress={() => {
             this.props.id && this.props.click(this.props.id);
         }} style={styles.container}>
 

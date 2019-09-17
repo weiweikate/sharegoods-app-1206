@@ -34,7 +34,7 @@ export default class RecommendRow extends Component {
     }
 
     renderIconItem = ({ item }) => {
-        return (<TouchableOpacity onPress={() => {
+        return (<TouchableOpacity activeOpacity={0.7} onPress={() => {
         }} style={[styles.itemIcon, { marginLeft: 15 }]}>
             <AvatarImage style={styles.itemIcon} source={{ uri: item.headImg }} borderRadius={20}/>
         </TouchableOpacity>);
@@ -119,7 +119,7 @@ export default class RecommendRow extends Component {
                         </View>
                         <Text style={{ marginTop: 9, color: '#939393', fontSize: 12 }}
                               allowFontScaling={false}>店铺等级</Text>
-                        <TouchableOpacity style={styles.joinBtn} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} style={styles.joinBtn} onPress={() => {
                             this._onPress();
                         }}>
                             <Text style={styles.joinText} allowFontScaling={false}>+申请加入</Text>

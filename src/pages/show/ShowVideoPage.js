@@ -59,7 +59,7 @@ export default class ShowVideoPage extends BasePage {
     _renderNormalTitle() {
         return (
             <View style={styles.navTitle}>
-                <TouchableOpacity style={styles.backView} onPress={() => routePop()}>
+                <TouchableOpacity activeOpacity={0.7} style={styles.backView} onPress={() => routePop()}>
                     <Image source={res.button.icon_header_back} style={{ width: 30, height: 30 }}/>
                 </TouchableOpacity>
             </View>

@@ -17,10 +17,11 @@ const api = {
     /**拼团**/
     //是否参与当前商品团
     promotion_group_checkStartJoinUser: ['/promotion/group/checkStartJoinUser', { method: 'get' }],
-    //商品团列表
+    //正在开团列表
     promotion_group_togetherJoin: ['/promotion/group/togetherJoin', { method: 'get' }],
     //团参与的人数
     promotion_group_joinUser: ['/promotion/group/joinUser', { method: 'get' }],
+    checkGroupCanJoin: ['/promotion/group/checkGroupCanJoin', { method: 'get' }],
     //大家都在拼
     promotion_group_itemJoinList: ['/promotion/group/itemJoinList', { method: 'get' }],
     //拼团玩法描述

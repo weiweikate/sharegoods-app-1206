@@ -37,7 +37,7 @@ import PullView from '../components/pulltorefreshlayout';
 import WhiteModel from '../../show/model/WhiteModel';
 import { mediatorCallFunc } from '../../../SGMediator';
 import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
-import MineSpellGroupView from './spellGroup/components/MineSpellGroupView'
+import MineSpellGroupView from './spellGroup/components/MineSpellGroupView';
 import TimeModel from '../model/TimeModel';
 
 const {
@@ -104,7 +104,7 @@ export default class MinePage extends BasePage {
             hasFansMSGNum: 0,
             modalId: false,
             adArr: [],
-            groupData: {},
+            groupData: {}
         };
 
     }
@@ -154,7 +154,7 @@ export default class MinePage extends BasePage {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.willBlurSubscription && this.willBlurSubscription.remove();
         this.listener && this.listener.remove();
-        TimeModel.stopMineTime()
+        TimeModel.stopMineTime();
     }
 
     handleBackPress = () => {
@@ -196,17 +196,18 @@ export default class MinePage extends BasePage {
      * @func 请求是否有参与拼团且拼团即将结束
      */
     loadGroupList = () => {
-        MineApi.getGroupList({page: 1, size: 10, groupStatus: 2}).then((result) => {
-            if (result.data&&!EmptyUtils.isEmpty(result.data.data)) {
+        MineApi.getGroupList({ page: 1, size: 10, groupStatus: 2 }).then((result) => {
+            if (result.data && !EmptyUtils.isEmpty(result.data.data)) {
                 this.setState({
                     groupData: result.data.data[0]
                 });
-            }else {
+            } else {
                 this.setState({
                     groupData: []
                 });
             }
-        }).catch((error) => {});
+        }).catch((error) => {
+        });
     };
 
     loadMessageCount = () => {
@@ -707,8 +708,8 @@ export default class MinePage extends BasePage {
                         marginBottom: px2dp(10)
                     }}>
 
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <View style={{width: 2, height: 8, backgroundColor: '#FF0050', borderRadius: 1}}/>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ width: 2, height: 8, backgroundColor: '#FF0050', borderRadius: 1 }}/>
                             <UIText value={'我的订单'}
                                     style={{
                                         marginLeft: 10,
@@ -717,7 +718,7 @@ export default class MinePage extends BasePage {
                                         fontWeight: '600'
                                     }}/>
                         </View>
-                        <View style={{flexDirection: 'row', marginRight: 10, alignItems: 'center',}}>
+                        <View style={{ flexDirection: 'row', marginRight: 10, alignItems: 'center' }}>
                             <UIText value={'查看全部'}
                                     style={{
                                         fontSize: DesignRule.fontSize_24,
@@ -728,7 +729,7 @@ export default class MinePage extends BasePage {
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
-    {/*<ScrollView style={{ width: DesignRule.width - DesignRule.margin_page * 2 }} horizontal={true}*/}
+                {/*<ScrollView style={{ width: DesignRule.width - DesignRule.margin_page * 2 }} horizontal={true}*/}
                 {/*showsHorizontalScrollIndicator={false}>*/}
                 <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(15) }}>
                     {this.renderOrderStates()}
@@ -779,7 +780,7 @@ export default class MinePage extends BasePage {
                 {this.orderRender()}
                 <MineSpellGroupView data={this.state.groupData}
                                     timeEnd={this.loadGroupList}
-                                    itemClick={()=>{
+                                    itemClick={() => {
                                         this.$navigate(RouterMap.SpellGroupList);
                                     }}
                 />
@@ -800,7 +801,7 @@ export default class MinePage extends BasePage {
                 {this.state.adArr.map((item, index) => {
                     return (
                         <View>
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
                                 console.log('item', item);
                                 track(trackEvent.bannerClick, {
                                     bannerLocation: 61,
@@ -998,7 +999,7 @@ export default class MinePage extends BasePage {
                     <View style={{ paddingTop: 7, paddingLeft: 8, paddingRight: 8, paddingBottom: 0 }}>
                         <UIImage source={menu[i].icon}
                                  resizeMode={'contain'}
-                                 style={{ width: 24, height: 24,marginBottom: 5 }}/>
+                                 style={{ width: 24, height: 24, marginBottom: 5 }}/>
                         {menu[i].num ? <View style={{
                             minWidth: 16,
                             height: 16,

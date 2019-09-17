@@ -59,7 +59,7 @@ export default class BottomSingleSelectModal extends Component {
         for (let i = 0; i < nameArr.length; i++) {
             itemArr.push(
                 <View key={i}>
-                    <TouchableOpacity key={i} style={{
+                    <TouchableOpacity activeOpacity={0.7} key={i} style={{
                         height: 48,
                         justifyContent: 'center',
                         backgroundColor: this.state.currentSelect === i ? DesignRule.bgColor : 'white'
@@ -106,11 +106,11 @@ export default class BottomSingleSelectModal extends Component {
                         borderBottomWidth: DesignRule.lineHeight,
                         borderBottomColor: DesignRule.lineColor_inWhiteBg
                     }}>
-                        <TouchableOpacity style={{ paddingRight: 17, width: 50 }}>
+                        <TouchableOpacity activeOpacity={0.7} style={{ paddingRight: 17, width: 50 }}>
                             <UIText value={' '} style={{ color: DesignRule.textColor_hint, fontSize: 24 }}/>
                         </TouchableOpacity>
                         <UIText value={'请选择'}/>
-                        <TouchableOpacity style={{ paddingLeft: 17, width: 50 }}
+                        <TouchableOpacity activeOpacity={0.7} style={{ paddingLeft: 17, width: 50 }}
                                           onPress={() => {this.close()}}>
                             <UIText value={'x'} style={{ color: DesignRule.textColor_hint, fontSize: 24 }}/>
                         </TouchableOpacity>
@@ -118,7 +118,7 @@ export default class BottomSingleSelectModal extends Component {
                     <ScrollView >
                     {this.renderMenu()}
                     </ScrollView>
-                    <TouchableOpacity style={{  height:  45 ,justifyContent: 'center', alignItems: 'center',backgroundColor: DesignRule.mainColor}}
+                    <TouchableOpacity activeOpacity={0.7} style={{  height:  45 ,justifyContent: 'center', alignItems: 'center',backgroundColor: DesignRule.mainColor}}
                                       onPress={() => {this.commitSelect()}}>
                         <UIText value={'确定'} style={{ color: 'white', fontSize: 16}}/>
                     </TouchableOpacity>
