@@ -24,8 +24,8 @@ export const HomeSource = {
     alert: 1,//首页弹窗广告位
     banner: 2,//首页BANNER广告位
     icon: 3,//首页icon图标
-    newbanner: 4,//首页通栏BANNER
-    recommend: 5,//首页推荐位
+    expandBnner: 4,//首页通栏BANNER
+    focusAd: 5,//首页推荐位
     limitGo: 6,//限时购
     marketing: 7,//首页配置
     hot: 8,//首页超值热卖
@@ -36,10 +36,10 @@ export const HomeSource = {
 }
 
 export function getSGscm(source = 'none',id = 'none', strategy = 'none', algorithm = 'none') {
-    return source + id + strategy + algorithm
+    return {sgscm: source + id + strategy + algorithm}
 }
 
 
 export function getSGspm_home(source,index = 1) {
-  return '1,1'+source+index
+  return {sgspm:'1,1'+source+index}
 }
