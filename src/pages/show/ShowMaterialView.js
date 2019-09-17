@@ -165,7 +165,7 @@ export default class ShowMaterialView extends React.Component {
                                                spuName: product.name,
                                                author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
                                            });
-                                           routePush(RouterMap.ProductDetailPage, { productCode: product.prodCode,trackType:3,trackCode:showNo });
+                                           routePush(RouterMap.ProductDetailPage, { productCode: product.prodCode,trackType:3,trackCode:showNo ,sgscm:`2.${showNo}.none.none`});
                                        }}
 
                                        onAddCartClick={({ nativeEvent }) => {

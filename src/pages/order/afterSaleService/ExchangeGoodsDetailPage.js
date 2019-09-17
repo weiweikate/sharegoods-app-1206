@@ -334,7 +334,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     urlString: '',
                     title: this.kefuData.title || '平台客服',
                     shopId: this.kefuData.shopId || '',
-                    chatType: beginChatType.BEGIN_FROM_ORDER,
+                    chatType: beginChatType.BEGIN_FROM_AFTER,
                     data: {
                         title: merchantOrderNo,
                         desc,
@@ -352,7 +352,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                             urlString: '',
                             title: this.kefuData.title || '平台客服',
                             shopId: this.kefuData.shopId || '',
-                            chatType: beginChatType.BEGIN_FROM_ORDER,
+                            chatType: beginChatType.BEGIN_FROM_AFTER,
                             data: {
                                 title: merchantOrderNo,
                                 desc,

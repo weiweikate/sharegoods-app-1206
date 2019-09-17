@@ -244,7 +244,8 @@ export default class ShowHotView extends React.Component {
                                            routePush(RouterMap.ProductDetailPage, {
                                                productCode: product.prodCode,
                                                trackType: 3,
-                                               trackCode: showNo
+                                               trackCode: showNo,
+                                               sgscm:`2.${showNo}.none.none`
                                            });
                                        }}
 

@@ -92,7 +92,8 @@ export default class SectionHeaderView extends Component {
                 width: section_width,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                flexWrap: 'wrap'
+                flexWrap: 'wrap',
+                alignSelf:'center'
             }}>
                 <View style={{ width: section_width, height: px2dp(15) }}/>
                 <View
