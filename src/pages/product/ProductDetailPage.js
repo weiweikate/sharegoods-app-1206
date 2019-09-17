@@ -77,6 +77,8 @@ export default class ProductDetailPage extends BasePage {
         this.productDetailModel.prodCode = this.params.productCode;
         this.productDetailModel.trackCode = this.params.trackCode;
         this.productDetailModel.trackType = this.params.trackType;
+        this.productDetailModel.sgscm = this.params.sgscm;
+        this.productDetailModel.sgspm = this.params.sgspm;
     }
 
     _getPageStateOptions = () => {
@@ -185,7 +187,9 @@ export default class ProductDetailPage extends BasePage {
             shopCartCacheTool.addGoodItem({
                 'amount': amount,
                 'skuCode': skuCode,
-                'productCode': prodCode
+                'productCode': prodCode,
+                'sgscm':this.productDetailModel.sgscm,
+                'sgspm':this.productDetailModel.sgspm,
             });
             /*加入购物车埋点*/
             track(trackEvent.AddToShoppingcart, {
@@ -215,6 +219,8 @@ export default class ProductDetailPage extends BasePage {
                     orderParamVO: {
                         orderType: 1,
                         source: 2,
+                        sgscm:this.productDetailModel.sgscm,
+                        sgspm:this.productDetailModel.sgspm,
                         orderProducts: [{
                             activityCode: code,
                             batchNo: 1,
@@ -243,6 +249,8 @@ export default class ProductDetailPage extends BasePage {
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
                     orderType: 99,
+                    sgscm:this.productDetailModel.sgscm,
+                    sgspm:this.productDetailModel.sgspm,
                     orderProducts: orderProducts,
                     source: parseInt(type) === 9 ? 4 : 2,
                     couponsId: parseInt(couponId)
