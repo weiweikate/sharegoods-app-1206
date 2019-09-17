@@ -39,6 +39,7 @@ import { mediatorCallFunc } from '../../../SGMediator';
 import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
 import MineSpellGroupView from './spellGroup/components/MineSpellGroupView';
 import TimeModel from '../model/TimeModel';
+import LinearGradient from 'react-native-linear-gradient';
 
 const {
     // mine_header_bg,
@@ -68,11 +69,11 @@ const {
 
 const vipBg = res.homeBaseImg.mine_vip_bg;
 const vipStatus = {
-    'supMember': {img: res.homeBaseImg.mine_vip_supMember,  width: 106, height: 25},
-    'partner': {img: res.homeBaseImg.mine_vip_partner,      width: 124, height: 25},
-    'noviciate': {img: res.homeBaseImg.mine_vip_noviciate,  width: 107, height: 25},
-    'beBoss': {img: res.homeBaseImg.mine_vip_beBoss,        width: 63 , height: 25},
-    'boss': {img: res.homeBaseImg.mine_vip_boss,            width: 38, height: 25},
+    'supMember': {img: res.homeBaseImg.mine_vip_supMember,  width: 78, height: 25, text:' · 超级会员  更多权益'},
+    'partner': {img: res.homeBaseImg.mine_vip_partner,      width: 94, height: 25, text:' · 做合伙人拿奖励金'},
+    'noviciate': {img: res.homeBaseImg.mine_vip_noviciate,  width: 79, height: 25, text:' · 开启属于你的店铺'},
+    'beBoss': {img: res.homeBaseImg.mine_vip_beBoss,        width: 35, height: 25, text:' · 秀一秀  赚到够'},
+    'boss': {img: res.homeBaseImg.mine_vip_boss,            width: 38, height: 25, text:' · 秀一秀  赚到够'},
 };
 /**
  * @author chenxiang
@@ -85,7 +86,7 @@ const vipStatus = {
 const { px2dp, headerHeight, statusBarHeight, getImgHeightWithWidth } = ScreenUtils;
 const headerBgSize = { width: 375, height: 237 };
 const scaleHeaderSize = getImgHeightWithWidth(headerBgSize);
-const halfScaleHeaderSize = scaleHeaderSize / 2;
+// const halfScaleHeaderSize = scaleHeaderSize / 2;
 // const offset = scaleHeaderSize - headerHeight;
 @observer
 export default class MinePage extends BasePage {
@@ -227,7 +228,7 @@ export default class MinePage extends BasePage {
     _onScroll = (event) => {
         this.offsetY = event.nativeEvent.contentOffset.y;
 
-        if (this.offsetY <= halfScaleHeaderSize) {
+        if (this.offsetY <= 0) {
             if (!this.state.changeHeader) {
                 this.setState({
                     changeHeader: true
@@ -289,7 +290,6 @@ export default class MinePage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <PullView
-                    bounces={false}
                     contentBackgroundColor={'#F7F7F7'}
                     backgroundColor={'white'}
                     renderForeground={this.renderUserHead}
@@ -299,7 +299,6 @@ export default class MinePage extends BasePage {
                     onScroll={this._onScroll}
                     showsVerticalScrollIndicator={false}
                 >
-                    {this.renderLevelName()}
                     {this.renderBodyView()}
                 </PullView>
                 {/*{this.navRender()}*/}
@@ -399,80 +398,49 @@ export default class MinePage extends BasePage {
                     {this.accountRender()}
                 </View>
                 {this.copyModalRender()}
-                {/*{this.renderLevelName(index)}*/}
+                {this.renderLevelName()}
             </View>
         );
     };
 
     renderLevelName = () => {
         return (
-            <View style={{flex:1,marginTop:10}}>
+            <View style={{flex: 1, marginTop: 10, justifyContent: 'flex-end'}}>
                 <ImageBackground style={{
                     alignSelf: 'center',
                     flexDirection: 'row',
                     alignItems: 'center',
-                    width:ScreenUtils.width,
+                    width: ScreenUtils.width,
                     height: (ScreenUtils.width) * 54 / 381,
                     borderRadius: 10
                 }} source={vipBg}>
-                    <View style={{flexDirection: 'row', marginLeft:33,marginRight:27}}>
-                        <Image style={{width:vipStatus.supMember.width, height:vipStatus.supMember.height}} source={vipStatus.supMember.img}/>
+                    <View style={{flexDirection: 'row', marginLeft: 33, alignItems: 'center'}}>
+                        <Text style={{color: 'white', fontSize: 12}}>成为</Text>
+                        <Image style={{width: vipStatus.partner.width, height: vipStatus.partner.height}}
+                               source={vipStatus.partner.img}/>
+                        <Text style={{color: 'white', fontSize: 12}}>{vipStatus.partner.text}</Text>
+                        <View style={{flex:1,alignItems:'flex-end', marginRight:27}}>
+                        <LinearGradient style={styles.btnStyle}
+                                        start={{x: 0, y: 0}}
+                                        end={{x: 1, y: 1}}
+                                        colors={['#FFE1C2', '#FFFEE3']}
+                        >
+                            <TouchableOpacity activeOpacity={0.8} style={{alignItems: 'center'}}
+                                              onPress={() => {
+                                              }}>
+                                <View style={styles.btnStyle}>
+                                    <Text style={{color: '#333333', fontSize: 12}} allowFontScaling={false}>
+                                        如何开通
+                                    </Text>
+                                    <Image source={res.homeBaseImg.mine_arrow_black}
+                                           style={{width: 12, height: 12}}/>
+                                </View>
+                            </TouchableOpacity>
+                        </LinearGradient>
                     </View>
-                </ImageBackground>
-
-                <ImageBackground style={{
-                    alignSelf: 'center',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width:ScreenUtils.width,
-                    height: (ScreenUtils.width) * 54 / 381,
-                    borderRadius: 10
-                }} source={vipBg}>
-                    <View style={{flexDirection: 'row', marginLeft:33,marginRight:27}}>
-                        <Image style={{width:vipStatus.partner.width, height:vipStatus.partner.height}} source={vipStatus.partner.img}/>
-                    </View>
-                </ImageBackground>
-
-                <ImageBackground style={{
-                    alignSelf: 'center',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width:ScreenUtils.width,
-                    height: (ScreenUtils.width) * 54 / 381,
-                    borderRadius: 10
-                }} source={vipBg}>
-                    <View style={{flexDirection: 'row', marginLeft:33,marginRight:27}}>
-                        <Image style={{width:vipStatus.noviciate.width, height:vipStatus.noviciate.height}} source={vipStatus.noviciate.img}/>
-                    </View>
-                </ImageBackground>
-
-                <ImageBackground style={{
-                    alignSelf: 'center',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width:ScreenUtils.width,
-                    height: (ScreenUtils.width) * 54 / 381,
-                    borderRadius: 10
-                }} source={vipBg}>
-                    <View style={{flexDirection: 'row', marginLeft:33,marginRight:27}}>
-                        <Image style={{width:vipStatus.beBoss.width, height:vipStatus.beBoss.height}} source={vipStatus.beBoss.img}/>
-                    </View>
-                </ImageBackground>
-
-                <ImageBackground style={{
-                    alignSelf: 'center',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width:ScreenUtils.width,
-                    height: (ScreenUtils.width) * 54 / 381,
-                    borderRadius: 10
-                }} source={vipBg}>
-                    <View style={{flexDirection: 'row', marginLeft:33,marginRight:27}}>
-                        <Image style={{width:vipStatus.boss.width, height:vipStatus.boss.height}} source={vipStatus.boss.img}/>
                     </View>
                 </ImageBackground>
             </View>
-
         );
     };
 
@@ -1201,5 +1169,13 @@ const styles = StyleSheet.create({
     copyTextStyle: {
         color: DesignRule.white,
         fontSize: DesignRule.fontSize_22
+    },
+    btnStyle:{
+        flexDirection: 'row',
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius: 10,
+        width:73,
+        height:20
     }
 });
