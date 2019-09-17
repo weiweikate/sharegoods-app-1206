@@ -19,7 +19,6 @@ import {
 } from 'react-native';
 
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from '../../../../constants/DesignRule';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { homeType } from '../../HomeTypes';
 import { ImageAdViewGetHeight, TopicImageAdView } from '../TopicImageAdView';
