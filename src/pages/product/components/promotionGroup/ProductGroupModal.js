@@ -70,6 +70,7 @@ export class GroupPersonAllList extends Component {
                        visible={this.state.modalVisible}
                        transparent={true}>
                 <View style={stylesAll.containerView}>
+                    <NoMoreClick style={{flex:1}} onPress={this._close}/>
                     <View style={[stylesAll.container, {height: viewHeight, width}]}>
                         <View style={stylesAll.topView}>
                             <MRText style={stylesAll.topLText}>正在凑团</MRText>
@@ -82,6 +83,7 @@ export class GroupPersonAllList extends Component {
                             })}
                         </ScrollView>
                     </View>
+
                 </View>
             </CommModal>
         );
