@@ -111,7 +111,7 @@ export default class SpellGroupList extends BasePage {
         return <DefaultTabBar
             backgroundColor={'white'}
             activeTextColor={DesignRule.mainColor}
-            inactiveTextColor={DesignRule.textColor_instruction}
+            inactiveTextColor={DesignRule.textColor_secondTitle}
             textStyle={styles.tabBarText}
             underlineStyle={styles.tabBarUnderline}
             style={styles.tabBar}
