@@ -88,7 +88,7 @@ export default class HttpUtils {
     static async get(uri, isRSA, params) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
-        if (params) {
+        if (params && params.length > 0) {
             if (url.indexOf('?') > -1) {
                 url = url + '&' + Qs.stringify(params);
             } else {
@@ -113,7 +113,8 @@ export default class HttpUtils {
                     'sg-token': token ? token : '',
                     'platform': this.platform,
                     'version': rsa_config.version,
-                    'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
+                    'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
+                    'DEV_ENV_BRANCH': 'XG-100.FY'
                 }
             };
             return axios.get(url, config);
@@ -160,7 +161,8 @@ export default class HttpUtils {
                 'sg-token': token ? token : '',
                 'platform': this.platform,
                 'version': rsa_config.version,
-                'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
+                'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
+                'DEV_ENV_BRANCH': 'XG-100.FY'
             };
             return axios.post(url, params, config);
         }).then(response => {

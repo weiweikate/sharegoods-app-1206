@@ -31,7 +31,12 @@ export default function ApiUtils(Urls) {
                     msg: '用户登录失效'
                 });
             }
-            const response = await HttpUtils[method](url, isRSA, params, config);
+            //路径传参
+            const { pathValue, ...paramsOutPathValue } = params || {};
+            if (pathValue) {
+                url = url + pathValue;
+            }
+            const response = await HttpUtils[method](url, isRSA, paramsOutPathValue, config);
             // code为0表明请求正常
             if (!response.code || response.code === 10000) {
                 filter && filter(response);
