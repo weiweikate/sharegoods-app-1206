@@ -138,6 +138,8 @@ const api = {
     getGroupList:['/promotion/group/us',{method:'get'}],
     //设置页面短信开关
     setMessageStatus:['/user/setContactInformationStatus',{method:'post'}],
+    //获取用户下一个会员身份
+    getNextBenefitPackageInfo:['/member/benefits/getNextBenefitPackageInfo',{method:'post'}],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

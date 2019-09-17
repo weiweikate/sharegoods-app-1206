@@ -69,12 +69,19 @@ const {
 
 const vipBg = res.homeBaseImg.mine_vip_bg;
 const vipStatus = {
-    'supMember': {img: res.homeBaseImg.mine_vip_supMember,  width: 78, height: 25, text:' · 超级会员  更多权益'},
-    'partner': {img: res.homeBaseImg.mine_vip_partner,      width: 94, height: 25, text:' · 做合伙人拿奖励金'},
-    'noviciate': {img: res.homeBaseImg.mine_vip_noviciate,  width: 79, height: 25, text:' · 开启属于你的店铺'},
-    'beBoss': {img: res.homeBaseImg.mine_vip_beBoss,        width: 35, height: 25, text:' · 秀一秀  赚到够'},
-    'boss': {img: res.homeBaseImg.mine_vip_boss,            width: 38, height: 25, text:' · 秀一秀  赚到够'},
+    'supMember': {img: res.homeBaseImg.mine_vip_supMember,  width: 78, height: 25, text:' · 超级会员  更多权益', title:'supMember'},
+    'partner': {img: res.homeBaseImg.mine_vip_partner,      width: 94, height: 25, text:' · 做合伙人拿奖励金', title:'partner'},
+    'shopkeeper': {img: res.homeBaseImg.mine_vip_noviciate, width: 79, height: 25, text:' · 开启属于你的店铺', title:'shopkeeper'},
+    'beBoss': {img: res.homeBaseImg.mine_vip_beBoss,        width: 35, height: 25, text:' · 秀一秀  赚到够', title:'beBoss'},
+    'boss': {img: res.homeBaseImg.mine_vip_boss,            width: 38, height: 25, text:' · 秀一秀  赚到够', title:'boss'},
 };
+
+const eumState={
+    'benefit_package_super_member':'supMember', //超级会员
+    'benefit_package_store_partner':'partner',  //会员合伙人
+    'benefit_package_ready_shopkeeper':'shopkeeper', //见习店长
+    'benefit_package_shopkeeper':'beBoss', //成为店长
+}
 /**
  * @author chenxiang
  * @date on 2018/9/13
@@ -105,7 +112,8 @@ export default class MinePage extends BasePage {
             hasFansMSGNum: 0,
             modalId: false,
             adArr: [],
-            groupData: {}
+            groupData: {},
+            currentUserState:{}
         };
 
     }
@@ -139,6 +147,7 @@ export default class MinePage extends BasePage {
                 this.loadAd();
                 this.loadGroupList();
                 this._needShowFans();
+                this.getNextBenefit();
                 WhiteModel.saveWhiteType();
                 console.log('willFocusSubscriptionMine', state);
                 if (state && state.routeName === 'MinePage') {
@@ -192,6 +201,37 @@ export default class MinePage extends BasePage {
         });
 
     };
+
+    /**
+    * @func 当前会员下一个会员身份请求
+    */
+    getNextBenefit=()=>{
+        MineApi.getNextBenefitPackageInfo().then((res)=>{
+            if (res.data && res.data.currentPackageVO && res.data.nextPackageVO) {
+                let current = res.data.currentPackageVO;
+                let next = res.data.nextPackageVO;
+                if(current.uniqueId !== next.uniqueId){
+                    let str =  eumState[next.uniqueId];
+                    this.setState({
+                        currentUserState: vipStatus[str]
+                    })
+                }
+                if(current.uniqueId === next.uniqueId){
+                    this.setState({
+                        currentUserState: vipStatus.boss
+                    })
+                }
+            }else {
+                this.setState({
+                    currentUserState: {}
+                })
+            }
+        }).catch(err=>{
+            this.setState({
+                currentUserState: {}
+            })
+        });
+    }
 
     /**
      * @func 请求是否有参与拼团且拼团即将结束
@@ -404,6 +444,9 @@ export default class MinePage extends BasePage {
     };
 
     renderLevelName = () => {
+        const {currentUserState} = this.state;
+        let data = !EmptyUtils.isEmpty(currentUserState) ? currentUserState : vipStatus.supMember;
+        let isTopVip = currentUserState && currentUserState.title === 'boss';
         return (
             <View style={{flex: 1, marginTop: 10, justifyContent: 'flex-end'}}>
                 <ImageBackground style={{
@@ -416,8 +459,8 @@ export default class MinePage extends BasePage {
                 }} source={vipBg}>
                     <View style={{flexDirection: 'row', marginLeft: 33, alignItems: 'center'}}>
                         <Text style={{color: 'white', fontSize: 12}}>成为</Text>
-                        <Image style={{width: vipStatus.partner.width, height: vipStatus.partner.height}}
-                               source={vipStatus.partner.img}/>
+                        <Image style={{width: data.width, height: data.height}}
+                               source={data.img}/>
                         <Text style={{color: 'white', fontSize: 12}}>{vipStatus.partner.text}</Text>
                         <View style={{flex:1,alignItems:'flex-end', marginRight:27}}>
                         <LinearGradient style={styles.btnStyle}
@@ -427,10 +470,12 @@ export default class MinePage extends BasePage {
                         >
                             <TouchableOpacity activeOpacity={0.8} style={{alignItems: 'center'}}
                                               onPress={() => {
+                                                  this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
+                                                  TrackApi.ViewLevelInterest({ moduleSource: 2 });
                                               }}>
                                 <View style={styles.btnStyle}>
                                     <Text style={{color: '#333333', fontSize: 12}} allowFontScaling={false}>
-                                        如何开通
+                                        {isTopVip ? '查看权益' : '如何开通'}
                                     </Text>
                                     <Image source={res.homeBaseImg.mine_arrow_black}
                                            style={{width: 12, height: 12}}/>
@@ -484,7 +529,7 @@ export default class MinePage extends BasePage {
                     </Text>
                 </View>
                 <TouchableWithoutFeedback onPress={() => {
-                    this.$navigate(RouterMap.MyPromotionPage);
+                    this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
                     TrackApi.ViewLevelInterest({ moduleSource: 2 });
                 }}>
                     <View style={{
@@ -492,7 +537,7 @@ export default class MinePage extends BasePage {
                         alignItems: 'center', marginRight: 15, backgroundColor: '#FFE6B1', borderRadius: 12
                     }}>
                         <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22 }}>
-                            {user.token ? `${user.levelName ? user.levelName : ''}品鉴官>` : ''}
+                            查看权益
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>

@@ -190,7 +190,7 @@ export default class SetMentorPage extends BasePage {
             }}>
                 {
                     canCommit ? <LinearGradient start={{x: 0, y: 0}} end={{x: 0, y: 1}}
-                                                colors={['#FF1C89', '#FD0128']}
+                                                colors={['#FC5D39', '#FF0050']}
                                                 style={styles.buttonStyle}>
                         <Text style={styles.buttonTextStyle}>
                             设置他为我的服务顾问
