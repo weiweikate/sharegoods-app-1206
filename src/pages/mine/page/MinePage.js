@@ -66,14 +66,14 @@ const {
     mine_showOrder
 } = res.homeBaseImg;
 
-const vipBg = [
-    res.homeBaseImg.mine_line_v0,
-    res.homeBaseImg.mine_line_v1,
-    res.homeBaseImg.mine_line_v2,
-    res.homeBaseImg.mine_line_v3,
-    res.homeBaseImg.mine_line_v4,
-    res.homeBaseImg.mine_line_v5];
-
+const vipBg = res.homeBaseImg.mine_vip_bg;
+const vipStatus = {
+    'supMember': {img: res.homeBaseImg.mine_vip_supMember,  width: 106, height: 25},
+    'partner': {img: res.homeBaseImg.mine_vip_partner,      width: 124, height: 25},
+    'noviciate': {img: res.homeBaseImg.mine_vip_noviciate,  width: 107, height: 25},
+    'beBoss': {img: res.homeBaseImg.mine_vip_beBoss,        width: 63 , height: 25},
+    'boss': {img: res.homeBaseImg.mine_vip_boss,            width: 38, height: 25},
+};
 /**
  * @author chenxiang
  * @date on 2018/9/13
@@ -299,6 +299,7 @@ export default class MinePage extends BasePage {
                     onScroll={this._onScroll}
                     showsVerticalScrollIndicator={false}
                 >
+                    {this.renderLevelName()}
                     {this.renderBodyView()}
                 </PullView>
                 {/*{this.navRender()}*/}
@@ -343,7 +344,7 @@ export default class MinePage extends BasePage {
                 index = i;
             }
         }
-
+        console.log(index)
         let name = '';
 
         if (EmptyUtils.isEmpty(user.nickname)) {
@@ -398,53 +399,80 @@ export default class MinePage extends BasePage {
                     {this.accountRender()}
                 </View>
                 {this.copyModalRender()}
-                {this.renderLevelName(index)}
+                {/*{this.renderLevelName(index)}*/}
             </View>
         );
     };
 
-    renderLevelName = (index) => {
+    renderLevelName = () => {
         return (
-            <ImageBackground style={{
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                height: (ScreenUtils.width - px2dp(30)) * 37 / 346,
-                marginHorizontal: px2dp(15),
-                borderRadius: 10
-            }} source={index !== 10 ? vipBg[index] : vipBg[2]}>
-                <View style={{
+            <View style={{flex:1,marginTop:10}}>
+                <ImageBackground style={{
+                    alignSelf: 'center',
                     flexDirection: 'row',
-                    justifyContent: 'center',
-                    marginLeft: 20,
-                    marginRight: 20
-                }}>
-                    <Text style={{
-                        flex: 1,
-                        color: index === 2 || index === 4 || index === 5 ? '#FFE6B1' : DesignRule.textColor_mainTitle,
-                        fontSize: DesignRule.fontSize_threeTitle,
-                        fontWeight: '600'
-                    }}>
-                        {user.token ? index !== 10 ? `V${index}${user.levelName ? user.levelName : ''}品鉴官` : '' : ''}
-                    </Text>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.$navigate(RouterMap.MyPromotionPage);
-                        TrackApi.ViewLevelInterest({ moduleSource: 2 });
-                    }}>
-                        <View>
-                            <ImageBackground style={{
-                                height: 20, width: 73, justifyContent: 'center',
-                                alignItems: 'center'
-                            }} source={res.homeBaseImg.mine_btn_yellow}>
-                                <Text
-                                    style={{ color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22 }}>
-                                    查看权益>
-                                </Text>
-                            </ImageBackground>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View>
-            </ImageBackground>
+                    alignItems: 'center',
+                    width:ScreenUtils.width,
+                    height: (ScreenUtils.width) * 54 / 381,
+                    borderRadius: 10
+                }} source={vipBg}>
+                    <View style={{flexDirection: 'row', marginLeft:33,marginRight:27}}>
+                        <Image style={{width:vipStatus.supMember.width, height:vipStatus.supMember.height}} source={vipStatus.supMember.img}/>
+                    </View>
+                </ImageBackground>
+
+                <ImageBackground style={{
+                    alignSelf: 'center',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width:ScreenUtils.width,
+                    height: (ScreenUtils.width) * 54 / 381,
+                    borderRadius: 10
+                }} source={vipBg}>
+                    <View style={{flexDirection: 'row', marginLeft:33,marginRight:27}}>
+                        <Image style={{width:vipStatus.partner.width, height:vipStatus.partner.height}} source={vipStatus.partner.img}/>
+                    </View>
+                </ImageBackground>
+
+                <ImageBackground style={{
+                    alignSelf: 'center',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width:ScreenUtils.width,
+                    height: (ScreenUtils.width) * 54 / 381,
+                    borderRadius: 10
+                }} source={vipBg}>
+                    <View style={{flexDirection: 'row', marginLeft:33,marginRight:27}}>
+                        <Image style={{width:vipStatus.noviciate.width, height:vipStatus.noviciate.height}} source={vipStatus.noviciate.img}/>
+                    </View>
+                </ImageBackground>
+
+                <ImageBackground style={{
+                    alignSelf: 'center',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width:ScreenUtils.width,
+                    height: (ScreenUtils.width) * 54 / 381,
+                    borderRadius: 10
+                }} source={vipBg}>
+                    <View style={{flexDirection: 'row', marginLeft:33,marginRight:27}}>
+                        <Image style={{width:vipStatus.beBoss.width, height:vipStatus.beBoss.height}} source={vipStatus.beBoss.img}/>
+                    </View>
+                </ImageBackground>
+
+                <ImageBackground style={{
+                    alignSelf: 'center',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width:ScreenUtils.width,
+                    height: (ScreenUtils.width) * 54 / 381,
+                    borderRadius: 10
+                }} source={vipBg}>
+                    <View style={{flexDirection: 'row', marginLeft:33,marginRight:27}}>
+                        <Image style={{width:vipStatus.boss.width, height:vipStatus.boss.height}} source={vipStatus.boss.img}/>
+                    </View>
+                </ImageBackground>
+            </View>
+
         );
     };
 
