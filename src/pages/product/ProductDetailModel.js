@@ -121,6 +121,10 @@ export default class ProductDetailModel {
     @observable monthSaleCount;
     /*商品库存全*/
     @observable skuList = [];
+    //位置来源
+    @observable sgspm = null;
+    //业务来源
+    @observable sgscm = null;
 
     /**根据现有库存和地区库存结合成新德skuList**/
     @computed get skuListByArea() {

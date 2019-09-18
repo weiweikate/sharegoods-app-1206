@@ -82,7 +82,7 @@ export default class SetMentorPage extends BasePage {
             // this.$toastShow(error.msg);
             this.setState({
                 hasError: true,
-                canSet: false,
+                canSet: error.code == 34208 ? false : true,
                 hasSearch: true,
                 searchErrorMsg: error.msg
             });
@@ -158,11 +158,27 @@ export default class SetMentorPage extends BasePage {
     };
 
     _searchErrorRender = () => {
+        let noCanSet = (
+            <TouchableWithoutFeedback onPress={() => {
+                this.$navigate(RouterMap.HtmlPage, {
+                    title: '我的服务顾问',
+                    uri: apiEnvironment.getCurrentH5Url() + '/static/protocol/consultant-explain.html'
+                });
+            }}>
+                <View style={styles.rowStyle}>
+                    <Text style={styles.noCanSetTextStyle}>
+                        不可设置
+                    </Text>
+                    <Image resizeMode={'stretch'} source={mentor_error_icon} style={styles.iconStyle}/>
+                </View>
+            </TouchableWithoutFeedback>
+        );
         return (
             <View style={styles.resultWrapper}>
                 <Text style={styles.errorMsgStyle}>
                     {this.state.searchErrorMsg}
                 </Text>
+                {this.state.canSet ? null : noCanSet}
             </View>
         );
     };
@@ -190,7 +206,7 @@ export default class SetMentorPage extends BasePage {
             }}>
                 {
                     canCommit ? <LinearGradient start={{x: 0, y: 0}} end={{x: 0, y: 1}}
-                                                colors={['#FF1C89', '#FD0128']}
+                                                colors={['#FC5D39', '#FF0050']}
                                                 style={styles.buttonStyle}>
                         <Text style={styles.buttonTextStyle}>
                             设置他为我的服务顾问

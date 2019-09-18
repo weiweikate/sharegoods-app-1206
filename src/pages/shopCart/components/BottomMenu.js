@@ -172,7 +172,9 @@ export default class BottomMenu extends Component {
                     specImg: goods.imgUrl,
                     productName: goods.productName,
                     unitPrice: goods.price,
-                    productType: goods.type
+                    productType: goods.type,
+                    sgspm : goods.sgspm,
+                    sgscm : goods.sgscm
                 });
             });
             routePush(RouterMap.ConfirOrderPage, {

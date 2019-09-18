@@ -105,7 +105,7 @@ export const ContentType = {
 };
 
 
-export function topicAdOnPress(data, item, p, title) {
+export function topicAdOnPress(data, item, p, title, orderTrackParams) {
     let p2 = {};
     let linkValues = item.linkValue;
     let linkType = item.linkType;
@@ -119,38 +119,52 @@ export function topicAdOnPress(data, item, p, title) {
         }
 
     }
+    let route = '';
+    let params = {}
     switch (linkType) {
         case 1://商品
             p2.contentType = 1;
             p2.contentKey = linkValue;
-            routePush(RouterMap.ProductDetailPage, { productCode: linkValue });
+            route = RouterMap.ProductDetailPage;
+            params = { productCode: linkValue };
         case 4://商品
             p2.contentType = 8;
             p2.contentKey = linkValue;
-            routePush(RouterMap.ProductDetailPage, { productCode: linkValue });
+            route = RouterMap.ProductDetailPage;
+            params = { productCode: linkValue };
             break;
         case 2://专题
             p2.contentType = 3;
             p2.contentKey = linkValue;
+            route = 'HtmlPage';
             if (linkValue && linkValue.indexOf('ZT') === 0) {
-                routePush('HtmlPage', { uri: '/subject/' + linkValue });
+                params = { uri: '/subject/' + linkValue };
             } else if (linkValue && linkValue.indexOf('ST') === 0) {
-                routePush('HtmlPage', { uri: '/topic/temp/' + linkValue });
+                params = { uri: '/topic/temp/' + linkValue };
             } else {
-                routePush('HtmlPage', { uri: '/custom/' + linkValue });
+                params = { uri: '/custom/' + linkValue };
             }
             break;
         case 3:
             p2.contentType = 6;
             p2.contentKey = '/spike';
-            routePush('HtmlPage', { uri: '/spike' });
+            route = 'HtmlPage';
+            params = { uri: '/spike' };
             break;
         case 6://跳转网页
-            routePush('HtmlPage', { uri: linkValue });
+            route = 'HtmlPage';
+            params = { uri: linkValue };
             break;
         case 99://商品列表
-            routePush('HtmlPage', { uri: `/search?c=${data.code + item.linkId}` });
+            route = 'HtmlPage';
+            params = { uri: `/search?c=${data.code + item.linkId}` };
             break;
+    }
+    if (route) {
+        if (orderTrackParams){
+            params = {...params,...orderTrackParams}
+        }
+        routePush(route,params)
     }
     if (p) {
         p.contentValue = title || '';

@@ -269,7 +269,7 @@ export default class SearchResultPage extends BasePage {
             spuCode: prodCode,
             spuName: name
         });
-        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,sgscm:this.params.sgscm,sgspm:this.params.sgspm });
     };
 
     //选择规格确认
@@ -287,7 +287,9 @@ export default class SearchResultPage extends BasePage {
         let temp = {
             'amount': amount,
             'skuCode': skuCode,
-            'productCode': prodCode
+            'productCode': prodCode,
+            'sgscm':this.params.sgscm,
+            'sgspm':this.params.sgspm
         };
         shopCartCacheTool.addGoodItem(temp);
     };

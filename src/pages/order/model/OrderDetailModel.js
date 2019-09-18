@@ -188,7 +188,7 @@ class OrderDetailModel {
         }
         menu = menu.filter((item) => {
 
-            if (!this.merchantOrderNo.existLogistics && item.operation === '查看物流') {
+            if (!this.merchantOrder.existLogistics && item.operation === '查看物流') {
                 return false;
             }
             if (!isAllVirtual) {

@@ -17,6 +17,7 @@ import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import bridge from '../../../utils/bridge';
+import { getSGscm, getSGspm_home, HomeSource, SGscmSource } from '../../../utils/OrderTrackUtil';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 const kHomeTopTopic = '@home/topTopic';
@@ -440,10 +441,10 @@ class HomeModule {
                 }
                 HomeApi.getCustomTopic({ topicCode: code, page: 1, pageSize: 10 }).then((data) => {
                     if (isTop) {
-                        this.topTopice = this.handleData(data, isTop);
+                        this.topTopice = this.handleData(data, isTop, code);
                         store.save(kHomeTopTopic, this.topTopice);
                     } else {
-                        this.bottomTopice = this.handleData(data);
+                        this.bottomTopice = this.handleData(data,false, code);
                         store.save(kHomeBottomTopic, this.bottomTopice);
                     }
                     this.homeList = this.getHomeListData(true);
@@ -466,7 +467,7 @@ class HomeModule {
 
     }
 
-    @action handleData = (data, isTop) => {
+    @action handleData = (data, isTop, code) => {
         if (!data.data || !data.data.widgets) {
             return [];
         }
@@ -475,7 +476,10 @@ class HomeModule {
         let p = [];
         let count = data.length;
         for (let index = 0; index < count; index++) {
+            getSGspm_home(HomeSource.marketing,index+1)
             let item = data[index];
+            item.sgscm = getSGscm(SGscmSource.topic,code).sgscm;
+            item.sgspm = getSGspm_home(HomeSource.marketing,index+1).sgspm
             if (item.type === homeType.custom_goods) {
                 item.itemHeight = GoodsCustomViewGetHeight(item);
                 item.marginBottom = ScreenUtils.autoSizeWidth(0);

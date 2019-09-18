@@ -46,7 +46,8 @@ export default class ShopCartCell extends Component {
             <View rowMap={rowMap} style={{
                 backgroundColor: DesignRule.bgColor,
                 paddingBottom: px2dp(1),
-                marginTop: itemData.topSpace
+                marginTop: itemData.topSpace,
+                alignItems:'center'
             }}>
                 <TouchableHighlight onPress={() => {
                     cellClickAction(itemData);
