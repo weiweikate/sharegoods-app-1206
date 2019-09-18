@@ -219,14 +219,14 @@ export default class ProductDetailPage extends BasePage {
                     orderParamVO: {
                         orderType: 1,
                         source: 2,
-                        sgscm:this.productDetailModel.sgscm,
-                        sgspm:this.productDetailModel.sgspm,
                         orderProducts: [{
                             activityCode: code,
                             batchNo: 1,
                             productCode: prodCode,
                             skuCode: skuCode,
-                            quantity: amount
+                            quantity: amount,
+                            sgscm:this.productDetailModel.sgscm,
+                            sgspm:this.productDetailModel.sgspm
                         }, ...orderProductList]
                     }
                 });
@@ -236,6 +236,8 @@ export default class ProductDetailPage extends BasePage {
             const { specImg, promotionPrice, price, propertyValues } = item;
             let orderProducts = [{
                 productType: this.productDetailModel.type,
+                sgscm:this.productDetailModel.sgscm,
+                sgspm:this.productDetailModel.sgspm,
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,
@@ -249,8 +251,6 @@ export default class ProductDetailPage extends BasePage {
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
                     orderType: 99,
-                    sgscm:this.productDetailModel.sgscm,
-                    sgspm:this.productDetailModel.sgspm,
                     orderProducts: orderProducts,
                     source: parseInt(type) === 9 ? 4 : 2,
                     couponsId: parseInt(couponId)
@@ -263,6 +263,8 @@ export default class ProductDetailPage extends BasePage {
             const { id, initiatorUserName } = this.groupItem || {};
             let orderProducts = [{
                 productType: this.productDetailModel.type,
+                sgscm:this.productDetailModel.sgscm,
+                sgspm:this.productDetailModel.sgspm,
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,
