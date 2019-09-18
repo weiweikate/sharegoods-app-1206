@@ -107,6 +107,9 @@ export default class GoodsListItem extends React.Component {
         });
 
         nameArr = nameArr.filter((item) => {
+            if (!merchantOrder.existLogistics && item.operation === '查看物流') {
+                return false;
+            }
             if (!isAllVirtual){
                 return true;
             }
