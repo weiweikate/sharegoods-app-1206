@@ -153,11 +153,13 @@ class ConfirmOrderModel {
             // "quantity":, //int 购买数量
             // "activityCode":, //string 活动code
             // "batchNo": //string 活动批次  (拼团业务传递团id)
-            let { skuCode, quantity, activityCode, batchNo, activityTag } = item;
+            let { skuCode, quantity, activityCode, batchNo, activityTag, sgspm = '', sgscm = '' } = item;
+            sgspm = sgspm || ''
+            sgscm = sgscm || ''
             if (batchNo){
-                return { skuCode, quantity, activityCode,batchNo, activityTag };
+                return { skuCode, quantity, activityCode,batchNo, activityTag, sgspm, sgscm };
             }else {
-                return { skuCode, quantity, activityCode, activityTag };
+                return { skuCode, quantity, activityCode, activityTag, sgspm,  sgscm};
             }
 
         });
