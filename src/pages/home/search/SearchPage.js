@@ -16,6 +16,7 @@ import store from '@mr/rn-store';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { MRText as Text } from '../../../components/ui';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 const recentDataKey = '@mr/recentDataKey';
 export default class SearchPage extends BasePage {
@@ -139,7 +140,8 @@ export default class SearchPage extends BasePage {
             keywords: text,
             hotWordId: hotWordId,
             searchType: hotWordId ? 3 : (StringUtils.isNoEmpty(index) ? 2 : 1),
-            isFromSearch:true
+            isFromSearch:true,
+            ...getSGspm_home(HomeSource.search)
         });
     };
 
