@@ -105,13 +105,14 @@ export default class ShowVideoPage extends BasePage {
             });
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
                 const { prodCode, name, originalPrice } = addCartModel;
+                const { showNo, userInfoVO } = detail;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
                     'skuCode': skuCode,
-                    'productCode': detail.prodCode
+                    'productCode': detail.prodCode,
+                    'sgscm':`2.${showNo}.none.none`
                 });
                 /*加入购物车埋点*/
-                const { showNo, userInfoVO } = detail;
                 const { userNo } = userInfoVO || {};
                 track(trackEvent.XiuChangAddToCart, {
                     xiuChangBtnLocation: '2',
