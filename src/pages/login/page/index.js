@@ -1,4 +1,6 @@
 import LoginPage from './LoginPage';
+import VerifyResultPage from './VerifyResultPage';
+import VerifyWXCodePage from './VerifyWXCodePage';
 
 import ForgetPasswordPage from './ForgetPasswordPage';
 import InviteCodePage from './InviteCodePage';
@@ -19,7 +21,9 @@ export default {
         MentorDetailPage,
         PhoneLoginPage,
         PwdLoginPage,
-        LoginVerifyCodePage
+        LoginVerifyCodePage,
+        VerifyWXCodePage,
+        VerifyResultPage
     }
 };
 
