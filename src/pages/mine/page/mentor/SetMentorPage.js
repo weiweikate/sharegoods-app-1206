@@ -158,11 +158,27 @@ export default class SetMentorPage extends BasePage {
     };
 
     _searchErrorRender = () => {
+        let noCanSet = (
+            <TouchableWithoutFeedback onPress={() => {
+                this.$navigate(RouterMap.HtmlPage, {
+                    title: '我的服务顾问',
+                    uri: apiEnvironment.getCurrentH5Url() + '/static/protocol/consultant-explain.html'
+                });
+            }}>
+                <View style={styles.rowStyle}>
+                    <Text style={styles.noCanSetTextStyle}>
+                        不可设置
+                    </Text>
+                    <Image resizeMode={'stretch'} source={mentor_error_icon} style={styles.iconStyle}/>
+                </View>
+            </TouchableWithoutFeedback>
+        );
         return (
             <View style={styles.resultWrapper}>
                 <Text style={styles.errorMsgStyle}>
                     {this.state.searchErrorMsg}
                 </Text>
+                {this.state.canSet ? null : noCanSet}
             </View>
         );
     };
