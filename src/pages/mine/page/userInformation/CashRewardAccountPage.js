@@ -1,6 +1,13 @@
+/**
+ * @author zhoujianxin
+ * @date on 2019/9/18
+ * @desc 自返金账户列表
+ * @org  www.sharegoodsmall.com
+ * @email zhoujianxin@meeruu.com
+ */
+
 import React from 'react';
 import {
-    Alert,
     Image,
     RefreshControl,
     SectionList,
@@ -45,7 +52,6 @@ const qita = res.cashAccount.qita_icon;
 const chengFa = res.cashAccount.chengFa_icon;
 const shouru = res.cashAccount.shouru_icon;
 const shouyi = res.cashAccount.shouyi_icon;
-// const renwuShuoMing = res.cashAccount.renwuShuoMing_icon;
 
 const allType = {
     1: {
@@ -129,10 +135,9 @@ const newTypeIcons = {
 };
 
 @observer
-export default class MyCashAccountPage extends BasePage {
+export default class CashRewardAccountPage extends BasePage {
     constructor(props) {
         super(props);
-        this.getUserBankInfoing = false;
         this.state = {
             viewData: [],
             currentPage: 1,
@@ -150,31 +155,13 @@ export default class MyCashAccountPage extends BasePage {
         this.$navigate(RouterMap.BankCardListPage);
     };
     $navigationBarOptions = {
-        title: '现金账户',
+        title: '我的自返金',
         show: false
     };
 
     $isMonitorNetworkStatus() {
         return true;
     }
-
-
-    _onScroll = (event) => {
-        let Y = event.nativeEvent.contentOffset.y;
-        if (Y <= 175) {
-            if (this.state.changeHeader) {
-                this.setState({
-                    changeHeader: false
-                });
-            }
-        } else {
-            if (!this.state.changeHeader) {
-                this.setState({
-                    changeHeader: true
-                });
-            }
-        }
-    };
 
     sectionComp = (info) => {
         let txt = info.section.key;
@@ -204,9 +191,6 @@ export default class MyCashAccountPage extends BasePage {
                     onEndReached={this.onLoadMore}
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
-                    onScroll={(e) => {
-                        this._onScroll(e);
-                    }}
                     showsVerticalScrollIndicator={false}
                     refreshControl={
                         <RefreshControl
@@ -226,14 +210,14 @@ export default class MyCashAccountPage extends BasePage {
                 <View style={styles.headerViewStyle}>
                     <View style={styles.withdrawWrapper}>
                         <Text style={styles.countTextStyle}>
-                            账户余额（元）
+                            累计自返(元)
                         </Text>
-                        <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>
+                        <NoMoreClick style={styles.withdrawButtonWrapper} onPress={()=>{}}>
                             <Text
                                 style={{
                                     fontSize: DesignRule.fontSize_threeTitle,
                                     color: DesignRule.mainColor
-                                }}>提现</Text>
+                                }}>123123</Text>
                         </NoMoreClick>
                     </View>
                     <Text style={{
@@ -252,15 +236,9 @@ export default class MyCashAccountPage extends BasePage {
                         <View style={{flex: 1, marginLeft: 15, justifyContent: 'center'}}>
                             <Text
                                 style={styles.numTextStyle}>{user.historicalBalance ? user.historicalBalance : '0.00'}</Text>
-                            <Text style={styles.numRemarkStyle}>累计收益(元)</Text>
+                            <Text style={styles.numRemarkStyle}>可转金额(元)</Text>
                         </View>
                     </View>
-                    <NoMoreClick
-                        style={{flexDirection: 'row', backgroundColor: '#F7F7F7', height: 32, alignItems: 'center'}}
-                        onPress={() => {this.$navigate(RouterMap.CashRewardAccountPage)}}>
-                        <Text style={{fontSize: 13, color: '#666666', marginLeft: 15, flex: 1}}>您还没有自返金，快去获取</Text>
-                        <Text style={{fontSize: 13, color: '#999999', marginRight: 15}}>快去获取</Text>
-                    </NoMoreClick>
                 </View>
             </View>
         );
@@ -291,13 +269,11 @@ export default class MyCashAccountPage extends BasePage {
                         fontSize: px2dp(17),
                         includeFontPadding: false
                     }}>
-                        {this.state.changeHeader ? '账户余额' : ''}
+                        我的自返金
                     </Text>
 
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.$navigate(RouterMap.BankCardListPage);
-                    }}>
-                        <Text style={[styles.settingStyle, {flex: 1}]}>银行卡管理</Text>
+                    <TouchableWithoutFeedback onPress={() => {}}>
+                        <Text style={[styles.settingStyle, {flex: 1}]}>自返规则</Text>
                     </TouchableWithoutFeedback>
 
                 </View>
@@ -371,7 +347,7 @@ export default class MyCashAccountPage extends BasePage {
                                     end={{x: 1, y: 0}}
                                     colors={['#FF0050', '#FC5D39']}
                     />
-                    <View style={{height: 48, width: ScreenUtils.width, backgroundColor: 'white'}}/>
+                    <View style={{height: 14, width: ScreenUtils.width, backgroundColor: 'white'}}/>
                     {this._accountInfoRender()}
                 </View>
             );
@@ -415,7 +391,7 @@ export default class MyCashAccountPage extends BasePage {
                             </View>
                             <Text style={{
                                 fontSize: 12, color: DesignRule.textColor_instruction
-                            }}>{item.realBalance == 0 || (!EmptyUtils.isEmpty(item.realBalance) && item.realBalance >= 0) ? `已入账：${item.realBalance}` : '入账等待'}</Text>
+                            }}>{item.realBalance === 0 || (!EmptyUtils.isEmpty(item.realBalance) && item.realBalance >= 0) ? `已入账：${item.realBalance}` : '入账等待'}</Text>
                         </View>
                         :
                         <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
@@ -452,36 +428,6 @@ export default class MyCashAccountPage extends BasePage {
         );
 
     }
-
-    jumpToWithdrawCashPage = () => {
-        MineApi.getUserBankInfo().then((data) => {
-            if (data.data && data.data.length > 0) {
-                MineApi.gongmallResult().then((data) => {
-                    if (!data.data) {
-                        this.$navigate(RouterMap.WithdrawalAgreementPage);
-                    } else {
-                        this.$navigate(RouterMap.WithdrawCashPage);
-                    }
-                }).catch(error => {
-                    this.$toastShow(error.msg);
-                });
-            } else {
-                Alert.alert('未绑定银行卡', '你还没有绑定银行卡', [{
-                    text: '稍后设置', onPress: () => {
-                    }
-                }, {
-                    text: '马上就去', onPress: () => {
-                        this.$navigate(RouterMap.BankCardListPage, {
-                            callBack: (params) => {
-                            }
-                        });
-                    }
-                }]);
-            }
-        }).catch((err) => {
-            this.$toastShow(err.msg);
-        });
-    };
 
     getDataFromNetwork = () => {
         let use_type_symbol = ['', '+', '-'];
@@ -662,7 +608,7 @@ const styles = StyleSheet.create({
     },
     headerViewStyle:{
         backgroundColor: 'white',
-        height: px2dp(206),
+        height: px2dp(174),
         width: ScreenUtils.width - 2 * DesignRule.margin_page,
         borderRadius: 15,
         overflow: 'hidden',
