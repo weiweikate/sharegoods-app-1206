@@ -242,6 +242,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                     {isShow_backAddressView ? <BackAddressView
                         title={'用户寄回物流信息'}
                         data={refundAddress}
+                        // isUser={true}
+                        afterSaleDetailModel={this.afterSaleDetailModel}
                         onPress={this.returnLogists}
                     /> : null}
                     {

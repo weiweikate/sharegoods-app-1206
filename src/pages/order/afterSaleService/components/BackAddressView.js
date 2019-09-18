@@ -16,6 +16,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { UIText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
+import { routePush } from '../../../../navigation/RouterMap';
 
 export default class BackAddressView extends React.Component {
 
@@ -31,12 +32,29 @@ export default class BackAddressView extends React.Component {
 
     }
 
+    onPress = (logisticsNum,code,manyLogistics,logisticsCompanyName) => {
+
+        let afterSaleDetailModel = this.props.afterSaleDetailModel;
+        routePush('order/afterSaleService/FillReturnLogisticsPage', {
+            logisticsCompanyName,
+            logisticsNum,
+            code,
+            pageData: {
+                productOrderNo: afterSaleDetailModel.pageData.product.productOrderNo,
+                serviceNo: afterSaleDetailModel.pageData.service.serviceNo
+            },
+            callBack: () => {
+                afterSaleDetailModel.loadPageData();
+            }
+        });
+    };
+
     componentDidMount() {
     }
 
 
     render() {
-        let { title, onPress, data } = this.props;
+        let { title, onPress, data, isUser } = this.props;
         let { receiverPhone, receiver, receiverAddress, express, expressNo, expressCode, expressName } = data || {};
         let detailAddress = receiverAddress +
             '；收件人：' + receiver + '联系方式：' + receiverPhone;
@@ -72,8 +90,22 @@ export default class BackAddressView extends React.Component {
                 <View style={{
                     height: 50,
                     justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                }}>{
+                    isUser? <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => {
+                            this.onPress(expressNo, expressCode, manyLogistics, expressName);
+                        }}
+                        style={[styles.borderButton, {borderColor: DesignRule.mainColor, marginRight: 30}]}>
+                        <UIText value={'修改物流信息'}
+                                style={{
+                                    fontSize: 12,
+                                    color: DesignRule.mainColor
+                                }}/>
+                    </TouchableOpacity>: null
+                }
                     <TouchableOpacity
                         activeOpacity={0.7}
                         onPress={() => {

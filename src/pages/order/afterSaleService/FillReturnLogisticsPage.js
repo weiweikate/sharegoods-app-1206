@@ -35,10 +35,10 @@ export default class FillReturnLogisticsPage extends BasePage {
         super(props);
         this.state = {
             //物流公司名称
-            logisticsCompanyName: null,
+            logisticsCompanyName: this.params.logisticsCompanyName,
             //物流单号
-            logisticsNum: '',
-            code: 0,
+            logisticsNum:  this.params.logisticsNum||'',
+            code: this.params.code|| 0,
             pageData:{}
         };
         this._bindFunc();
