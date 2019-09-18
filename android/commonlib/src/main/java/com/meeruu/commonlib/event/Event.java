@@ -61,4 +61,16 @@ public class Event {
             return url;
         }
     }
+
+    public static class MRWXCodeEvent {
+        private String code;
+
+        public MRWXCodeEvent(String code) {
+            this.code = code;
+        }
+
+        public String getCode() {
+            return code;
+        }
+    }
 }
