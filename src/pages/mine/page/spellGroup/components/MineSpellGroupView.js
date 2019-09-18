@@ -57,14 +57,15 @@ export default class MineSpellGroupView extends PureComponent {
                 backgroundColor: 'white',
                 marginTop: 15,
                 borderRadius: px2dp(10),
-                marginHorizontal: DesignRule.margin_page
+                marginHorizontal: DesignRule.margin_page,
+                height:60
             }}>
                 {data.image ?
                     <Image source={{uri: data.image}} style={{
                         width: 50,
                         height: 50,
                         borderRadius: 5,
-                        margin: 10
+                        margin: 5
                     }}/>
                     :
                     <View style={{
@@ -72,13 +73,13 @@ export default class MineSpellGroupView extends PureComponent {
                         height: 50,
                         borderRadius: 5,
                         backgroundColor: '#f5f5f5',
-                        margin: 10
+                        margin: 5
                     }}/>
                 }
 
                 <View style={{flex: 1,justifyContent:'center'}}>
                     <Text style={{marginLeft: 5, color: '#333333', fontSize: 13}}>拼团仅剩
-                        <Text style={{marginRight: 5, fontSize: 16, color: '#FF0050', fontWeight: '600'}}>
+                        <Text style={{marginRight: 5, fontSize: 16, color: '#FF0050', fontWeight: 'bold'}}>
                             {' ' + this.timeFormat(backtime)}
                         </Text>
                     </Text>
@@ -93,7 +94,7 @@ export default class MineSpellGroupView extends PureComponent {
                                     end={{x: 1, y: 1}}
                                     colors={['#FC5D39', '#FF0050']}
                     >
-                        <View style={{borderRadius: 14, height: 30, alignItems: 'center', justifyContent: 'center'}}>
+                        <View style={{borderRadius: 17, height: 30, width:80, alignItems: 'center', justifyContent: 'center'}}>
                             <Text style={styles.btnTxtStyle}>邀请好友</Text>
                         </View>
                     </LinearGradient>
@@ -116,7 +117,7 @@ export default class MineSpellGroupView extends PureComponent {
      */
     timeFormat = (time)=>{
         if (!time) {
-            this.props.timeEnd&&this.props.timeEnd();
+            // this.props.timeEnd&&this.props.timeEnd();
             return '00:00:00';
         }
         let format = '';
@@ -137,8 +138,6 @@ const styles = StyleSheet.create({
     },
     btnTxtStyle: {
         fontSize: 12,
-        marginHorizontal: 10,
-        marginVertical: 5,
         color: 'white'
 
     }

@@ -87,6 +87,10 @@ class SpellStatusModel {
             this.getUserData(data.data || {});
             return Promise.resolve(data);
         }).catch((error) => {
+            //登录失效需要清空storeStatus
+            if (error.code === 10009) {
+                this.clearGetUserData();
+            }
             return Promise.reject(error);
         });
     }
