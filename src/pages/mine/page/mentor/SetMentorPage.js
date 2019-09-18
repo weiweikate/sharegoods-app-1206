@@ -82,7 +82,7 @@ export default class SetMentorPage extends BasePage {
             // this.$toastShow(error.msg);
             this.setState({
                 hasError: true,
-                canSet: false,
+                canSet: error.code == 34208 ? false : true,
                 hasSearch: true,
                 searchErrorMsg: error.msg
             });
