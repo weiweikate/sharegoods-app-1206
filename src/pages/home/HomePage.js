@@ -280,7 +280,7 @@ class HomePage extends BasePage {
                                 }} onPress={() => {
                                     tabModel.changeTabIndex(page)
                                     p.goToPage(page);
-                                }}>
+                                }} activeOpacity={0.7}>
                                     {showType === 2 ?
                                         <ImageLoader source={{ uri: isTabActive ? navIcon : bottomNavIcon }}
                                                      style={{

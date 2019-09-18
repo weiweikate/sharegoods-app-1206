@@ -141,7 +141,7 @@ export default class SelectionAmountView extends Component {
                     borderRadius: 2,
                     marginRight: 16
                 }}>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
+                    <TouchableOpacity activeOpacity={0.7} style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._leftAction} disabled={type === 'after'}>
                         <Text style={{
                             color: leftEnable ? DesignRule.textColor_mainTitle : DesignRule.lineColor_inGrayBg,
@@ -162,7 +162,7 @@ export default class SelectionAmountView extends Component {
                         />
                     </View>
                     <View style={{ height: 28, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
+                    <TouchableOpacity activeOpacity={0.7} style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._rightAction} disabled={type === 'after' || isOnlyBuyOne}>
                         <Text style={{
                             color: rightEnable ? DesignRule.textColor_mainTitle : DesignRule.lineColor_inGrayBg,

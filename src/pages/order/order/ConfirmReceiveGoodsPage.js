@@ -30,11 +30,11 @@ export default class ConfirmReceiveGoodsPage extends BasePage {
                     <Text style={styles.secTextStyle}>去晒一晒本次的购物体验吧～</Text>
                 </View>
                 <View style={styles.selectStyle}>
-                    <TouchableOpacity style={[styles.toucStyle, { marginRight: 10 }]}
+                    <TouchableOpacity activeOpacity={0.7} style={[styles.toucStyle, { marginRight: 10 }]}
                                       onPress={this.goToHomePage}>
                         <Text style={{ fontSize: px2dp(15), color: DesignRule.textColor_secondTitle }}>返回首页</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.toucStyle, { marginLeft: 10 }]}
+                    <TouchableOpacity activeOpacity={0.7} style={[styles.toucStyle, { marginLeft: 10 }]}
                                       onPress={this.showOrderPage}>
                         <Text style={{ fontSize: px2dp(15), color: DesignRule.textColor_secondTitle }}>立即晒单</Text>
                     </TouchableOpacity>
@@ -48,17 +48,17 @@ export default class ConfirmReceiveGoodsPage extends BasePage {
 
     };
     showOrderPage = () => {
-        OrderApi.checkInfo({warehouseOrderNo:this.params.merchantOrderNo}).then(res => {
-            if(res.data === true){
+        OrderApi.checkInfo({ warehouseOrderNo: this.params.merchantOrderNo }).then(res => {
+            if (res.data === true) {
                 this.$navigate(RouterMap.P_ScorePublishPage, {
                     orderNo: this.params.merchantOrderNo
                 });
-            }else{
+            } else {
                 Toast.$toast('该商品已晒过单！');
             }
-        }).catch(e =>{
+        }).catch(e => {
             Toast.$toast(e.msg);
-        })
+        });
     };
     $NavBarLeftPressed = () => {
         this.$navigateBack();
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         borderRadius: px2dp(24), borderColor: DesignRule.lineColor_inWhiteBg, borderWidth: 1,
         width: px2dp(110), height: px2dp(40), alignItems: 'center', justifyContent: 'center', flex: 1
     },
-    selectStyle : {
+    selectStyle: {
         marginLeft: px2dp(58),
         marginRight: px2dp(58),
         marginTop: px2dp(40),

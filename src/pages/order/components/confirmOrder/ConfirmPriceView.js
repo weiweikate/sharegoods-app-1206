@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import {
-    StyleSheet,
-    View,
-    Image,
-    TouchableOpacity,
-    TextInput as RNTextInput, Keyboard
-} from 'react-native';
-import {
-    UIText
-} from '../../../../components/ui';
+import { Image, Keyboard, StyleSheet, TextInput as RNTextInput, TouchableOpacity, View } from 'react-native';
+import { UIText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { confirmOrderModel } from '../../model/ConfirmOrderModel';
@@ -21,20 +13,12 @@ const arrow_right = res.arrow_right;
 @observer
 export default class ConfirmPriceView extends Component {
 
-    render() {
-        return (
-            <View style={{ marginBottom: 250 }}>
-                {this.renderPriceView()}
-            </View>
-        );
-    }
-
     renderLine = () => {
         return (
             <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg, marginHorizontal: 15 }}/>
         );
     };
-    renderPriceView = () => {
+    render = () => {
         // let promotionAmount = confirmOrderModel.promotionAmount || 0;
         // promotionAmount = parseFloat(promotionAmount);
         // //优惠券文案处理
@@ -62,85 +46,89 @@ export default class ConfirmPriceView extends Component {
         let { totalFreightFee = 0, totalAmount = 0, couponAmount = 0, promotionAmount = 0, tokenCoinAmount = 0 } = confirmOrderModel.payInfo;
         return (
 
-            <View style={{ backgroundColor: 'white' }}>
-                <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
-                < View style={styles.couponsStyle}>
-                    <UIText value={'商品金额'} style={styles.blackText}/>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText value={`${StringUtils.formatMoneyString(totalAmount)}`}
-                                style={[styles.grayText]}/>
-                    </View>
-                </View>
-                {this.renderLine()}
-                {confirmOrderModel.isAllVirtual ? null :
-                    <View style={[styles.couponsStyle]}>
-                        <UIText value={'运费'} style={styles.blackText}/>
+            <View>
+                <View style={styles.block}>
+                    < View style={styles.couponsStyle}>
+                        <UIText value={'商品金额'} style={styles.blackText}/>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <UIText value={`${StringUtils.formatMoneyString(totalFreightFee)}`}
+                            <UIText value={`${StringUtils.formatMoneyString(totalAmount)}`}
                                     style={[styles.grayText]}/>
                         </View>
                     </View>
-                }
-                {confirmOrderModel.isAllVirtual ? null : this.renderLine()}
-                {promotionAmount != 0 ? <View style={styles.couponsStyle}
-                                              activeOpacity={0.5}
-                                              onPress={this.props.jumpToCouponsPage}>
-                    <UIText value={'组合优惠'} style={styles.blackText}/>
                     {this.renderLine()}
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText
-                            value={promotionAmount > 0 ? ('-' + StringUtils.formatMoneyString(promotionAmount)) : ('+' + StringUtils.formatMoneyString(Math.abs(promotionAmount)))}
-                            style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
-                        <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
-                    </View>
-                </View> : null}
-                <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
-                <TouchableOpacity style={styles.couponsStyle}
-                                  activeOpacity={0.5}
-                                  disabled={!confirmOrderModel.canUseCou}
-                                  onPress={this.props.jumpToCouponsPage}>
-                    <UIText value={'优惠券'} style={styles.blackText}/>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText
-                            value={confirmOrderModel.canUseCou ? (couponAmount != 0 ? '-' + StringUtils.formatMoneyString(couponAmount) : (confirmOrderModel.canInvoke ? '请激活兑换券' : '请选择优惠券')) : '不可用优惠券'}
-                            style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
-                        <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
-                    </View>
-                </TouchableOpacity>
-                {this.renderLine()}
-                <TouchableOpacity style={styles.couponsStyle}
-                                  activeOpacity={0.5}
-                                  onPress={() => this.props.jumpToCouponsPage('justOne')}>
-                    <UIText value={'1元现金券'} style={styles.blackText}/>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText
-                            value={tokenCoinAmount != 0 ? '-' + StringUtils.formatMoneyString(tokenCoinAmount) : '请选择1元现金券'}
-                            style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
-                        <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
-                    </View>
-                </TouchableOpacity>
-                {this.renderLine()}
-                <TouchableOpacity style={styles.couponsStyle} onPress={() => {
-                    if (this.input.isFocused()) {
-                        this.input.blur();
-                        Keyboard.dismiss();
+                    {confirmOrderModel.isAllVirtual ? null :
+                        <View style={[styles.couponsStyle]}>
+                            <UIText value={'运费'} style={styles.blackText}/>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <UIText value={`${StringUtils.formatMoneyString(totalFreightFee)}`}
+                                        style={[styles.grayText, {color: DesignRule.mainColor}]}/>
+                            </View>
+                        </View>
                     }
-                }}>
-                    <UIText value={'买家留言'} style={styles.blackText}/>
-                    <RNTextInput
-                        ref={(e) => this.input = e}
-                        maxLength={180}
-                        style={styles.inputTextStyle}
-                        onChangeText={text => confirmOrderModel.message = text}
-                        placeholder={'选填：填写内容已与卖家协商确认'}
-                        placeholderTextColor={DesignRule.textColor_instruction}
-                        numberOfLines={1}
-                        underlineColorAndroid={'transparent'}
-                        onFocus={this.props.inputFocus}
-                    />
-                </TouchableOpacity>
-                {this.renderLine()}
-
+                    {confirmOrderModel.isAllVirtual ? null : this.renderLine()}
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={styles.couponsStyle}
+                        onPress={() => {
+                            if (this.input.isFocused()) {
+                                this.input.blur();
+                                Keyboard.dismiss();
+                            }
+                        }}>
+                        <UIText value={'买家留言'} style={styles.blackText}/>
+                        <RNTextInput
+                            ref={(e) => this.input = e}
+                            maxLength={180}
+                            style={styles.inputTextStyle}
+                            onChangeText={text => confirmOrderModel.message = text}
+                            placeholder={'填写内容已与卖家协商确认'}
+                            placeholderTextColor={DesignRule.textColor_instruction}
+                            numberOfLines={1}
+                            underlineColorAndroid={'transparent'}
+                            onFocus={this.props.inputFocus}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.block}>
+                    {promotionAmount != 0 ? <View style={styles.couponsStyle}
+                                                  activeOpacity={0.5}
+                                                  onPress={this.props.jumpToCouponsPage}>
+                        <UIText value={'组合优惠'} style={styles.blackText}/>
+                        {this.renderLine()}
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <UIText
+                                value={promotionAmount > 0 ? ('-' + StringUtils.formatMoneyString(promotionAmount)) : ('+' + StringUtils.formatMoneyString(Math.abs(promotionAmount)))}
+                                style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(0), color: DesignRule.mainColor }]}/>
+                        </View>
+                    </View> : null}
+                    {promotionAmount != 0 ?this.renderLine(): null}
+                    <TouchableOpacity
+                        style={styles.couponsStyle}
+                        activeOpacity={0.7}
+                        disabled={!confirmOrderModel.canUseCou}
+                        onPress={this.props.jumpToCouponsPage}>
+                        <UIText value={'优惠券'} style={styles.blackText}/>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <UIText
+                                value={confirmOrderModel.canUseCou ? (couponAmount != 0 ? '-' + StringUtils.formatMoneyString(couponAmount) : (confirmOrderModel.canInvoke ? '请激活兑换券' : '请选择优惠券')) : '不可用优惠券'}
+                                style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(0),color: (confirmOrderModel.canUseCou&&couponAmount!= 0) ? DesignRule.mainColor : DesignRule.textColor_instruction}]}/>
+                            <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
+                        </View>
+                    </TouchableOpacity>
+                    {this.renderLine()}
+                    <TouchableOpacity
+                        style={styles.couponsStyle}
+                        activeOpacity={0.7}
+                        onPress={() => this.props.jumpToCouponsPage('justOne')}>
+                        <UIText value={'1元现金券'} style={styles.blackText}/>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <UIText
+                                value={tokenCoinAmount != 0 ? '-' + StringUtils.formatMoneyString(tokenCoinAmount) : '请选择1元现金券'}
+                                style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(0), color: tokenCoinAmount != 0 ? DesignRule.mainColor : DesignRule.textColor_instruction}]}/>
+                            <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     };
@@ -199,6 +187,13 @@ const styles = StyleSheet.create({
         fontSize: ScreenUtils.px2dp(13),
         alignSelf: 'center',
         marginRight: ScreenUtils.autoSizeWidth(13.5)
+    },
+    block: {
+        marginBottom: 10,
+        marginHorizontal: DesignRule.margin_page,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white'
     }
 
 });

@@ -46,6 +46,7 @@ export default class AfterLogisticsListView extends BasePage {
         return (
             <View style={{ paddingBottom: 10 }}>
                 <TouchableOpacity
+                    activeOpacity={0.7}
                     style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center', marginBottom: 1 }}
                     onPress={() => {
                         this.$navigate(RouterMap.LogisticsDetailsPage, {

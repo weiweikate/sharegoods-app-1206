@@ -40,7 +40,7 @@ export default class ShowConnectPage extends BasePage {
     $NavBarRenderRightItem = () => {
         const { select } = this.state;
         return (
-            <TouchableOpacity style={styles.rightButton} onPress={() => this._onSelectedAction()}>
+            <TouchableOpacity activeOpacity={0.7} style={styles.rightButton} onPress={() => this._onSelectedAction()}>
                 <Text style={styles.select}>{select ? '完成' : '管理'}</Text>
             </TouchableOpacity>
         );
@@ -211,7 +211,7 @@ export default class ShowConnectPage extends BasePage {
             {
                 select
                     ?
-                    <TouchableOpacity style={styles.selectedView} onPress={() => this._selectedAction(data)}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.selectedView} onPress={() => this._selectedAction(data)}>
                         <Image
                             style={
                                 {
@@ -253,7 +253,7 @@ export default class ShowConnectPage extends BasePage {
                 <Image style={styles.noCollect} source={res.placeholder.noCollect}/>
                 <Text style={styles.collectWhat} allowFontScaling={false}>去收藏点什么吧</Text>
                 <Text style={styles.goToIndex} allowFontScaling={false}>快去商城逛逛吧</Text>
-                <TouchableOpacity style={styles.gotobutton} onPress={() => {
+                <TouchableOpacity activeOpacity={0.7} style={styles.gotobutton} onPress={() => {
                     this.goToHome();
                 }}>
                     <Text style={styles.goToText} allowFontScaling={false}>逛一逛</Text>
@@ -281,7 +281,7 @@ export default class ShowConnectPage extends BasePage {
                     select
                         ?
                         <View style={styles.bottomView}>
-                            <TouchableOpacity style={styles.allView} onPress={() => {
+                            <TouchableOpacity activeOpacity={0.7} style={styles.allView} onPress={() => {
                                 this._selectedAllAction();
                             }}>
                                 <Image style={styles.allImg}
@@ -289,7 +289,7 @@ export default class ShowConnectPage extends BasePage {
                                 <Text style={styles.all} allowFontScaling={false}>全选</Text>
                             </TouchableOpacity>
                             <View style={{ flex: 1 }}/>
-                            <TouchableOpacity style={styles.button} onPress={() => this._delete()}>
+                            <TouchableOpacity activeOpacity={0.7} style={styles.button} onPress={() => this._delete()}>
                                 <Text style={styles.delete} allowFontScaling={false}>删除</Text>
                             </TouchableOpacity>
                         </View>

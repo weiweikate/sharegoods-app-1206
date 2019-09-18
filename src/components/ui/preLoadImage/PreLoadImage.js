@@ -48,7 +48,7 @@ export default class PreLoadImage extends Component {
 
             onClickAction ?
                 <TouchableOpacity
-                    activeOpacity={0.5}
+                    activeOpacity={0.7}
                     onPress={() => {
                         this._onClickAction();
                     }}

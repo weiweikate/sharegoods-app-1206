@@ -42,6 +42,7 @@
         "@mr/rn-store": "2.1.2",
         "@mr/rn-webview-bridge": "0.1.8",
         "@mr/webview": "0.5.0",
+        "@mr/react-native-refresh": "0.0.1",
         "@react-native-community/netinfo": "^4.1.4",
         "@react-native-community/slider": "2.0.0",
         "@sensors.data/react-native-sensors-analytics": "^1.0.0",

@@ -56,6 +56,7 @@ export default class PasswordInputText extends React.PureComponent {
               keyboardType={'default'}
               secureTextEntry={secureTextEntry}/>
           <TouchableOpacity
+              activeOpacity={0.7}
               onPress={() => {
               Keyboard.dismiss();
               this.setState({ secureTextEntry: !secureTextEntry});

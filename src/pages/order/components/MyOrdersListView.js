@@ -124,7 +124,7 @@ export default class MyOrdersListView extends Component {
                     <Text style={styles.titleStyle} allowFontScaling={false}>
                         {error.msg}
                     </Text>
-                    <TouchableOpacity activeOpacity={0.5} style={styles.btnStyle}
+                    <TouchableOpacity activeOpacity={0.7} style={styles.btnStyle}
                                       onPress={() => this.onRefresh()}>
                         <Text style={{
                             color: DesignRule.bgColor_btn,

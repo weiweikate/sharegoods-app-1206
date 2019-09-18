@@ -66,7 +66,7 @@ export default class HomeLimitGoView extends Component {
 
     _tabItem(item, index, isTabActive) {
         const textColor = isTabActive ? 'white' : '#666';
-        return (<TouchableOpacity onPress={() => {
+        return (<TouchableOpacity activeOpacity={0.7} onPress={() => {
             this._onChangeTab(index);
         }}>
             <ImageBackground style={styles.tab}
@@ -151,7 +151,7 @@ export default class HomeLimitGoView extends Component {
                 <View style={{ paddingHorizontal: px2dp(15), flexDirection: 'row', alignItems: 'center' }}>
                     <HomeTitleView title={'限时购'}/>
                     <View style={{ flex: 1 }}/>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.seeMore();
                     }}>
                         <MRText style={{ color: DesignRule.textColor_placeholder, fontSize: px2dp(12) }}>更多></MRText>
@@ -159,7 +159,7 @@ export default class HomeLimitGoView extends Component {
                 </View>
                 {
                     limitGoModule.isShowFreeOrder ?
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             this.openModal();
                         }}>
                             <Image source={res.limitGoHeader}

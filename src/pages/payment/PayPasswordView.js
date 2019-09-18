@@ -1,13 +1,14 @@
-import React, {Component} from 'react'
-import { StyleSheet, View, TouchableOpacity, Image, Platform, Keyboard} from 'react-native'
-import PasswordInput from '../../components/ui/PasswordInput'
-import ScreenUtils from '../../utils/ScreenUtils'
-const { px2dp } = ScreenUtils
-import PropTypes from 'prop-types'
+import React, { Component } from 'react';
+import { Image, Keyboard, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import PasswordInput from '../../components/ui/PasswordInput';
+import ScreenUtils from '../../utils/ScreenUtils';
+import PropTypes from 'prop-types';
 import res from './res';
-import {MRText as Text} from '../../components/ui'
-import Modal from '../../comm/components/CommModal'
-import DesignRule from '../../constants/DesignRule'
+import { MRText as Text } from '../../components/ui';
+import Modal from '../../comm/components/CommModal';
+import DesignRule from '../../constants/DesignRule';
+
+const { px2dp } = ScreenUtils;
 
 export default class PasswordView extends Component {
     static propTypes = {
@@ -20,14 +21,14 @@ export default class PasswordView extends Component {
     state = {
         keyboardHeight: px2dp(448) + ScreenUtils.safeBottom,
         pwdMsg: ''
-    }
+    };
 
     componentWillReceiveProps(nextProps) {
-        console.log('PasswordView componentWillReceiveProps', nextProps)
-        const { showPwdMsg } = nextProps
+        console.log('PasswordView componentWillReceiveProps', nextProps);
+        const { showPwdMsg } = nextProps;
         if (showPwdMsg) {
-            this.passwordInput && this.passwordInput.changeRedBorderColor()
-            this.state.pwdMsg = showPwdMsg
+            this.passwordInput && this.passwordInput.changeRedBorderColor();
+            this.state.pwdMsg = showPwdMsg;
         }
     }
 
@@ -39,101 +40,105 @@ export default class PasswordView extends Component {
     }
 
     componentWillUnmount() {
-        this.keyboardShowEventListener && this.keyboardShowEventListener.remove()
-        this.keyboardHideEventListener && this.keyboardHideEventListener.remove()
+        this.keyboardShowEventListener && this.keyboardShowEventListener.remove();
+        this.keyboardHideEventListener && this.keyboardHideEventListener.remove();
     }
 
     handleKeyboardShow = (keyboardEvent) => {
-        this.setState({keyboardHeight : keyboardEvent.endCoordinates.height + px2dp(233)})
-    }
+        this.setState({ keyboardHeight: keyboardEvent.endCoordinates.height + px2dp(233) });
+    };
 
     handleKeyboardHide = (keyboardEvent) => {
 
-    }
+    };
 
     onRequestClose() {
-        this.passwordInput && this.passwordInput.clear()
+        this.passwordInput && this.passwordInput.clear();
     }
 
     inputText(value) {
-        this.props.finishedAction(value)
+        this.props.finishedAction(value);
     }
 
     forgetAction() {
-        this.props.forgetAction()
+        this.props.forgetAction();
     }
 
     _dismiss() {
-        this.props.dismiss()
+        this.props.dismiss();
     }
 
     _onChange() {
         this.setState({
             pwdMsg: ''
-        })
+        });
     }
 
     render() {
-        const { keyboardHeight, pwdMsg } = this.state
-        return  <Modal
-        animation='fade'
-        visible={true}
-        onRequestClose={()=>this._dismiss()}
+        const { keyboardHeight, pwdMsg } = this.state;
+        return <Modal
+            animation='fade'
+            visible={true}
+            onRequestClose={() => this._dismiss()}
         >
-        <View style={styles.container}>
-            <View style={{flex: 1}}/>
-            <View style={[styles.content, {height: keyboardHeight}]}>
-            <View style={styles.row}>
-                <TouchableOpacity style={styles.left} onPress={()=> {this._dismiss()}}>
-                <Image style={{ width: 18, height: 18 }} source={res.back}/>
-                </TouchableOpacity>
-                <View style={styles.titleView}>
-                <Text style={styles.input} allowFontScaling={false}>请输入平台的支付密码</Text>
-                </View>
-                <View style={styles.right}/>
-            </View>
-            <View style={styles.msgView}>
-            {
-                pwdMsg
-                ?
-                <Text style={styles.showPwdMsg}>{pwdMsg}</Text>
-                :
-                null
-            }
-            </View>
-            <PasswordInput maxLength={6} style={styles.password}
-                      onEnd={(pwd) => this.inputText(pwd)} ref={(ref)=> {this.passwordInput = ref}}
-                      onChange={(pwd) => this._onChange(pwd)}
-                      />
-            {/* <PasswordInput
+            <View style={styles.container}>
+                <View style={{ flex: 1 }}/>
+                <View style={[styles.content, { height: keyboardHeight }]}>
+                    <View style={styles.row}>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.left} onPress={() => {
+                            this._dismiss();
+                        }}>
+                            <Image style={{ width: 18, height: 18 }} source={res.back}/>
+                        </TouchableOpacity>
+                        <View style={styles.titleView}>
+                            <Text style={styles.input} allowFontScaling={false}>请输入平台的支付密码</Text>
+                        </View>
+                        <View style={styles.right}/>
+                    </View>
+                    <View style={styles.msgView}>
+                        {
+                            pwdMsg
+                                ?
+                                <Text style={styles.showPwdMsg}>{pwdMsg}</Text>
+                                :
+                                null
+                        }
+                    </View>
+                    <PasswordInput maxLength={6} style={styles.password}
+                                   onEnd={(pwd) => this.inputText(pwd)} ref={(ref) => {
+                        this.passwordInput = ref;
+                    }}
+                                   onChange={(pwd) => this._onChange(pwd)}
+                    />
+                    {/* <PasswordInput
                 ref={(ref)=>{this.passwordInput = ref}}
                 style={styles.password}
                 maxLength={6}
                 onChange={value => this.inputText(value)}
                 autoFocus = {true}
             /> */}
-            <TouchableOpacity style={styles.forget} onPress={()=>this.forgetAction()}>
-                <Text style={styles.forgetText} allowFontScaling={false}>忘记密码</Text>
-            </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.forget} onPress={() => this.forgetAction()}>
+                        <Text style={styles.forgetText} allowFontScaling={false}>忘记密码</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
-        </Modal>
+        </Modal>;
     }
 }
 
-const bgColor = 'rgba(4, 4, 4, 0.4)'
-const contentBgColor = '#fff'
-const fontColor = '#333'
+const bgColor = 'rgba(4, 4, 4, 0.4)';
+const contentBgColor = '#fff';
+const fontColor = '#333';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: bgColor,
-        width:ScreenUtils.width
+        width: ScreenUtils.width
     },
     content: {
         height: ScreenUtils.safeBottom,
-        width : ScreenUtils.width,
+        width: ScreenUtils.width,
         backgroundColor: contentBgColor
     },
     row: {
@@ -155,7 +160,7 @@ const styles = StyleSheet.create({
         height: px2dp(45)
     },
     password: {
-        width:ScreenUtils.width - px2dp(30),
+        width: ScreenUtils.width - px2dp(30),
         height: px2dp(57),
         marginRight: px2dp(15),
         marginLeft: px2dp(15)
@@ -181,15 +186,15 @@ const styles = StyleSheet.create({
     },
     forget: {
         height: px2dp(46),
-        width:px2dp(70),
+        width: px2dp(70),
         alignSelf: 'flex-end',
-        justifyContent:'center',
+        justifyContent: 'center',
         marginRight: px2dp(15)
     },
     forgetText: {
         color: '#00A7F5',
         fontSize: px2dp(12),
-        textAlign:'right'
+        textAlign: 'right'
     },
     msgView: {
         height: px2dp(49),
@@ -200,4 +205,4 @@ const styles = StyleSheet.create({
         color: DesignRule.mainColor,
         fontSize: px2dp(15)
     }
-})
+});

@@ -52,6 +52,7 @@ export class TopicImageAdView extends React.Component {
                             links.map((item,index) => {
                                 return (
                                     <TouchableOpacity
+                                        activeOpacity={0.7}
                                         key={data.imgs[0].src + '_' + index}
                                         onPress={() => {
                                             topicAdOnPress(data,item, this.props.p);

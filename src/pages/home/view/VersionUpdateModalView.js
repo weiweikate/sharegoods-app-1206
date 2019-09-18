@@ -122,6 +122,7 @@ export default class VersionUpdateModalView extends React.Component {
                         versionData.forceUpdate ? null :
                             <View style={{ flex: 1, flexDirection: 'row' }}>
                                 <TouchableOpacity
+                                    activeOpacity={0.7}
                                     style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
                                     onPress={() => {
                                         // 缓存状态
@@ -134,6 +135,7 @@ export default class VersionUpdateModalView extends React.Component {
                     }{
                     this.state.showBtn ?
                         <TouchableOpacity
+                            activeOpacity={0.7}
                             style={{
                                 flex: 1,
                                 justifyContent: 'center',

@@ -21,6 +21,8 @@ include ':react-native-linear-gradient'
 project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
 include ':react-native-fetch-blob'
 project(':react-native-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-fetch-blob/android')
+include ':react-native-refresh'
+project(':react-native-refresh').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/react-native-refresh/android')
 include ':@mr_react-native-video'
 project(':@mr_react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/react-native-video/android-exoplayer')
 include ':app'

@@ -43,7 +43,7 @@ export default class EditPhonePwdPage extends BasePage {
                 <PasswordInputText placeholder={'请输入原密码'} onChangeText={(text)=>{this.setState({oldPwd: text})}}/>
                 <PasswordInputText placeholder={'请输入新密码'} onChangeText={(text)=>{this.setState({newPwd: text})}}/>
                 <PasswordInputText placeholder={'请再次输入密码'} onChangeText={(text)=>{this.setState({newPwdAgain: text})}}/>
-                <TouchableOpacity style={[{
+                <TouchableOpacity activeOpacity={0.7} style={[{
                     backgroundColor: enabled ? DesignRule.mainColor : '#cccccc',
                     enabled: enabled
                 }, styles.btn]} onPress={() => this._done()}>

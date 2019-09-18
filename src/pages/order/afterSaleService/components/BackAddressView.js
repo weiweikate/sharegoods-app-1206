@@ -12,15 +12,9 @@
 
 import React from 'react';
 
-import {
-    StyleSheet,
-    View,
-    TouchableOpacity
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import {
-    UIText
-} from '../../../../components/ui';
+import { UIText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
 
 export default class BackAddressView extends React.Component {
@@ -42,9 +36,9 @@ export default class BackAddressView extends React.Component {
 
 
     render() {
-        let {title,onPress, data} = this.props;
-        let {receiverPhone, receiver, receiverAddress, express, expressNo, expressCode, expressName} = data || {}
-        let detailAddress =   receiverAddress +
+        let { title, onPress, data } = this.props;
+        let { receiverPhone, receiver, receiverAddress, express, expressNo, expressCode, expressName } = data || {};
+        let detailAddress = receiverAddress +
             '；收件人：' + receiver + '联系方式：' + receiverPhone;
         let manyLogistics = express && express.length > 1;
         if (express && express.length > 0) {
@@ -54,24 +48,24 @@ export default class BackAddressView extends React.Component {
         }
         let detail_num = null;
         let detail_company = '';
-        if (manyLogistics){
-            detail_num = '该订单被拆成' + express.length + '个包裹发出，点击“查看物流信息”查看详情'
+        if (manyLogistics) {
+            detail_num = '该订单被拆成' + express.length + '个包裹发出，点击“查看物流信息”查看详情';
         } else {
-                detail_num = '物流单号：' + expressNo
-                detail_company = '物流公司：' + expressName
+            detail_num = '物流单号：' + expressNo;
+            detail_company = '物流公司：' + expressName;
         }
         return (
             <View style={styles.container}>
-                <View style = {styles.titleContainer}>
-                <UIText value={title} style={styles.title}/>
+                <View style={styles.titleContainer}>
+                    <UIText value={title} style={styles.title}/>
                 </View>
                 <View style={styles.detailContainer}>
-                  <UIText value={detail_num} style={styles.detail}/>
+                    <UIText value={detail_num} style={styles.detail}/>
                     {detail_company ? <UIText value={detail_company} style={styles.detail}/> : null}
-                    <View style={{marginTop: 5, flexDirection: 'row'}}>
+                    <View style={{ marginTop: 5, flexDirection: 'row' }}>
                         <UIText value={'寄回信息：'} style={styles.title}/>
-                        <View style={{flex: 1, marginRight: 15}}>
-                            <UIText value={detailAddress} style={[styles.title,{marginLeft: 0}]}/>
+                        <View style={{ flex: 1, marginRight: 15 }}>
+                            <UIText value={detailAddress} style={[styles.title, { marginLeft: 0 }]}/>
                         </View>
                     </View>
                 </View>
@@ -80,8 +74,12 @@ export default class BackAddressView extends React.Component {
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                    <TouchableOpacity onPress={()=> {onPress(expressNo, expressCode, manyLogistics, expressName)}}
-                                      style={styles.borderButton}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => {
+                            onPress(expressNo, expressCode, manyLogistics, expressName);
+                        }}
+                        style={styles.borderButton}>
                         <UIText value={'查看物流信息'}
                                 style={{
                                     fontSize: 12,
@@ -118,7 +116,7 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         color: DesignRule.textColor_mainTitle,
         fontSize: 13,
-        marginTop: 5,
+        marginTop: 5
     },
     borderButton: {
         borderWidth: 0.5,

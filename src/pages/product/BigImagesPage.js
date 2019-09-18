@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import XGSwiper from '../../components/ui/XGSwiper';
 import VideoView from '../../components/ui/video/VideoView';
 import UIImage from '@mr/image-placeholder';
@@ -52,7 +52,7 @@ export default class BigImagesPage extends BasePage {
                         {/*视频 图片*/}
                         <View style={styles.topView}>
                             {this.haveVideo ?
-                                <TouchableOpacity style={{ marginRight: 30 }}>
+                                <TouchableOpacity activeOpacity={0.7} style={{ marginRight: 30 }}>
                                     <Text style={{
                                         fontSize: 13,
                                         color: isSelectedVideo ? DesignRule.white : DesignRule.textColor_secondTitle
@@ -63,7 +63,7 @@ export default class BigImagesPage extends BasePage {
                                         backgroundColor: isSelectedVideo ? DesignRule.white : 'transparent'
                                     }}/>
                                 </TouchableOpacity> : null}
-                            <TouchableOpacity>
+                            <TouchableOpacity activeOpacity={0.7}>
                                 <Text style={{
                                     fontSize: 13,
                                     color: isSelectedVideo ? DesignRule.textColor_secondTitle : DesignRule.white

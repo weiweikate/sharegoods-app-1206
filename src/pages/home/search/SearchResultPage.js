@@ -5,7 +5,8 @@ import {
     Image,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    RefreshControl
+    RefreshControl,
+    BackHandler
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ResultSearchNav from './components/ResultSearchNav';
@@ -76,7 +77,17 @@ export default class SearchResultPage extends BasePage {
     }
 
     componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
         this._productList(true);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    handleBackPress=()=>{
+        this.params.isFromSearch ? this.$navigateBack(2) : this.$navigateBack();
+        return true;
     }
 
     _getPageStateOptions = () => {
@@ -477,9 +488,7 @@ export default class SearchResultPage extends BasePage {
             <View style={{ flex: 1 }}>
                 <ResultSearchNav changeLayout={this._changeLayout}
                                  ref={(ref) => this.ResultSearchNav = ref}
-                                 goBack={() => {
-                                     this.$navigateBack();
-                                 }}
+                                 goBack={this.handleBackPress}
                                  isHorizontal={this.state.isHorizontal}
                                  defaultValue={this.state.textInput}
                                  onFocus={() => {
@@ -493,11 +502,11 @@ export default class SearchResultPage extends BasePage {
                 {this._renderContainer()}
 
                 <View style={{ position: 'absolute', right: 15, bottom: 15 }}>
-                    <TouchableOpacity onPress={this._onPressToGwc}>
+                    <TouchableOpacity onPress={this._onPressToGwc} activeOpacity={0.7}>
                         <Image source={toGwc} style={{ width: 40, height: 40 }}/>
                         <ShopCartRedNumView/>
                     </TouchableOpacity>
-                    {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop.bind(this)}>
+                    {this.state.showTop ? <TouchableOpacity activeOpacity={0.7} onPress={this._onPressToTop.bind(this)}>
                         <Image style={{ marginTop: 5, width: 40, height: 40 }} source={toTop}/>
                     </TouchableOpacity> : null}
 

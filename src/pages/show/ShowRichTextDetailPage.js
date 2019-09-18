@@ -1,30 +1,26 @@
 import React from 'react';
 import {
-    ScrollView,
-    Image,
-    TouchableOpacity,
-    View,
-    StyleSheet,
-    NativeModules,
     Alert,
-    TouchableWithoutFeedback
+    Image,
+    NativeModules,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import AutoHeightWebView from '@mr/react-native-autoheight-webview';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-
-const { px2dp } = ScreenUtils;
 import { ShowDetail } from './Show';
 import { observer } from 'mobx-react';
 import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 import BasePage from '../../BasePage';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
-import {
-    MRText as Text
-} from '../../components/ui';
+import { MRText as Text } from '../../components/ui';
 import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
@@ -38,12 +34,14 @@ import SelectionPage from '../product/SelectionPage';
 import EmptyUtils from '../../utils/EmptyUtils';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import ProductListModal from './components/ProductListModal';
-import RouterMap, { routePop, routeNavigate, routePush } from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePop, routePush } from '../../navigation/RouterMap';
 import ShowApi from './ShowApi';
 import LinearGradient from 'react-native-linear-gradient';
 import WhiteModel from './model/WhiteModel';
 import ShareUtil from '../../utils/ShareUtil';
 import CommShowShareModal from '../../comm/components/CommShowShareModal';
+
+const { px2dp } = ScreenUtils;
 
 const { iconShowFire, iconLike, iconNoLike, iconShowShare, dynamicEmpty, collected, uncollected } = res;
 const SkeletonWidth = DesignRule.width - px2dp(30);
@@ -258,7 +256,7 @@ export default class ShowRichTextDetailPage extends BasePage {
         return (
 
             <View style={styles.navTitle}>
-                <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
+                <TouchableOpacity activeOpacity={0.7} style={styles.backView} onPress={() => this._goBack()}>
                     <Image source={res.button.back_black} style={{ width: 30, height: 30 }}/>
                 </TouchableOpacity>
                 <View style={styles.profileRow}>
@@ -329,10 +327,10 @@ export default class ShowRichTextDetailPage extends BasePage {
 
                     </TouchableWithoutFeedback> : null
                 }
-                {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
+                {detail.status === 1 ? <TouchableOpacity activeOpacity={0.7} style={styles.shareView} onPress={() => {
                     this._goToShare();
                 }}>
-                    <Image style={{width:20,height:20}} source={iconShowShare}/>
+                    <Image style={{ width: 20, height: 20 }} source={iconShowShare}/>
                 </TouchableOpacity> : null}
 
             </View>
@@ -793,7 +791,8 @@ export default class ShowRichTextDetailPage extends BasePage {
                                         this.$navigate(RouterMap.ProductDetailPage, {
                                             productCode: prodCode,
                                             trackType: 3,
-                                            trackCode: detail.showNo
+                                            trackCode: detail.showNo,
+                                            sgscm:`2.${detail.showNo}.none.none`
                                         });
                                     }}
                 />
@@ -1053,7 +1052,7 @@ let styles = StyleSheet.create({
         height: px2dp(44),
         alignItems: 'flex-end',
         justifyContent: 'center',
-        marginRight:px2dp(15)
+        marginRight: px2dp(15)
     },
     titleView: {
         flex: 1,

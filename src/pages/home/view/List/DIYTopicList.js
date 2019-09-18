@@ -14,10 +14,11 @@
 
 import React from 'react';
 
-import { RefreshControl, View } from 'react-native';
+import {
+    View
+} from 'react-native';
 
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from '../../../../constants/DesignRule';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { homeType } from '../../HomeTypes';
 import { ImageAdViewGetHeight, TopicImageAdView } from '../TopicImageAdView';
@@ -31,6 +32,8 @@ import bridge from '../../../../utils/bridge';
 import { tabModel } from '../../model/HomeTabModel';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
+import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
+
 @observer
 export default class DIYTopicList extends React.Component {
 
@@ -143,10 +146,11 @@ export default class DIYTopicList extends React.Component {
         this.dataProvider = this.dataProvider.cloneWithRows(this.loadMoreDataUtil.data);
         return (
             <RecyclerListView
-                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0 }}
-                refreshControl={<RefreshControl refreshing={this.loadMoreDataUtil.refreshing}
-                                                onRefresh={this.loadMoreDataUtil.onRefresh}
-                                                colors={[DesignRule.mainColor]}/>}
+                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0}}
+                refreshControl={<HeaderLoading
+                    isRefreshing={this.loadMoreDataUtil.refreshing}
+                    onRefresh={this.loadMoreDataUtil.onRefresh}
+                />}
                 onEndReached={this.loadMoreDataUtil.getMoreData.bind(this)}
                 onEndReachedThreshold={ScreenUtils.height / 3}
                 dataProvider={this.dataProvider}

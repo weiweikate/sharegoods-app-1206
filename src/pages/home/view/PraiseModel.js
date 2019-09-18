@@ -59,7 +59,7 @@ export default class PraiseModel extends React.Component {
             <View style={styles.modal}>
                 <ImageBackground source={image} style={styles.bg}>
                     <MRText style={styles.title}>{title}</MRText>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         routePush('HtmlPage', { uri: '/awardPool' });
                         HomeModalManager.closePrize(true);
                     }

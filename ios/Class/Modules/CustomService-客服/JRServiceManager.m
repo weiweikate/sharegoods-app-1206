@@ -164,7 +164,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   sessionVC.staffId = 0;
   
   QYSource *source = [[QYSource alloc] init];
-  source.title = chatInfo[@"title"];
+  source.title = chatInfo[@"sourceTitle"];
   sessionVC.sessionTitle = chatInfo[@"title"];
   sessionVC.navigationItem.leftBarButtonItem =
   [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain

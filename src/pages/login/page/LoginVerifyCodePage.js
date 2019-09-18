@@ -146,7 +146,7 @@ export default class LoginVerifyCodePage extends BasePage {
                             autoFocus={true}
                             maxLength={11}/>
                         <View style={{ height: px2dp(25), width: 1, backgroundColor: DesignRule.mainColor }}/>
-                        <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                                           onPress={() => {
                                               this.setState({
                                                   downTime: 60
@@ -175,7 +175,7 @@ export default class LoginVerifyCodePage extends BasePage {
                         <CommSpaceLine style={{ width: 0 }}/>
                     </View>
                     <View style={{ flexDirection: 'row', marginHorizontal: px2dp(30), marginTop: px2dp(20) }}>
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }}>
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
                                    source={null}/>
                             <UIText style={{
@@ -184,7 +184,7 @@ export default class LoginVerifyCodePage extends BasePage {
                                 color: DesignRule.textColor_mainTitle
                             }}/>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }}>
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
                                    source={null}/>
                             <UIText style={{

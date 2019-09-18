@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,
-    Image,
-    TouchableOpacity, ImageBackground
-} from 'react-native';
+import { Image, ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import Modal from '../../../comm/components/CommModal';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import {
-    MRText as Text
-} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
 
 const { message_bg } = res;
 
@@ -38,11 +31,12 @@ class ShowMessageModal extends Component {
                     this.modal = ref;
                 }}
                 visible={this.props.isShow && this.state.dis}>
-                <TouchableOpacity style={styles.modalStyle}
-                                  activeOpacity={1}
-                                  onPress={() => {
-                                      this.props.closeWindow();
-                                  }}>
+                <TouchableOpacity
+                    style={styles.modalStyle}
+                    activeOpacity={1}
+                    onPress={() => {
+                        this.props.closeWindow();
+                    }}>
                     {this.renderContent()}
                 </TouchableOpacity>
             </Modal>
@@ -56,16 +50,18 @@ class ShowMessageModal extends Component {
         for (let i = 0; i < arrLen; i++) {
             itemArr.push(
                 <View key={i}>
-                    <TouchableOpacity key={i}
-                                      style={{
-                                          flexDirection: 'row',
-                                          height: 40,
-                                          alignItems: 'center',
-                                          paddingLeft: 20
-                                      }}
-                                      onPress={() => {
-                                          this.props.clickSelect(i);
-                                      }}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        key={i}
+                        style={{
+                            flexDirection: 'row',
+                            height: 40,
+                            alignItems: 'center',
+                            paddingLeft: 20
+                        }}
+                        onPress={() => {
+                            this.props.clickSelect(i);
+                        }}>
                         <Image source={this.props.detail[i].icon} style={{ height: 18, width: 18 }}/>
                         <Text style={{
                             marginLeft: 12,

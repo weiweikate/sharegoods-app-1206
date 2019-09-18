@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import MarqueeLabelVertical from '../../components/ui/MarqueeLabelVertical';
 import ScreenUtil from '../../utils/ScreenUtils';
-
-const { px2dp, onePixel } = ScreenUtil;
 import { observer } from 'mobx-react';
 import { HomeShowModules, tagName } from './Show';
 import DesignRule from '../../constants/DesignRule';
-import {
-    MRText as Text
-} from '../../components/ui';
+import { MRText as Text } from '../../components/ui';
 import res from './res';
-import { routePush } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { routePush } from '../../navigation/RouterMap';
+
+const { px2dp, onePixel } = ScreenUtil;
 
 const homeShowImg = res.other.home_show;
 const TagView = ({ text }) => <View style={styles.tagView}>
@@ -74,7 +71,7 @@ export default class ShowView extends Component {
             {
                 this.showModules.showImage
                     ?
-                    <TouchableOpacity onPress={() => this._goToDetail()}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => this._goToDetail()}>
                         <Image style={styles.icon}
                                source={{ uri: this.showModules.showImage ? this.showModules.showImage : null }}/>
                     </TouchableOpacity>

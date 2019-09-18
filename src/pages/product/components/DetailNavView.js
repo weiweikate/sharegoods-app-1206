@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    TouchableOpacity,
-    Image,
-    View
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { observer } from 'mobx-react';
@@ -57,7 +52,7 @@ export default class DetailNavView extends Component {
         return (<View style={!this.props.scale ? styles.transparentView : styles.transparentView1}>
                 <View style={styles.leftBarItemContainer}>
                     {/*返回*/}
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.props.navBack && this.props.navBack();
                     }} style={styles.btnContainer}>
                         <Image
@@ -76,7 +71,7 @@ export default class DetailNavView extends Component {
                 </View>
                 <View style={styles.rightBarItemContainer}>
                     {/*购物车*/}
-                    {this.props.navRLeft ? <TouchableOpacity onPress={() => {
+                    {this.props.navRLeft ? <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.props.navRLeft && this.props.navRLeft();
                     }} style={styles.btnContainer}>
                         <Image style={{ marginRight: 10 }}
@@ -95,7 +90,7 @@ export default class DetailNavView extends Component {
                         </View>}
                     </TouchableOpacity> : null}
                     {/*分享相关*/}
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.props.navRRight && this.props.navRRight();
                     }} style={styles.btnContainer}>
                         <Image source={this.state.scale ? detail_more_down : show_share}/>
