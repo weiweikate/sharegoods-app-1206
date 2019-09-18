@@ -51,7 +51,7 @@ class AfterSaleServicePage extends BasePage {
             imageArr: this.params.isEdit === true ? this.params.imgList : [],                           //选择的图片数组
             /** 编辑申请需要的售后详情id*/
             returnProductId: this.params.orderProductNo,
-            applyRefundAmount: this.params.isEdit === true ? this.params.refundPrice : 0,//退款金额,
+            applyRefundAmount: this.params.isEdit === true ? this.params.applyRefundAmount : 0,//退款金额,
             editable: false
             /** 换货需要的数据*/
             // selectionData: {}, //规格数据
