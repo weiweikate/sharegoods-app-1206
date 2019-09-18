@@ -33,6 +33,7 @@ import { tabModel } from '../../model/HomeTabModel';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
+import { getSGscm, getSGspm_home, HomeSource, SGscmSource } from '../../../../utils/OrderTrackUtil';
 
 @observer
 export default class DIYTopicList extends React.Component {
@@ -43,8 +44,9 @@ export default class DIYTopicList extends React.Component {
 
         this.loadMoreDataUtil = new LoadMoreDataUtil();
         this.loadMoreDataUtil.API = HomeAPI.getCustomTopic;
+        this.code = (this.props.data || {}).linkCode
         this.loadMoreDataUtil.paramsFunc = () => {
-            return { topicCode: (this.props.data || {}).linkCode };
+            return { topicCode: this.code};
         };
         this.loadMoreDataUtil.asyncHandleData = (data) => {
             data = data.data.widgets.data || [];
@@ -120,6 +122,8 @@ export default class DIYTopicList extends React.Component {
 
     _renderItem = (type, item, index) => {
         type = type.type;
+        item.sgscm = getSGscm(SGscmSource.topic,this.code).sgscm;
+        item.sgspm = getSGspm_home(HomeSource.marketing,index+1).sgspm
         let p = { specialTopicId: this.props.data.linkCode };
         if (type === homeType.custom_text) {
             p.specialTopicArea = 6;

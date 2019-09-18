@@ -28,6 +28,7 @@ import productRes from '../../product/res/product';
 import XiuDouResultModal from './XiuDouResultModal';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 const { px2dp } = ScreenUtils;
 const { saleSmallSkill } = productRes.pSacle;
@@ -93,7 +94,7 @@ export default class HomeLimitGoView extends Component {
     }
 
     _goToDetail(index, value, activityData) {
-        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode });
+        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode,...getSGspm_home(HomeSource.limitGo, index)});
         // 限时购商品点击埋点
         track(trackEvent.SpikeProdClick,
             {
@@ -119,7 +120,8 @@ export default class HomeLimitGoView extends Component {
 
     seeMore() {
         routePush('HtmlPage', {
-            uri: '/spike'
+            uri: '/spike',
+            ...getSGspm_home(HomeSource.limitGo, 0)
         });
     }
 

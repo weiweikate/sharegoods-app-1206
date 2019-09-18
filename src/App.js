@@ -36,6 +36,7 @@ import settingModel from './pages/mine/model/SettingModel';
 import StringUtils from './utils/StringUtils';
 import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
 import loginModel from './pages/login/model/LoginModel';
+import { getSGspm_home, HomeSource } from './utils/OrderTrackUtil';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -103,7 +104,7 @@ class App extends Component {
             (reminder) => {
                 this.timer = setInterval(() => {
                     if (global.$navigator) {
-                        routePush('HtmlPage', { uri: reminder.uri });
+                        routePush('HtmlPage', { uri: reminder.uri, ...getSGspm_home(HomeSource.launchAd)});
                         clearInterval(this.timer);
                     }
                 }, 100);

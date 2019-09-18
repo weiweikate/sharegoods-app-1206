@@ -15,6 +15,7 @@ import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterM
 import user from '../../../model/user';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { homePoint } from '../HomeTypes';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 
 const { px2dp, width } = ScreenUtils;
@@ -65,7 +66,7 @@ export default class HomeChannelView extends Component {
         let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(data);
         params.fromHome = true;
-        this._filterNav(router, { ...params });
+        this._filterNav(router, { ...params, ...getSGspm_home(HomeSource.icon, index+1) });
         track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeIcon, index));
     };
 

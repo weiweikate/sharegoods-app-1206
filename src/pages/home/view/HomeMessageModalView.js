@@ -37,6 +37,7 @@ const { autoSizeWidth } = ScreenUtils;
 import { homeModule } from '../model/Modules';
 import { routePush } from '../../../navigation/RouterMap';
 import { ImageCacheManager } from 'react-native-cached-image';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 @observer
 export default class HomeMessageModalView extends React.Component {
@@ -159,6 +160,9 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
                 const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
                 let params = homeModule.paramsNavigate(data);
                 if (router) {
+                    if (modal === HomeModalManager) {
+                        params = {...params, ...getSGspm_home(HomeSource.alert)}
+                    }
                     routePush(router, params);
                 }
                 this.close(true);
