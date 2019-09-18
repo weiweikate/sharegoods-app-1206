@@ -36,10 +36,10 @@ export const HomeSource = {
 }
 
 export function getSGscm(source = 'none',id = 'none', strategy = 'none', algorithm = 'none') {
-    return {sgscm: source + id + strategy + algorithm}
+    return {sgscm: source +'.'+ id +'.'+ strategy +'.'+ algorithm}
 }
 
 
 export function getSGspm_home(source,index = 1) {
-  return {sgspm:'1,1,'+source+','+index}
+  return {sgspm:'1.1.'+source+','+index}
 }
