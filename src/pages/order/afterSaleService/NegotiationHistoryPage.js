@@ -84,7 +84,7 @@ export default class NegotiationHistoryPage extends BasePage {
     renderDetail(item) {
         if (item.operation === '提交售后申请' || item.operation === '修改售后申请') {
             let content = item.content || '{}';
-            let { applyQuantity, imgList, description, reason, applyRefundAmount, createTime, merchantOrderNo, serviceNo, type } = JSON.parse(content) || {};
+            let { applyQuantity, imgList, description, reason, applyRefundAmount, createTime, merchantOrderNo, serviceNo, type, address } = JSON.parse(content) || {};
             return (
                 <View>
                     <MRText style={styles.detail}>{'申请售后理由：' + reason}</MRText>
@@ -114,6 +114,7 @@ export default class NegotiationHistoryPage extends BasePage {
                             <MRText style={styles.copyBtnText}>复制</MRText>
                         </TouchableOpacity>
                     </View>
+                    {address ? <MRText style={styles.detail}>{'收货地址：' + address}</MRText> : null}
                     <MRText style={styles.detail}>{'上传图片:' + (imgList ? '' : '/')}</MRText>
                     <View style={{
                         flexDirection: 'row',
