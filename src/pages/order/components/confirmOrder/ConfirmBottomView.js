@@ -41,7 +41,7 @@ export default class ConfirmBottomView extends Component {
                         onPress={() => {
                                 this.props.commitOrder();
                         }}>
-                        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
+                        <LinearGradient start={{ x: 1, y: 0 }} end={{ x: 0, y: 0 }}
                                         colors={colors}
                                         style={{ alignItems: "center",
                                             justifyContent: 'center',

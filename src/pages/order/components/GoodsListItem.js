@@ -158,7 +158,7 @@ export default class GoodsListItem extends React.Component {
                             borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd,
                             height: ScreenUtils.autoSizeWidth(24),
                             borderRadius: ScreenUtils.autoSizeWidth(12),
-                            marginRight: ScreenUtils.autoSizeWidth(15),
+                            marginRight: ScreenUtils.autoSizeWidth(10),
                             justifyContent: 'center',
                             alignItems: 'center',
                             paddingHorizontal:  ScreenUtils.autoSizeWidth(10)
@@ -177,7 +177,7 @@ export default class GoodsListItem extends React.Component {
                 )}
             {
                 this.state.isShow ?
-                    <View style={{bottom: ScreenUtils.autoSizeWidth(40), right: ScreenUtils.autoSizeWidth(95*3-10), position: 'absolute',alignItems: 'center'}}>
+                    <View style={{bottom: ScreenUtils.autoSizeWidth(40), right: ScreenUtils.autoSizeWidth(90*3-10), position: 'absolute',alignItems: 'center'}}>
                         {moreArr.map((item, i) => {
                                 return <NoMoreClick key={i} style={{
                                     backgroundColor: '#999999',
