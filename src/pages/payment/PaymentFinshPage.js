@@ -12,11 +12,12 @@ import user from '../../model/user';
 import PaymentApi from './PaymentApi';
 import apiEnvironment from '../../api/ApiEnvironment';
 import bridge from '../../utils/bridge';
-// import FinshPayAlertView from './FinshPayAlertView';
 import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import FinshPayAlertView from './FinshPayAlertView';
 import RecommendProductView from '../product/productScore/components/RecommendProductView';
 import { GroupShareView } from './GroupShareView';
+import { BannersVerticalView } from '../../comm/components/BannersVerticalView';
+import { homeType } from '../home/HomeTypes';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -110,11 +111,14 @@ export default class PaymentFinshPage extends BasePage {
         return (
             <ScrollView style={Styles.contentStyle}>
                 {this.renderTopSuccessView()}
+                {/*拼团分享 优惠券和分享互斥*/}
                 <GroupShareView groupShareData={this.state.groupShareData}/>
-                {/*<RenderSeparator title={'你还有兑换券即将过期，快来使用吧'}/>*/}
                 {this.renderCouponList()}
                 {this.state.showShareView ? this._renderShareView() : null}
+                <BannersVerticalView type={homeType.paySuccess}/>
+                {/*推荐*/}
                 <RecommendProductView recommendScene={2}/>
+                {/*弹窗*/}
                 <FinshPayAlertView btnClick={() => {
                     this._clickAlertView();
                 }} isShow={this.state.isShow}/>
