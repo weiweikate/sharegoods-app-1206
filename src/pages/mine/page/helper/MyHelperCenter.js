@@ -124,7 +124,7 @@ export default class MyHelperCenter extends BasePage {
                             borderBottomWidth: 0.5,
                             borderColor: '#dedede'
                         }}
-                         />
+                        />
                         : null
                 }
                 <NoMoreClick style={styles.hotQuestionItemStyle}
@@ -172,7 +172,7 @@ export default class MyHelperCenter extends BasePage {
                                             flex: 1
                                         }}
                         >
-                            <UIText value={'您好,\n我们为你提供更多帮助...'}
+                            <UIText value={'您好,\n我们为您提供更多帮助...'}
                                     numberOfLines={2}
                                     style={{
                                         fontSize: 18,
@@ -203,9 +203,6 @@ export default class MyHelperCenter extends BasePage {
                     </View>
                 </View>
                 {this.renderHotQuestionList()}
-                {/*<View style={{height:6, backgroundColor: DesignRule.bgColor}}/>*/}
-                {/*联系客服按钮*/}
-                {/*<CustomerServiceButton/>*/}
             </View>
         );
     };
@@ -231,16 +228,9 @@ export default class MyHelperCenter extends BasePage {
     }
 
     // 跳转到问题详情页面
-
     jumpQuestionDetail = (detail) => {
         this.$navigate(RouterMap.HelperCenterQuestionDetail, { detail, refreshList: this.refreshList });
     };
-
-    // 初始化数据
-
-    componentDidMount() {
-
-    }
 
     _render() {
         return (

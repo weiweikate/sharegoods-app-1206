@@ -489,7 +489,7 @@ export default class HomeNormalList extends React.Component {
                     removeClippedSubviews={false}
                     canChangeSize={false}
                     renderFooter={() => <DefaultLoadMoreComponent status={this.state.footerStatus}/>}
-                        />
+                />
             </View>
         );
     }

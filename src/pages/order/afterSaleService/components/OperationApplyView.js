@@ -26,7 +26,7 @@ export default class OperationApplyView extends React.Component {
     }
 
     render() {
-        let { cancelPress } = this.props;
+        let { cancelPress, changePress } = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.title}>
@@ -40,16 +40,27 @@ export default class OperationApplyView extends React.Component {
                 <View style={{
                     flex: 1,
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    flexDirection: 'row'
                 }}>
                     <TouchableOpacity
                         activeOpacity={0.7}
-                        onPress={cancelPress}
+                        onPress={changePress}
                         style={styles.borderButton}>
-                        <UIText value={'撤销申请'}
+                        <UIText value={'修改申请'}
                                 style={{
                                     fontSize: 12,
                                     color: DesignRule.mainColor
+                                }}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={cancelPress}
+                        style={[styles.borderButton,{borderColor: '#CCCCCC', marginLeft: 15}]}>
+                        <UIText value={'撤销申请'}
+                                style={{
+                                    fontSize: 12,
+                                    color: '#333333'
                                 }}/>
                     </TouchableOpacity>
                 </View>

@@ -11,7 +11,7 @@ const api = {
     //密码登陆
     passwordLogin: ['/user/userLogin/passwordLogin', { isRSA: true }],
     //app微信登陆
-    appWechatLogin: '/user/userLogin/appWechatLogin',
+    appWechatLogin: ['/member/login/weChatCodeLogin', { method: 'post' }],
     //检测用户是否存在注册
     existedUserLogin: '/user/userLogin/existedUserLogin',
     //注册领红包
@@ -31,7 +31,11 @@ const api = {
     //一键登录校验token接口
     oneClickLoginValidation: ['/user/userLogin/autoLoginByJiGuang'],
     // 获取本地手机号
-    getMobileByToken: ['/user/userLogin/getMobileByJiGuangToken']
+    getMobileByToken: ['/user/userLogin/getMobileByJiGuangToken'],
+    // 微信绑定异常验证
+    weChatUnusual: ['/member/login/weChatUnusual', { method: 'post' }],
+    // 登录
+    memberLogin: ['/member/login/memberLogin', { method: 'post' }]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

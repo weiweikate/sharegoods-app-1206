@@ -46,11 +46,10 @@ export default class GoodsGrayItem extends React.Component {
                                     fontSize: 10,
                                     marginRight: 6,
                                     paddingHorizontal: 3,
-                                    paddingVertical: 3,
+                                    paddingVertical: 2,
                                     borderRadius: 3,
                                     overflow: 'hidden',
                                     color: DesignRule.mainColor,
-                                    marginVertical: 2.5,
                                     backgroundColor: 'rgba(255,0,80,0.1)'
                                 }}>
                                     {item}

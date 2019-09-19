@@ -11,9 +11,10 @@ import ProtocolView from '../components/Login.protocol.view';
 import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import LinearGradient from 'react-native-linear-gradient';
-import { getWxUserInfo, pwdLoginAction, wxLoginAction } from '../model/LoginActionModel';
+import { getWxUserInfo, memberLogin, wxLoginAction } from '../model/LoginActionModel';
 import bridge from '../../../utils/bridge';
 import res from '../../../comm/res';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 export default class PwdLoginPage extends BasePage {
@@ -61,20 +62,19 @@ export default class PwdLoginPage extends BasePage {
         let loginParam = {
             campaignType: this.params.campaignType || '',
             spm: this.params.spm || '',
-            phoneNumber: this.state.phoneNum,
-            password: this.state.pwd
+            phone: this.state.phoneNum,
+            password: this.state.pwd,
+            loginType: 2
         };
         this.$loadingShow();
-        pwdLoginAction(loginParam, (data) => {
-            if (data.code === 10000) {
-                this.$toastShow('登录成功');
-                this.params.callback && this.params.callback();
-                this.$loadingDismiss();
-                this.$navigateBack();
-            } else {
-                this.$loadingDismiss();
-            }
+        memberLogin(loginParam, (data) => {
+            this.$toastShow('登录成功');
+            this.params.callback && this.params.callback();
+            this.$loadingDismiss();
             loginModel.savePhoneNumber(this.state.phoneNum);
+            TrackApi.pwdLoginSuccess();
+        }, () => {
+            this.$loadingDismiss();
         });
     };
 
@@ -146,7 +146,8 @@ export default class PwdLoginPage extends BasePage {
                             </TouchableOpacity>
                         </View>
                         <View style={{ width: ScreenUtils.width - px2dp(60), alignItems: 'flex-end' }}>
-                            <TouchableOpacity activeOpacity={0.7} style={{ height: px2dp(35), justifyContent: 'center' }}
+                            <TouchableOpacity activeOpacity={0.7}
+                                              style={{ height: px2dp(35), justifyContent: 'center' }}
                                               onPress={() => {
                                                   routeNavigate(RouterMap.ForgetPasswordPage, { phoneNum: loginModel.phoneNumber });
                                               }}>
@@ -184,23 +185,22 @@ export default class PwdLoginPage extends BasePage {
                                 this.$toastShow('请先勾选用户协议');
                                 return;
                             }
-                            // 微信授权登录
+                            // 微信授权
                             getWxUserInfo((wxData) => {
                                 this.$loadingShow('加载中');
-                                wxLoginAction(wxData, (code, data) => {
+                                if (!wxData) {
                                     this.$loadingDismiss();
-                                    if (code === 10000) {
-                                        this.$navigateBack();
-                                        this.params.callback && this.params.callback();
-                                    } else if (code === 34005) {
-                                        // 绑定手机
-                                        this.$toastShow('请绑定手机号');
-                                        routeNavigate(RouterMap.PhoneLoginPage, {
-                                            ...this.params,
-                                            needBottom: false,
-                                            wxData
-                                        });
-                                    }
+                                    this.$toastShow('微信授权失败！');
+                                    return;
+                                }
+                                // 微信登录
+                                wxLoginAction(wxData, () => {
+                                    bridge.$toast('登录成功');
+                                    this.$loadingDismiss();
+                                    this.$navigateBack();
+                                    this.params.callback && this.params.callback();
+                                }, () => {
+                                    this.$loadingDismiss();
                                 });
                             });
                         }}>
