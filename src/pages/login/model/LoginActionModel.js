@@ -118,7 +118,7 @@ const handleLoginData = (params, data, code, successCallBack, failCallBack, popN
             bridge.$toast('请绑定手机号');
             routeNavigate(RouterMap.PhoneLoginPage, {
                 needBottom: false,
-                wechatCode: data.wechatCode || params.wechatCode
+                weChatCode: data.wechatCode || params.weChatCode
             });
         }
     } else {
@@ -128,7 +128,8 @@ const handleLoginData = (params, data, code, successCallBack, failCallBack, popN
             text: '验证',
             onPress: () => {
                 // 验证微信手机号
-                routeNavigate(RouterMap.VerifyWXCodePage, { weChatCode: data.weChatCode });
+                routeNavigate(RouterMap.VerifyWXCodePage,
+                    { weChatCode: data.wechatCode || params.weChatCode });
             }
         }]);
     }
