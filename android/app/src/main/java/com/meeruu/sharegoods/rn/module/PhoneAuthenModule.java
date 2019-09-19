@@ -49,14 +49,11 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
     public void checkInitResult(final Promise callback) {
         if (JVerificationInterface.isInitSuccess()) {
             if (JVerificationInterface.checkVerifyEnable(mContext)) {
-                JVerificationInterface.preLogin(mContext, 5000, new PreLoginListener() {
-                    @Override
-                    public void onResult(int i, String s) {
-                        if (i == 7000) {
-                            callback.resolve(true);
-                        } else {
-                            callback.reject(i + "", "当前网络不支持号码认证");
-                        }
+                JVerificationInterface.preLogin(mContext, 5000, (i, s) -> {
+                    if (i == 7000) {
+                        callback.resolve(true);
+                    } else {
+                        callback.reject(i + "", "当前网络不支持号码认证");
                     }
                 });
             } else {
@@ -86,27 +83,21 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
                     DensityUtils.dip2px(170f));
             mLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             bottomView.setLayoutParams(mLayoutParams);
-            bottomView.findViewById(R.id.tv_wechat).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 微信登录
-                    WritableMap wechatMap = new WritableNativeMap();
-                    wechatMap.putString("login_type", "1");
-                    mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit("Event_Login_Type", wechatMap);
-                    closeAuth();
-                }
+            bottomView.findViewById(R.id.tv_wechat).setOnClickListener(v -> {
+                // 微信登录
+                WritableMap wechatMap = new WritableNativeMap();
+                wechatMap.putString("login_type", "1");
+                mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("Event_Login_Type", wechatMap);
+                closeAuth();
             });
-            bottomView.findViewById(R.id.tv_phone).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 手机号登录
-                    WritableMap wechatMap = new WritableNativeMap();
-                    wechatMap.putString("login_type", "2");
-                    mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit("Event_Login_Type", wechatMap);
-                    closeAuth();
-                }
+            bottomView.findViewById(R.id.tv_phone).setOnClickListener(v -> {
+                // 手机号登录
+                WritableMap wechatMap = new WritableNativeMap();
+                wechatMap.putString("login_type", "2");
+                mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("Event_Login_Type", wechatMap);
+                closeAuth();
             });
         }
         builder.setStatusBarColorWithNav(true)
@@ -137,14 +128,11 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void preLogin(final Promise callback) {
-        JVerificationInterface.preLogin(mContext, 5000, new PreLoginListener() {
-            @Override
-            public void onResult(int i, String s) {
-                if (i == 7000) {
-                    callback.resolve(true);
-                } else {
-                    callback.reject(i + "", "一键登录失败");
-                }
+        JVerificationInterface.preLogin(mContext, 5000, (i, s) -> {
+            if (i == 7000) {
+                callback.resolve(true);
+            } else {
+                callback.reject(i + "", "一键登录失败");
             }
         });
     }
@@ -156,14 +144,11 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getVerifyToken(final Promise callback) {
-        JVerificationInterface.getToken(mContext, 5000, new VerifyListener() {
-            @Override
-            public void onResult(int i, String s, String s1) {
-                if (i == 2000) {
-                    callback.resolve(s);
-                } else {
-                    callback.reject(s, s1);
-                }
+        JVerificationInterface.getToken(mContext, 5000, (i, s, s1) -> {
+            if (i == 2000) {
+                callback.resolve(s);
+            } else {
+                callback.reject(s, s1);
             }
         });
     }
@@ -171,17 +156,14 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void startLoginAuth(final Promise callback) {
         initUI();
-        JVerificationInterface.loginAuth(mContext.getApplicationContext(), true, new VerifyListener() {
-            @Override
-            public void onResult(int code, String token, String operator) {
-                LogUtils.d("login=====" + code);
-                if (code == 6000) {
-                    callback.resolve(token);
-                } else if (code == 6002) {
-                    callback.reject("555", "取消授权");
-                } else {
-                    callback.reject("556", "一键登录失败");
-                }
+        JVerificationInterface.loginAuth(mContext.getApplicationContext(), true, (code, token, operator) -> {
+            LogUtils.d("login=====" + code);
+            if (code == 6000) {
+                callback.resolve(token);
+            } else if (code == 6002) {
+                callback.reject("555", "取消授权");
+            } else {
+                callback.reject("556", "一键登录失败");
             }
         });
     }
