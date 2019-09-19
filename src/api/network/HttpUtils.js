@@ -88,7 +88,7 @@ export default class HttpUtils {
     static async get(uri, isRSA, params) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
-        if (params && params.length > 0) {
+        if (params) {
             if (url.indexOf('?') > -1) {
                 url = url + '&' + Qs.stringify(params);
             } else {

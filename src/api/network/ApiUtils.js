@@ -22,9 +22,10 @@ export default function ApiUtils(Urls) {
         }
     });
     list.forEach(function(item) {
-        let name = item.name, url = item.uri, method = item.method || 'post', isRSA = item.isRSA || false,
-            filter = item.filter, checkLogin = item.checkLogin || false;
+        let name = item.name;
         result[name] = async function(params, config = {}) {
+            let url = item.uri, method = item.method || 'post', isRSA = item.isRSA || false,
+                filter = item.filter, checkLogin = item.checkLogin || false;
             if (checkLogin === true && !User.isLogin) {
                 return Promise.reject({
                     code: 10009,
