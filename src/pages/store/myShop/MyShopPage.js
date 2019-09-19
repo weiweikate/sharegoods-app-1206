@@ -4,6 +4,7 @@
 import React from 'react';
 import { Alert, Image, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { observer } from 'mobx-react';
+import { autorun } from 'mobx';
 import BasePage from '../../../BasePage';
 import { MRText as Text } from '../../../components/ui';
 import ShopHeader from './components/ShopHeader';
@@ -26,6 +27,8 @@ import { ShopBottomBannerView, ShopCardView, ShopProductItemView } from './compo
 import MyShopDetailModel from './MyShopDetailModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import StringUtils from '../../../utils/StringUtils';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
+import { navigateBackToStore, routePush } from '../../../navigation/RouterMap';
 // 图片资源
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
@@ -52,6 +55,15 @@ export default class MyShopPage extends BasePage {
         this.MyShopDetailModel.wayToPinType = props.wayToPinType;
         this.MyShopDetailModel.storeCode = props.storeCode || this.params.storeCode;
     }
+
+    //拆分开店后storeCode会变化  需要刷新
+    needUpdateStoreCode = autorun(() => {
+        const { storeCode } = spellStatusModel;
+        if (this.props.storeData) {
+            this.MyShopDetailModel.storeCode = storeCode;
+            this._loadPageData();
+        }
+    });
 
     componentDidMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
@@ -87,6 +99,7 @@ export default class MyShopPage extends BasePage {
     };
 
     _loadPageData = () => {
+        this.MyShopDetailModel.checkOpenStore();
         this.MyShopDetailModel.requestAppStore();
         this.MyShopDetailModel.requestShopBanner();
         this.MyShopDetailModel.requestShopProducts();
@@ -148,27 +161,29 @@ export default class MyShopPage extends BasePage {
 
     // 点击店铺设置
     _clickSettingItem = () => {
-        const { roleType } = this.MyShopDetailModel.storeData;
+        const { storeData, storeCode, canOpenShop } = this.MyShopDetailModel;
+        const { roleType } = storeData;
+        const items = canOpenShop ? ['分享店铺', '拆分开店', '举报店铺', '退出店铺'] : ['分享店铺', '举报店铺', '退出店铺'];
         if (roleType === 0) {
             this.$navigate('store/shopSetting/ShopPageSettingPage', {
                 storeData: this.MyShopDetailModel.storeData,
                 myShopCallBack: this.MyShopDetailModel.requestAppStore
             });
         } else {
-            this.actionSheetRef.show({
-                items: ['分享店铺', '举报店铺', '退出店铺']//
-            }, (item, index) => {
-                if (index === 0) {
+            this.actionSheetRef.show({ items }, (item) => {
+                if (item === '分享店铺') {
                     setTimeout(() => {
                         this.shareModal && this.shareModal.open();
                     }, 500);
-                } else if (index === 1) {
-                    // 举报弹框
+                } else if (item === '拆分开店') {
+                    routePush('store/shopSetting/SetShopNamePage', { isSplit: true });
+                } else if (item === '举报店铺') {
                     setTimeout(() => {
                         this.reportAlert && this.reportAlert.show({
                             confirmCallBack: (text) => {
                                 SpellShopApi.storeTipOffInsert({
-                                    content: text
+                                    content: text,
+                                    storeCode: storeCode
                                 }).then(() => {
                                     this.$toastShow('举报成功');
                                 }).catch((error) => {
@@ -177,7 +192,7 @@ export default class MyShopPage extends BasePage {
                             }
                         });
                     }, 500);
-                } else if (index === 2) {
+                } else if (item === '退出店铺') {
                     setTimeout(() => {
                         Alert.alert('提示', '确定要退出么?', [{
                             text: '取消'
@@ -224,12 +239,10 @@ export default class MyShopPage extends BasePage {
                 {
                     text: '申请', onPress: () => {
                         this.$loadingShow();
-                        SpellShopApi.addToStore({ storeCode: this.MyShopDetailModel.storeCode }).then((data) => {
-                            if (!this.props.leftNavItemHidden) {
-                                this._loadPageData();
-                            }
-                            spellStatusModel.requestHome();
+                        SpellShopApi.user_apply({ storeCode: this.MyShopDetailModel.storeCode }).then(() => {
                             this.$loadingDismiss();
+                            navigateBackToStore();
+                            spellStatusModel.requestHome();
                         }).catch((error) => {
                             this.$loadingDismiss();
                             this.$toastShow(error.msg);
@@ -278,7 +291,8 @@ export default class MyShopPage extends BasePage {
                             />}>
                     <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement}
                                 storeData={this.MyShopDetailModel.storeData}/>
-                    {roleType === 0 && <ShopCardView/>}
+                    {isNoEmpty(roleType) &&
+                    <ShopCardView/>}
                     <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                     <MembersRow MyShopDetailModel={this.MyShopDetailModel}
                                 onPressAllMembers={this._clickAllMembers}/>
@@ -290,6 +304,10 @@ export default class MyShopPage extends BasePage {
                         {isNoEmpty(roleType) &&
                         <InfoRow icon={myShop_join} title={'加入时间'} desc={joinTime || ''}/>}
                     </View>
+                    {!isNoEmpty(roleType) &&
+                    <NoMoreClick style={styles.joinBtn} onPress={this._joinBtnAction}>
+                        <Text style={styles.joinText}>申请加入</Text>
+                    </NoMoreClick>}
                     <ShopBottomBannerView MyShopDetailModel={this.MyShopDetailModel}/>
                 </ScrollView>
                 <IntervalMsgView pageType={IntervalType.shopDetail} storeCode={this.MyShopDetailModel.storeCode}/>
@@ -350,5 +368,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         width: 88
+    },
+    joinBtn: {
+        alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginVertical: 14,
+        width: ScreenUtils.px2dp(345), height: 40, backgroundColor: DesignRule.bgColor_btn, borderRadius: 20
+    },
+    joinText: {
+        fontSize: 17, color: 'white'
     }
 });

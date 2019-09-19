@@ -16,6 +16,7 @@ import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import AvatarImage from '../../../components/ui/AvatarImage';
 import RouterMap from '../../../navigation/RouterMap';
+import bridge from '../../../utils/bridge';
 
 const { px2dp } = ScreenUtils;
 const arrow_right = res.button.arrow_right_black;
@@ -103,9 +104,10 @@ export default class SetShopNamePage extends BasePage {
             this.$toastShow('请选择店铺位置');
             return;
         }
-        const { storeData } = this.params;
+        const { storeData, isSplit } = this.params;
+        bridge.showLoading();
         if (storeData) {
-            SpellShopApi.app_store_put({
+            SpellShopApi.app_store_update({
                 pathValue: `/${storeData.storeCode}`,
                 name: textName,
                 headUrl: storeHeadUrlOrigin,
@@ -113,22 +115,40 @@ export default class SetShopNamePage extends BasePage {
                 cityCode: cityCode,
                 profile: this.state.textProfile
             }).then(() => {
+                bridge.hiddenLoading();
                 this.$toastShow('修改成功');
                 this.params.myShopCallBack && this.params.myShopCallBack();
                 this.$navigateBack();
             }).catch((error) => {
+                bridge.hiddenLoading();
                 this.$toastShow(error.msg);
             });
-        } else {
-            SpellShopApi.app_store_post({
+        } else if (isSplit) {
+            SpellShopApi.app_store_split({
                 name: textName,
                 headUrl: storeHeadUrlOrigin,
                 provinceCode: provinceCode,
                 cityCode: cityCode,
                 profile: this.state.textProfile
             }).then(() => {
+                bridge.hiddenLoading();
                 this.$navigate(RouterMap.OpenShopSuccessPage);
             }).catch((error) => {
+                bridge.hiddenLoading();
+                this.$toastShow(error.msg);
+            });
+        } else {
+            SpellShopApi.app_store_open({
+                name: textName,
+                headUrl: storeHeadUrlOrigin,
+                provinceCode: provinceCode,
+                cityCode: cityCode,
+                profile: this.state.textProfile
+            }).then(() => {
+                bridge.hiddenLoading();
+                this.$navigate(RouterMap.OpenShopSuccessPage);
+            }).catch((error) => {
+                bridge.hiddenLoading();
                 this.$toastShow(error.msg);
             });
         }

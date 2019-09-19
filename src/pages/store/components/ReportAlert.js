@@ -151,7 +151,14 @@ export default class ReportAlert extends Component {
                             }
                         ]}
                     >
-                        <Image style={{ position: 'absolute', top: 0, zIndex: 1, alignSelf: 'center' }}
+                        <Image style={{
+                            position: 'absolute',
+                            top: 0,
+                            zIndex: 1,
+                            alignSelf: 'center',
+                            width: 90,
+                            height: 90
+                        }}
                                source={KeFuIcon}/>
                         <View style={styles.whitePanel}>
                             <View style={styles.inputContainer}>

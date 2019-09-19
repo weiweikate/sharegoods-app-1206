@@ -32,7 +32,7 @@ import { homeType } from '../../home/HomeTypes';
 import { homeModule } from '../../home/model/Modules';
 import { bannerModule } from './PinShopBannerModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
-import RouterMap, { navigateBackToStore } from '../../../navigation/RouterMap';
+import { navigateBackToStore } from '../../../navigation/RouterMap';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -236,7 +236,7 @@ export default class RecommendPage extends BasePage {
 
     // 点击查看某个店铺
     _RecommendRowOnPress = (storeCode) => {
-        this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: storeCode, wayToPinType: 2 });
+        this.$navigate('store/myShop/MyShopPage', { storeCode: storeCode, wayToPinType: 2 });
     };
 
     // 点击轮播图广告

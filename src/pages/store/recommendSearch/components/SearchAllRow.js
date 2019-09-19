@@ -35,7 +35,7 @@ export default class RecommendRow extends Component {
     };
 
     render() {
-        const { headUrl, name, level, storeCode, userCount } = this.props.RecommendRowItem;
+        const { headUrl, name, level, showNumber, userCount } = this.props.RecommendRowItem;
         const starsArr = [];
         if (level && typeof level === 'number') {
             for (let i = 0; i < level; i++) {
@@ -79,7 +79,7 @@ export default class RecommendRow extends Component {
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop} allowFontScaling={false}>店铺ID</Text>
                         <Text style={styles.containBottom}
-                              allowFontScaling={false}>{storeCode || ''}</Text>
+                              allowFontScaling={false}>{showNumber || ''}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>

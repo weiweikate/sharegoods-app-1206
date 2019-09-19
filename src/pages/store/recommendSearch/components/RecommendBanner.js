@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MRBannerView from '../../../../components/ui/bannerView/MRBannerView';
 import DesignRule from '../../../../constants/DesignRule';
 import { bannerModule } from '../PinShopBannerModel';
 import { observer } from 'mobx-react';
+import res from '../../res';
+
+const HeaderBarBgImg = res.myShop.txbg_02;
+const { px2dp } = ScreenUtils;
 
 @observer
 export class RecommendBanner extends Component {
@@ -52,22 +56,19 @@ export class RecommendBanner extends Component {
 
         return (
             <View>
-                <MRBannerView
-                    style={{
-                        height: ScreenUtils.px2dp(230),
-                        width: ScreenUtils.width + 0.5
-                    }}
-                    itemWidth={ScreenUtils.width + 0.5}
-                    imgUrlArray={items}
-                    itemSpace={0}
-                    interceptTouchEvent={true}  //android端起作用，是否拦截touch事件
-                    onDidSelectItemAtIndex={(index) => {
-                        bannerList[this.state.index] && this._onPress(bannerList[this.state.index]);
-                    }}
-                    onDidScrollToIndex={(index) => {
-                        this._onDidScrollToIndex(index);
-                    }}
-                />
+                <Image source={HeaderBarBgImg}
+                       style={[styles.imgBg]}/>
+                <MRBannerView style={styles.bannerView}
+                              interceptTouchEvent={true}//android端起作用，是否拦截touch事件
+                              itemWidth={ScreenUtils.width + 0.5}
+                              itemSpace={0}
+                              imgUrlArray={items}
+                              onDidSelectItemAtIndex={(index) => {
+                                  bannerList[index] && this._onPress(bannerList[index]);
+                              }}
+                              onDidScrollToIndex={(index) => {
+                                  this._onDidScrollToIndex(index);
+                              }}/>
                 {this.renderIndexView()}
             </View>
         );
@@ -75,6 +76,15 @@ export class RecommendBanner extends Component {
 }
 
 const styles = StyleSheet.create({
+    imgBg: {
+        position: 'absolute',
+        left: 0, top: 0,
+        width: ScreenUtils.width, height: px2dp(210)
+    },
+    bannerView: {
+        height: px2dp(230), width: px2dp(345) + 0.5
+    },
+
     indexView: {
         position: 'absolute',
         bottom: 5,

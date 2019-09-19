@@ -14,6 +14,7 @@ export default class MyShopDetailModel {
     @observable isRefresh = false;
     @observable storeCode;
 
+    @observable canOpenShop = false;
     @observable productList = [];
     @observable bottomBannerList = [];
     @observable storeData = {};
@@ -35,6 +36,12 @@ export default class MyShopDetailModel {
             this.netFailedInfo = e;
             this.loadingState = PageLoadingState.fail;
             this.isRefresh = false;
+        });
+    };
+
+    checkOpenStore = () => {
+        SpellShopApi.checkQualificationOpenStore().then((data) => {
+            this.canOpenShop = data.data;
         });
     };
 

@@ -13,13 +13,15 @@ import BasePage from '../../../BasePage';
 import DesignRule from '../../../constants/DesignRule';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import SpellShopApi from '../api/SpellShopApi';
-import spellStatusModel from '../SpellStatusModel';
 import HTML from '@mr/react-native-render-html';
 import res from '../res';
 import { MRText as Text } from '../../../components/ui';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import RouterMap from '../../../navigation/RouterMap';
+import HomeAPI from '../../home/api/HomeAPI';
+import { homeType } from '../../home/HomeTypes';
+import bridge from '../../../utils/bridge';
 
 
 const { openShop_yes, openShop_no } = res.openShop;
@@ -27,7 +29,7 @@ const { openShop_yes, openShop_no } = res.openShop;
 export default class OpenShopExplainPage extends BasePage {
 
     state = {
-        pageState: PageLoadingState.loading,
+        pageState: PageLoadingState.success,
         isSelected: true,
         netFailedInfo: {},
         data: null
@@ -53,18 +55,18 @@ export default class OpenShopExplainPage extends BasePage {
     };
 
     componentDidMount() {
-        this._openStore();
+        // this._openStore();
     }
 
     _openStore = () => {
-        SpellShopApi.store_openStore().then((data) => {
+        HomeAPI.getHomeData({ type: homeType.tore29 }).then((data) => {
             this.setState({
                 data: data.data,
                 pageState: PageLoadingState.success
             });
         }).catch((e) => {
             this.setState({
-                pageState: PageLoadingState.fail
+                pageState: PageLoadingState.success
             });
         });
     };
@@ -86,10 +88,14 @@ export default class OpenShopExplainPage extends BasePage {
             [
                 {
                     text: '确认开店', onPress: () => {
-                        SpellShopApi.depositTest().then(() => {
-                            spellStatusModel.requestHome();
-                            this.$navigate(RouterMap.SetShopNamePage);
+                        bridge.showLoading();
+                        SpellShopApi.checkQualificationOpenStore().then((data) => {
+                            bridge.hiddenLoading();
+                            if (data.data) {
+                                this.$navigate('store/shopSetting/SetShopNamePage');
+                            }
                         }).catch((error) => {
+                            bridge.hiddenLoading();
                             this.$toastShow(error.msg);
                         });
                     }

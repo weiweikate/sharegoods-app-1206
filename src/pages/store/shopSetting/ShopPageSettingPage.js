@@ -17,8 +17,8 @@ import DateUtils from '../../../utils/DateUtils';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
-import SpellShopApi from '../../spellShop/api/SpellShopApi';
-import spellStatusModel from '../../spellShop/model/SpellStatusModel';
+import SpellShopApi from '../api/SpellShopApi';
+import spellStatusModel from '../SpellStatusModel';
 
 const ArrowImg = res.shopSetting.xjt_03;
 
@@ -68,7 +68,7 @@ export default class ShopPageSettingPage extends BasePage {
                 },
                 {
                     text: '确定', onPress: () => {
-                        SpellShopApi.store_disband().then(() => {
+                        SpellShopApi.app_store_close().then(() => {
                             spellStatusModel.requestHome();
                             this.$navigateBackToStore();
                         }).catch(e => this.$toastShow(e.msg));
