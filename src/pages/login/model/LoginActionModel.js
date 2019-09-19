@@ -124,7 +124,7 @@ const handleLoginData = (data, code, successCallBack, failCallBack, popNumber) =
         } else {
             // 前往绑定手机号
             failCallBack && failCallBack(code, data);
-            this.$toastShow('请绑定手机号');
+            bridge.$toast('请绑定手机号');
             routeNavigate(RouterMap.PhoneLoginPage, {
                 needBottom: false,
                 wechatCode: data.wechatCode

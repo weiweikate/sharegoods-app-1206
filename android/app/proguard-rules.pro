@@ -453,7 +453,6 @@ public static final int *;
 -keep class com.cmic.** { *; }
 -dontwarn com.unicom.**
 -keep class com.unicom.** { *; }
-
 -dontwarn cn.com.chinatelecom.**
 -keep class cn.com.chinatelecom.** { *; }
 
