@@ -166,6 +166,7 @@ export default class VerifyWXCodePage extends BasePage {
                                         }
                                     });
                                 }}
+                                autoFocus={true}
                                 placeholder='请输入手机号'
                                 placeholderTextColor={DesignRule.textColor_instruction}
                                 keyboardType='numeric'
@@ -209,7 +210,6 @@ export default class VerifyWXCodePage extends BasePage {
                                 placeholder='请输入验证码'
                                 placeholderTextColor={DesignRule.textColor_instruction}
                                 keyboardType='numeric'
-                                autoFocus={true}
                                 maxLength={11}/>
                             <View style={{ height: px2dp(25), width: 1, backgroundColor: DesignRule.mainColor }}/>
                             <TouchableOpacity
