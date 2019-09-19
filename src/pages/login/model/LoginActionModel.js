@@ -121,7 +121,7 @@ const handleLoginData = (params, data, code, successCallBack, failCallBack, popN
                 weChatCode: data.wechatCode || params.weChatCode
             });
         }
-    } else {
+    } else if (data.weChatBindingStatus === false) {
         // 走微信异常路径
         failCallBack && failCallBack(code, data);
         Alert.alert('账号异常', '请验证绑定该微信号的手机号', [{

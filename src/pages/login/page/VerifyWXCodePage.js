@@ -116,11 +116,14 @@ export default class VerifyWXCodePage extends BasePage {
                 smsCode: this.state.code
             };
             weChatUnusual(params, () => {
+                this.$toastShow('登录成功');
                 this.$loadingDismiss();
-            }, () => {
+            }, (code, data) => {
                 this.$loadingDismiss();
-                // 跳转到结果页
-                routeNavigate(RouterMap.VerifyResultPage);
+                if (data && data.weChatBindingStatus === false) {
+                    // 跳转到结果页
+                    routeNavigate(RouterMap.VerifyResultPage);
+                }
             }, 2);
         }
     };
