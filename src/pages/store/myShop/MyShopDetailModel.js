@@ -24,6 +24,7 @@ export default class MyShopDetailModel {
     requestAppStore = () => {
         SpellShopApi.app_store({ pathValue: `/${this.storeCode}` }).then((data) => {
             this.loadingState = PageLoadingState.success;
+            this.isRefresh = false;
             this.storeData = data.data || {};
             this.requestHomePageList();
             track(trackEvent.PinShopEnter, {
@@ -33,6 +34,7 @@ export default class MyShopDetailModel {
         }).catch(e => {
             this.netFailedInfo = e;
             this.loadingState = PageLoadingState.fail;
+            this.isRefresh = false;
         });
     };
 

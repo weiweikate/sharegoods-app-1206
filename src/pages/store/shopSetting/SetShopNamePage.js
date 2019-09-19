@@ -56,9 +56,11 @@ export default class SetShopNamePage extends BasePage {
     }
 
     componentDidMount() {
-        if (this.params.storeData) {
+        const { storeData } = this.params;
+        if (storeData) {
+            const { storeCode } = storeData;
             this.$loadingShow();
-            SpellShopApi.getById({ storeCode: this.params.storeData.storeCode }).then((data) => {
+            SpellShopApi.app_store({ pathValue: `/${storeCode}` }).then((data) => {
                 let dataTemp = data.data || {};
                 this.setState({
                     storeHeadUrlOrigin: dataTemp.headUrl,
@@ -78,36 +80,37 @@ export default class SetShopNamePage extends BasePage {
     }
 
     _complete = () => {
-        if (StringUtils.isEmpty(this.state.storeHeadUrlOrigin)) {
+        const { storeHeadUrlOrigin, textName, provinceCode, cityCode } = this.state;
+        if (StringUtils.isEmpty(storeHeadUrlOrigin)) {
             this.$toastShow('店铺头像不能为空');
             return;
         }
 
-        if (StringUtils.isEmpty(this.state.textName)) {
+        if (StringUtils.isEmpty(textName)) {
             this.$toastShow('请输入店铺名称');
             return;
         }
-        if (this._checkIsHasSpecialStr(this.state.textName)) {
+        if (this._checkIsHasSpecialStr(textName)) {
             this.$toastShow('店铺名称带有特殊字符，请重新输入');
             return;
         }
-        if (this.state.textName.length < 4 || this.state.textName.length > 16) {
+        if (textName.length < 4 || textName.length > 16) {
             this.$toastShow('店铺名称仅限4~16位字符');
             return;
         }
 
-        if (StringUtils.isEmpty(this.state.provinceCode) || StringUtils.isEmpty(this.state.cityCode)) {
+        if (StringUtils.isEmpty(provinceCode) || StringUtils.isEmpty(cityCode)) {
             this.$toastShow('请选择店铺位置');
             return;
         }
-
-        if (this.params.storeData) {
-            SpellShopApi.updateStoreInfo({
-                name: this.state.textName,
-                headUrl: this.state.storeHeadUrlOrigin,
-                provinceCode: this.state.provinceCode,
-                cityCode: this.state.cityCode,
-                areaCode: this.state.areaCode,
+        const { storeData } = this.params;
+        if (storeData) {
+            SpellShopApi.app_store_put({
+                pathValue: `/${storeData.storeCode}`,
+                name: textName,
+                headUrl: storeHeadUrlOrigin,
+                provinceCode: provinceCode,
+                cityCode: cityCode,
                 profile: this.state.textProfile
             }).then(() => {
                 this.$toastShow('修改成功');
@@ -117,14 +120,11 @@ export default class SetShopNamePage extends BasePage {
                 this.$toastShow(error.msg);
             });
         } else {
-            // 创建店铺，并设置店铺基础信息
-            SpellShopApi.initStore({
-                name: this.state.textName,
-                headUrl: this.state.storeHeadUrlOrigin,
-                status: 3,
-                provinceCode: this.state.provinceCode,
-                cityCode: this.state.cityCode,
-                areaCode: this.state.areaCode,
+            SpellShopApi.app_store_post({
+                name: textName,
+                headUrl: storeHeadUrlOrigin,
+                provinceCode: provinceCode,
+                cityCode: cityCode,
                 profile: this.state.textProfile
             }).then(() => {
                 this.$navigate(RouterMap.OpenShopSuccessPage);
@@ -146,7 +146,6 @@ export default class SetShopNamePage extends BasePage {
     //点击头像
     _clickHeader = () => {
         BusinessUtils.getImagePicker((response) => {
-            // if (response && typeof response === 'object' && response.ok) {
             const { imageUrl } = response;
             if (imageUrl) {
                 this.setState({
@@ -164,12 +163,11 @@ export default class SetShopNamePage extends BasePage {
         });
     };
 
-    setArea(provinceName, provinceCode, cityName, cityCode, areaName, areaCode) {
+    setArea(provinceName, provinceCode, cityName, cityCode) {
         this.setState({
-            textArea: `${provinceName}${cityName}${areaName}`,
+            textArea: `${provinceName}${cityName}`,
             provinceCode: provinceCode,
-            cityCode: cityCode,
-            areaCode: areaCode
+            cityCode: cityCode
         });
     }
 

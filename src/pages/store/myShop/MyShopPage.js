@@ -83,6 +83,7 @@ export default class MyShopPage extends BasePage {
     _onRefresh = () => {
         this.MyShopDetailModel.isRefresh = true;
         this._loadPageData();
+        spellStatusModel.requestHome();
     };
 
     _loadPageData = () => {
@@ -150,7 +151,8 @@ export default class MyShopPage extends BasePage {
         const { roleType } = this.MyShopDetailModel.storeData;
         if (roleType === 0) {
             this.$navigate('store/shopSetting/ShopPageSettingPage', {
-                storeData: this.MyShopDetailModel.storeData
+                storeData: this.MyShopDetailModel.storeData,
+                myShopCallBack: this.MyShopDetailModel.requestAppStore
             });
         } else {
             this.actionSheetRef.show({
@@ -275,7 +277,7 @@ export default class MyShopPage extends BasePage {
                                 colors={[DesignRule.mainColor]}
                             />}>
                     <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement}
-                                item={this.MyShopDetailModel.storeData}/>
+                                storeData={this.MyShopDetailModel.storeData}/>
                     {roleType === 0 && <ShopCardView/>}
                     <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                     <MembersRow MyShopDetailModel={this.MyShopDetailModel}

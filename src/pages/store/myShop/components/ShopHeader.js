@@ -2,7 +2,6 @@
  * 我的店铺-店铺头
  */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import {
     View,
     Image,
@@ -27,39 +26,30 @@ import {
 const HeaderBarBgImg = res.myShop.txbg_02;
 const StarImg = res.myShop.dj_03;
 
-
 export default class ShopHeader extends Component {
 
-    static propTypes = {
-        onPressShopAnnouncement: PropTypes.func,//点击公告
-        item: PropTypes.object
-    };
-
-
     render() {
-        let {
-            headUrl, name, showNumber, storeStarId, userStatus,
-            storeNoticeDTO, profile
-        } = this.props.item;
-        let { content } = storeNoticeDTO || {};
-        content = content || '';
-        content = content.replace(/[\r\n]/g, '');
+        const { headUrl, name, showNumber, level, profile, roleType } = this.props.storeData;
+        let { content } = this.props;
+        content = (content || '').replace(/[\r\n]/g, '');
         const starsArr = [];
-        if (storeStarId && typeof storeStarId === 'number') {
-            for (let i = 0; i < storeStarId; i++) {
+        if (level && typeof level === 'number') {
+            for (let i = 0; i < level; i++) {
                 i <= 2 && starsArr.push(i);
             }
         }
+        const showTicker = StringUtils.isNoEmpty(content) && StringUtils.isNoEmpty(roleType);
         return <View>
             <Image source={HeaderBarBgImg}
                    style={[styles.imgBg]}/>
             <View style={{
-                height: StringUtils.isNoEmpty(content) && userStatus === 1 ? px2dp(20) : 0,
+                height: showTicker ? px2dp(20) : 0,
                 marginTop: ScreenUtils.headerHeight,
                 backgroundColor: 'rgba(255,255,255,0.4)',
                 justifyContent: 'center'
             }}>
-                {StringUtils.isNoEmpty(content) && userStatus === 1 ? <View style={{ marginHorizontal: 15 }}>
+                {showTicker &&
+                <View style={{ marginHorizontal: 15 }}>
                     <TextTicker
                         style={{ fontSize: 12, color: DesignRule.white }}
                         loop
@@ -67,7 +57,7 @@ export default class ShopHeader extends Component {
                         repeatSpacer={100}
                         marqueeDelay={2000}
                     >{`公告: ${content}`}</TextTicker>
-                </View> : null}
+                </View>}
             </View>
 
             <View style={[styles.whiteBg]}>
@@ -77,12 +67,12 @@ export default class ShopHeader extends Component {
                     marginHorizontal: px2dp(20)
                 }}>
                     <AvatarImage style={styles.headerImg} borderRadius={px2dp(30)}
-                                 source={{ uri: StringUtils.isNoEmpty(headUrl) ? headUrl : '' }}/>
+                                 source={{ uri: headUrl || '' }}/>
                     <View style={styles.shopInContainer}>
-                        <Text style={styles.shopName} allowFontScaling={false}>{name || ''}</Text>
-                        <Text style={styles.shopId} allowFontScaling={false}>ID：{showNumber || ''}</Text>
+                        <Text style={styles.shopName}>{name || ''}</Text>
+                        <Text style={styles.shopId}>ID：{showNumber || ''}</Text>
                         <View style={styles.starRow}>
-                            <Text style={{ fontSize: 11, color: '#999999' }} allowFontScaling={false}>店铺星级：</Text>
+                            <Text style={{ fontSize: 11, color: '#999999' }}>店铺星级：</Text>
                             {
                                 starsArr.map((item, index) => {
                                     return <Image key={index} source={StarImg} style={{ width: 18, height: 18 }}/>;
@@ -91,8 +81,8 @@ export default class ShopHeader extends Component {
                         </View>
                     </View>
 
-                    {userStatus === 1 ? <TouchableOpacity onPress={this.props.onPressShopAnnouncement}
-                                                          style={styles.announcementContainer}>
+                    {roleType === 0 ? <TouchableOpacity onPress={this.props.onPressShopAnnouncement}
+                                                        style={styles.announcementContainer}>
                         <Text style={styles.announcementTitle} allowFontScaling={false}>店铺公告</Text>
                     </TouchableOpacity> : null}
                 </View>

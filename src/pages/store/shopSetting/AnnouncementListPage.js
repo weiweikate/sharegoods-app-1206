@@ -13,7 +13,6 @@ import bridge from '../../../utils/bridge';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from '../../../constants/DesignRule';
-import RouterMap from '../../../navigation/RouterMap';
 // 是否显示删除按钮
 
 @observer
@@ -72,11 +71,9 @@ export default class AnnouncementListPage extends BasePage {
 
     loadPageData = () => {
         this.state.page = 1;
-        const { storeData } = this.params;
         SpellShopApi.queryByStoreId({
             page: this.state.page,
             pageSize: 10,
-            storeCode: storeData.storeNumber
         }).then((data) => {
             this.state.page++;
             let dateTemp = data.data || {};
@@ -97,7 +94,6 @@ export default class AnnouncementListPage extends BasePage {
     };
 
     loadPageDataMore = () => {
-        const { storeData } = this.params;
         this.onEndReached = true;
         this.setState({
             loadingMore: true
@@ -105,7 +101,6 @@ export default class AnnouncementListPage extends BasePage {
             SpellShopApi.queryByStoreId({
                 page: this.state.page,
                 pageSize: 10,
-                storeCode: storeData.storeNumber
             }).then((data) => {
                 this.state.page++;
                 this.onEndReached = false;
@@ -127,17 +122,6 @@ export default class AnnouncementListPage extends BasePage {
     };
 
     _delItem = ({ id }) => {
-        // id && this.refs.delAlert && this.refs.delAlert.show({
-        //     title: '确定要删除此条公告？',
-        //     confirmCallBack: () => {
-        //         SpellShopApi.deleteById({ id: id }).then(() => {
-        //             this.loadPageData();
-        //             bridge.$toast('删除成功');
-        //         }).catch((error) => {
-        //             this.$toastShow(error.msg);
-        //         });
-        //     }
-        // });
 
         id && Alert.alert('提示', '确定要删除此条公告',
             [
@@ -160,7 +144,7 @@ export default class AnnouncementListPage extends BasePage {
     };
 
     _clickRow = (info) => {
-        this.$navigate(RouterMap.AnnouncementDetailPage, info);
+        this.$navigate('store/shopSetting/AnnouncementDetailPage', info);
     };
 
     // 列表触底
@@ -182,9 +166,11 @@ export default class AnnouncementListPage extends BasePage {
 
     // 渲染行
     _renderItem = ({ item }) => {
-        return (<AnnouncementRow canDelete={this.params.storeData.myStore}
+        const { storeData } = this.params;
+        return (<AnnouncementRow storeData={storeData}
+                                 itemData={item}
                                  onPress={this._clickRow}
-                                 onPressDelete={this._delItem} {...item} />);
+                                 onPressDelete={this._delItem}/>);
     };
 
     _render() {

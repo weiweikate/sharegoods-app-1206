@@ -5,7 +5,7 @@ import {
     Image,
     StyleSheet,
     ScrollView,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback, Alert
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import DesignRule from '../../../constants/DesignRule';
@@ -17,6 +17,8 @@ import DateUtils from '../../../utils/DateUtils';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
+import SpellShopApi from '../../spellShop/api/SpellShopApi';
+import spellStatusModel from '../../spellShop/model/SpellStatusModel';
 
 const ArrowImg = res.shopSetting.xjt_03;
 
@@ -58,7 +60,22 @@ export default class ShopPageSettingPage extends BasePage {
     };
 
     _closeStore = () => {
-        this.$navigate('store/shopSetting/ShopCloseExplainPage', { storeData: this.state.storeData });
+        Alert.alert('提示', '确认解散该店铺吗？',
+            [
+                {
+                    text: '取消', onPress: () => {
+                    }
+                },
+                {
+                    text: '确定', onPress: () => {
+                        SpellShopApi.store_disband().then(() => {
+                            spellStatusModel.requestHome();
+                            this.$navigateBackToStore();
+                        }).catch(e => this.$toastShow(e.msg));
+                    }
+                }
+            ]
+        );
     };
 
     _render() {

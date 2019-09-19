@@ -61,7 +61,6 @@ export class RecommendBanner extends Component {
                     imgUrlArray={items}
                     itemSpace={0}
                     interceptTouchEvent={true}  //android端起作用，是否拦截touch事件
-                    pageFocused={this.props.pageFocused}
                     onDidSelectItemAtIndex={(index) => {
                         bannerList[this.state.index] && this._onPress(bannerList[this.state.index]);
                     }}

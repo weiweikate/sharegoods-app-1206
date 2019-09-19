@@ -4,7 +4,6 @@ import AnnouncementListPage from './AnnouncementListPage';
 import AnnouncementDetailPage from './AnnouncementDetailPage';
 import AnnouncementPublishPage from './AnnouncementPublishPage';
 import ShopScorePage from './ShopScorePage';
-import ShopCloseExplainPage from './ShopCloseExplainPage';
 
 export default {
     moduleName: 'shopSetting',          //模块名称
@@ -15,6 +14,5 @@ export default {
         AnnouncementDetailPage,//公告详情
         AnnouncementPublishPage,//发布公告
         ShopScorePage,                  //店铺星级页面
-        ShopCloseExplainPage
     }
 };

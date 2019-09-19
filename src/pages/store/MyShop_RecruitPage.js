@@ -115,7 +115,7 @@ export default class MyShop_RecruitPage extends BasePage {
                                navigation={this.props.navigation}
                                storeCode={storeCode}/>;
         } else if (errorCode === 31407) {
-            return <RecommendPage navigation={this.props.navigation}/>;
+            return <RecommendPage navigation={this.props.navigation} isHome={true}/>;
         } else {
             return <NoAccessPage/>;
         }

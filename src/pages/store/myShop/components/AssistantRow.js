@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     rowContainer: {
         height: 88,
         borderRadius: 10,
-        backgroundColor: 'white',
         shadowColor: 'rgba(0, 0, 0, 0.1)',
         shadowOffset: {
             width: 0,

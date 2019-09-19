@@ -1,10 +1,12 @@
 import ApiUtils from '../../../api/network/ApiUtils';
 
 const api = {
+    //是否开店
+    checkQualificationOpenStore: ['/app/store/user/checkQualificationOpenStore', { method: 'get' }],
     //新开
     app_store_post: '/app/store',
     //修改
-    app_store_put: ['/app/store', { method: 'put' }],
+    app_store_put: ['/app/store/update'],
     //删除
     app_store_delete: ['/app/store', { method: 'delete' }],
     //拆分
@@ -27,6 +29,8 @@ const api = {
     /**店铺管理**/
     //举报店铺
     storeTipOffInsert: '/app/store/tipoff/save',
+    //移除店铺人员
+    storeUserRemove: '/user/storeUser/remove',
     // 退出店铺
     quitStore: '/app/store/user/quit',
     //查询店铺人员
@@ -46,39 +50,11 @@ const api = {
     /**开店信息**/
     store_openStore: ['/user/store/openStore', { method: 'get' }],
 
-    //test-------------test店铺支付成功
-    depositTest: ['/user/store/deposit', { method: 'get' }],
-
-    //获取保证金金额
-    getMoney: ['/common/config/getMoney', { method: 'get' }],
-
-
-    // 开启店铺post
-    startStore: '/user/store/startStore',
-    // 关闭店铺
-    closeStore: '/user/store/closeStore',
-
-
-    // 同意/拒绝 他人加入店铺 -- 店主行为post
-    agreeOrDisAgreeJoin: '/user/storeUser/agreeOrDisAgreeJoin',
-    // 移除店铺人员 -- 店主行为post
-    storeUserRemove: '/user/storeUser/remove',
-
-
     // 请求加入店铺 -- 店员行为post
     addToStore: '/user/storeUser/addToStore',
-
-    // 更新店铺信息post
-    updateStoreInfo: '/user/store/updateStoreInfo',
-
-
     // 根据店铺公告id查询公告信息get
     findById: ['/user/storeNotice/findById', { method: 'get' }],
 
-    /*
-    * 拼店解散说明
-    * */
-    store_dissolve: ['/config/store/dissolve', { method: 'get' }],
     /**店铺扩容**/
     /*
     * 查询店铺人员数量,最大人员数量,是否可以扩容

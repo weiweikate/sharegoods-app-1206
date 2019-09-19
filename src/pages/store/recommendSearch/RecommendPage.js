@@ -17,7 +17,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import RecommendRow from './components/RecommendRow';
 import SegementHeaderView from './components/RecommendSegmentView';
 import BasePage from '../../../BasePage';
-import SpellStatusModel from '../SpellStatusModel';
+import spellStatusModel from '../SpellStatusModel';
 import SpellShopApi from '../api/SpellShopApi';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import StringUtils from '../../../utils/StringUtils';
@@ -63,20 +63,21 @@ export default class RecommendPage extends BasePage {
             locationResult: {},//latitude  //longitude
             //data
             dataList: [{}],//默认一行显示状态页面使用 错误页 无数据页面
-            pageFocused: false
+            canOpenShop: false
         };
     }
 
     $navigationBarOptions = {
         title: '拼店',
-        leftNavItemHidden: this.props.leftNavItemHidden
+        leftNavItemHidden: this.props.isHome
     };
 
     $NavBarRenderRightItem = () => {
         return <View style={styles.rightBarItemContainer}>
+            {this.state.canOpenShop &&
             <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
                 <Image source={ShopItemLogo} style={{ width: 20, height: 20 }}/>
-            </TouchableOpacity>
+            </TouchableOpacity>}
             <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickSearchItem}>
                 <Image source={SearchItemLogo} style={{ width: 20, height: 20 }}/>
             </TouchableOpacity>
@@ -89,35 +90,48 @@ export default class RecommendPage extends BasePage {
                 bannerModule.loadBannerList();
             }
         });
-        this.willBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
-            payload => {
-                this.setState({
-                    pageFocused: false
-                });
-            }
-        );
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                this.setState({
-                    pageFocused: true
-                });
+                const { state } = payload;
+                console.log('didFocus', state);
+                if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
+                    this._checkOpenStore();
+                }
             }
         );
+
         this._verifyLocation();
+        this._checkOpenStore();
         bannerModule.loadBannerList();
     }
 
     componentWillUnmount() {
         this.listenerBannerRefresh && this.listenerBannerRefresh.remove();
-        this.willBlurSubscription && this.willBlurSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
     }
+
+    _checkOpenStore = () => {
+        SpellShopApi.checkQualificationOpenStore().then((data) => {
+            this.setState({
+                canOpenShop: data.data
+            });
+        });
+    };
 
     _getSize = () => {
         const segmentIndex = this.state.segmentIndex;
         return segmentIndex === 1 ? 10 : 10;
+    };
+
+    _refreshing = () => {
+        this.setState({
+            refreshing: true
+        }, () => {
+            this._verifyLocation();
+            bannerModule.loadBannerList();
+            spellStatusModel.requestHome();
+        });
     };
 
     _verifyLocation() {
@@ -135,7 +149,7 @@ export default class RecommendPage extends BasePage {
                     this._loadPageData();
                 }
             }).catch((error) => {
-                    SpellStatusModel.alertAction(error, () => {
+                    spellStatusModel.alertAction(error, () => {
                         this.$navigateBackToHome();
                     }, () => {
                         this.$navigateBackToHome();
@@ -144,16 +158,6 @@ export default class RecommendPage extends BasePage {
             );
         });
     }
-
-    _refreshing = () => {
-        this.setState({
-            refreshing: true
-        }, () => {
-            this._verifyLocation();
-            bannerModule.loadBannerList();
-            SpellStatusModel.requestHome();
-        });
-    };
 
     _loadPageData = () => {
         this.state.page = 1;
@@ -218,7 +222,11 @@ export default class RecommendPage extends BasePage {
 
     // 点击开启店铺页面
     _clickOpenShopItem = () => {
-        navigateBackToStore();
+        if (!spellStatusModel.storeCode) {
+            this.$navigate('store/openShop/OpenShopExplainPage');
+        } else {
+            navigateBackToStore();
+        }
     };
 
     // 点击搜索店铺
@@ -252,8 +260,7 @@ export default class RecommendPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return <RecommendBanner pageFocused={this.state.pageFocused}
-                                onPress={this._clickItem}/>;
+        return <RecommendBanner onPress={this._clickItem}/>;
     };
 
     _renderSectionHeader = () => {
@@ -340,8 +347,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     rightItemBtn: {
-        width: 35,
-        height: 35,
+        width: 44,
+        height: 44,
         justifyContent: 'center',
         alignItems: 'center'
     },
