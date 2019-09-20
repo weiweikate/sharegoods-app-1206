@@ -643,6 +643,11 @@ public class CommModule extends ReactContextBaseJavaModule {
         promise.resolve(map);
     }
 
+    @ReactMethod
+    public void exitApp(){
+        System.exit(0);
+    }
+
     /***
      * 获取字体高度
      * @param paint
