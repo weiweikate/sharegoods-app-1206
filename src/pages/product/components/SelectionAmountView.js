@@ -42,7 +42,7 @@ export default class SelectionAmountView extends Component {
     _rightAction = () => {
         const { promotionLimit } = this.props;
         if (promotionLimit !== null && promotionLimit <= this.state.amount) {
-            bridge.$toast(`最多只能购买${promotionLimit}件~`);
+            bridge.$toast(`您已超出限购数量`);
             return;
         }
         if (this.props.maxCount <= this.state.amount) {
@@ -100,7 +100,7 @@ export default class SelectionAmountView extends Component {
             this.setState({
                 amount: promotionLimit
             }, () => {
-                bridge.$toast(`最多只能购买${promotionLimit}件~`);
+                bridge.$toast(`您已超出限购数量`);
                 this.props.amountClickAction(promotionLimit);
             });
         }
