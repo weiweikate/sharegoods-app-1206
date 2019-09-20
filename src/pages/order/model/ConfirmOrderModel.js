@@ -67,6 +67,7 @@ class ConfirmOrderModel {
         this.receiveInfo = {};
         this.data = null;
         this.canInvoke = false
+        this.invokeSelect = false
         this.invokeItem = null;
 
     }

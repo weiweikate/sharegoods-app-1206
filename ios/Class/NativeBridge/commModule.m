@@ -151,6 +151,10 @@ RCT_EXPORT_METHOD(getCookie:(NSString *)url and:(RCTResponseSenderBlock)callback
   callback(@[mr]);
 }
 
+RCT_EXPORT_METHOD(exitApp){
+  exit(0);
+}
+
 RCT_EXPORT_METHOD(clearCookie:(NSString *)url){
   if(url && url.length){
     NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:url]];
