@@ -1,5 +1,5 @@
 // 原生桥接接口函数请使用'$'开头
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform, BackHandler } from 'react-native';
 import ScreenUtils from './ScreenUtils';
 import StringUtils from './StringUtils';
 import TimerMixin from 'react-timer-mixin';
@@ -219,5 +219,12 @@ export default {
     getAPKChannel: NativeModules.commModule.getAPKChannel,
     getTextHeightWithWidth: (str, fontSize, width)=> {
         return NativeModules.commModule.getTextHeightWithWidth(str, fontSize, width)
+    },
+    exitApp: () => {
+        if (NativeModules.commModule.exitApp){
+            NativeModules.commModule.exitApp();
+        } else {
+            BackHandler.exitApp();
+        }
     }
 };

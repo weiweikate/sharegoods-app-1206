@@ -37,6 +37,7 @@ import HomeNormalList from './view/List/HomeNormalList';
 import DIYTopicList from './view/List/DIYTopicList';
 import { observer } from 'mobx-react';
 import ImageLoader from '@mr/image-placeholder';
+import PrivacyModal from './view/PrivacyModal';
 
 
 /**
@@ -82,6 +83,7 @@ class HomePage extends BasePage {
             'willFocus',
             payload => {
                 const { state } = payload;
+                homeModalManager.entryHome();
                 if (state && state.routeName === 'HomePage') {
                     if (homeModule.firstLoad) {
                         homeModule.loadHomeList(true);
@@ -99,7 +101,6 @@ class HomePage extends BasePage {
                     track(trackEvent.ViewHomePage);
                     homeTabManager.setHomeFocus(true);
                     homeModule.homeFocused(true);
-                    homeModalManager.entryHome();
                     user.getToken().then(() => {//让user初始化完成
                         this.luckyIcon && this.luckyIcon.getLucky(1, '');
                         if (user.token) {
@@ -232,6 +233,7 @@ class HomePage extends BasePage {
                 <IntervalMsgView pageType={IntervalType.home}/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
+                <PrivacyModal />
                 <VersionUpdateModalView/>
             </View>
         );
