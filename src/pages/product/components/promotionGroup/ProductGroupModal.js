@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { Alert, FlatList, Image, ScrollView, StyleSheet, View } from 'react-native';
+import { View, StyleSheet, Image, ScrollView, Alert } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
@@ -22,11 +22,12 @@ import { observer } from 'mobx-react';
 import whoAreYou from './whoAreYou.png';
 import morePerson from './morePerson.png';
 import user from '../../../../model/user';
-import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
+import { routeNavigate } from '../../../../navigation/RouterMap';
+import RouterMap from '../../../../navigation/RouterMap';
 import ProductApi from '../../api/ProductApi';
 import bridge from '../../../../utils/bridge';
 
-const { px2dp, width } = ScreenUtils;
+const { px2dp } = ScreenUtils;
 
 /*
 * 正在凑团
@@ -48,9 +49,9 @@ export class GroupPersonAllList extends Component {
         });
     };
 
-    _renderItem = ({ item }) => {
+    _renderItem = ({ item },index) => {
         const { goToBuy, showGroupJoinView, requestGroupList } = this.props;
-        return <GroupPersonItem style={stylesAll.itemView} itemData={item} goToBuy={goToBuy}
+        return <GroupPersonItem key={`GroupPersonItem${index}`} style={stylesAll.itemView} itemData={item} goToBuy={goToBuy}
                                 requestGroupList={requestGroupList}
                                 close={this._close}
                                 showGroupJoinView={showGroupJoinView}/>;
@@ -70,22 +71,20 @@ export class GroupPersonAllList extends Component {
                        visible={this.state.modalVisible}
                        transparent={true}>
                 <View style={stylesAll.containerView}>
-                    <View style={[stylesAll.container, { height: viewHeight, width }]}>
+                    <NoMoreClick style={{ flex: 1 }} onPress={this._close} activeOpacity={1}/>
+                    <View style={[stylesAll.container, { height: viewHeight }]}>
                         <View style={stylesAll.topView}>
                             <MRText style={stylesAll.topLText}>正在凑团</MRText>
                             <MRText
                                 style={stylesAll.topRText}>{groupList.length === 10 ? '仅显示10个正在拼团的人' : ''}</MRText>
                         </View>
-                        <View style={{ flex: 1 }}>
-                            <FlatList
-                                style={stylesAll.flatList}
-                                data={groupList || []}
-                                keyExtractor={(item) => item.id + ''}
-                                renderItem={this._renderItem}
-                                showsHorizontalScrollIndicator={false}
-                                // initialNumToRender={5}
-                            />
-                        </View>
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            {
+                                (groupList || []).map((item,index)=>{
+                                    return this._renderItem({item},index);
+                                })
+                            }
+                        </ScrollView>
                     </View>
                 </View>
             </CommModal>
@@ -95,13 +94,9 @@ export class GroupPersonAllList extends Component {
 
 const stylesAll = StyleSheet.create({
     containerView: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
+        flex: 1,
         backgroundColor: 'rgba(0,0,0,0.5)',
-        justifyContent: 'flex-end'
+        width: ScreenUtils.width
     },
     container: {
         borderTopLeftRadius: 10, borderTopRightRadius: 10,

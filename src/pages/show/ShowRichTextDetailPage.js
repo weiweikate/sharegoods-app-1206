@@ -564,13 +564,14 @@ export default class ShowRichTextDetailPage extends BasePage {
             });
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
                 const { prodCode, name, originalPrice } = addCartModel;
+                const { showNo, userInfoVO } = this.showDetailModule.detail;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
                     'skuCode': skuCode,
-                    'productCode': detail.prodCode
+                    'productCode': detail.prodCode,
+                    'sgscm':`2.${showNo}.none.none`
                 });
                 /*加入购物车埋点*/
-                const { showNo, userInfoVO } = this.showDetailModule.detail;
                 const { userNo } = userInfoVO || {};
                 track(trackEvent.XiuChangAddToCart, {
                     xiuChangBtnLocation: '2',
@@ -791,7 +792,8 @@ export default class ShowRichTextDetailPage extends BasePage {
                                         this.$navigate(RouterMap.ProductDetailPage, {
                                             productCode: prodCode,
                                             trackType: 3,
-                                            trackCode: detail.showNo
+                                            trackCode: detail.showNo,
+                                            sgscm:`2.${detail.showNo}.none.none`
                                         });
                                     }}
                 />
@@ -827,7 +829,8 @@ export default class ShowRichTextDetailPage extends BasePage {
                                                      this.$navigate(RouterMap.ProductDetailPage, {
                                                          productCode: prodCode,
                                                          trackType: 3,
-                                                         trackCode: detail.showNo
+                                                         trackCode: detail.showNo,
+                                                         sgscm:`2.${detail.showNo}.none.none`
                                                      });
                                                  }}
                                                  addCart={this.addCart}

@@ -109,7 +109,9 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
                 }
             });
         }
-        builder.setNavReturnImgPath("close_x")
+        builder.setStatusBarColorWithNav(true)
+                .setStatusBarDarkMode(true)
+                .setNavReturnImgPath("close_x")
                 .setNavColor(mContext.getResources().getColor(R.color.white))
                 .setNavText("")
                 .setNavTextColor(mContext.getResources().getColor(R.color.app_main_text_color))

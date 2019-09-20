@@ -9,6 +9,8 @@ const index = {
     login_phone: require('./login_phone.png'),
     login_pwd: require('./login_pwd.png'),
     login_one: require('./login_one.png'),
+    verify_phone: require('./verify_phone.png'),
+    verify_result: require('./verify_result.png'),
     ...res
 };
 export default index;

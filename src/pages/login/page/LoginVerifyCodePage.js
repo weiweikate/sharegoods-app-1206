@@ -10,8 +10,7 @@ import { netStatusTool } from '../../../api/network/NetStatusTool';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import SMSTool from '../../../utils/SMSTool';
 import bridge from '../../../utils/bridge';
-import { codeLoginAction } from '../model/LoginActionModel';
-import RouterMap from '../../../navigation/RouterMap';
+import { memberLogin } from '../model/LoginActionModel';
 import { mediatorCallFunc } from '../../../SGMediator';
 import { TrackApi } from '../../../utils/SensorsTrack';
 
@@ -20,7 +19,6 @@ export default class LoginVerifyCodePage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.params = this.props.navigation.state.params || {};
         this.state = {
             downTime: 60,
             code: ''
@@ -33,6 +31,9 @@ export default class LoginVerifyCodePage extends BasePage {
         gesturesEnabled: false
     };
 
+    /**
+     * 获取验证码
+     */
     getVerifyCode = () => {
         if (this.params.phoneNum) {
             // 获取验证码
@@ -51,45 +52,47 @@ export default class LoginVerifyCodePage extends BasePage {
         }
     };
 
+    /**
+     * 登录
+     */
     toLogin = () => {
         let loginParams = {
             campaignType: this.params.campaignType || '',
             spm: this.params.spm || '',
-            code: this.state.code,
-            phoneNumber: this.params.phoneNum, password: ''
+            smsCode: this.state.code,
+            phone: this.params.phoneNum,
+            loginType: 1
         };
-        if (this.params.wxData) {
-            loginParams.nickname = this.params.wxData.nickName;
-            loginParams.headImg = this.params.wxData.headerImg;
-            loginParams.appOpenid = this.params.wxData.appOpenid;
-            loginParams.unionid = this.params.wxData.unionid;
+        // 如果有微信code，则自动绑定
+        if (this.params.weChatCode) {
+            loginParams.weChatCode = this.params.weChatCode;
         }
 
-        codeLoginAction(loginParams, (data) => {
-            if (data.code === 10000) {
-                this.$loadingDismiss();
-                if (data.data.withRegister) {
-                    this.$toastShow('注册成功');
-                    this.$navigate(RouterMap.InviteCodePage);
-                    TrackApi.phoneSignUpSuccess({ 'signUpPhone': this.params.phoneNum });
-                    mediatorCallFunc('Home_RequestNoviceGift');
-                } else {
-                    this.$toastShow('登录成功');
-                    this.$navigateBack(3);
-                    TrackApi.codeLoginSuccess();
-                }
-                this.params.callback && this.params.callback();
+        memberLogin(loginParams, (data) => {
+            this.$loadingDismiss();
+            if (data.withRegister) {
+                this.$toastShow('注册成功');
+                TrackApi.phoneSignUpSuccess({ 'signUpPhone': this.params.phoneNum });
+                // 新手福利
+                mediatorCallFunc('Home_RequestNoviceGift');
             } else {
-                this.$loadingDismiss();
-                this.$toastShow(data.msg);
+                this.$toastShow('登录成功');
+                TrackApi.codeLoginSuccess();
             }
-        });
+            this.params.callback && this.params.callback();
+        }, (code, data) => {
+            this.$loadingDismiss();
+            this.$toastShow(data.msg);
+        }, 3);
     };
 
     componentDidMount() {
         this.timeDown();
     }
 
+    /**
+     * 开始倒计时
+     */
     timeDown = () => {
         (new TimeDownUtils()).startDown((time) => {
             this.setState({
@@ -146,14 +149,17 @@ export default class LoginVerifyCodePage extends BasePage {
                             autoFocus={true}
                             maxLength={11}/>
                         <View style={{ height: px2dp(25), width: 1, backgroundColor: DesignRule.mainColor }}/>
-                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                        <TouchableOpacity activeOpacity={0.7}
+                                          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                                           onPress={() => {
-                                              this.setState({
-                                                  downTime: 60
-                                              }, () => {
-                                                  this.timeDown();
-                                                  this.getVerifyCode();
-                                              });
+                                              if (this.state.downTime === 0) {
+                                                  this.setState({
+                                                      downTime: 60
+                                                  }, () => {
+                                                      this.timeDown();
+                                                      this.getVerifyCode();
+                                                  });
+                                              }
                                           }}>
                             <UIText style={{
                                 fontSize: px2dp(14),

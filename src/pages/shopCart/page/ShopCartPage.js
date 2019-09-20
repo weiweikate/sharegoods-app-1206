@@ -140,7 +140,7 @@ export default class ShopCartPage extends BasePage {
                     rightOpenValue={-75}
                     showsVerticalScrollIndicator={false}
                     swipeRefreshControl={<HeaderLoading
-                        refreshing={shopCartStore.isRefresh}
+                        isRefreshing={shopCartStore.isRefresh}
                         onRefresh={this._refreshFun}
                     />}
 

@@ -24,7 +24,8 @@ import res1 from '../../res';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import CouponNormalItem from '../../../mine/components/CouponNormalItem';
 import API from '../../../../api';
-import bridge from '../../../../utils/bridge';
+import { confirmOrderModel } from '../../model/ConfirmOrderModel';
+
 
 const emptyIcon = res1.empty_icon;
 let { autoSizeWidth, safeBottom } = ScreenUtils;
@@ -84,19 +85,7 @@ export default class SelectTicketModel extends React.Component {
                     this.clickItem(item);
                 }}
                                   onActivity={() => {
-                                      bridge.showLoading('');
-                                      API.invokeCoupons({ userCouponCode: item.code }).then((data) => {
-                                          if (data.data) {
-                                              this.clickItem(data.data);
-                                              bridge.$toast('激活成功');
-                                          } else {
-                                              bridge.$toast('激活失败');
-                                          }
-                                          bridge.hiddenLoading();
-                                      }).catch((err) => {
-                                          bridge.$toast(err.msg);
-                                          bridge.hiddenLoading();
-                                      });
+                                      confirmOrderModel.invokeTicket(item,()=> {this.close()})
                                   }}
                 />
             </View>);

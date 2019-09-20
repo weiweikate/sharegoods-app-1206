@@ -18,7 +18,6 @@ import res from '../../res';
 
 const position = res.dizhi;
 const arrow_right = res.arrow_right;
-const colorLine = res.addressLine;
 
 
 @observer
@@ -27,9 +26,8 @@ export default class ConfirmAddressView extends Component {
 
     render() {
         return (
-            <View style={{ marginBottom: 10}}>
+            <View style={{ marginVertical: 10, marginHorizontal: DesignRule.margin_page, borderRadius: 5, overflow: 'hidden'}}>
                 {this.renderAddress()}
-                {this.renderSelectImage()}
             </View>
         );
     }
@@ -56,8 +54,8 @@ export default class ConfirmAddressView extends Component {
                     style={styles.addressSelectStyle}
                     onPress={this.props.selectAddress}>
                     <UIImage source={position} style={{
-                        height: ScreenUtils.autoSizeHeight(20),
-                        width: ScreenUtils.autoSizeWidth(20),
+                        height: ScreenUtils.autoSizeHeight(30),
+                        width: ScreenUtils.autoSizeWidth(30),
                         marginLeft: ScreenUtils.autoSizeWidth(20)
                     }} resizeMode={'contain'}/>
                     <View style={{
@@ -67,8 +65,8 @@ export default class ConfirmAddressView extends Component {
                         marginRight: ScreenUtils.autoSizeWidth(15)
                     }}>
                         <View style={{ flexDirection: 'row' }}>
-                            <Text style={[styles.commonTextStyle, { flex: 1 }]}
-                                  allowFontScaling={false}>收货人：{receiver}</Text>
+                            <Text style={[styles.commonTextStyle, { marginRight: ScreenUtils.autoSizeWidth(15) }]}
+                                  allowFontScaling={false}>{receiver}</Text>
                             <Text style={styles.commonTextStyle}
                                   allowFontScaling={false}>{receiverPhone}</Text>
                         </View>
@@ -94,8 +92,8 @@ export default class ConfirmAddressView extends Component {
                     }}
                     onPress={this.props.selectAddress}>
                     <UIImage source={position} style={{
-                        height: ScreenUtils.autoSizeWidth(20),
-                        width: ScreenUtils.autoSizeWidth(20),
+                        height: ScreenUtils.autoSizeWidth(30),
+                        width: ScreenUtils.autoSizeWidth(30),
                         marginLeft: ScreenUtils.autoSizeWidth(20)
                     }} resizeMode={'contain'}/>
                     <View style={{
@@ -107,21 +105,6 @@ export default class ConfirmAddressView extends Component {
                     </View>
                     <Image source={arrow_right} style={styles.arrowRightStyle} resizeMode={'contain'}/>
                 </TouchableOpacity>
-        );
-    };
-    renderSelectImage = () => {
-        return (
-            <View style={{ backgroundColor: 'white' }}>
-                    <Image source={colorLine} style={{ height: 3, width: ScreenUtils.width }}/>
-                {confirmOrderModel.orderParamVO.orderType === 3 ?
-                    <View style={styles.giftOutStyle}>
-                        <View style={styles.giftInnerStyle}>
-                            <Text style={styles.giftTextStyles} allowFontScaling={false}>礼包</Text>
-                        </View>
-                    </View>
-                    :
-                    null}
-            </View>
         );
     };
 }

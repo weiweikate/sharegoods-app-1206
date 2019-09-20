@@ -223,7 +223,9 @@ class HomePage extends BasePage {
                 </ScrollableTabView>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
-                }}/>
+                }}
+                           isHome={true}
+                />
                 <PraiseModel/>
                 <GiftModal/>
                 <UserLevelModalView/>
