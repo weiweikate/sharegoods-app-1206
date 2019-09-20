@@ -15,7 +15,6 @@ import user from '../../../../model/user';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import spellStatusModel from '../../SpellStatusModel';
 import bridge from '../../../../utils/bridge';
-import { AutoHeightImage } from '../../../../components/ui/AutoHeightImage';
 
 const { myShop } = shopRes;
 const { shopProduct, shopProductShare, shop_card } = myShop;
@@ -229,36 +228,6 @@ const ProductItemViewStyles = StyleSheet.create({
         width: 16, height: 16
     }
 });
-
-@observer
-export class ShopBottomBannerView extends Component {
-
-    render() {
-        const { MyShopDetailModel } = this.props;
-        const { bottomBannerList } = MyShopDetailModel;
-        if (!bottomBannerList || bottomBannerList.length === 0) {
-            return null;
-        }
-        return (
-            <View style={{ marginBottom: 20 }}>
-                {
-                    bottomBannerList.map((item) => {
-                        const { image, linkType, linkTypeCode } = item;
-                        return <NoMoreClick onPress={() => {
-                            const router = homeModule.homeNavigate(linkType, linkTypeCode);
-                            let params = homeModule.paramsNavigate(item);
-                            if (router) {
-                                routePush(router, params);
-                            }
-                        }}>
-                            <AutoHeightImage source={{ uri: image }} ImgWidth={ScreenUtils.width}/>
-                        </NoMoreClick>;
-                    })
-                }
-            </View>
-        );
-    }
-}
 
 export class ShopCardView extends React.Component {
     _cardAction = () => {

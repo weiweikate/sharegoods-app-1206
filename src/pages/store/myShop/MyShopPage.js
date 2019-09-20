@@ -23,7 +23,7 @@ import user from '../../../model/user';
 import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
 import { trackEvent } from '../../../utils/SensorsTrack';
-import { ShopBottomBannerView, ShopCardView, ShopProductItemView } from './components/ShopDetailItemView';
+import { ShopCardView, ShopProductItemView } from './components/ShopDetailItemView';
 import MyShopDetailModel from './MyShopDetailModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import StringUtils from '../../../utils/StringUtils';
@@ -216,7 +216,8 @@ export default class MyShopPage extends BasePage {
 
     // 点击店铺公告
     _clickShopAnnouncement = () => {
-        this.$navigate('store/shopSetting/AnnouncementListPage', { MyShopDetailModel: this.MyShopDetailModel });
+        const { storeData } = this.MyShopDetailModel;
+        this.$navigate('store/shopSetting/AnnouncementListPage', { storeData: storeData });
     };
 
     // 点击全部成员
@@ -290,7 +291,7 @@ export default class MyShopPage extends BasePage {
                                 colors={[DesignRule.mainColor]}
                             />}>
                     <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement}
-                                storeData={this.MyShopDetailModel.storeData}/>
+                                MyShopDetailModel={this.MyShopDetailModel}/>
                     {isNoEmpty(roleType) &&
                     <ShopCardView/>}
                     <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
@@ -308,7 +309,6 @@ export default class MyShopPage extends BasePage {
                     <NoMoreClick style={styles.joinBtn} onPress={this._joinBtnAction}>
                         <Text style={styles.joinText}>申请加入</Text>
                     </NoMoreClick>}
-                    <ShopBottomBannerView MyShopDetailModel={this.MyShopDetailModel}/>
                 </ScrollView>
                 <IntervalMsgView pageType={IntervalType.shopDetail} storeCode={this.MyShopDetailModel.storeCode}/>
                 <ActionSheetView ref={ref => {

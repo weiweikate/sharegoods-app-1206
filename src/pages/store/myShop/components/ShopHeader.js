@@ -21,6 +21,7 @@ import AvatarImage from '../../../../components/ui/AvatarImage';
 import {
     MRText as Text
 } from '../../../../components/ui';
+import { ShopBannerView } from './ShopBannerView';
 
 
 const HeaderBarBgImg = res.myShop.txbg_02;
@@ -29,7 +30,8 @@ const StarImg = res.myShop.dj_03;
 export default class ShopHeader extends Component {
 
     render() {
-        const { headUrl, name, showNumber, level, profile, roleType } = this.props.storeData;
+        const { storeData, bottomBannerList } = this.props.MyShopDetailModel;
+        const { headUrl, name, showNumber, level, profile, roleType } = storeData;
         let { content } = this.props;
         content = (content || '').replace(/[\r\n]/g, '');
         const starsArr = [];
@@ -59,7 +61,7 @@ export default class ShopHeader extends Component {
                     >{`公告: ${content}`}</TextTicker>
                 </View>}
             </View>
-
+            <ShopBannerView bannerList={bottomBannerList}/>
             <View style={[styles.whiteBg]}>
                 <View style={{
                     flexDirection: 'row',

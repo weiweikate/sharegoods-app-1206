@@ -1,17 +1,23 @@
+/**
+ * @author 陈阳君
+ * @date on 2019/09/20
+ * @describe
+ * @org 秀购
+ * @email chenyangjun@meeruu.com
+ */
+
 import React, { Component } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MRBannerView from '../../../../components/ui/bannerView/MRBannerView';
 import DesignRule from '../../../../constants/DesignRule';
-import { bannerModule } from '../PinShopBannerModel';
 import { observer } from 'mobx-react';
-import res from '../../res';
+import { homeModule } from '../../../home/model/Modules';
 
-const HeaderBarBgImg = res.myShop.txbg_02;
 const { px2dp } = ScreenUtils;
 
 @observer
-export class RecommendBanner extends Component {
+export class ShopBannerView extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,7 +27,7 @@ export class RecommendBanner extends Component {
 
     renderIndexView() {
         const { index } = this.state;
-        const { bannerList } = bannerModule;
+        const { bannerList } = this.props;
         let items = [];
         for (let i = 0; i < bannerList.length; i++) {
             if (index === i) {
@@ -36,7 +42,9 @@ export class RecommendBanner extends Component {
     }
 
     _onPress = (item) => {
-        this.props.onPress && this.props.onPress(item);
+        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
+        let params = homeModule.paramsNavigate(item);
+        this.$navigate(router, { ...params });
     };
 
     _onDidScrollToIndex(e) {
@@ -44,7 +52,7 @@ export class RecommendBanner extends Component {
     }
 
     render() {
-        const { bannerList } = bannerModule;
+        const { bannerList } = this.props;
         if (bannerList.length === 0) {
             return null;
         }
@@ -55,35 +63,28 @@ export class RecommendBanner extends Component {
         });
 
         return (
-            <View>
-                <Image source={HeaderBarBgImg}
-                       style={[styles.imgBg]}/>
-                <MRBannerView style={styles.bannerView}
-                              interceptTouchEvent={true}//android端起作用，是否拦截touch事件
-                              itemWidth={ScreenUtils.width + 0.5}
-                              itemSpace={0}
-                              imgUrlArray={items}
-                              onDidSelectItemAtIndex={(index) => {
-                                  bannerList[index] && this._onPress(bannerList[index]);
-                              }}
-                              onDidScrollToIndex={(index) => {
-                                  this._onDidScrollToIndex(index);
-                              }}/>
+            <MRBannerView style={styles.bannerView}
+                          interceptTouchEvent={true}//android端起作用，是否拦截touch事件
+                          itemWidth={ScreenUtils.width + 0.5}
+                          itemSpace={0}
+                          imgUrlArray={items}
+                          onDidSelectItemAtIndex={(index) => {
+                              bannerList[index] && this._onPress(bannerList[index]);
+                          }}
+                          onDidScrollToIndex={(index) => {
+                              this._onDidScrollToIndex(index);
+                          }}>
                 {this.renderIndexView()}
-            </View>
+            </MRBannerView>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    imgBg: {
-        position: 'absolute',
-        left: 0, top: 0,
-        width: ScreenUtils.width, height: px2dp(210)
-    },
+
     bannerView: {
         height: px2dp(160), width: px2dp(345) + 0.5, borderRadius: 5, overflow: 'hidden',
-        alignSelf: 'center', marginTop: ScreenUtils.headerHeight
+        alignSelf: 'center'
     },
 
     indexView: {
@@ -109,6 +110,3 @@ const styles = StyleSheet.create({
         margin: 3
     }
 });
-
-
-export default RecommendBanner;

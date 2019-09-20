@@ -32,7 +32,8 @@ import { homeType } from '../../home/HomeTypes';
 import { homeModule } from '../../home/model/Modules';
 import { bannerModule } from './PinShopBannerModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
-import { navigateBackToStore } from '../../../navigation/RouterMap';
+import { navigateBackToStore, routePop } from '../../../navigation/RouterMap';
+import { MRText } from '../../../components/ui';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -41,6 +42,7 @@ const HOME_REFRESH = 'homeRefresh';
 
 const ShopItemLogo = res.recommendSearch.dp_03;
 const SearchItemLogo = res.recommendSearch.pdss_03;
+const NavLeft = res.button.back_white;
 
 
 @observer
@@ -68,20 +70,7 @@ export default class RecommendPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '拼店',
-        leftNavItemHidden: this.props.isHome
-    };
-
-    $NavBarRenderRightItem = () => {
-        return <View style={styles.rightBarItemContainer}>
-            {this.state.canOpenShop &&
-            <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
-                <Image source={ShopItemLogo} style={{ width: 20, height: 20 }}/>
-            </TouchableOpacity>}
-            <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickSearchItem}>
-                <Image source={SearchItemLogo} style={{ width: 20, height: 20 }}/>
-            </TouchableOpacity>
-        </View>;
+        show: false
     };
 
     componentDidMount() {
@@ -307,9 +296,38 @@ export default class RecommendPage extends BasePage {
         };
     };
 
+    _renderNavView1 = () => {
+        return <View style={styles.navView}>
+            <View style={styles.navTitleView}>
+                <View style={styles.barItemContainer}>
+                    {!this.props.isHome ?
+                        <TouchableOpacity style={styles.barItemBtn} onPress={() => {
+                            routePop();
+                        }}>
+                            <Image source={NavLeft} style={{ width: 30, height: 30 }}/>
+                        </TouchableOpacity> : null
+                    }
+                </View>
+                <View style={styles.titleView}>
+                    <MRText style={styles.titleText}>拼店</MRText>
+                </View>
+                <View style={[styles.barItemContainer, { justifyContent: 'flex-end' }]}>
+                    {this.state.canOpenShop &&
+                    <TouchableOpacity style={styles.barItemBtn} onPress={this._clickOpenShopItem}>
+                        <Image source={ShopItemLogo} style={{ width: 20, height: 20 }}/>
+                    </TouchableOpacity>}
+                    <TouchableOpacity style={styles.barItemBtn} onPress={this._clickSearchItem}>
+                        <Image source={SearchItemLogo} style={{ width: 20, height: 20 }}/>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View>;
+    };
+
     _render() {
         return (
             <View style={{ flex: 1 }}>
+                {this._renderNavView1()}
                 <SectionList keyExtractor={(item, index) => `${item.storeCode}${index}`}
                              style={{ backgroundColor: DesignRule.bgColor }}
                              refreshControl={
@@ -340,17 +358,27 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    // 顶部条 右边item容器
-    rightBarItemContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
+
+    navView: {
+        position: 'absolute', top: 0, left: 0, right: 0, zIndex: 50,
+        height: ScreenUtils.headerHeight
     },
-    rightItemBtn: {
-        width: 44,
-        height: 44,
-        justifyContent: 'center',
-        alignItems: 'center'
+    navTitleView: {
+        marginTop: ScreenUtils.statusBarHeight, flex: 1,
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'
+    },
+    titleView: {
+        flex: 1, justifyContent: 'center', alignItems: 'center'
+    },
+    titleText: {
+        color: 'white', fontSize: 17, fontWeight: '500'
+    },
+    // 顶部条 右边item容器
+    barItemContainer: {
+        flexDirection: 'row', alignItems: 'center', width: 88
+    },
+    barItemBtn: {
+        width: 44, height: 44, justifyContent: 'center', alignItems: 'center'
     },
 
     ViewPager: {

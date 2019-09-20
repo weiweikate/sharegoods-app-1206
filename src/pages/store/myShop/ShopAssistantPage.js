@@ -32,6 +32,7 @@ export default class AssistantListPage extends BasePage {
             isMore: true,
             loadingMore: false,//是否显示加载更多的菊花
             loadingMoreError: null,//加载更多是否报错
+            pageSize:10,
 
             list: [],
             searchText: '',
