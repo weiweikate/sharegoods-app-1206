@@ -124,14 +124,17 @@ const handleLoginData = (params, data, code, successCallBack, failCallBack, popN
     } else if (data.weChatBindingStatus === false) {
         // 走微信异常路径
         failCallBack && failCallBack(code, data);
-        Alert.alert('账号异常', '请验证绑定该微信号的手机号', [{
-            text: '验证',
-            onPress: () => {
-                // 验证微信手机号
-                routeNavigate(RouterMap.VerifyWXCodePage,
-                    { weChatCode: data.wechatCode || params.weChatCode });
-            }
-        }]);
+        // 结果页不需要展示弹框
+        if(params && params.showAlert === false){
+            Alert.alert('账号异常', '请验证绑定该微信号的手机号', [{
+                text: '验证',
+                onPress: () => {
+                    // 验证微信手机号
+                    routeNavigate(RouterMap.VerifyWXCodePage,
+                        { weChatCode: data.wechatCode || params.weChatCode });
+                }
+            }]);
+        }
     }
 };
 
@@ -156,7 +159,6 @@ const loginDataInit = (data) => {
     bridge.setCookies(data);
     DeviceEventEmitter.emit('homePage_message', null);
     DeviceEventEmitter.emit('contentViewed', null);
-    // homeModule.loadHomeList();
     // 更新推送
     JPushUtils.updatePushTags();
     JPushUtils.updatePushAlias();

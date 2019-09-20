@@ -113,7 +113,8 @@ export default class VerifyWXCodePage extends BasePage {
             let params = {
                 weChatCode: this.params.weChatCode,
                 phone: this.state.phoneNum,
-                smsCode: this.state.code
+                smsCode: this.state.code,
+                showAlert: false
             };
             weChatUnusual(params, () => {
                 this.$toastShow('登录成功');

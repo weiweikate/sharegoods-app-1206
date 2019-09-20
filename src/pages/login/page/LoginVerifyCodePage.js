@@ -82,7 +82,6 @@ export default class LoginVerifyCodePage extends BasePage {
             this.params.callback && this.params.callback();
         }, (code, data) => {
             this.$loadingDismiss();
-            this.$toastShow(data.msg);
         }, 3);
     };
 
