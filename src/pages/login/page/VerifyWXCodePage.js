@@ -116,11 +116,14 @@ export default class VerifyWXCodePage extends BasePage {
                 smsCode: this.state.code
             };
             weChatUnusual(params, () => {
+                this.$toastShow('登录成功');
                 this.$loadingDismiss();
-            }, () => {
+            }, (code, data) => {
                 this.$loadingDismiss();
-                // 跳转到结果页
-                routeNavigate(RouterMap.VerifyResultPage);
+                if (data && data.weChatBindingStatus === false) {
+                    // 跳转到结果页
+                    routeNavigate(RouterMap.VerifyResultPage);
+                }
             }, 2);
         }
     };
@@ -166,6 +169,7 @@ export default class VerifyWXCodePage extends BasePage {
                                         }
                                     });
                                 }}
+                                autoFocus={true}
                                 placeholder='请输入手机号'
                                 placeholderTextColor={DesignRule.textColor_instruction}
                                 keyboardType='numeric'
@@ -209,7 +213,6 @@ export default class VerifyWXCodePage extends BasePage {
                                 placeholder='请输入验证码'
                                 placeholderTextColor={DesignRule.textColor_instruction}
                                 keyboardType='numeric'
-                                autoFocus={true}
                                 maxLength={11}/>
                             <View style={{ height: px2dp(25), width: 1, backgroundColor: DesignRule.mainColor }}/>
                             <TouchableOpacity

@@ -23,7 +23,6 @@ export default class LoginVerifyCodePage extends BasePage {
             downTime: 60,
             code: ''
         };
-        console.log('----' + JSON.stringify(this.params));
         this.getVerifyCode();
     }
 
@@ -65,8 +64,8 @@ export default class LoginVerifyCodePage extends BasePage {
             loginType: 1
         };
         // 如果有微信code，则自动绑定
-        if (this.params.wechatCode) {
-            loginParams.wechatCode = this.params.wechatCode;
+        if (this.params.weChatCode) {
+            loginParams.weChatCode = this.params.weChatCode;
         }
 
         memberLogin(loginParams, (data) => {

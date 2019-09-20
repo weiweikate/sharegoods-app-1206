@@ -19,26 +19,17 @@ import StringUtils from '../../../utils/StringUtils';
  * 回调code 和 数据 34005 需要去绑定手机号 10000 登录成功
  * @param callBack
  */
-const wxLoginAction = (data, okCallBack, failCallBack) => {
+const wxLoginAction = (params, okCallBack, failCallBack) => {
     TrackApi.LoginButtonClick({ 'loginMethod': 1 });
-    LoginAPI.appWechatLogin({
-        device: data.device,
-        encryptedData: '',
-        weChatHeadImg: data.headerImg,
-        iv: '',
-        weChatName: data.nickName,
-        openId: data.appOpenid,
-        systemVersion: data.systemVersion,
-        unionId: data.unionid
-    }).then((res) => {
+    LoginAPI.appWechatLogin(params).then((res) => {
         // 登录成功处理
         let resData = res.data || {};
-        handleLoginData(resData, res.code, okCallBack, failCallBack);
+        handleLoginData(params, resData, res.code, okCallBack, failCallBack);
         // 数据埋点
         TrackApi.wxLoginSuccess();
     }).catch((error) => {
         failCallBack && failCallBack();
-        bridge.$toast(data.msg);
+        bridge.$toast(error.msg);
     });
 };
 
@@ -55,7 +46,7 @@ const memberLogin = (params, successCallBack, failCallBack, popNumbers) => {
     LoginAPI.memberLogin(params).then((res) => {
         let data = res.data || {};
         // 登录流程处理
-        handleLoginData(data, res.code, successCallBack, failCallBack, popNumbers);
+        handleLoginData(params, data, res.code, successCallBack, failCallBack, popNumbers);
     }).catch((error) => {
         failCallBack && failCallBack(error.code);
         bridge.$toast(error.msg);
@@ -101,7 +92,7 @@ const getWxUserInfo = (callback) => {
     });
 };
 
-const handleLoginData = (data, code, successCallBack, failCallBack, popNumber) => {
+const handleLoginData = (params, data, code, successCallBack, failCallBack, popNumber) => {
     if (data.weChatBindingStatus) {
         // 登录成功
         if (StringUtils.isNoEmpty(data.code)) {
@@ -124,20 +115,21 @@ const handleLoginData = (data, code, successCallBack, failCallBack, popNumber) =
         } else {
             // 前往绑定手机号
             failCallBack && failCallBack(code, data);
-            this.$toastShow('请绑定手机号');
+            bridge.$toast('请绑定手机号');
             routeNavigate(RouterMap.PhoneLoginPage, {
                 needBottom: false,
-                wechatCode: data.wechatCode
+                weChatCode: data.wechatCode || params.weChatCode
             });
         }
-    } else {
+    } else if (data.weChatBindingStatus === false) {
         // 走微信异常路径
         failCallBack && failCallBack(code, data);
         Alert.alert('账号异常', '请验证绑定该微信号的手机号', [{
             text: '验证',
             onPress: () => {
                 // 验证微信手机号
-                routeNavigate(RouterMap.VerifyWXCodePage, { weChatCode: data.weChatCode });
+                routeNavigate(RouterMap.VerifyWXCodePage,
+                    { weChatCode: data.wechatCode || params.weChatCode });
             }
         }]);
     }
@@ -147,7 +139,7 @@ const weChatUnusual = (params, successCallBack, failCallBack, popNumbers) => {
     LoginAPI.weChatUnusual(params).then((res) => {
         let data = res.data || {};
         // 登录流程处理
-        handleLoginData(data, res.code, successCallBack, failCallBack, popNumbers);
+        handleLoginData(params, data, res.code, successCallBack, failCallBack, popNumbers);
     }).catch((err) => {
         failCallBack && failCallBack(err.code);
         bridge.$toast(err.msg);

@@ -123,8 +123,8 @@ export default class PhoneLoginPage extends BasePage {
         // 保存本次输入的手机号
         loginModel.savePhoneNumber(this.state.phoneNum);
         let params = { ...this.params, phoneNum: this.state.phoneNum };
-        if (StringUtils.isNoEmpty(this.props.wechatCode)) {
-            params.wechatCode = this.props.wechatCode;
+        if (StringUtils.isNoEmpty(this.params.weChatCode)) {
+            params.weChatCode = this.params.weChatCode;
         }
         // 跳转到验证码页面
         routeNavigate(RouterMap.LoginVerifyCodePage, params);

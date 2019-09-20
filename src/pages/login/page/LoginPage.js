@@ -160,8 +160,18 @@ export default class LoginPage extends BasePage {
                 this.$toastShow('微信授权失败！');
                 return;
             }
+            let params = {
+                device: wxData.device,
+                encryptedData: '',
+                weChatHeadImg: wxData.headerImg,
+                iv: '',
+                weChatName: wxData.nickName,
+                openId: wxData.appOpenid,
+                systemVersion: wxData.systemVersion,
+                unionId: wxData.unionid
+            };
             // 微信登录
-            wxLoginAction(wxData, () => {
+            wxLoginAction(params, () => {
                 bridge.$toast('登录成功');
                 this.$loadingDismiss();
                 this.$navigateBack();
