@@ -61,8 +61,8 @@ export default class ActivateTicketView extends React.Component {
                         <MRText style={styles.title}>现在勾选激活，立即兑换商品</MRText>
                         <MRText style={styles.detail}>激活后不可取消</MRText>
                     </View>
-                    <Image source={activate_text}
-                           style={styles.activate_text}/>
+                    {!confirmOrderModel.invokeSelect? <Image source={activate_text}
+                           style={styles.activate_text}/> : null}
                     <Image source={confirmOrderModel.invokeSelect? selected_circle_red :unselected_circle}
                            style={styles.btn}/>
                 </View>
