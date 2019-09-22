@@ -18,6 +18,7 @@ import AvatarImage from '../../../components/ui/AvatarImage';
 import RouterMap from '../../../navigation/RouterMap';
 import bridge from '../../../utils/bridge';
 import LinearGradient from 'react-native-linear-gradient';
+import spellStatusModel from '../SpellStatusModel';
 
 const { px2dp } = ScreenUtils;
 const arrow_right = res.button.arrow_right_black;
@@ -133,6 +134,7 @@ export default class SetShopNamePage extends BasePage {
                 profile: this.state.textProfile
             }).then(() => {
                 bridge.hiddenLoading();
+                spellStatusModel.requestHome();
                 this.$navigate(RouterMap.OpenShopSuccessPage);
             }).catch((error) => {
                 bridge.hiddenLoading();
@@ -147,6 +149,7 @@ export default class SetShopNamePage extends BasePage {
                 profile: this.state.textProfile
             }).then(() => {
                 bridge.hiddenLoading();
+                spellStatusModel.requestHome();
                 this.$navigate(RouterMap.OpenShopSuccessPage);
             }).catch((error) => {
                 bridge.hiddenLoading();
