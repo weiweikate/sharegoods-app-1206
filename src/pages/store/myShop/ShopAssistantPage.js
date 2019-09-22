@@ -11,6 +11,7 @@ import SpellShopApi from '../api/SpellShopApi';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from '../../../constants/DesignRule';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
+import { MRText } from '../../../components/ui';
 
 export default class AssistantListPage extends BasePage {
 
@@ -32,7 +33,7 @@ export default class AssistantListPage extends BasePage {
             isMore: true,
             loadingMore: false,//是否显示加载更多的菊花
             loadingMoreError: null,//加载更多是否报错
-            pageSize:10,
+            pageSize: 10,
 
             list: [],
             searchText: '',
@@ -92,7 +93,7 @@ export default class AssistantListPage extends BasePage {
             this.setState({
                 refreshing: false,
                 list: [],
-                loadingState: PageLoadingState.success,
+                loadingState: PageLoadingState.fail,
                 netFailedInfo: error
             }, () => {
                 this.$toastShow(error.msg);
@@ -188,12 +189,15 @@ export default class AssistantListPage extends BasePage {
 
     _render() {
         return (
-            <View style={{ flex: 1 }}>
-                <View style={styles.headerBg}>
-                    <SearchBar placeholder={'搜索用户名'}
-                               style={{ marginBottom: 10 }}
-                               onChangeText={this._onChangeText}
-                               title={this.state.searchText}/>
+            <View style={styles.container}>
+                <SearchBar placeholder={'搜索用户名'}
+                           style={{ marginBottom: 10 }}
+                           onChangeText={this._onChangeText}
+                           title={this.state.searchText}/>
+                <View style={{ backgroundColor: 'white', marginBottom: 15 }}>
+                    <MRText style={styles.title}>温馨提示：</MRText>
+                    <MRText
+                        style={styles.titleContent}>{`1. 扩容后，待扩容成员将成为正式成员；\n2. 待扩容期内，此成员可自由离店；\n3. 若指定时间内不扩容，此成员将自动离店。`}</MRText>
                 </View>
                 <FlatList data={this.state.list}
                           renderItem={this._renderItem}
@@ -218,7 +222,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    headerBg: {
-        backgroundColor: DesignRule.bgColor
+    title: {
+        fontSize: 12, color: DesignRule.textColor_instruction, paddingHorizontal: 15
+    },
+    titleContent: {
+        fontSize: 12, color: DesignRule.textColor_secondTitle, marginTop: 5, paddingHorizontal: 15, paddingBottom: 10
     }
 });

@@ -2,8 +2,7 @@
 import React, { Component } from 'react';
 import {
     View,
-    StyleSheet,
-    TouchableWithoutFeedback
+    StyleSheet
 } from 'react-native';
 import SwipeOut from 'react-native-swipeout';
 import DesignRule from '../../../../constants/DesignRule';
@@ -12,6 +11,7 @@ import {
 } from '../../../../components/ui';
 import AvatarImage from '../../../../components/ui/AvatarImage';
 import UIImage from '@mr/image-placeholder';
+import NoMoreClick from '../../../../components/ui/NoMoreClick';
 
 export default class AssistantRow extends Component {
 
@@ -33,20 +33,22 @@ export default class AssistantRow extends Component {
     renderContent = () => {
         const { headImg, levelName, nickName, roleType, packageStatus, packageImg } = this.props.item;
         const { showActivityImage } = this.props;
-        return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
-            <View style={styles.rowContainer}>
-                <AvatarImage source={{ uri: headImg }} style={styles.headerImg} borderRadius={14}/>
-                <View style={styles.right}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
-                        <Text style={styles.name} allowFontScaling={false}>{nickName || ' '}</Text>
-                        {packageStatus && showActivityImage && roleType === 0 ?
-                            <UIImage source={{ uri: packageImg }}
-                                     style={{ width: 59, height: 16, marginLeft: 5 }}/> : null}
+        return (
+            <NoMoreClick style={styles.rowContainer} onPress={this._clickAssistantDetail}>
+                <View style={styles.rowView}>
+                    <AvatarImage source={{ uri: headImg }} style={styles.headerImg} borderRadius={14}/>
+                    <View style={styles.right}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={styles.name}>{nickName || ''}</Text>
+                            {packageStatus && showActivityImage && roleType === 0 ?
+                                <UIImage source={{ uri: packageImg }}
+                                         style={{ width: 59, height: 16, marginLeft: 5 }}/> : null}
+                        </View>
+                        <Text style={styles.level}>{levelName || ''}</Text>
+                        {/*<Text style={styles.desc}>若未扩容，此成员将在{levelName || ''}离店</Text>*/}
                     </View>
-                    <Text style={styles.level} allowFontScaling={false}>{levelName || ' '}</Text>
                 </View>
-            </View>
-        </TouchableWithoutFeedback>);
+            </NoMoreClick>);
     };
 
     render() {
@@ -69,57 +71,35 @@ export default class AssistantRow extends Component {
 }
 
 const styles = StyleSheet.create({
-    swipeCustomView: {
-        flex: 1,
-        marginLeft: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: DesignRule.mainColor,
-        borderRadius: 10
-    },
     container: {
-        backgroundColor: DesignRule.bgColor,
-        marginTop: 10,
-        marginHorizontal: 15
+        marginBottom: 10, marginHorizontal: 15, backgroundColor: DesignRule.bgcolor
     },
+    swipeCustomView: {
+        flex: 1, marginLeft: 10, alignItems: 'center', justifyContent: 'center',
+        backgroundColor: DesignRule.mainColor, borderRadius: 10
+    },
+
     rowContainer: {
-        height: 88,
-        borderRadius: 10,
-        shadowColor: 'rgba(0, 0, 0, 0.1)',
-        shadowOffset: {
-            width: 0,
-            height: 0
-        },
-        shadowRadius: 10,
-        shadowOpacity: 1,
-        flexDirection: 'row',
-        overflow: 'hidden',
-        backgroundColor: 'white'
+        borderRadius: 10, backgroundColor: 'white'
+    },
+    rowView: {
+        flexDirection: 'row', alignItems: 'center', marginVertical: 15
     },
     headerImg: {
-        width: 28,
-        height: 28,
-        borderRadius: 14,
-        marginLeft: 20,
-        marginTop: 15
+        width: 50, height: 50, borderRadius: 25, overflow: 'hidden',
+        marginLeft: 15, marginRight: 10
     },
     right: {
-        flex: 1,
-        marginLeft: 15,
-        justifyContent: 'center'
+        flex: 1, justifyContent: 'center'
     },
     name: {
-        fontSize: 14,
-        color: DesignRule.textColor_secondTitle
+        fontSize: 15, color: DesignRule.textColor_mainTitle
     },
     level: {
-        fontSize: 13,
-        color: DesignRule.textColor_secondTitle,
-        marginVertical: 3
+        fontSize: 13, paddingTop: 5, color: DesignRule.textColor_secondTitle
     },
     desc: {
-        fontSize: 12,
-        color: DesignRule.textColor_secondTitle
+        fontSize: 10, paddingTop: 5, color: DesignRule.textColor_redWarn
     }
 });
 

@@ -20,8 +20,6 @@ const api = {
     deleteById: ['/app/store/notice/delete', { method: 'get' }],
     // 公告列表
     queryByStoreId: ['/app/store/notice/list', { method: 'get' }],
-    // 根据店铺公告id查询公告信息get
-    findById: ['/user/storeNotice/findById', { method: 'get' }],
     /**店铺管理**/
     //查看店铺path
     app_store: ['/app/store', { method: 'get' }],
@@ -41,6 +39,7 @@ const api = {
     user_list: ['/app/store/user/list', { method: 'get' }],
     //是否显示活动图标
     package_identification: ['/app/store/user/package/identification', { method: 'get' }],
+
     //移除店铺人员
     storeUserRemove: '/user/storeUser/remove',
     //获取店员详情
