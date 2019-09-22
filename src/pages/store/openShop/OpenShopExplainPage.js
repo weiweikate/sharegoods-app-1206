@@ -19,8 +19,6 @@ import { MRText as Text } from '../../../components/ui';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import RouterMap from '../../../navigation/RouterMap';
-import HomeAPI from '../../home/api/HomeAPI';
-import { homeType } from '../../home/HomeTypes';
 import bridge from '../../../utils/bridge';
 
 
@@ -29,7 +27,7 @@ const { openShop_yes, openShop_no } = res.openShop;
 export default class OpenShopExplainPage extends BasePage {
 
     state = {
-        pageState: PageLoadingState.success,
+        pageState: PageLoadingState.loading,
         isSelected: true,
         netFailedInfo: {},
         data: null
@@ -55,18 +53,18 @@ export default class OpenShopExplainPage extends BasePage {
     };
 
     componentDidMount() {
-        // this._openStore();
+        this._openStore();
     }
 
     _openStore = () => {
-        HomeAPI.getHomeData({ type: homeType.tore29 }).then((data) => {
+        SpellShopApi.store_openStore().then((data) => {
             this.setState({
                 data: data.data,
                 pageState: PageLoadingState.success
             });
-        }).catch((e) => {
+        }).catch(() => {
             this.setState({
-                pageState: PageLoadingState.success
+                pageState: PageLoadingState.fail
             });
         });
     };

@@ -68,7 +68,9 @@ const api = {
 
 
     // 查询消息
-    floatMsg: ['/floatMsg/get', { method: 'get' }]
+    floatMsg: ['/floatMsg/get', { method: 'get' }],
+
+    store_openStore: ['/user/store/openStore', { method: 'get' }],
 };
 const StoreApi = ApiUtils(api);
 export default StoreApi;
