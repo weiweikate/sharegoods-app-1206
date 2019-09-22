@@ -23,8 +23,8 @@ export class AddCapacityPricePage extends BasePage {
         this.addCapacityPriceModel.requestList();
     }
 
-    _renderItem = ({ item }) => {
-        return <AddCapacityPriceItem itemData={item}/>;
+    _renderItem = ({ item, index }) => {
+        return <AddCapacityPriceItem itemData={item} index={index}/>;
     };
 
     _keyExtractor = (item, index) => {

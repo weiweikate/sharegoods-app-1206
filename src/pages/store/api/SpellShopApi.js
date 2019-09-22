@@ -42,6 +42,7 @@ const api = {
 
     //移除店铺人员
     storeUserRemove: '/user/storeUser/remove',
+    //还有购买校验接口
     //获取店员详情
     findUserDetail: ['/user/storeUser/findUserDetail', { method: 'get' }],
     /**店铺扩容**/

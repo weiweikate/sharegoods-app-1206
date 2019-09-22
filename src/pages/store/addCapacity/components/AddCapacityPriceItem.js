@@ -23,28 +23,30 @@ const { selectedImg, unSelectedImg } = res.addCapacity;
 @observer
 export class AddCapacityPriceItem extends Component {
     render() {
-        const { itemData } = this.props;
+        const { itemData, index } = this.props;
         const { goodsName, goodsImage, specs, salePrice, originPrice, isSelected } = itemData;
         return (
-            <View style={stylesItem.container}>
-                <NoMoreClick style={stylesItem.selectBtn} onPress={() => {
-                    itemData.isSelected = !isSelected;
-                }}>
-                    <Image source={isSelected ? selectedImg : unSelectedImg} style={stylesItem.selectImg}/>
-                </NoMoreClick>
-                <UIImage style={stylesItem.productImg} source={{ uri: goodsImage }}/>
-                <View style={stylesItem.rightView}>
-                    <View>
-                        <MRText>{goodsName || ''}</MRText>
-                        <MRText>{`规格: ${specs || ''}`}</MRText>
-                    </View>
-                    <View style={stylesItem.rightBottomView}>
-                        <MRText>¥
-                            <MRText>{salePrice}
-                                <MRText>{originPrice}</MRText>
+            <View style={[stylesItem.container, index === 0 && { marginTop: 15 }]}>
+                <View style={stylesItem.container1}>
+                    <NoMoreClick style={stylesItem.selectBtn} onPress={() => {
+                        itemData.isSelected = !isSelected;
+                    }}>
+                        <Image source={isSelected ? selectedImg : unSelectedImg} style={stylesItem.selectImg}/>
+                    </NoMoreClick>
+                    <UIImage style={stylesItem.productImg} source={{ uri: goodsImage }}/>
+                    <View style={stylesItem.rightView}>
+                        <View>
+                            <MRText style={stylesItem.nameText}>{goodsName || ''}</MRText>
+                            <MRText style={stylesItem.specText}>{`规格: ${specs || ''}`}</MRText>
+                        </View>
+                        <View style={stylesItem.rightBottomView}>
+                            <MRText style={stylesItem.priceText}>¥
+                                <MRText>{`${salePrice} `}
+                                    <MRText style={stylesItem.oPriceText}>¥{originPrice}</MRText>
+                                </MRText>
                             </MRText>
-                        </MRText>
-                        <AmountView itemData={itemData}/>
+                            <AmountView itemData={itemData}/>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -54,8 +56,10 @@ export class AddCapacityPriceItem extends Component {
 
 const stylesItem = StyleSheet.create({
     container: {
-        flexDirection: 'row', borderRadius: 5, marginHorizontal: 15, marginBottom: 10,
-        backgroundColor: 'white'
+        borderRadius: 5, marginHorizontal: 15, marginBottom: 10, backgroundColor: 'white'
+    },
+    container1: {
+        flexDirection: 'row', marginVertical: 10
     },
     selectBtn: {
         justifyContent: 'center', alignItems: 'center',
@@ -65,14 +69,25 @@ const stylesItem = StyleSheet.create({
         width: 17, height: 17
     },
     productImg: {
-        marginVertical: 10,
         width: 80, height: 80, overflow: 'hidden', borderRadius: 5
     },
     rightView: {
-        justifyContent: 'space-between', flex: 1
+        flex: 1, marginLeft: 10, justifyContent: 'space-between'
+    },
+    nameText: {
+        fontSize: 13, color: DesignRule.textColor_mainTitle
+    },
+    specText: {
+        fontSize: 10, color: DesignRule.textColor_instruction
+    },
+    priceText: {
+        fontSize: 17, color: DesignRule.textColor_redWarn
+    },
+    oPriceText: {
+        fontSize: 10, color: DesignRule.textColor_instruction, textDecorationLine: 'line-through'
     },
     rightBottomView: {
-        flexDirection: 'row', alignItems: 'center', marginRight: 10
+        flexDirection: 'row', alignItems: 'center', marginRight: 10, justifyContent: 'space-between'
     }
 });
 
@@ -104,10 +119,10 @@ const stylesAmount = StyleSheet.create({
         flexDirection: 'row', alignItems: 'center'
     },
     amountText: {
-        fontSize: 10, color: DesignRule.textColor_mainTitle, width: 34
+        fontSize: 10, color: DesignRule.textColor_mainTitle, width: 34, textAlign: 'center'
     },
     clickBtn: {
-        justifyContent: 'center', alignItems: 'center', backgroundColor: DesignRule.bgcolor,
+        justifyContent: 'center', alignItems: 'center', backgroundColor: '#F7F7F7',
         width: 20, height: 20, borderRadius: 3
     },
     clickText: {
@@ -154,14 +169,13 @@ export class PriceBottomView extends Component {
                         <MRText style={{ fontSize: 12, color: DesignRule.textColor_mainTitle }}>
                             已选扩容{totalPerson}人
                         </MRText>
-                        <MRText style={{ fontSize: 12, color: DesignRule.textColor_redWarn }}>
+                        <MRText style={{ fontSize: 13, color: DesignRule.textColor_redWarn }}>
                             最高可扩容10000人
                         </MRText>
                     </View>
                     <View style={{ flex: 1 }}/>
-                    <MRText style={{ fontSize: 12, color: DesignRule.textColor_placeholder }}>
-                        合计：
-                        <MRText>¥{totalMoney}</MRText>
+                    <MRText style={{ fontSize: 12, color: DesignRule.textColor_mainTitle }}>合计：
+                        <MRText style={{ fontSize: 13, color: DesignRule.textColor_redWarn }}>¥{totalMoney}</MRText>
                     </MRText>
                     <NoMoreClick onPress={this._bottomAction}>
                         <LinearGradient style={stylesBottom.LinearGradient}
@@ -184,11 +198,10 @@ const stylesBottom = StyleSheet.create({
         height: ScreenUtils.safeBottom + bottomHeight, backgroundColor: 'white'
     },
     container: {
-        flexDirection: 'row', alignItems: 'center',
-        height: bottomHeight
+        flexDirection: 'row', alignItems: 'center', height: bottomHeight, marginHorizontal: 15
     },
     LinearGradient: {
-        justifyContent: 'center', alignItems: 'center',
-        width: 100, height: 34
+        justifyContent: 'center', alignItems: 'center', marginLeft: 10,
+        width: 100, height: 34, borderRadius: 17
     }
 });
