@@ -17,6 +17,7 @@ import NoMoreClick from '../../../components/ui/NoMoreClick';
 import AvatarImage from '../../../components/ui/AvatarImage';
 import RouterMap from '../../../navigation/RouterMap';
 import bridge from '../../../utils/bridge';
+import LinearGradient from 'react-native-linear-gradient';
 
 const { px2dp } = ScreenUtils;
 const arrow_right = res.button.arrow_right_black;
@@ -201,21 +202,11 @@ export default class SetShopNamePage extends BasePage {
 
     _renderHeaderView = () => {
         const uri = this.state.storeHeadUrlOrigin;
-        if (this.params.storeData) {
-            return <TouchableOpacity style={styles.updateWhite} onPress={this._clickHeader}>
-                <AvatarImage style={styles.updateImg} source={{ uri: uri }} borderRadius={px2dp(20)}/>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.updateText} allowFontScaling={false}>修改头像</Text>
-                    <Image resizeMode={'contain'} source={arrow_right} style={styles.arrowImg}/>
-                </View>
-            </TouchableOpacity>;
-        } else {
-            return <View style={styles.whitePanel}>
-                <TouchableOpacity onPress={this._clickHeader}>
-                    <AvatarImage style={styles.headerImg} source={{ uri: uri }} borderRadius={px2dp(40)}/>
-                </TouchableOpacity>
-            </View>;
-        }
+        return <View style={styles.whitePanel}>
+            <TouchableOpacity onPress={this._clickHeader}>
+                <AvatarImage style={styles.headerImg} source={{ uri: uri }}/>
+            </TouchableOpacity>
+        </View>;
     };
 
     _render() {
@@ -225,22 +216,21 @@ export default class SetShopNamePage extends BasePage {
                     {/*头像*/}
                     {this._renderHeaderView()}
                     {/*店铺*/}
+                    <Text style={styles.textTitle}>请填写店铺名称</Text>
                     <View style={styles.textContainer}>
-                        <Text style={styles.textTitle} allowFontScaling={false}>店铺名称</Text>
                         <TextInput value={this.state.textName}
                                    onChangeText={(text) => {
                                        this.setState({
                                            textName: text
                                        });
                                    }}
-                                   placeholder={'请输入店铺名称'}
+                                   placeholder={'请输入4-16位汉字/字母作为拼店店名'}
                                    blurOnSubmit={false}
                                    style={[styles.textInput, { marginRight: 32 }]}/>
                     </View>
-                    <View style={styles.viewLine}/>
                     {/*区域*/}
+                    <Text style={styles.textTitle}>您的拼店所在区域</Text>
                     <View style={styles.textContainer}>
-                        <Text style={styles.textTitle} allowFontScaling={false}>拼店区域</Text>
                         <TextInput value={this.state.textArea}
                                    placeholder={'请选择店铺位置'}
                                    blurOnSubmit={false}
@@ -251,27 +241,31 @@ export default class SetShopNamePage extends BasePage {
                                           onPress={this._getCityPicker}/>
                     </View>
                     {/*简介*/}
+                    <Text style={styles.textTitle}>简单介绍下您的拼店店铺</Text>
                     <View style={styles.profileContainer}>
-                        <Text style={styles.profileTittle} allowFontScaling={false}>店铺简介</Text>
                         <TextInput value={this.state.textProfile}
                                    onChangeText={this._onChangeText}
                                    multiline
                                    placeholder={'可以简单介绍下你拼店的目标方向'}
                                    blurOnSubmit={false}
                                    style={styles.profileText}/>
-                        <Text style={styles.profileTextAbsolute}
-                              allowFontScaling={false}>{`${this.state.textProfile.length}/180`}</Text>
+                        <Text style={styles.profileTextAbsolute}>{`${this.state.textProfile.length}/180`}</Text>
                     </View>
 
                 </ScrollView>
                 {/*开店*/}
                 {
-                    this.params.storeData ? null : <NoMoreClick onPress={this._complete}>
-                        <View style={styles.btnRow}>
-                            <Text style={styles.btnTitle} allowFontScaling={false}>开店</Text>
-                        </View>
+                    this.params.storeData ? null : <NoMoreClick style={styles.btnRow} onPress={this._complete}>
+                        <LinearGradient style={styles.btn}
+                                        start={{ x: 0, y: 0 }}
+                                        end={{ x: 1, y: 0 }}
+                                        colors={['#FC5D39', '#FF0050']} onPress={this._complete}>
+                            <Text style={styles.btnTitle}>开店</Text>
+                        </LinearGradient>
                     </NoMoreClick>
                 }
+
+
             </View>
         );
 
@@ -293,102 +287,51 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: DesignRule.mainColor
     },
-    // 照片
-    //更新
-    updateWhite: {
-        height: px2dp(60),
-        marginBottom: px2dp(10),
-        backgroundColor: 'white',
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    updateImg: {
-        width: px2dp(40),
-        height: px2dp(40),
-        borderRadius: px2dp(20),
-        marginLeft: 15
-    },
-    updateText: {
-        fontSize: 13,
-        color: DesignRule.textColor_secondTitle
-    },
     //开店
     whitePanel: {
-        height: px2dp(150),
-        marginBottom: px2dp(13),
-        backgroundColor: 'white',
+        height: px2dp(123),
         justifyContent: 'center',
         alignItems: 'center'
     },
     headerImg: {
-        width: px2dp(80),
-        height: px2dp(80),
-        borderRadius: px2dp(40)
+        width: px2dp(76), height: px2dp(76), borderRadius: px2dp(38), overflow: 'hidden'
     },
     //文本栏 名称 区域
-    textContainer: {
-        backgroundColor: 'white',
-        flexDirection: 'row',
-        height: px2dp(40),
-        alignItems: 'center'
-    },
     textTitle: {
-        fontSize: 13,
-        paddingLeft: 15,
-        paddingRight: 30,
-        color: DesignRule.textColor_mainTitle
+        fontSize: 13, paddingLeft: 15, color: DesignRule.textColor_secondTitle, paddingBottom: 10
+    },
+    textContainer: {
+        flexDirection: 'row', alignItems: 'center',
+        marginHorizontal: 15, marginBottom: 20,
+        backgroundColor: 'white', height: px2dp(44), borderRadius: 10
     },
     textInput: {
-        textAlign: 'right',
-        color: DesignRule.textColor_secondTitle,
-        fontSize: 13,
-        flex: 1
+        color: DesignRule.textColor_mainTitle, fontSize: 13, paddingLeft: 15, flex: 1
     },
-
-    viewLine: {
-        height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg
-    },
-
     bntArea: {
         position: 'absolute', bottom: 0, right: 0, left: 0, top: 0
     },
 
     //店铺简介
     profileContainer: {
-        marginTop: 10,
-        backgroundColor: 'white',
-        height: px2dp(200)
-    },
-    profileTittle: {
-        marginTop: 10,
-        marginLeft: 15,
-        marginBottom: 10,
-        fontSize: 13,
-        color: DesignRule.textColor_mainTitle
+        backgroundColor: 'white', height: px2dp(120), borderRadius: 10, marginHorizontal: 15
     },
     profileText: {
-        flex: 1,
-        textAlignVertical: 'top',
-        paddingHorizontal: 15,
-        color: DesignRule.textColor_secondTitle
+        flex: 1, textAlignVertical: 'top', paddingHorizontal: 15, color: DesignRule.textColor_mainTitle
     },
     profileTextAbsolute: {
-        position: 'absolute',
-        bottom: 10,
-        right: 10,
-        color: DesignRule.textColor_instruction
+        position: 'absolute', bottom: 10, right: 10, color: DesignRule.textColor_instruction
     },
     //开店按钮
     btnRow: {
-        marginBottom: ScreenUtils.safeBottom,
-        height: 50,
-        backgroundColor: DesignRule.mainColor,
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'center', alignItems: 'center',
+        marginBottom: ScreenUtils.safeBottom, height: 49, backgroundColor: 'white'
+    },
+    btn: {
+        width: px2dp(345), height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center'
     },
     btnTitle: {
-        fontSize: 17,
-        color: 'white'
+        fontSize: 16, color: 'white'
     }
+
 });
