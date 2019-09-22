@@ -113,8 +113,7 @@ export default class HttpUtils {
                     'sg-token': token ? token : '',
                     'platform': this.platform,
                     'version': rsa_config.version,
-                    'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
-                    'DEV_ENV_BRANCH': 'XG-100.FY'
+                    'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
                 }
             };
             return axios.get(url, config);
@@ -161,8 +160,7 @@ export default class HttpUtils {
                 'sg-token': token ? token : '',
                 'platform': this.platform,
                 'version': rsa_config.version,
-                'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
-                'DEV_ENV_BRANCH': 'XG-100.FY'
+                'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
             };
             return axios.post(url, params, config);
         }).then(response => {

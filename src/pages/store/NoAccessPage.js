@@ -27,7 +27,7 @@ export default class NoAccessPage extends Component {
                             refreshControl={<RefreshControl title="下拉刷新"
                                                             tintColor={DesignRule.textColor_instruction}
                                                             titleColor={DesignRule.textColor_instruction}
-                                                            refreshing={SpellStatusModel.refreshing}
+                                                            refreshing={false}
                                                             colors={[DesignRule.mainColor]}
                                                             onRefresh={() => {
                                                                 SpellStatusModel.requestHome();

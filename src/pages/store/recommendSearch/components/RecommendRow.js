@@ -10,7 +10,7 @@ import res from '../../res';
 import AvatarImage from '../../../../components/ui/AvatarImage';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
-
+import LinearGradient from 'react-native-linear-gradient';
 
 const StarImg = res.recommendSearch.dj_03;
 
@@ -55,27 +55,40 @@ export default class RecommendRow extends Component {
                 <View style={styles.bottomContainer}>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>{`${tradeBalanceOfMonth || '0.00'}`}</Text>
-                        <Text style={styles.containBottom}>店铺本月销售额</Text>
+                        <Text style={styles.containBottom}>店铺本月收入(元)</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>{`${totalTradeBalance || '0.00'}`}</Text>
-                        <Text style={styles.containBottom}>店铺总计销售额</Text>
+                        <Text style={styles.containBottom}>店铺累计收入(元)</Text>
                     </View>
                 </View>
                 <View style={styles.iconView}>
                     <View style={{ flexDirection: 'row' }}>
                         {
-                            users.map((item, index) => {
+                            (users || []).map((item, index) => {
+                                if (index > 4) {
+                                    return;
+                                }
+                                if (index === 4) {
+                                    return <View style={styles.moreIconView}>
+                                        <Text style={styles.moreIconText}>...</Text>
+                                    </View>;
+                                }
                                 return <AvatarImage key={index}
                                                     style={[styles.itemIcon, index === 0 && { marginLeft: 0 }]}
                                                     source={{ uri: item.headImg }}/>;
                             })
                         }
                     </View>
-                    <NoMoreClick>
-                        <Text>申请加入</Text>
-                    </NoMoreClick>
+                    <LinearGradient style={styles.joinBtn}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 0 }}
+                                    colors={['#FC5D39', '#FF0050']}>
+                        <Text style={{ fontSize: 13, color: 'white', fontWeight: '500' }}>
+                            申请加入
+                        </Text>
+                    </LinearGradient>
                 </View>
             </NoMoreClick>);
     }
@@ -93,7 +106,7 @@ const styles = StyleSheet.create({
         width: 60, height: 60, borderRadius: 30, overflow: 'hidden'
     },
     tittleContainer: {
-        marginLeft: 10
+        marginLeft: 10, flex: 1
     },
     shopName: {
         color: DesignRule.textColor_mainTitle, fontSize: 14
@@ -125,6 +138,16 @@ const styles = StyleSheet.create({
 
     itemIcon: {
         width: 32, height: 32, borderRadius: 16, overflow: 'hidden', marginLeft: -15
+    },
+    moreIconView: {
+        width: 32, height: 32, borderRadius: 16, marginLeft: -15, backgroundColor: '#E5E5E5',
+        justifyContent: 'center', alignItems: 'center'
+    },
+    moreIconText: {
+        color: 'white', fontSize: 12
+    },
+    joinBtn: {
+        width: 90, height: 28, borderRadius: 14, justifyContent: 'center', alignItems: 'center'
     }
 });
 

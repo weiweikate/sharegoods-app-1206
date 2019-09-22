@@ -5,7 +5,6 @@ import {
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
-import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import {
     MRText as Text
@@ -36,13 +35,13 @@ export default class RecommendSegmentView extends Component {
         );
     };
 
-    _renderItem = (title, index) => {
+    _renderItem = (title, index, style1) => {
         return <TouchableWithoutFeedback onPress={() => {
             this._onPress(index);
         }}>
-            <View style={styles.itemContainer}>
+            <View style={[styles.itemContainer, style1]}>
                 <Text
-                    style={[styles.title, { color: this.state.selectIndex === index ? DesignRule.bgColor_btn : '#999999' }]} allowFontScaling={false}>{title}</Text>
+                    style={[styles.title, { color: this.state.selectIndex === index ? DesignRule.bgColor_btn : '#999999' }]}>{title}</Text>
                 {index === this.state.selectIndex && < View style={styles.itemLine}/>}
             </View>
         </TouchableWithoutFeedback>;
@@ -50,9 +49,8 @@ export default class RecommendSegmentView extends Component {
 
     render() {
         return (<View style={styles.container}>
-            {this._renderItem('附近店铺', 1)}
-            <View style={{ width: ScreenUtils.autoSizeWidth(51) }}/>
-            {this._renderItem('新开店铺', 2)}
+            {this._renderItem('附近店铺', 1, { marginLeft: 15 })}
+            {this._renderItem('新开店铺', 2, { marginLeft: 20 })}
         </View>);
     }
 
@@ -60,12 +58,8 @@ export default class RecommendSegmentView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        width: ScreenUtils.width,
-        height: 40,
-        backgroundColor: '#ffffff',
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: 'center'
     },
     itemContainer: {
         height: 40,
@@ -77,7 +71,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         backgroundColor: DesignRule.bgColor_btn,
         height: 2,
-        width: 50,
+        width: 20,
         alignSelf: 'center'
     },
     title: {
