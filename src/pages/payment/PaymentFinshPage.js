@@ -1,6 +1,12 @@
 import React from 'react';
 import BasePage from '../../BasePage';
-import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    ScrollView,
+    Image,
+    TouchableOpacity
+} from 'react-native';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
@@ -12,7 +18,9 @@ import user from '../../model/user';
 import PaymentApi from './PaymentApi';
 import apiEnvironment from '../../api/ApiEnvironment';
 import bridge from '../../utils/bridge';
-import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
+// import FinshPayAlertView from './FinshPayAlertView';
+import { replaceRoute } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 import FinshPayAlertView from './FinshPayAlertView';
 import RecommendProductView from '../product/productScore/components/RecommendProductView';
 import { GroupShareView } from './GroupShareView';
