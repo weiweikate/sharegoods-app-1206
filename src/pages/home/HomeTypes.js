@@ -29,6 +29,7 @@ export const homeType = {
     Alert: 21,//退出的弹窗
     shopProducts: 22,//拼店详情商品列表
     shopBanner: 23,//拼店详情底部banner
+    paySuccess: 27,//订单支付完成页面广告位
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
     custom_goods: 'WIDGET-GOODS',
