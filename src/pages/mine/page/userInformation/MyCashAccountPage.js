@@ -16,6 +16,7 @@ import DataUtils from '../../../../utils/DateUtils';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
+import ReturnCashModel from '../../model/ReturnCashModel';
 import Toast from './../../../../utils/bridge';
 import {observer} from 'mobx-react';
 import DesignRule from '../../../../constants/DesignRule';
@@ -221,6 +222,15 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     _accountInfoRender() {
+        // let status = 1;
+        if(ReturnCashModel.returnCashInfo){
+            let data = ReturnCashModel.returnCashInfo;
+            if(Number(data.historySelfReturnAmount)+Number(data.historySelfReturnAmount)>0){
+
+            }else {
+
+            }
+        }
         return (
             <View style={styles.headerViewShadow}>
                 <View style={styles.headerViewStyle}>
@@ -447,6 +457,7 @@ export default class MyCashAccountPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                ReturnCashModel.getReturnCashInfo();
                 this.onRefresh();
             }
         );
