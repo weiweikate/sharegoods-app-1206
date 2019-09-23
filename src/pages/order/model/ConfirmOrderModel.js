@@ -91,6 +91,7 @@ class ConfirmOrderModel {
                 callBack&&callBack();
                 bridge.$toast('激活成功');
                 this.invokeSelect = true;
+                this.canInvoke = false;
                 this.selectUserCoupon(data.code)
             } else {
                 bridge.$toast('激活失败');
@@ -202,7 +203,7 @@ class ConfirmOrderModel {
                 productCode: item.productCode,
                 amount: item.quantity,
                 activityCode: item.activityCode,
-                batchNo: item.batchNo
+                batchNo: item.batchNo,
             };
         });
         let params = { productPriceIds: arr };
