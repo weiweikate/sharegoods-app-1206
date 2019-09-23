@@ -64,7 +64,7 @@ export default class OpenShopExplainPage extends BasePage {
             });
         }).catch(() => {
             this.setState({
-                pageState: PageLoadingState.fail
+                pageState: PageLoadingState.success
             });
         });
     };
