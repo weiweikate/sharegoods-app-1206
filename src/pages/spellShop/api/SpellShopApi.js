@@ -99,7 +99,8 @@ const api = {
     store_record: ['/user/store/record', { method: 'get' }],
 
     //去支付测试
-    user_pay: ['/user/pay', { method: 'get' }]
+    user_pay: ['/user/pay', { method: 'get' }],
+    store_bonusTips: ['/config/store/bonusTips', { method: 'get' }]
 };
 const SpellShopApi = ApiUtils(api);
 export default SpellShopApi;

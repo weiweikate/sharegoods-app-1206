@@ -20,16 +20,13 @@ import {
     ImageBackground,
     Image,
 } from 'react-native';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
+
+
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { UIImage } from '../../../../components/ui';
 import { MRText as Text } from '../../../../components/ui';
-
-import ExtraDimensions from 'react-native-extra-dimensions-android';
-
-
-
-const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal';
 import bridge from '../../../../utils/bridge';
 import apiEnvironment from '../../../../api/ApiEnvironment';
@@ -38,6 +35,9 @@ import res from '../../res';
 import user from '../../../../model/user';
 import {track, trackEvent} from '../../../../utils/SensorsTrack';
 import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/components/SmoothPushHighComponent';
+import userApi from '../../../../model/userApi';
+
+const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 const {
     button: {
@@ -61,7 +61,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
         super(props);
         this.state = {
             disable: false,
-            path: ''
+            path: '',
         };
         this._bind();
         this.linkUrl = `${apiEnvironment.getCurrentH5Url()}/register?upuserid=${user.code || ''}&signUpSource=fxhy`;
@@ -78,14 +78,35 @@ export default class InviteFriendsPage extends BasePage<Props> {
     }
 
     componentDidMount() {
-        track(trackEvent.ViewInviteFriends,{});
-        this.loadPageData();
+        track(trackEvent.ViewInviteFriends, {});
+        /*  接口请求 将长链接转成短链接 当res.data 存在时，传入  */
+        userApi.shareShortUrl({'longUrl': this.linkUrl, 'expireTime': 0})
+            .then(res => {
+                console.log('res', res);
+                if (res && res.data) {
+                    this.loadPageData(res.data);
+                } else {
+                    this.loadPageData();
+                }
+            }).catch(error => {
+            this.loadPageData();
+        });
     }
 
-    loadPageData() {
-        this.creatQRCodeImage(this.linkUrl);
+    /**
+     * @func 生成二维码图片
+     * @param  codeUrl {String} 传入地址URL
+     */
+    loadPageData(codeUrl) {
+        let codeStr = codeUrl || this.linkUrl;
+        this.creatQRCodeImage(codeStr);
     }
 
+
+    /**
+     * @func 调用原生方法生成二维码图片，
+     * @param  QRCodeStr {String} 传入地址URL
+     */
     creatQRCodeImage(QRCodeStr) {
         bridge.creatQRCodeImage(QRCodeStr, (path) => {
             this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path });
