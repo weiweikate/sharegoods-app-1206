@@ -16,7 +16,8 @@ import {
     StyleSheet,
     View,
     TouchableWithoutFeedback,
-    Image
+    Image,
+    Alert
 } from 'react-native';
 
 import {
@@ -42,15 +43,22 @@ export default class ActivateTicketView extends React.Component {
     componentDidMount() {
     }
 
+    onPress = () => {
+        Alert.alert('兑换券激活后不能取消，\n是否确认激活？',null,
+            [{text: '取消', onPress: ()=> {}},
+                {text: '确定', onPress: ()=> confirmOrderModel.invokeTicket(confirmOrderModel.invokeItem)}])
+    }
+
+
 
     render() {
-        if (!confirmOrderModel.canInvoke) {
+        if (!confirmOrderModel.canInvoke&&!confirmOrderModel.invokeSelect) {
             return null;
         }
 
         return (
             <TouchableWithoutFeedback
-                onPress={()=> {confirmOrderModel.invokeTicket(confirmOrderModel.invokeItem)}}
+                onPress={this.onPress}
                 disabled={confirmOrderModel.invokeSelect}
             >
                 <View style={styles.block}>

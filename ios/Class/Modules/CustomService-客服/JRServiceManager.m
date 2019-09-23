@@ -129,6 +129,10 @@ SINGLETON_FOR_CLASS(JRServiceManager)
        |——————————————————|
     */
   
+  actionConfig.linkClickBlock = ^(NSString *linkAddress) {
+    
+  };
+  
    actionConfig.botClick = ^(NSString *target, NSString *params) {
     NSMutableDictionary *dic = [target getURLParameters];
     NSString *targetUrl = dic[@"targetUrl"];
@@ -160,8 +164,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
         [self onBack:nil];
          [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
         
-      }else if ([eventData containsString:@"https://hzmrwlyxgs.qiyukf.com/client?"]||
-                [eventData containsString:@"http://hzmrwlyxgs.qiyukf.com/client?"]) {
+      }else if ([eventData containsString:@"hzmrwlyxgs.qiyukf.com/client?"]) {
         
         [self connetMerchantWithtargetUrl:eventData];
         
@@ -192,7 +195,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   sessionVC.shopId = ((NSString *)chatInfo[@"shopId"]).length > 0 ?chatInfo[@"shopId"]:suspensionId;
   //重置一下供应商的域名
   if ([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_OTHER) {
-    sessionVC.shopId= suspensionId;
+   // sessionVC.shopId= suspensionId;
   }
   sessionVC.commodityInfo = [self getCommodityMsgWithData:swichData];
   sessionVC.groupId = 0;

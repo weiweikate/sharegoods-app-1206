@@ -42,7 +42,7 @@ export default class PrivacyModal extends React.Component {
     }
 
     onPress(){
-        routePush('HtmlPage', { uri: '/static/protocol/privacyPolicy.html' });
+        routePush('HtmlPage', { uri: '/static/protocol/privacy.html' });
     }
 
 

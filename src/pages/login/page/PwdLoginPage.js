@@ -41,6 +41,9 @@ export default class PwdLoginPage extends BasePage {
         headerStyle: { borderBottomWidth: 0 }
     };
 
+    /**
+     * 密码登录
+     */
     pwdLogin = () => {
         if (!loginModel.isSelectProtocol) {
             this.$toastShow('请先勾选用户协议');
@@ -77,6 +80,37 @@ export default class PwdLoginPage extends BasePage {
             this.$loadingDismiss();
         });
     };
+
+    /**
+     * 微信登录
+     */
+    wechatLogin() {
+        getWxUserInfo((wxData) => {
+            this.$loadingShow('加载中');
+            if (!wxData) {
+                this.$loadingDismiss();
+                this.$toastShow('微信授权失败！');
+                return;
+            }
+            let params = {
+                device: wxData.device,
+                weChatHeadImg: wxData.headerImg,
+                weChatName: wxData.nickName,
+                openId: wxData.appOpenid,
+                systemVersion: wxData.systemVersion,
+                unionId: wxData.unionid
+            };
+            // 微信登录
+            wxLoginAction(params, () => {
+                bridge.$toast('登录成功');
+                this.$loadingDismiss();
+                this.$navigateBack();
+                this.params.callback && this.params.callback();
+            }, () => {
+                this.$loadingDismiss();
+            });
+        });
+    }
 
     _render() {
         return (
@@ -186,23 +220,7 @@ export default class PwdLoginPage extends BasePage {
                                 return;
                             }
                             // 微信授权
-                            getWxUserInfo((wxData) => {
-                                this.$loadingShow('加载中');
-                                if (!wxData) {
-                                    this.$loadingDismiss();
-                                    this.$toastShow('微信授权失败！');
-                                    return;
-                                }
-                                // 微信登录
-                                wxLoginAction(wxData, () => {
-                                    bridge.$toast('登录成功');
-                                    this.$loadingDismiss();
-                                    this.$navigateBack();
-                                    this.params.callback && this.params.callback();
-                                }, () => {
-                                    this.$loadingDismiss();
-                                });
-                            });
+                            this.wechatLogin();
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
                                    source={res.share.weiXin}/>

@@ -130,6 +130,42 @@ export default class PhoneLoginPage extends BasePage {
         routeNavigate(RouterMap.LoginVerifyCodePage, params);
     }
 
+    /**
+     * 微信登录
+     */
+    weChatLogin() {
+        if (!loginModel.isSelectProtocol) {
+            this.$toastShow('请先勾选用户协议');
+            return;
+        }
+        // 微信授权
+        getWxUserInfo((wxData) => {
+            this.$loadingShow('加载中');
+            if (!wxData) {
+                this.$loadingDismiss();
+                this.$toastShow('微信授权失败！');
+                return;
+            }
+            let params = {
+                device: wxData.device,
+                weChatHeadImg: wxData.headerImg,
+                weChatName: wxData.nickName,
+                openId: wxData.appOpenid,
+                systemVersion: wxData.systemVersion,
+                unionId: wxData.unionid
+            };
+            // 微信登录
+            wxLoginAction(params, () => {
+                bridge.$toast('登录成功');
+                this.$loadingDismiss();
+                this.$navigateBack();
+                this.params.callback && this.params.callback();
+            }, () => {
+                this.$loadingDismiss();
+            });
+        });
+    }
+
     _render() {
         return (
             <View style={Styles.contentStyle}>
@@ -228,28 +264,7 @@ export default class PhoneLoginPage extends BasePage {
                     <View style={{ flexDirection: 'row', marginHorizontal: px2dp(30), marginTop: px2dp(20) }}>
                         <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             // 微信登录
-                            if (!loginModel.isSelectProtocol) {
-                                this.$toastShow('请先勾选用户协议');
-                                return;
-                            }
-                            // 微信授权
-                            getWxUserInfo((wxData) => {
-                                this.$loadingShow('加载中');
-                                if (!wxData) {
-                                    this.$loadingDismiss();
-                                    this.$toastShow('微信授权失败！');
-                                    return;
-                                }
-                                // 微信登录
-                                wxLoginAction(wxData, () => {
-                                    bridge.$toast('登录成功');
-                                    this.$loadingDismiss();
-                                    this.$navigateBack();
-                                    this.params.callback && this.params.callback();
-                                }, () => {
-                                    this.$loadingDismiss();
-                                });
-                            });
+                            this.weChatLogin();
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
                                    source={this.params.needBottom ? res.share.weiXin : null}/>

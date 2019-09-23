@@ -91,6 +91,7 @@ class ConfirmOrderModel {
                 callBack&&callBack();
                 bridge.$toast('激活成功');
                 this.invokeSelect = true;
+                this.canInvoke = false;
                 this.selectUserCoupon(data.code)
             } else {
                 bridge.$toast('激活失败');
@@ -104,9 +105,6 @@ class ConfirmOrderModel {
 
     @action
     selecttokenCoin(num) {
-        if (this.tokenCoin == num) {
-            return;
-        }
         this.tokenCoin = num;
         this.makeSureProduct();
     }
@@ -202,7 +200,7 @@ class ConfirmOrderModel {
                 productCode: item.productCode,
                 amount: item.quantity,
                 activityCode: item.activityCode,
-                batchNo: item.batchNo
+                batchNo: item.batchNo,
             };
         });
         let params = { productPriceIds: arr };
@@ -370,7 +368,7 @@ class ConfirmOrderModel {
             if (this.orderParamVO.source === 1) {
                 shopCartCacheTool.getShopCartGoodsListData();
             }
-            payment.checkOrderToPage(data.platformOrderNo, data.productOrderList[0].productName);
+            payment.checkOrderToPage(data.platformOrderNo, data.productOrderList[0].productName, 'order');
             track(trackEvent.submitOrder, {
                 orderId: data.orderNo,
                 orderSubmitPage: this.orderParamVO.source == 1 ? 11 : 1

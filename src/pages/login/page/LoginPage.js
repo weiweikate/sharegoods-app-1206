@@ -162,9 +162,7 @@ export default class LoginPage extends BasePage {
             }
             let params = {
                 device: wxData.device,
-                encryptedData: '',
                 weChatHeadImg: wxData.headerImg,
-                iv: '',
                 weChatName: wxData.nickName,
                 openId: wxData.appOpenid,
                 systemVersion: wxData.systemVersion,
