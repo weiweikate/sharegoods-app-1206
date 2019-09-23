@@ -105,9 +105,6 @@ class ConfirmOrderModel {
 
     @action
     selecttokenCoin(num) {
-        if (this.tokenCoin == num) {
-            return;
-        }
         this.tokenCoin = num;
         this.makeSureProduct();
     }
