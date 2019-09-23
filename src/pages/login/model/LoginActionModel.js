@@ -24,7 +24,6 @@ const wxLoginAction = (params, okCallBack, failCallBack) => {
     LoginAPI.appWechatLogin(params).then((res) => {
         // 登录成功处理
         let resData = res.data || {};
-        console.log('------' + JSON.stringify(resData));
         handleLoginData(params, resData, res.code, okCallBack, failCallBack);
         // 数据埋点
         TrackApi.wxLoginSuccess();

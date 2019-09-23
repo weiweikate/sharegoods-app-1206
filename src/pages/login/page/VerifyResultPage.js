@@ -25,7 +25,7 @@ export default class VerifyResultPage extends BasePage {
         headerStyle: { borderBottomWidth: 0 }
     };
 
-    $NavigationBarDefaultLeftPressed() {
+    $NavBarLeftPressed() {
         routePop(2);
     }
 

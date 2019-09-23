@@ -18,7 +18,6 @@ import user from '../../model/user';
 import PaymentApi from './PaymentApi';
 import apiEnvironment from '../../api/ApiEnvironment';
 import bridge from '../../utils/bridge';
-// import FinshPayAlertView from './FinshPayAlertView';
 import { replaceRoute } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
 import FinshPayAlertView from './FinshPayAlertView';
