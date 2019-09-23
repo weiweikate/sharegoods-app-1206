@@ -41,5 +41,5 @@ export function getSGscm(source = 'none',id = 'none', strategy = 'none', algorit
 
 
 export function getSGspm_home(source,index = 1) {
-  return {sgspm:'1.1.'+source+','+index}
+  return {sgspm:'1.1.'+source+'.'+index}
 }
