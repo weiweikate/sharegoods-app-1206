@@ -371,7 +371,7 @@ class ConfirmOrderModel {
             if (this.orderParamVO.source === 1) {
                 shopCartCacheTool.getShopCartGoodsListData();
             }
-            payment.checkOrderToPage(data.platformOrderNo, data.productOrderList[0].productName);
+            payment.checkOrderToPage(data.platformOrderNo, data.productOrderList[0].productName, 'order');
             track(trackEvent.submitOrder, {
                 orderId: data.orderNo,
                 orderSubmitPage: this.orderParamVO.source == 1 ? 11 : 1

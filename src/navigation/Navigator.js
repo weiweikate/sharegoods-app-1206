@@ -21,7 +21,10 @@ const noAnimatedTransition = (toTransitionProps, fromTransitionProps) => {
     //指定无转场动画的页面
     if (noAnimatedPage.indexOf(routeName) > -1) {
         return {
-            screenInterpolator: StackViewStyleInterpolator.forNoAnimation
+            screenInterpolator: StackViewStyleInterpolator.forNoAnimation,
+            transitionSpec: {
+                duration: 10,
+            },
         }
     }
 }
