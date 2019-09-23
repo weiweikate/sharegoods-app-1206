@@ -121,14 +121,19 @@ const sStyles = StyleSheet.create({
 export class ProductDetailAddressModel {
 
     @observable prodCode = null;
+    @observable templateCode = null;
     /*个人地址列表*/
     @observable addressList = [];
     /*手动选择的区域*/
     @observable addressSelectedText = null;
+    @observable provinceCode = null;
+    @observable cityCode = null;
     @observable addressSelectedCode = null;
 
     /*区域库存(地区变化就需要更新)  未请求成功为null*/
     @observable areaSkuList = null;
+
+    @observable freightPrice = null;
 
     @computed get showAreaText() {
         if (this.addressSelectedText) {
@@ -142,6 +147,30 @@ export class ProductDetailAddressModel {
         return '杭州市萧山区';
     }
 
+    @computed get getProvinceCode() {
+        if (this.provinceCode) {
+            return this.provinceCode;
+        }
+        for (const item of this.addressList) {
+            if (item.defaultStatus === 1) {
+                return item.provinceCode;
+            }
+        }
+        return '330000000';
+    }
+
+    @computed get getCityCode() {
+        if (this.cityCode) {
+            return this.cityCode;
+        }
+        for (const item of this.addressList) {
+            if (item.defaultStatus === 1) {
+                return item.cityCode;
+            }
+        }
+        return '330100000';
+    }
+
     @computed get getAreaCode() {
         if (this.addressSelectedCode) {
             return this.addressSelectedCode;
@@ -151,13 +180,13 @@ export class ProductDetailAddressModel {
                 return item.areaCode;
             }
         }
-        return '330109';
+        return '330109000';
     }
 
     /*地址变化自动更新库存*/
     requestSkuByAreaCode = autorun(() => {
         const { prodCode, getAreaCode } = this;
-        if (!this.prodCode) {
+        if (!prodCode) {
             return;
         }
         ProductApi.getProductSkuStockByAreaCode({
@@ -165,6 +194,17 @@ export class ProductDetailAddressModel {
             areaCode: getAreaCode
         }).then((data) => {
             this.areaSkuList = data.data || [];
+        });
+
+        const { templateCode } = this;
+        ProductApi.freightByTemplateAndArea({
+            prodCode,
+            templateCode,
+            provinceCode: this.getProvinceCode,
+            cityCode: this.getCityCode,
+            areaCode: getAreaCode
+        }).then((data) => {
+            this.freightPrice = data.data;
         });
     });
 

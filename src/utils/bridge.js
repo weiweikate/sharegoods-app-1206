@@ -5,6 +5,8 @@ import StringUtils from './StringUtils';
 import TimerMixin from 'react-timer-mixin';
 import { clearCookies, setCookies, setCookieToken } from '@mr/webview';
 import apiEnvironment from '../api/ApiEnvironment';
+import userApi from '../model/userApi';
+import ShareUtil from './ShareUtil';
 
 export default {
     $checkIsCanComment() {
@@ -78,6 +80,11 @@ export default {
      */
     creatShareImage(jsonParam, onSuccess, onError = (errorStr) => {
     }) {
+        let QRCodeStr = jsonParam.QRCodeStr;
+        if (QRCodeStr && jsonParam.imageType !== 'invite') {
+            QRCodeStr = ShareUtil.QRCodeAppendPageSource(QRCodeStr);
+        }
+        jsonParam.QRCodeStr = QRCodeStr;
         NativeModules.LoginAndShareModule.creatShareImage(jsonParam, onSuccess, onError);
     },
     createPromotionShareImage(qrString, onSuccess, onError = (errorStr) => {
@@ -117,9 +124,31 @@ export default {
     saveImage(path) {
         NativeModules.LoginAndShareModule.saveImage(path);
     },
-    creatQRCodeImage(QRCodeStr, onSuccess, onError = (errorStr) => {
-    }) {
-        NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
+
+    /**
+     * func 生成二维码图片
+     * params QRCode      二维码地址
+     * params routeName   当前路由名称
+     * params onSuccess() 成功回调
+     * params onError()   回调
+     */
+    creatQRCodeImage(QRCode, onSuccess, onError = (errorStr) => {
+    }, routeName) {
+        let QRCodeStr = ShareUtil.QRCodeAppendPageSource(QRCode);
+        if (routeName) {
+            userApi.shareShortUrl({'longUrl': QRCodeStr, 'expireTime': 0})
+                .then(res => {
+                    if (res && res.data) {
+                        NativeModules.LoginAndShareModule.creatQRCodeImage(res.data, onSuccess, onError);
+                    } else {
+                        NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
+                    }
+                }).catch(error => {
+                NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
+            });
+        } else {
+            NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
+        }
     },
     createQRToAlbum(info) {
         return NativeModules.LoginAndShareModule.createQRToAlbum(info);

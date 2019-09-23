@@ -35,6 +35,8 @@ export class AddressSelectPage extends BasePage {
                         return item.name;
                     });
                     productDetailAddressModel.addressSelectedText = nameList.join('');
+                    productDetailAddressModel.provinceCode = selectItems[0].code;
+                    productDetailAddressModel.cityCode = selectItems[1].code;
                     productDetailAddressModel.addressSelectedCode = item.code;
                     popToRouteName(RouterMap.ProductDetailPage);
                     return;

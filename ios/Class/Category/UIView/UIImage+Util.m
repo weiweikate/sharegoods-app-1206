@@ -225,7 +225,7 @@
   CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
   [filter setDefaults];
   //存放的信息
-  NSString *info = [str urlAddCompnentForValue:@"7" key:@"pageSource"];
+  NSString *info = str;
   //把信息转化为NSData
   NSData *infoData = [info dataUsingEncoding:NSUTF8StringEncoding];
   //滤镜对象kvc存值
