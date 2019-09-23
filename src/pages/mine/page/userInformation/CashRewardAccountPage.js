@@ -56,7 +56,7 @@ const shouru = res.cashAccount.shouru_icon;
 const shouyi = res.cashAccount.shouyi_icon;
 
 const bg_black_img = res.userInfoImg.cash_bg_icon;
-// const bg_top_img = res.userInfoImg.cash_top_icon;
+const bg_top_img = res.userInfoImg.cash_top_icon;
 
 const allType = {
     1: {
@@ -220,17 +220,30 @@ export default class CashRewardAccountPage extends BasePage {
                         <Text style={styles.countTextStyle}>
                             累计自返(元)
                         </Text>
-                        <ImageBackground
-                            style={{}} source={bg_black_img}>
-                            <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => {
-                            }}>
+                        <NoMoreClick style={{}} onPress={() => {
+                        }}>
+                            <ImageBackground
+                                style={styles.beSubVipBgStyle}
+                                source={bg_black_img}>
+
                                 <Text
                                     style={{
                                         fontSize: DesignRule.fontSize_threeTitle,
-                                        color: DesignRule.mainColor
-                                    }}>123123</Text>
-                            </NoMoreClick>
-                        </ImageBackground>
+                                        color: '#E9CD8D'
+                                    }}>开启超级会员</Text>
+                            </ImageBackground>
+
+                            <ImageBackground
+                                style={styles.beSubVipTopStyle}
+                                source={bg_top_img}>
+                                <Text
+                                    style={{
+                                        fontSize: DesignRule.fontSize_20,
+                                        color: '#333333'
+                                    }}>自动转出余额</Text>
+                            </ImageBackground>
+                        </NoMoreClick>
+
                     </View>
                     <Text style={{
                         color: DesignRule.textColor_mainTitle,
@@ -576,7 +589,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: DesignRule.margin_page,
-        marginTop: px2dp(22)
+        marginTop: px2dp(10)
     },
     settingStyle: {
         color: DesignRule.white,
@@ -585,20 +598,26 @@ const styles = StyleSheet.create({
     },
     countTextStyle: {
         color: DesignRule.textColor_mainTitle,
-        fontSize: DesignRule.fontSize_threeTitle
+        fontSize: DesignRule.fontSize_threeTitle,
+        marginTop: px2dp(13),
     },
-    withdrawButtonWrapper: {
-        width: px2dp(80),
-        height: px2dp(28),
-        borderRadius: px2dp(14),
+    beSubVipTopStyle: {
+        width: px2dp(74),
+        height: px2dp(14),
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: DesignRule.white,
-        borderColor: DesignRule.mainColor,
-        borderWidth: 1,
         position: 'absolute',
-        right: 15,
-        top: 0
+        right: -4,
+        top: -19,
+    },
+    beSubVipBgStyle: {
+        width: px2dp(115),
+        height: px2dp(28),
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        right: 0,
+        top: -8
     },
     numTextStyle: {
         color: '#333333',
