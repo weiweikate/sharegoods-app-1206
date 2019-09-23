@@ -75,11 +75,12 @@ export default class AssistantListPage extends BasePage {
 
     loadPageData() {
         this.state.page = 1;
+        const { storeCode } = this.params.storeData;
         SpellShopApi.user_list({
             keywords: this.state.searchText,
             page: this.state.page,
             pageSize: this.state.pageSize,
-            storeCode: this.params.storeCode
+            storeCode: storeCode
         }).then((data) => {
             const tempData = data.data || {};
             this.setState({
@@ -102,6 +103,7 @@ export default class AssistantListPage extends BasePage {
     }
 
     _loadPageDataMore = () => {
+        const { storeCode } = this.params.storeData;
         this.setState({
             loadingMore: true
         }, () => {
@@ -109,7 +111,7 @@ export default class AssistantListPage extends BasePage {
                 keywords: this.state.searchText,
                 page: this.state.page,
                 pageSize: this.state.pageSize,
-                storeCode: this.params.storeCode
+                storeCode: storeCode
             }).then((data) => {
                 this.state.page++;
                 let dataTemp = data.data || {};
@@ -135,9 +137,9 @@ export default class AssistantListPage extends BasePage {
 
     // 店员详情
     _clickAssistantDetail = (userCode) => {
-        const { roleType } = this.params.storeData;
+        const { roleType, storeCode } = this.params.storeData;
         if (roleType === 0) {
-            this.$navigate('store/myShop/ShopAssistantDetailPage', { userCode });
+            this.$navigate('store/myShop/ShopAssistantDetailPage', { userCode, storeCode });
         }
     };
 

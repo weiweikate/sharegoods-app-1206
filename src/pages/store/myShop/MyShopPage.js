@@ -29,6 +29,7 @@ import { IntervalMsgView, IntervalType } from '../../../comm/components/Interval
 import StringUtils from '../../../utils/StringUtils';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import { navigateBackToStore, routePush } from '../../../navigation/RouterMap';
+import DateUtils from '../../../utils/DateUtils';
 // 图片资源
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
@@ -222,9 +223,10 @@ export default class MyShopPage extends BasePage {
 
     // 点击全部成员
     _clickAllMembers = () => {
-        const { roleType, storeCode } = this.MyShopDetailModel.storeData;
+        const { storeData } = this.MyShopDetailModel;
+        const { roleType } = storeData;
         if (roleType === 0) {
-            this.$navigate('store/myShop/ShopAssistantPage', { storeCode: storeCode });
+            this.$navigate('store/myShop/ShopAssistantPage', { storeData });
         }
     };
 
@@ -298,12 +300,14 @@ export default class MyShopPage extends BasePage {
                     <MembersRow MyShopDetailModel={this.MyShopDetailModel}
                                 onPressAllMembers={this._clickAllMembers}/>
                     <View>
-                        <InfoRow icon={RmbIcon} title={'店铺已完成奖励总额'} desc={`¥${storeTotalBonus || ''}`}/>
+                        <InfoRow icon={RmbIcon} title={'店铺已完成奖励总额'} desc={`${storeTotalBonus || 0}元`}/>
                         {isNoEmpty(roleType) &&
                         <InfoRow icon={system_charge} title={'个人已获得奖励'} desc={`${totalBonusMoney || 0}元`}/>}
-                        <InfoRow icon={QbIcon} title={'店铺成立时间'} desc={buildTime || ''}/>
+                        <InfoRow icon={QbIcon} title={'店铺成立时间'}
+                                 desc={buildTime ? DateUtils.formatDate(buildTime, 'yyyy年MM月dd日') : ''}/>
                         {isNoEmpty(roleType) &&
-                        <InfoRow icon={myShop_join} title={'加入时间'} desc={joinTime || ''}/>}
+                        <InfoRow icon={myShop_join} title={'加入时间'}
+                                 desc={joinTime ? DateUtils.formatDate(joinTime, 'yyyy年MM月dd日') : ''}/>}
                     </View>
                     {!isNoEmpty(roleType) &&
                     <NoMoreClick style={styles.joinBtn} onPress={this._joinBtnAction}>

@@ -31,7 +31,7 @@ export default class AssistantRow extends Component {
 
 
     renderContent = () => {
-        const { headImg, levelName, nickName, roleType, packageStatus, packageImg } = this.props.item;
+        const { headImg, levelName, nickName, roleType, packageStatus, packageImg, status } = this.props.item;
         const { showActivityImage } = this.props;
         return (
             <NoMoreClick style={styles.rowContainer} onPress={this._clickAssistantDetail}>
@@ -45,7 +45,7 @@ export default class AssistantRow extends Component {
                                          style={{ width: 59, height: 16, marginLeft: 5 }}/> : null}
                         </View>
                         <Text style={styles.level}>{levelName || ''}</Text>
-                        {/*<Text style={styles.desc}>若未扩容，此成员将在{levelName || ''}离店</Text>*/}
+                        {status === 10 && <Text style={styles.desc}>若未扩容，此成员将在{levelName || ''}离店</Text>}
                     </View>
                 </View>
             </NoMoreClick>);

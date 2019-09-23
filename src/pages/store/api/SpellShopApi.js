@@ -44,7 +44,7 @@ const api = {
     storeUserRemove: '/app/store/user/remove',
     //还有购买校验接口
     //获取店员详情
-    findUserDetail: ['/user/storeUser/findUserDetail', { method: 'get' }],
+    findUserDetail: ['/app/store/user/detail', { method: 'get' }],
     /**店铺扩容**/
     /*
     * 查询店铺人员数量,最大人员数量,是否可以扩容
