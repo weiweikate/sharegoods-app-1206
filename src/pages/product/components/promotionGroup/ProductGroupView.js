@@ -163,7 +163,7 @@ export class GroupProductListView extends Component {
                 <FlatList
                     style={stylesProduct.flatList}
                     data={groupProducts || []}
-                    keyExtractor={(item) => item.id + ''}
+                    keyExtractor={(item) => item.prodCode + ''}
                     renderItem={this._renderItem}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}

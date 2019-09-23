@@ -12,6 +12,8 @@ const api = {
     promotion_detail: ['/promotion/package/detail', { method: 'get' }],
     /*获取地址范围内的库存*/
     getProductSkuStockByAreaCode: ['/product/getProductSkuStockByAreaCode', { method: 'get' }],
+    //根据地址返回邮费
+    freightByTemplateAndArea: ['/product/freightByTemplateAndArea'],
     // 获取产品规格信息
     getProductSpec: ['/product/getProductSpec', { method: 'get' }],
     /**拼团**/

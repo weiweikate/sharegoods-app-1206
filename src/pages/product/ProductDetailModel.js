@@ -657,6 +657,7 @@ export default class ProductDetailModel {
             this.requestShopInfo(tempData.merchantCode);
             /**赋值prodCode会autoRun自动拉取库存**/
             if (tempData && tempData.type !== 3) {
+                this.productDetailAddressModel.templateCode = tempData.freightTemplateCode;
                 this.productDetailAddressModel.prodCode = this.prodCode;
             }
 
