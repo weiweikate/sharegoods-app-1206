@@ -41,7 +41,7 @@ const api = {
     package_identification: ['/app/store/user/package/identification', { method: 'get' }],
 
     //移除店铺人员
-    storeUserRemove: '/user/storeUser/remove',
+    storeUserRemove: '/app/store/user/remove',
     //还有购买校验接口
     //获取店员详情
     findUserDetail: ['/user/storeUser/findUserDetail', { method: 'get' }],
