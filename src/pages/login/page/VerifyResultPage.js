@@ -8,6 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import res from '../../../comm/res';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
+import { routePop } from '../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 export default class VerifyResultPage extends BasePage {
@@ -23,6 +24,10 @@ export default class VerifyResultPage extends BasePage {
         leftImageStyle: { marginLeft: 10, width: 20, height: 20 },
         headerStyle: { borderBottomWidth: 0 }
     };
+
+    $NavigationBarDefaultLeftPressed() {
+        routePop(2);
+    }
 
     toService = () => {
         track(trackEvent.ClickOnlineCustomerService
