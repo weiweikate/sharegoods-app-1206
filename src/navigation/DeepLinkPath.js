@@ -19,8 +19,10 @@ const deepLinkPath = {
     'MyOrdersDetailPage': 'path/MyOrdersDetailPage/:merchantOrderNo',
     /* 个人中心 */
     'mine': 'path/mine',
+    /*优惠券*/
+    'CouponsPage': 'path/CouponsPage',
     /* 我的拼团 */
-    'SpellGroupList': 'path/SpellGroupList',
+    'SpellGroupList': 'path/SpellGroupList'
 };
 
 export default deepLinkPath;
