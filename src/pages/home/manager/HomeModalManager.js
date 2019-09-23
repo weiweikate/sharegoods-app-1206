@@ -249,7 +249,7 @@ class HomeModalManager {
                 this.actionFinish();
             }else {
                 HomeAPI.queryConfig({code: 'privacy_agreement_switch' }).then((data)=> {
-                    if (data.data&&data.data.value) {
+                    if (data.data&&(data.data.value == 1)) {
                         this.needShowPrivacyModal = true;
                     }
                     this.actionFinish();
