@@ -8,7 +8,6 @@ import DateUtils from '../../../utils/DateUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import StringUtils from '../../../utils/StringUtils';
 import res from '../res';
 import resCommon from '../../../comm/res';
 //Source
@@ -56,8 +55,8 @@ export default class ShopAssistantDetailPage extends BasePage {
     }
 
     loadPageData() {
-        const { userCode } = this.params;
-        SpellShopApi.findUserDetail({ userCode }).then((data) => {
+        const { userCode, storeCode } = this.params;
+        SpellShopApi.findUserDetail({ userCode, storeCode }).then((data) => {
             this.setState({
                 userInfo: data.data || {}
             });
@@ -87,7 +86,7 @@ export default class ShopAssistantDetailPage extends BasePage {
 
     renderContent = () => {
         const { userInfo } = this.state;
-        const { updateTime, dealerTotalBonus, dealerThisTimeBonus } = this.state.userInfo;
+        const { updateTime, userBonus } = this.state.userInfo;
         return (
             <ScrollView style={{ flex: 1 }}>
                 <ImageBackground source={HeaderBarBgImg} style={styles.imgBg}>
@@ -112,9 +111,9 @@ export default class ShopAssistantDetailPage extends BasePage {
                         </View>
                     </View>
                 </ImageBackground>
-                {this._renderRow(QbIcon, '加入店铺时间', updateTime && DateUtils.formatDate(updateTime, 'yyyy年MM月dd日'))}
+                {this._renderRow(QbIcon, '加入店铺时间', updateTime ? DateUtils.formatDate(updateTime, 'yyyy年MM月dd日') : '')}
                 {this.renderSepLine()}
-                {this._renderRow(MoneyIcon, '共获得奖励总额', `${StringUtils.sub((dealerTotalBonus || 0), (dealerThisTimeBonus || 0))}元`)}
+                {this._renderRow(MoneyIcon, '每月分红总额', `${userBonus || 0}元`)}
             </ScrollView>);
     };
 
