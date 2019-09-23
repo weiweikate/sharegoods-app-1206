@@ -129,6 +129,10 @@ SINGLETON_FOR_CLASS(JRServiceManager)
        |——————————————————|
     */
   
+  actionConfig.linkClickBlock = ^(NSString *linkAddress) {
+    
+  };
+  
    actionConfig.botClick = ^(NSString *target, NSString *params) {
     NSMutableDictionary *dic = [target getURLParameters];
     NSString *targetUrl = dic[@"targetUrl"];
