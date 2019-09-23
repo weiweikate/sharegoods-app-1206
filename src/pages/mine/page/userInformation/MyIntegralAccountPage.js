@@ -531,7 +531,6 @@ const styles = StyleSheet.create({
         shadowOffset: {w: 0, h: 4},
         shadowOpacity: 1,
         shadowRadius: 8,
-        elevation: 2,
     },
     headerViewStyle:{
         backgroundColor: 'white',
@@ -539,6 +538,7 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width - 2 * DesignRule.margin_page,
         borderRadius: 15,
         overflow: 'hidden',
+        elevation: 2,
     }
 });
 

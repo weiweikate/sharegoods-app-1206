@@ -13,10 +13,14 @@ import {
     SectionList,
     StyleSheet,
     TouchableWithoutFeedback,
-    View
+    View,
+    ImageBackground
 } from 'react-native';
-import BasePage from '../../../../BasePage';
+import {observer} from 'mobx-react';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
+import LinearGradient from 'react-native-linear-gradient';
+
+import BasePage from '../../../../BasePage';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DataUtils from '../../../../utils/DateUtils';
@@ -24,14 +28,12 @@ import EmptyUtils from '../../../../utils/EmptyUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from './../../../../utils/bridge';
-import {observer} from 'mobx-react';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import {MRText as Text} from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import EmptyView from '../../../../components/pageDecorator/BaseView/EmptyView';
 import RouterMap, {routeNavigate} from '../../../../navigation/RouterMap';
-import LinearGradient from 'react-native-linear-gradient';
 
 const {px2dp} = ScreenUtils;
 const renwu = res.cashAccount.renwu_icon;
@@ -52,6 +54,9 @@ const qita = res.cashAccount.qita_icon;
 const chengFa = res.cashAccount.chengFa_icon;
 const shouru = res.cashAccount.shouru_icon;
 const shouyi = res.cashAccount.shouyi_icon;
+
+const bg_black_img = res.userInfoImg.cash_bg_icon;
+// const bg_top_img = res.userInfoImg.cash_top_icon;
 
 const allType = {
     1: {
@@ -204,6 +209,9 @@ export default class CashRewardAccountPage extends BasePage {
         );
     }
 
+    /**
+    * 页面顶部用户自返金信息
+    */
     _accountInfoRender() {
         return (
             <View style={styles.headerViewShadow}>
@@ -212,13 +220,17 @@ export default class CashRewardAccountPage extends BasePage {
                         <Text style={styles.countTextStyle}>
                             累计自返(元)
                         </Text>
-                        <NoMoreClick style={styles.withdrawButtonWrapper} onPress={()=>{}}>
-                            <Text
-                                style={{
-                                    fontSize: DesignRule.fontSize_threeTitle,
-                                    color: DesignRule.mainColor
-                                }}>123123</Text>
-                        </NoMoreClick>
+                        <ImageBackground
+                            style={{}} source={bg_black_img}>
+                            <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => {
+                            }}>
+                                <Text
+                                    style={{
+                                        fontSize: DesignRule.fontSize_threeTitle,
+                                        color: DesignRule.mainColor
+                                    }}>123123</Text>
+                            </NoMoreClick>
+                        </ImageBackground>
                     </View>
                     <Text style={{
                         color: DesignRule.textColor_mainTitle,
@@ -604,7 +616,6 @@ const styles = StyleSheet.create({
         shadowOffset: {w: 0, h: 4},
         shadowOpacity: 1,
         shadowRadius: 8,
-        elevation: 2,
     },
     headerViewStyle:{
         backgroundColor: 'white',
@@ -612,6 +623,7 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width - 2 * DesignRule.margin_page,
         borderRadius: 15,
         overflow: 'hidden',
+        elevation: 2,
     }
 });
 

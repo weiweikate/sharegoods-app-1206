@@ -415,7 +415,7 @@ export default class MyCashAccountPage extends BasePage {
                             </View>
                             <Text style={{
                                 fontSize: 12, color: DesignRule.textColor_instruction
-                            }}>{item.realBalance == 0 || (!EmptyUtils.isEmpty(item.realBalance) && item.realBalance >= 0) ? `已入账：${item.realBalance}` : '入账等待'}</Text>
+                            }}>{item.realBalance === 0 || (!EmptyUtils.isEmpty(item.realBalance) && item.realBalance >= 0) ? `已入账：${item.realBalance}` : '入账等待'}</Text>
                         </View>
                         :
                         <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
@@ -658,7 +658,6 @@ const styles = StyleSheet.create({
         shadowOffset: {w: 0, h: 4},
         shadowOpacity: 1,
         shadowRadius: 8,
-        elevation: 2,
     },
     headerViewStyle:{
         backgroundColor: 'white',
@@ -666,6 +665,7 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width - 2 * DesignRule.margin_page,
         borderRadius: 15,
         overflow: 'hidden',
+        elevation: 2,
     }
 });
 
