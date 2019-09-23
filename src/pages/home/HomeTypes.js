@@ -29,6 +29,9 @@ export const homeType = {
     Alert: 21,//退出的弹窗
     shopProducts: 22,//拼店详情商品列表
     shopBanner: 23,//拼店详情底部banner
+    tore28: 28,//拼店权益页面广告
+    tore29: 29,//拼店开店页面广告
+    tore30: 30,//拼店扩容页面广告
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
     custom_goods: 'WIDGET-GOODS',
