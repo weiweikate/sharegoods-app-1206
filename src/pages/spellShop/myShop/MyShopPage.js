@@ -30,7 +30,12 @@ import user from '../../../model/user';
 import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
-import { ShopBottomBannerView, ShopCardView, ShopProductItemView } from './components/ShopDetailItemView';
+import {
+    ShopBottomBannerView,
+    ShopCardView,
+    ShopMoneyExplainView,
+    ShopProductItemView
+} from './components/ShopDetailItemView';
 import MyShopDetailModel from './MyShopDetailModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import RouterMap from '../../../navigation/RouterMap';
@@ -166,6 +171,7 @@ export default class MyShopPage extends BasePage {
         this._requestGetById();
         this.MyShopDetailModel.requestShopBanner();
         this.MyShopDetailModel.requestShopProducts();
+        this.MyShopDetailModel.requestBonusTips();
     };
 
     _requestGetById = () => {
@@ -336,7 +342,7 @@ export default class MyShopPage extends BasePage {
         //bonusCount店长个人分红次数
         //totalBonusMoney店长个人已获得分红金
         //managerTotalBonusMoney作为店长的总分红
-        const { totalBonusMoney } = manager;
+        const { totalBonusMoney } = manager || {};
         if (userStatus === 1) {
             return (
                 <View>
@@ -435,6 +441,7 @@ export default class MyShopPage extends BasePage {
                 {userStatus === 1 && <ShopCardView/>}
                 <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
+                <ShopMoneyExplainView MyShopDetailModel={this.MyShopDetailModel}/>
                 <MembersRow storeUserList={storeUserList || []}
                             userCount={userCount}
                             userStatus={userStatus}
