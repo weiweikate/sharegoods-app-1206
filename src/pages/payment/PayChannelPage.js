@@ -21,7 +21,7 @@ import { TrackApi } from '../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { routePop } from '../../navigation/RouterMap';
 import StringUtils from '../../utils/StringUtils';
 
 @observer
@@ -30,6 +30,21 @@ export default class ChannelPage extends BasePage {
     $navigationBarOptions = {
         title: '订单支付',
         show: true
+    };
+
+    $NavBarLeftPressed = () => {
+        //是否选择余额
+        const { selectedBalace } = payment;
+        if (selectedBalace) {
+            this._goToOrder();
+        } else {
+            routePop();
+        }
+    };
+
+    // 禁用某个页面的手势
+    static navigationOptions = {
+        gesturesEnabled: false
     };
 
     state = {

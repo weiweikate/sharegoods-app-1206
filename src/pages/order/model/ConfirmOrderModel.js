@@ -6,7 +6,7 @@ import bridge from '../../../utils/bridge';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import RouterMap, { navigateBack, routePush } from '../../../navigation/RouterMap';
+import RouterMap, { navigateBack, routePop, routePush } from '../../../navigation/RouterMap';
 import { payment } from '../../payment/Payment';
 import API from '../../../api';
 
@@ -375,7 +375,22 @@ class ConfirmOrderModel {
             });
         }).catch(err => {
             bridge.hiddenLoading();
-            bridge.$toast(err.msg);
+            if (err.code !== -1){
+                Alert.alert(err.msg+'，请刷新页面或返回修改？',null,[{
+                    text: '返回', onPress: () => {
+                        routePop();
+                    }
+                },
+                    {
+                        text: '刷新', onPress: () => {
+                            this.makeSureProduct();
+                        }
+                    }
+                ])
+            }else {
+                bridge.$toast(err.msg);
+            }
+
         });
     }
 }

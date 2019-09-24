@@ -164,6 +164,8 @@ const loginDataInit = (data) => {
     JPushUtils.updatePushAlias();
     // 埋点登录成功
     login(data.code);
+    // 静默刷新首页数据
+    homeModule.loadHomeList(false);
 };
 
 export {
