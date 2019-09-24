@@ -81,6 +81,7 @@ export default class ShopCartEmptyView extends Component {
         }
     };
     _onRefresh = () => {
+        shopCartEmptyModel.setRefreshing(true);
         shopCartEmptyModel.getRecommendProducts(true);
     };
     _onEndReached = () => {
