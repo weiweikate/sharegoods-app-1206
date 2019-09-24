@@ -177,7 +177,7 @@ export default class PaymentFinshPage extends BasePage {
                             <View style={{
                                 borderWidth: px2dp(0.5),
                                 color: DesignRule.textColor_instruction,
-                                borderColor: DesignRule.textColor_instruction,
+                                borderColor: '#cccccc',
                                 borderRadius: px2dp(17),
                                 height: px2dp(34),
                                 width: px2dp(100),
