@@ -31,7 +31,7 @@ export default class HomeBannerView extends Component {
             const { navigate } = this.props;
 
             track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner, index));
-            params = {...params,...getSGspm_home(HomeSource.banner, index+1)}
+            params = {...params,...getSGspm_home(HomeSource.banner, index)}
             navigate(router, params);
         }
     };

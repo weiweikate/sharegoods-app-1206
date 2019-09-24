@@ -66,7 +66,7 @@ export default class HomeChannelView extends Component {
         let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(data);
         params.fromHome = true;
-        this._filterNav(router, { ...params, ...getSGspm_home(HomeSource.icon, index+1) });
+        this._filterNav(router, { ...params, ...getSGspm_home(HomeSource.icon, index) });
         track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeIcon, index));
     };
 

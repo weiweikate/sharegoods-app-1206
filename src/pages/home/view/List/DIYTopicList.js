@@ -123,7 +123,7 @@ export default class DIYTopicList extends React.Component {
     _renderItem = (type, item, index) => {
         type = type.type;
         item.sgscm = getSGscm(SGscmSource.topic,this.code).sgscm;
-        item.sgspm = getSGspm_home(HomeSource.marketing,index+1).sgspm
+        item.sgspm = getSGspm_home(HomeSource.marketing,index).sgspm
         let p = { specialTopicId: this.props.data.linkCode };
         if (type === homeType.custom_text) {
             p.specialTopicArea = 6;

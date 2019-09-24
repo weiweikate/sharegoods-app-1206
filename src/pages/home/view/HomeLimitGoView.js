@@ -121,7 +121,7 @@ export default class HomeLimitGoView extends Component {
     seeMore() {
         routePush('HtmlPage', {
             uri: '/spike',
-            ...getSGspm_home(HomeSource.limitGo, 0)
+            ...getSGspm_home(HomeSource.limitGo, -1)
         });
     }
 

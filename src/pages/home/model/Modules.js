@@ -479,10 +479,10 @@ class HomeModule {
         let p = [];
         let count = data.length;
         for (let index = 0; index < count; index++) {
-            getSGspm_home(HomeSource.marketing,index+1)
+            getSGspm_home(HomeSource.marketing,index)
             let item = data[index];
             item.sgscm = getSGscm(SGscmSource.topic,code).sgscm;
-            item.sgspm = getSGspm_home(HomeSource.marketing,index+1).sgspm
+            item.sgspm = getSGspm_home(HomeSource.marketing,index).sgspm
             if (item.type === homeType.custom_goods) {
                 item.itemHeight = GoodsCustomViewGetHeight(item);
                 item.marginBottom = ScreenUtils.autoSizeWidth(0);

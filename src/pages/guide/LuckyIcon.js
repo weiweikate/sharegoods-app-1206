@@ -101,7 +101,7 @@ export default class LuckyIcon extends React.Component {
         let params = homeModule.paramsNavigate(data);
         if (router) {
             if (this.props.isHome){
-                params = {params,...getSGspm_home(HomeSource.float)}
+                params = {...params,...getSGspm_home(HomeSource.float)}
             }
             routePush(router, params);
         }

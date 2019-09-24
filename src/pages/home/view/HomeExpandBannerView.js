@@ -26,7 +26,7 @@ export default class HomeExpandBannerView extends Component {
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);
-        navigate(router, { ...params, ...getSGspm_home(HomeSource.expandBnner, index+1)});
+        navigate(router, { ...params, ...getSGspm_home(HomeSource.expandBnner, index)});
     }
 
     _renderBanner() {
