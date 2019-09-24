@@ -35,7 +35,7 @@ export class GroupIsOldView extends Component {
 const stylesOld = StyleSheet.create({
     container: {
         flexDirection: 'row', alignItems: 'center',
-        height: 44, backgroundColor: 'white'
+        height: 44, backgroundColor: 'white', marginBottom: 10
     },
     img: {
         marginLeft: 15,
@@ -109,7 +109,6 @@ export class GroupOpenPersonSView extends Component {
 
 const stylesPerson = StyleSheet.create({
     container: {
-        marginTop: 10,
         backgroundColor: 'white'
     },
     topBtn: {
