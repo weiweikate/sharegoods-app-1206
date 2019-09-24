@@ -29,6 +29,7 @@
 #import <AMapFoundationKit/AMapFoundationKit.h>
 #import <AMapLocationKit/AMapLocationKit.h>
 #import <CoreLocation/CLLocationManager.h>
+#import <RNGeolocation/RNGeolocation.h>
 
 @implementation AppDelegate
 
@@ -38,8 +39,7 @@
   [self JR_ConfigVC:application didFinishLaunchingWithOptions:launchOptions];
   [self JR_ConfigAPNS:application didFinishLaunchingWithOptions:launchOptions];
   [self initSensorsAnalyticsWithLaunchOptions:launchOptions];
-  [AMapServices sharedServices].apiKey =@"f85b644981f8642aef08e5a361e9ab6b";
-  [[AMapLocationManager alloc] init];
+  [RNGeolocation initLoaction];
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isNotFrist"]) {
     //添加广告页
     AdView *adView = [AdView new];

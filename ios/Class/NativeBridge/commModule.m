@@ -152,7 +152,7 @@ RCT_EXPORT_METHOD(getCookie:(NSString *)url and:(RCTResponseSenderBlock)callback
 }
 
 RCT_EXPORT_METHOD(exitApp){
-  exit(0);
+  [[UIApplication sharedApplication] performSelector:@selector(suspend)];
 }
 
 RCT_EXPORT_METHOD(clearCookie:(NSString *)url){
