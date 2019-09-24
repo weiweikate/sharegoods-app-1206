@@ -14,6 +14,7 @@ import JPushUtils from '../../../utils/JPushUtils';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import RouterMap, { routeNavigate, routePop } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
+import homeModalManager from '../../home/manager/HomeModalManager';
 
 /**
  * 回调code 和 数据 34005 需要去绑定手机号 10000 登录成功
@@ -164,8 +165,8 @@ const loginDataInit = (data) => {
     JPushUtils.updatePushAlias();
     // 埋点登录成功
     login(data.code);
-    // 静默刷新首页数据
-    homeModule.loadHomeList(false);
+    // 首页的弹框需要登录后再次请求
+    homeModalManager.requestData();
 };
 
 export {
