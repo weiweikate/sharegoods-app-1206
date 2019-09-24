@@ -228,7 +228,7 @@ export default class MyShopPage extends BasePage {
     _clickAllMembers = () => {
         const { storeData } = this.MyShopDetailModel;
         const { roleType } = storeData;
-        if (roleType === 0) {
+        if (isNoEmpty(roleType)) {
             this.$navigate('store/myShop/ShopAssistantPage', { storeData });
         }
     };
