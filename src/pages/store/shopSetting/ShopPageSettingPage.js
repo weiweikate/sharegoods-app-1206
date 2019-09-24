@@ -13,8 +13,6 @@ import res from '../res';
 import {
     MRText as Text
 } from '../../../components/ui';
-import DateUtils from '../../../utils/DateUtils';
-import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import SpellShopApi from '../api/SpellShopApi';
@@ -103,7 +101,7 @@ export default class ShopPageSettingPage extends BasePage {
                         }, {
                             key: '店铺成立时间',
                             showArrow: false,
-                            value: StringUtils.isNoEmpty(buildTime) ? DateUtils.formatDate(buildTime, 'yyyy-MM-dd') : ''
+                            value: buildTime || ''
                         }].map((item, index) => {
                             return this.renderRow(item, index);
                         })

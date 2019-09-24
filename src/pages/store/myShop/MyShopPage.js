@@ -60,9 +60,9 @@ export default class MyShopPage extends BasePage {
     //拆分开店后storeCode会变化  需要刷新
     needUpdateStoreCode = autorun(() => {
         const { storeCode } = spellStatusModel;
-        if (this.props.storeData) {
+        if (this.props.storeCode && this.MyShopDetailModel.storeCode !== storeCode) {
             this.MyShopDetailModel.storeCode = storeCode;
-            this._loadPageData();
+            this._loadPageData && this._loadPageData();
         }
     });
 
@@ -155,7 +155,10 @@ export default class MyShopPage extends BasePage {
             loadingState: loadingState,
             netFailedProps: {
                 netFailedInfo: netFailedInfo,
-                reloadBtnClick: requestAppStore
+                reloadBtnClick: () => {
+                    this.props.storeCode && spellStatusModel.requestHome();
+                    requestAppStore();
+                }
             }
         };
     };
@@ -304,7 +307,7 @@ export default class MyShopPage extends BasePage {
                         {isNoEmpty(roleType) &&
                         <InfoRow icon={system_charge} title={'个人已获得奖励'} desc={`${totalBonusMoney || 0}元`}/>}
                         <InfoRow icon={QbIcon} title={'店铺成立时间'}
-                                 desc={buildTime ? DateUtils.formatDate(buildTime, 'yyyy年MM月dd日') : ''}/>
+                                 desc={buildTime || ''}/>
                         {isNoEmpty(roleType) &&
                         <InfoRow icon={myShop_join} title={'加入时间'}
                                  desc={joinTime ? DateUtils.formatDate(joinTime, 'yyyy年MM月dd日') : ''}/>}

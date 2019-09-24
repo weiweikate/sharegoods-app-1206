@@ -1,10 +1,11 @@
 //拼店权限或店铺基本状态
 import { Alert, Linking, PermissionsAndroid } from 'react-native';
-import { observable } from 'mobx';
+import { observable, action, autorun } from 'mobx';
 import SpellShopApi from './api/SpellShopApi';
 import ScreenUtils from '../../utils/ScreenUtils';
 import geolocation from '@mr/rn-geolocation';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
+import user from '../../model/user';
 
 class SpellStatusModel {
 
@@ -16,7 +17,7 @@ class SpellStatusModel {
     @observable errorCode = null;
     @observable storeCode = null;
 
-    requestHome = () => {
+    @action requestHome = () => {
         SpellShopApi.app_store_user_store().then((data) => {
             this.loadingState = PageLoadingState.success;
             this.storeCode = (data.data || {}).storeCode;
@@ -77,5 +78,9 @@ class SpellStatusModel {
 }
 
 const spellStatusModel = new SpellStatusModel();
+
+autorun(() => {
+    spellStatusModel.requestHome(user.isLogin);
+});
 
 export default spellStatusModel;
