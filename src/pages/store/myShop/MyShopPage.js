@@ -60,7 +60,7 @@ export default class MyShopPage extends BasePage {
     //拆分开店后storeCode会变化  需要刷新
     needUpdateStoreCode = autorun(() => {
         const { storeCode } = spellStatusModel;
-        if (this.props.storeData) {
+        if (this && this.props.storeCode) {
             this.MyShopDetailModel.storeCode = storeCode;
             this._loadPageData();
         }
@@ -155,7 +155,10 @@ export default class MyShopPage extends BasePage {
             loadingState: loadingState,
             netFailedProps: {
                 netFailedInfo: netFailedInfo,
-                reloadBtnClick: requestAppStore
+                reloadBtnClick: () => {
+                    this.props.storeCode && spellStatusModel.requestHome();
+                    requestAppStore();
+                }
             }
         };
     };
