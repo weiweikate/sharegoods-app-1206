@@ -36,6 +36,7 @@ const { saleBig_1001 } = RES.pSacle;
 /*
 * 商品头部
 * */
+@observer
 export class HeaderItemView extends Component {
 
     /*价格模块*/
