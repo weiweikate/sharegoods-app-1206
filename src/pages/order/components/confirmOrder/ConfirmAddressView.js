@@ -26,7 +26,7 @@ export default class ConfirmAddressView extends Component {
 
     render() {
         return (
-            <View style={{ marginVertical: 10, marginHorizontal: DesignRule.margin_page, borderRadius: 5, overflow: 'hidden'}}>
+            <View style={{ marginVertical: 10, marginHorizontal: DesignRule.margin_page, borderRadius: 10, overflow: 'hidden'}}>
                 {this.renderAddress()}
             </View>
         );

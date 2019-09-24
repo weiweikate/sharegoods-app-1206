@@ -15,6 +15,7 @@
 #import "SuspensionBtn.h"
 #import "NetWorkTool.h"
 #import "NSString+UrlAddParams.h"
+#import "MBProgressHUD+PD.h"
 
 #define all_unread_count @"unreadCount"
 #define sessionListData  @"sessionListData"
@@ -85,9 +86,11 @@ SINGLETON_FOR_CLASS(JRServiceManager)
       weakSelf.preTitle = result[@"title"] ? result[@"title"]: @"商家";
       weakSelf.preShopId = result[@"shopId"];
       [self changeToSupplierAction:nil];
+    }else{
+      [MBProgressHUD showSuccess:@"找不到供应商"];
     }
   } failure:^(NSString *msg, NSInteger code) {
-    
+    [MBProgressHUD showSuccess: msg];
   } showLoading:@""];
 }
 /**
