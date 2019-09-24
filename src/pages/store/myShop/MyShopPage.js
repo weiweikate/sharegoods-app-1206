@@ -108,7 +108,7 @@ export default class MyShopPage extends BasePage {
 
     _NavBarRender = () => {
         const { storeCode } = this.props;
-        const { tittle } = this.MyShopDetailModel;
+        const { storeData } = this.MyShopDetailModel;
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!storeCode ?
@@ -120,7 +120,7 @@ export default class MyShopPage extends BasePage {
                         </TouchableOpacity> : null}
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 17, color: '#ffffff' }}>{tittle}</Text>
+                    <Text style={{ fontSize: 17, color: '#ffffff' }}>{storeData.name}</Text>
                 </View>
                 {this._RightItem()}
             </View>

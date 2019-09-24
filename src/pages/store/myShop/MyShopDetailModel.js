@@ -8,7 +8,6 @@ import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 
 export default class MyShopDetailModel {
 
-    @observable tittle = '店铺';
     @observable loadingState = PageLoadingState.loading;
     @observable netFailedInfo = {};
     @observable isRefresh = false;
