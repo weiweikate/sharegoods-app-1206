@@ -49,9 +49,10 @@ export class GroupPersonAllList extends Component {
         });
     };
 
-    _renderItem = ({ item },index) => {
+    _renderItem = ({ item }, index) => {
         const { goToBuy, showGroupJoinView, requestGroupList } = this.props;
-        return <GroupPersonItem key={`GroupPersonItem${index}`} style={stylesAll.itemView} itemData={item} goToBuy={goToBuy}
+        return <GroupPersonItem key={`GroupPersonItem${index}`} style={stylesAll.itemView} itemData={item}
+                                goToBuy={goToBuy}
                                 requestGroupList={requestGroupList}
                                 close={this._close}
                                 showGroupJoinView={showGroupJoinView}/>;
@@ -80,8 +81,8 @@ export class GroupPersonAllList extends Component {
                         </View>
                         <ScrollView showsVerticalScrollIndicator={false}>
                             {
-                                (groupList || []).map((item,index)=>{
-                                    return this._renderItem({item},index);
+                                (groupList || []).map((item, index) => {
+                                    return this._renderItem({ item }, index);
                                 })
                             }
                         </ScrollView>
@@ -190,7 +191,7 @@ export class GroupJoinView extends Component {
                 setTimeout(() => {
                     Alert.alert(
                         '无法参团',
-                        '该团仅支持新用户参加，可以开个新团，\n立享优惠哦~',
+                        '该团仅支持新用户参加，可以开个新团，立享优惠哦~',
                         [
                             {
                                 text: '知道了', onPress: () => {
@@ -360,7 +361,7 @@ const stylesDesc = StyleSheet.create({
     container: {
         height: ScreenUtils.autoSizeHeight(405),
         borderTopLeftRadius: 10, borderTopRightRadius: 10,
-        backgroundColor: DesignRule.bgColor
+        backgroundColor: 'white'
     },
     topView: {
         flexDirection: 'row', justifyContent: 'center', alignItems: 'center',
