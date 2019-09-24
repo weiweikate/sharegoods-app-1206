@@ -110,7 +110,6 @@ export default class SetShopNamePage extends BasePage {
         bridge.showLoading();
         if (storeData) {
             SpellShopApi.app_store_update({
-                pathValue: `/${storeData.storeCode}`,
                 name: textName,
                 headUrl: storeHeadUrlOrigin,
                 provinceCode: provinceCode,

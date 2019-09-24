@@ -79,7 +79,7 @@ export default class ShopPageSettingPage extends BasePage {
     };
 
     _render() {
-        const { createTime } = this.params.storeData || {};
+        const { buildTime } = this.params.storeData || {};
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
@@ -103,7 +103,7 @@ export default class ShopPageSettingPage extends BasePage {
                         }, {
                             key: '店铺成立时间',
                             showArrow: false,
-                            value: StringUtils.isNoEmpty(createTime) && DateUtils.formatDate(createTime, 'yyyy-MM-dd')
+                            value: StringUtils.isNoEmpty(buildTime) ? DateUtils.formatDate(buildTime, 'yyyy-MM-dd') : ''
                         }].map((item, index) => {
                             return this.renderRow(item, index);
                         })

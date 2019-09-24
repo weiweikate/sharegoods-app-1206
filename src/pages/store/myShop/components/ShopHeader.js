@@ -31,9 +31,8 @@ export default class ShopHeader extends Component {
 
     render() {
         const { storeData, bottomBannerList } = this.props.MyShopDetailModel;
-        const { headUrl, name, showNumber, level, profile, roleType } = storeData;
-        let { content } = this.props;
-        content = (content || '').replace(/[\r\n]/g, '');
+        const { headUrl, name, showNumber, level, profile, roleType, noticeContent } = storeData;
+        let content = (noticeContent || '').replace(/[\r\n]/g, '');
         const starsArr = [];
         if (level && typeof level === 'number') {
             for (let i = 0; i < level; i++) {
