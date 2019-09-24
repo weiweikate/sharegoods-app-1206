@@ -4,7 +4,7 @@ const api = {
     //首页店铺状态
     app_store_user_store: ['/app/store/user_store', { method: 'get' }],
     //获取列表附近新开
-    app_store_get: ['/app/store', { method: 'get' }],
+    app_store_get: ['/app/store/list/type', { method: 'get' }],
     //搜索
     app_store_list: ['/app/store/list', { method: 'get' }],
     //是否能开店
