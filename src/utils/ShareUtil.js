@@ -164,9 +164,24 @@ const QRCodeAppendPageSource = (QRCode) => {
     return str;
 };
 
+const longChangeShortUrl = (QRCode, callBack = () => {
+}) => {
+    userApi.shareShortUrl({'longUrl': QRCode, 'expireTime': 0})
+        .then(res => {
+            if (res && res.data) {
+                callBack(res.data);
+            } else {
+                callBack(QRCode);
+            }
+        }).catch(error => {
+        callBack(QRCode);
+    });
+};
+
 export default {
     onShare,
     queryString,
     showSharedetailDataType,
-    QRCodeAppendPageSource
+    QRCodeAppendPageSource,
+    longChangeShortUrl
 };

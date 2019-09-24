@@ -83,9 +83,14 @@ export default {
         let QRCodeStr = jsonParam.QRCodeStr;
         if (QRCodeStr && jsonParam.imageType !== 'invite') {
             QRCodeStr = ShareUtil.QRCodeAppendPageSource(QRCodeStr);
+            ShareUtil.longChangeShortUrl(QRCodeStr, (data) => {
+                jsonParam.QRCodeStr = data;
+                NativeModules.LoginAndShareModule.creatShareImage(jsonParam, onSuccess, onError);
+            });
+        } else {
+            jsonParam.QRCodeStr = QRCodeStr;
+            NativeModules.LoginAndShareModule.creatShareImage(jsonParam, onSuccess, onError);
         }
-        jsonParam.QRCodeStr = QRCodeStr;
-        NativeModules.LoginAndShareModule.creatShareImage(jsonParam, onSuccess, onError);
     },
     createPromotionShareImage(qrString, onSuccess, onError = (errorStr) => {
     }) {
