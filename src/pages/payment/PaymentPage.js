@@ -53,7 +53,7 @@ export default class PaymentPage extends BasePage {
     }
 
     $NavBarLeftPressed = () => {
-        this.$navigateBack();
+        this._cancelPay();
     };
 
     goToPay = () => {
@@ -176,7 +176,6 @@ export default class PaymentPage extends BasePage {
     };
 
     _cancelPay = () => {
-        this.setState({ showPwd: false });
         setTimeout(() => {
             Alert.alert(
                 '确认要放弃付款？',
@@ -184,13 +183,11 @@ export default class PaymentPage extends BasePage {
                 [
                     {
                         text: '确认离开', onPress: () => {
-                            this.setState({ showPwd: false });
                             this._goToOrder();
                         }
                     },
                     {
                         text: '继续支付', onPress: () => {
-                            this.setState({ showPwd: true });
                         }
                     }
                 ],
@@ -202,18 +199,9 @@ export default class PaymentPage extends BasePage {
     _goToOrder(index) {
         const { bizType } = payment;
         if (bizType === 1) {
-            this.props.navigation.dispatch({
-                key: this.props.navigation.state.key,
-                type: 'ReplacePaymentPage',
-                routeName: RouterMap.AddCapacityHistoryPage
-            });
+            replaceRoute(RouterMap.AddCapacityHistoryPage);
         } else {
-            this.props.navigation.dispatch({
-                key: this.props.navigation.state.key,
-                type: 'ReplacePaymentPage',
-                routeName: 'order/order/MyOrdersListPage',
-                params: { index: index ? index : 0 }
-            });
+            replaceRoute('order/order/MyOrdersListPage', { index: index ? index : 0 });
         }
         payment.resetPayment();
     }
@@ -281,7 +269,7 @@ export default class PaymentPage extends BasePage {
                     this._forgetPassword();
                 }}
                 dismiss={() => {
-                    this._cancelPay();
+                    this.setState({ showPwd: false });
                 }}
                 showPwdMsg={this.state.showPwdMsg}
             /> : null}
