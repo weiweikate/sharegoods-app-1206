@@ -461,7 +461,7 @@ export default class MinePage extends BasePage {
                         <Text style={{color: 'white', fontSize: 12}}>成为</Text>
                         <Image style={{width: data.width, height: data.height}}
                                source={data.img}/>
-                        <Text style={{color: 'white', fontSize: 12}}>{vipStatus.partner.text}</Text>
+                        <Text style={{color: 'white', fontSize: 12}}>{data.text}</Text>
                         <View style={{flex:1,alignItems:'flex-end', marginRight:27}}>
                         <LinearGradient style={styles.btnStyle}
                                         start={{x: 0, y: 0}}
