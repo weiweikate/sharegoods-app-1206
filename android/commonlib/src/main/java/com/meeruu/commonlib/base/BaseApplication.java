@@ -40,6 +40,7 @@ import com.qiyukf.unicorn.api.OnBotEventListener;
 import com.qiyukf.unicorn.api.OnMessageItemClickListener;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
+import com.qiyukf.unicorn.api.pop.ShopInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -60,6 +61,8 @@ public class BaseApplication extends MultiDexApplication {
     private boolean isDownload = false;
     private String downLoadUrl;
     private String packageName = "";
+    //平台客服showpid
+    private final String SHOPID = "hzmrwlyxgs";
 
     public boolean isDownload() {
         return isDownload;
@@ -181,10 +184,12 @@ public class BaseApplication extends MultiDexApplication {
                     } else if (url.contains("h5.sharegoodsmall.com/product") || url.contains("http:///")) {
                         // 商品卡片，订单卡片
                         EventBus.getDefault().post(new com.meeruu.qiyu.Event.QiyuUrlEvent(url));
+                        ((Activity) context).finish();
                     } else {
                         EventBus.getDefault().post(new Event.MR2HTMLEvent(url));
+                        ((Activity) context).finish();
+
                     }
-                    ((Activity) context).finish();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -267,7 +272,9 @@ public class BaseApplication extends MultiDexApplication {
                 JSONObject object = JSON.parseObject(result);
                 String shopId = object.getString("shopId");
                 String title = object.getString("title");
-                EventBus.getDefault().post(new com.meeruu.qiyu.Event.QiyuShopIdEvent(shopId, title));
+                if(!TextUtils.equals(SHOPID,shopId)){
+                    EventBus.getDefault().post(new com.meeruu.qiyu.Event.QiyuShopIdEvent(shopId, title));
+                }
             }
         });
     }
