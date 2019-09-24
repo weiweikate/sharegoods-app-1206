@@ -86,7 +86,7 @@ class HomePage extends BasePage {
                 homeModalManager.entryHome();
                 if (state && state.routeName === 'HomePage') {
                     if (homeModule.firstLoad) {
-                        homeModule.loadHomeList(true);
+                        homeModule.loadHomeList(false);
                     }
                 }
             }

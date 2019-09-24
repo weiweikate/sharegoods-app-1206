@@ -216,11 +216,14 @@ class HomeModule {
     };
 
     // 加载首页数据
-    @action loadHomeList = flow(function* () {
-        this.isRefreshing = true;
-        setTimeout(() => {
-            this.isRefreshing = false;
-        }, 1000);
+    @action loadHomeList = flow(function* (showLoading = true) {
+        //手动下拉展示刷新组件
+        if(showLoading){
+            this.isRefreshing = true;
+            setTimeout(() => {
+                this.isRefreshing = false;
+            }, 1000);
+        }
 
         if (this.firstLoad) {
             try {
