@@ -32,11 +32,10 @@ const index = {
     mine_invite2: require('./invite2.png'),
     mine_moreMoney: require('./moreMoney.png'),
     mine_vip_bg: require('./vipBg.png'),
-    mine_vip_supMember: require('./mine_supMember.png'),    //超级会员
-    mine_vip_partner: require('./mine_partner.png'),        //会员合伙人
-    mine_vip_noviciate: require('./mine_noviciate.png'),    //见习店长
-    mine_vip_beBoss: require('./mine_beBoss.png'),          //成为店长
-    mine_vip_boss: require('./mine_boss.png'),              //店长
+    mine_bevip: require('./beVIP.png'),
+    mine_vip: require('./VIP.png'),
+    mine_diamondvip: require('./diamondVIP.png'),
+    mine_supremevip: require('./supremeVIP.png'),
     mine_btn_red: require('./btnRed.png'),
     mine_btn_yellow: require('./btnYellow.png'),
     mine_levelBg: require('./levelBg.png'),

@@ -69,18 +69,17 @@ const {
 
 const vipBg = res.homeBaseImg.mine_vip_bg;
 const vipStatus = {
-    'supMember': {img: res.homeBaseImg.mine_vip_supMember,  width: 78, height: 25, text:' · 超级会员  更多权益', title:'supMember'},
-    'partner': {img: res.homeBaseImg.mine_vip_partner,      width: 94, height: 25, text:' · 做合伙人拿奖励金', title:'partner'},
-    'shopkeeper': {img: res.homeBaseImg.mine_vip_noviciate, width: 79, height: 25, text:' · 开启属于你的店铺', title:'shopkeeper'},
-    'beBoss': {img: res.homeBaseImg.mine_vip_beBoss,        width: 35, height: 25, text:' · 秀一秀  赚到够', title:'beBoss'},
-    'boss': {img: res.homeBaseImg.mine_vip_boss,            width: 38, height: 25, text:' · 秀一秀  赚到够', title:'boss'},
+    'beVIP': {img: res.homeBaseImg.mine_bevip,  width: 63, height: 25, text:' · 超值特惠，收益翻倍', title:'beVIP'},
+    'VIP': {img: res.homeBaseImg.mine_vip,      width: 64, height: 25, text:' · 超值特惠，收益翻倍', title:'VIP'},
+    'diamondVIP': {img: res.homeBaseImg.mine_diamondvip, width: 64, height: 25, text:' · 不一样的PLUS专属特权', title:'diamondVIP'},
+    'supremeVIP': {img: res.homeBaseImg.mine_supremevip, width: 64, height: 25, text:' · 美好生活，至尊享受', title:'supremeVIP'},
 };
 
 const eumState={
-    'benefit_package_super_member':'supMember', //超级会员
-    'benefit_package_store_partner':'partner',  //会员合伙人
-    'benefit_package_ready_shopkeeper':'shopkeeper', //见习店长
-    'benefit_package_shopkeeper':'beBoss', //成为店长
+    'benefit_package_super_member':'VIP',            //超级会员 = vip会员
+    'benefit_package_store_partner':'diamondVIP',    // 会员合伙人 = 钻石会员
+    'benefit_package_ready_shopkeeper':'supremeVIP', //见习店长 =  至尊会员
+    'benefit_package_shopkeeper':'supremeVIP',       //店长 = 至尊会员
 }
 /**
  * @author chenxiang
@@ -113,7 +112,7 @@ export default class MinePage extends BasePage {
             modalId: false,
             adArr: [],
             groupData: {},
-            currentUserState:{}
+            currentUserState:null
         };
 
     }
@@ -187,6 +186,9 @@ export default class MinePage extends BasePage {
         return false;
     }
 
+    /**
+     * @func 我的页面底部广告位接口请求
+     */
     loadAd = () => {
         MineApi.queryAdList({ type: 24 }).then(result => {
             if (!EmptyUtils.isEmpty(result.data)) {
@@ -206,29 +208,23 @@ export default class MinePage extends BasePage {
     * @func 当前会员下一个会员身份请求
     */
     getNextBenefit=()=>{
-        MineApi.getNextBenefitPackageInfo().then((res)=>{
+        MineApi.getNextBenefitPackageInfo().then((res) => {
             if (res.data && res.data.currentPackageVO && res.data.nextPackageVO) {
                 let current = res.data.currentPackageVO;
-                let next = res.data.nextPackageVO;
-                if(current.uniqueId !== next.uniqueId){
-                    let str =  eumState[next.uniqueId];
+                if (eumState[current.uniqueId]) {
+                    let str = eumState[current.uniqueId];
                     this.setState({
-                        currentUserState: vipStatus[str]
+                        currentUserState: str
+                    })
+                } else {
+                    this.setState({
+                        currentUserState: vipStatus.beVIP
                     })
                 }
-                if(current.uniqueId === next.uniqueId){
-                    this.setState({
-                        currentUserState: vipStatus.boss
-                    })
-                }
-            }else {
-                this.setState({
-                    currentUserState: {}
-                })
             }
-        }).catch(err=>{
+        }).catch(err => {
             this.setState({
-                currentUserState: {}
+                currentUserState: null
             })
         });
     }
@@ -251,6 +247,9 @@ export default class MinePage extends BasePage {
         });
     };
 
+    /**
+     * @func 获取消息中心通知消息数量
+     */
     loadMessageCount = () => {
         MessageApi.getNewNoticeMessageCount().then(result => {
             if (!EmptyUtils.isEmpty(result.data)) {
@@ -283,6 +282,9 @@ export default class MinePage extends BasePage {
         }
     };
 
+    /**
+     * @func 获取用户消息和订单消息数量
+     */
     refresh = () => {
         userOrderNum.getUserOrderNum();
         // this.$loadingShow('加载中...', 1000);
@@ -376,14 +378,6 @@ export default class MinePage extends BasePage {
             </Text>
         ) : null;
 
-        let levelArr = ['V0', 'V1', 'V2', 'V3', 'V4', 'V5'];
-        let index = 10;
-        for (let i = 0; i < levelArr.length; i++) {
-            if (levelArr[i] === user.levelRemark) {
-                index = i;
-            }
-        }
-        console.log(index)
         let name = '';
 
         if (EmptyUtils.isEmpty(user.nickname)) {
@@ -445,46 +439,54 @@ export default class MinePage extends BasePage {
 
     renderLevelName = () => {
         const {currentUserState} = this.state;
-        let data = !EmptyUtils.isEmpty(currentUserState) ? currentUserState : vipStatus.supMember;
-        let isTopVip = currentUserState && currentUserState.title === 'boss';
+        let data = !EmptyUtils.isEmpty(currentUserState) ? currentUserState : vipStatus.beVIP;
+        let beVip = data && data.title === 'beVIP';
+        console.log('currentUserState',currentUserState)
         return (
             <View style={{flex: 1, marginTop: 10, justifyContent: 'flex-end'}}>
-                <ImageBackground style={{
-                    alignSelf: 'center',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: ScreenUtils.width,
-                    height: (ScreenUtils.width) * 54 / 381,
-                    borderRadius: 10
-                }} source={vipBg}>
-                    <View style={{flexDirection: 'row', marginLeft: 33, alignItems: 'center'}}>
-                        <Text style={{color: 'white', fontSize: 12}}>成为</Text>
-                        <Image style={{width: data.width, height: data.height}}
-                               source={data.img}/>
-                        <Text style={{color: 'white', fontSize: 12}}>{data.text}</Text>
-                        <View style={{flex:1,alignItems:'flex-end', marginRight:27}}>
-                        <LinearGradient style={styles.btnStyle}
-                                        start={{x: 0, y: 0}}
-                                        end={{x: 1, y: 1}}
-                                        colors={['#FFE1C2', '#FFFEE3']}
-                        >
-                            <TouchableOpacity activeOpacity={0.8} style={{alignItems: 'center'}}
-                                              onPress={() => {
-                                                  this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
-                                                  TrackApi.ViewLevelInterest({ moduleSource: 2 });
-                                              }}>
-                                <View style={styles.btnStyle}>
-                                    <Text style={{color: '#333333', fontSize: 12}} allowFontScaling={false}>
-                                        {isTopVip ? '查看权益' : '如何开通'}
-                                    </Text>
-                                    <Image source={res.homeBaseImg.mine_arrow_black}
-                                           style={{width: 12, height: 12}}/>
-                                </View>
-                            </TouchableOpacity>
-                        </LinearGradient>
-                    </View>
-                    </View>
-                </ImageBackground>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={{alignItems: 'center'}}
+                    onPress={() => {
+                        if (beVip) {
+                            this.$navigate(RouterMap.HtmlPage, {uri: '/custom/:'});
+                        } else {
+                            this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
+                        }
+                        TrackApi.ViewLevelInterest({moduleSource: 2});
+                    }}>
+                    <ImageBackground style={{
+                        alignSelf: 'center',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: ScreenUtils.width,
+                        height: (ScreenUtils.width) * 54 / 381,
+                        borderRadius: 10
+                    }} source={vipBg}>
+                        <View style={{flexDirection: 'row', marginLeft: 33, alignItems: 'center'}}>
+                            <Text style={{color: 'white', fontSize: 12}}>{beVip ? '成为' : ''}</Text>
+                            <Image style={{width: data.width, height: data.height}}
+                                   source={data.img}/>
+                            <Text style={{color: 'white', fontSize: 12}}>{data.text}</Text>
+                            <View style={{flex: 1, alignItems: 'flex-end', marginRight: 27}}>
+                                <LinearGradient style={styles.btnStyle}
+                                                start={{x: 0, y: 0}}
+                                                end={{x: 1, y: 1}}
+                                                colors={['#FFE1C2', '#FFFEE3']}
+                                >
+
+                                    <View style={styles.btnStyle}>
+                                        <Text style={{color: '#333333', fontSize: 12}} allowFontScaling={false}>
+                                            {beVip ? '立即开通' : '查看权益'}
+                                        </Text>
+                                        <Image source={res.homeBaseImg.mine_arrow_black}
+                                               style={{width: 12, height: 12}}/>
+                                    </View>
+                                </LinearGradient>
+                            </View>
+                        </View>
+                    </ImageBackground>
+                </TouchableOpacity>
             </View>
         );
     };
