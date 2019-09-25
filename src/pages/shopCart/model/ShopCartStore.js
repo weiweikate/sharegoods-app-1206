@@ -420,14 +420,11 @@ class ShopCartStore {
                     shoppingCartParamList: localValue
                 };
             //存在本地缓存
-            // this.setRefresh(true);
             ShopCartAPI.getRichItemList(
                 params
             ).then(res => {
                 this.packingShopCartGoodsData(res.data);
-                this.setRefresh(false);
             }).catch(error => {
-                this.setRefresh(false);
                 bridge.$toast(error.msg);
                 //同步成功删除本地数据
                 shopCartCacheTool.deleteAllLocalData();
@@ -443,14 +440,12 @@ class ShopCartStore {
         // this.packingShopCartGoodsData([]);
         // return;
         ShopCartAPI.list().then(result => {
-            this.setRefresh(false);
             bridge.hiddenLoading();
             //组装购物车数据
             this.packingShopCartGoodsData(result.data);
         }).catch(error => {
             bridge.hiddenLoading();
             bridge.$toast(error.msg);
-            this.setRefresh(false);
             this.data = [];
         });
     };

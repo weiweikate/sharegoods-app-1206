@@ -192,6 +192,9 @@ export default class ShopCartPage extends BasePage {
 
     _refreshFun = () => {
         shopCartStore.setRefresh(true);
+        setTimeout(() => {
+            shopCartStore.setRefresh(false);
+        }, 1000);
         shopCartCacheTool.getShopCartGoodsListData();
         shopCartEmptyModel.getRecommendProducts(true);
     };
