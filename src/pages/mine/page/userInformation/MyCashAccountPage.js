@@ -129,9 +129,9 @@ const newTypeIcons = {
     99: {title: '系统调账', icon: renwu}
 };
 const eumStatus={
-    NO_CASH_NO_SUPMEMBER: 1,
-    HAVE_CASH_NO_SUPMEMBER: 2,
-    HAVE_CASH_HAVE_SUPMEMBER: 3,
+    NO_CASH_NO_SUPMEMBER: 1,    //自返金为0
+    HAVE_CASH_NO_SUPMEMBER: 2,  //自返金不为0，用户非超级会员
+    HAVE_CASH_HAVE_SUPMEMBER: 3,//自返金不为0，用户是超级会员
 };
 
 @observer
@@ -228,6 +228,9 @@ export default class MyCashAccountPage extends BasePage {
         );
     }
 
+    /**
+     * 页面顶部用户账户余额，及自返金状态
+     */
     _accountInfoRender=()=> {
         const {returnCashInfo}  = ReturnCashModel;
         const {NO_CASH_NO_SUPMEMBER,HAVE_CASH_NO_SUPMEMBER,HAVE_CASH_HAVE_SUPMEMBER} = eumStatus;
@@ -235,8 +238,8 @@ export default class MyCashAccountPage extends BasePage {
         let status = NO_CASH_NO_SUPMEMBER;
         let returnCash = 0;
         if(returnCashInfo){
-            if(Number(returnCashInfo.historySelfReturnAmount)+Number(returnCashInfo.historySelfReturnAmount)>0){
-                returnCash = Number(returnCashInfo.historySelfReturnAmount)+Number(returnCashInfo.historySelfReturnAmount);
+            if(Number(returnCashInfo.historySelfReturnAmount)+Number(returnCashInfo.preSettleSelfReturn)>0){
+                returnCash = Number(returnCashInfo.historySelfReturnAmount)+Number(returnCashInfo.preSettleSelfReturn);
                 if(returnCashInfo.convertSwitchStatus){
                     status = HAVE_CASH_HAVE_SUPMEMBER;
                 }else {
@@ -285,7 +288,7 @@ export default class MyCashAccountPage extends BasePage {
                             <Text style={styles.returnCashTextStyle}>您还没有自返金，快去获取</Text> : null}
                         {status === HAVE_CASH_NO_SUPMEMBER ?
                             <Text style={styles.returnCashTextStyle}>
-                                您有<Text style={{fontSize: 16, color: '#FF0050'}}>{returnCash}</Text>自返金可转到余额
+                                您有<Text style={{fontSize: 16, color: '#FF0050'}}>{StringUtils.formatMoneyString(returnCash, false)}</Text>自返金可转到余额
                             </Text> : null}
                         {status === HAVE_CASH_HAVE_SUPMEMBER ?
                             <Text style={styles.returnCashTextStyle}>
@@ -303,7 +306,7 @@ export default class MyCashAccountPage extends BasePage {
                 </View>
             </View>
         );
-    }
+    };
 
     renderHeader = () => {
         return (
