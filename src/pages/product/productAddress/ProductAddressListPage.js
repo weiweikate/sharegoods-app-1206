@@ -19,14 +19,11 @@ export class ProductAddressPage extends BasePage {
     };
 
     _renderItem = ({ item }) => {
-        const { receiverPhone, receiver, province, city, provinceCode, cityCode, area, address, areaCode, defaultStatus } = item;
+        const { receiverPhone, receiver, province, city, area, address, defaultStatus } = item;
         return (
             <NoMoreClick style={styles.itemView} onPress={() => {
                 const { productDetailAddressModel } = this.params;
-                productDetailAddressModel.addressSelectedText = `${province || ''}${city || ''}${area || ''}`;
-                productDetailAddressModel.provinceCode = provinceCode;
-                productDetailAddressModel.cityCode = cityCode;
-                productDetailAddressModel.addressSelectedCode = areaCode;
+                productDetailAddressModel.setAddressItem(item);
                 popToRouteName(RouterMap.ProductDetailPage);
             }}>
                 <View style={styles.itemTopView}>
