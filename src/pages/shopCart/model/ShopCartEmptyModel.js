@@ -25,14 +25,16 @@ class ShopCartEmptyModel {
     firstLoad = true;
 
     @action
-    setRefreshing = (showRefresh) => {
-        this.isRefreshing = showRefresh;
-    }
-    @action
-    getRecommendProducts = (isRefresh = true) => {
+    getRecommendProducts = (isRefresh = true,showRefresh = false) => {
 
         if (isRefresh) {
             this.page = 1;
+            if(showRefresh){
+                this.isRefreshing = true;
+                setTimeout(() => {
+                    this.isRefreshing = false;
+                }, 1000);
+            }
         } else {
             this.isFetching = true;
             this.page = this.page + 1;
@@ -70,12 +72,12 @@ class ShopCartEmptyModel {
                 this.emptyViewList = newArr;
                 this.errorMsg = '';
                 this.isFetching = false;
-                this.isRefreshing = false;
+
+
                 console.log(result);
             }).catch(error => {
                 this.isEnd = true;
                 this.isFetching = false;
-                this.isRefreshing = false;
                 this.errorMsg = error.msg;
             });
         } else {
@@ -111,12 +113,9 @@ class ShopCartEmptyModel {
                 this.emptyViewList = newArr;
                 this.errorMsg = '';
                 this.isFetching = false;
-                this.isRefreshing = false;
-                console.log(result);
             }).catch(error => {
                 this.isEnd = true;
                 this.isFetching = false;
-                this.isRefreshing = false;
                 this.errorMsg = error.msg;
             });
         }
