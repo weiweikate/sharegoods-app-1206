@@ -9,6 +9,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import RouterMap, { navigateBack, routePop, routePush } from '../../../navigation/RouterMap';
 import { payment } from '../../payment/Payment';
 import API from '../../../api';
+import MineAPI from '../../mine/api/MineApi';
 
 class ConfirmOrderModel {
 
@@ -29,6 +30,11 @@ class ConfirmOrderModel {
     addressId = '';
     addressData = {};
     isNoAddress = false;
+    @observable
+    addressModalShow = true;
+    @observable
+    addressList = [];
+
 
     orderParamVO = {};
     tokenCoin = 0;
@@ -69,6 +75,8 @@ class ConfirmOrderModel {
         this.canInvoke = false
         this.invokeSelect = false
         this.invokeItem = null;
+        this.addressModalShow = false;
+        this.addressList = [];
 
     }
 
@@ -208,7 +216,47 @@ class ConfirmOrderModel {
     }
 
     @action
+    makeSureProduct_selectDefaltAddress(){
+        let addressData = this.orderParamVO.address
+        //不存在街道code，直接请求
+        if (!addressData || !addressData.areaCode) {
+            return this.makeSureProduct_selectDefaltCoupon(this.orderParamVO.couponsId)
+        }
+        //选择了收货地址
+        if (addressData.id){
+            let addressId = addressData.id || '';
+            addressId = addressId + '';
+            this.addressId = addressId;
+            this.addressData = addressData;
+            this.tokenCoin = 0;
+            return this.makeSureProduct_selectDefaltCoupon(this.orderParamVO.couponsId)
+        }
+        //进行匹配区的收货地址
+        MineAPI.queryAddrList().then((data)=> {
+            data = data.data || [];
+            if (data.length === 0){
+
+            } else {
+                this.addressList = data;
+                this.addressModalShow = true;
+            }
+        }).finally(()=> {
+            this.makeSureProduct_selectDefaltCoupon(this.orderParamVO.couponsId)
+        })
+    }
+    @action
+    closeAddressModal(){
+        this.addressModalShow = false;
+    }
+    @action
+    addressModal_selecetAddress(index){
+        this.closeAddressModal();
+        this.selectAddressId(this.addressList[index]);
+    }
+
+    @action
     makeSureProduct_selectDefaltCoupon(couponsId) {
+       //拼团不能使用优惠券
         if (this.orderParamVO.bizTag === 'group') {
             this.makeSureProduct();
             return;
