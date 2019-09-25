@@ -38,20 +38,11 @@ import ReturnCashModel from '../../model/ReturnCashModel';
 
 const {px2dp} = ScreenUtils;
 const renwu = res.cashAccount.renwu_icon;
-// const daoshi = res.cashAccount.daoshi_icon;
-// const fenhong = res.cashAccount.fenhong_icon;
-// const hongbao = res.cashAccount.hongbao_icon;
-// const tuiguang = res.cashAccount.tuiguang_icon;
 const tixiang = res.cashAccount.tixian_icon;
-// const tixiantk = res.cashAccount.tixian_icon;
 const xiaofei = res.cashAccount.xiaofei_icon;
-// const xiaofeitk = res.cashAccount.xiaofei_icon;
-// const account_bg_white = res.bankCard.account_bg_white;
 const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
-// const writer = res.cashAccount.writer_icon;
 const cash_noData = res.cashAccount.cash_noData;
-// const qita = res.cashAccount.qita_icon;
 const chengFa = res.cashAccount.chengFa_icon;
 const shouru = res.cashAccount.shouru_icon;
 const shouyi = res.cashAccount.shouyi_icon;
@@ -154,6 +145,7 @@ export default class CashRewardAccountPage extends BasePage {
                         {!returnCashInfo.convertSwitchStatus ?
                             <NoMoreClick
                                 onPress={() => {
+                                    this.$navigate(RouterMap.HtmlPage,{uri: '/mine/memberRights'});
                             }}>
                                 <ImageBackground
                                     style={styles.beSubVipBgStyle}
