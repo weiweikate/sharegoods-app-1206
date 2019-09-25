@@ -24,7 +24,6 @@ import {
     DeviceEventEmitter,
     NativeEventEmitter,
     NativeModules,
-    RefreshControl,
     StyleSheet,
     View
 } from 'react-native';
@@ -43,6 +42,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import intervalMsgModel from '../../../../comm/components/IntervalMsgView';
 import { MRText as Text } from '../../../../components/ui/index';
 import TextCustomView from '../TextCustomView';
+import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
 import { tabModel } from '../../model/HomeTabModel';
 
 
@@ -186,7 +186,7 @@ export default class HomeFirstTabView extends Component {
 
     _onRefresh() {
         homeModule.isRefreshing = true;
-        homeModule.loadHomeList(true);
+        homeModule.loadHomeList();
         taskModel.getData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
     }
@@ -228,6 +228,15 @@ export default class HomeFirstTabView extends Component {
         });
     };
 
+    renderRefreshLoading = () => {
+        return (
+            <HeaderLoading
+                isRefreshing={homeModule.isRefreshing}
+                onRefresh={this._onRefresh.bind(this)}
+            />
+        );
+    };
+
 
     render() {
         if (Math.abs(tabModel.tabIndex) > 1){
@@ -241,9 +250,7 @@ export default class HomeFirstTabView extends Component {
                     this.recyclerListView = ref;
                 }}
                 style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
-                refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
-                                                onRefresh={this._onRefresh.bind(this)}
-                                                colors={[DesignRule.mainColor]}/>}
+                refreshControl={this.renderRefreshLoading()}
                 onEndReached={this._onEndReached.bind(this)}
                 onEndReachedThreshold={ScreenUtils.height / 3}
                 dataProvider={this.dataProvider}

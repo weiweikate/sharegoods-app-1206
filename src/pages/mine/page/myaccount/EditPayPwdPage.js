@@ -15,7 +15,7 @@ export default class EditPayPwdPage extends BasePage {
 
     _render() {
         return <View style={{ flexDirection: 'column' }}>
-            <TouchableOpacity style={{
+            <TouchableOpacity activeOpacity={0.7} style={{
                 marginTop: 160,
                 width: ScreenUtils.width - 84,
                 borderColor: DesignRule.mainColor,
@@ -29,7 +29,7 @@ export default class EditPayPwdPage extends BasePage {
             }} onPress={() => this._know()}>
                 <Text style={{ fontSize: 17, color: DesignRule.mainColor }}>记得原交易密码</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{
+            <TouchableOpacity activeOpacity={0.7} style={{
                 marginTop: 21,
                 backgroundColor: DesignRule.mainColor,
                 width: ScreenUtils.width - 84,

@@ -1,26 +1,21 @@
 import React from 'react';
 import {
-    View,
+    BackHandler,
+    DeviceEventEmitter,
+    Image,
+    InteractionManager,
+    Platform,
     StyleSheet,
     TouchableOpacity,
-    Image,
-    BackHandler,
-    InteractionManager,
-    DeviceEventEmitter, TouchableWithoutFeedback,
-    Platform
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
-
-const { px2dp } = ScreenUtils;
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
-import {
-    MRText as Text,
-    AvatarImage,
-    UIImage
-} from '../../components/ui';
+import { AvatarImage, MRText as Text, UIImage } from '../../components/ui';
 import ShowActivityViewIOS from './ShowActivityView';
 
 import user from '../../model/user';
@@ -37,10 +32,11 @@ import CommShowShareModal from '../../comm/components/CommShowShareModal';
 import WhiteModel from './model/WhiteModel';
 import ShowListIndexModel from './model/ShowListIndexModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
-import { routeNavigate } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import ShowUtils from './utils/ShowUtils';
+
+const { px2dp } = ScreenUtils;
 
 const {
     mine_message_icon_gray
@@ -258,7 +254,8 @@ export default class ShowListPage extends BasePage {
                 {
                     left
                         ?
-                        <TouchableOpacity style={styles.backImg} onPress={() => this._onLeftPressed()}>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.backImg}
+                                          onPress={() => this._onLeftPressed()}>
                             <Image source={icon_header_back} style={{ width: 30, height: 30 }}/>
                         </TouchableOpacity>
                         :
@@ -271,33 +268,33 @@ export default class ShowListPage extends BasePage {
                 </TouchableWithoutFeedback>
                 <View style={{ flex: 1 }}/>
                 <View style={styles.titleView}>
-                    <TouchableOpacity style={[styles.items, { marginRight: px2dp(20) }]}
+                    <TouchableOpacity activeOpacity={0.7} style={[styles.items, { marginRight: px2dp(20) }]}
                                       onPress={() => this._gotoPage(0)}>
                         <Text style={[ShowListIndexModel.pageIndex === 0 ? styles.activityIndex : styles.index]}
                               allowFontScaling={false}>关注</Text>
                         {ShowListIndexModel.pageIndex === 0 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(1)}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.items} onPress={() => this._gotoPage(1)}>
                         <Text style={[ShowListIndexModel.pageIndex === 1 ? styles.activityIndex : styles.index]}
                               allowFontScaling={false}>推荐</Text>
                         {ShowListIndexModel.pageIndex === 1 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                     <View style={{ width: px2dp(20) }}/>
-                    <TouchableOpacity style={[{ marginRight: px2dp(20) }, styles.items]}
+                    <TouchableOpacity activeOpacity={0.7} style={[{ marginRight: px2dp(20) }, styles.items]}
                                       onPress={() => this._gotoPage(2)}>
                         <Text style={ShowListIndexModel.pageIndex === 2 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>素材圈</Text>
                         {ShowListIndexModel.pageIndex === 2 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.items, { marginRight: px2dp(20) }]}
+                    <TouchableOpacity activeOpacity={0.7} style={[styles.items, { marginRight: px2dp(20) }]}
                                       onPress={() => this._gotoPage(3)}>
                         <Text style={ShowListIndexModel.pageIndex === 3 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>发现</Text>
                         {ShowListIndexModel.pageIndex === 3 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(4)}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.items} onPress={() => this._gotoPage(4)}>
                         <Text style={ShowListIndexModel.pageIndex === 4 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>活动</Text>
                         {ShowListIndexModel.pageIndex === 4 ? <View style={styles.line}/> : null}

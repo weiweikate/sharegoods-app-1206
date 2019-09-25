@@ -17,10 +17,9 @@ function _renderTips(tips, failProduct){
                                 fontSize: 10,
                                 marginRight: 6,
                                 paddingHorizontal: 3,
-                                paddingVertical: 3,
+                                paddingVertical: 2,
                                 color: DesignRule.mainColor,
-                                marginVertical: 2.5,
-                                backgroundColor: !failProduct ? 'rgba(255,0,80,0.1)' : 'white',
+                                backgroundColor: !failProduct?'rgba(255,0,80,0.1)': 'white',
                                 borderRadius: 4,
                                 overflow: 'hidden'
                             }}>
@@ -72,8 +71,9 @@ const GoodsItem = props => {
             flexDirection: 'row',
             minHeight: 100,
             paddingVertical: 10,
-            width: ScreenUtils.width,
-            backgroundColor: 'white'
+            width: ScreenUtils.width - DesignRule.margin_page,
+            backgroundColor: 'white',
+            paddingRight: 10
         }} onPress={() => onPress()}>
             <View style={{ height: 80, width: 80, marginLeft: 15 }}>
                 <UIImage style={{ height: 80, width: 80 }} source={{ uri: uri }}/>
@@ -82,7 +82,7 @@ const GoodsItem = props => {
                 <View style={{ height: 30, justifyContent: 'center' }}>
                     <Text style={{
                         flexWrap: 'wrap',
-                        color: !failProduct ? DesignRule.textColor_mainTitle : DesignRule.textColor_placeholder,
+                        color: !failProduct?DesignRule.textColor_mainTitle: DesignRule.textColor_placeholder,
                         fontSize: 13,
                         marginLeft: 10,
                         marginRight: 15,
@@ -91,11 +91,11 @@ const GoodsItem = props => {
                 <View style={{
                     marginTop: 5,
                     marginLeft: 10,
-                    marginRight: 20,
                     flexDirection: 'row',
+                    paddingRight: 20,
                     justifyContent: 'space-between' }}>
                     <UIText value={`${category}`}
-                            style={{ color: !failProduct ? DesignRule.textColor_instruction : DesignRule.textColor_placeholder, fontSize: 13, marginRight: 20 }}/>
+                            style={{ color: !failProduct?DesignRule.textColor_instruction: DesignRule.textColor_placeholder, fontSize: 13, marginRight: 20 }}/>
                     <UIText value={goodsNum} style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
                 </View>
                 { _renderTips(tips, failProduct)}
@@ -105,8 +105,8 @@ const GoodsItem = props => {
                     flexDirection: 'row',
                     alignItems: 'flex-end'
                 }}>
-                    <Text style={{ color: !failProduct ? DesignRule.mainColor : DesignRule.textColor_placeholder, fontSize: 18, fontWeight: '400' }}>
-                        <Text style={{ color: !failProduct ? DesignRule.mainColor : DesignRule.textColor_placeholder, fontSize: 13 ,marginBottom: 3}}>
+                    <Text style={{ color: !failProduct?DesignRule.mainColor: DesignRule.textColor_placeholder, fontSize: 18, fontWeight: '400' }}>
+                        <Text style={{ color: !failProduct?DesignRule.mainColor: DesignRule.textColor_placeholder, fontSize: 13 ,marginBottom: 3}}>
                             {'¥'}
                         </Text>
                         {salePrice}

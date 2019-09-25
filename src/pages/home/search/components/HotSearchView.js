@@ -33,7 +33,7 @@ export default class HotSearchView extends Component {
             textshow = textshow.length > 10 ? textshow.substr(0, 10) + '...' : textshow;
             tagList.push(
                 <View key={index}>
-                    <TouchableOpacity style={styles.btn}
+                    <TouchableOpacity activeOpacity={0.7} style={styles.btn}
                                       onPress={() => this.props.clickItemAction(item.wordName, index, item.id)}>
                         <Text style={styles.btnText} allowFontScaling={false}>{textshow}</Text>
                     </TouchableOpacity>

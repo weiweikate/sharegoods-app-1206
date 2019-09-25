@@ -16,7 +16,7 @@ import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
-import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { UIText } from '../../../components/ui/index';
 import PropTypes from 'prop-types';
 import user from '../../../model/user';
@@ -57,6 +57,7 @@ export default class BottomMenu extends Component {
                 ]}>
                 <View style={styles.CartBottomContainer}>
                     <TouchableOpacity
+                        activeOpacity={0.7}
                         style={styles.touchableOpacity}
                         onPress={() => this._selectAll()}
                     >
@@ -86,7 +87,9 @@ export default class BottomMenu extends Component {
                         </View>
 
 
-                        <TouchableOpacity onPress={() => this._toBuyImmediately()}>
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            onPress={() => this._toBuyImmediately()}>
                             <LinearGradient colors={['rgba(255, 0, 80, 1)', 'rgba(252, 93, 57, 1)']}
                                             style={styles.selectGoodsNum}
                                             start={{ x: 0, y: 0 }}
@@ -166,10 +169,12 @@ export default class BottomMenu extends Component {
                     batchNo: '1',
                     shoppingCartId: goods.id,
                     activityCode: goods.activityCode || '',
-                    specImg:goods.imgUrl,
-                    productName:goods.productName,
-                    unitPrice:goods.price,
-                    productType:goods.type
+                    specImg: goods.imgUrl,
+                    productName: goods.productName,
+                    unitPrice: goods.price,
+                    productType: goods.type,
+                    sgspm : goods.sgspm,
+                    sgscm : goods.sgscm
                 });
             });
             routePush(RouterMap.ConfirOrderPage, {

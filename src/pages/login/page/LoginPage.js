@@ -8,39 +8,20 @@ import DesignRule from '../../../constants/DesignRule';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import loginModel from '../model/LoginModel';
 import ProtocolView from '../components/Login.protocol.view';
-import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
+import RouterMap, { replaceRoute } from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
-import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
+import { getWxUserInfo, memberLogin, wxLoginAction } from '../model/LoginActionModel';
 import { checkInitResult, closeAuth, preLogin, startLoginAuth } from '../model/PhoneAuthenAction';
 import store from '@mr/rn-store';
 import { observer } from 'mobx-react';
+import bridge from '../../../utils/bridge';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 const btnWidth = ScreenUtils.width - px2dp(60);
 
 @observer
 export default class LoginPage extends BasePage {
-
-    constructor(props) {
-        super(props);
-        if (!loginModel.authPhone) {
-            checkInitResult().then((isVerifyEnable) => {
-                loginModel.setAuthPhone(isVerifyEnable);
-            }).catch(e => {
-                loginModel.setAuthPhone(null);
-            });
-        } else {
-            preLogin().then(data => {
-            }).catch(error => {
-            });
-        }
-
-        // 获取最近一次输入的手机号
-        store.get('@mr/lastPhone').then((data) => {
-            loginModel.phoneNumber = data;
-        }).catch(e => {
-        });
-    }
 
     // 禁用某个页面的手势
     static navigationOptions = {
@@ -55,8 +36,47 @@ export default class LoginPage extends BasePage {
     };
 
     componentDidMount() {
-        // 登录页面type
-        this.subscription = NativeAppEventEmitter.addListener(
+        // 一键登录UI初始化
+        this.initOneLogin();
+        // 获取最近一次输入的手机号
+        this.getLastInputPhone();
+        // 监听事件
+        this.oneLoginJump();
+    }
+
+    /**
+     * 一键登录UI初始化
+     */
+    initOneLogin() {
+        if (!loginModel.authPhone) {
+            checkInitResult().then((isVerifyEnable) => {
+                loginModel.setAuthPhone(isVerifyEnable);
+            }).catch(e => {
+                loginModel.setAuthPhone(null);
+            });
+        } else {
+            preLogin().then(data => {
+            }).catch(error => {
+            });
+        }
+    }
+
+    /**
+     * 获取最近一次输入的手机号
+     */
+    getLastInputPhone() {
+        store.get('@mr/lastPhone').then((data) => {
+            loginModel.phoneNumber = data;
+        }).catch(e => {
+        });
+    }
+
+    /**
+     * 监听事件
+     */
+    oneLoginJump() {
+        // 一键登录其他登录方式跳转按钮监听
+        this.subscriptionLoginType = NativeAppEventEmitter.addListener(
             'Event_Login_Type',
             (data) => {
                 if (data.login_type === '1') {
@@ -71,9 +91,13 @@ export default class LoginPage extends BasePage {
     }
 
     componentWillUnmount() {
-        this.subscription && this.subscription.remove();
+        this.subscriptionWXCode && this.subscriptionWXCode.remove();
+        this.subscriptionLoginType && this.subscriptionLoginType.remove();
     }
 
+    /**
+     * 一键登录判断
+     */
     justLogin = () => {
         // 一键登录
         if (loginModel.authPhone) {
@@ -95,11 +119,14 @@ export default class LoginPage extends BasePage {
         }
     };
 
+    /**
+     * 一键登录
+     */
     startOneLogin = () => {
         startLoginAuth().then((data) => {
             this.$loadingShow();
-            let { navigation } = this.props;
-            oneClickLoginValidation(data, null, navigation, () => {
+            let params = { token: data, loginType: 4 };
+            memberLogin(params, () => {
                 this.$loadingDismiss();
                 this.$toastShow('登录成功');
             }, () => {
@@ -117,28 +144,38 @@ export default class LoginPage extends BasePage {
         });
     };
 
+    /**
+     * 微信授权登录
+     */
     wxLogin = () => {
         if (!loginModel.isSelectProtocol) {
             this.$toastShow('请先勾选用户协议');
             return;
         }
-        // 微信授权登录
+        // 微信授权
         getWxUserInfo((wxData) => {
             this.$loadingShow('加载中');
-            wxLoginAction(wxData, (code, data) => {
+            if (!wxData) {
                 this.$loadingDismiss();
-                if (code === 10000) {
-                    this.$navigateBack();
-                    this.params.callback && this.params.callback();
-                } else if (code === 34005) {
-                    // 绑定手机
-                    this.$toastShow('请绑定手机号');
-                    routeNavigate(RouterMap.PhoneLoginPage, {
-                        ...this.params,
-                        needBottom: false,
-                        wxData
-                    });
-                }
+                this.$toastShow('微信授权失败！');
+                return;
+            }
+            let params = {
+                device: wxData.device,
+                weChatHeadImg: wxData.headerImg,
+                weChatName: wxData.nickName,
+                openId: wxData.appOpenid,
+                systemVersion: wxData.systemVersion,
+                unionId: wxData.unionid
+            };
+            // 微信登录
+            wxLoginAction(params, () => {
+                bridge.$toast('登录成功');
+                this.$loadingDismiss();
+                this.$navigateBack();
+                this.params.callback && this.params.callback();
+            }, () => {
+                this.$loadingDismiss();
             });
         });
     };
@@ -152,6 +189,7 @@ export default class LoginPage extends BasePage {
                     <LinearGradient colors={['#FF1C89', '#FD0129']}
                                     style={[Styles.loginButton, { marginTop: px2dp(15) }]}>
                         <TouchableOpacity
+                            activeOpacity={0.7}
                             style={Styles.touchableStyle}
                             onPress={() => {
                                 this.wxLogin();
@@ -174,7 +212,8 @@ export default class LoginPage extends BasePage {
                         <CommSpaceLine style={{ width: px2dp(102) }}/>
                     </View>
                     <View style={{ flexDirection: 'row', marginHorizontal: px2dp(30), marginTop: px2dp(20) }}>
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                            TrackApi.localPhoneNumLogin({ 'loginMethod': 2 });
                             // 手机号登录
                             replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
                         }}>
@@ -187,10 +226,12 @@ export default class LoginPage extends BasePage {
                             }} value={'手机号登录'}/>
                         </TouchableOpacity>
                         {loginModel.authPhone ?
-                            <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
-                                // 一键登录
-                                this.justLogin();
-                            }}>
+                            <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }}
+                                              onPress={() => {
+                                                  TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
+                                                  // 一键登录
+                                                  this.justLogin();
+                                              }}>
                                 <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
                                        source={res.login_one}/>
                                 <UIText style={{
@@ -200,7 +241,9 @@ export default class LoginPage extends BasePage {
                                 }} value={'一键登录'}/>
                             </TouchableOpacity> : null
                         }
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                            TrackApi.localPhoneNumLogin({ 'loginMethod': 3 });
+                            // 密码登录
                             replaceRoute(RouterMap.PwdLoginPage, { ...this.params });
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}

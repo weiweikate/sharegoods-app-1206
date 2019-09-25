@@ -42,7 +42,7 @@ export default class SelectionAmountView extends Component {
     _rightAction = () => {
         const { promotionLimit } = this.props;
         if (promotionLimit !== null && promotionLimit <= this.state.amount) {
-            bridge.$toast(`最多只能购买${promotionLimit}件~`);
+            bridge.$toast(`商品已达限购数量`);
             return;
         }
         if (this.props.maxCount <= this.state.amount) {
@@ -100,7 +100,7 @@ export default class SelectionAmountView extends Component {
             this.setState({
                 amount: promotionLimit
             }, () => {
-                bridge.$toast(`最多只能购买${promotionLimit}件~`);
+                bridge.$toast(`商品已达限购数量`);
                 this.props.amountClickAction(promotionLimit);
             });
         }
@@ -141,7 +141,7 @@ export default class SelectionAmountView extends Component {
                     borderRadius: 2,
                     marginRight: 16
                 }}>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
+                    <TouchableOpacity activeOpacity={0.7} style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._leftAction} disabled={type === 'after'}>
                         <Text style={{
                             color: leftEnable ? DesignRule.textColor_mainTitle : DesignRule.lineColor_inGrayBg,
@@ -162,7 +162,7 @@ export default class SelectionAmountView extends Component {
                         />
                     </View>
                     <View style={{ height: 28, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
+                    <TouchableOpacity activeOpacity={0.7} style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._rightAction} disabled={type === 'after' || isOnlyBuyOne}>
                         <Text style={{
                             color: rightEnable ? DesignRule.textColor_mainTitle : DesignRule.lineColor_inGrayBg,

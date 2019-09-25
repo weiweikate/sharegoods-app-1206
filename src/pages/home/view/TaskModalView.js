@@ -151,7 +151,7 @@ export default class TaskModalView extends React.Component {
                                 )
                             })
                         }
-                        <TouchableOpacity onPress={()=> {this.onPress(lottery)}}>
+                        <TouchableOpacity activeOpacity={0.7} onPress={()=> {this.onPress(lottery)}}>
                             <ImageBackground source={taskModal_btn} style={styles.btn}>
                                 <MRText style={styles.btnText}>{lottery ? (lottery.parameter ? '查看' : '关闭') : '确定'}</MRText>
                             </ImageBackground>
@@ -206,8 +206,8 @@ export class UserLevelModalView extends React.Component {
         let imgs = {V2, V3, V4, V5}
         return(
             <View style={styles.modal}>
-                <TouchableOpacity style={{width: ScreenUtils.width, alignItems: 'center'}} onPress={()=> {this.onPress(HomeModalManager.Userdata)}} >
-                    <TouchableOpacity onPress={()=> {this.onPress()}}
+                <TouchableOpacity activeOpacity={0.7} style={{width: ScreenUtils.width, alignItems: 'center'}} onPress={()=> {this.onPress(HomeModalManager.Userdata)}} >
+                    <TouchableOpacity activeOpacity={0.7} onPress={()=> {this.onPress()}}
                                       style={{alignSelf: 'flex-end',
                                           marginRight: ScreenUtils.autoSizeWidth(30),
                                           marginBottom: ScreenUtils.autoSizeWidth(0),}}>

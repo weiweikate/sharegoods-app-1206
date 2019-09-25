@@ -8,6 +8,8 @@ export default class MyShopDetailModel {
     @observable productList = [];
     @observable bottomBannerList = [];
 
+    @observable switchStatus = false;
+    @observable storeBonusTips = '';
 
     /*网络*/
     requestShopProducts() {
@@ -32,4 +34,13 @@ export default class MyShopDetailModel {
             intervalMsgModel.setMsgData(content, shopCode);
         });
     }
+
+    requestBonusTips = () => {
+        SpellShopApi.store_bonusTips().then((data) => {
+            const { switchStatus, storeBonusTips } = data.data || {};
+            this.storeBonusTips = storeBonusTips;
+            this.switchStatus = switchStatus;
+        });
+    };
+
 }

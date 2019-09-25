@@ -149,13 +149,13 @@ export default class InvitationToShopPage extends BasePage {
                                 marginTop: ScreenUtils.autoSizeWidth(8),
                                 justifyContent: 'center'
                             }}>
-                                <TouchableOpacity onPress={this._saveImg}
+                                <TouchableOpacity activeOpacity={0.7} onPress={this._saveImg}
                                                   disabled={this.state.disable}>
                                     <ImageBackground source={yqhy_Btn} style={styles.bottomBtn}>
                                         <Text style={styles.textBtn} allowFontScaling={false}>保存图片</Text>
                                     </ImageBackground>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{ marginLeft: 20 }}
+                                <TouchableOpacity activeOpacity={0.7} style={{ marginLeft: 20 }}
                                                   onPress={this._shareImg}>
                                     <ImageBackground source={yqhy_Btn} style={styles.bottomBtn}>
                                         <Text style={styles.textBtn} allowFontScaling={false}>分享到...</Text>

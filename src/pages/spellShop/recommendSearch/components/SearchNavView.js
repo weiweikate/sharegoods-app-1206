@@ -60,7 +60,7 @@ export default class SearchNavView extends Component {
         return (
             <View style={[styles.container, this.props.style]}>
                 <View style={styles.contentView}>
-                    {!this.state.onFocus && <TouchableOpacity onPress={() => {
+                    {!this.state.onFocus && <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.props.navigation.goBack();
                     }} style={{ width: 48, justifyContent: 'center', alignItems: 'center' }}>
                         <Image source={icon_header_back} style={{ width: 30, height: 30 }}/>
@@ -79,7 +79,7 @@ export default class SearchNavView extends Component {
                                    onFocus={this._onFocus}/>
 
                     </View>
-                    {this.state.onFocus && <TouchableOpacity onPress={this._cancel}>
+                    {this.state.onFocus && <TouchableOpacity activeOpacity={0.7} onPress={this._cancel}>
                         <Text style={{
                             paddingLeft: 10,
                             paddingRight: 15,

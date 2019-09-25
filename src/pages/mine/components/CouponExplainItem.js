@@ -36,6 +36,7 @@ export default class CouponExplainItem extends Component {
             (item.status === 2 ? res.couponsImg.youhuiquan_icon_yishixiao : item.status === 3 ? (res.couponsImg.youhuiquan_icon_daijihuo) : null);
         return (
             <TouchableOpacity
+                activeOpacity={0.7}
                 style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5, justifyContent: 'center' }}
                 onPress={() => {console.log('item',item)}}>
                 <ImageBackground style={{

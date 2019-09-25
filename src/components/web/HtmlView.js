@@ -35,7 +35,9 @@ export default class RequestDetailPage extends BasePage {
     constructor(props) {
         super(props);
         const params = this.props.navigation.state.params || {};
-        let { uri, title } = params;
+        let { uri, title, sgspm, sgscm } = params;
+        sgspm = sgspm || ''
+        sgscm = sgscm || ''
         uri = decodeURIComponent(uri);
         this.canGoBack = false;
         let realUri = '';
@@ -46,7 +48,10 @@ export default class RequestDetailPage extends BasePage {
         let parmasString = 'platform=' + platform +
             '&app_version=' + app_version +
             '&app_name=' + app_name +
-            '&ts=' + new Date().getTime();
+            '&ts=' + new Date().getTime() +
+            '&sgspm=' + sgspm +
+            '&sgscm=' + sgscm
+        ;
         //拼参数
         if (uri && uri.indexOf('?') > 0) {
             if (uri.charAt(uri.length - 1, 1) !== '?') {
@@ -94,7 +99,7 @@ export default class RequestDetailPage extends BasePage {
                     height: ScreenUtils.px2dp(44),
                     alignItems: 'center',
                     justifyContent: 'center'
-                }}>
+                }} activeOpacity={0.7}>
                     <Image source={moreIcon} style={{ width: 22 }}
                            resizeMode={'contain'}/>
                 </TouchableOpacity>

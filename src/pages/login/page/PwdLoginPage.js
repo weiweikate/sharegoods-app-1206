@@ -11,9 +11,10 @@ import ProtocolView from '../components/Login.protocol.view';
 import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import LinearGradient from 'react-native-linear-gradient';
-import { getWxUserInfo, pwdLoginAction, wxLoginAction } from '../model/LoginActionModel';
+import { getWxUserInfo, memberLogin, wxLoginAction } from '../model/LoginActionModel';
 import bridge from '../../../utils/bridge';
 import res from '../../../comm/res';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 export default class PwdLoginPage extends BasePage {
@@ -40,6 +41,9 @@ export default class PwdLoginPage extends BasePage {
         headerStyle: { borderBottomWidth: 0 }
     };
 
+    /**
+     * 密码登录
+     */
     pwdLogin = () => {
         if (!loginModel.isSelectProtocol) {
             this.$toastShow('请先勾选用户协议');
@@ -61,22 +65,52 @@ export default class PwdLoginPage extends BasePage {
         let loginParam = {
             campaignType: this.params.campaignType || '',
             spm: this.params.spm || '',
-            phoneNumber: this.state.phoneNum,
-            password: this.state.pwd
+            phone: this.state.phoneNum,
+            password: this.state.pwd,
+            loginType: 2
         };
         this.$loadingShow();
-        pwdLoginAction(loginParam, (data) => {
-            if (data.code === 10000) {
-                this.$toastShow('登录成功');
-                this.params.callback && this.params.callback();
-                this.$loadingDismiss();
-                this.$navigateBack();
-            } else {
-                this.$loadingDismiss();
-            }
+        memberLogin(loginParam, (data) => {
+            this.$toastShow('登录成功');
+            this.params.callback && this.params.callback();
+            this.$loadingDismiss();
             loginModel.savePhoneNumber(this.state.phoneNum);
+            TrackApi.pwdLoginSuccess();
+        }, () => {
+            this.$loadingDismiss();
         });
     };
+
+    /**
+     * 微信登录
+     */
+    wechatLogin() {
+        getWxUserInfo((wxData) => {
+            this.$loadingShow('加载中');
+            if (!wxData) {
+                this.$loadingDismiss();
+                this.$toastShow('微信授权失败！');
+                return;
+            }
+            let params = {
+                device: wxData.device,
+                weChatHeadImg: wxData.headerImg,
+                weChatName: wxData.nickName,
+                openId: wxData.appOpenid,
+                systemVersion: wxData.systemVersion,
+                unionId: wxData.unionid
+            };
+            // 微信登录
+            wxLoginAction(params, () => {
+                bridge.$toast('登录成功');
+                this.$loadingDismiss();
+                this.$navigateBack();
+                this.params.callback && this.params.callback();
+            }, () => {
+                this.$loadingDismiss();
+            });
+        });
+    }
 
     _render() {
         return (
@@ -107,6 +141,7 @@ export default class PwdLoginPage extends BasePage {
                                 maxLength={11}
                             />
                             <TouchableOpacity
+                                activeOpacity={0.7}
                                 style={{ justifyContent: 'center', width: px2dp(30) }} onPress={() => {
                                 this.setState({
                                     phoneNum: ''
@@ -133,6 +168,7 @@ export default class PwdLoginPage extends BasePage {
                                 secureTextEntry={this.state.isSecret}
                             />
                             <TouchableOpacity
+                                activeOpacity={0.7}
                                 style={{ justifyContent: 'center', width: px2dp(30) }} onPress={() => {
                                 loginModel.isSecuret = !loginModel.isSecuret;
                                 this.setState({
@@ -144,7 +180,8 @@ export default class PwdLoginPage extends BasePage {
                             </TouchableOpacity>
                         </View>
                         <View style={{ width: ScreenUtils.width - px2dp(60), alignItems: 'flex-end' }}>
-                            <TouchableOpacity style={{ height: px2dp(35), justifyContent: 'center' }}
+                            <TouchableOpacity activeOpacity={0.7}
+                                              style={{ height: px2dp(35), justifyContent: 'center' }}
                                               onPress={() => {
                                                   routeNavigate(RouterMap.ForgetPasswordPage, { phoneNum: loginModel.phoneNumber });
                                               }}>
@@ -159,6 +196,7 @@ export default class PwdLoginPage extends BasePage {
                 <LinearGradient colors={['#FF1C89', '#FD0129']}
                                 style={[Styles.loginButton, { marginTop: 0, marginBottom: px2dp(40) }]}>
                     <TouchableOpacity
+                        activeOpacity={0.7}
                         style={Styles.touchableStyle}
                         onPress={() => {
                             // 密码登录
@@ -176,30 +214,13 @@ export default class PwdLoginPage extends BasePage {
                         <CommSpaceLine style={{ width: px2dp(102) }}/>
                     </View>
                     <View style={{ flexDirection: 'row', marginHorizontal: px2dp(30), marginTop: px2dp(20) }}>
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             if (!loginModel.isSelectProtocol) {
                                 this.$toastShow('请先勾选用户协议');
                                 return;
                             }
-                            // 微信授权登录
-                            getWxUserInfo((wxData) => {
-                                this.$loadingShow('加载中');
-                                wxLoginAction(wxData, (code, data) => {
-                                    this.$loadingDismiss();
-                                    if (code === 10000) {
-                                        this.$navigateBack();
-                                        this.params.callback && this.params.callback();
-                                    } else if (code === 34005) {
-                                        // 绑定手机
-                                        this.$toastShow('请绑定手机号');
-                                        routeNavigate(RouterMap.PhoneLoginPage, {
-                                            ...this.params,
-                                            needBottom: false,
-                                            wxData
-                                        });
-                                    }
-                                });
-                            });
+                            // 微信授权
+                            this.wechatLogin();
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
                                    source={res.share.weiXin}/>
@@ -209,7 +230,7 @@ export default class PwdLoginPage extends BasePage {
                                 color: DesignRule.textColor_instruction
                             }} value={'微信登录'}/>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}

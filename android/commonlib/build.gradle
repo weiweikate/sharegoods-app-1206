@@ -87,19 +87,15 @@ dependencies {
     api files('libs/umeng-share-wechat-simplify-6.9.6.jar')
     api files('libs/umeng-sharetool-6.9.6.jar')
     api files('libs/utdid4all-1.1.5.3_proguard.jar')
-    api 'cn.jiguang.sdk:jpush:3.3.4'
+    api 'cn.jiguang.sdk:jverification:2.4.9'
     // 此处以JPush 3.2.0 版本为例。
-    api 'cn.jiguang.sdk:jcore:2.1.2'
+    api 'cn.jiguang.sdk:jpush:3.3.6'
     // 此处以JCore 1.2.7 版本为例。
-    api 'cn.jiguang.sdk.plugin:xiaomi:3.3.4'
-    //此版本插件仅支持JPushSDK3.2.0及以上版本
-    api 'cn.jiguang.sdk.plugin:huawei:3.3.4'
-    //此版本插件仅支持JPushSDK3.2.0及以上版本
-    api 'cn.jiguang.sdk.plugin:meizu:3.3.4'
-    //此版本插件仅支持JPushSDK3.2.0及以上版本
-    api 'cn.jiguang.sdk.plugin:oppo:3.3.4'
-    //此版本插件仅支持JPushSDK3.1.8及以上版本
-    //    api 'cn.jiguang.sdk.plugin:vivo:3.3.4'//此版本插件仅支持JPushSDK3.2.0及以上版本
+    api 'cn.jiguang.sdk:jcore:2.1.4'
+    api 'cn.jiguang.sdk.plugin:xiaomi:3.3.6'
+    api 'cn.jiguang.sdk.plugin:huawei:3.3.6'
+    api 'cn.jiguang.sdk.plugin:meizu:3.3.6'
+    api 'cn.jiguang.sdk.plugin:oppo:3.3.6'
+    api 'cn.jiguang.sdk.plugin:vivo:3.3.6'
     api 'jp.wasabeef:blurry:3.0.0'
-    implementation files('libs/jverification-android-release-2.3.8.jar')
 }

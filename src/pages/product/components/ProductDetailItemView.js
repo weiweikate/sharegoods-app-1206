@@ -36,6 +36,7 @@ const { saleBig_1001 } = RES.pSacle;
 /*
 * 商品头部
 * */
+@observer
 export class HeaderItemView extends Component {
 
     /*价格模块*/
@@ -113,6 +114,9 @@ export class HeaderItemView extends Component {
         const showShop = ((activityType === activity_type.skill || activity_type.pinGroup) && activityStatus === activity_status.inSell) || isHuaFei || this.props.paramsType === '9';
         /*直降中显示活动价 价格区间*/
         const verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
+        const { productDetailAddressModel } = productDetailModel;
+        const { freightPrice } = productDetailAddressModel;
+        const freightPriceShow = isNoEmpty(freightPrice) ? freightPrice : freight;
         return (
             <View style={styles.bgView}>
                 <DetailBanner data={productDetailModel} navigation={navigation}/>
@@ -140,7 +144,7 @@ export class HeaderItemView extends Component {
                 <View style={styles.freightMonthView}>
                     {/*值为0*/}
                     <Text
-                        style={styles.freightMonthText}>快递：{type === 3 ? '免运费' : (freight == 0 ? '包邮' : `${freight}元`)}</Text>
+                        style={styles.freightMonthText}>快递：{type === 3 ? '免运费' : (freightPriceShow == 0 ? '包邮' : `${freightPriceShow}元`)}</Text>
                     <Text style={styles.freightMonthText}>{`近期销量: ${monthSaleCount}`}</Text>
                 </View>
             </View>

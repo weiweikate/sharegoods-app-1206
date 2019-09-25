@@ -64,7 +64,7 @@ export default class SetPayPwdSuccessPage extends BasePage {
                     <MRText style={titleStyle}>{titleString}</MRText>
                     <MRText style={tipStyle}>{tipString}</MRText>
                 </View>
-                <TouchableOpacity onPress={this.onPress} style={[DesignRule.style_bigRedRadiusBtn, {marginHorizontal: 30, marginTop: autoSizeWidth(50)}]}>
+                <TouchableOpacity activeOpacity={0.7} onPress={this.onPress} style={[DesignRule.style_bigRedRadiusBtn, {marginHorizontal: 30, marginTop: autoSizeWidth(50)}]}>
                     <MRText style={DesignRule.style_btnWhiteText}>确定</MRText>
                 </TouchableOpacity>
             </View>

@@ -33,12 +33,14 @@ import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SensorsUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
+import com.meeruu.commonlib.utils.UrlUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.OnBotEventListener;
 import com.qiyukf.unicorn.api.OnMessageItemClickListener;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
+import com.qiyukf.unicorn.api.pop.ShopInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -59,6 +61,8 @@ public class BaseApplication extends MultiDexApplication {
     private boolean isDownload = false;
     private String downLoadUrl;
     private String packageName = "";
+    //平台客服showpid
+    private final String SHOPID = "hzmrwlyxgs";
 
     public boolean isDownload() {
         return isDownload;
@@ -96,8 +100,7 @@ public class BaseApplication extends MultiDexApplication {
         }
         if (packageName.equals(getPackageName())) {
             SoLoader.init(getApplicationContext(), /* native exopackage */ false);
-            Fresco.initialize(getApplicationContext(),
-                    FrescoImagePipelineConfig.getDefaultImagePipelineConfig(getApplicationContext()));
+            Fresco.initialize(getApplicationContext(), FrescoImagePipelineConfig.getDefaultImagePipelineConfig(getApplicationContext()));
             // 拿到主线程的MessageQueue
             Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
 
@@ -140,8 +143,7 @@ public class BaseApplication extends MultiDexApplication {
         JPushInterface.init(getApplicationContext());
         if (Utils.isApkInDebug()) {
             // 七鱼初始化
-            Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
-                    new QiyuImageLoader(getApplicationContext()));
+            Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(), new QiyuImageLoader(getApplicationContext()));
             // jpush debug
             JPushInterface.setDebugMode(true);
             // umeng debug
@@ -154,8 +156,7 @@ public class BaseApplication extends MultiDexApplication {
             // SensorsDataAPI.sharedInstance().enableLog(true);
         } else {
             // 七鱼初始化
-            Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
-                    new QiyuImageLoader(getApplicationContext()));
+            Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(), new QiyuImageLoader(getApplicationContext()));
             JPushInterface.setDebugMode(false);
             JPushInterface.initCrashHandler(getApplicationContext());
             JPushInterface.setChannel(getApplicationContext(), channel);
@@ -173,13 +174,22 @@ public class BaseApplication extends MultiDexApplication {
                 try {
                     url = URLDecoder.decode(url, "utf-8");
                     LogUtils.d("=====" + url);
-                    // 商品卡片，订单卡片
-                    if (url.contains("h5.sharegoodsmall.com/product") || url.contains("http:///")) {
+                    if (url.contains("hzmrwlyxgs.qiyukf.com/client")) {
+                        //跳转到商家客服
+                        Map params = UrlUtils.urlSplit(url);
+                        if (params.containsKey("bid")) {
+                            final String bid = (String) params.get("bid");
+                            navigateShopServiceByBid(bid);
+                        }
+                    } else if (url.contains("h5.sharegoodsmall.com/product") || url.contains("http:///")) {
+                        // 商品卡片，订单卡片
                         EventBus.getDefault().post(new com.meeruu.qiyu.Event.QiyuUrlEvent(url));
+                        ((Activity) context).finish();
                     } else {
                         EventBus.getDefault().post(new Event.MR2HTMLEvent(url));
+                        ((Activity) context).finish();
+
                     }
-                    ((Activity) context).finish();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -236,6 +246,37 @@ public class BaseApplication extends MultiDexApplication {
                 return true;
             }
         };
+    }
+
+    private void navigateShopServiceByBid(final String bid) {
+        RequestManager.getInstance().doGet(ParameterUtils.NETWORK_ELSE_CACHED, new BaseRequestConfig() {
+            @Override
+            public String getUrl() {
+                return HttpUrlUtils.getUrl(HttpUrlUtils.URL_SHOPINFO);
+            }
+
+            @Override
+            public Map getParams() {
+                Map<String, String> map = new HashMap();
+                map.put("supplierCode", bid);
+                return map;
+            }
+        }, new BaseCallback<String>() {
+            @Override
+            public void onErr(String errCode, String msg) {
+                ToastUtils.showToast("获取商家信息失败");
+            }
+
+            @Override
+            public void onSuccess(String result) {
+                JSONObject object = JSON.parseObject(result);
+                String shopId = object.getString("shopId");
+                String title = object.getString("title");
+                if(!TextUtils.equals(SHOPID,shopId)){
+                    EventBus.getDefault().post(new com.meeruu.qiyu.Event.QiyuShopIdEvent(shopId, title));
+                }
+            }
+        });
     }
 
     @Override

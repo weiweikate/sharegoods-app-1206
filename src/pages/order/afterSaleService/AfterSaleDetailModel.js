@@ -36,6 +36,9 @@ class AfterSaleDetailModel {
             data.product = data.product || {};
             data.refundInfo = data.refundInfo || {};
             data.refundDetail = data.refundDetail || {};
+            if (data.service.secRemarks) {
+                data.service.remarks = data.service.secRemarks;
+            }
             let service = data.service;
             let status = service.status;
             let subStatus = service.subStatus;

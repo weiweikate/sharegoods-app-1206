@@ -186,7 +186,7 @@ export default class SetShopNamePage extends BasePage {
     _renderHeaderView = () => {
         const uri = this.state.storeHeadUrlOrigin;
         if (this.params.storeData) {
-            return <TouchableOpacity style={styles.updateWhite} onPress={this._clickHeader}>
+            return <TouchableOpacity activeOpacity={0.7} style={styles.updateWhite} onPress={this._clickHeader}>
                 <AvatarImage style={styles.updateImg} source={{ uri: uri }} borderRadius={px2dp(20)}/>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.updateText} allowFontScaling={false}>修改头像</Text>
@@ -195,7 +195,7 @@ export default class SetShopNamePage extends BasePage {
             </TouchableOpacity>;
         } else {
             return <View style={styles.whitePanel}>
-                <TouchableOpacity onPress={this._clickHeader}>
+                <TouchableOpacity activeOpacity={0.7} onPress={this._clickHeader}>
                     <AvatarImage style={styles.headerImg} source={{ uri: uri }} borderRadius={px2dp(40)}/>
                 </TouchableOpacity>
             </View>;
@@ -231,8 +231,9 @@ export default class SetShopNamePage extends BasePage {
                                    style={styles.textInput}
                                    editable={false}/>
                         <Image resizeMode={'contain'} source={arrow_right} style={styles.arrowImg}/>
-                        <TouchableOpacity style={styles.bntArea}
-                                          onPress={this._getCityPicker}/>
+                        <TouchableOpacity
+                            activeOpacity={0.7} style={styles.bntArea}
+                            onPress={this._getCityPicker}/>
                     </View>
                     {/*简介*/}
                     <View style={styles.profileContainer}>

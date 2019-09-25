@@ -53,7 +53,7 @@ export default class CouponsPage extends BasePage {
             return <Text style={[styles.title]} allowFontScaling={false} numberOfLines={1}>优惠券</Text>;
         } else {
             return (
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => {
+                <TouchableOpacity activeOpacity={0.7} style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => {
                     this.setState({ modalVisible: true });
                 }} disabled={!!this.params.fromOrder || !!this.params.justOne}>
                     <Text style={{

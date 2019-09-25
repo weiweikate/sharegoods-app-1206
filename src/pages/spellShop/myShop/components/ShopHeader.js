@@ -3,25 +3,17 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    View,
-    Image,
-    StyleSheet,
-    TouchableOpacity,
-    ScrollView
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import DesignRule from '../../../../constants/DesignRule';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-
-const { px2dp } = ScreenUtils;
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
 import TextTicker from 'react-native-text-ticker';
 import AvatarImage from '../../../../components/ui/AvatarImage';
-import {
-    MRText as Text
-} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
+
+const { px2dp } = ScreenUtils;
 
 
 const HeaderBarBgImg = res.myShop.txbg_02;
@@ -91,10 +83,11 @@ export default class ShopHeader extends Component {
                         </View>
                     </View>
 
-                    {userStatus === 1 ? <TouchableOpacity onPress={this.props.onPressShopAnnouncement}
-                                                          style={styles.announcementContainer}>
-                        <Text style={styles.announcementTitle} allowFontScaling={false}>店铺公告</Text>
-                    </TouchableOpacity> : null}
+                    {userStatus === 1 ?
+                        <TouchableOpacity activeOpacity={0.7} onPress={this.props.onPressShopAnnouncement}
+                                          style={styles.announcementContainer}>
+                            <Text style={styles.announcementTitle} allowFontScaling={false}>店铺公告</Text>
+                        </TouchableOpacity> : null}
                 </View>
                 <View style={{
                     marginTop: px2dp(15),

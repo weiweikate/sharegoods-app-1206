@@ -95,7 +95,7 @@ export default class SelectAmountView extends Component {
             <View style={[styles.containerView, this.props.style]}>
                 <Text style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}>请选择券数</Text>
                 <View style={styles.amountView}>
-                    <TouchableOpacity style={styles.btn} onPress={this._leftAction}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.btn} onPress={this._leftAction}>
                         <Text style={[styles.btnText, { color: leftColor }]}>-</Text>
                     </TouchableOpacity>
                     <View style={{ height: 28, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
@@ -108,7 +108,7 @@ export default class SelectAmountView extends Component {
                                    keyboardType='numeric'/>
                     </View>
                     <View style={{ height: 28, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
-                    <TouchableOpacity style={styles.btn} onPress={this._rightAction}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.btn} onPress={this._rightAction}>
                         <Text style={[styles.btnText, { color: rightColor }]}>+</Text>
                     </TouchableOpacity>
                 </View>

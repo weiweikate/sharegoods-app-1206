@@ -1,4 +1,4 @@
-import { View, TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import React, { Component } from 'react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText } from '../../../components/ui';
@@ -26,19 +26,21 @@ export default class ShopCartEmptyCell extends Component {
                 marginTop: px2dp(5),
                 overflow: 'hidden'
             }}>
-                <TouchableOpacity onPress={() => {
-                    const { prodCode, name, similarity, mark, strategy } = itemData;
-                    TrackApi.RecommendSpuClick({
-                        spuCode: prodCode,
-                        spuName: name,
-                        spuRelationIndex: selectedIndex,
-                        strategy,
-                        mark,
-                        similarity,
-                        recommendScene
-                    });
-                    onClick();
-                }} activeOpacity={0.7}>
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => {
+                        const { prodCode, name, similarity, mark, strategy } = itemData;
+                        TrackApi.RecommendSpuClick({
+                            spuCode: prodCode,
+                            spuName: name,
+                            spuRelationIndex: selectedIndex,
+                            strategy,
+                            mark,
+                            similarity,
+                            recommendScene
+                        });
+                        onClick();
+                    }}>
                     <ImageLoad
                         source={{ uri: imgUrl }}
                         style={{

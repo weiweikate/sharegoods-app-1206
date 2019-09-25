@@ -137,12 +137,14 @@ export default class TopicDetailHeaderView extends Component {
                 </View>
                 {activityType === 2 ?
                     <View style={{ backgroundColor: 'white', marginTop: 10 }}>
-                        <TouchableOpacity style={{
-                            height: 45,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }} onPress={this.props.showDetailModal}>
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            style={{
+                                height: 45,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                            }} onPress={this.props.showDetailModal}>
                             <Text style={{
                                 color: DesignRule.textColor_secondTitle,
                                 fontSize: 13,

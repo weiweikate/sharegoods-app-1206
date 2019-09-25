@@ -77,6 +77,8 @@ export default class ProductDetailPage extends BasePage {
         this.productDetailModel.prodCode = this.params.productCode;
         this.productDetailModel.trackCode = this.params.trackCode;
         this.productDetailModel.trackType = this.params.trackType;
+        this.productDetailModel.sgscm = this.params.sgscm;
+        this.productDetailModel.sgspm = this.params.sgspm;
     }
 
     _getPageStateOptions = () => {
@@ -185,7 +187,9 @@ export default class ProductDetailPage extends BasePage {
             shopCartCacheTool.addGoodItem({
                 'amount': amount,
                 'skuCode': skuCode,
-                'productCode': prodCode
+                'productCode': prodCode,
+                'sgscm':this.productDetailModel.sgscm,
+                'sgspm':this.productDetailModel.sgspm,
             });
             /*加入购物车埋点*/
             track(trackEvent.AddToShoppingcart, {
@@ -220,7 +224,9 @@ export default class ProductDetailPage extends BasePage {
                             batchNo: 1,
                             productCode: prodCode,
                             skuCode: skuCode,
-                            quantity: amount
+                            quantity: amount,
+                            sgscm:this.productDetailModel.sgscm,
+                            sgspm:this.productDetailModel.sgspm
                         }, ...orderProductList]
                     }
                 });
@@ -230,6 +236,8 @@ export default class ProductDetailPage extends BasePage {
             const { specImg, promotionPrice, price, propertyValues } = item;
             let orderProducts = [{
                 productType: this.productDetailModel.type,
+                sgscm:this.productDetailModel.sgscm,
+                sgspm:this.productDetailModel.sgspm,
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,
@@ -255,6 +263,8 @@ export default class ProductDetailPage extends BasePage {
             const { id, initiatorUserName } = this.groupItem || {};
             let orderProducts = [{
                 productType: this.productDetailModel.type,
+                sgscm:this.productDetailModel.sgscm,
+                sgspm:this.productDetailModel.sgspm,
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,

@@ -121,6 +121,10 @@ export default class ProductDetailModel {
     @observable monthSaleCount;
     /*商品库存全*/
     @observable skuList = [];
+    //位置来源
+    @observable sgspm = null;
+    //业务来源
+    @observable sgscm = null;
 
     /**根据现有库存和地区库存结合成新德skuList**/
     @computed get skuListByArea() {
@@ -653,6 +657,7 @@ export default class ProductDetailModel {
             this.requestShopInfo(tempData.merchantCode);
             /**赋值prodCode会autoRun自动拉取库存**/
             if (tempData && tempData.type !== 3) {
+                this.productDetailAddressModel.templateCode = tempData.freightTemplateCode;
                 this.productDetailAddressModel.prodCode = this.prodCode;
             }
 

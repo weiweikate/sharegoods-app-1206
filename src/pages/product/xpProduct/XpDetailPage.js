@@ -51,7 +51,7 @@ export class XpDetailPage extends BasePage {
     };
 
     $NavBarRenderRightItem = () => {
-        return <TouchableOpacity style={styles.rightNavBtn} onPress={this._rightPressed}>
+        return <TouchableOpacity activeOpacity={0.7} style={styles.rightNavBtn} onPress={this._rightPressed}>
             <Image source={detail_more_down}/>
             {this.xpDetailModel.messageCount === 0 ? null : <View style={styles.rightNavMessage}/>}
         </TouchableOpacity>;
@@ -225,14 +225,14 @@ export class XpDetailPage extends BasePage {
             {/*商品信息*/}
             <XpDetailProductView xpDetailModel={this.xpDetailModel} imgBtnAction={this._imgBtnAction}/>
             <View style={styles.productPramsView}>
-                <TouchableOpacity style={styles.pramsBtn} onPress={this._activityAction}>
+                <TouchableOpacity activeOpacity={0.7} style={styles.pramsBtn} onPress={this._activityAction}>
                     <Text style={styles.pramsText}>活动规则</Text>
                     <Image resizeMode={'contain'} style={styles.arrowImg} source={arrow_right_black}/>
                 </TouchableOpacity>
                 {
                     pParamList.length !== 0 ? <View>
                         <View style={styles.lineView}/>
-                        <TouchableOpacity style={styles.pramsBtn} onPress={this._paramsAction}>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.pramsBtn} onPress={this._paramsAction}>
                             <Text style={styles.pramsText}>参数信息</Text>
                             <Image resizeMode={'contain'} style={styles.arrowImg} source={arrow_right_black}/>
                         </TouchableOpacity>

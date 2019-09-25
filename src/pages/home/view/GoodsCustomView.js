@@ -74,7 +74,7 @@ export default class GoodsCustomView extends React.Component {
             >
                 {products.map(((item, i) => {
                     return(
-                        <TouchableWithoutFeedback onPress={()=> {this.gotoProduceDetail(item)}}>
+                        <TouchableWithoutFeedback onPress={()=> {this.gotoProduceDetail(item, i)}}>
                             <View style = {style}>
                                 {this.renderImage(data,item, style.width)}
                                 {this.renderTitle(data, item)}
@@ -90,7 +90,9 @@ export default class GoodsCustomView extends React.Component {
                 {
                     showMore.visible ?
                         <TouchableWithoutFeedback onPress={()=> {
-                                topicAdOnPress(data,showMore)
+                            let {sgscm, sgspm} = data;
+                            sgspm = sgspm+ '_'+ (products.length+1);
+                                topicAdOnPress(data,showMore, null, '', {sgscm, sgspm} )
                         }}>
                             <View style = {[style,{alignItems: 'center', justifyContent: 'center'}]}>
                                 <Image source={shouye_icon_gengduo}
@@ -118,7 +120,7 @@ export default class GoodsCustomView extends React.Component {
                 style2.marginTop = 0;
             }
             return(
-                <TouchableWithoutFeedback onPress={()=> {this.gotoProduceDetail(item)}}>
+                <TouchableWithoutFeedback onPress={()=> {this.gotoProduceDetail(item, i)}}>
                     <View style = {[style, style2]}>
                         {this.renderImage(data, item, style.height)}
                         <View style={{flex: 1, marginHorizontal: autoSizeWidth(10)}}>
@@ -187,7 +189,7 @@ export default class GoodsCustomView extends React.Component {
                         style2.marginTop = 0;
                     }
                     return(
-                        <TouchableWithoutFeedback onPress={()=> {this.gotoProduceDetail(item)}}>
+                        <TouchableWithoutFeedback onPress={()=> {this.gotoProduceDetail(item, i)}}>
                             <View style = {[style,style2]}>
                                 {this.renderImage(data,item, style.width)}
                                 {this.renderTitle(data, item)}
@@ -552,26 +554,24 @@ export default class GoodsCustomView extends React.Component {
         }
         if (data.buyButtonType === 1){
             return (
-                <TouchableWithoutFeedback onPress={() => this.gotoProduceDetail(item)}>
                     <ImageBackground style={shopCarStyle} source={icon_shopCar}/>
-                </TouchableWithoutFeedback>
             )
         }else if(data.buyButtonType === 2){
             return (
-                <TouchableWithoutFeedback onPress={() => this.gotoProduceDetail(item)}>
                     <LinearGradient start={{ x: 1, y: 0 }} end={{ x: 0, y: 0 }}
                                     colors={['#FC5D39', '#FF0050']}
                                     style={buyBtnStyle}
                     >
                         <MRText style={buyTextStyle}>{data.buyButtonText}</MRText>
                     </LinearGradient>
-                </TouchableWithoutFeedback>
             )
         }
     }
 
-    gotoProduceDetail(item){
-        topicAdOnPress({},{ linkType: 1, linkValue:[item.prodCode]}, this.props.p, item.name)
+    gotoProduceDetail(item, i){
+        let {sgscm, sgspm} = this.props.data;
+        sgspm = sgspm+ '_'+ (i+1);
+        topicAdOnPress({},{ linkType: 1, linkValue:[item.prodCode]}, this.props.p, item.name,  {sgscm, sgspm})
 
     }
     //添加购物车

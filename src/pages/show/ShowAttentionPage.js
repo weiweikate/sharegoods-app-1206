@@ -51,13 +51,14 @@ export default class ShowAttentionPage extends React.Component {
         addCartModel.requestProductDetail(product.prodCode, (productIsPromotionPrice) => {
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
                 const { prodCode, name, originalPrice } = addCartModel;
+                const { showNo , userInfoVO } = detail;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
                     'skuCode': skuCode,
-                    'productCode': product.prodCode
+                    'productCode': product.prodCode,
+                    'sgscm':`2.${showNo}.none.none`
                 });
                 /*加入购物车埋点*/
-                const { showNo , userInfoVO } = detail;
                 const { userNo } = userInfoVO || {};
                 track(trackEvent.XiuChangAddToCart, {
                     xiuChangBtnLocation:'1',
@@ -188,7 +189,7 @@ export default class ShowAttentionPage extends React.Component {
                                                spuName: product.name,
                                                author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
                                            });
-                                           routePush(RouterMap.ProductDetailPage, { productCode: product.prodCode ,trackType:3,trackCode:showNo});
+                                           routePush(RouterMap.ProductDetailPage, { productCode: product.prodCode ,trackType:3,trackCode:showNo,sgscm:`2.${showNo}.none.none`});
                                        }}
 
                                        onZanPress={({ nativeEvent }) => {

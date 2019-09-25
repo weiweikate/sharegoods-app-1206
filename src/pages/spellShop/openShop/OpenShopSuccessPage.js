@@ -47,14 +47,14 @@ export default class OpenShopSuccessPage extends BasePage {
                     </Text>
 
                     <View style={{ flexDirection: 'row', marginTop: 79 }}>
-                        <TouchableOpacity activeOpacity={0.5} onPress={this._clickEnterShop} style={styles.btnStyle}>
+                        <TouchableOpacity activeOpacity={0.7} onPress={this._clickEnterShop} style={styles.btnStyle}>
                             <Text style={styles.btnText} allowFontScaling={false}>
                                 进入店铺
                             </Text>
                         </TouchableOpacity>
 
 
-                        <TouchableOpacity activeOpacity={0.8} onPress={this._clickInvite} style={[styles.btnStyle, {
+                        <TouchableOpacity activeOpacity={0.7} onPress={this._clickInvite} style={[styles.btnStyle, {
                             marginLeft: 20,
                             backgroundColor: DesignRule.mainColor
                         }]}>

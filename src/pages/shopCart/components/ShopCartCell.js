@@ -46,7 +46,8 @@ export default class ShopCartCell extends Component {
             <View rowMap={rowMap} style={{
                 backgroundColor: DesignRule.bgColor,
                 paddingBottom: px2dp(1),
-                marginTop: itemData.topSpace
+                marginTop: itemData.topSpace,
+                alignItems:'center'
             }}>
                 <TouchableHighlight onPress={() => {
                     cellClickAction(itemData);
@@ -84,7 +85,7 @@ export default class ShopCartCell extends Component {
                             <View style={styles.priceBgView}>
                                 <UIText value={'￥' + itemData.price} style={styles.priceText}/>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <TouchableOpacity style={styles.rectangle} onPress={() => {
+                                    <TouchableOpacity activeOpacity={0.7} style={styles.rectangle} onPress={() => {
                                         this._reduceProductNum(itemData, rowId);
                                     }}>
                                         <Image style={styles.addOrReduceBtnStyle} source={(itemData.sellStock === 0 ||
@@ -140,6 +141,7 @@ export default class ShopCartCell extends Component {
                                         />
                                     </View>
                                     <TouchableOpacity
+                                        activeOpacity={0.7}
                                         style={styles.rectangle}
                                         onPress={() => {
                                             this._addProductNum(itemData, rowId);
@@ -265,7 +267,6 @@ const styles = StyleSheet.create({
         height: Cell_Height,
         width: ScreenUtils.width - px2dp(30),
         flexDirection: 'row',
-        marginRight: px2dp(15),
         borderRadius: px2dp(5)
     },
     itemSelectImg: { marginLeft: px2dp(10), width: px2dp(18), height: px2dp(18) },

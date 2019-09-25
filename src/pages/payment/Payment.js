@@ -257,7 +257,7 @@ export class Payment {
         });
     };
 
-    checkOrderToPage = (platformOrderNo, title = '') => {
+    checkOrderToPage = (platformOrderNo, title = '', from) => {
         //从订单发起的都是普通支付
         this.checkOrderStatus(platformOrderNo, 0, 0, 0, title).then(result => {
             //零元支付
@@ -278,12 +278,21 @@ export class Payment {
                 return;
             }
             if (result.code === payStatus.payNo) {
-                routePush('payment/PaymentPage', {
-                    amounts: result.unpaidAmount,
-                    platformOrderNo: platformOrderNo,
-                    orderProductList: [],
-                    productTitle: title
-                });
+                if (from === 'order'){
+                    replaceRoute('payment/PaymentPage', {
+                        amounts: result.unpaidAmount,
+                        platformOrderNo: platformOrderNo,
+                        orderProductList: [],
+                        productTitle: title
+                    });
+                } else {
+                    routePush('payment/PaymentPage', {
+                        amounts: result.unpaidAmount,
+                        platformOrderNo: platformOrderNo,
+                        orderProductList: [],
+                        productTitle: title
+                    });
+                }
             } else if (result.code === payStatus.payNeedThrid) {
                 routePush('payment/ChannelPage', {
                     remainMoney: result.unpaidAmount,

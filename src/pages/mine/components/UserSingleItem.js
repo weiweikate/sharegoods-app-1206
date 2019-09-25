@@ -33,7 +33,7 @@ export default class UserSingleItem extends Component {
             marginLeft = 15
         } = this.props;
         return (
-            <TouchableOpacity style={itemHeightStyle ? itemHeightStyle : styles.containerStyle} onPress={onPress}>
+            <TouchableOpacity activeOpacity={0.7} style={itemHeightStyle ? itemHeightStyle : styles.containerStyle} onPress={onPress}>
                 <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}>
                     <View style={{ justifyContent: 'center', marginLeft: marginLeft }}>
                         <Text style={leftTextStyle && leftTextStyle} allowFontScaling={false}>{leftText}</Text>

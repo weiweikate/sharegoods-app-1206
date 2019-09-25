@@ -26,6 +26,10 @@
 #import "WelcomeView.h"
 #import "NetWorkTool.h"
 #import "MBProgressHUD+PD.h"
+#import <AMapFoundationKit/AMapFoundationKit.h>
+#import <AMapLocationKit/AMapLocationKit.h>
+#import <CoreLocation/CLLocationManager.h>
+#import <RNGeolocation/RNGeolocation.h>
 
 @implementation AppDelegate
 
@@ -35,6 +39,7 @@
   [self JR_ConfigVC:application didFinishLaunchingWithOptions:launchOptions];
   [self JR_ConfigAPNS:application didFinishLaunchingWithOptions:launchOptions];
   [self initSensorsAnalyticsWithLaunchOptions:launchOptions];
+  [RNGeolocation initLoaction];
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isNotFrist"]) {
     //添加广告页
     AdView *adView = [AdView new];

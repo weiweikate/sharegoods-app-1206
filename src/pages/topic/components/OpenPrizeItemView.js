@@ -70,7 +70,7 @@ export default class OpenPrizeItemView extends Component {
         const itemData = this.state.itemData;
         return (
             <TouchableOpacity
-                activeOpacity={0.8}
+                activeOpacity={0.7}
                 onPress={() => {
                     this.props.itemClick && this.props.itemClick(itemData);
                 }}
@@ -159,6 +159,7 @@ export default class OpenPrizeItemView extends Component {
                                             borderRadius: 5
                                         }}>
                                         <TouchableOpacity
+                                            activeOpacity={0.7}
                                             onPress={() => {
                                                 this._followAction();
                                             }

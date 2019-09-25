@@ -204,7 +204,7 @@ RCT_EXPORT_METHOD(creatQRCodeImage:(NSString *) QRCodeStr
     if (errorStr) {
       onError(@[errorStr]);
     }else{
-      onSuccess(@[pathStr]);
+      onSuccess(@[pathStr,QRCodeStr]);
     }
   }];
    });
