@@ -12,11 +12,11 @@ import bridge from '../../../utils/bridge';
 
 class ReturnCashModel {
     @observable
-    returnCashInfo = { };
+    returnCashInfo = {};
 
-    @action getReturnCashInfo(item) {
+    @action getReturnCashInfo() {
         MineAPI.getReturnCashInfo().then(res => {
-            console.log('res',res)
+            console.log('getReturnCashInfo',res)
             this.returnCashInfo = res.data;
         }).catch(err => {
             bridge.$toast(err.msg);

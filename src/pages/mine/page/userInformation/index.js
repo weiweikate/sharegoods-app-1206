@@ -11,8 +11,7 @@ import SetWechatPage from './SetWechatPage';
 import WithdrawRecordPage from './WithdrawRecordPage';
 import WithdrawRecordDetailPage from './WithdrawRecordDetailPage';
 import CashRewardAccountPage from './CashRewardAccountPage';
-
-
+import ReturnCashRulePage from './ReturnCashRulePage';
 
 export default {
     moduleName: 'userInformation',    //模块名称
@@ -28,6 +27,7 @@ export default {
         SetWechatPage,
         WithdrawRecordPage,
         WithdrawRecordDetailPage,
-        CashRewardAccountPage
+        CashRewardAccountPage,
+        ReturnCashRulePage
     }
 };

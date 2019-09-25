@@ -8,5 +8,6 @@ const userInfoImg = {
     IDcard_persion: require('./IDcard_persion.png'),
     questionImage_gray: require('./questionImage_gray.png'),
     questionImage_white: require('./questionImage_white.png'),
+    cash_arrow_right: require('./arrow_right.png'),
 };
 export default userInfoImg;
