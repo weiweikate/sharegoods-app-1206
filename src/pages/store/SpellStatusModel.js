@@ -20,7 +20,7 @@ class SpellStatusModel {
     @action requestHome = () => {
         SpellShopApi.app_store_user_store().then((data) => {
             this.loadingState = PageLoadingState.success;
-            this.storeCode = (data.data || {}).storeCode;
+            this.storeCode = data.data;
             this.errorCode = null;
         }).catch(e => {
             if (e.code === 9000 || 31412 || 31407) {
