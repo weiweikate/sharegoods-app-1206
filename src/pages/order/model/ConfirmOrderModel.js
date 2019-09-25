@@ -6,7 +6,7 @@ import bridge from '../../../utils/bridge';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import RouterMap, { navigateBack, routePop, routePush } from '../../../navigation/RouterMap';
+import RouterMap, { routePop, routePush } from '../../../navigation/RouterMap';
 import { payment } from '../../payment/Payment';
 import API from '../../../api';
 import MineAPI from '../../mine/api/MineApi';
@@ -31,7 +31,7 @@ class ConfirmOrderModel {
     addressData = {};
     isNoAddress = false;
     @observable
-    addressModalShow = true;
+    addressModalShow = false;
     @observable
     addressList = [];
 
@@ -83,6 +83,9 @@ class ConfirmOrderModel {
     @action
     selectAddressId(addressData) {
         let addressId = addressData.id || '';
+        if (addressId && addressId === this.addressId){
+            return;
+        }
         addressId = addressId + '';
         this.addressId = addressId;
         this.addressData = addressData;
@@ -219,7 +222,7 @@ class ConfirmOrderModel {
     makeSureProduct_selectDefaltAddress(){
         let addressData = this.orderParamVO.address
         //不存在街道code，直接请求
-        if (!addressData || !addressData.areaCode) {
+        if (!addressData || !addressData.areaCode || this.isAllVirtual) {
             return this.makeSureProduct_selectDefaltCoupon(this.orderParamVO.couponsId)
         }
         //选择了收货地址
@@ -235,10 +238,38 @@ class ConfirmOrderModel {
         MineAPI.queryAddrList().then((data)=> {
             data = data.data || [];
             if (data.length === 0){
-
-            } else {
+                return;
+            }
+            data = data.filter((item) => {
+                return addressData.areaCode == item.areaCode;
+            })
+            if (data.length === 1){
+                let addressId = data[0].id || '';
+                addressId = addressId + '';
+                this.addressId = addressId;
+                this.addressData = addressData;
+                this.tokenCoin = 0;
+            } else if (data.length > 1) {
                 this.addressList = data;
                 this.addressModalShow = true;
+            }else {
+                Alert.alert('', '您在浏览商品中选择了新的收货地址，是否添加新地址？',
+                    [{
+                        text: '取消', onPress: () => {
+                        }
+                    },
+                        {
+                            text: '添加', onPress: () => {
+                                routePush(RouterMap.AddressEditAndAddPage, {
+                                    callBack: (json) => {
+                                        this.selectAddressId(json);
+                                    },
+                                    from: 'add'
+                                });
+                            }
+                        }
+                    ]);
+
             }
         }).finally(()=> {
             this.makeSureProduct_selectDefaltCoupon(this.orderParamVO.couponsId)
@@ -322,7 +353,7 @@ class ConfirmOrderModel {
             Alert.alert('提示', err.msg, [
                 {
                     text: '确定', onPress: () => {
-                        navigateBack();
+                        routePop();
                     }
                 }
             ]);

@@ -217,8 +217,8 @@ export default class ProductDetailPage extends BasePage {
                     };
                 });
                 this.$navigate(RouterMap.ConfirOrderPage, {
-                    address: paramAddressItem,
                     orderParamVO: {
+                        address: paramAddressItem,
                         orderType: 1,
                         source: 2,
                         orderProducts: [{
@@ -251,9 +251,8 @@ export default class ProductDetailPage extends BasePage {
                 spec: (propertyValues || '').replace(/@/g, '-')
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
-                address: paramAddressItem,
                 orderParamVO: {
-                    orderType: 99,
+                    address: paramAddressItem,
                     orderProducts: orderProducts,
                     source: parseInt(type) === 9 ? 4 : 2,
                     couponsId: parseInt(couponId)
@@ -280,9 +279,9 @@ export default class ProductDetailPage extends BasePage {
                 spec: (propertyValues || '').replace(/@/g, '-')
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
-                address: paramAddressItem,
                 orderParamVO: {
                     bizTag: 'group',
+                    address: paramAddressItem,
                     groupData: {
                         isSponsor: StringUtils.isEmpty(this.groupItem),
                         sponsor: initiatorUserName
