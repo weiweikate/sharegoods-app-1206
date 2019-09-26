@@ -13,6 +13,7 @@ import StringUtils from '../../../utils/StringUtils';
 export class AddCapacityPriceModel {
     @observable loadingState = PageLoadingState.loading;
     @observable dataList = [];
+    @observable canBuyExpandGoodsNum = 0;
 
     @computed get selectedList() {
         return this.dataList.filter((item) => {
@@ -34,15 +35,21 @@ export class AddCapacityPriceModel {
         }, 0);
     }
 
+    @computed get canBuy() {
+        const leavePerson = this.canBuyExpandGoodsNum - this.totalPerson;
+        return (leavePerson > 0) && (this.totalPerson > 0);
+    }
+
     requestList = () => {
         SpellShopApi.expand_goodsList().then((data) => {
-            const dataTemp = data.data || {};
-            dataTemp.forEach((item) => {
+            let { canBuyExpandGoodsNum, expandGoodsList } = data.data || {};
+            expandGoodsList.forEach((item) => {
                 item.amount = 0;
                 item.isSelected = false;
             });
             this.loadingState = PageLoadingState.success;
-            this.dataList = dataTemp;
+            this.dataList = expandGoodsList;
+            this.canBuyExpandGoodsNum = canBuyExpandGoodsNum;
         }).catch(() => {
             this.loadingState = PageLoadingState.fail;
         });

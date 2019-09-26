@@ -17,6 +17,8 @@ import { observer } from 'mobx-react';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import LinearGradient from 'react-native-linear-gradient';
 import RouterMap, { routePush } from '../../../../navigation/RouterMap';
+import SpellShopApi from '../../api/SpellShopApi';
+import bridge from '../../../../utils/bridge';
 
 const { selectedImg, unSelectedImg } = res.addCapacity;
 
@@ -136,32 +138,38 @@ const bottomHeight = 54;
 export class PriceBottomView extends Component {
 
     _bottomAction = () => {
-        const { selectedList } = this.props.addCapacityPriceModel;
-        const orderProducts = selectedList.map((item) => {
-            const { skuCode, amount, goodsImage, goodsName, salePrice, specs } = item;
-            return {
-                skuCode: skuCode,
-                productName: goodsName,
-                specImg: goodsImage,
-                quantity: amount,
-                productType: 3,
-                activityCode: '',
-                batchNo: 1,
-                unitPrice: salePrice,
-                spec: specs
-            };
-        });
-        routePush(RouterMap.ConfirOrderPage, {
-            orderParamVO: {
-                orderProducts: orderProducts,
-                source: 2
-            }
+        const { selectedList, totalPerson } = this.props.addCapacityPriceModel;
+        SpellShopApi.verifyExpandOrderParams({ buyNum: totalPerson }).then(() => {
+            const orderProducts = selectedList.map((item) => {
+                const { skuCode, amount, goodsImage, goodsName, salePrice, specs } = item;
+                return {
+                    skuCode: skuCode,
+                    productName: goodsName,
+                    specImg: goodsImage,
+                    quantity: amount,
+                    productType: 3,
+                    activityCode: '',
+                    batchNo: 1,
+                    unitPrice: salePrice,
+                    spec: specs
+                };
+            });
+            routePush(RouterMap.ConfirOrderPage, {
+                orderParamVO: {
+                    orderProducts: orderProducts,
+                    source: 2
+                }
+            });
+        }).catch((e) => {
+            bridge.$toast(e.msg);
         });
     };
 
     render() {
         const { addCapacityPriceModel } = this.props;
-        const { totalPerson, totalMoney } = addCapacityPriceModel;
+        const { totalPerson, totalMoney, canBuyExpandGoodsNum, canBuy } = addCapacityPriceModel;
+        const leavePerson = canBuyExpandGoodsNum - totalPerson;
+        const colors = canBuy ? ['#FC5D39', '#FF0050'] : ['#FFCDDC', '#FFDFD8'];
         return (
             <View style={stylesBottom.bottomView}>
                 <View style={stylesBottom.container}>
@@ -170,18 +178,18 @@ export class PriceBottomView extends Component {
                             已选扩容{totalPerson}人
                         </MRText>
                         <MRText style={{ fontSize: 13, color: DesignRule.textColor_redWarn }}>
-                            最高可扩容10000人
+                            {leavePerson > 0 ? `还可扩容${leavePerson}人` : `最高可扩容${canBuyExpandGoodsNum}人`}
                         </MRText>
                     </View>
                     <View style={{ flex: 1 }}/>
                     <MRText style={{ fontSize: 12, color: DesignRule.textColor_mainTitle }}>合计：
                         <MRText style={{ fontSize: 13, color: DesignRule.textColor_redWarn }}>¥{totalMoney}</MRText>
                     </MRText>
-                    <NoMoreClick onPress={this._bottomAction}>
+                    <NoMoreClick onPress={this._bottomAction} disabled={!canBuy}>
                         <LinearGradient style={stylesBottom.LinearGradient}
                                         start={{ x: 0, y: 0 }}
                                         end={{ x: 1, y: 0 }}
-                                        colors={['#FC5D39', '#FF0050']}>
+                                        colors={colors}>
                             <MRText style={{ fontSize: 14, color: 'white' }}>
                                 立即购买
                             </MRText>
