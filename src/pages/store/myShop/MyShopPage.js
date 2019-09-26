@@ -279,7 +279,7 @@ export default class MyShopPage extends BasePage {
     _render() {
         const {
             name, headUrl, profile, storeCode, storeTotalBonus,
-            roleType, totalBonusMoney, buildTime, joinTime
+            roleType, storeUserBonus, buildTime, joinTime
         } = this.MyShopDetailModel.storeData;
         return (
             <View style={styles.container}>
@@ -306,7 +306,7 @@ export default class MyShopPage extends BasePage {
                     <View>
                         <InfoRow icon={RmbIcon} title={'店铺已完成奖励总额'} desc={`${storeTotalBonus || 0}元`}/>
                         {isNoEmpty(roleType) &&
-                        <InfoRow icon={system_charge} title={'个人已获得奖励'} desc={`${totalBonusMoney || 0}元`}/>}
+                        <InfoRow icon={system_charge} title={'个人已获得奖励'} desc={`${storeUserBonus || 0}元`}/>}
                         <InfoRow icon={QbIcon} title={'店铺成立时间'}
                                  desc={buildTime || ''}/>
                         {isNoEmpty(roleType) &&
