@@ -439,7 +439,7 @@ export default class MinePage extends BasePage {
 
     renderLevelName = () => {
         const {currentUserState} = this.state;
-        let data = !EmptyUtils.isEmpty(currentUserState) ? currentUserState : vipStatus.beVIP;
+        let data = !EmptyUtils.isEmpty(currentUserState) && vipStatus[currentUserState] ? vipStatus[currentUserState] : vipStatus.beVIP;
         let beVip = data && data.title === 'beVIP';
         console.log('currentUserState',currentUserState)
         return (
