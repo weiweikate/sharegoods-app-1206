@@ -133,7 +133,7 @@ export default class AddressModal extends React.Component {
                                             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                                             colors={['#FC5D39', '#FF0050']}
                             >
-                                <MRText style={{fontSize:  ScreenUtils.autoSizeWidth(13), color: 'white'}}>确定</MRText>
+                                <MRText style={{fontSize:  ScreenUtils.autoSizeWidth(13), color: 'white'}}>切换</MRText>
                             </LinearGradient>
                         </TouchableWithoutFeedback>
                     </View>
