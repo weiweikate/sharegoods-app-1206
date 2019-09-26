@@ -34,6 +34,7 @@ import RouterMap from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import TaskView from '../view/TaskView';
 import { mineTaskModel } from '../model/TaskModel';
+import {SafeAreaView} from 'react-navigation';
 
 const { px2dp } = ScreenUtils;
 
@@ -565,7 +566,7 @@ export default class SignInPage extends BasePage {
     _render() {
 
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <ScrollView
                     onScroll={this._onScroll}
                     scrollEventThrottle={30}
@@ -582,7 +583,7 @@ export default class SignInPage extends BasePage {
                 {this.navBackgroundRender()}
                 {this.navRender()}
                 {this._signModalRender()}
-            </View>
+            </SafeAreaView>
         );
     }
 }
