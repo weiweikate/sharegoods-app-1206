@@ -36,8 +36,7 @@ export default class ShopPageSettingPage extends BasePage {
     // 店铺管理
     _managerShop = () => {
         this.$navigate('store/shopSetting/SetShopNamePage', {
-            storeData: this.state.storeData,
-            myShopCallBack: this.params.myShopCallBack
+            storeData: this.state.storeData
         });
     };
 

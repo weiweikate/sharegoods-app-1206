@@ -13,7 +13,7 @@ class SpellStatusModel {
 
     @observable loadingState = PageLoadingState.loading;
     @observable netFailedInfo = {};
-    //31407 可以看列表  31412没权限
+    //31412没权限
     @observable errorCode = null;
     @observable storeCode = null;
 
@@ -23,7 +23,7 @@ class SpellStatusModel {
             this.storeCode = data.data;
             this.errorCode = null;
         }).catch(e => {
-            if (e.code === 9000 || 31412 || 31407) {
+            if (e.code === 9000 || 31412) {
                 this.loadingState = PageLoadingState.success;
             } else {
                 this.loadingState = PageLoadingState.fail;

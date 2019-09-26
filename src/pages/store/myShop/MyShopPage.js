@@ -170,8 +170,7 @@ export default class MyShopPage extends BasePage {
         const items = canOpenShop ? ['分享店铺', '拆分开店', '举报店铺', '退出店铺'] : ['分享店铺', '举报店铺', '退出店铺'];
         if (roleType === 0) {
             this.$navigate('store/shopSetting/ShopPageSettingPage', {
-                storeData: this.MyShopDetailModel.storeData,
-                myShopCallBack: this.MyShopDetailModel.requestAppStore
+                storeData: this.MyShopDetailModel.storeData
             });
         } else {
             this.actionSheetRef.show({ items }, (item) => {
@@ -221,7 +220,9 @@ export default class MyShopPage extends BasePage {
     // 点击店铺公告
     _clickShopAnnouncement = () => {
         const { storeData } = this.MyShopDetailModel;
-        this.$navigate('store/shopSetting/AnnouncementListPage', { storeData: storeData });
+        this.$navigate('store/shopSetting/AnnouncementListPage', {
+            storeData: storeData
+        });
     };
 
     // 点击全部成员
@@ -278,7 +279,7 @@ export default class MyShopPage extends BasePage {
     _render() {
         const {
             name, headUrl, profile, storeCode, storeTotalBonus,
-            roleType, totalBonusMoney, buildTime, joinTime
+            roleType, storeUserBonus, buildTime, joinTime
         } = this.MyShopDetailModel.storeData;
         return (
             <View style={styles.container}>
@@ -305,7 +306,7 @@ export default class MyShopPage extends BasePage {
                     <View>
                         <InfoRow icon={RmbIcon} title={'店铺已完成奖励总额'} desc={`${storeTotalBonus || 0}元`}/>
                         {isNoEmpty(roleType) &&
-                        <InfoRow icon={system_charge} title={'个人已获得奖励'} desc={`${totalBonusMoney || 0}元`}/>}
+                        <InfoRow icon={system_charge} title={'个人已获得奖励'} desc={`${storeUserBonus || 0}元`}/>}
                         <InfoRow icon={QbIcon} title={'店铺成立时间'}
                                  desc={buildTime || ''}/>
                         {isNoEmpty(roleType) &&

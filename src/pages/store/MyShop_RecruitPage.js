@@ -114,7 +114,7 @@ export default class MyShop_RecruitPage extends BasePage {
             return <MyShopPage wayToPinType={this.params.wayToPinType || 0}
                                navigation={this.props.navigation}
                                storeCode={storeCode}/>;
-        } else if (errorCode === 31407) {
+        } else if (errorCode === null) {
             return <RecommendPage navigation={this.props.navigation} isHome={true}/>;
         } else {
             return <NoAccessPage/>;

@@ -117,7 +117,6 @@ export default class SetShopNamePage extends BasePage {
             }).then(() => {
                 bridge.hiddenLoading();
                 this.$toastShow('修改成功');
-                this.params.myShopCallBack && this.params.myShopCallBack();
                 this.$navigateBack();
             }).catch((error) => {
                 bridge.hiddenLoading();
