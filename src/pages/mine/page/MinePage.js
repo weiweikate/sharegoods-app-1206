@@ -92,7 +92,7 @@ const eumState={
 const { px2dp, headerHeight, statusBarHeight, getImgHeightWithWidth } = ScreenUtils;
 const headerBgSize = { width: 375, height: 237 };
 const scaleHeaderSize = getImgHeightWithWidth(headerBgSize);
-// const halfScaleHeaderSize = scaleHeaderSize / 2;
+const halfScaleHeaderSize = scaleHeaderSize / 2;
 // const offset = scaleHeaderSize - headerHeight;
 @observer
 export default class MinePage extends BasePage {
@@ -267,7 +267,7 @@ export default class MinePage extends BasePage {
     _onScroll = (event) => {
         this.offsetY = event.nativeEvent.contentOffset.y;
 
-        if (this.offsetY <= 0) {
+        if (this.offsetY <= halfScaleHeaderSize ) {
             if (!this.state.changeHeader) {
                 this.setState({
                     changeHeader: true
