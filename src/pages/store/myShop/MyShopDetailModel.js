@@ -18,6 +18,7 @@ export default class MyShopDetailModel {
     @observable bottomBannerList = [];
     @observable storeData = {};
     @observable storeUsers = [];
+    @observable storeUserCount = 0;
     wayToPinType = '';
 
     /*网络*/
@@ -47,7 +48,9 @@ export default class MyShopDetailModel {
     requestHomePageList = () => {
         const { storeCode } = this.storeData;
         SpellShopApi.app_store_homePageList({ storeCode }).then((data) => {
-            this.storeUsers = data.data || [];
+            const { storeUserCount, storeUserList } = data.data || {};
+            this.storeUsers = storeUserList || [];
+            this.storeUserCount = storeUserCount;
         });
     };
 

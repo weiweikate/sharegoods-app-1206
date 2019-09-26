@@ -61,9 +61,8 @@ export default class SetShopNamePage extends BasePage {
     componentDidMount() {
         const { storeData } = this.params;
         if (storeData) {
-            const { storeCode } = storeData;
             this.$loadingShow();
-            SpellShopApi.app_store({ pathValue: `/${storeCode}` }).then((data) => {
+            SpellShopApi.app_store_master().then((data) => {
                 let dataTemp = data.data || {};
                 this.setState({
                     storeHeadUrlOrigin: dataTemp.headUrl,
