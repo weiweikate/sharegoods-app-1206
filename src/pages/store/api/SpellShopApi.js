@@ -23,6 +23,8 @@ const api = {
     /**店铺管理**/
     //查看店铺path
     app_store: ['/app/store', { method: 'get' }],
+    //查看店长信息
+    app_store_master: ['/app/store/master', { method: 'get' }],
     //修改店铺信息
     app_store_update: ['/app/store/update'],
     //请求加入店铺
