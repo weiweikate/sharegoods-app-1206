@@ -449,7 +449,7 @@ export default class MinePage extends BasePage {
                     style={{alignItems: 'center'}}
                     onPress={() => {
                         if (beVip) {
-                            this.$navigate(RouterMap.HtmlPage, {uri: '/custom/:'});
+                            this.$navigate(RouterMap.HtmlPage, {uri: '/custom/:ZDYZT201909251743341'});
                         } else {
                             this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
                         }
@@ -464,7 +464,7 @@ export default class MinePage extends BasePage {
                         borderRadius: 10
                     }} source={vipBg}>
                         <View style={{flexDirection: 'row', marginLeft: 33, alignItems: 'center'}}>
-                            <Text style={{color: 'white', fontSize: 12}}>{beVip ? '成为' : ''}</Text>
+                            <Text style={{color: 'white', fontSize: 12}}>{beVip ? '开启' : ''}</Text>
                             <Image style={{width: data.width, height: data.height}}
                                    source={data.img}/>
                             <Text style={{color: 'white', fontSize: 12}}>{data.text}</Text>
