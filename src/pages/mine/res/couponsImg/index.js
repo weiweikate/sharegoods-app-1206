@@ -5,6 +5,7 @@ const couponsImg = {
     youhuiquan_bg_drop_unUser: require('./drop_unUser.png'),
     youhuiquan_bg_drop_user: require('./drop_user.png'),
     youhuiquan_bg_remark: require('./youhuiquan_remark.png'),
+    youhuiquan_bg_arrow: require('./youhuiquan_arrow.png'),
     youhuiquan_icon_jia_nor: require('./youhuiquan_icon_jia_nor.png'),
     youhuiquan_icon_jian_nor: require('./youhuiquan_icon_jian_nor.png'),
     youhuiquan_icon_topArrow: require('./youhuiquan_icon_zhankai_nor.png'),

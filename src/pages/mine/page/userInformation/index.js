@@ -10,7 +10,7 @@ import GongMallContractPage from './GongMallContractPage';
 import SetWechatPage from './SetWechatPage';
 import WithdrawRecordPage from './WithdrawRecordPage';
 import WithdrawRecordDetailPage from './WithdrawRecordDetailPage';
-import CashRewardAccountPage from './CashRewardAccountPage';
+import ReturnCashAccountPage from './ReturnCashAccountPage';
 import ReturnCashRulePage from './ReturnCashRulePage';
 
 export default {
@@ -27,7 +27,7 @@ export default {
         SetWechatPage,
         WithdrawRecordPage,
         WithdrawRecordDetailPage,
-        CashRewardAccountPage,
+        ReturnCashAccountPage,
         ReturnCashRulePage
     }
 };
