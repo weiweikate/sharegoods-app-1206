@@ -60,7 +60,7 @@ class ConfirmOrderModel {
         this.err = null;
         this.canUseCou = false;
 
-        this.addressId = '';
+        // this.addressId = '';每次保留上次的地址
         this.message = '';
         this.tokenCoin = 0;
         this.orderParamVO = {};
@@ -237,19 +237,34 @@ class ConfirmOrderModel {
         //进行匹配区的收货地址
         MineAPI.queryAddrList().then((data)=> {
             data = data.data || [];
-            if (data.length === 0){
+            if (data.length === 0){//只有默认地址或没有地址
                 return;
             }
+
+            let flag = false;
+
             data = data.filter((item, index) => {
-                if (index === 0){
+                if (this.addressId){//当前选择的地址，过滤
+                    if (this.addressId == item.id ){
+                        flag = true;
+                        return false;
+                    }
+                } else if (index === 0){
+                    if (addressData.areaCode == item.areaCode){
+                        flag = true;
+                    }
                     return false;
                 }
                 return addressData.areaCode == item.areaCode;
             })
+
             if (data.length !== 0) {
                 this.addressList = data;
                 this.addressModalShow = true;
             }else {
+                if (flag){
+                    return;
+                }
                 Alert.alert('', '您在浏览商品中选择了新的收货地址，是否添加新地址？',
                     [{
                         text: '取消', onPress: () => {

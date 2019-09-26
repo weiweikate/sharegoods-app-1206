@@ -226,12 +226,12 @@ export class ProductDetailAddressModel {
     /*获取收货地址*/
     requestAddress = () => {
         MineAPI.queryAddrList().then((data) => {
+            this.addressList = data.data || [];
             for (const item of this.addressList) {
                 if (item.defaultStatus === 1) {
                     this.paramAddressItem = item;
                 }
             }
-            this.addressList = data.data || [];
         });
     };
 }
