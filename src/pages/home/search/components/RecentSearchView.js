@@ -41,7 +41,7 @@ export default class RecentSearchView extends Component {
                 textshow = textshow.length > 10 ? textshow.substr(0, 10) + '...' : textshow;
                 tagList.push(
                     <View key={index}>
-                        <TouchableOpacity style={styles.btn}
+                        <TouchableOpacity activeOpacity={0.7} style={styles.btn}
                                           onPress={() => this.props.clickItemAction(this.props.listData[index], index)}>
                             <Text style={styles.btnText} allowFontScaling={false}>{textshow}</Text>
                         </TouchableOpacity>
@@ -57,7 +57,7 @@ export default class RecentSearchView extends Component {
             <View>
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText} allowFontScaling={false}>历史搜索</Text>
-                    <TouchableOpacity onPress={this.props.clearHistory}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={this.props.clearHistory}>
                         <Image style={styles.image} source={deleteImg}/>
                     </TouchableOpacity>
                 </View>

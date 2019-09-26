@@ -1,9 +1,4 @@
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    ScrollView
-} from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { Component } from 'react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
@@ -99,7 +94,7 @@ export default class SbOpenPrizeHeader extends Component {
             let tempCompoentArr = [];
             topicNavTitleList.map((item, index) => {
                 tempCompoentArr.push(
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this._downItemViewClick(index, item);
                     }} key={index}>
                         <View style={[itemViewStyle.itemBgStyle,

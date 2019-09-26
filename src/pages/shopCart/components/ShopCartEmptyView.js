@@ -14,7 +14,7 @@
 
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { ActivityIndicator, Image, RefreshControl, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Text, View } from 'react-native';
 import DesignRule from '../../../constants/DesignRule';
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -23,8 +23,8 @@ import { MRText } from '../../../components/ui';
 import ShopCartEmptyCell from './ShopCartEmptyCell';
 import res from '../res';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
-import { homeModule } from '../../home/model/Modules';
 import RouterMap from '../../../navigation/RouterMap';
+import HeaderLoading from '../../../comm/components/lottieheader/ListHeaderLoading';
 
 const { px2dp } = ScreenUtils;
 const { shopCartNoGoods } = res;
@@ -81,7 +81,7 @@ export default class ShopCartEmptyView extends Component {
         }
     };
     _onRefresh = () => {
-        shopCartEmptyModel.getRecommendProducts(true);
+        shopCartEmptyModel.getRecommendProducts(true,true);
     };
     _onEndReached = () => {
         shopCartEmptyModel.getRecommendProducts(false);
@@ -132,9 +132,10 @@ export default class ShopCartEmptyView extends Component {
                         marginLeft: px2dp(15),
                         marginRight: px2dp(15)
                     }}
-                    refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
-                                                    onRefresh={this._onRefresh.bind(this)}
-                                                    colors={[DesignRule.mainColor]}/>}
+                    refreshControl={<HeaderLoading
+                        isRefreshing={shopCartEmptyModel.isRefreshing}
+                        onRefresh={()=>{this._onRefresh()}}
+                    />}
                     onEndReachedThreshold={ScreenUtils.height / 3}
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}

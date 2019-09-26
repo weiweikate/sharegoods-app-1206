@@ -137,14 +137,12 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
 
     @Override
     public void onHostResume() {
-        // We show the dialog again when the host resumes
-//        showOrUpdate();
+
     }
 
     @Override
     public void onHostPause() {
-        // We dismiss the dialog and reconstitute it onHostResume
-        dismiss();
+
     }
 
     @Override

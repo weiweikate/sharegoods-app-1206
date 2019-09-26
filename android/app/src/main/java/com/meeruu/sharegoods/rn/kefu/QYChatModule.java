@@ -210,7 +210,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
          * 三个参数分别为：来源页面的url，来源页面标题，来源页面额外信息（保留字段，暂时无用）。
          * 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
          */
-        ConsultSource source = new ConsultSource("mine/helper", title, "");
+        ConsultSource source = new ConsultSource("mine/helper", params.getString("sourceTitle"), "");
         source.vipLevel = userLevel;
         source.custom = chatType + "";
         if (params.hasKey("shopId")) {

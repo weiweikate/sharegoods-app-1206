@@ -51,8 +51,9 @@ class AfterSaleServicePage extends BasePage {
             imageArr: this.params.isEdit === true ? this.params.imgList : [],                           //选择的图片数组
             /** 编辑申请需要的售后详情id*/
             returnProductId: this.params.orderProductNo,
-            applyRefundAmount: this.params.isEdit === true ? this.params.refundPrice : 0,//退款金额,
-            editable: false
+            applyRefundAmount: this.params.isEdit === true ? this.params.applyRefundAmount : 0,//退款金额,
+            editable: false,
+            addressStr: '',
             /** 换货需要的数据*/
             // selectionData: {}, //规格数据
             // exchangeSpec: this.params.exchangeSpec,
@@ -222,13 +223,31 @@ class AfterSaleServicePage extends BasePage {
     renderOrderTime = () => {
         return (
             <View>
-                {/*<View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>*/}
-                {/*<UIText value={'下单时间：' + DateUtils.getFormatDate(this.state.productData.orderCreateTime / 1000)}*/}
-                {/*style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>*/}
-                {/*</View>*/}
-                {/*{this.renderWideLine()}*/}
-                <TouchableOpacity style={{
-                    height: 48,
+                {this.state.pageType === 2? <TouchableOpacity activeOpacity={0.7} style={{
+                    minHeight: 56,
+                    backgroundColor: 'white',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: 5,
+                    marginBottom: 10
+                }} onPress={() => this.selectAddress()}>
+                    <UIText value={'换货地址'}
+                            style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
+                    <UIText style={{
+                        color:  DesignRule.textColor_mainTitle,
+                        fontSize: 13,
+                        marginLeft: 10,
+                        flex: 1
+                    }} value={this.state.addressStr}/>
+                        <UIText style={{
+                            color:  DesignRule.textColor_hint,
+                            fontSize: 13,
+                            marginRight: 5
+                        }} value={ '去修改'}/>
+                        <UIImage resizeMode={'contain'} source={arrow_right} style={{ height: 12, marginRight: 15 }}/>
+                </TouchableOpacity>: null }
+                <TouchableOpacity activeOpacity={0.7} style={{
+                    height: 40,
                     backgroundColor: 'white',
                     justifyContent: 'space-between',
                     flexDirection: 'row',
@@ -321,6 +340,7 @@ class AfterSaleServicePage extends BasePage {
     renderCommit = () => {
         return (
             <TouchableOpacity
+                activeOpacity={0.7}
                 style={{
                     backgroundColor: DesignRule.mainColor,
                     justifyContent: 'center',
@@ -377,6 +397,29 @@ class AfterSaleServicePage extends BasePage {
             exchangeSpecImg: exchangeSpecImg
         });
     };
+
+    selectAddress(){
+        this.$navigate('mine/address/AddressManagerPage', {
+            from: 'order',
+            currentId: this.addressId,
+            callBack: (json) => {
+               this.handleAddressData(json)
+            }
+        });
+    }
+
+    handleAddressData=(json)=>{
+        json = json || {}
+        this.addressId = json.id;
+        this.addressData = json;
+        let { province, city, area, street, address } = this.addressData;
+        province = province || '';
+        city = city || '';
+        area = area || '';
+        street = street || '';
+        address = address || '';
+        this.setState({addressStr: province+city+area+street+address})
+    }
 
     _render() {
         return (
@@ -443,6 +486,7 @@ class AfterSaleServicePage extends BasePage {
             let productData = result.data || {};
             let status = productData.status;
             let editable = true;
+            this.handleAddressData(productData.address)
             let payAmount = productData.payAmount || 0;
             if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
                 editable = false;
@@ -529,6 +573,9 @@ class AfterSaleServicePage extends BasePage {
             return;
         }
         let { payAmount } = this.state.productData;
+        let { receiver, receiverPhone, province, city, area, street, address, provinceCode, cityCode, areaCode } = this.addressData;
+        let _address = {receiver, receiverPhone, province, city, area, street, address, provinceCode, cityCode, areaCode};
+        params.address = _address;
 
         /** 修改申请*/
         if (this.params.isEdit) {

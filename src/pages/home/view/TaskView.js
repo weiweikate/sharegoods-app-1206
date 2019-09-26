@@ -144,7 +144,7 @@ class TaskItem extends React.Component {
                                 numberOfLines={1}>{memo}</MRText>
                     </View>
                     {btn}
-                    {item.type === 2 ? <TouchableOpacity style={{
+                    {item.type === 2 ? <TouchableOpacity activeOpacity={0.7} style={{
                         height: autoSizeWidth(50),
                         width: autoSizeWidth(20),
                         marginLeft: autoSizeWidth(5),
@@ -177,7 +177,7 @@ class TaskItem extends React.Component {
                 title = item.status === TaskStatusUndone ? '签到' : '领奖';
             }
             return (
-                <TouchableOpacity style={{
+                <TouchableOpacity activeOpacity={0.7} style={{
                     width: ScreenUtils.autoSizeWidth(63),
                     height: ScreenUtils.autoSizeWidth(35),
                     marginTop: ScreenUtils.autoSizeWidth(5)
@@ -381,7 +381,7 @@ export default class TaskView extends React.Component {
                 break;
         }
         return (
-            <TouchableOpacity style={{
+            <TouchableOpacity activeOpacity={0.7} style={{
                 width: autoSizeWidth(47),
                 height: autoSizeWidth(65),
                 alignItems: 'center',
@@ -420,7 +420,7 @@ export default class TaskView extends React.Component {
 
     renderBtn() {
         return (
-            <TouchableOpacity style={{
+            <TouchableOpacity activeOpacity={0.7} style={{
                 height: autoSizeWidth(30),
                 justifyContent: 'center',
                 alignItems: 'center',

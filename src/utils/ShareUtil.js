@@ -150,10 +150,38 @@ const showSharedetailDataType = (type,download = false)=>{
         }
     }
     return '';
-}
+};
+
+const QRCodeAppendPageSource = (QRCode) => {
+    let str = QRCode;
+    if (StringUtils.isNoEmpty(str)&& str.indexOf('pageSource') === -1) {
+        if (str.search(/\?/) === -1) {
+            str = str + "?pageSource=7";
+        } else {
+            str = str + "&pageSource=7";
+        }
+    }
+    return str;
+};
+
+const longChangeShortUrl = (QRCode, callBack = () => {
+}) => {
+    userApi.shareShortUrl({'longUrl': QRCode, 'expireTime': 0})
+        .then(res => {
+            if (res && res.data) {
+                callBack(res.data);
+            } else {
+                callBack(QRCode);
+            }
+        }).catch(error => {
+        callBack(QRCode);
+    });
+};
 
 export default {
     onShare,
     queryString,
-    showSharedetailDataType
+    showSharedetailDataType,
+    QRCodeAppendPageSource,
+    longChangeShortUrl
 };

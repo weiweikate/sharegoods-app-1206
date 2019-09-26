@@ -53,7 +53,7 @@ export default class PickTicketModal extends Component {
                        visible={this.state.modalVisible}
                        transparent={true}>
                 <View style={styles.containerView}>
-                    <TouchableOpacity style={styles.topCloseBtn} onPress={this._close}/>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.topCloseBtn} onPress={this._close}/>
                     <View style={styles.bottomView}>
                         <View style={styles.bottomTittleView}>
                             <Text style={styles.bottomTittleText}>选择一元优惠券</Text>
@@ -91,7 +91,7 @@ export default class PickTicketModal extends Component {
                             }
 
                         </ScrollView>
-                        <TouchableOpacity style={styles.sureBtn} onPress={() => this._close(true)}>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.sureBtn} onPress={() => this._close(true)}>
                             <Text style={styles.sureText}>确认</Text>
                         </TouchableOpacity>
                     </View>

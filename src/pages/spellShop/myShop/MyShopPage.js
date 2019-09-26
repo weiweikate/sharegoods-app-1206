@@ -30,7 +30,12 @@ import user from '../../../model/user';
 import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
-import { ShopBottomBannerView, ShopCardView, ShopProductItemView } from './components/ShopDetailItemView';
+import {
+    ShopBottomBannerView,
+    ShopCardView,
+    ShopMoneyExplainView,
+    ShopProductItemView
+} from './components/ShopDetailItemView';
 import MyShopDetailModel from './MyShopDetailModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import RouterMap from '../../../navigation/RouterMap';
@@ -74,10 +79,11 @@ export default class MyShopPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity style={{ width: 40, justifyContent: 'center' }}
-                                          onPress={() => {
-                                              this.$navigateBack();
-                                          }}>
+                        <TouchableOpacity
+                            activeOpacity={0.7} style={{ width: 40, justifyContent: 'center' }}
+                            onPress={() => {
+                                this.$navigateBack();
+                            }}>
                             <Image source={NavLeft} style={{ width: 30, height: 30 }}/>
                         </TouchableOpacity> : null}
                 </View>
@@ -94,12 +100,16 @@ export default class MyShopPage extends BasePage {
         if (userStatus === 1) {
             return (
                 <View style={styles.rightBarItemContainer}>
-                    <TouchableOpacity onPress={() => {
-                        this.$navigate(RouterMap.RecommendPage);
-                    }}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => {
+                            this.$navigate(RouterMap.RecommendPage);
+                        }}>
                         <Image style={{ marginRight: 10, width: 18, height: 18 }} source={icons8_Shop_50px}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this._clickSettingItem}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={this._clickSettingItem}>
                         <Image source={myStore ? shezhi : my_Shop_gengduo} style={{ width: 18, height: 18 }}/>
                     </TouchableOpacity>
                 </View>
@@ -161,6 +171,7 @@ export default class MyShopPage extends BasePage {
         this._requestGetById();
         this.MyShopDetailModel.requestShopBanner();
         this.MyShopDetailModel.requestShopProducts();
+        this.MyShopDetailModel.requestBonusTips();
     };
 
     _requestGetById = () => {
@@ -331,7 +342,7 @@ export default class MyShopPage extends BasePage {
         //bonusCount店长个人分红次数
         //totalBonusMoney店长个人已获得分红金
         //managerTotalBonusMoney作为店长的总分红
-        const { totalBonusMoney } = manager;
+        const { totalBonusMoney } = manager || {};
         if (userStatus === 1) {
             return (
                 <View>
@@ -391,17 +402,19 @@ export default class MyShopPage extends BasePage {
             btnText = '店铺已关闭';
         }
 
-        return <TouchableOpacity onPress={this._joinBtnAction}
-                                 disabled={!canJoin}
-                                 style={{
-                                     height: 40,
-                                     width: 150,
-                                     backgroundColor: canJoin ? DesignRule.mainColor : 'rgb(221,109,140)',
-                                     borderRadius: 20,
-                                     marginTop: 30,
-                                     marginBottom: 30,
-                                     alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
-                                 }}>
+        return <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={this._joinBtnAction}
+            disabled={!canJoin}
+            style={{
+                height: 40,
+                width: 150,
+                backgroundColor: canJoin ? DesignRule.mainColor : 'rgb(221,109,140)',
+                borderRadius: 20,
+                marginTop: 30,
+                marginBottom: 30,
+                alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
+            }}>
             <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>{btnText}</Text>
         </TouchableOpacity>;
     };
@@ -428,6 +441,7 @@ export default class MyShopPage extends BasePage {
                 {userStatus === 1 && <ShopCardView/>}
                 <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
+                <ShopMoneyExplainView MyShopDetailModel={this.MyShopDetailModel}/>
                 <MembersRow storeUserList={storeUserList || []}
                             userCount={userCount}
                             userStatus={userStatus}

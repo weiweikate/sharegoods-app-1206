@@ -71,9 +71,8 @@ export default class ListItemView extends PureComponent {
                 <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={()=>{
-                        let type = item.groupStatus != ENUMSTATUS.GROUPSTATUS_SUCCESS && item.groupStatus != ENUMSTATUS.GROUPSTATUS_FAIL
-                        // type 是否拼团中 true 为拼团中，点击跳转，其他不触发
-                        type && onClick && onClick(false, item);
+                        //点击item 跳转到拼团详情页
+                        onClick && onClick(false, item);
                     }}
                 >
                     {item.groupStatus != ENUMSTATUS.GROUPSTATUS_SUCCESS && item.groupStatus != ENUMSTATUS.GROUPSTATUS_FAIL ?
@@ -132,6 +131,7 @@ export default class ListItemView extends PureComponent {
                                                 <Text
                                                     style={{
                                                         marginHorizontal: 4,
+                                                        marginVertical: 2,
                                                         color: 'white',
                                                         fontSize: 10,
                                                     }}>团长</Text>
@@ -148,6 +148,7 @@ export default class ListItemView extends PureComponent {
                                                 color: '#FF0050',
                                                 fontSize: 10,
                                                 marginHorizontal: 4,
+                                                marginVertical: 2,
                                             }}>{item.groupNum}人团</Text>
                                         </View>
                                         : null

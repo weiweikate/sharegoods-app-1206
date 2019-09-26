@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    Image
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import res from '../../res/product';
 import CommModal from '../../../../comm/components/CommModal';
 import { MRText } from '../../../../components/ui';
@@ -47,14 +42,14 @@ export default class SuitExplainModal extends Component {
                        visible={this.state.modalVisible}
                        transparent={true}>
                 <View style={styles.containerView}>
-                    <TouchableOpacity style={styles.topCloseBtn} onPress={this.close}/>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.topCloseBtn} onPress={this.close}/>
                     <View style={styles.bottomView}>
                         <View style={styles.contentView}>
                             <Image source={suitWhyRed} style={styles.img}/>
                             <MRText style={styles.titleText}>{title}</MRText>
                         </View>
                         <MRText style={styles.tipText}>{tip}</MRText>
-                        <TouchableOpacity style={styles.sureBtn} onPress={this.close}>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.sureBtn} onPress={this.close}>
                             <MRText style={styles.sureText}>确定</MRText>
                         </TouchableOpacity>
                     </View>

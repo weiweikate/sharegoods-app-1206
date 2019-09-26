@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, TouchableOpacity, StyleSheet, Alert} from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import user from '../../../../model/user';
@@ -11,7 +11,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 import { PageType } from '../myaccount/JudgePhonePage';
-import SettingModel from "../../model/SettingModel";
+import SettingModel from '../../model/SettingModel';
 import Switch from '../../components/SwitchComponent';
 
 const arrow_right = res.button.arrow_right_black;
@@ -29,6 +29,7 @@ export default class AccountSettingPage extends BasePage {
 
     constructor(props) {
         super(props);
+        console.log('-----' + JSON.stringify(user));
         this.state = {
             phonePwdStatus: PhonePwdStatus.Undefined
         };
@@ -60,7 +61,8 @@ export default class AccountSettingPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPhoneNum(user.phone)}>
+                <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle}
+                                  onPress={() => this._toEditPhoneNum(user.phone)}>
                     <UIText value={'修改手机号'} style={[styles.blackText, { flex: 1 }]}/>
                     <UIText value={user.phone}
                             style={{ fontSize: 13, color: DesignRule.textColor_secondTitle, marginRight: 8 }}/>
@@ -72,7 +74,7 @@ export default class AccountSettingPage extends BasePage {
                     marginLeft: 15,
                     marginRight: 15
                 }}/>
-                <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPwd()}>
+                <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle} onPress={() => this._toEditPwd()}>
                     <UIText value={this.state.phonePwdStatus === 1 ? '设置密码' : '修改密码'} style={styles.blackText}/>
                     <Image source={arrow_right} style={{ height: 12 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
@@ -82,7 +84,7 @@ export default class AccountSettingPage extends BasePage {
                     marginLeft: 15,
                     marginRight: 15
                 }}/>
-                <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPayPwd()}>
+                <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle} onPress={() => this._toEditPayPwd()}>
                     <UIText value={'交易密码设置'} style={styles.blackText}/>
                     <Image source={arrow_right} style={{ height: 12 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
@@ -92,7 +94,8 @@ export default class AccountSettingPage extends BasePage {
                     marginLeft: 15,
                     marginRight: 15
                 }}/>
-                <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditWechat(user.unionid)}>
+                <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle}
+                                  onPress={() => this._toEditWechat(user.unionid)}>
                     <UIText value={'微信账号'} style={[styles.blackText, { flex: 1 }]}/>
                     <UIText value={StringUtils.isEmpty(user.unionid) ? '未绑定' : (user.wechatName || '无昵称')}
                             style={{ fontSize: 13, color: DesignRule.textColor_secondTitle, marginRight: 8 }}/>
@@ -101,10 +104,10 @@ export default class AccountSettingPage extends BasePage {
 
                 {this.renderLine()}
                 <View style={{
-                height: 15,
-                backgroundColor: DesignRule.bgColor,
+                    height: 15,
+                    backgroundColor: DesignRule.bgColor
                 }}/>
-                <TouchableOpacity style={styles.viewStyle}>
+                <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle}>
                     <UIText value={'通过短信联系我'} style={styles.blackText}/>
                     <Switch value={SettingModel.messageState}
                             backgroundActive={'#00D914'}

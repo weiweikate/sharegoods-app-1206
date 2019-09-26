@@ -28,6 +28,7 @@ import productRes from '../../product/res/product';
 import XiuDouResultModal from './XiuDouResultModal';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 const { px2dp } = ScreenUtils;
 const { saleSmallSkill } = productRes.pSacle;
@@ -66,7 +67,7 @@ export default class HomeLimitGoView extends Component {
 
     _tabItem(item, index, isTabActive) {
         const textColor = isTabActive ? 'white' : '#666';
-        return (<TouchableOpacity onPress={() => {
+        return (<TouchableOpacity activeOpacity={0.7} onPress={() => {
             this._onChangeTab(index);
         }}>
             <ImageBackground style={styles.tab}
@@ -93,7 +94,7 @@ export default class HomeLimitGoView extends Component {
     }
 
     _goToDetail(index, value, activityData) {
-        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode });
+        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode,...getSGspm_home(HomeSource.limitGo, index)});
         // 限时购商品点击埋点
         track(trackEvent.SpikeProdClick,
             {
@@ -119,7 +120,8 @@ export default class HomeLimitGoView extends Component {
 
     seeMore() {
         routePush('HtmlPage', {
-            uri: '/spike'
+            uri: '/spike',
+            ...getSGspm_home(HomeSource.limitGo, -1)
         });
     }
 
@@ -151,7 +153,7 @@ export default class HomeLimitGoView extends Component {
                 <View style={{ paddingHorizontal: px2dp(15), flexDirection: 'row', alignItems: 'center' }}>
                     <HomeTitleView title={'限时购'}/>
                     <View style={{ flex: 1 }}/>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.seeMore();
                     }}>
                         <MRText style={{ color: DesignRule.textColor_placeholder, fontSize: px2dp(12) }}>更多></MRText>
@@ -159,7 +161,7 @@ export default class HomeLimitGoView extends Component {
                 </View>
                 {
                     limitGoModule.isShowFreeOrder ?
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             this.openModal();
                         }}>
                             <Image source={res.limitGoHeader}
@@ -304,7 +306,7 @@ const styles = StyleSheet.create({
         marginTop: px2dp(3)
     },
     tab: {
-        minWidth: px2dp(67),
+        minWidth: px2dp(68),
         alignItems: 'center',
         height: px2dp(51)
     },
@@ -312,13 +314,11 @@ const styles = StyleSheet.create({
         height: 0
     },
     time: {
-        color: '#666',
-        fontWeight: '400',
+        fontWeight: 'bold',
         fontSize: 17,
         marginTop: Platform.OS === 'ios' ? 3 : 0
     },
     title: {
-        color: '#666',
         fontSize: 11,
         marginTop: Platform.OS === 'ios' ? 4 : 2
     },

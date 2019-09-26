@@ -4,7 +4,7 @@ import {
     View
 } from 'react-native';
 import {
-    UIText, NoMoreClick
+    UIText, NoMoreClick, MRText
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -29,19 +29,19 @@ export default class ConfirmBottomView extends Component {
                             fontSize: ScreenUtils.px2dp(12),
                             color: DesignRule.textColor_mainTitle
                         }}/>
-                        <UIText
-                            value={'¥'}
-                            style={styles.commitAmountStyle}/>
+
+                        <MRText  style={[styles.commitAmountStyle,{marginRight: ScreenUtils.autoSizeWidth(15)}]}>¥
                         <UIText
                             value={(confirmOrderModel.payInfo.payAmount || '0')}
-                            style={[styles.commitAmountStyle,{fontSize: ScreenUtils.px2dp(18),  marginRight: ScreenUtils.autoSizeWidth(15)}]}/>
+                            style={[styles.commitAmountStyle,{fontSize: ScreenUtils.px2dp(18)}]}/>
+                        </MRText>
 
                     </View>
                     <NoMoreClick
                         onPress={() => {
                                 this.props.commitOrder();
                         }}>
-                        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
+                        <LinearGradient start={{ x: 1, y: 0 }} end={{ x: 0, y: 0 }}
                                         colors={colors}
                                         style={{ alignItems: "center",
                                             justifyContent: 'center',

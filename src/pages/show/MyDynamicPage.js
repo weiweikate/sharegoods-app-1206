@@ -58,6 +58,7 @@ export default class MyDynamicPage extends BasePage {
                     marginTop: ScreenUtils.statusBarHeight
                 }}>
                         <TouchableOpacity
+                            activeOpacity={0.7}
                             style={styles.left}
                             onPress={() => {
                                 this.props.navigation.goBack();

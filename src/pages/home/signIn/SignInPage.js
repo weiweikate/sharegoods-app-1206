@@ -440,6 +440,7 @@ export default class SignInPage extends BasePage {
                 }}>
                     <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
                         <TouchableOpacity
+                            activeOpacity={0.7}
                             style={[styles.left, { width: 40 }]}
                             onPress={() => {
                                 this.props.navigation.goBack();
@@ -541,7 +542,7 @@ export default class SignInPage extends BasePage {
                 <View style={{ alignItems: 'center' }}>
                     <TouchableOpacity onPress={() => {
                         this._modalPress();
-                    }}>
+                    }} activeOpacity={0.7}>
                         <ImageLoader
                             source={{ uri: this.state.modalInfo[0].image }}
                             showPlaceholder={false}

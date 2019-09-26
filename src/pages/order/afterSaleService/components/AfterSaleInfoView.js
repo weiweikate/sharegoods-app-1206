@@ -48,7 +48,7 @@ export default class AfterSaleInfoView extends React.Component {
             return imgList.map((item, i) => {
                 if (item) {
                     return (
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             this.imgClick(imgList, i);
                         }}>
                             <ImageLoader source={{ uri: item }}
@@ -100,7 +100,7 @@ export default class AfterSaleInfoView extends React.Component {
                 <View style={{ flexDirection: 'row' }}>
                     <UIText value={'订单号：' + afterSaleInfo.merchantOrderNo}
                             style={styles.refundReason}/>
-                    <TouchableOpacity style={styles.copyBtn}
+                    <TouchableOpacity activeOpacity={0.7} style={styles.copyBtn}
                                       onPress={() => {
                                           this.copyText(afterSaleInfo.merchantOrderNo);
                                       }}>
@@ -110,7 +110,7 @@ export default class AfterSaleInfoView extends React.Component {
                 <View style={{ flexDirection: 'row' }}>
                     <UIText value={'申请单号：' + afterSaleInfo.serviceNo}
                             style={styles.refundReason}/>
-                    <TouchableOpacity style={styles.copyBtn}
+                    <TouchableOpacity activeOpacity={0.7} style={styles.copyBtn}
                                       onPress={() => {
                                           this.copyText(afterSaleInfo.serviceNo);
                                       }}>

@@ -144,7 +144,7 @@ export default class MessageCenterPage extends BasePage {
             count = count > 99 ? '99+' : count;
             arr.push(
                 <View key={i} style={{ width: ScreenUtils.width, height: 60, marginTop: 11 }}>
-                    <TouchableOpacity style={{
+                    <TouchableOpacity activeOpacity={0.7} style={{
                         flex: 1,
                         alignItems: 'center',
                         paddingHorizontal: DesignRule.margin_page,

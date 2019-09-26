@@ -20,16 +20,13 @@ import {
     ImageBackground,
     Image,
 } from 'react-native';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
+
+
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { UIImage } from '../../../../components/ui';
 import { MRText as Text } from '../../../../components/ui';
-
-import ExtraDimensions from 'react-native-extra-dimensions-android';
-
-
-
-const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal';
 import bridge from '../../../../utils/bridge';
 import apiEnvironment from '../../../../api/ApiEnvironment';
@@ -38,6 +35,8 @@ import res from '../../res';
 import user from '../../../../model/user';
 import {track, trackEvent} from '../../../../utils/SensorsTrack';
 import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/components/SmoothPushHighComponent';
+
+const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 const {
     button: {
@@ -61,10 +60,11 @@ export default class InviteFriendsPage extends BasePage<Props> {
         super(props);
         this.state = {
             disable: false,
-            path: ''
+            path: '',
+            inviteCode: '',
         };
         this._bind();
-        this.linkUrl = `${apiEnvironment.getCurrentH5Url()}/topic/temp/ST20190455?upuserid=${user.code || ''}&signUpSource=fxhy`;
+        this.linkUrl = `${apiEnvironment.getCurrentH5Url()}/register?upuserid=${user.code || ''}&signUpSource=fxhy`;
     }
 
     $navigationBarOptions = {
@@ -82,14 +82,25 @@ export default class InviteFriendsPage extends BasePage<Props> {
         this.loadPageData();
     }
 
+    /**
+     * @func 调用生成二维码图片方法
+     */
     loadPageData() {
         this.creatQRCodeImage(this.linkUrl);
     }
 
+    /**
+     * @func 调用原生方法生成二维码图片，
+     * @param  QRCodeStr {String} 传入地址URL
+     */
     creatQRCodeImage(QRCodeStr) {
-        bridge.creatQRCodeImage(QRCodeStr, (path) => {
-            this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path });
-        });
+        bridge.creatQRCodeImage(QRCodeStr, (path, QRCodeUrl) => {
+            this.setState({
+                path: Platform.OS === 'android' ? 'file://' + path : '' + path,
+                inviteCode: QRCodeUrl
+            });
+        },()=>{
+        },'invite');
     }
 
     // //截屏
@@ -217,7 +228,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                                     imageType: 'invite',
                                     titleStr:'',
                                     imageUrlStr:'',
-                                    QRCodeStr: this.linkUrl,
+                                    QRCodeStr: this.state.inviteCode || this.linkUrl,
                                 }}
                                 webJson={{
                                     title: '送你1张免费商品兑换券，海量好物0元领！',

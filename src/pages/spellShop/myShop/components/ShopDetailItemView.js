@@ -19,7 +19,7 @@ import { getSource } from '@mr/image-placeholder/oos';
 import { getSize } from '../../../../utils/OssHelper';
 
 const { myShop } = shopRes;
-const { shopProduct, shopProductShare, shop_card } = myShop;
+const { shopProduct, shopProductShare, shop_card, bounusTip } = myShop;
 const { px2dp, width } = ScreenUtils;
 const itemImgSize = px2dp(100);
 const progressWidth = px2dp(60);
@@ -318,3 +318,40 @@ const cardStyles = StyleSheet.create({
         height: px2dp(80), width: width
     }
 });
+
+@observer
+export class ShopMoneyExplainView extends Component {
+    render() {
+        const { MyShopDetailModel } = this.props;
+        const { switchStatus, storeBonusTips } = MyShopDetailModel;
+        if (!switchStatus || !storeBonusTips) {
+            return null;
+        }
+        return (
+            <View style={stylesEx.container}>
+                <View style={stylesEx.topView}>
+                    <Image source={bounusTip} style={stylesEx.img}/>
+                    <MRText>温馨提示</MRText>
+                </View>
+                <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg }}/>
+                <MRText style={stylesEx.text}>{storeBonusTips}</MRText>
+            </View>
+        );
+    }
+}
+
+const stylesEx = StyleSheet.create({
+    container: {
+        marginBottom: 10, marginHorizontal: 15, borderRadius: 5, backgroundColor: 'white'
+    },
+    topView: {
+        height: 40, flexDirection: 'row', alignItems: 'center'
+    },
+    img: {
+        marginLeft: 10, marginRight: 3, width: 16, height: 16
+    },
+    text: {
+        padding: 15, fontSize: 12, color: DesignRule.textColor_secondTitle
+    }
+});
+

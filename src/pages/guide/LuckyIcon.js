@@ -27,6 +27,7 @@ import HomeAPI from '../home/api/HomeAPI';
 import { routePush } from '../../navigation/RouterMap';
 import { homeModule } from '../home/model/Modules';
 import { trackEvent, track } from '../../utils/SensorsTrack';
+import { getSGspm_home, HomeSource } from '../../utils/OrderTrackUtil';
 
 export default class LuckyIcon extends React.Component {
 
@@ -99,6 +100,9 @@ export default class LuckyIcon extends React.Component {
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
         if (router) {
+            if (this.props.isHome){
+                params = {...params,...getSGspm_home(HomeSource.float)}
+            }
             routePush(router, params);
         }
     };
@@ -116,7 +120,7 @@ export default class LuckyIcon extends React.Component {
                     bottom: 40,
                     transform: [{ translateX: this.state.x }]
                 }}>
-                <TouchableOpacity onPress={this._onPress}>
+                <TouchableOpacity onPress={this._onPress} activeOpacity={0.7}>
                     <Image
                         style={styles.image}
                         source={{ uri: this.state.data.image }}

@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.showground.utils;
+package com.meeruu.commonlib.utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,6 @@ public class UrlUtils {
      * 去掉url中的路径，留下请求参数部分
      * @param strURL url地址
      * @return url请求参数部分
-     * @author lzf
      */
     private static String TruncateUrlPage(String strURL){
         String strAllParam=null;
@@ -30,7 +29,6 @@ public class UrlUtils {
      * 如 "index.jsp?Action=del&id=123"，解析出Action:del,id:123存入map中
      * @param URL  url地址
      * @return  url请求参数部分
-     * @author lzf
      */
     public static Map<String, String> urlSplit(String URL){
         Map<String, String> mapRequest = new HashMap<>();

@@ -73,7 +73,7 @@ export default class DetailPromoteModal extends Component {
                        visible={this.state.modalVisible}
                        transparent={true}>
                 <View style={styles.containerView}>
-                    <TouchableOpacity style={styles.topCloseBtn} onPress={this._close}/>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.topCloseBtn} onPress={this._close}/>
                     <View style={styles.bottomView}>
                         <Text style={styles.tittleText}>促销</Text>
                         <FlatList data={promoteInfoVOList || []}
@@ -81,7 +81,7 @@ export default class DetailPromoteModal extends Component {
                                   ItemSeparatorComponent={this._ItemSeparatorComponent}
                                   showsVerticalScrollIndicator={false}
                                   keyExtractor={this._keyExtractor}/>
-                        <TouchableOpacity style={styles.sureBtn} onPress={this._close}>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.sureBtn} onPress={this._close}>
                             <Text style={styles.sureText}>确定</Text>
                         </TouchableOpacity>
                     </View>

@@ -3,12 +3,14 @@
 * */
 import React from 'react';
 import {
-    View,
     Image,
-    StyleSheet,
+    NativeEventEmitter,
+    NativeModules,
+    RefreshControl,
     SectionList,
+    StyleSheet,
     TouchableOpacity,
-    RefreshControl, NativeModules, NativeEventEmitter
+    View
 } from 'react-native';
 
 import { observer } from 'mobx-react';
@@ -74,10 +76,10 @@ export default class RecommendPage extends BasePage {
 
     $NavBarRenderRightItem = () => {
         return <View style={styles.rightBarItemContainer}>
-            <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
+            <TouchableOpacity activeOpacity={0.7} style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
                 <Image source={ShopItemLogo} style={{ width: 20, height: 20 }}/>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickSearchItem}>
+            <TouchableOpacity activeOpacity={0.7} style={styles.rightItemBtn} onPress={this._clickSearchItem}>
                 <Image source={SearchItemLogo} style={{ width: 20, height: 20 }}/>
             </TouchableOpacity>
         </View>;

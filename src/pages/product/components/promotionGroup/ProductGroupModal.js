@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, Image, ScrollView, Alert } from 'react-native';
+import { View, StyleSheet, Image, ScrollView, Alert } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
@@ -49,9 +49,10 @@ export class GroupPersonAllList extends Component {
         });
     };
 
-    _renderItem = ({ item }) => {
+    _renderItem = ({ item }, index) => {
         const { goToBuy, showGroupJoinView, requestGroupList } = this.props;
-        return <GroupPersonItem style={stylesAll.itemView} itemData={item} goToBuy={goToBuy}
+        return <GroupPersonItem key={`GroupPersonItem${index}`} style={stylesAll.itemView} itemData={item}
+                                goToBuy={goToBuy}
                                 requestGroupList={requestGroupList}
                                 close={this._close}
                                 showGroupJoinView={showGroupJoinView}/>;
@@ -78,14 +79,13 @@ export class GroupPersonAllList extends Component {
                             <MRText
                                 style={stylesAll.topRText}>{groupList.length === 10 ? '仅显示10个正在拼团的人' : ''}</MRText>
                         </View>
-                        <FlatList
-                            style={stylesAll.flatList}
-                            data={groupList || []}
-                            keyExtractor={(item) => item.id + ''}
-                            renderItem={this._renderItem}
-                            showsHorizontalScrollIndicator={false}
-                            initialNumToRender={5}
-                        />
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            {
+                                (groupList || []).map((item, index) => {
+                                    return this._renderItem({ item }, index);
+                                })
+                            }
+                        </ScrollView>
                     </View>
                 </View>
             </CommModal>
@@ -191,7 +191,7 @@ export class GroupJoinView extends Component {
                 setTimeout(() => {
                     Alert.alert(
                         '无法参团',
-                        '该团仅支持新用户参加，可以开个新团，\n立享优惠哦~',
+                        '该团仅支持新用户参加，可以开个新团，立享优惠哦~',
                         [
                             {
                                 text: '知道了', onPress: () => {
@@ -361,7 +361,7 @@ const stylesDesc = StyleSheet.create({
     container: {
         height: ScreenUtils.autoSizeHeight(405),
         borderTopLeftRadius: 10, borderTopRightRadius: 10,
-        backgroundColor: DesignRule.bgColor
+        backgroundColor: 'white'
     },
     topView: {
         flexDirection: 'row', justifyContent: 'center', alignItems: 'center',
