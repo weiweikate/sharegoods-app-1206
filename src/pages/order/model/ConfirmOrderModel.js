@@ -240,16 +240,13 @@ class ConfirmOrderModel {
             if (data.length === 0){
                 return;
             }
-            data = data.filter((item) => {
+            data = data.filter((item, index) => {
+                if (index === 0){
+                    return false;
+                }
                 return addressData.areaCode == item.areaCode;
             })
-            if (data.length === 1){
-                let addressId = data[0].id || '';
-                addressId = addressId + '';
-                this.addressId = addressId;
-                this.addressData = addressData;
-                this.tokenCoin = 0;
-            } else if (data.length > 1) {
+            if (data.length !== 0) {
                 this.addressList = data;
                 this.addressModalShow = true;
             }else {
