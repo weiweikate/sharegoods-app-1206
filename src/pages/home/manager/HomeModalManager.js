@@ -79,7 +79,7 @@ class HomeModalManager {
 
     @action
     requestData() {
-        this.finishCount = 0;
+        this.finishCount = 1;
         this.getVersion();
         this.getMessage();
         this.getAd();

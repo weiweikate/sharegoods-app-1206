@@ -13,11 +13,12 @@
 
 import React from 'react';
 import { routePush } from '../../../navigation/RouterMap';
-
+import Modal from '../../../comm/components/CommModal';
 import {
     StyleSheet,
     View,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Platform
 } from 'react-native';
 
 import {
@@ -105,6 +106,22 @@ export default class PrivacyModal extends React.Component {
 
 
     render() {
+        if (Platform.OS !== 'ios'){
+            return (
+                <Modal
+                    animationType='slide'
+                    ref={(ref) => {
+                        this.modal = ref;
+                    }}
+                    onRequestClose={() => {
+                        HomeModalManager.closePrize();
+                    }}
+                    visible={ HomeModalManager.isShowPrivacyModal && HomeModalManager.isHome}>
+                    {this.renderContent()}
+                </Modal>
+            );
+        }
+
         if (!HomeModalManager.isShowPrivacyModal || !HomeModalManager.isHome){
             return <View />;
         }

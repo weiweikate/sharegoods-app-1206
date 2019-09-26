@@ -6,7 +6,8 @@ import {
     ScrollView,
     StyleSheet,
     TouchableOpacity,
-    View
+    View,
+    Platform
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './model/Modules';
@@ -230,7 +231,7 @@ class HomePage extends BasePage {
                 <GiftModal/>
                 <UserLevelModalView/>
                 <IntervalMsgView pageType={IntervalType.home}/>
-                <HomeAdModal/>
+                {Platform.OS !== 'ios'?  <HomeAdModal/>:null}
                 <HomeMessageModalView/>
                 <VersionUpdateModalView/>
             </View>
