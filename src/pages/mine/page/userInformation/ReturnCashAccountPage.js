@@ -145,7 +145,7 @@ export default class CashRewardAccountPage extends BasePage {
                         {!returnCashInfo.convertSwitchStatus ?
                             <NoMoreClick
                                 onPress={() => {
-                                    this.$navigate(RouterMap.HtmlPage,{uri: '/mine/memberRights'});
+                                    this.$navigate(RouterMap.HtmlPage, {uri: '/custom/:ZDYZT201909251743341'});
                             }}>
                                 <ImageBackground
                                     style={styles.beSubVipBgStyle}
