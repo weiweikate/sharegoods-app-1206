@@ -39,6 +39,7 @@ import { mediatorCallFunc } from '../../../SGMediator';
 import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
 import MineSpellGroupView from './spellGroup/components/MineSpellGroupView';
 import TimeModel from '../model/TimeModel';
+import LinearGradient from 'react-native-linear-gradient';
 
 const {
     // mine_header_bg,
@@ -145,6 +146,7 @@ export default class MinePage extends BasePage {
                 this.loadAd();
                 this.loadGroupList();
                 this._needShowFans();
+                this.getNextBenefit();
                 WhiteModel.saveWhiteType();
                 console.log('willFocusSubscriptionMine', state);
                 if (state && state.routeName === 'MinePage') {
@@ -203,8 +205,6 @@ export default class MinePage extends BasePage {
     };
 
     /**
-<<<<<<< HEAD
-=======
     * @func 当前会员下一个会员身份请求
     */
     getNextBenefit=()=>{
@@ -230,7 +230,6 @@ export default class MinePage extends BasePage {
     }
 
     /**
->>>>>>> zjx-109-huiyuan
      * @func 请求是否有参与拼团且拼团即将结束
      */
     loadGroupList = () => {
@@ -532,7 +531,7 @@ export default class MinePage extends BasePage {
                     </Text>
                 </View>
                 <TouchableWithoutFeedback onPress={() => {
-                    this.$navigate(RouterMap.MyPromotionPage);
+                    this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
                     TrackApi.ViewLevelInterest({ moduleSource: 2 });
                 }}>
                     <View style={{
@@ -540,7 +539,7 @@ export default class MinePage extends BasePage {
                         alignItems: 'center', marginRight: 15, backgroundColor: '#FFE6B1', borderRadius: 12
                     }}>
                         <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22 }}>
-                            {user.token ? `${user.levelName ? user.levelName : ''}品鉴官>` : ''}
+                            查看权益
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -1217,5 +1216,13 @@ const styles = StyleSheet.create({
     copyTextStyle: {
         color: DesignRule.white,
         fontSize: DesignRule.fontSize_22
+    },
+    btnStyle:{
+        flexDirection: 'row',
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius: 10,
+        width:73,
+        height:20
     }
 });
