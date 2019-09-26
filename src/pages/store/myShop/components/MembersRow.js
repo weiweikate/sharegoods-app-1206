@@ -16,7 +16,7 @@ import {
     MRText as Text
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
-import {observer} from 'mobx-react'
+import { observer } from 'mobx-react';
 
 const PeopleImg = res.myShop.dy_07;
 const ArrowImg = res.myShop.xjt_03;
@@ -25,8 +25,8 @@ const ArrowImg = res.myShop.xjt_03;
 export default class MembersRow extends Component {
 
     render() {
-        const { storeData, storeUsers } = this.props.MyShopDetailModel;
-        const { roleType, storeUserCount } = storeData;
+        const { storeData, storeUsers, storeUserCount } = this.props.MyShopDetailModel;
+        const { roleType } = storeData;
         return (<View style={styles.container}>
             <TouchableOpacity onPress={this.props.onPressAllMembers}
                               activeOpacity={1}
