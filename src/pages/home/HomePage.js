@@ -37,7 +37,6 @@ import HomeNormalList from './view/List/HomeNormalList';
 import DIYTopicList from './view/List/DIYTopicList';
 import { observer } from 'mobx-react';
 import ImageLoader from '@mr/image-placeholder';
-import PrivacyModal from './view/PrivacyModal';
 
 
 /**
@@ -233,7 +232,6 @@ class HomePage extends BasePage {
                 <IntervalMsgView pageType={IntervalType.home}/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
-                <PrivacyModal />
                 <VersionUpdateModalView/>
             </View>
         );

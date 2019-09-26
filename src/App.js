@@ -37,6 +37,7 @@ import StringUtils from './utils/StringUtils';
 import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
 import loginModel from './pages/login/model/LoginModel';
 import { getSGspm_home, HomeSource } from './utils/OrderTrackUtil';
+import PrivacyModal from './pages/home/view/PrivacyModal';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -221,6 +222,7 @@ class App extends Component {
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
+                <PrivacyModal />
             </View>
         );
     }
