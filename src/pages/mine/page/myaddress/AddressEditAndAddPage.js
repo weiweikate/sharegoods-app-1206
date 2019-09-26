@@ -160,7 +160,7 @@ export default class AddressEditAndAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from, streetCode } = this.params;
+        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from, streetCode, province,  city, area} = this.params;
         if (from === 'edit') {
             this.$navigationBarOptions.title = '编辑地址';
         } else if (from === 'add') {
@@ -172,11 +172,11 @@ export default class AddressEditAndAddPage extends BasePage {
             areaText: areaText || '',
             addrText: address || '',
             provinceCode: provinceCode,
-            provinceName: '',
+            provinceName: province || '',
             cityCode: cityCode,
-            cityName: '',
+            cityName: city || '',
             areaCode: areaCode,
-            areaName: '',
+            areaName: area || '',
             streetCode: streetCode,
             streetName: '',
             isDefault: isDefault || false,
