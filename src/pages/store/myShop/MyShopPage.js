@@ -170,8 +170,7 @@ export default class MyShopPage extends BasePage {
         const items = canOpenShop ? ['分享店铺', '拆分开店', '举报店铺', '退出店铺'] : ['分享店铺', '举报店铺', '退出店铺'];
         if (roleType === 0) {
             this.$navigate('store/shopSetting/ShopPageSettingPage', {
-                storeData: this.MyShopDetailModel.storeData,
-                myShopCallBack: this.MyShopDetailModel.requestAppStore
+                storeData: this.MyShopDetailModel.storeData
             });
         } else {
             this.actionSheetRef.show({ items }, (item) => {
@@ -221,7 +220,9 @@ export default class MyShopPage extends BasePage {
     // 点击店铺公告
     _clickShopAnnouncement = () => {
         const { storeData } = this.MyShopDetailModel;
-        this.$navigate('store/shopSetting/AnnouncementListPage', { storeData: storeData });
+        this.$navigate('store/shopSetting/AnnouncementListPage', {
+            storeData: storeData
+        });
     };
 
     // 点击全部成员
