@@ -225,6 +225,7 @@ class ConfirmOrderModel {
         if (!addressData || !addressData.areaCode || this.isAllVirtual) {
             return this.makeSureProduct_selectDefaltCoupon(this.orderParamVO.couponsId)
         }
+        const { province, city, area, provinceCode, cityCode, areaCode} = addressData;
         //选择了收货地址
         if (addressData.id){
             let addressId = addressData.id || '';
@@ -246,7 +247,9 @@ class ConfirmOrderModel {
             data = data.filter((item, index) => {
                 if (this.addressId){//当前选择的地址，过滤
                     if (this.addressId == item.id ){
-                        flag = true;
+                        if (addressData.areaCode == item.areaCode){
+                            flag = true;
+                        }
                         return false;
                     }
                 } else if (index === 0){
@@ -276,7 +279,14 @@ class ConfirmOrderModel {
                                     callBack: (json) => {
                                         this.selectAddressId(json);
                                     },
-                                    from: 'add'
+                                    from: 'add',
+                                    province,
+                                    city,
+                                    area,
+                                    provinceCode,
+                                    cityCode,
+                                    areaCode,
+                                    areaText: province + city + area
                                 });
                             }
                         }
