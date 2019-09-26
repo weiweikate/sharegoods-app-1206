@@ -1,6 +1,7 @@
 import ApiUtils from '../../../api/network/ApiUtils';
 
 const api = {
+    /**店铺相关**/
     //首页店铺状态
     app_store_user_store: ['/app/store/user_store', { method: 'get' }],
     //获取列表附近新开
@@ -41,10 +42,8 @@ const api = {
     user_list: ['/app/store/user/list', { method: 'get' }],
     //是否显示活动图标
     package_identification: ['/app/store/user/package/identification', { method: 'get' }],
-
     //移除店铺人员
     storeUserRemove: '/app/store/user/remove',
-    //还有购买校验接口
     //获取店员详情
     findUserDetail: ['/app/store/user/detail', { method: 'get' }],
     /**店铺扩容**/
@@ -67,12 +66,13 @@ const api = {
     * expandId
     * */
     expand_recordList: ['/app/store/expand/recordList', { method: 'get' }],
-
+    //还有购买校验接口
+    verifyExpandOrderParams: ['/app/store/expand/verifyExpandOrderParams'],
 
     // 查询消息
     floatMsg: ['/floatMsg/get', { method: 'get' }],
 
-    store_openStore: ['/user/store/openStore', { method: 'get' }],
+    store_openStore: ['/user/store/openStore', { method: 'get' }]
 };
 const StoreApi = ApiUtils(api);
 export default StoreApi;
