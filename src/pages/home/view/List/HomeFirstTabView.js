@@ -186,7 +186,7 @@ export default class HomeFirstTabView extends Component {
 
     _onRefresh() {
         homeModule.isRefreshing = true;
-        homeModule.loadHomeList(true);
+        homeModule.loadHomeList();
         taskModel.getData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
     }

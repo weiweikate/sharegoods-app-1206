@@ -11,6 +11,7 @@ import MRBannerViewComponent from '../../../components/ui/bannerView/MRBannerVie
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import DesignRule from '../../../constants/DesignRule';
 import { homePoint } from '../HomeTypes';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 const { px2dp, width } = ScreenUtils;
 
@@ -30,7 +31,8 @@ export default class HomeBannerView extends Component {
             const { navigate } = this.props;
 
             track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner, index));
-            navigate(router, { ...params });
+            params = {...params,...getSGspm_home(HomeSource.banner, index)}
+            navigate(router, params);
         }
     };
 

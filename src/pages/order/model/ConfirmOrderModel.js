@@ -6,7 +6,7 @@ import bridge from '../../../utils/bridge';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import RouterMap, { navigateBack, routePush } from '../../../navigation/RouterMap';
+import RouterMap, { navigateBack, routePop, routePush } from '../../../navigation/RouterMap';
 import { payment } from '../../payment/Payment';
 import API from '../../../api';
 
@@ -67,6 +67,7 @@ class ConfirmOrderModel {
         this.receiveInfo = {};
         this.data = null;
         this.canInvoke = false
+        this.invokeSelect = false
         this.invokeItem = null;
 
     }
@@ -90,6 +91,7 @@ class ConfirmOrderModel {
                 callBack&&callBack();
                 bridge.$toast('激活成功');
                 this.invokeSelect = true;
+                this.canInvoke = false;
                 this.selectUserCoupon(data.code)
             } else {
                 bridge.$toast('激活失败');
@@ -103,9 +105,6 @@ class ConfirmOrderModel {
 
     @action
     selecttokenCoin(num) {
-        if (this.tokenCoin == num) {
-            return;
-        }
         this.tokenCoin = num;
         this.makeSureProduct();
     }
@@ -153,11 +152,13 @@ class ConfirmOrderModel {
             // "quantity":, //int 购买数量
             // "activityCode":, //string 活动code
             // "batchNo": //string 活动批次  (拼团业务传递团id)
-            let { skuCode, quantity, activityCode, batchNo, activityTag } = item;
+            let { skuCode, quantity, activityCode, batchNo, activityTag, sgspm = '', sgscm = '' } = item;
+            sgspm = sgspm || ''
+            sgscm = sgscm || ''
             if (batchNo){
-                return { skuCode, quantity, activityCode,batchNo, activityTag };
+                return { skuCode, quantity, activityCode,batchNo, activityTag, sgspm, sgscm };
             }else {
-                return { skuCode, quantity, activityCode, activityTag };
+                return { skuCode, quantity, activityCode, activityTag, sgspm,  sgscm};
             }
 
         });
@@ -182,8 +183,8 @@ class ConfirmOrderModel {
                 source: this.orderParamVO.source,  //int 订单来源: 1.购物车 2.直接下单
                 channel: 2,//int 渠道来源: 1.小程序 2.APP 3.H5
                 bizTag:  this.orderParamVO.bizTag,//"bizTag": //String 订单标记 group-拼团 非拼团不需要传  －－－－－－－－－－－－0917拼团业务新增
-                sgspm: this.orderParamVO.sgspm,
-                sgscm: this.orderParamVO.sgscm
+                // sgspm: this.orderParamVO.sgspm,
+                // sgscm: this.orderParamVO.sgscm
             },
             ext: { //扩展信息
                 userMessage: this.message// string 买家留言
@@ -199,7 +200,7 @@ class ConfirmOrderModel {
                 productCode: item.productCode,
                 amount: item.quantity,
                 activityCode: item.activityCode,
-                batchNo: item.batchNo
+                batchNo: item.batchNo,
             };
         });
         let params = { productPriceIds: arr };
@@ -367,14 +368,29 @@ class ConfirmOrderModel {
             if (this.orderParamVO.source === 1) {
                 shopCartCacheTool.getShopCartGoodsListData();
             }
-            payment.checkOrderToPage(data.platformOrderNo, data.productOrderList[0].productName);
+            payment.checkOrderToPage(data.platformOrderNo, data.productOrderList[0].productName, 'order');
             track(trackEvent.submitOrder, {
                 orderId: data.orderNo,
                 orderSubmitPage: this.orderParamVO.source == 1 ? 11 : 1
             });
         }).catch(err => {
             bridge.hiddenLoading();
-            bridge.$toast(err.msg);
+            if (err.code !== -1){
+                Alert.alert(err.msg+'，请刷新页面或返回修改？',null,[{
+                    text: '返回', onPress: () => {
+                        routePop();
+                    }
+                },
+                    {
+                        text: '刷新', onPress: () => {
+                            this.makeSureProduct();
+                        }
+                    }
+                ])
+            }else {
+                bridge.$toast(err.msg);
+            }
+
         });
     }
 }

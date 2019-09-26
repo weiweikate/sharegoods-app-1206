@@ -14,9 +14,9 @@ const arrow_right = res.arrow_right;
 export default class ConfirmPriceView extends Component {
 
     renderLine = () => {
-        return (
-            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg, marginHorizontal: 15 }}/>
-        );
+        // return (
+        //     <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg, marginHorizontal: 15 }}/>
+        // );
     };
     render = () => {
         // let promotionAmount = confirmOrderModel.promotionAmount || 0;
@@ -66,28 +66,6 @@ export default class ConfirmPriceView extends Component {
                         </View>
                     }
                     {confirmOrderModel.isAllVirtual ? null : this.renderLine()}
-                    <TouchableOpacity
-                        activeOpacity={0.7}
-                        style={styles.couponsStyle}
-                        onPress={() => {
-                            if (this.input.isFocused()) {
-                                this.input.blur();
-                                Keyboard.dismiss();
-                            }
-                        }}>
-                        <UIText value={'买家留言'} style={styles.blackText}/>
-                        <RNTextInput
-                            ref={(e) => this.input = e}
-                            maxLength={180}
-                            style={styles.inputTextStyle}
-                            onChangeText={text => confirmOrderModel.message = text}
-                            placeholder={'填写内容已与卖家协商确认'}
-                            placeholderTextColor={DesignRule.textColor_instruction}
-                            numberOfLines={1}
-                            underlineColorAndroid={'transparent'}
-                            onFocus={this.props.inputFocus}
-                        />
-                    </TouchableOpacity>
                 </View>
                 <View style={styles.block}>
                     {promotionAmount != 0 ? <View style={styles.couponsStyle}
@@ -127,6 +105,28 @@ export default class ConfirmPriceView extends Component {
                                 style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(0), color: tokenCoinAmount != 0 ? DesignRule.mainColor : DesignRule.textColor_instruction}]}/>
                             <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
                         </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={styles.couponsStyle}
+                        onPress={() => {
+                            if (this.input.isFocused()) {
+                                this.input.blur();
+                                Keyboard.dismiss();
+                            }
+                        }}>
+                        <UIText value={'买家留言'} style={styles.blackText}/>
+                        <RNTextInput
+                            ref={(e) => this.input = e}
+                            maxLength={180}
+                            style={styles.inputTextStyle}
+                            onChangeText={text => confirmOrderModel.message = text}
+                            placeholder={'填写内容已与卖家协商确认'}
+                            placeholderTextColor={DesignRule.textColor_instruction}
+                            numberOfLines={1}
+                            underlineColorAndroid={'transparent'}
+                            onFocus={this.props.inputFocus}
+                        />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     block: {
         marginBottom: 10,
         marginHorizontal: DesignRule.margin_page,
-        borderRadius: 5,
+        borderRadius: 10,
         overflow: 'hidden',
         backgroundColor: 'white'
     }

@@ -24,7 +24,8 @@ export default class OrderDetailStatusView extends Component{
                 <LinearGradient style={styles.redRectangle}
                                  start={{x: 0, y: 0}}
                                  end={{x: 1, y: 0}}
-                                 colors={['#FF0050', '#FC5D39']}
+                                colors={['#FF0050','#F94B35', '#FF2035','#F80759']}
+                                locations={[0,0.3,0.7,1]}
                 >
                     <View style={{ marginTop:px2dp(-22)}}>
                         <UIText value={orderDetailModel.buyState} style={styles.textStyle}/>

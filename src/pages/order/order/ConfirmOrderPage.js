@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     block: {
         marginBottom: 10,
         marginHorizontal: DesignRule.margin_page,
-        borderRadius: 5,
+        borderRadius: 10,
         overflow: 'hidden'
     }
 });

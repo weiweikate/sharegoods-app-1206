@@ -9,6 +9,7 @@ import { observer } from 'mobx-react';
 import ImageLoad from '@mr/image-placeholder';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import bridge from '../../../utils/bridge';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 const { px2dp } = ScreenUtils;
 
@@ -39,7 +40,7 @@ export default class HomeFocusAdView extends Component {
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);
-        navigate(router, { ...params });
+        navigate(router, { ...params, ...getSGspm_home(HomeSource.focusAd, index) });
     }
 
 

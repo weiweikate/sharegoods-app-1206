@@ -39,7 +39,10 @@ export default class TextCustomView extends React.Component {
 
     //linkType 链接类型：1商品 2专题 3限时购专场 4直降商品 5不做跳转
     onPress(data) {
-            topicAdOnPress(data, data, this.props.p, this.props.data.text);
+        let {sgscm, sgspm} = data;
+        sgspm = sgspm+'_1';
+
+        topicAdOnPress(data, data, this.props.p, this.props.data.text,{sgscm, sgspm});
     }
 
     render() {

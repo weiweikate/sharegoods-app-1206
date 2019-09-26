@@ -40,7 +40,7 @@ export default class SuitProductPage extends BasePage {
                 <NoMoreClick style={styles.rightNavBtn} onPress={() => {
                     this.shareModal && this.shareModal.open();
                 }}>
-                    <Image source={share}/>
+                    <Image source={share} style={{ width: 28, height: 28 }}/>
                 </NoMoreClick>
             );
         }

@@ -14,6 +14,8 @@
 #import <SandBoxPreviewTool/SuspensionButton.h>
 #import "SuspensionBtn.h"
 #import "NetWorkTool.h"
+#import "NSString+UrlAddParams.h"
+#import "MBProgressHUD+PD.h"
 
 #define all_unread_count @"unreadCount"
 #define sessionListData  @"sessionListData"
@@ -84,9 +86,11 @@ SINGLETON_FOR_CLASS(JRServiceManager)
       weakSelf.preTitle = result[@"title"] ? result[@"title"]: @"商家";
       weakSelf.preShopId = result[@"shopId"];
       [self changeToSupplierAction:nil];
+    }else{
+      [MBProgressHUD showSuccess:@"找不到供应商"];
     }
   } failure:^(NSString *msg, NSInteger code) {
-    
+    [MBProgressHUD showSuccess: msg];
   } showLoading:@""];
 }
 /**
@@ -113,9 +117,38 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   NSArray * sessionList =  [[[QYSDK sharedSDK]conversationManager]getSessionList];
   [self postNoti:sessionList];
 }
-
+-(void)connetMerchantWithtargetUrl:(NSString *)targetUrl{
+  //判断参数是否包含 k、bid
+  NSMutableDictionary *p = [targetUrl getURLParameters];
+  if (p[@"k"]&&p[@"bid"]) {
+    //
+    [[JRServiceManager sharedInstance] connetMerchant:p[@"bid"]];
+  }
+}
 -(void)initActionConfig{
   QYCustomActionConfig  * actionConfig = [[QYSDK sharedSDK] customActionConfig];
+  /**  |——————————————————|
+       |      联系商家      |  按钮的
+       |——————————————————|
+    */
+  
+  actionConfig.linkClickBlock = ^(NSString *linkAddress) {
+    
+  };
+  
+   actionConfig.botClick = ^(NSString *target, NSString *params) {
+    NSMutableDictionary *dic = [target getURLParameters];
+    NSString *targetUrl = dic[@"targetUrl"];
+    if (!target || target.length == 0) {
+      return;
+    }
+    //判断地址是否 qiyukf.com/client
+    if (![targetUrl containsString:@"https://qiyukf.com/client?"]&& ![targetUrl containsString:@"http://qiyukf.com/client?"]) {
+      return;
+    }
+     [self connetMerchantWithtargetUrl:targetUrl];
+  };
+  
   actionConfig.eventClickBlock = ^(NSString *eventName, NSString *eventData, NSString *messageId) {
     if ([eventName isEqualToString:@"QYEventNameTapCommodityInfo"]) {
       NSDictionary *urlData;
@@ -127,15 +160,23 @@ SINGLETON_FOR_CLASS(JRServiceManager)
       [self onBack:nil];
       [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
     }else if ([eventName isEqualToString:@"QYEventNameTapLabelLink"]){
-      if ([eventData containsString:@"h5.sharegoodsmall.com/product"] && [eventData containsString:@"http"])
-      {
+      if ([eventData containsString:@"h5.sharegoodsmall.com/product"] &&
+          [eventData containsString:@"http"]){
+        
           NSDictionary *urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":eventData};
         [self onBack:nil];
          [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
+        
+      }else if ([eventData containsString:@"hzmrwlyxgs.qiyukf.com/client?"]) {
+        
+        [self connetMerchantWithtargetUrl:eventData];
+        
       }else if([eventData containsString:@"http"]){
+        
         NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"linkUrl":eventData};
         [self onBack:nil];
         [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
+        
       }
     }
   };
@@ -157,7 +198,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   sessionVC.shopId = ((NSString *)chatInfo[@"shopId"]).length > 0 ?chatInfo[@"shopId"]:suspensionId;
   //重置一下供应商的域名
   if ([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_OTHER) {
-    sessionVC.shopId= suspensionId;
+   // sessionVC.shopId= suspensionId;
   }
   sessionVC.commodityInfo = [self getCommodityMsgWithData:swichData];
   sessionVC.groupId = 0;

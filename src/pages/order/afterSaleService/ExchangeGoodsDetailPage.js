@@ -242,6 +242,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                     {isShow_backAddressView ? <BackAddressView
                         title={'用户寄回物流信息'}
                         data={refundAddress}
+                        // isUser={true}
+                        afterSaleDetailModel={this.afterSaleDetailModel}
                         onPress={this.returnLogists}
                     /> : null}
                     {
@@ -527,13 +529,13 @@ class ExchangeGoodsDetailPage extends BasePage {
         } else {
             let {
                 serviceNo,
-                orderProductNo,
                 type,
-                refundPrice,
+                applyRefundAmount,
                 imgList,
                 description,
                 reason
-            } = this.afterSaleDetailModel.pageData;
+            } = this.afterSaleDetailModel.pageData.service;
+            let orderProductNo = this.afterSaleDetailModel.pageData.product.productOrderNo
             imgList = imgList || '';
             if (EmptyUtils.isEmpty(imgList)) {
                 imgList = [];
@@ -552,7 +554,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 reason,
                 description,
                 imgList,
-                refundPrice
+                applyRefundAmount
             });
 
         }

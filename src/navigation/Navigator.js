@@ -21,7 +21,10 @@ const noAnimatedTransition = (toTransitionProps, fromTransitionProps) => {
     //指定无转场动画的页面
     if (noAnimatedPage.indexOf(routeName) > -1) {
         return {
-            screenInterpolator: StackViewStyleInterpolator.forNoAnimation
+            screenInterpolator: StackViewStyleInterpolator.forNoAnimation,
+            transitionSpec: {
+                duration: 10,
+            },
         }
     }
 }
@@ -136,16 +139,6 @@ RootStack.router.getStateForAction = (action, state) => {
     //支付页面路由替换，需要替换2个
     if (state && (action.type === 'ReplacePayScreen')) {
         const routes = state.routes.slice(0, state.routes.length - 2);
-        routes.push(action);
-        return {
-            ...state,
-            routes,
-            index: routes.length - 1
-        };
-    }
-    //支付页面路由替换，需要替换2个
-    if (state && (action.type === 'ReplacePaymentPage')) {
-        const routes = state.routes.slice(0, state.routes.length - 1);
         routes.push(action);
         return {
             ...state,

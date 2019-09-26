@@ -16,7 +16,8 @@ import {
     StyleSheet,
     View,
     TouchableWithoutFeedback,
-    Image
+    Image,
+    Alert
 } from 'react-native';
 
 import {
@@ -42,15 +43,22 @@ export default class ActivateTicketView extends React.Component {
     componentDidMount() {
     }
 
+    onPress = () => {
+        Alert.alert('兑换券激活后不能取消，\n是否确认激活？',null,
+            [{text: '取消', onPress: ()=> {}},
+                {text: '确定', onPress: ()=> confirmOrderModel.invokeTicket(confirmOrderModel.invokeItem)}])
+    }
+
+
 
     render() {
-        if (!confirmOrderModel.canInvoke) {
+        if (!confirmOrderModel.canInvoke&&!confirmOrderModel.invokeSelect) {
             return null;
         }
 
         return (
             <TouchableWithoutFeedback
-                onPress={()=> {confirmOrderModel.invokeTicket(confirmOrderModel.invokeItem)}}
+                onPress={this.onPress}
                 disabled={confirmOrderModel.invokeSelect}
             >
                 <View style={styles.block}>
@@ -61,8 +69,8 @@ export default class ActivateTicketView extends React.Component {
                         <MRText style={styles.title}>现在勾选激活，立即兑换商品</MRText>
                         <MRText style={styles.detail}>激活后不可取消</MRText>
                     </View>
-                    <Image source={activate_text}
-                           style={styles.activate_text}/>
+                    {!confirmOrderModel.invokeSelect? <Image source={activate_text}
+                           style={styles.activate_text}/> : null}
                     <Image source={confirmOrderModel.invokeSelect? selected_circle_red :unselected_circle}
                            style={styles.btn}/>
                 </View>
@@ -75,7 +83,7 @@ const styles = StyleSheet.create({
     block: {
         marginBottom: 10,
         marginHorizontal: DesignRule.margin_page,
-        borderRadius: 5,
+        borderRadius: 10,
         overflow: 'hidden',
         backgroundColor: 'white',
         flexDirection: 'row',

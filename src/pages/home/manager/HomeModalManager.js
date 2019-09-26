@@ -14,8 +14,9 @@ import store from '@mr/rn-store';
 import MessageApi from '../../message/api/MessageApi';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import StringUtils from '../../../utils/StringUtils';
+import bridge from '../../../utils/bridge';
 
-const requsetCount = 4;
+const requsetCount = 5;
 
 class HomeModalManager {
     /** 控制升级框*/
@@ -24,6 +25,9 @@ class HomeModalManager {
     @observable
     isShowUpdate = false;
     needShowUpdate = false;
+    @observable
+    isShowPrivacyModal = false;
+    needShowPrivacyModal = false
     /** 控制公告*/
     @observable
     isShowNotice = false;
@@ -80,6 +84,7 @@ class HomeModalManager {
         this.getMessage();
         this.getAd();
         this.getPrize();
+        this.getPrivacy();
     }
 
     @action
@@ -89,7 +94,8 @@ class HomeModalManager {
             this.isShowAd ||
             this.isShowGift ||
             this.isShowPrize ||
-            this.isShowUser
+            this.isShowUser ||
+            this.isShowPrivacyModal
         ) {
             return;
         } // 如果有页面展示
@@ -97,7 +103,9 @@ class HomeModalManager {
         if (this.needShowUpdate === true) {
             this.isShowUpdate = true;
             track(trackEvent.HomePagePopShow, {homePagePopType: 5});
-        } else if (this.needShowNotice === true) {
+        }  else if (this.needShowPrivacyModal === true) {
+            this.isShowPrivacyModal = true;
+        }else if (this.needShowNotice === true) {
             this.isShowNotice = true;
             track(trackEvent.HomePagePopShow, {homePagePopType: 2});
         } else if (this.needShowAd === true) {
@@ -129,6 +137,20 @@ class HomeModalManager {
         this.isShowUpdate = false;
         this.needShowUpdate = false;
         this.openNext();
+    }
+
+    @action
+    closePrivacyModal(agree){
+        if (agree){
+            store.save('@mr/privacy', 'agree', () => {
+                this.versionData = null;
+            });
+            this.isShowPrivacyModal = false;
+            this.needShowPrivacyModal = false;
+            this.openNext();
+        } else {
+            bridge.exitApp();
+        }
     }
 
     @action
@@ -219,6 +241,26 @@ class HomeModalManager {
             this.actionFinish();
         });
     };
+
+    @action
+    getPrivacy = () => {
+        store.get('@mr/privacy').then((value) => {
+            if (value === 'agree') {
+                this.actionFinish();
+            }else {
+                HomeAPI.queryConfig({code: 'privacy_agreement_switch' }).then((data)=> {
+                    if (data.data&&(data.data.value == 1)) {
+                        this.needShowPrivacyModal = true;
+                    }
+                    this.actionFinish();
+                }).finally(() => {
+                    this.actionFinish();
+                })
+            }
+        }).catch(() => {
+            this.actionFinish();
+        });
+    }
 
 
 //一天弹一次 公告与广告不共存

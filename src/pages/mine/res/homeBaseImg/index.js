@@ -31,16 +31,16 @@ const index = {
     mine_invite: require('./invite.png'),
     mine_invite2: require('./invite2.png'),
     mine_moreMoney: require('./moreMoney.png'),
-    mine_vip_bg: require('./vipBg.png'),
-    mine_vip_supMember: require('./mine_supMember.png'),    //超级会员
-    mine_vip_partner: require('./mine_partner.png'),        //会员合伙人
-    mine_vip_noviciate: require('./mine_noviciate.png'),    //见习店长
-    mine_vip_beBoss: require('./mine_beBoss.png'),          //成为店长
-    mine_vip_boss: require('./mine_boss.png'),              //店长
+    mine_line_v0: require('./v0Bgline.png'),
+    mine_line_v1: require('./v1Bgline.png'),
+    mine_line_v2: require('./v2Bgline.png'),
+    mine_line_v3: require('./v3Bgline.png'),
+    mine_line_v4: require('./v4Bgline.png'),
+    mine_line_v5: require('./v5Bgline.png'),
     mine_btn_red: require('./btnRed.png'),
     mine_btn_yellow: require('./btnYellow.png'),
-    mine_levelBg: require('./levelBg.png'),
-    mine_arrow_black: require('./mine_vip_arrow_black.png')
+    mine_levelBg: require('./levelBg.png')
+
 
 };
 export default index;
