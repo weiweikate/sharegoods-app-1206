@@ -82,6 +82,7 @@ export default class AssistantListPage extends BasePage {
             pageSize: this.state.pageSize,
             storeCode: storeCode
         }).then((data) => {
+            this.state.page++;
             const tempData = data.data || {};
             this.setState({
                 isMore: tempData.isMore,
