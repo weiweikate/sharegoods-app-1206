@@ -1,12 +1,20 @@
+/**
+ * @author zhoujianxin
+ * @date on 2019/9/18
+ * @desc 自返金账户列表
+ * @org  www.sharegoodsmall.com
+ * @email zhoujianxin@meeruu.com
+ */
+
 import React from 'react';
 import {
-    Alert,
     Image,
     RefreshControl,
     SectionList,
     StyleSheet,
     TouchableWithoutFeedback,
-    View
+    View,
+    ImageBackground
 } from 'react-native';
 import {observer} from 'mobx-react';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
@@ -19,7 +27,6 @@ import DataUtils from '../../../../utils/DateUtils';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
-import ReturnCashModel from '../../model/ReturnCashModel';
 import Toast from './../../../../utils/bridge';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
@@ -27,98 +34,21 @@ import {MRText as Text} from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import EmptyView from '../../../../components/pageDecorator/BaseView/EmptyView';
 import RouterMap, {routeNavigate} from '../../../../navigation/RouterMap';
+import ReturnCashModel from '../../model/ReturnCashModel';
 
 const {px2dp} = ScreenUtils;
 const renwu = res.cashAccount.renwu_icon;
-const daoshi = res.cashAccount.daoshi_icon;
-const fenhong = res.cashAccount.fenhong_icon;
-const hongbao = res.cashAccount.hongbao_icon;
-const tuiguang = res.cashAccount.tuiguang_icon;
 const tixiang = res.cashAccount.tixian_icon;
-const tixiantk = res.cashAccount.tixian_icon;
 const xiaofei = res.cashAccount.xiaofei_icon;
-const xiaofeitk = res.cashAccount.xiaofei_icon;
 const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
-const writer = res.cashAccount.writer_icon;
 const cash_noData = res.cashAccount.cash_noData;
-const qita = res.cashAccount.qita_icon;
 const chengFa = res.cashAccount.chengFa_icon;
 const shouru = res.cashAccount.shouru_icon;
 const shouyi = res.cashAccount.shouyi_icon;
-const arrowRight = res.userInfoImg.cash_arrow_right;
 
-const allType = {
-    1: {
-        title: '其他',
-        icon: renwu
-    },
-    2: {
-        title: '提现支出',
-        icon: tixiang
-    },
-    3: {
-        title: '消费支出',
-        icon: xiaofei
-    },
-    4: {
-        title: '导师管理',
-        icon: daoshi
-    },
-    5: {
-        title: '额外品牌分红奖励',
-        icon: fenhong
-    },
-    6: {
-        title: '品牌推广奖励',
-        icon: tuiguang
-    },
-    7: {
-        title: '其他',
-        icon: hongbao
-    },
-    8: {
-        title: '任务奖励',
-        icon: renwu
-    },
-    9: {
-        title: '消费退款',
-        icon: xiaofeitk
-    },
-    10: {
-        title: '提现退款',
-        icon: tixiantk
-    },
-    11: {
-        title: '自返奖励',
-        icon: hongbao
-    },
-    12: {
-        title: '写手奖励',
-        icon: writer
-    },
-    13: {
-        title: '系统升级',
-        icon: hongbao
-    },
-    14: {
-        title: '百万补贴奖励金',
-        icon: shouru
-    },
-    15: {
-        title: '活跃任务奖励金',
-        icon: shouru
-    },
-    16: {
-        title: '管理任务奖励金',
-        icon: shouru
-    },
-    17: {
-        title: '抽奖奖励',
-        icon: renwu
-    }
-
-};
+const bg_black_img = res.userInfoImg.cash_bg_icon;
+const bg_top_img = res.userInfoImg.cash_top_icon;
 
 const newTypeIcons = {
     1: {title: '消费', icon: xiaofei},
@@ -128,17 +58,11 @@ const newTypeIcons = {
     9: {title: '待入账结算', icon: shouyi},
     99: {title: '系统调账', icon: renwu}
 };
-const eumStatus={
-    NO_CASH_NO_SUPMEMBER: 1,    //自返金为0
-    HAVE_CASH_NO_SUPMEMBER: 2,  //自返金不为0，用户非超级会员
-    HAVE_CASH_HAVE_SUPMEMBER: 3,//自返金不为0，用户是超级会员
-};
 
 @observer
-export default class MyCashAccountPage extends BasePage {
+export default class CashRewardAccountPage extends BasePage {
     constructor(props) {
         super(props);
-        this.getUserBankInfoing = false;
         this.state = {
             viewData: [],
             currentPage: 1,
@@ -148,39 +72,20 @@ export default class MyCashAccountPage extends BasePage {
 
         };
         this.currentPage = 0;
-        this.type = null;
-        this.biType = null;
+        this.params = null;
     }
 
     $NavBarRightPressed = () => {
         this.$navigate(RouterMap.BankCardListPage);
     };
     $navigationBarOptions = {
-        title: '现金账户',
+        title: '我的自返金',
         show: false
     };
 
     $isMonitorNetworkStatus() {
         return true;
     }
-
-
-    _onScroll = (event) => {
-        let Y = event.nativeEvent.contentOffset.y;
-        if (Y <= 175) {
-            if (this.state.changeHeader) {
-                this.setState({
-                    changeHeader: false
-                });
-            }
-        } else {
-            if (!this.state.changeHeader) {
-                this.setState({
-                    changeHeader: true
-                });
-            }
-        }
-    };
 
     sectionComp = (info) => {
         let txt = info.section.key;
@@ -194,8 +99,7 @@ export default class MyCashAccountPage extends BasePage {
     //**********************************ViewPart******************************************
     _render() {
         const {viewData} = this.state;
-        const {returnCashInfo}  = ReturnCashModel;
-        console.log(returnCashInfo);
+        //section header组件区分，key=A 不显示header组件 ，key=B 线上tab切换组件
         let sections = [
             {key: 'A', data: [{title: 'head'}]},
             {key: 'B', data: !EmptyUtils.isEmpty(viewData) ? viewData : [{title: 'empty'}]}
@@ -212,9 +116,6 @@ export default class MyCashAccountPage extends BasePage {
                     onEndReached={this.onLoadMore}
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
-                    onScroll={(e) => {
-                        this._onScroll(e);
-                    }}
                     showsVerticalScrollIndicator={false}
                     refreshControl={
                         <RefreshControl
@@ -229,38 +130,53 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     /**
-     * 页面顶部用户账户余额，及自返金状态
-     */
-    _accountInfoRender=()=> {
+    * 页面顶部用户自返金信息
+    */
+    _accountInfoRender() {
         const {returnCashInfo}  = ReturnCashModel;
-        const {NO_CASH_NO_SUPMEMBER,HAVE_CASH_NO_SUPMEMBER,HAVE_CASH_HAVE_SUPMEMBER} = eumStatus;
-        //判断当前用户状态
-        let status = NO_CASH_NO_SUPMEMBER;
-        let returnCash = 0;
-        if(returnCashInfo){
-            if(Number(returnCashInfo.historySelfReturnAmount)+Number(returnCashInfo.preSettleSelfReturn)>0){
-                returnCash = Number(returnCashInfo.historySelfReturnAmount)+Number(returnCashInfo.preSettleSelfReturn);
-                if(returnCashInfo.convertSwitchStatus){
-                    status = HAVE_CASH_HAVE_SUPMEMBER;
-                }else {
-                    status = HAVE_CASH_NO_SUPMEMBER;
-                }
-            }
-        }
+
         return (
             <View style={styles.headerViewShadow}>
                 <View style={styles.headerViewStyle}>
                     <View style={styles.withdrawWrapper}>
                         <Text style={styles.countTextStyle}>
-                            账户余额（元）
+                            累计自返(元)
                         </Text>
-                        <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>
-                            <Text
-                                style={{
-                                    fontSize: DesignRule.fontSize_threeTitle,
-                                    color: DesignRule.mainColor
-                                }}>提现</Text>
-                        </NoMoreClick>
+                        {!returnCashInfo.convertSwitchStatus ?
+                            <NoMoreClick
+                                onPress={() => {
+                                    this.$navigate(RouterMap.HtmlPage, {uri: '/custom/:ZDYZT201909251743341'});
+                            }}>
+                                <ImageBackground
+                                    style={styles.beSubVipBgStyle}
+                                    source={bg_black_img}>
+
+                                    <Text
+                                        style={{
+                                            fontSize: DesignRule.fontSize_threeTitle,
+                                            color: '#E9CD8D'
+                                        }}>开启超级会员</Text>
+                                </ImageBackground>
+
+                                <ImageBackground
+                                    style={styles.beSubVipTopStyle}
+                                    source={bg_top_img}>
+                                    <Text
+                                        style={{
+                                            fontSize: DesignRule.fontSize_20,
+                                            color: '#333333'
+                                        }}>自动转出余额</Text>
+                                </ImageBackground>
+                            </NoMoreClick> :
+                            null
+                        }
+                        {returnCashInfo.convertSwitchStatus ?
+                            <View style={styles.subVipBgStyle}>
+                                <Text style={{color: '#FF0050', fontSize: 13}}>自动转到余额</Text>
+                            </View> :
+                            null
+                        }
+
                     </View>
                     <Text style={{
                         color: DesignRule.textColor_mainTitle,
@@ -268,46 +184,29 @@ export default class MyCashAccountPage extends BasePage {
                         marginLeft: DesignRule.margin_page,
                         height: 58,
                         lineHeight: 58
-                    }}>{user.availableBalance ? user.availableBalance : '0.00'}</Text>
+                    }}>{returnCashInfo.historySelfReturnAmount ? returnCashInfo.historySelfReturnAmount : '0.00'}</Text>
                     <View style={{display: 'flex', flex: 1, flexDirection: 'row', marginTop: 15}}>
                         <View style={{flex: 1, marginLeft: 15, justifyContent: 'center'}}>
                             <Text
-                                style={styles.numTextStyle}>{user.blockedBalance ? user.blockedBalance : '0.00'}</Text>
+                                style={styles.numTextStyle}>{returnCashInfo.preSettleSelfReturn ? returnCashInfo.preSettleSelfReturn : '0.00'}</Text>
                             <Text style={styles.numRemarkStyle}>待入账(元)</Text>
                         </View>
                         <View style={{flex: 1, marginLeft: 15, justifyContent: 'center'}}>
                             <Text
-                                style={styles.numTextStyle}>{user.historicalBalance ? user.historicalBalance : '0.00'}</Text>
-                            <Text style={styles.numRemarkStyle}>累计收益(元)</Text>
+                                style={styles.numTextStyle}>
+                                {returnCashInfo.availableSelfReturnAmount ? returnCashInfo.availableSelfReturnAmount : '0.00'}
+                                </Text>
+                            <Text style={styles.numRemarkStyle}>可转金额(元)</Text>
                         </View>
                     </View>
-                    <NoMoreClick
-                        style={{flexDirection: 'row', backgroundColor: '#F7F7F7', height: 32, alignItems: 'center'}}
-                        onPress={() => {this.$navigate(RouterMap.ReturnCashAccountPage)}}>
-                        {status === NO_CASH_NO_SUPMEMBER ?
-                            <Text style={styles.returnCashTextStyle}>您还没有自返金，快去获取</Text> : null}
-                        {status === HAVE_CASH_NO_SUPMEMBER ?
-                            <Text style={styles.returnCashTextStyle}>
-                                您有<Text style={{fontSize: 16, color: '#FF0050'}}>{StringUtils.formatMoneyString(returnCash, false)}</Text>自返金可转到余额
-                            </Text> : null}
-                        {status === HAVE_CASH_HAVE_SUPMEMBER ?
-                            <Text style={styles.returnCashTextStyle}>
-                                累计已有{returnCashInfo.historySelfReturnAmount}元自返金转到余额</Text>
-                            : null}
-
-                        {status === NO_CASH_NO_SUPMEMBER ?
-                            <Text style={{fontSize: 13, color: '#999999',}}>快去获取</Text> : null}
-                        {status === HAVE_CASH_NO_SUPMEMBER ?
-                            <Text style={{fontSize: 13, color: '#999999'}}>去提取</Text> : null}
-                        {status === HAVE_CASH_HAVE_SUPMEMBER ?
-                            <Text style={{fontSize: 13, color: '#999999'}}>明细</Text> : null}
-                        <Image source={arrowRight} style={{width: 14, height: 14, marginRight: 12,marginLeft:7}}/>
-                    </NoMoreClick>
                 </View>
             </View>
         );
-    };
+    }
 
+    /**
+     * 标题导航组件
+     */
     renderHeader = () => {
         return (
             <LinearGradient start={{x: 0, y: 0}}
@@ -333,13 +232,11 @@ export default class MyCashAccountPage extends BasePage {
                         fontSize: px2dp(17),
                         includeFontPadding: false
                     }}>
-                        {this.state.changeHeader ? '账户余额' : ''}
+                        我的自返金
                     </Text>
 
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.$navigate(RouterMap.BankCardListPage);
-                    }}>
-                        <Text style={[styles.settingStyle, {flex: 1}]}>银行卡管理</Text>
+                    <TouchableWithoutFeedback onPress={() => {this.$navigate(RouterMap.ReturnCashRulePage)}}>
+                        <Text style={[styles.settingStyle, {flex: 1}]}>自返规则</Text>
                     </TouchableWithoutFeedback>
 
                 </View>
@@ -347,23 +244,27 @@ export default class MyCashAccountPage extends BasePage {
         );
     };
 
+    /**
+     * tab切换组件
+     */
     renderReHeader = () => {
         return (
             <View style={{flex: 1, backgroundColor: 'white', height: 40}}>
                 <ScrollableTabView
                     onChangeTab={(obj) => {
+                        //tab请求切换数据源
+                        // fundsType:收入支出类型(1:收入 2:支出)
+                        // flag:查询类型(1: 全部/收入/支出 2:待入账)
+
                         if (obj.i === 1) {
-                            this.type = 1;
-                            this.biType = 1;
+                            this.params = {fundsType: 1,  flag: 1};
                         } else if (obj.i === 2) {
-                            this.type = 1;
-                            this.biType = 2;
+                            this.params = {fundsType: 2,  flag: 1};
                         } else if (obj.i === 3) {
-                            this.type = 2;
-                            this.biType = 1;
+                            this.params = {fundsType: '', flag: 2};
                         } else {
-                            this.type = null;
-                            this.biType = null;
+                            this.params = {fundsType: '', flag: 1};  //
+
                         }
                         this.onRefresh();
                     }}
@@ -382,6 +283,9 @@ export default class MyCashAccountPage extends BasePage {
         );
     };
 
+    /**
+     * tab按钮
+     */
     _renderTabBar = () => {
         return (
             <DefaultTabBar
@@ -396,6 +300,9 @@ export default class MyCashAccountPage extends BasePage {
         );
     };
 
+    /**
+     * 列表item组件，进行不同section 区分不同item
+     */
     renderItem = (info) => {
         let item = info.item;
         console.log('item', item);
@@ -413,15 +320,20 @@ export default class MyCashAccountPage extends BasePage {
                                     end={{x: 1, y: 0}}
                                     colors={['#FF0050', '#FC5D39']}
                     />
-                    <View style={{height: 48, width: ScreenUtils.width, backgroundColor: 'white'}}/>
+                    <View style={{height: 14, width: ScreenUtils.width, backgroundColor: 'white'}}/>
                     {this._accountInfoRender()}
                 </View>
             );
         }
+
         if (item.title && item.title === 'empty') {
             return <EmptyView style={{flex: 1}} imageStyle={{width: 267, height: 192}} description={''}
                               subDescription={'暂无明细数据～'} source={cash_noData}/>;
         }
+
+        let remark = item.remark ? item.remark : '其他';
+        let icon = item.tradeType && newTypeIcons[item.tradeType] ? newTypeIcons[item.tradeType].icon : renwu;
+        let time = DataUtils.getFormatDate(item.updateTime / 1000);
         return (
             <View style={{
                 height: 60,
@@ -432,7 +344,7 @@ export default class MyCashAccountPage extends BasePage {
                 paddingBottom: 10,
                 paddingTop: 10
             }}>
-                <Image source={item.iconImage} style={{marginLeft: 15, width: 40, height: 40}}/>
+                <Image source={icon} style={{marginLeft: 15, width: 40, height: 40}}/>
                 <View style={{
                     marginLeft: 17,
                     marginRight: 18,
@@ -442,22 +354,23 @@ export default class MyCashAccountPage extends BasePage {
                     flexDirection: 'row'
                 }}>
                     <View style={{justifyContent: 'space-between'}}>
-                        <Text style={{fontSize: 14, color: DesignRule.textColor_secondTitle}}>{item.type}</Text>
+                        <Text style={{fontSize: 14, color: DesignRule.textColor_secondTitle}}>{ this.params.flag+remark}</Text>
                         <Text style={{
                             fontSize: 12, color: DesignRule.textColor_instruction
-                        }}>{item.time}</Text>
+                        }}>{time}</Text>
                     </View>
-                    {Number(item.status) === 2 || (this.type === 2 && this.biType === 1) ?
+                    {item.status === 0 || (this.params && this.params.flag === 2) ?
                         <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{
                                     fontSize: 17,
                                     color: DesignRule.textColor_mainTitle
-                                }}>{item.capital ? item.capital : 0}</Text>
+                                }}>{item.preSettleAmount ? item.preSettleAmount : 0}</Text>
                             </View>
                             <Text style={{
                                 fontSize: 12, color: DesignRule.textColor_instruction
-                            }}>{item.realBalance === 0 || (!EmptyUtils.isEmpty(item.realBalance) && item.realBalance >= 0) ? `已入账：${item.realBalance}` : '入账等待'}</Text>
+                            }}>{item.actSettleAmount === 0 || (!EmptyUtils.isEmpty(item.actSettleAmount) && item.actSettleAmount >= 0) ?
+                                `已入账：${item.actSettleAmount}` : '入账等待'}</Text>
                         </View>
                         :
                         <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
@@ -465,13 +378,10 @@ export default class MyCashAccountPage extends BasePage {
                                 <Text style={{
                                     fontSize: 17,
                                     color: DesignRule.textColor_mainTitle
-                                }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                                }}>{StringUtils.formatMoneyString(item.balance, false)}</Text>
                                 <Image style={{marginLeft: 5, width: 8, height: 5}}
-                                       source={item.capitalRed ? lv_down : red_up}/>
+                                       source={item.fundsType === 2 ? lv_down : item.fundsType === 1 ? red_up : ''}/>
                             </View>
-                            <Text style={{
-                                fontSize: 12, color: DesignRule.textColor_instruction
-                            }}>{item.serialNumber}</Text>
                         </View>}
 
                 </View>
@@ -496,44 +406,15 @@ export default class MyCashAccountPage extends BasePage {
 
     }
 
-    jumpToWithdrawCashPage = () => {
-        MineApi.getUserBankInfo().then((data) => {
-            if (data.data && data.data.length > 0) {
-                MineApi.gongmallResult().then((data) => {
-                    if (!data.data) {
-                        this.$navigate(RouterMap.WithdrawalAgreementPage);
-                    } else {
-                        this.$navigate(RouterMap.WithdrawCashPage);
-                    }
-                }).catch(error => {
-                    this.$toastShow(error.msg);
-                });
-            } else {
-                Alert.alert('未绑定银行卡', '你还没有绑定银行卡', [{
-                    text: '稍后设置', onPress: () => {
-                    }
-                }, {
-                    text: '马上就去', onPress: () => {
-                        this.$navigate(RouterMap.BankCardListPage, {
-                            callBack: (params) => {
-                            }
-                        });
-                    }
-                }]);
-            }
-        }).catch((err) => {
-            this.$toastShow(err.msg);
-        });
-    };
-
+    /**
+     * 数据请求接口
+     */
     getDataFromNetwork = () => {
-        let use_type_symbol = ['', '+', '-'];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
-        MineApi.userBalanceQuery({
+        MineApi.getReturnCashList({
             page: this.currentPage,
-            size: 10,
-            type: this.type,
-            biType: this.biType
+            pageSize: 20,
+            ...this.params
         }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
@@ -541,36 +422,17 @@ export default class MyCashAccountPage extends BasePage {
                 let data = response.data;
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
-                        let remark = '';
-                        let icon = '';
-                        if (item.useType && allType[item.useType]) {
-                            remark = allType[item.useType] ? allType[item.useType].title : '其他';
-                            icon = allType[item.useType] ? allType[item.useType].icon : qita;
-                        } else {
-                            remark = item.remark ? item.remark : '其他';
-                            icon = newTypeIcons[item.tradeType] ? newTypeIcons[item.tradeType].icon : renwu
-                        }
-                        arrData.push({
-                            type: remark,
-                            time: DataUtils.getFormatDate(item.createTime / 1000),
-                            serialNumber: item.serialNo,
-                            capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
-                            iconImage: icon,
-                            capitalRed: use_type_symbol[item.biType] === '-',
-                            realBalance: item.realBalance,
-                            status: item.status
-                        });
+                        arrData.push(item);
                     });
                 }
                 this.setState({
                     refreshing: false,
                     viewData: arrData,
-                    isEmpty: data.data && data.data.length !== 0 ? false : true
+                    isEmpty: data.data && data.data.length > 0 ? false : true
                 });
             } else {
                 this.setState({refreshing: false});
                 this.$toastShow(response.msg);
-
             }
         }).catch(e => {
             Toast.hiddenLoading();
@@ -581,6 +443,10 @@ export default class MyCashAccountPage extends BasePage {
             });
         });
     };
+
+    /**
+     * 数据请求接口
+     */
     onLoad = () => {
         if (user.isLogin) {
             MineApi.getUser().then(resp => {
@@ -597,6 +463,9 @@ export default class MyCashAccountPage extends BasePage {
         this.getDataFromNetwork();
     };
 
+    /**
+     * 数据请求刷新
+     */
     onRefresh = () => {
         this.currentPage = 1;
         if (user.isLogin) {
@@ -611,6 +480,10 @@ export default class MyCashAccountPage extends BasePage {
         }
         this.getDataFromNetwork();
     };
+
+    /**
+     * 数据请求加载更多
+     */
     onLoadMore = () => {
         if (!this.state.isEmpty) {
             this.currentPage++;
@@ -661,7 +534,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: DesignRule.margin_page,
-        marginTop: px2dp(22)
+        marginTop: px2dp(10)
     },
     settingStyle: {
         color: DesignRule.white,
@@ -670,20 +543,37 @@ const styles = StyleSheet.create({
     },
     countTextStyle: {
         color: DesignRule.textColor_mainTitle,
-        fontSize: DesignRule.fontSize_threeTitle
+        fontSize: DesignRule.fontSize_threeTitle,
+        marginTop: px2dp(13),
     },
-    withdrawButtonWrapper: {
-        width: px2dp(80),
-        height: px2dp(28),
-        borderRadius: px2dp(14),
+    beSubVipTopStyle: {
+        width: px2dp(74),
+        height: px2dp(14),
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: DesignRule.white,
-        borderColor: DesignRule.mainColor,
-        borderWidth: 1,
         position: 'absolute',
-        right: 15,
-        top: 0
+        right: -4,
+        top: -19,
+    },
+    beSubVipBgStyle: {
+        width: px2dp(115),
+        height: px2dp(28),
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        right: 0,
+        top: -8
+    },
+    subVipBgStyle: {
+        width: px2dp(98),
+        height: px2dp(32),
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        right: 0,
+        top: -px2dp(10),
+        backgroundColor: 'rgba(255, 0, 80, 0.1)',
+        borderBottomLeftRadius: 15
     },
     numTextStyle: {
         color: '#333333',
@@ -704,17 +594,11 @@ const styles = StyleSheet.create({
     },
     headerViewStyle:{
         backgroundColor: 'white',
-        height: px2dp(206),
+        height: px2dp(174),
         width: ScreenUtils.width - 2 * DesignRule.margin_page,
         borderRadius: 15,
         overflow: 'hidden',
         elevation: 2,
-    },
-    returnCashTextStyle:{
-        fontSize: 13,
-        color: '#666666',
-        marginLeft: 15,
-        flex: 1
     }
 });
 
