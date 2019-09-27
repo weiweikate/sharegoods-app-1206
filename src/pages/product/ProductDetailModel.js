@@ -574,7 +574,7 @@ export default class ProductDetailModel {
             productType = 4;
         } else if (this.activityType === activity_type.group) {
             productType = 3;
-        } else if (this.activityType = activity_type.pinGroup) {
+        } else if (this.activityType === activity_type.pinGroup) {
             productType = 5;
         }
         return productType;
