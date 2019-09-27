@@ -7,6 +7,7 @@ import StringUtils from '../../../utils/StringUtils';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import EmptyView from '../../../components/pageDecorator/BaseView/EmptyView';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
+import DateUtils from '../../../utils/DateUtils';
 
 export class AddCapacityHistoryPage extends BasePage {
     $navigationBarOptions = {
@@ -121,7 +122,7 @@ export class AddCapacityHistoryPage extends BasePage {
                 <View style={styles.itemLeft}>
                     <Text style={styles.originalText}>扩容后坐席总数{StringUtils.add(originalVolume, volume)}人</Text>
                     <Text
-                        style={styles.dateText}>失效时间：{expandDeadline}</Text>
+                        style={styles.dateText}>失效时间：{expandDeadline ? DateUtils.formatDate(expandDeadline) : ''}</Text>
                 </View>
                 <Text style={styles.numText}>扩容{volume}人</Text>
             </View>

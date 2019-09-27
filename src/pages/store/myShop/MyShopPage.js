@@ -30,6 +30,7 @@ import StringUtils from '../../../utils/StringUtils';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import { navigateBackToStore, routePush } from '../../../navigation/RouterMap';
 import DateUtils from '../../../utils/DateUtils';
+import WaitingToNormalModal from './components/WaitingToNormalModal';
 // 图片资源
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
@@ -104,6 +105,7 @@ export default class MyShopPage extends BasePage {
         this.MyShopDetailModel.requestAppStore();
         this.MyShopDetailModel.requestShopBanner();
         this.MyShopDetailModel.requestShopProducts();
+        this.MyShopDetailModel.requestWaitToNormalUser();
     };
 
     _NavBarRender = () => {
@@ -337,6 +339,7 @@ export default class MyShopPage extends BasePage {
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.code || ''}`,
                                     thumImage: `${headUrl}`
                                 }}/>
+                <WaitingToNormalModal MyShopDetailModel={this.MyShopDetailModel}/>
             </View>
         );
     }

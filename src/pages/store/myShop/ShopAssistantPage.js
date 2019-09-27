@@ -20,7 +20,7 @@ export default class AssistantListPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
-        this.$navigate('store/addCapacity/AddCapacityPage', { storeData: this.params.storeData });
+        this.$navigate('store/addCapacity/AddCapacityPage');
     };
 
     constructor(props) {
