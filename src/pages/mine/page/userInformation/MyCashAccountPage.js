@@ -240,7 +240,7 @@ export default class MyCashAccountPage extends BasePage {
         if(returnCashInfo){
             if(Number(returnCashInfo.historySelfReturnAmount)+Number(returnCashInfo.preSettleSelfReturn)>0){
                 returnCash = Number(returnCashInfo.historySelfReturnAmount)+Number(returnCashInfo.preSettleSelfReturn);
-                if(returnCashInfo.convertSwitchStatus){
+                if (returnCashInfo.convertSwitchStatus === 1) {
                     status = HAVE_CASH_HAVE_SUPMEMBER;
                 }else {
                     status = HAVE_CASH_NO_SUPMEMBER;
