@@ -141,6 +141,7 @@ export default class MinePage extends BasePage {
             'didFocus',
             payload => {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+                settingModel.memberSwitch();//请求后台会员权益开关状态
                 const { state } = payload;
                 this.loadMessageCount();
                 this.loadAd();
@@ -327,8 +328,8 @@ export default class MinePage extends BasePage {
 
     //**********************************ViewPart******************************************
     _render() {
-        const { availableBalance, userScore, coupons, fansMSG } = settingModel;
-        console.log(availableBalance, userScore, coupons, fansMSG);
+        const { availableBalance, userScore, coupons, fansMSG, memberSwitchState } = settingModel;
+        console.log(availableBalance, userScore, coupons, fansMSG, memberSwitchState);
         return (
             <View style={{ flex: 1 }}>
                 <PullView
@@ -443,16 +444,16 @@ export default class MinePage extends BasePage {
         let beVip = data && data.title === 'beVIP';
         console.log('currentUserState',currentUserState)
 
-        if(!settingModel.memberSwitchState){
-            return;
-        }
-
         return (
             <View style={{flex: 1, marginTop: 10, justifyContent: 'flex-end'}}>
                 <TouchableOpacity
                     activeOpacity={0.8}
                     style={{alignItems: 'center'}}
                     onPress={() => {
+                        if(!settingModel.memberSwitchState){
+                            return;
+                        }
+
                         if (beVip) {
                             this.$navigate(RouterMap.HtmlPage, {uri: '/custom/:ZDYZT201909251743341'});
                         } else {
@@ -473,22 +474,25 @@ export default class MinePage extends BasePage {
                             <Image style={{width: data.width, height: data.height}}
                                    source={data.img}/>
                             <Text style={{color: 'white', fontSize: 12}}>{data.text}</Text>
-                            <View style={{flex: 1, alignItems: 'flex-end', marginRight: 27}}>
-                                <LinearGradient style={styles.btnStyle}
-                                                start={{x: 0, y: 0}}
-                                                end={{x: 1, y: 1}}
-                                                colors={['#FFE1C2', '#FFFEE3']}
-                                >
+                            {settingModel.memberSwitchState ?
+                                <View style={{flex: 1, alignItems: 'flex-end', marginRight: 27}}>
+                                    <LinearGradient style={styles.btnStyle}
+                                                    start={{x: 0, y: 0}}
+                                                    end={{x: 1, y: 1}}
+                                                    colors={['#FFE1C2', '#FFFEE3']}
+                                    >
 
-                                    <View style={styles.btnStyle}>
-                                        <Text style={{color: '#333333', fontSize: 12}} allowFontScaling={false}>
-                                            {beVip ? '立即开通' : '查看权益'}
-                                        </Text>
-                                        <Image source={res.homeBaseImg.mine_arrow_black}
-                                               style={{width: 12, height: 12}}/>
-                                    </View>
-                                </LinearGradient>
-                            </View>
+                                        <View style={styles.btnStyle}>
+                                            <Text style={{color: '#333333', fontSize: 12}} allowFontScaling={false}>
+                                                {beVip ? '立即开通' : '查看权益'}
+                                            </Text>
+                                            <Image source={res.homeBaseImg.mine_arrow_black}
+                                                   style={{width: 12, height: 12}}/>
+                                        </View>
+                                    </LinearGradient>
+                                </View> :
+                                null
+                            }
                         </View>
                     </ImageBackground>
                 </TouchableOpacity>
@@ -498,19 +502,16 @@ export default class MinePage extends BasePage {
 
     renderLevelNameNav = () => {
         let name = '';
-
         if (EmptyUtils.isEmpty(user.nickname)) {
             name = user.phone ? user.phone : '未登录';
         } else {
             name = user.nickname.length > 8 ? user.nickname.substring(0, 8) + '...' : user.nickname;
         }
-
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIconNavStyle}
                          borderRadius={px2dp(15)}/> :
             <Image source={res.placeholder.avatar_default} style={styles.userIconNavStyle}
                    borderRadius={px2dp(15)}/>;
-
         return (
             <View style={{
                 position: 'absolute',
@@ -535,19 +536,21 @@ export default class MinePage extends BasePage {
                         {name}
                     </Text>
                 </View>
-                <TouchableWithoutFeedback onPress={() => {
-                    this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
-                    TrackApi.ViewLevelInterest({ moduleSource: 2 });
-                }}>
-                    <View style={{
-                        height: 24, width: 85, justifyContent: 'center',
-                        alignItems: 'center', marginRight: 15, backgroundColor: '#FFE6B1', borderRadius: 12
+                {settingModel.memberSwitchState ? <TouchableWithoutFeedback onPress={() => {
+                        this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
+                        TrackApi.ViewLevelInterest({moduleSource: 2});
                     }}>
-                        <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22 }}>
-                            查看权益
-                        </Text>
-                    </View>
-                </TouchableWithoutFeedback>
+                        <View style={{
+                            height: 24, width: 85, justifyContent: 'center',
+                            alignItems: 'center', marginRight: 15, backgroundColor: '#FFE6B1', borderRadius: 12
+                        }}>
+                            <Text style={{color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22}}>
+                                查看权益
+                            </Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    : null
+                }
             </View>
         );
     };

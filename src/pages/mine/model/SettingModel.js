@@ -8,7 +8,7 @@ import store from '@mr/rn-store';
 import userModel from '../../../model/user';
 import MineAPI from '../api/MineApi';
 import bridge from '../../../utils/bridge';
-
+import DateUtils from '../../../utils/DateUtils';
 
 const mineKey = '@mr/msgmine';
 
@@ -50,7 +50,8 @@ class SettingModel {
     messageState = 0;
 
     @observable
-    memberSwitchState = false;
+    memberSwitchState =  true//!DateUtils.getDateDiffFun('2019/10/25 00:00:00', '');
+
 
     @action
     getLocationState() {
@@ -197,7 +198,15 @@ class SettingModel {
 
     @action
     memberSwitch(){
-        this.memberSwitchState = true
+        if(DateUtils.getDateDiffFun('2019/10/25 00:00:00', '')){
+            return
+        }
+
+        MineAPI.getMemberCenterShow().then((res)=>{
+            this.messageState = res.data && res.data.showNewMemberBenefit ? res.data.showNewMemberBenefit : false;
+        }).catch(error=>{
+            this.memberSwitchState = false
+        })
     }
 
 
