@@ -5,13 +5,12 @@ import {
     StyleSheet, RefreshControl, Alert
 } from 'react-native';
 import SearchBar from '../../../components/ui/searchBar/SearchBar';
-import AssistantRow from './components/AssistantRow';
+import AssistantRow, { ExplainView } from './components/AssistantRow';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from '../../../constants/DesignRule';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
-import { MRText } from '../../../components/ui';
 
 export default class AssistantListPage extends BasePage {
 
@@ -197,11 +196,7 @@ export default class AssistantListPage extends BasePage {
                            style={{ marginBottom: 10 }}
                            onChangeText={this._onChangeText}
                            title={this.state.searchText}/>
-                <View style={{ backgroundColor: 'white', marginBottom: 15 }}>
-                    <MRText style={styles.title}>温馨提示：</MRText>
-                    <MRText
-                        style={styles.titleContent}>{`1. 扩容后，待扩容成员将成为正式成员；\n2. 待扩容期内，此成员可自由离店；\n3. 若指定时间内不扩容，此成员将自动离店。`}</MRText>
-                </View>
+                <ExplainView/>
                 <FlatList data={this.state.list}
                           renderItem={this._renderItem}
                           keyExtractor={(item, index) => `${index}`}
@@ -224,11 +219,5 @@ export default class AssistantListPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1
-    },
-    title: {
-        fontSize: 12, color: DesignRule.textColor_instruction, paddingHorizontal: 15
-    },
-    titleContent: {
-        fontSize: 12, color: DesignRule.textColor_secondTitle, marginTop: 5, paddingHorizontal: 15, paddingBottom: 10
     }
 });
