@@ -31,13 +31,10 @@ export class AddressSelectPage extends BasePage {
                     }
                     /*商品详情回调*/
                     const { productDetailAddressModel } = this.params;
-                    const nameList = selectItems.map((item) => {
-                        return item.name;
+                    productDetailAddressModel.setAddressItem({
+                        province: selectItems[0].name, city: selectItems[1].name, area: item.name,
+                        provinceCode: selectItems[0].code, cityCode: selectItems[1].code, areaCode: item.code
                     });
-                    productDetailAddressModel.addressSelectedText = nameList.join('');
-                    productDetailAddressModel.provinceCode = selectItems[0].code;
-                    productDetailAddressModel.cityCode = selectItems[1].code;
-                    productDetailAddressModel.addressSelectedCode = item.code;
                     popToRouteName(RouterMap.ProductDetailPage);
                     return;
                 }

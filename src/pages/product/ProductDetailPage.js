@@ -181,15 +181,16 @@ export default class ProductDetailPage extends BasePage {
 
     //选择规格确认
     _selectionViewConfirm = (amount, skuCode, item, productIsPromotionPrice) => {
-        const { prodCode, name, originalPrice, isGroupIn, groupActivity } = this.productDetailModel;
+        const { prodCode, name, originalPrice, isGroupIn, groupActivity, productDetailAddressModel } = this.productDetailModel;
+        const { paramAddressItem } = productDetailAddressModel;
         const { goType } = this.state;
         if (goType === 'gwc') {
             shopCartCacheTool.addGoodItem({
                 'amount': amount,
                 'skuCode': skuCode,
                 'productCode': prodCode,
-                'sgscm':this.productDetailModel.sgscm,
-                'sgspm':this.productDetailModel.sgspm,
+                'sgscm': this.productDetailModel.sgscm,
+                'sgspm': this.productDetailModel.sgspm
             });
             /*加入购物车埋点*/
             track(trackEvent.AddToShoppingcart, {
@@ -217,6 +218,7 @@ export default class ProductDetailPage extends BasePage {
                 });
                 this.$navigate(RouterMap.ConfirOrderPage, {
                     orderParamVO: {
+                        address: paramAddressItem,
                         orderType: 1,
                         source: 2,
                         orderProducts: [{
@@ -225,8 +227,8 @@ export default class ProductDetailPage extends BasePage {
                             productCode: prodCode,
                             skuCode: skuCode,
                             quantity: amount,
-                            sgscm:this.productDetailModel.sgscm,
-                            sgspm:this.productDetailModel.sgspm
+                            sgscm: this.productDetailModel.sgscm,
+                            sgspm: this.productDetailModel.sgspm
                         }, ...orderProductList]
                     }
                 });
@@ -236,8 +238,8 @@ export default class ProductDetailPage extends BasePage {
             const { specImg, promotionPrice, price, propertyValues } = item;
             let orderProducts = [{
                 productType: this.productDetailModel.type,
-                sgscm:this.productDetailModel.sgscm,
-                sgspm:this.productDetailModel.sgspm,
+                sgscm: this.productDetailModel.sgscm,
+                sgspm: this.productDetailModel.sgspm,
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,
@@ -250,7 +252,7 @@ export default class ProductDetailPage extends BasePage {
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
-                    orderType: 99,
+                    address: paramAddressItem,
                     orderProducts: orderProducts,
                     source: parseInt(type) === 9 ? 4 : 2,
                     couponsId: parseInt(couponId)
@@ -263,8 +265,8 @@ export default class ProductDetailPage extends BasePage {
             const { id, initiatorUserName } = this.groupItem || {};
             let orderProducts = [{
                 productType: this.productDetailModel.type,
-                sgscm:this.productDetailModel.sgscm,
-                sgspm:this.productDetailModel.sgspm,
+                sgscm: this.productDetailModel.sgscm,
+                sgspm: this.productDetailModel.sgspm,
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,
@@ -279,6 +281,7 @@ export default class ProductDetailPage extends BasePage {
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
                     bizTag: 'group',
+                    address: paramAddressItem,
                     groupData: {
                         isSponsor: StringUtils.isEmpty(this.groupItem),
                         sponsor: initiatorUserName
@@ -288,6 +291,9 @@ export default class ProductDetailPage extends BasePage {
                     source: 2
                 }
             });
+        }
+        if (paramAddressItem &&!paramAddressItem.id) {
+            productDetailAddressModel.paramAddressItem = null;
         }
     };
 

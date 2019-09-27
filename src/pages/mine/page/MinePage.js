@@ -267,7 +267,7 @@ export default class MinePage extends BasePage {
     _onScroll = (event) => {
         this.offsetY = event.nativeEvent.contentOffset.y;
 
-        if (this.offsetY <= halfScaleHeaderSize ) {
+        if (this.offsetY <= halfScaleHeaderSize) {
             if (!this.state.changeHeader) {
                 this.setState({
                     changeHeader: true

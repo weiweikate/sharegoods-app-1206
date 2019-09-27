@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import { MRText, NoMoreClick } from '../../../components/ui';
 import res from '../res/product';
 import DesignRule from '../../../constants/DesignRule';
-import { observable, computed, autorun } from 'mobx';
+import { observable, computed, autorun, action } from 'mobx';
 import { observer } from 'mobx-react';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import MineAPI from '../../mine/api/MineApi';
@@ -128,12 +128,27 @@ export class ProductDetailAddressModel {
     @observable addressSelectedText = null;
     @observable provinceCode = null;
     @observable cityCode = null;
-    @observable addressSelectedCode = null;
+    @observable areaCode = null;
+
+    paramAddressItem = {
+        province: '浙江省', city: '杭州市', area: '萧山区',
+        provinceCode: '330000000', cityCode: '330100000', areaCode: '330109000'
+    };
 
     /*区域库存(地区变化就需要更新)  未请求成功为null*/
     @observable areaSkuList = null;
 
     @observable freightPrice = null;
+
+    @action setAddressItem = (item) => {
+        this.paramAddressItem = item;
+
+        const { province, city, provinceCode, cityCode, area, areaCode } = item;
+        this.addressSelectedText = `${province || ''}${city || ''}${area || ''}`;
+        this.provinceCode = provinceCode;
+        this.cityCode = cityCode;
+        this.areaCode = areaCode;
+    };
 
     @computed get showAreaText() {
         if (this.addressSelectedText) {
@@ -172,8 +187,8 @@ export class ProductDetailAddressModel {
     }
 
     @computed get getAreaCode() {
-        if (this.addressSelectedCode) {
-            return this.addressSelectedCode;
+        if (this.areaCode) {
+            return this.areaCode;
         }
         for (const item of this.addressList) {
             if (item.defaultStatus === 1) {
@@ -212,6 +227,11 @@ export class ProductDetailAddressModel {
     requestAddress = () => {
         MineAPI.queryAddrList().then((data) => {
             this.addressList = data.data || [];
+            for (const item of this.addressList) {
+                if (item.defaultStatus === 1) {
+                    this.paramAddressItem = item;
+                }
+            }
         });
     };
 }
