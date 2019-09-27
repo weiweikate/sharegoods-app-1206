@@ -442,6 +442,11 @@ export default class MinePage extends BasePage {
         let data = !EmptyUtils.isEmpty(currentUserState) && vipStatus[currentUserState] ? vipStatus[currentUserState] : vipStatus.beVIP;
         let beVip = data && data.title === 'beVIP';
         console.log('currentUserState',currentUserState)
+
+        if(!settingModel.memberSwitchState){
+            return;
+        }
+
         return (
             <View style={{flex: 1, marginTop: 10, justifyContent: 'flex-end'}}>
                 <TouchableOpacity

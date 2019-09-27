@@ -49,6 +49,9 @@ class SettingModel {
     @observable
     messageState = 0;
 
+    @observable
+    memberSwitchState = false;
+
     @action
     getLocationState() {
         store.get('@mr/settingWXState').then((data) => {
@@ -190,6 +193,11 @@ class SettingModel {
         }).catch(error=>{
             bridge.$toast(error.msg);
         })
+    }
+
+    @action
+    memberSwitch(){
+        this.memberSwitchState = true
     }
 
 
