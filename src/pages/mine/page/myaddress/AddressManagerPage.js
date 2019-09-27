@@ -252,7 +252,8 @@ const styles = StyleSheet.create({
         marginRight: 15,
         marginLeft: 15,
         marginTop: 10,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderRadius: 10
     },
     cell_name_tel: {
         flexDirection: 'row',
