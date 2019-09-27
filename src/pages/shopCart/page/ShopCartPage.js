@@ -198,7 +198,27 @@ export default class ShopCartPage extends BasePage {
         shopCartCacheTool.getShopCartGoodsListData();
         shopCartEmptyModel.getRecommendProducts(true);
     };
+
+
+    /**
+     * 判断商品是否有效
+     * @param item
+     * @private
+     */
+    _isValidProduct = (item)=>{
+        if (item.productStatus === 0 || item.productStatus === 2 || item.productStatus === 3 || item.sellStock === 0 || item.orderOnProduct === 0){
+            return false;
+        }
+        return true;
+    }
+
     _jumpToProductDetailPage = (itemData) => {
+        TrackApi.CartProductOper({
+            spuCode:itemData.spuCode,
+            spuName:itemData.productName,
+            spuStatus:this._isValidProduct(itemData) ? 1 : 2,
+            operType:1
+        });
         if (itemData.productStatus === 0) {
             return;
         }
@@ -217,6 +237,13 @@ export default class ShopCartPage extends BasePage {
     _deleteFromShoppingCartByProductId = (itemData) => {
         console.log('删除前');
         console.log(itemData);
+        const {item} = itemData;
+        TrackApi.CartProductOper({
+            spuCode:item.spuCode,
+            spuName:item.productName,
+            spuStatus:this._isValidProduct(item) ? 1 : 2,
+            operType:2
+        })
         let delteCode = [
             { 'skuCode': itemData.item.skuCode }
         ];
