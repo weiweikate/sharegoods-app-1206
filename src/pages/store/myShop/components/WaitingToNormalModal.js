@@ -28,15 +28,15 @@ const { px2dp } = ScreenUtils;
 export default class WaitingToNormalModal extends Component {
 
     render() {
-        const { hasWaitToNormalUser, closeWaiting } = this.props.MyShopDetailModel;
-        if (!hasWaitToNormalUser) {
+        const { closeWaiting, waitToNormalUsers } = this.props.MyShopDetailModel;
+        if (waitToNormalUsers === 0) {
             return null;
         }
         return (
             <View style={styles.container}>
                 <View style={styles.containerView}>
                     <Image source={waitToNormal} style={styles.img}/>
-                    <MRText style={styles.text}>{`您有100位成员待扩容\n请尽快扩容～`}</MRText>
+                    <MRText style={styles.text}>{`您有${waitToNormalUsers}位成员待扩容\n请尽快扩容～`}</MRText>
                     <View style={{ flexDirection: 'row', marginBottom: 25 }}>
                         <NoMoreClick style={styles.leftBtn} onPress={closeWaiting}>
                             <MRText style={styles.leftText}>知道了</MRText>
