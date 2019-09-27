@@ -21,12 +21,13 @@ export default class MyShopDetailModel {
     @observable storeData = {};
     @observable storeUsers = [];
     @observable storeUserCount = 0;
-    @observable hasWaitToNormalUser = false;
+
+    @observable waitToNormalUsers = 0;
     wayToPinType = '';
 
     @action closeWaiting = () => {
         store.save('@mr/hasWaitToNormalUser', new Date());
-        this.hasWaitToNormalUser = false;
+        this.waitToNormalUsers = 0;
     };
 
     /*网络*/
@@ -90,7 +91,7 @@ export default class MyShopDetailModel {
             if (data.data > 0) {
                 store.get('@mr/hasWaitToNormalUser').then((date) => {
                     if (!DateUtils.isToday(date)) {
-                        this.hasWaitToNormalUser = true;
+                        this.waitToNormalUsers = data.data;
                     }
                 });
             }
