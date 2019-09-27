@@ -153,7 +153,7 @@ export default class GoodsListItem extends React.Component {
                             this.setState({isShow: !this.state.isShow})
                         }}
                     >
-                        <Text style={{color: '#666666', fontSize: 12}}>更多</Text>
+                        <Text style={{color: '#666666', fontSize: 12}}>更多></Text>
                     </NoMoreClick> : null}
                 {nameArr.map((item, i) => {
                         return <NoMoreClick key={i} style={{
@@ -164,7 +164,7 @@ export default class GoodsListItem extends React.Component {
                             marginRight: ScreenUtils.autoSizeWidth(10),
                             justifyContent: 'center',
                             alignItems: 'center',
-                            paddingHorizontal:  ScreenUtils.autoSizeWidth(10)
+                            width:  ScreenUtils.autoSizeWidth(70)
                         }} onPress={() => {
                             this.setState({isShow: false})
                             operationMenuClick(item);

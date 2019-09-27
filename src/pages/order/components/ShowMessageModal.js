@@ -89,7 +89,7 @@ class ShowMessageModal extends Component {
                 justifyContent: 'flex-start',
                 alignItems: 'flex-end',
                 paddingRight: 8,
-                paddingTop: ScreenUtils.headerHeight - 3
+                paddingTop: ScreenUtils.headerHeight - 10
             }}>
                 <ImageBackground style={{ width: 143, height: 93, paddingTop: 9 }} source={message_bg}
                                  resizeMode={'stretch'}>
