@@ -1,10 +1,12 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 import HomeAPI from '../../home/api/HomeAPI';
 import { homeType } from '../../home/HomeTypes';
 import SpellShopApi from '../api/SpellShopApi';
 import intervalMsgModel, { IntervalType } from '../../../comm/components/IntervalMsgView';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import store from '@mr/rn-store/src/index';
+import DateUtils from '../../../utils/DateUtils';
 
 export default class MyShopDetailModel {
 
@@ -19,7 +21,13 @@ export default class MyShopDetailModel {
     @observable storeData = {};
     @observable storeUsers = [];
     @observable storeUserCount = 0;
+    @observable hasWaitToNormalUser = false;
     wayToPinType = '';
+
+    @action closeWaiting = () => {
+        store.save('@mr/hasWaitToNormalUser', new Date());
+        this.hasWaitToNormalUser = false;
+    };
 
     /*网络*/
     requestAppStore = () => {
@@ -74,6 +82,18 @@ export default class MyShopDetailModel {
             }
             const content = { pageType: IntervalType.shopDetail, params: { floatMsgs: dataList } };
             intervalMsgModel.setMsgData(content, shopCode);
+        });
+    };
+
+    requestWaitToNormalUser = () => {
+        SpellShopApi.waitToNormalUser().then((data) => {
+            if (data.data > 0) {
+                store.get('@mr/hasWaitToNormalUser').then((date) => {
+                    if (!DateUtils.isToday(date)) {
+                        this.hasWaitToNormalUser = true;
+                    }
+                });
+            }
         });
     };
 }

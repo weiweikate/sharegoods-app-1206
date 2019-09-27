@@ -53,10 +53,6 @@ const api = {
     * */
     expand_expandInfo: ['/app/store/expand/expandInfo', { method: 'get' }],
     /*
-    * 拼店扩容说明
-    * */
-    store_expansion: ['/config/store/expansion', { method: 'get' }],
-    /*
     * 商品列表
     * storeCode
     * */
@@ -68,11 +64,10 @@ const api = {
     expand_recordList: ['/app/store/expand/recordList', { method: 'get' }],
     //还有购买校验接口
     verifyExpandOrderParams: ['/app/store/expand/verifyExpandOrderParams'],
-
+    //是否提醒去扩容
+    waitToNormalUser: ['/app/store/waitToNormalUser', { method: 'get' }],
     // 查询消息
     floatMsg: ['/floatMsg/get', { method: 'get' }],
-
-    store_openStore: ['/user/store/openStore', { method: 'get' }]
 };
 const StoreApi = ApiUtils(api);
 export default StoreApi;

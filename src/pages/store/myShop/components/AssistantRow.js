@@ -14,6 +14,7 @@ import UIImage from '@mr/image-placeholder';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import LinearGradient from 'react-native-linear-gradient';
 import res from '../../res';
+import DateUtils from '../../../../utils/DateUtils';
 
 const { close_icon } = res.button;
 
@@ -52,7 +53,9 @@ export default class AssistantRow extends Component {
                                          style={{ width: 59, height: 16, marginLeft: 5 }}/> : null}
                         </View>
                         <Text style={styles.level}>{levelName || ''}</Text>
-                        {status === 10 && <Text style={styles.desc}>若未扩容，此成员将在{waitDeadline || ''}离店</Text>}
+                        {status === 10 &&
+                        <Text
+                            style={styles.desc}>若未扩容，此成员将在{waitDeadline ? DateUtils.formatDate(waitDeadline) : ''}离店</Text>}
                     </View>
                 </View>
                 {showLinear && <LinearGradient style={styles.linearGradient}

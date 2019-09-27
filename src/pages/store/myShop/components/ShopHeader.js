@@ -45,7 +45,7 @@ export default class ShopHeader extends Component {
                    style={[styles.imgBg]}/>
             <View style={{
                 height: showTicker ? px2dp(20) : 0,
-                marginTop: ScreenUtils.headerHeight,
+                marginTop: ScreenUtils.headerHeight, marginBottom: 8,
                 backgroundColor: 'rgba(255,255,255,0.4)',
                 justifyContent: 'center'
             }}>

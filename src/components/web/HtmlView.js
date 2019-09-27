@@ -5,7 +5,7 @@ import { BackHandler, Image, Platform, TouchableOpacity, View } from 'react-nati
 import CommShareModal from '../../comm/components/CommShareModal';
 // import res from '../../comm/res';
 import apiEnvironment from '../../api/ApiEnvironment';
-import RouterMap, {routeNavigate,GoToTabItem} from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate, GoToTabItem } from '../../navigation/RouterMap';
 import { autorun } from 'mobx';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
@@ -17,7 +17,7 @@ import SmoothPushHighComponent from '../../comm/components/SmoothPushHighCompone
 import ShareUtil from '../../utils/ShareUtil';
 import { homeType } from '../../pages/home/HomeTypes';
 import LuckyIcon from '../../pages/guide/LuckyIcon';
-import GroupSelectModel from '../../pages/mine/page/spellGroup/components/GroupSelectModel'
+import GroupSelectModel from '../../pages/mine/page/spellGroup/components/GroupSelectModel';
 
 const moreIcon = res.button.message_three;
 const btn_group = res.button.btn_group;
@@ -29,18 +29,19 @@ export default class RequestDetailPage extends BasePage {
 
     // 页面配置
     $navigationBarOptions = {
-        title: this.params.title || '加载中...'
+        title: this.params.title || '加载中...',
+        show: !(this.props.params || {}).unShow
     };
 
     constructor(props) {
         super(props);
-        const params = this.props.navigation.state.params || {};
+        const params = this.props.params || this.params || {};
         let { uri, title } = params;
         uri = decodeURIComponent(uri);
         this.canGoBack = false;
         let realUri = '';
         let platform = Platform.OS;
-        this.openShareModal = this.params.openShareModal || false;
+        this.openShareModal = params.openShareModal || false;
         let app_version = DeviceInfo.getVersion();
         let app_name = DeviceInfo.getBundleId();
         let parmasString = 'platform=' + platform +
@@ -99,36 +100,38 @@ export default class RequestDetailPage extends BasePage {
                            resizeMode={'contain'}/>
                 </TouchableOpacity>
             );
-        }else if(this.state.hasRightItem === 'showGroupRightItem') {
+        } else if (this.state.hasRightItem === 'showGroupRightItem') {
             return (
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <TouchableOpacity
                         activeOpacity={0.7}
-                        onPress={() => {routeNavigate(RouterMap.SpellGroupList)}}
+                        onPress={() => {
+                            routeNavigate(RouterMap.SpellGroupList);
+                        }}
                         style={{
-                        width: ScreenUtils.px2dp(40),
-                        height: ScreenUtils.px2dp(44),
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <Image source={btn_group} style={{width: 22 ,height: ScreenUtils.px2dp(44)}}
+                            width: ScreenUtils.px2dp(40),
+                            height: ScreenUtils.px2dp(44),
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                        <Image source={btn_group} style={{ width: 22, height: ScreenUtils.px2dp(44) }}
                                resizeMode={'contain'}/>
                     </TouchableOpacity>
                     <TouchableOpacity
                         activeOpacity={0.7}
                         onPress={this.showMore}
                         style={{
-                        width: ScreenUtils.px2dp(40),
-                        height: ScreenUtils.px2dp(44),
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <Image source={share_group} style={{width: 22 ,height: ScreenUtils.px2dp(44)}}
+                            width: ScreenUtils.px2dp(40),
+                            height: ScreenUtils.px2dp(44),
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                        <Image source={share_group} style={{ width: 22, height: ScreenUtils.px2dp(44) }}
                                resizeMode={'contain'}/>
                     </TouchableOpacity>
                 </View>
             );
-        }else{
+        } else {
             return <View/>;
         }
 
@@ -201,12 +204,12 @@ export default class RequestDetailPage extends BasePage {
             if ((msg.shareParams && msg.shareParams.type && msg.shareParams.type === 'Group') ||
                 (msg.shareParmas && msg.shareParmas.type && msg.shareParmas.type === 'Group')) {
 
-                this.setState({shareParmas: msg.shareParams || msg.shareParmas}, () => {
+                this.setState({ shareParmas: msg.shareParams || msg.shareParmas }, () => {
                     this.SelectModel && this.SelectModel.onOpen();
                 });
                 return;
             } else {
-                this.setState({shareParmas: msg.shareParams || msg.shareParmas}, () => {
+                this.setState({ shareParmas: msg.shareParams || msg.shareParmas }, () => {
                     this.shareModal && this.shareModal.open();
                 });
                 return;
@@ -316,11 +319,11 @@ export default class RequestDetailPage extends BasePage {
                 />
                 <GroupSelectModel
                     ref={(ref) => {
-                        this.SelectModel = ref
+                        this.SelectModel = ref;
                     }}
                     data={this.state.shareParmas}
                     createAD={(data) => {
-                        console.log('createAD',data)
+                        console.log('createAD', data);
                         this.setState({
                             shareParmas: data
                         }, () => {
@@ -328,12 +331,12 @@ export default class RequestDetailPage extends BasePage {
                         });
                     }}
                     inviteShare={(data) => {
-                        console.log('inviteShare',data)
+                        console.log('inviteShare', data);
                         this.setState({
                             shareParmas: data
                         }, () => {
                             this.shareModal && this.shareModal.open();
-                        })
+                        });
                     }}
 
                 />

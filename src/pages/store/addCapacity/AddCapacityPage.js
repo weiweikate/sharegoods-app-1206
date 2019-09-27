@@ -5,10 +5,10 @@ import DesignRule from '../../../constants/DesignRule';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import SpellShopApi from '../api/SpellShopApi';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
-import HTML from '@mr/react-native-render-html';
-import ScreenUtils from '../../../utils/ScreenUtils';
 import StringUtils from '../../../utils/StringUtils';
 import { MRText as Text } from '../../../components/ui';
+import { BannersVerticalView } from '../../../comm/components/BannersVerticalView';
+import { homeType } from '../../home/HomeTypes';
 
 export class AddCapacityPage extends BasePage {
     $navigationBarOptions = {
@@ -24,8 +24,6 @@ export class AddCapacityPage extends BasePage {
             currStoreVolume: '',
             storeUserNum: '',
             expandDone: false,
-
-            storeExpansion: ''
         };
     }
 
@@ -54,14 +52,6 @@ export class AddCapacityPage extends BasePage {
                 netFailedInfo: e
             });
         });
-
-        SpellShopApi.store_expansion().then((data) => {
-            const dataTemp = data.data || {};
-            const { storeExpansion } = dataTemp;
-            this.setState({
-                storeExpansion
-            });
-        });
     };
 
     componentDidMount() {
@@ -73,7 +63,7 @@ export class AddCapacityPage extends BasePage {
     };
 
     _render() {
-        const { currStoreVolume, storeUserNum, expandDone, storeExpansion } = this.state;
+        const { currStoreVolume, storeUserNum, expandDone } = this.state;
         const outNum = StringUtils.sub(storeUserNum || 0, currStoreVolume || 0);
         return (
             <ScrollView>
@@ -92,16 +82,7 @@ export class AddCapacityPage extends BasePage {
                 <NoMoreClick style={styles.addBtn} onPress={this._addBtnAction} disabled={!expandDone}>
                     <Text style={styles.addText}>立即扩容</Text>
                 </NoMoreClick>
-                <HTML html={storeExpansion}
-                      imagesMaxWidth={ScreenUtils.width - 30}
-                      imagesInitialDimensions={{
-                          width: ScreenUtils.width - 30,
-                          height: 0
-                      }}
-                      containerStyle={{
-                          marginTop: 30,
-                          marginHorizontal: 15
-                      }}/>
+                <BannersVerticalView type={homeType.store30} style={{ marginTop: 30 }}/>
             </ScrollView>
         );
     }

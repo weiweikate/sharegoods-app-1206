@@ -13,13 +13,15 @@ import BasePage from '../../../BasePage';
 import DesignRule from '../../../constants/DesignRule';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import SpellShopApi from '../api/SpellShopApi';
-import HTML from '@mr/react-native-render-html';
 import res from '../res';
 import { MRText as Text } from '../../../components/ui';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import RouterMap from '../../../navigation/RouterMap';
 import bridge from '../../../utils/bridge';
+import { BannersVerticalView } from '../../../comm/components/BannersVerticalView';
+import HomeAPI from '../../home/api/HomeAPI';
+import { homeType } from '../../home/HomeTypes';
 
 
 const { openShop_yes, openShop_no } = res.openShop;
@@ -30,7 +32,7 @@ export default class OpenShopExplainPage extends BasePage {
         pageState: PageLoadingState.loading,
         isSelected: true,
         netFailedInfo: {},
-        data: null
+        data: []
     };
 
     $navigationBarOptions = {
@@ -57,14 +59,14 @@ export default class OpenShopExplainPage extends BasePage {
     }
 
     _openStore = () => {
-        SpellShopApi.store_openStore().then((data) => {
+        HomeAPI.getHomeData({ type: homeType.store29 }).then((data) => {
             this.setState({
                 data: data.data,
                 pageState: PageLoadingState.success
             });
         }).catch(() => {
             this.setState({
-                pageState: PageLoadingState.success
+                pageState: PageLoadingState.fail
             });
         });
     };
@@ -112,10 +114,7 @@ export default class OpenShopExplainPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView style={styles.scrollView}>
-                    <HTML html={data}
-                          imagesMaxWidth={ScreenUtils.width - 30}
-                          imagesInitialDimensions={{ width: ScreenUtils.width - 30, height: 0 }}
-                          containerStyle={{ backgroundColor: '#fff' }}/>
+                    <BannersVerticalView bannerList={data}/>
                 </ScrollView>
                 <NoMoreClick onPress={this._clickOpen} style={styles.btnStyle}>
                     <Text style={styles.btnText}>我要开店</Text>
