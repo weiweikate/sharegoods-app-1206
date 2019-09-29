@@ -354,7 +354,7 @@ export default class CashRewardAccountPage extends BasePage {
                     flexDirection: 'row'
                 }}>
                     <View style={{justifyContent: 'space-between'}}>
-                        <Text style={{fontSize: 14, color: DesignRule.textColor_secondTitle}}>{ this.params.flag+remark}</Text>
+                        <Text style={{fontSize: 14, color: DesignRule.textColor_secondTitle}}>{remark}</Text>
                         <Text style={{
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{time}</Text>
