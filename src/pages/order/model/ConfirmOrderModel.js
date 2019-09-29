@@ -101,8 +101,10 @@ class ConfirmOrderModel {
             if (data) {
                 callBack&&callBack();
                 bridge.$toast('激活成功');
-                this.invokeSelect = true;
-                this.canInvoke = false;
+                if (this.canInvoke ) {
+                    this.invokeSelect = true;
+                    this.canInvoke = false;
+                }
                 this.selectUserCoupon(data.code)
             } else {
                 bridge.$toast('激活失败');
@@ -327,13 +329,17 @@ class ConfirmOrderModel {
                         if (item.status !== 0){
                         return;//不可用
                     }
-                    if (item.couponConfigId == couponsId) {
+                    if (item.couponConfigId == couponsId) {//如果是匹配的兑换券，就结束循环
                         userCouponCode = item.code;
+                        this.canInvoke = false
+                        this.invokeItem = null
                         return true;
                     }
-                    if (item.type == 5 && !userCouponCode) {
+                    if (item.type == 5 && !userCouponCode) {//是兑换券，且userCouponCode还没空（为了找第一个可用兑换券）
                         userCouponCode = item.code;
-                        if (!couponsId) {
+                        if (!couponsId) {//id为空，不需要匹配对应的优惠券就结束循环
+                            this.canInvoke = false
+                            this.invokeItem = null
                             return true;
                         }
                     }
