@@ -37,6 +37,14 @@
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
+        "xbj": {
+            "name": "熊宝静",
+            "host": "http://172.18.10.239:5656/gateway",
+            "oss": "https://devcdn.sharegoodsmall.com",
+            "h5": "https://devh5.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c",
+            "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
+        },
         "qa": {
             "name": "测试",
             "host": "https://testapi.sharegoodsmall.com/gateway",

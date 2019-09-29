@@ -2,7 +2,6 @@ package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -247,12 +245,12 @@ public class ShowGroundView implements IShowgroundView, OnRefreshListener {
         adapter.setEnableLoadMore(false);
         cursor = null;
         presenter.getShowList(cursor);
-        swipeRefreshLayout.finishRefresh(1000);
     }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         this.onRefresh();
+        swipeRefreshLayout.finishRefresh(1000);
     }
 
     @Override
