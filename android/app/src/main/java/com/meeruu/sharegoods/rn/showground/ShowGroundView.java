@@ -2,6 +2,7 @@ package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,10 @@ import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
+import com.meeruu.sharegoods.rn.showground.widgets.ShowRefreshHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -46,8 +50,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
-    private SwipeRefreshLayout swipeRefreshLayout;
+public class ShowGroundView implements IShowgroundView, OnRefreshListener {
+    private SmartRefreshLayout swipeRefreshLayout;
     private RnRecyclerView recyclerView;
     private StaggeredGridLayoutManager layoutManager;
     private ShowGroundAdapter adapter;
@@ -63,11 +67,12 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     private Handler handler;
     private View errImg;
     private String cursor = null;
+    private ShowRefreshHeader mShowRefreshHeader;
 
     public ViewGroup getShowGroundView(ReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         LayoutInflater inflater = LayoutInflater.from(reactContext);
-        View view = inflater.inflate(R.layout.view_showground, null);
+        View view = inflater.inflate(R.layout.view_showground1, null);
         initView(reactContext, view);
         initData();
 
@@ -76,6 +81,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
 
     private void initView(Context context, final View view) {
         handler = new Handler();
+        mShowRefreshHeader = new ShowRefreshHeader(context);
         showgroundView = new WeakReference<>(view);
         errView = view.findViewById(R.id.err_view);
         errImg = view.findViewById(R.id.errImg);
@@ -87,7 +93,6 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                 swipeRefreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        swipeRefreshLayout.setRefreshing(true);
                         onRefresh();
                     }
                 }, 200);
@@ -96,13 +101,20 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
 
         errView.setVisibility(View.INVISIBLE);
         swipeRefreshLayout = view.findViewById(R.id.refresh_control);
-        swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
+        swipeRefreshLayout.setRefreshHeader(mShowRefreshHeader);
+        swipeRefreshLayout.setEnableLoadMore(false);
+        swipeRefreshLayout.setHeaderMaxDragRate(2);
+        swipeRefreshLayout.setHeaderTriggerRate(1);
+        swipeRefreshLayout.setDragRate(0.5f);
+        swipeRefreshLayout.setEnableOverScrollDrag(true);
+        swipeRefreshLayout.setEnablePureScrollMode(false);
+        swipeRefreshLayout.setEnablePureScrollMode(false);
+//        swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         recyclerView = view.findViewById(R.id.home_recycler_view);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshLayout.setRefreshing(true);
                 onRefresh();
             }
         }, 200);
@@ -222,7 +234,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         }
     }
 
-    @Override
+
     public void onRefresh() {
         if (eventDispatcher != null) {
             View view = showgroundView.get();
@@ -235,11 +247,17 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         adapter.setEnableLoadMore(false);
         cursor = null;
         presenter.getShowList(cursor);
+        swipeRefreshLayout.finishRefresh(1000);
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        this.onRefresh();
     }
 
     @Override
     public void loadMoreFail(final String code) {
-        swipeRefreshLayout.setRefreshing(false);
+//        swipeRefreshLayout.setRefreshing(false);
         if (adapter != null) {
             adapter.loadMoreFail();
             setEmptyText();
@@ -278,7 +296,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             }
             adapter.setEnableLoadMore(true);
             adapter.setNewData(resolveData(data));
-            swipeRefreshLayout.setRefreshing(false);
+//            swipeRefreshLayout.setRefreshing(false);
             setEmptyText();
         }
     }
