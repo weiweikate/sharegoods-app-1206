@@ -238,8 +238,10 @@ export default class MyCashAccountPage extends BasePage {
         let status = NO_CASH_NO_SUPMEMBER;
         let returnCash = 0;
         if (returnCashInfo) {
+            if (returnCashInfo.availableSelfReturnAmount && returnCashInfo.preSettleSelfReturn
+                && (returnCashInfo.availableSelfReturnAmount > 0 || returnCashInfo.preSettleSelfReturn > 0)) {
                 if (returnCashInfo.convertSwitchStatus === 1) {
-                    if(returnCashInfo.selfReturnToBalanceAmount){
+                    if (returnCashInfo.selfReturnToBalanceAmount) {
                         returnCash = returnCashInfo.selfReturnToBalanceAmount;
                     }
                     status = HAVE_CASH_HAVE_SUPMEMBER;
@@ -249,6 +251,7 @@ export default class MyCashAccountPage extends BasePage {
                     }
                     status = HAVE_CASH_NO_SUPMEMBER;
                 }
+            }
         }
         return (
             <View style={styles.headerViewShadow}>
@@ -286,7 +289,10 @@ export default class MyCashAccountPage extends BasePage {
                     </View>
                     <NoMoreClick
                         style={{flexDirection: 'row', backgroundColor: '#F7F7F7', height: 32, alignItems: 'center'}}
-                        onPress={() => {this.$navigate(RouterMap.ReturnCashAccountPage)}}>
+                        onPress={() => {
+                            status === NO_CASH_NO_SUPMEMBER ?
+                                this.$navigate(RouterMap.ReturnCashRulePage) : this.$navigate(RouterMap.ReturnCashAccountPage)
+                        }}>
                         {status === NO_CASH_NO_SUPMEMBER ?
                             <Text style={styles.returnCashTextStyle}>您还没有自返金，快去获取</Text> : null}
                         {status === HAVE_CASH_NO_SUPMEMBER ?
