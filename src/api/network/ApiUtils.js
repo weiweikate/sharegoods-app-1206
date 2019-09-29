@@ -22,16 +22,22 @@ export default function ApiUtils(Urls) {
         }
     });
     list.forEach(function(item) {
-        let name = item.name, url = item.uri, method = item.method || 'post', isRSA = item.isRSA || false,
-            filter = item.filter, checkLogin = item.checkLogin || false;
+        let name = item.name;
         result[name] = async function(params, config = {}) {
+            let url = item.uri, method = item.method || 'post', isRSA = item.isRSA || false,
+                filter = item.filter, checkLogin = item.checkLogin || false;
             if (checkLogin === true && !User.isLogin) {
                 return Promise.reject({
                     code: 10009,
                     msg: '用户登录失效'
                 });
             }
-            const response = await HttpUtils[method](url, isRSA, params, config);
+            //路径传参
+            const { pathValue, ...paramsOutPathValue } = params || {};
+            if (pathValue) {
+                url = url + pathValue;
+            }
+            const response = await HttpUtils[method](url, isRSA, paramsOutPathValue, config);
             // code为0表明请求正常
             if (!response.code || response.code === 10000) {
                 filter && filter(response);
