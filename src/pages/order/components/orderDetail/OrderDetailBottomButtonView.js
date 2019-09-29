@@ -44,7 +44,7 @@ export default class OrderDetailBottomButtonView extends Component {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                        <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 12 }}
+                        <UIText value={'更多>'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 12 }}
                                 onPress={
                                     () => this.props.switchButton(nameArr.filter((item, i) => {
                                         return i <= (nameArr.length - 1 - 2);
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
         marginRight: px2dp(10),
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: px2dp(10),
+        width: px2dp(70),
         borderColor: DesignRule.lineColor_inWhiteBg
     }
 });

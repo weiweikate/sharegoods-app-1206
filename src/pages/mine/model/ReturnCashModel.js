@@ -17,7 +17,7 @@ class ReturnCashModel {
     @action getReturnCashInfo() {
         MineAPI.getReturnCashInfo().then(res => {
             console.log('getReturnCashInfo',res)
-            this.returnCashInfo = res.data;
+            this.returnCashInfo = res.data||{};
         }).catch(err => {
             bridge.$toast(err.msg);
         });

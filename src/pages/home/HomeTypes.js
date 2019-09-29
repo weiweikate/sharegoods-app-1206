@@ -29,6 +29,9 @@ export const homeType = {
     Alert: 21,//退出的弹窗
     shopProducts: 22,//拼店详情商品列表
     shopBanner: 23,//拼店详情底部banner
+    store28: 28,//拼店权益页面广告
+    store29: 29,//拼店开店页面广告
+    store30: 30,//拼店扩容页面广告
     paySuccess: 27,//订单支付完成页面广告位
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
@@ -50,7 +53,8 @@ export const homeLinkType = {
     store: 11,      //店铺
     classify: 12,      //分类
     nothing: 13,      //无跳转
-    page: 14      //页面路由
+    page: 14,      //页面路由
+    showHtml: 16      //当前页面显示网页内容
 };
 
 export const homeRoute = {

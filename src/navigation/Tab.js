@@ -12,7 +12,7 @@ import {
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
-import MyShop_RecruitPage from '../pages/spellShop/MyShop_RecruitPage';
+import MyShop_RecruitPage from '../pages/store/MyShop_RecruitPage';
 import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
