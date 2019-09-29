@@ -8,7 +8,7 @@
 
         <ImageView android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic_go_back"
+            android:src="@drawable/ic_go_back1"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:id="@+id/id_iv_back"/>
