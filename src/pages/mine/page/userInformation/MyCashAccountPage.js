@@ -238,16 +238,14 @@ export default class MyCashAccountPage extends BasePage {
         let status = NO_CASH_NO_SUPMEMBER;
         let returnCash = 0;
         if (!EmptyUtils.isEmpty(returnCashInfo)) {
-            if ((returnCashInfo.availableSelfReturnAmount + returnCashInfo.preSettleSelfReturn) > 0) {
-                if (returnCashInfo.convertSwitchStatus === 1) {
-                    if (returnCashInfo.selfReturnToBalanceAmount) {
-                        returnCash = returnCashInfo.selfReturnToBalanceAmount;
-                    }
+            if (returnCashInfo.convertSwitchStatus === 1) {
+                if (returnCashInfo.historySelfReturnAmount > 0 || returnCashInfo.preSettleSelfReturn > 0) {
+                    returnCash = returnCashInfo.selfReturnToBalanceAmount;
                     status = HAVE_CASH_HAVE_SUPMEMBER;
-                } else {
-                    if (returnCashInfo.availableSelfReturnAmount > 0 || returnCashInfo.preSettleSelfReturn>0) {
-                        returnCash = returnCashInfo.availableSelfReturnAmount + returnCashInfo.preSettleSelfReturn;
-                    }
+                }
+            } else {
+                if (returnCashInfo.availableSelfReturnAmount > 0 || returnCashInfo.preSettleSelfReturn > 0) {
+                    returnCash = returnCashInfo.availableSelfReturnAmount + returnCashInfo.preSettleSelfReturn;
                     status = HAVE_CASH_NO_SUPMEMBER;
                 }
             }
