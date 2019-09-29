@@ -237,13 +237,17 @@ export default class MyCashAccountPage extends BasePage {
         //判断当前用户状态
         let status = NO_CASH_NO_SUPMEMBER;
         let returnCash = 0;
-        if (returnCashInfo) {
-            if (returnCashInfo.selfReturnToBalanceAmount && returnCashInfo.selfReturnToBalanceAmount > 0) {
+        if (!EmptyUtils.isEmpty(returnCashInfo)) {
+            if ((returnCashInfo.availableSelfReturnAmount + returnCashInfo.preSettleSelfReturn) > 0) {
                 if (returnCashInfo.convertSwitchStatus === 1) {
-                    returnCash = returnCashInfo.historySelfReturnAmount;
+                    if (returnCashInfo.selfReturnToBalanceAmount) {
+                        returnCash = returnCashInfo.selfReturnToBalanceAmount;
+                    }
                     status = HAVE_CASH_HAVE_SUPMEMBER;
                 } else {
-                    returnCash = returnCashInfo.selfReturnToBalanceAmount;
+                    if (returnCashInfo.availableSelfReturnAmount > 0 || returnCashInfo.preSettleSelfReturn>0) {
+                        returnCash = returnCashInfo.availableSelfReturnAmount + returnCashInfo.preSettleSelfReturn;
+                    }
                     status = HAVE_CASH_NO_SUPMEMBER;
                 }
             }
@@ -284,7 +288,10 @@ export default class MyCashAccountPage extends BasePage {
                     </View>
                     <NoMoreClick
                         style={{flexDirection: 'row', backgroundColor: '#F7F7F7', height: 32, alignItems: 'center'}}
-                        onPress={() => {this.$navigate(RouterMap.ReturnCashAccountPage)}}>
+                        onPress={() => {
+                            status === NO_CASH_NO_SUPMEMBER ?
+                                this.$navigate(RouterMap.ReturnCashRulePage) : this.$navigate(RouterMap.ReturnCashAccountPage)
+                        }}>
                         {status === NO_CASH_NO_SUPMEMBER ?
                             <Text style={styles.returnCashTextStyle}>您还没有自返金，快去获取</Text> : null}
                         {status === HAVE_CASH_NO_SUPMEMBER ?
@@ -293,11 +300,11 @@ export default class MyCashAccountPage extends BasePage {
                             </Text> : null}
                         {status === HAVE_CASH_HAVE_SUPMEMBER ?
                             <Text style={styles.returnCashTextStyle}>
-                                累计已有{returnCashInfo.historySelfReturnAmount}元自返金转到余额</Text>
+                                累计已有{StringUtils.formatMoneyString(returnCash, false)}元自返金转到余额</Text>
                             : null}
 
                         {status === NO_CASH_NO_SUPMEMBER ?
-                            <Text style={{fontSize: 13, color: '#999999',}}>快去获取</Text> : null}
+                            <Text style={{fontSize: 13, color: '#999999',}}>如何获取</Text> : null}
                         {status === HAVE_CASH_NO_SUPMEMBER ?
                             <Text style={{fontSize: 13, color: '#999999'}}>去提取</Text> : null}
                         {status === HAVE_CASH_HAVE_SUPMEMBER ?
