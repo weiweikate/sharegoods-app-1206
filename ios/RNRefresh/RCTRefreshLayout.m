@@ -40,7 +40,7 @@
     a.repeatCount = 1;
     [_line.rightLine addAnimation:a forKey:@""];
     [_line.leftLine addAnimation:a forKey:@""];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.19 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       self.line.hidden = YES;
     });
   }else if (state == MJRefreshStateIdle && self.state == MJRefreshStateRefreshing){
@@ -98,7 +98,7 @@
 -(void)didMoveToSuperview
 {
    [super didMoveToSuperview];
-    [self.superview addSubview:_line];
+   [self.superview addSubview:_line];
 }
 
 @end
