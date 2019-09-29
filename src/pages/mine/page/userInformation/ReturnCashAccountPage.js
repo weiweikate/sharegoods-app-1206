@@ -142,7 +142,7 @@ export default class CashRewardAccountPage extends BasePage {
                         <Text style={styles.countTextStyle}>
                             累计自返(元)
                         </Text>
-                        {!returnCashInfo.convertSwitchStatus ?
+                        {returnCashInfo.convertSwitchStatus === 2 ?
                             <NoMoreClick
                                 onPress={() => {
                                     this.$navigate(RouterMap.HtmlPage, {uri: '/custom/:ZDYZT201909251743341'});
@@ -170,7 +170,7 @@ export default class CashRewardAccountPage extends BasePage {
                             </NoMoreClick> :
                             null
                         }
-                        {returnCashInfo.convertSwitchStatus ?
+                        {returnCashInfo.convertSwitchStatus === 1 ?
                             <View style={styles.subVipBgStyle}>
                                 <Text style={{color: '#FF0050', fontSize: 13}}>自动转到余额</Text>
                             </View> :
