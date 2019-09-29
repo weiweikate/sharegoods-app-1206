@@ -70,7 +70,7 @@ export default class BankTradingModal extends Component {
                 <View style={styles.passwordForm}>
                     <View style={styles.form}>
                         <View style={styles.header}>
-                            <TouchableOpacity style={styles.closeButton} onPress={() => {
+                            <TouchableOpacity activeOpacity={0.7} style={styles.closeButton} onPress={() => {
                                 this.props.closeAction();
                             }}>
                                 <Image source={closeImg} style={{ width: 12, height: 12 }}/>
@@ -92,7 +92,7 @@ export default class BankTradingModal extends Component {
                         {/*<Text style={styles.msgStyle}>*/}
                             {/*{this.props.errMsg || ''}*/}
                         {/*</Text>*/}
-                        <TouchableOpacity style={styles.forget} onPress={()=>{this.props.forgetAction()}}>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.forget} onPress={()=>{this.props.forgetAction()}}>
                             <Text style={styles.forgetText}>{this.props.instructions}</Text>
                         </TouchableOpacity>
                     </View>

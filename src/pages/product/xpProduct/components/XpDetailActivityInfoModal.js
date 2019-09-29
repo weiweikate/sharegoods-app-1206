@@ -194,7 +194,7 @@ export default class XpDetailActivityInfoModal extends Component {
                        visible={this.state.modalVisible}
                        transparent={true}>
                 <View style={styles.containerView}>
-                    <TouchableOpacity style={styles.topCloseBtn} onPress={this._close}/>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.topCloseBtn} onPress={this._close}/>
                     <View style={styles.bottomView}>
                         <Text style={styles.tittleText}>活动信息</Text>
                         <SectionList keyExtractor={this._keyExtractor}
@@ -202,7 +202,7 @@ export default class XpDetailActivityInfoModal extends Component {
                                      renderSectionHeader={this._renderHeader}
                                      renderItem={this._renderItem}
                                      sections={sectionListData}/>
-                        <TouchableOpacity style={styles.sureBtn} onPress={this._close}>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.sureBtn} onPress={this._close}>
                             <Text style={styles.sureText}>确定</Text>
                         </TouchableOpacity>
                     </View>

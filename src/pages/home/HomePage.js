@@ -6,7 +6,8 @@ import {
     ScrollView,
     StyleSheet,
     TouchableOpacity,
-    View
+    View,
+    Platform
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './model/Modules';
@@ -82,9 +83,10 @@ class HomePage extends BasePage {
             'willFocus',
             payload => {
                 const { state } = payload;
+                homeModalManager.entryHome();
                 if (state && state.routeName === 'HomePage') {
                     if (homeModule.firstLoad) {
-                        homeModule.loadHomeList(true);
+                        homeModule.loadHomeList(false);
                     }
                 }
             }
@@ -99,7 +101,6 @@ class HomePage extends BasePage {
                     track(trackEvent.ViewHomePage);
                     homeTabManager.setHomeFocus(true);
                     homeModule.homeFocused(true);
-                    homeModalManager.entryHome();
                     user.getToken().then(() => {//让user初始化完成
                         this.luckyIcon && this.luckyIcon.getLucky(1, '');
                         if (user.token) {
@@ -223,12 +224,14 @@ class HomePage extends BasePage {
                 </ScrollableTabView>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
-                }}/>
+                }}
+                           isHome={true}
+                />
                 <PraiseModel/>
                 <GiftModal/>
                 <UserLevelModalView/>
                 <IntervalMsgView pageType={IntervalType.home}/>
-                <HomeAdModal/>
+                {Platform.OS !== 'ios'?  <HomeAdModal/>:null}
                 <HomeMessageModalView/>
                 <VersionUpdateModalView/>
             </View>
@@ -280,7 +283,7 @@ class HomePage extends BasePage {
                                 }} onPress={() => {
                                     tabModel.changeTabIndex(page)
                                     p.goToPage(page);
-                                }}>
+                                }} activeOpacity={0.7}>
                                     {showType === 2 ?
                                         <ImageLoader source={{ uri: isTabActive ? navIcon : bottomNavIcon }}
                                                      style={{

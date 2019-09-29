@@ -124,7 +124,7 @@ export default class AddressManagerPage extends BasePage {
     _renderItem = (item) => {
         let {province, city, area, address, street,addressStatus} = item.item;
         street = street || '';
-        return <TouchableOpacity onPress={() => this._onItemClick(item.item)} style={styles.touchable}>
+        return <TouchableOpacity activeOpacity={0.7} onPress={() => this._onItemClick(item.item)} style={styles.touchable}>
                 <View style={styles.cell_name_tel}>
                     <Text style={{
                         flex: 1,
@@ -146,7 +146,7 @@ export default class AddressManagerPage extends BasePage {
             }
             <View style={{flex: 1}}/>
             <View style={{ flexDirection: 'row', alignItems: 'center',height: DesignRule.autoSizeWidth(38), borderTopWidth: 1, borderTopColor: DesignRule.bgColor}}>
-                <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 16 }}
+                <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 16 }}
                                   onPress={() => this._onSelectImgClick(item.item, item.index)}>
                     <Image style={{ width: DesignRule.autoSizeWidth(16), height: DesignRule.autoSizeWidth(16), marginRight: 11 }}
                            source={item.index === this.state.selectIndex ? res.button.selected_circle_red : res.button.unselected_circle}
@@ -157,13 +157,13 @@ export default class AddressManagerPage extends BasePage {
                         color: item.index === this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_instruction
                     }}>默认地址</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}
+                <TouchableOpacity activeOpacity={0.7} style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}
                                   onPress={() => this._onEditAddress(item.item, item.index)}>
                     <Image style={{ width: 16, height: 17, marginRight: 4 }}
                            source={addr_edit}/>
                     <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>编辑</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 17 }}
+                <TouchableOpacity activeOpacity={0.7} style={{ flexDirection: 'row', alignItems: 'center', marginRight: 17 }}
                                   onPress={() => this._onDelAddress(item.item)}>
                     <Image style={{ width: 17, height: 15, marginRight: 6 }}
                            source={addr_del}/>
@@ -252,7 +252,8 @@ const styles = StyleSheet.create({
         marginRight: 15,
         marginLeft: 15,
         marginTop: 10,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderRadius: 10
     },
     cell_name_tel: {
         flexDirection: 'row',

@@ -37,6 +37,7 @@ const { autoSizeWidth } = ScreenUtils;
 import { homeModule } from '../model/Modules';
 import { routePush } from '../../../navigation/RouterMap';
 import { ImageCacheManager } from 'react-native-cached-image';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 @observer
 export default class HomeMessageModalView extends React.Component {
@@ -159,6 +160,9 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
                 const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
                 let params = homeModule.paramsNavigate(data);
                 if (router) {
+                    if (modal === HomeModalManager) {
+                        params = {...params, ...getSGspm_home(HomeSource.alert)}
+                    }
                     routePush(router, params);
                 }
                 this.close(true);
@@ -205,7 +209,7 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
                                 </View>
                             </TouchableWithoutFeedback>
                             <View style={{ flex: 1 }}>
-                                <TouchableOpacity onPress={() => {
+                                <TouchableOpacity activeOpacity={0.7} onPress={() => {
                                     this.close();
                                 }} style={{ marginTop: autoSizeWidth(25) }}>
                                     <Image source={closeImg}
@@ -225,6 +229,88 @@ let HomeAdModal = observer(AdViewBindModal(HomeModalManager));
 let GiftModal = observer(AdViewBindModal(HomeModalManager, 'giftData', 'isShowGift', 'closeGift'));
 export { HomeAdModal, AdViewBindModal, GiftModal };
 
+@observer
+export class HomeAdModal_IOS extends React.Component {
+    state = {
+        img: ''
+    };
+
+    constructor(props) {
+        super(props);
+        this.imageCacheManager =  ImageCacheManager()  ;
+        this.image = '';
+    }
+
+    gotoPage = () => {
+        let data = HomeModalManager.AdData || {};
+        const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        let params = homeModule.paramsNavigate(data);
+        if (router) {
+            params = {...params, ...getSGspm_home(HomeSource.alert)}
+            routePush(router, params);
+        }
+        this.close(true);
+        //页面跳转
+    };
+
+    close(click) {
+        HomeModalManager.closeAd && HomeModalManager.closeAd(click);
+    }
+
+    render() {
+        if (!HomeModalManager.isShowAd || !HomeModalManager.isHome){
+            return <View/>
+        }
+        let AdData = HomeModalManager.AdData || {};
+        let image = AdData.image || '';
+        if (image !== this.image){
+            this.image = image;
+            this.imageCacheManager.downloadAndCacheUrl(image).then((data)=>{
+                this.setState({
+                    img:ScreenUtils.isIOS ? data : `file://${data}`
+                });
+            });
+        }
+        return (
+            <View style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(0,0,0,0.3)',
+                alignItems: 'center',
+                justifyContent: 'center'
+
+            }}>
+                <View style={{ flex: 1 }}/>
+                <TouchableWithoutFeedback onPress={() => {
+                    this.gotoPage();
+                }}>
+                    <View>
+                        <Image style={{
+                            width: autoSizeWidth(310),
+                            height: autoSizeWidth(410),
+                            backgroundColor: this.state.img.length > 0 ? null : '#F4F4F4'
+                        }}
+                               source={{ uri: this.state.img }}
+                               resizeMode={'contain'}
+                        />
+                    </View>
+                </TouchableWithoutFeedback>
+                <View style={{ flex: 1 }}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                        this.close();
+                    }} style={{ marginTop: autoSizeWidth(25) }}>
+                        <Image source={closeImg}
+                               style={{ height: autoSizeWidth(24), width: autoSizeWidth(24) }}
+                               resizeMode={'stretch'}/>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
+}
 
 const styles = StyleSheet.create({
     messageCloseStyle: {

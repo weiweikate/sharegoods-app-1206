@@ -6,9 +6,10 @@ import bridge from '../../../utils/bridge';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import RouterMap, { navigateBack, routePush } from '../../../navigation/RouterMap';
+import RouterMap, { routePop, routePush } from '../../../navigation/RouterMap';
 import { payment } from '../../payment/Payment';
 import API from '../../../api';
+import MineAPI from '../../mine/api/MineApi';
 
 class ConfirmOrderModel {
 
@@ -22,10 +23,18 @@ class ConfirmOrderModel {
     isAllVirtual = false;
     @observable
     canInvoke = false
+    invokeItem = null
+    @observable
+    invokeSelect = false;
 
     addressId = '';
     addressData = {};
     isNoAddress = false;
+    @observable
+    addressModalShow = false;
+    @observable
+    addressList = [];
+
 
     orderParamVO = {};
     tokenCoin = 0;
@@ -43,13 +52,15 @@ class ConfirmOrderModel {
     payInfo = {};
     @observable
     receiveInfo = {};
+    @observable
+    err = null;
 
     @action clearData() {
         this.loadingState = PageLoadingState.success;
         this.err = null;
         this.canUseCou = false;
 
-        this.addressId = '';
+        // this.addressId = '';每次保留上次的地址
         this.message = '';
         this.tokenCoin = 0;
         this.orderParamVO = {};
@@ -62,12 +73,19 @@ class ConfirmOrderModel {
         this.receiveInfo = {};
         this.data = null;
         this.canInvoke = false
+        this.invokeSelect = false
+        this.invokeItem = null;
+        this.addressModalShow = false;
+        this.addressList = [];
 
     }
 
     @action
     selectAddressId(addressData) {
         let addressId = addressData.id || '';
+        if (addressId && addressId === this.addressId){
+            return;
+        }
         addressId = addressId + '';
         this.addressId = addressId;
         this.addressData = addressData;
@@ -76,10 +94,28 @@ class ConfirmOrderModel {
     }
 
     @action
+    invokeTicket(item, callBack){
+        bridge.showLoading('');
+        API.invokeCoupons({ userCouponCode: item.code }).then((data) => {
+            data = data.data;
+            if (data) {
+                callBack&&callBack();
+                bridge.$toast('激活成功');
+                this.invokeSelect = true;
+                this.canInvoke = false;
+                this.selectUserCoupon(data.code)
+            } else {
+                bridge.$toast('激活失败');
+            }
+            bridge.hiddenLoading();
+        }).catch((err) => {
+            bridge.$toast(err.msg);
+            bridge.hiddenLoading();
+        });
+    }
+
+    @action
     selecttokenCoin(num) {
-        if (this.tokenCoin == num) {
-            return;
-        }
         this.tokenCoin = num;
         this.makeSureProduct();
     }
@@ -127,11 +163,13 @@ class ConfirmOrderModel {
             // "quantity":, //int 购买数量
             // "activityCode":, //string 活动code
             // "batchNo": //string 活动批次  (拼团业务传递团id)
-            let { skuCode, quantity, activityCode, batchNo, activityTag } = item;
+            let { skuCode, quantity, activityCode, batchNo, activityTag, sgspm = '', sgscm = '' } = item;
+            sgspm = sgspm || ''
+            sgscm = sgscm || ''
             if (batchNo){
-                return { skuCode, quantity, activityCode,batchNo, activityTag };
+                return { skuCode, quantity, activityCode,batchNo, activityTag, sgspm, sgscm };
             }else {
-                return { skuCode, quantity, activityCode, activityTag };
+                return { skuCode, quantity, activityCode, activityTag, sgspm,  sgscm};
             }
 
         });
@@ -156,6 +194,8 @@ class ConfirmOrderModel {
                 source: this.orderParamVO.source,  //int 订单来源: 1.购物车 2.直接下单
                 channel: 2,//int 渠道来源: 1.小程序 2.APP 3.H5
                 bizTag:  this.orderParamVO.bizTag,//"bizTag": //String 订单标记 group-拼团 非拼团不需要传  －－－－－－－－－－－－0917拼团业务新增
+                // sgspm: this.orderParamVO.sgspm,
+                // sgscm: this.orderParamVO.sgscm
             },
             ext: { //扩展信息
                 userMessage: this.message// string 买家留言
@@ -171,7 +211,7 @@ class ConfirmOrderModel {
                 productCode: item.productCode,
                 amount: item.quantity,
                 activityCode: item.activityCode,
-                batchNo: item.batchNo
+                batchNo: item.batchNo,
             };
         });
         let params = { productPriceIds: arr };
@@ -179,7 +219,97 @@ class ConfirmOrderModel {
     }
 
     @action
+    makeSureProduct_selectDefaltAddress(){
+        let addressData = this.orderParamVO.address
+        //不存在街道code，直接请求
+        if (!addressData || !addressData.areaCode || this.isAllVirtual) {
+            return this.makeSureProduct_selectDefaltCoupon(this.orderParamVO.couponsId)
+        }
+        const { province, city, area, provinceCode, cityCode, areaCode} = addressData;
+        //选择了收货地址
+        if (addressData.id){
+            let addressId = addressData.id || '';
+            addressId = addressId + '';
+            this.addressId = addressId;
+            this.addressData = addressData;
+            this.tokenCoin = 0;
+            return this.makeSureProduct_selectDefaltCoupon(this.orderParamVO.couponsId)
+        }
+        //进行匹配区的收货地址
+        MineAPI.queryAddrList().then((data)=> {
+            data = data.data || [];
+            if (data.length === 0){//只有默认地址或没有地址
+                return;
+            }
+
+            let flag = false;
+
+            data = data.filter((item, index) => {
+                if (this.addressId){//当前选择的地址，过滤
+                    if (this.addressId == item.id ){
+                        if (addressData.areaCode == item.areaCode){
+                            flag = true;
+                        }
+                        return false;
+                    }
+                } else if (index === 0){
+                    if (addressData.areaCode == item.areaCode){
+                        flag = true;
+                    }
+                    return false;
+                }
+                return addressData.areaCode == item.areaCode;
+            })
+
+            if (data.length !== 0) {
+                this.addressList = data;
+                this.addressModalShow = true;
+            }else {
+                if (flag){
+                    return;
+                }
+                Alert.alert('', '您在浏览商品中选择了新的收货地址，是否添加新地址？',
+                    [{
+                        text: '取消', onPress: () => {
+                        }
+                    },
+                        {
+                            text: '添加', onPress: () => {
+                                routePush(RouterMap.AddressEditAndAddPage, {
+                                    callBack: (json) => {
+                                        this.selectAddressId(json);
+                                    },
+                                    from: 'add',
+                                    province,
+                                    city,
+                                    area,
+                                    provinceCode,
+                                    cityCode,
+                                    areaCode,
+                                    areaText: province + city + area
+                                });
+                            }
+                        }
+                    ]);
+
+            }
+        }).finally(()=> {
+            this.makeSureProduct_selectDefaltCoupon(this.orderParamVO.couponsId)
+        })
+    }
+    @action
+    closeAddressModal(){
+        this.addressModalShow = false;
+    }
+    @action
+    addressModal_selecetAddress(index){
+        this.closeAddressModal();
+        this.selectAddressId(this.addressList[index]);
+    }
+
+    @action
     makeSureProduct_selectDefaltCoupon(couponsId) {
+       //拼团不能使用优惠券
         if (this.orderParamVO.bizTag === 'group') {
             this.makeSureProduct();
             return;
@@ -192,6 +322,7 @@ class ConfirmOrderModel {
                     if (item.canInvoke === true && item.type == 5)
                     {
                         this.canInvoke = true;
+                        this.invokeItem = item;
                     }
                         if (item.status !== 0){
                         return;//不可用
@@ -244,7 +375,7 @@ class ConfirmOrderModel {
             Alert.alert('提示', err.msg, [
                 {
                     text: '确定', onPress: () => {
-                        navigateBack();
+                        routePop();
                     }
                 }
             ]);
@@ -338,14 +469,29 @@ class ConfirmOrderModel {
             if (this.orderParamVO.source === 1) {
                 shopCartCacheTool.getShopCartGoodsListData();
             }
-            payment.checkOrderToPage(data.platformOrderNo, data.productOrderList[0].productName);
+            payment.checkOrderToPage(data.platformOrderNo, data.productOrderList[0].productName, 'order');
             track(trackEvent.submitOrder, {
                 orderId: data.orderNo,
                 orderSubmitPage: this.orderParamVO.source == 1 ? 11 : 1
             });
         }).catch(err => {
             bridge.hiddenLoading();
-            bridge.$toast(err.msg);
+            if (err.code !== -1){
+                Alert.alert(err.msg+'，请刷新页面或返回修改？',null,[{
+                    text: '返回', onPress: () => {
+                        routePop();
+                    }
+                },
+                    {
+                        text: '刷新', onPress: () => {
+                            this.makeSureProduct();
+                        }
+                    }
+                ])
+            }else {
+                bridge.$toast(err.msg);
+            }
+
         });
     }
 }

@@ -128,7 +128,7 @@ class ApiEnvironment {
                 }
                 this.envType = envType;
                 // 刷新首页
-                homeModule.loadHomeList();
+                homeModule.loadHomeList(false);
             } else {
                 __DEV__ && console.error(`Not support envType with: 【${envType}】, for more details to see documents in ApiEnvironment.js file`);
             }

@@ -37,8 +37,9 @@ import PullView from '../components/pulltorefreshlayout';
 import WhiteModel from '../../show/model/WhiteModel';
 import { mediatorCallFunc } from '../../../SGMediator';
 import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
-import MineSpellGroupView from './spellGroup/components/MineSpellGroupView'
+import MineSpellGroupView from './spellGroup/components/MineSpellGroupView';
 import TimeModel from '../model/TimeModel';
+import LinearGradient from 'react-native-linear-gradient';
 
 const {
     // mine_header_bg,
@@ -66,14 +67,20 @@ const {
     mine_showOrder
 } = res.homeBaseImg;
 
-const vipBg = [
-    res.homeBaseImg.mine_line_v0,
-    res.homeBaseImg.mine_line_v1,
-    res.homeBaseImg.mine_line_v2,
-    res.homeBaseImg.mine_line_v3,
-    res.homeBaseImg.mine_line_v4,
-    res.homeBaseImg.mine_line_v5];
+const vipBg = res.homeBaseImg.mine_vip_bg;
+const vipStatus = {
+    'beVIP': {img: res.homeBaseImg.mine_bevip,  width: 63, height: 25, text:' · 超值特惠，收益翻倍', title:'beVIP'},
+    'VIP': {img: res.homeBaseImg.mine_vip,      width: 64, height: 25, text:' · 超值特惠，收益翻倍', title:'VIP'},
+    'diamondVIP': {img: res.homeBaseImg.mine_diamondvip, width: 64, height: 25, text:' · 不一样的PLUS专属特权', title:'diamondVIP'},
+    'supremeVIP': {img: res.homeBaseImg.mine_supremevip, width: 64, height: 25, text:' · 美好生活，至尊享受', title:'supremeVIP'},
+};
 
+const eumState={
+    'benefit_package_super_member':'VIP',            //超级会员 = vip会员
+    'benefit_package_store_partner':'diamondVIP',    // 会员合伙人 = 钻石会员
+    'benefit_package_ready_shopkeeper':'supremeVIP', //见习店长 =  至尊会员
+    'benefit_package_shopkeeper':'supremeVIP',       //店长 = 至尊会员
+}
 /**
  * @author chenxiang
  * @date on 2018/9/13
@@ -105,6 +112,7 @@ export default class MinePage extends BasePage {
             modalId: false,
             adArr: [],
             groupData: {},
+            currentUserState:null
         };
 
     }
@@ -138,6 +146,7 @@ export default class MinePage extends BasePage {
                 this.loadAd();
                 this.loadGroupList();
                 this._needShowFans();
+                this.getNextBenefit();
                 WhiteModel.saveWhiteType();
                 console.log('willFocusSubscriptionMine', state);
                 if (state && state.routeName === 'MinePage') {
@@ -154,7 +163,7 @@ export default class MinePage extends BasePage {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.willBlurSubscription && this.willBlurSubscription.remove();
         this.listener && this.listener.remove();
-        TimeModel.stopMineTime()
+        TimeModel.stopMineTime();
     }
 
     handleBackPress = () => {
@@ -177,6 +186,9 @@ export default class MinePage extends BasePage {
         return false;
     }
 
+    /**
+     * @func 我的页面底部广告位接口请求
+     */
     loadAd = () => {
         MineApi.queryAdList({ type: 24 }).then(result => {
             if (!EmptyUtils.isEmpty(result.data)) {
@@ -193,22 +205,51 @@ export default class MinePage extends BasePage {
     };
 
     /**
+    * @func 当前会员下一个会员身份请求
+    */
+    getNextBenefit=()=>{
+        MineApi.getNextBenefitPackageInfo().then((res) => {
+            if (res.data && res.data.currentPackageVO && res.data.nextPackageVO) {
+                let current = res.data.currentPackageVO;
+                if (eumState[current.uniqueId]) {
+                    let str = eumState[current.uniqueId];
+                    this.setState({
+                        currentUserState: str
+                    })
+                } else {
+                    this.setState({
+                        currentUserState: vipStatus.beVIP
+                    })
+                }
+            }
+        }).catch(err => {
+            this.setState({
+                currentUserState: null
+            })
+        });
+    }
+
+    /**
      * @func 请求是否有参与拼团且拼团即将结束
      */
     loadGroupList = () => {
-        MineApi.getGroupList({page: 1, size: 10, groupStatus: 2}).then((result) => {
-            if (result.data&&!EmptyUtils.isEmpty(result.data.data)) {
+        MineApi.getGroupList({ page: 1, size: 10, groupStatus: 2 }).then((result) => {
+            if (result.data && !EmptyUtils.isEmpty(result.data.data)) {
                 this.setState({
                     groupData: result.data.data[0]
                 });
-            }else {
+            } else {
                 this.setState({
                     groupData: []
                 });
             }
-        }).catch((error) => {});
+        }).catch((error) => {
+        });
     };
 
+    /**
+     * @func 获取消息中心通知消息数量
+     */
     loadMessageCount = () => {
         MessageApi.getNewNoticeMessageCount().then(result => {
             if (!EmptyUtils.isEmpty(result.data)) {
@@ -241,6 +282,9 @@ export default class MinePage extends BasePage {
         }
     };
 
+    /**
+     * @func 获取用户消息和订单消息数量
+     */
     refresh = () => {
         userOrderNum.getUserOrderNum();
         // this.$loadingShow('加载中...', 1000);
@@ -288,7 +332,6 @@ export default class MinePage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <PullView
-                    bounces={false}
                     contentBackgroundColor={'#F7F7F7'}
                     backgroundColor={'white'}
                     renderForeground={this.renderUserHead}
@@ -334,14 +377,6 @@ export default class MinePage extends BasePage {
                 {user.shareGoodsAge ? `秀龄：${user.shareGoodsAge}` : '0天'}
             </Text>
         ) : null;
-
-        let levelArr = ['V0', 'V1', 'V2', 'V3', 'V4', 'V5'];
-        let index = 10;
-        for (let i = 0; i < levelArr.length; i++) {
-            if (levelArr[i] === user.levelRemark) {
-                index = i;
-            }
-        }
 
         let name = '';
 
@@ -397,53 +432,62 @@ export default class MinePage extends BasePage {
                     {this.accountRender()}
                 </View>
                 {this.copyModalRender()}
-                {this.renderLevelName(index)}
+                {this.renderLevelName()}
             </View>
         );
     };
 
-    renderLevelName = (index) => {
+    renderLevelName = () => {
+        const {currentUserState} = this.state;
+        let data = !EmptyUtils.isEmpty(currentUserState) && vipStatus[currentUserState] ? vipStatus[currentUserState] : vipStatus.beVIP;
+        let beVip = data && data.title === 'beVIP';
+        console.log('currentUserState',currentUserState)
         return (
-            <ImageBackground style={{
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                height: (ScreenUtils.width - px2dp(30)) * 37 / 346,
-                marginHorizontal: px2dp(15),
-                borderRadius: 10
-            }} source={index !== 10 ? vipBg[index] : vipBg[2]}>
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    marginLeft: 20,
-                    marginRight: 20
-                }}>
-                    <Text style={{
-                        flex: 1,
-                        color: index === 2 || index === 4 || index === 5 ? '#FFE6B1' : DesignRule.textColor_mainTitle,
-                        fontSize: DesignRule.fontSize_threeTitle,
-                        fontWeight: '600'
+            <View style={{flex: 1, marginTop: 10, justifyContent: 'flex-end'}}>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={{alignItems: 'center'}}
+                    onPress={() => {
+                        if (beVip) {
+                            this.$navigate(RouterMap.HtmlPage, {uri: '/custom/:ZDYZT201909251743341'});
+                        } else {
+                            this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
+                        }
+                        TrackApi.ViewLevelInterest({moduleSource: 2});
                     }}>
-                        {user.token ? index !== 10 ? `V${index}${user.levelName ? user.levelName : ''}品鉴官` : '' : ''}
-                    </Text>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.$navigate(RouterMap.MyPromotionPage);
-                        TrackApi.ViewLevelInterest({ moduleSource: 2 });
-                    }}>
-                        <View>
-                            <ImageBackground style={{
-                                height: 20, width: 73, justifyContent: 'center',
-                                alignItems: 'center'
-                            }} source={res.homeBaseImg.mine_btn_yellow}>
-                                <Text
-                                    style={{ color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22 }}>
-                                    查看权益>
-                                </Text>
-                            </ImageBackground>
+                    <ImageBackground style={{
+                        alignSelf: 'center',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: ScreenUtils.width,
+                        height: (ScreenUtils.width) * 54 / 381,
+                        borderRadius: 10
+                    }} source={vipBg}>
+                        <View style={{flexDirection: 'row', marginLeft: 33, alignItems: 'center'}}>
+                            <Text style={{color: 'white', fontSize: 12}}>{beVip ? '开启' : ''}</Text>
+                            <Image style={{width: data.width, height: data.height}}
+                                   source={data.img}/>
+                            <Text style={{color: 'white', fontSize: 12}}>{data.text}</Text>
+                            <View style={{flex: 1, alignItems: 'flex-end', marginRight: 27}}>
+                                <LinearGradient style={styles.btnStyle}
+                                                start={{x: 0, y: 0}}
+                                                end={{x: 1, y: 1}}
+                                                colors={['#FFE1C2', '#FFFEE3']}
+                                >
+
+                                    <View style={styles.btnStyle}>
+                                        <Text style={{color: '#333333', fontSize: 12}} allowFontScaling={false}>
+                                            {beVip ? '立即开通' : '查看权益'}
+                                        </Text>
+                                        <Image source={res.homeBaseImg.mine_arrow_black}
+                                               style={{width: 12, height: 12}}/>
+                                    </View>
+                                </LinearGradient>
+                            </View>
                         </View>
-                    </TouchableWithoutFeedback>
-                </View>
-            </ImageBackground>
+                    </ImageBackground>
+                </TouchableOpacity>
+            </View>
         );
     };
 
@@ -487,7 +531,7 @@ export default class MinePage extends BasePage {
                     </Text>
                 </View>
                 <TouchableWithoutFeedback onPress={() => {
-                    this.$navigate(RouterMap.MyPromotionPage);
+                    this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
                     TrackApi.ViewLevelInterest({ moduleSource: 2 });
                 }}>
                     <View style={{
@@ -495,7 +539,7 @@ export default class MinePage extends BasePage {
                         alignItems: 'center', marginRight: 15, backgroundColor: '#FFE6B1', borderRadius: 12
                     }}>
                         <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22 }}>
-                            {user.token ? `${user.levelName ? user.levelName : ''}品鉴官>` : ''}
+                            查看权益
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -707,8 +751,8 @@ export default class MinePage extends BasePage {
                         marginBottom: px2dp(10)
                     }}>
 
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <View style={{width: 2, height: 8, backgroundColor: '#FF0050', borderRadius: 1}}/>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ width: 2, height: 8, backgroundColor: '#FF0050', borderRadius: 1 }}/>
                             <UIText value={'我的订单'}
                                     style={{
                                         marginLeft: 10,
@@ -717,7 +761,7 @@ export default class MinePage extends BasePage {
                                         fontWeight: '600'
                                     }}/>
                         </View>
-                        <View style={{flexDirection: 'row', marginRight: 10, alignItems: 'center',}}>
+                        <View style={{ flexDirection: 'row', marginRight: 10, alignItems: 'center' }}>
                             <UIText value={'查看全部'}
                                     style={{
                                         fontSize: DesignRule.fontSize_24,
@@ -728,7 +772,7 @@ export default class MinePage extends BasePage {
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
-    {/*<ScrollView style={{ width: DesignRule.width - DesignRule.margin_page * 2 }} horizontal={true}*/}
+                {/*<ScrollView style={{ width: DesignRule.width - DesignRule.margin_page * 2 }} horizontal={true}*/}
                 {/*showsHorizontalScrollIndicator={false}>*/}
                 <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(15) }}>
                     {this.renderOrderStates()}
@@ -779,7 +823,7 @@ export default class MinePage extends BasePage {
                 {this.orderRender()}
                 <MineSpellGroupView data={this.state.groupData}
                                     timeEnd={this.loadGroupList}
-                                    itemClick={()=>{
+                                    itemClick={() => {
                                         this.$navigate(RouterMap.SpellGroupList);
                                     }}
                 />
@@ -800,7 +844,7 @@ export default class MinePage extends BasePage {
                 {this.state.adArr.map((item, index) => {
                     return (
                         <View>
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
                                 console.log('item', item);
                                 track(trackEvent.bannerClick, {
                                     bannerLocation: 61,
@@ -971,7 +1015,7 @@ export default class MinePage extends BasePage {
             }
         };
 
-        let menu = [message, address, service, collect, setting, spellGroup];
+        let menu = [message, address, service, collect, spellGroup, setting];
 
 
         if (this.state.hasFans) {
@@ -998,7 +1042,7 @@ export default class MinePage extends BasePage {
                     <View style={{ paddingTop: 7, paddingLeft: 8, paddingRight: 8, paddingBottom: 0 }}>
                         <UIImage source={menu[i].icon}
                                  resizeMode={'contain'}
-                                 style={{ width: 24, height: 24,marginBottom: 5 }}/>
+                                 style={{ width: 24, height: 24, marginBottom: 5 }}/>
                         {menu[i].num ? <View style={{
                             minWidth: 16,
                             height: 16,
@@ -1172,5 +1216,13 @@ const styles = StyleSheet.create({
     copyTextStyle: {
         color: DesignRule.white,
         fontSize: DesignRule.fontSize_22
+    },
+    btnStyle:{
+        flexDirection: 'row',
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius: 10,
+        width:73,
+        height:20
     }
 });

@@ -163,6 +163,7 @@ export default class SelectMentorPage extends BasePage {
                         this._renderNoMentorView()
                 }
                 <TouchableOpacity
+                    activeOpacity={0.7}
                     onPress={
                         () => {
                             this._bindMentor();
@@ -230,7 +231,7 @@ export default class SelectMentorPage extends BasePage {
                     有认识的邀请人
                 </Text>
 
-                <TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.7}>
                     <View
                         style={{
                             flexDirection: 'row',

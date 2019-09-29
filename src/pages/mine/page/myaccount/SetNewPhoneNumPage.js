@@ -71,14 +71,14 @@ export default class SetNewPhoneNumPage extends BasePage {
                                }}
                                value={this.state.code}
                                keyboardType={'numeric'}/>
-                    <TouchableOpacity onPress={() => this._onGetCode(this.state.telText)}
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => this._onGetCode(this.state.telText)}
                                       disabled={this.state.vertifyCodeTime > 0 ? true : false}>
                         <UIText value={this.state.vertifyCodeTime > 0 ? this.state.vertifyCodeTime + '秒后重新获取' : '获取验证码'}
                                 style={{ color: '#D85674', fontSize: 13, marginRight: 15 }}/>
                     </TouchableOpacity>
                 </View>
             </View>
-            <TouchableOpacity style={{
+            <TouchableOpacity activeOpacity={0.7} style={{
                 marginTop: 54,
                 backgroundColor: DesignRule.mainColor,
                 width: ScreenUtils.width - 84,

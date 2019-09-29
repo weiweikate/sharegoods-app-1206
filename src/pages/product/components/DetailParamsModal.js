@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    FlatList,
-    TouchableWithoutFeedback
-} from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { MRText as Text } from '../../../components/ui/index';
 import CommModal from '../../../comm/components/CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -56,14 +50,14 @@ export default class DetailParamsModal extends Component {
                        visible={this.state.modalVisible}
                        transparent={true}>
                 <View style={styles.containerView}>
-                    <TouchableOpacity style={styles.topCloseBtn} onPress={this._close}/>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.topCloseBtn} onPress={this._close}/>
                     <View style={styles.bottomView}>
                         <Text style={styles.tittleText}>产品参数</Text>
                         <FlatList data={paramList || []}
                                   renderItem={this._renderItem}
                                   showsVerticalScrollIndicator={false}
                                   keyExtractor={this._keyExtractor}/>
-                        <TouchableOpacity style={styles.sureBtn} onPress={this._close}>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.sureBtn} onPress={this._close}>
                             <Text style={styles.sureText}>确定</Text>
                         </TouchableOpacity>
                     </View>

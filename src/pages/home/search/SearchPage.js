@@ -16,6 +16,7 @@ import store from '@mr/rn-store';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { MRText as Text } from '../../../components/ui';
+import { getSGscm, SGscmSource } from '../../../utils/OrderTrackUtil';
 
 const recentDataKey = '@mr/recentDataKey';
 export default class SearchPage extends BasePage {
@@ -138,7 +139,9 @@ export default class SearchPage extends BasePage {
         this.$navigate(RouterMap.SearchResultPage, {
             keywords: text,
             hotWordId: hotWordId,
-            searchType: hotWordId ? 3 : (StringUtils.isNoEmpty(index) ? 2 : 1)//
+            searchType: hotWordId ? 3 : (StringUtils.isNoEmpty(index) ? 2 : 1),
+            isFromSearch:true,
+            ...getSGscm(SGscmSource.search)
         });
     };
 

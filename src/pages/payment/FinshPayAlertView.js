@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import CommModal from '../../comm/components/CommModal';
-import {
-    Image,
-    ImageBackground,
-    View,
-    TouchableOpacity
-} from 'react-native';
+import { Image, ImageBackground, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
 import { MRText } from '../../components/ui';
@@ -26,16 +21,18 @@ export default class FinshPayAlertView extends Component {
             isShow: props.isShow
         };
     }
+
     componentWillReceiveProps(nextProps) {
-        const {isShow} = nextProps ;
-        if (isShow !== this.state.isShow){
+        const { isShow } = nextProps;
+        if (isShow !== this.state.isShow) {
             this.setState({
-                isShow:isShow
-            })
+                isShow: isShow
+            });
         }
     }
+
     render() {
-        const {btnClick,isShow} = this.props;
+        const { btnClick, isShow } = this.props;
         return (
             <CommModal
                 onRequestClose={this._closeNumKeyBoard}
@@ -50,7 +47,7 @@ export default class FinshPayAlertView extends Component {
                         width: ScreenUtils.width - px2dp(66),
                         height: px2dp(386)
                     }} source={finsh_pay_alertbg}>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             this.setState({
                                 isShow: false
                             });
@@ -61,28 +58,34 @@ export default class FinshPayAlertView extends Component {
                                 width: px2dp(21),
                                 height: px2dp(21)
                             }}
-                                   source={payClose} />
+                                   source={payClose}/>
                         </TouchableOpacity>
-                            <View style={{
-                                marginTop: px2dp(300),
-                                width: ScreenUtils.width - px2dp(66),
-                                height: px2dp(50),
-                                alignItems:'center',
-                                justifyContent:'center'
+                        <View style={{
+                            marginTop: px2dp(300),
+                            width: ScreenUtils.width - px2dp(66),
+                            height: px2dp(50),
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                                btnClick && btnClick();
                             }}>
-                                <TouchableOpacity onPress={()=>{
-                                    btnClick && btnClick();
-                                }}>
-                                    <LinearGradient colors={['rgba(255, 0, 80, 1)', 'rgba(252, 93, 57, 1)']}
-                                                    style={{width:px2dp(180),height:px2dp(40),alignItems:'center',justifyContent:'center',borderRadius:px2dp(20)}}
-                                                    start={{ x: 0, y: 0 }}
-                                                    end={{ x: 1, y: 1 }}>
-                                        <MRText style={{color:'white',fontSize:px2dp(14)}}>
-                                            去了解
-                                        </MRText>
-                                    </LinearGradient>
-                                </TouchableOpacity>
-                            </View>
+                                <LinearGradient colors={['rgba(255, 0, 80, 1)', 'rgba(252, 93, 57, 1)']}
+                                                style={{
+                                                    width: px2dp(180),
+                                                    height: px2dp(40),
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    borderRadius: px2dp(20)
+                                                }}
+                                                start={{ x: 0, y: 0 }}
+                                                end={{ x: 1, y: 1 }}>
+                                    <MRText style={{ color: 'white', fontSize: px2dp(14) }}>
+                                        去了解
+                                    </MRText>
+                                </LinearGradient>
+                            </TouchableOpacity>
+                        </View>
                     </ImageBackground>
                 </View>
             </CommModal>

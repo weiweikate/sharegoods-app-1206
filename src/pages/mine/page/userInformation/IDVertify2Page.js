@@ -133,10 +133,12 @@ export default class IDVertify2Page extends BasePage {
                             color: DesignRule.textColor_instruction,
                             marginTop: 7
                         }}/>
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}
-                                          onPress={() => {
-                                              this.agreeAggreement();
-                                          }}>
+                        <TouchableOpacity
+                            style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}
+                            activeOpacity={0.7}
+                            onPress={() => {
+                                this.agreeAggreement();
+                            }}>
                             <Image source={this.state.agreeAggreement ? addressSelect : addressUnselect}
                                    style={{ width: 11, height: 11 }}/>
                             <UIText value={'提交认证代表您已同意'}
@@ -164,7 +166,7 @@ export default class IDVertify2Page extends BasePage {
             }}/>;
         } else {
             return (
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity activeOpacity={0.7} onPress={() => {
                     this.getIDcard_country();
                 }}>
                     <ImageLoad source={{ uri: this.state.backIdCard }}
@@ -180,7 +182,7 @@ export default class IDVertify2Page extends BasePage {
             }}/>;
         } else {
             return (
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity activeOpacity={0.7} onPress={() => {
                     this.getIDcard_persion();
                 }}>
                     <ImageLoad source={{ uri: this.state.frontIdCard }}
@@ -285,10 +287,10 @@ export default class IDVertify2Page extends BasePage {
                 let data = resp.data;
                 track(trackEvent.ReadCodeentityVerifySuccss, {});
                 user.saveUserInfo(data);
-                this.params.from !== 'salePwd' ? this.$navigateBack():null;
+                this.params.from !== 'salePwd' ? this.$navigateBack() : null;
             }).catch(err => {
                 this.$loadingDismiss();
-                this.params.from !== 'salePwd' ? this.$navigateBack():null;
+                this.params.from !== 'salePwd' ? this.$navigateBack() : null;
                 if (err.code === 10009) {
                     routeNavigate(RouterMap.LoginPage);
                 }

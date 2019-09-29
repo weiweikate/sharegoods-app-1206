@@ -87,19 +87,19 @@ class SettingPage extends BasePage {
 
                 {this.renderWideLine()}
                 <View style={{ backgroundColor: 'white' }}>
-                    <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAccountSettingPage()}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle} onPress={() => this.jumpToAccountSettingPage()}>
                         <UIText value={'账号与安全'} style={styles.blackText}/>
                         <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
-                    <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAddressManagePage()}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle} onPress={() => this.jumpToAddressManagePage()}>
                         <UIText value={'收货地址管理'} style={styles.blackText}/>
                         <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     {Platform.OS === 'ios' ? null :
                         <View>
-                            <TouchableOpacity style={styles.viewStyle}>
+                            <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle}>
                                 <UIText value={'消息推送'} style={styles.blackText}/>
                                 <Switch value={this.state.value}
                                         backgroundActive={'#00D914'}
@@ -117,27 +117,27 @@ class SettingPage extends BasePage {
                             </TouchableOpacity>
                             {this.renderLine()}
                         </View>}
-                    <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
                         <UIText value={'清除缓存'} style={styles.blackText}/>
                         <UIText value={this.state.memorySize}
                                 style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
-                    <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
                         <UIText value={'关于我们'} style={styles.blackText}/>
                         <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <View style={{ height: 10, width: 1 }}/>
 
-                    <TouchableOpacity style={styles.viewStyle}
+                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle}
                                       onPress={() => this.getNewVersion()}>
                         <UIText value={'版本检测'} style={[styles.blackText, { flex: 1 }]}/>
                         <UIText value={'当前版本v' + this.state.version}
                                 style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={{
+                <TouchableOpacity activeOpacity={0.7} style={{
                     marginTop: 42,
                     backgroundColor: DesignRule.mainColor,
                     width: ScreenUtils.width - 84,
@@ -321,8 +321,8 @@ const styles = StyleSheet.create({
     viewStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingLeft: 21,
-        paddingRight: 23,
+        paddingLeft: 15,
+        paddingRight: 15,
         backgroundColor: 'white',
         height: 44,
         alignItems: 'center'

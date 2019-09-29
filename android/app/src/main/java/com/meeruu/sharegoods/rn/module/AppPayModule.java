@@ -154,21 +154,19 @@ public class AppPayModule extends ReactContextBaseJavaModule {
         //https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_12&index=2
         //将应用的appId注册到微信
 //        iwxapi.registerApp(App_ID);
-        Runnable payRunnable = new Runnable() {  //这里注意要放在子线程
-            @Override
-            public void run() {
-                PayReq request = new PayReq(); //调起微信APP的对象
-                //下面是设置必要的参数，也就是前面说的参数,这几个参数从何而来请看上面说明
-                //https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_12&index=2
-                request.appId = params.getAppid();//应用ID
-                request.partnerId = params.getPartnerid();//商户号
-                request.prepayId = params.getPrepayid();//预支付交易会话ID
-                request.packageValue = "Sign=WXPay";//扩展字段
-                request.nonceStr = params.getNoncestr();//随机字符串
-                request.timeStamp = params.getTimestamp();//时间戳
-                request.sign = params.getSign();//签名
-                api.sendReq(request);//发送调起微信的请求
-            }
+        //这里注意要放在子线程
+        Runnable payRunnable = () -> {
+            PayReq request = new PayReq(); //调起微信APP的对象
+            //下面是设置必要的参数，也就是前面说的参数,这几个参数从何而来请看上面说明
+            //https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_12&index=2
+            request.appId = params.getAppid();//应用ID
+            request.partnerId = params.getPartnerid();//商户号
+            request.prepayId = params.getPrepayid();//预支付交易会话ID
+            request.packageValue = "Sign=WXPay";//扩展字段
+            request.nonceStr = params.getNoncestr();//随机字符串
+            request.timeStamp = params.getTimestamp();//时间戳
+            request.sign = params.getSign();//签名
+            api.sendReq(request);//发送调起微信的请求
         };
         Thread payThread = new Thread(payRunnable);
         payThread.start();

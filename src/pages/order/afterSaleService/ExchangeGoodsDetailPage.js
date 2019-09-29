@@ -4,17 +4,17 @@
  */
 import React from 'react';
 import {
-    StyleSheet,
-    View,
-    ScrollView,
-    DeviceEventEmitter,
     Alert,
-    TouchableOpacity,
+    DeviceEventEmitter,
+    Image,
     RefreshControl,
-    Image
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import { UIText, UIImage, MRText } from '../../../components/ui';
+import { MRText, UIImage, UIText } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import GoodsItem from '../components/GoodsGrayItem';
 // import DateUtils from '../../../utils/DateUtils';
@@ -24,17 +24,17 @@ import DesignRule from '../../../constants/DesignRule';
 import AfterSaleDetailModel from './AfterSaleDetailModel';
 import {
     AfterSaleInfoView,
-    OperationApplyView,
-    HeaderView,
-    RefundDetailView,
-    StatusInfoView,
     BackAddressView,
-    FillAddressView
+    FillAddressView,
+    HeaderView,
+    OperationApplyView,
+    RefundDetailView,
+    StatusInfoView
 } from './components';
 import { observer } from 'mobx-react';
 import res from '../res';
 import RouterMap from '../../../navigation/RouterMap';
-import { PageType, isRefundFail, AfterStatus, SubStatus } from './AfterType';
+import { AfterStatus, isRefundFail, PageType, SubStatus } from './AfterType';
 import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
@@ -172,8 +172,8 @@ class ExchangeGoodsDetailPage extends BasePage {
         let isShow_afterInfo = !isShow_backAddressView;
         return (
             <View style={styles.container}>
-                <LinearGradient start={{x: 0, y: 0}}
-                                end={{x: 1, y: 0}}
+                <LinearGradient start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 0 }}
                                 colors={['#FF0050', '#FC5D39']}
                 >
                     <NavigatorBar headerStyle={{
@@ -185,7 +185,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                                       this.$navigateBack();
                                   }}
                                   title={'售后进度'}
-                                  titleStyle={{color: 'white'}}
+                                  titleStyle={{ color: 'white' }}
                                   renderRight={() => {
                                       return (
                                           <View style={{
@@ -196,9 +196,9 @@ class ExchangeGoodsDetailPage extends BasePage {
                                           }}>
                                               <Image source={tongyong_icon_kefu_white}
                                                      resizeMode={'stretch'}
-                                                     style={{width: 20, height: 20}}/>
+                                                     style={{ width: 20, height: 20 }}/>
                                           </View>
-                                      )
+                                      );
                                   }}
                                   rightPressed={() => {
                                       this.connetKefu();
@@ -242,6 +242,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                     {isShow_backAddressView ? <BackAddressView
                         title={'用户寄回物流信息'}
                         data={refundAddress}
+                        // isUser={true}
+                        afterSaleDetailModel={this.afterSaleDetailModel}
                         onPress={this.returnLogists}
                     /> : null}
                     {
@@ -299,10 +301,12 @@ class ExchangeGoodsDetailPage extends BasePage {
                                                               }}
                         /> : null
                     }
-                    <TouchableOpacity style={styles.item_style}
-                                      onPress={() => {
-                                          this.gotoNegotiateHistory();
-                                      }}
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={styles.item_style}
+                        onPress={() => {
+                            this.gotoNegotiateHistory();
+                        }}
                     >
                         <MRText style={styles.item_text}>协商记录</MRText>
                         <UIImage style={styles.item_arrow} source={arrow_right_black} resizeMode={'contain'}/>
@@ -332,7 +336,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     urlString: '',
                     title: this.kefuData.title || '平台客服',
                     shopId: this.kefuData.shopId || '',
-                    chatType: beginChatType.BEGIN_FROM_ORDER,
+                    chatType: beginChatType.BEGIN_FROM_AFTER,
                     data: {
                         title: merchantOrderNo,
                         desc,
@@ -350,7 +354,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                             urlString: '',
                             title: this.kefuData.title || '平台客服',
                             shopId: this.kefuData.shopId || '',
-                            chatType: beginChatType.BEGIN_FROM_ORDER,
+                            chatType: beginChatType.BEGIN_FROM_AFTER,
                             data: {
                                 title: merchantOrderNo,
                                 desc,
@@ -385,7 +389,7 @@ class ExchangeGoodsDetailPage extends BasePage {
     _renderEmptyView() {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity activeOpacity={0.7} onPress={() => {
                     this.afterSaleDetailModel.loadPageData();
                 }}
                                   style={{ alignItems: 'center' }}
@@ -525,13 +529,13 @@ class ExchangeGoodsDetailPage extends BasePage {
         } else {
             let {
                 serviceNo,
-                orderProductNo,
                 type,
-                refundPrice,
+                applyRefundAmount,
                 imgList,
                 description,
                 reason
-            } = this.afterSaleDetailModel.pageData;
+            } = this.afterSaleDetailModel.pageData.service;
+            let orderProductNo = this.afterSaleDetailModel.pageData.product.productOrderNo
             imgList = imgList || '';
             if (EmptyUtils.isEmpty(imgList)) {
                 imgList = [];
@@ -550,7 +554,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 reason,
                 description,
                 imgList,
-                refundPrice
+                applyRefundAmount
             });
 
         }

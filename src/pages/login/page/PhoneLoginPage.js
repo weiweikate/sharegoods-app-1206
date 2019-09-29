@@ -7,15 +7,16 @@ import DesignRule from '../../../constants/DesignRule';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import loginModel from '../model/LoginModel';
 import ProtocolView from '../components/Login.protocol.view';
-import RouterMap, { replaceRoute, routeNavigate, routePush } from '../../../navigation/RouterMap';
+import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import LinearGradient from 'react-native-linear-gradient';
 import store from '@mr/rn-store';
-import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
+import { getWxUserInfo, memberLogin, wxLoginAction } from '../model/LoginActionModel';
 import { getVerifyToken } from '../model/PhoneAuthenAction';
 import res from '../../../comm/res';
 import resLogin from '../res';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 const btnWidth = ScreenUtils.width - px2dp(60);
@@ -57,51 +58,113 @@ export default class PhoneLoginPage extends BasePage {
         headerStyle: { borderBottomWidth: 0 }
     };
 
+    /**
+     * 下一步校验
+     */
+    judgePhoneNumber() {
+        if (!loginModel.isSelectProtocol) {
+            this.$toastShow('请先勾选用户协议');
+            return false;
+        }
+        if (StringUtils.isEmpty(this.state.phoneNum.trim())) {
+            bridge.$toast('请输入手机号');
+            return false;
+        } else {
+            if (!StringUtils.checkPhone(this.state.phoneNum)) {
+                bridge.$toast('请输入正确的手机号');
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 号码校验，失败则跳转到验证码页面
+     */
     verifyPhone = () => {
+        if (this.judgePhoneNumber()) {
+            // 号码认证
+            this.$loadingShow();
+            if (loginModel.authPhone) {
+                // 回退步数2
+                let popNumber = 2;
+                getVerifyToken().then((data => {
+                    // token去服务端号码认证，认证通过登录成功
+                    let params = { token: data };
+                    memberLogin(params, () => {
+                        // 号码认证登录成功
+                        TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
+                        this.$loadingDismiss();
+                        bridge.$toast('登录成功');
+                    }, (code) => {
+                        // 认证失败，
+                        if (code === 34014) {
+                            /*微信号已经其他手机号绑定*/
+                            return;
+                        }
+                        this.goCodeVerifyPage();
+                    }, popNumber);
+                })).catch(e => {
+                    // 认证失败，
+                    this.goCodeVerifyPage();
+                });
+            } else {
+                this.goCodeVerifyPage();
+            }
+        }
+    };
+
+    /**
+     * 跳转到验证码页面
+     */
+    goCodeVerifyPage() {
+        this.$loadingDismiss();
+        TrackApi.localPhoneNumLogin({ 'loginMethod': 2 });
+        // 保存本次输入的手机号
+        loginModel.savePhoneNumber(this.state.phoneNum);
+        let params = { ...this.params, phoneNum: this.state.phoneNum };
+        if (StringUtils.isNoEmpty(this.params.weChatCode)) {
+            params.weChatCode = this.params.weChatCode;
+        }
+        // 跳转到验证码页面
+        routeNavigate(RouterMap.LoginVerifyCodePage, params);
+    }
+
+    /**
+     * 微信登录
+     */
+    weChatLogin() {
         if (!loginModel.isSelectProtocol) {
             this.$toastShow('请先勾选用户协议');
             return;
         }
-        if (StringUtils.isEmpty(this.state.phoneNum.trim())) {
-            bridge.$toast('请输入手机号');
-            return;
-        } else {
-            if (!StringUtils.checkPhone(this.state.phoneNum)) {
-                bridge.$toast('请输入正确的手机号');
+        // 微信授权
+        getWxUserInfo((wxData) => {
+            this.$loadingShow('加载中');
+            if (!wxData) {
+                this.$loadingDismiss();
+                this.$toastShow('微信授权失败！');
                 return;
             }
-        }
-        // 号码认证
-        this.$loadingShow();
-        if (loginModel.authPhone) {
-            getVerifyToken().then((data => {
-                // token去服务端号码认证，认证通过登录成功
-                let { navigation } = this.props;
-                oneClickLoginValidation(data, this.state.phoneNum, navigation, () => {
-                    this.$loadingDismiss();
-                }, (code) => {
-                    // 认证失败，
-                    this.$loadingDismiss();
-                    if (code === 34014) {
-                        /*微信号已经其他手机号绑定*/
-                        return;
-                    }
-                    loginModel.savePhoneNumber(this.state.phoneNum);
-                    routeNavigate(RouterMap.LoginVerifyCodePage, { ...this.params, phoneNum: this.state.phoneNum });
-                }, { popNumber: 2, wxData: this.params.wxData });
-                // 如果没有绑定微信，绑定微信
-            })).catch(e => {
-                // 认证失败，
+            let params = {
+                device: wxData.device,
+                weChatHeadImg: wxData.headerImg,
+                weChatName: wxData.nickName,
+                openId: wxData.appOpenid,
+                systemVersion: wxData.systemVersion,
+                unionId: wxData.unionid
+            };
+            // 微信登录
+            wxLoginAction(params, () => {
+                bridge.$toast('登录成功');
                 this.$loadingDismiss();
-                loginModel.savePhoneNumber(this.state.phoneNum);
-                routeNavigate(RouterMap.LoginVerifyCodePage, { ...this.params, phoneNum: this.state.phoneNum });
+                this.$navigateBack();
+                this.params.callback && this.params.callback();
+            }, () => {
+                this.$loadingDismiss();
             });
-        } else {
-            this.$loadingDismiss();
-            loginModel.savePhoneNumber(this.state.phoneNum);
-            routeNavigate(RouterMap.LoginVerifyCodePage, { ...this.params, phoneNum: this.state.phoneNum });
-        }
-    };
+        });
+    }
 
     _render() {
         return (
@@ -143,6 +206,7 @@ export default class PhoneLoginPage extends BasePage {
                             maxLength={11}
                         />
                         <TouchableOpacity
+                            activeOpacity={0.7}
                             style={{ justifyContent: 'center', width: px2dp(30) }} onPress={() => {
                             if (this.state.phoneNum.length > 0) {
                                 this.setState({
@@ -161,6 +225,7 @@ export default class PhoneLoginPage extends BasePage {
                                                 marginTop: px2dp(15)
                                             }]}>
                                 <TouchableOpacity
+                                    activeOpacity={0.7}
                                     style={Styles.touchableStyle}
                                     onPress={() => {
                                         // 发送验证码，跳转到验证码页面
@@ -197,31 +262,9 @@ export default class PhoneLoginPage extends BasePage {
                         <CommSpaceLine style={{ width: this.params.needBottom ? px2dp(102) : 0 }}/>
                     </View>
                     <View style={{ flexDirection: 'row', marginHorizontal: px2dp(30), marginTop: px2dp(20) }}>
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             // 微信登录
-                            if (!loginModel.isSelectProtocol) {
-                                this.$toastShow('请先勾选用户协议');
-                                return;
-                            }
-                            // 微信授权登录
-                            getWxUserInfo((wxData) => {
-                                this.$loadingShow('加载中');
-                                wxLoginAction(wxData, (code, data) => {
-                                    this.$loadingDismiss();
-                                    if (code === 10000) {
-                                        this.$navigateBack();
-                                        this.params.callback && this.params.callback();
-                                    } else if (code === 34005) {
-                                        // 绑定手机
-                                        this.$toastShow('请绑定手机号');
-                                        routePush(RouterMap.PhoneLoginPage, {
-                                            ...this.params,
-                                            needBottom: false,
-                                            wxData
-                                        });
-                                    }
-                                });
-                            });
+                            this.weChatLogin();
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
                                    source={this.params.needBottom ? res.share.weiXin : null}/>
@@ -231,7 +274,7 @@ export default class PhoneLoginPage extends BasePage {
                                 color: DesignRule.textColor_instruction
                             }} value={this.params.needBottom ? '微信登录' : ''}/>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                        <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             // 密码
                             replaceRoute(RouterMap.PwdLoginPage, { ...this.params });
                         }}>

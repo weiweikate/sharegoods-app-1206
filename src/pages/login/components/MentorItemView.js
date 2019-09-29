@@ -69,6 +69,7 @@ export default class MentorItemView extends Component {
                 style={[styles.mainBgStyle,
                     this.state.isSelect ? null : { opacity: 0.5 }]}>
                 <TouchableOpacity
+                    activeOpacity={0.7}
                     onPress={() => {
                         this.props.clickItemAction && this.props.clickItemAction(this.state.itemData);
                     }}>

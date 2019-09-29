@@ -137,6 +137,7 @@ export default class InviteCodePage extends BasePage {
                 </View>
                 <View style={styles.bottomContentStyle}>
                     <TouchableOpacity
+                        activeOpacity={0.7}
                         onPress={() => {
                             this.$navigate(RouterMap.SelectMentorPage);
                         }}

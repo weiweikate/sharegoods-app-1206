@@ -15,6 +15,7 @@ import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterM
 import user from '../../../model/user';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { homePoint } from '../HomeTypes';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 
 const { px2dp, width } = ScreenUtils;
@@ -30,7 +31,7 @@ class Item extends Component {
         const { onPress, data, index } = this.props;
         const { image, title } = this.props.data;
         let source = { uri: image };
-        return <TouchableOpacity style={[styles.item, {
+        return <TouchableOpacity activeOpacity={0.7} style={[styles.item, {
             marginLeft: index % 5 === 0 ? 0 : this.itemSpace,
             marginRight: index % 5 === 4 ? 0 : this.itemSpace,
             marginTop: index > 4 ? px2dp(-6) : 0
@@ -65,7 +66,7 @@ export default class HomeChannelView extends Component {
         let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(data);
         params.fromHome = true;
-        this._filterNav(router, { ...params });
+        this._filterNav(router, { ...params, ...getSGspm_home(HomeSource.icon, index) });
         track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeIcon, index));
     };
 

@@ -52,9 +52,12 @@ export class TopicImageAdView extends React.Component {
                             links.map((item,index) => {
                                 return (
                                     <TouchableOpacity
+                                        activeOpacity={0.7}
                                         key={data.imgs[0].src + '_' + index}
                                         onPress={() => {
-                                            topicAdOnPress(data,item, this.props.p);
+                                            let {sgscm, sgspm} = data;
+                                            sgspm = sgspm+ '_'+ index;
+                                            topicAdOnPress(data,item, this.props.p, '', {sgscm, sgspm});
 
 
                                     }}
@@ -81,7 +84,9 @@ export class TopicImageAdView extends React.Component {
                             onDidSelectItemAtIndex={(i) => {
                                 let links = data.imgs[i].links;
                                 if (links && links.length > 0) {
-                                    topicAdOnPress(data, links[0], this.props.p);
+                                    let {sgscm, sgspm} = data;
+                                    sgspm = sgspm+ '_'+ i;
+                                    topicAdOnPress(data, links[0], this.props.p, '', {sgscm, sgspm});
                                 }
 
                             }}/>

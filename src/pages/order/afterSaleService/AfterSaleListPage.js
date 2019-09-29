@@ -66,7 +66,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
             return null;
         } else {
             return (
-                <TouchableOpacity onPress={this.gotoSearchPage}>
+                <TouchableOpacity activeOpacity={0.7} onPress={this.gotoSearchPage}>
                     <Image source={search} style={{ width: 22, height: 22, marginRight: 10 }}/>
                 </TouchableOpacity>);
         }
@@ -133,7 +133,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     <UIText value={this.getStatusText(item)}
                             style={[styles.text, { marginLeft: 35, flex: 1 }]}
                     />
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         // if (status === 2) {
                         //     this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
                         //         pageData: {

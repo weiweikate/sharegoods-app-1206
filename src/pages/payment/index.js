@@ -4,8 +4,6 @@ import PaymentResultPage from './PaymentResultPage'
 import PaymentCheckPage from './PaymentCheckPage'
 import PaymentFinshPage  from './PaymentFinshPage'
 
-import TextWxPay from './TestWxPay'
-
 export default {
     moduleName: 'payment',    //模块名称
     childRoutes: {
@@ -13,7 +11,6 @@ export default {
         ChannelPage,
         PaymentResultPage,
         PaymentCheckPage,
-        TextWxPay,
         PaymentFinshPage
     }
 };

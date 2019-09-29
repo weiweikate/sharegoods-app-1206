@@ -23,6 +23,8 @@ import SelectTicketModel from '../components/confirmOrder/SelectTicketModel';
 import { MRText } from '../../../components/ui';
 import RouterMap from '../../../navigation/RouterMap';
 import res from '../res';
+import ActivateTicketView from '../components/confirmOrder/ActivateTicketView';
+import AddressModal from '../components/confirmOrder/AddressModal';
 const step_header = res.step_header;
 
 @observer
@@ -42,6 +44,53 @@ export default class ConfirmOrderPage extends BasePage {
         title: '提交订单',
         show: true // false则隐藏导航
     };
+
+    renderFailProductList(){
+        if (confirmOrderModel.failProductList.length  == 0){
+            return null;
+        }
+
+        return(
+            <View style={styles.block}>
+                {
+                    confirmOrderModel.failProductList.length > 0 ?
+                        <View style={{
+                            backgroundColor: 'white',
+                            paddingLeft: 15,
+                            height: 36,
+                            justifyContent: 'center',
+                            marginTop: 5,
+                            borderBottomWidth: 1,
+                            borderBottomColor: DesignRule.lineColor_inWhiteBg
+                        }}>
+                            <MRText style={{
+                                fontSize: 12,
+                                color: '#333333'}}>
+                                失效商品
+                            </MRText>
+                        </View> : null
+                }
+
+                {
+                    confirmOrderModel.failProductList.length > 0 ?
+                        confirmOrderModel.failProductList.map((item, index) => {
+                            return <GoodsItem
+                                key={'failProductList'+index}
+                                uri={item.specImg}
+                                activityCodes={item.failReason?[item.failReason]:[]}
+                                goodsName={item.productName}
+                                salePrice={item.unitPrice}
+                                category={item.spec}
+                                goodsNum={'x' + item.quantity}
+                                onPress={() => {
+                                }}
+                                failProduct={true}
+                            />
+                        })  : null
+                }
+            </View>
+        )
+    }
     //**********************************ViewPart******************************************
     _renderContent = () => {
         return (
@@ -55,56 +104,24 @@ export default class ConfirmOrderPage extends BasePage {
                         !confirmOrderModel.isAllVirtual ?  <ConfirmAddressView selectAddress={() => this.selectAddress()}/> : null
                     }
                     {this.renderGroupSponsor()}
+                    <View style={styles.block}>
                     {
                         confirmOrderModel.productOrderList.map((item, index) => {
                             return this._renderItem(item, index)
                         })
                     }
-
-                    {
-                        confirmOrderModel.failProductList.length > 0 ?
-                            <View style={{
-                                backgroundColor: 'white',
-                                paddingLeft: 15,
-                                height: 36,
-                                justifyContent: 'center',
-                                marginTop: 5,
-                                borderBottomWidth: 1,
-                                borderBottomColor: DesignRule.lineColor_inWhiteBg
-                            }}>
-                                <MRText style={{
-                                    fontSize: 12,
-                                    color: '#333333'}}>
-                                    失效商品
-                                </MRText>
-                            </View> : null
-                    }
-
-                    {
-                        confirmOrderModel.failProductList.length > 0 ?
-                            confirmOrderModel.failProductList.map((item, index) => {
-                               return <GoodsItem
-                                   key={'failProductList' + index}
-                                   uri={item.specImg}
-                                   activityCodes={item.failReason ? [item.failReason] : []}
-                                   goodsName={item.productName}
-                                   salePrice={item.unitPrice}
-                                   category={item.spec}
-                                   goodsNum={'x' + item.quantity}
-                                   onPress={() => {
-                                   }}
-                                   failProduct={true}
-                               />
-                            })  : null
-                    }
+                    </View>
+                    {this.renderFailProductList()}
                     <KeyboardAvoidingView>
                         <ConfirmPriceView
                             jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}
                             inputFocus={() => {
                             }}/>
                     </KeyboardAvoidingView>
+                    <ActivateTicketView />
                 </ScrollView>
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
+                <AddressModal/>
                 <SelectOneTicketModel ref={(ref)=>{this.oneTicketModel = ref}}/>
                 <SelectTicketModel ref={(ref)=>{this.ticketModel = ref}} />
             </View>
@@ -174,12 +191,13 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-        this.loadPageData(this.params.orderParamVO.couponsId);
+
+        this.loadPageData();
     }
 
     loadPageData = (couponsId) => {
         // 获取订单数据
-        confirmOrderModel.makeSureProduct_selectDefaltCoupon(couponsId);
+        confirmOrderModel.makeSureProduct_selectDefaltAddress();
     };
 
     // 地址重新选择
@@ -240,11 +258,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: DesignRule.bgColor
     },
-    text:{
+    text: {
         width: ScreenUtils.autoSizeWidth(100),
-        marginLeft: ScreenUtils.autoSizeWidth(45-20),
+        marginLeft: ScreenUtils.autoSizeWidth(45 - 20),
         fontSize: ScreenUtils.autoSizeWidth(12),
         color: DesignRule.textColor_instruction,
         textAlign: 'center'
+    },
+    block: {
+        marginBottom: 10,
+        marginHorizontal: DesignRule.margin_page,
+        borderRadius: 10,
+        overflow: 'hidden'
     }
 });

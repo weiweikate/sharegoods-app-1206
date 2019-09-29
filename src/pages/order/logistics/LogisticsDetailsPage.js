@@ -1,7 +1,7 @@
 import React from 'react';
-import { NativeModules, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { Image, NativeModules, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../BasePage';
-import { RefreshList, UIText, MRText as Text } from '../../../components/ui';
+import { MRText as Text, RefreshList, UIText } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LogisticsDetailItem from '../components/LogisticsDetailItem';
@@ -54,7 +54,7 @@ export default class LogisticsDetailsPage extends BasePage {
 
     renderHeader = () => {
         return (
-            <TouchableOpacity style={styles.logisticsNumber} onPress={() => this.copyToClipboard()}>
+            <TouchableOpacity activeOpacity={0.7} style={styles.logisticsNumber} onPress={() => this.copyToClipboard()}>
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
                     <UIText value={this.state.expressName + '：' + this.state.expressNo}
                             style={{ color: DesignRule.yellow_FF7, marginLeft: 18 }}/>
@@ -87,10 +87,10 @@ export default class LogisticsDetailsPage extends BasePage {
         return (
             <View style={styles.container}>
                 {this.state.expressNo ? this.renderHeader() : null}
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={Nowuliu} style={{ width: 92, height: 61 }}/>
-                <Text style={{ color: '#909090', fontSize: 15, marginTop: 25 }}>暂无物流信息</Text>
-            </View>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Image source={Nowuliu} style={{ width: 92, height: 61 }}/>
+                    <Text style={{ color: '#909090', fontSize: 15, marginTop: 25 }}>暂无物流信息</Text>
+                </View>
             </View>
         );
     }
@@ -124,7 +124,10 @@ export default class LogisticsDetailsPage extends BasePage {
     loadPageData() {
         console.log(this.params);
         if (StringUtils.isNoEmpty(this.state.expressNo)) {
-            OrderApi.findLogisticsDetail({ expressNo: this.state.expressNo, expressCode: this.params.expressCode }).then((response) => {
+            OrderApi.findLogisticsDetail({
+                expressNo: this.state.expressNo,
+                expressCode: this.params.expressCode
+            }).then((response) => {
                 // console.log(response.data.list);
                 let arrData = [];
                 if (response.data && response.data.expressContent && response.data.expressContent.length > 0) {

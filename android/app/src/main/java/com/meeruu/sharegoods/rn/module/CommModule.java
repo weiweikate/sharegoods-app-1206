@@ -642,7 +642,7 @@ public class CommModule extends ReactContextBaseJavaModule {
         map.putInt("height",oHeight*i);
         promise.resolve(map);
     }
-
+    
     /***
      * 获取字体高度
      * @param paint

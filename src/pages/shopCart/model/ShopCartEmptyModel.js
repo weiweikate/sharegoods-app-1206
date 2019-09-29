@@ -1,4 +1,4 @@
-import { action, autorun, observable } from 'mobx';
+import {action, autorun, observable} from 'mobx';
 import ShopCartAPI from '../api/ShopCartApi';
 import user from '../../../model/user';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -8,7 +8,7 @@ const EmptyViewTypes = {
     recommendListItem: 'recommendListItem'
 };
 
-const { px2dp } = ScreenUtils;
+const {px2dp} = ScreenUtils;
 const Cell_Height = px2dp(248);
 
 class ShopCartEmptyModel {
@@ -25,9 +25,16 @@ class ShopCartEmptyModel {
     firstLoad = true;
 
     @action
-    getRecommendProducts = (isRefresh = true) => {
+    getRecommendProducts = (isRefresh = true,showRefresh = false) => {
+
         if (isRefresh) {
             this.page = 1;
+            if(showRefresh){
+                this.isRefreshing = true;
+                setTimeout(() => {
+                    this.isRefreshing = false;
+                }, 1000);
+            }
         } else {
             this.isFetching = true;
             this.page = this.page + 1;
@@ -65,12 +72,12 @@ class ShopCartEmptyModel {
                 this.emptyViewList = newArr;
                 this.errorMsg = '';
                 this.isFetching = false;
-                this.isRefreshing = false;
+
+
                 console.log(result);
             }).catch(error => {
                 this.isEnd = true;
                 this.isFetching = false;
-                this.isRefreshing = false;
                 this.errorMsg = error.msg;
             });
         } else {
@@ -106,12 +113,9 @@ class ShopCartEmptyModel {
                 this.emptyViewList = newArr;
                 this.errorMsg = '';
                 this.isFetching = false;
-                this.isRefreshing = false;
-                console.log(result);
             }).catch(error => {
                 this.isEnd = true;
                 this.isFetching = false;
-                this.isRefreshing = false;
                 this.errorMsg = error.msg;
             });
         }
@@ -123,4 +127,4 @@ const shopCartEmptyModel = new ShopCartEmptyModel();
 autorun(() => {
     user.isLogin ? shopCartEmptyModel.getRecommendProducts(true) : null;
 });
-export { shopCartEmptyModel, EmptyViewTypes };
+export {shopCartEmptyModel, EmptyViewTypes};

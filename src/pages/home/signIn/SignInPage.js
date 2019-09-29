@@ -34,6 +34,7 @@ import RouterMap from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import TaskView from '../view/TaskView';
 import { mineTaskModel } from '../model/TaskModel';
+import {SafeAreaView} from 'react-navigation';
 
 const { px2dp } = ScreenUtils;
 
@@ -440,6 +441,7 @@ export default class SignInPage extends BasePage {
                 }}>
                     <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
                         <TouchableOpacity
+                            activeOpacity={0.7}
                             style={[styles.left, { width: 40 }]}
                             onPress={() => {
                                 this.props.navigation.goBack();
@@ -541,7 +543,7 @@ export default class SignInPage extends BasePage {
                 <View style={{ alignItems: 'center' }}>
                     <TouchableOpacity onPress={() => {
                         this._modalPress();
-                    }}>
+                    }} activeOpacity={0.7}>
                         <ImageLoader
                             source={{ uri: this.state.modalInfo[0].image }}
                             showPlaceholder={false}
@@ -564,7 +566,7 @@ export default class SignInPage extends BasePage {
     _render() {
 
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <ScrollView
                     onScroll={this._onScroll}
                     scrollEventThrottle={30}
@@ -581,7 +583,7 @@ export default class SignInPage extends BasePage {
                 {this.navBackgroundRender()}
                 {this.navRender()}
                 {this._signModalRender()}
-            </View>
+            </SafeAreaView>
         );
     }
 }

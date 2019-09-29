@@ -138,6 +138,13 @@ const api = {
     getGroupList:['/promotion/group/us',{method:'get'}],
     //设置页面短信开关
     setMessageStatus:['/user/setContactInformationStatus',{method:'post'}],
+    //获取用户下一个会员身份
+    getNextBenefitPackageInfo:['/member/benefits/getNextBenefitPackageInfo',{method:'post'}],
+    //查询自返金信息接口
+    getReturnCashInfo:['/account/selfReturn',{method:'get'}],
+    //查询自返金列表
+    getReturnCashList:['/account/selfReturn/list',{method:'get'}],
+
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

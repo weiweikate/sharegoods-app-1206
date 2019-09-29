@@ -14,19 +14,14 @@
 
 import React from 'react';
 
-import {
-    StyleSheet,
-    View,
-    TouchableOpacity
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import {
-    MRText
-} from '../../../../components/ui';
+import { MRText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { AfterStatus } from '../AfterType';
 import { routePush } from '../../../../navigation/RouterMap';
+
 const {
     STATUS_SEND_BACK           //待寄回
 } = AfterStatus;
@@ -43,22 +38,23 @@ export default class FillAddressView extends React.Component {
     componentDidMount() {
     }
 
-    onPress = ()=> {
+    onPress = () => {
         let afterSaleDetailModel = this.props.afterSaleDetailModel;
         routePush('order/afterSaleService/FillReturnLogisticsPage', {
-            pageData:{
-                productOrderNo:afterSaleDetailModel.pageData.product.productOrderNo,
-                serviceNo:afterSaleDetailModel.pageData.service.serviceNo},
+            pageData: {
+                productOrderNo: afterSaleDetailModel.pageData.product.productOrderNo,
+                serviceNo: afterSaleDetailModel.pageData.service.serviceNo
+            },
             callBack: () => {
                 afterSaleDetailModel.loadPageData();
             }
-        })
-    }
+        });
+    };
 
 
     render() {
         let status = this.props.status;
-        if (status !== STATUS_SEND_BACK){
+        if (status !== STATUS_SEND_BACK) {
             return null;
         }
         return (
@@ -72,8 +68,9 @@ export default class FillAddressView extends React.Component {
                     ，逾期未填写售后信息将自动关闭
                 </MRText>
                 <View style={styles.bottomContainer}>
-                    <TouchableOpacity onPress={this.onPress}
-                                      style={styles.borderButton}
+                    <TouchableOpacity
+                        activeOpacity={0.7} onPress={this.onPress}
+                        style={styles.borderButton}
                     >
                         <MRText style={styles.btnText}>填写寄回物流</MRText>
                     </TouchableOpacity>
@@ -100,7 +97,7 @@ const styles = StyleSheet.create({
         marginTop: 3
     },
     timerStr: {
-        color: DesignRule.mainColor,
+        color: DesignRule.mainColor
     },
     bottomContainer: {
         height: 44,
@@ -121,6 +118,6 @@ const styles = StyleSheet.create({
     },
     btnText: {
         color: DesignRule.mainColor,
-        fontSize: 12,
+        fontSize: 12
     }
 });

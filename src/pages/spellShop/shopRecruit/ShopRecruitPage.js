@@ -1,17 +1,8 @@
 //招募中店铺的页面
 import React from 'react';
-import {
-    View,
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity,
-    Image,
-    RefreshControl, Alert
-} from 'react-native';
+import { Alert, Image, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import {
-    MRText as Text
-} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
 
 import RecruitMembersRow from './components/RecruitMembersRow';
 import RecruitHeaderView from './components/RecruitHeaderView';
@@ -20,7 +11,6 @@ import SpellShopApi from '../api/SpellShopApi';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
-
 // 图片资源
 import spellStatusModel from '../model/SpellStatusModel';
 // import ConfirmAlert from '../../../components/ui/ConfirmAlert';
@@ -54,10 +44,12 @@ export default class ShopRecruitPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}
-                                          onPress={() => {
-                                              this.$navigateBack();
-                                          }}>
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}
+                            onPress={() => {
+                                this.$navigateBack();
+                            }}>
                             <Image source={NavLeft} style={{ width: 30, height: 30 }}/>
                         </TouchableOpacity> : null}
                 </View>
@@ -65,13 +57,13 @@ export default class ShopRecruitPage extends BasePage {
                     <Text style={{ fontSize: 17, color: '#ffffff' }} allowFontScaling={false}>店铺招募中</Text>
                 </View>
                 <View style={styles.rightBarItemContainer}>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.$navigate(RouterMap.RecommendPage);
                     }
                     }>
                         <Image style={{ marginRight: 10, width: 18, height: 18 }} source={icons8_Shop_50px}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this._clickSettingItem}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={this._clickSettingItem}>
                         <Image source={icons9_shop} style={{ width: 18, height: 18 }}/>
                     </TouchableOpacity>
                 </View>
@@ -314,11 +306,12 @@ export default class ShopRecruitPage extends BasePage {
                     marginTop: 20,
                     marginBottom: 30
                 }}>
-                    <TouchableOpacity onPress={this._closeStore}
-                                      style={[styles.unOpen, {
-                                          borderRadius: this.state.canOpen ? 5 : ScreenUtils.autoSizeWidth(345) / 2,
-                                          width: this.state.canOpen ? ScreenUtils.autoSizeWidth(168) : ScreenUtils.autoSizeWidth(260)
-                                      }]}>
+                    <TouchableOpacity
+                        activeOpacity={0.7} onPress={this._closeStore}
+                        style={[styles.unOpen, {
+                            borderRadius: this.state.canOpen ? 5 : ScreenUtils.autoSizeWidth(345) / 2,
+                            width: this.state.canOpen ? ScreenUtils.autoSizeWidth(168) : ScreenUtils.autoSizeWidth(260)
+                        }]}>
                         <Text style={{ fontSize: 16, color: DesignRule.mainColor }}
                               allowFontScaling={false}>{'取消开启'}</Text>
                     </TouchableOpacity>
@@ -339,16 +332,18 @@ export default class ShopRecruitPage extends BasePage {
             }}>
                 {
                     userStatus === 1 ?
-                        <TouchableOpacity onPress={this._quitStore}
-                                          style={[styles.unOpen, {
-                                              borderRadius: 24,
-                                              width: ScreenUtils.autoSizeWidth(260)
-                                          }]}>
+                        <TouchableOpacity
+                            activeOpacity={0.7} onPress={this._quitStore}
+                            style={[styles.unOpen, {
+                                borderRadius: 24,
+                                width: ScreenUtils.autoSizeWidth(260)
+                            }]}>
                             <Text style={{ fontSize: 16, color: DesignRule.mainColor }}
                                   allowFontScaling={false}>{'退出拼店'}</Text>
                         </TouchableOpacity>
-                        : <TouchableOpacity onPress={this._joinStore}
-                                            style={[styles.OutStore]}>
+                        : <TouchableOpacity
+                            activeOpacity={0.7} onPress={this._joinStore}
+                            style={[styles.OutStore]}>
                             <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>{'加入拼店'}</Text>
                         </TouchableOpacity>
                 }

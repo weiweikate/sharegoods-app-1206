@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import { MRText, NoMoreClick } from '../../../components/ui';
 import res from '../res/product';
 import DesignRule from '../../../constants/DesignRule';
-import { observable, computed, autorun } from 'mobx';
+import { observable, computed, autorun, action } from 'mobx';
 import { observer } from 'mobx-react';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import MineAPI from '../../mine/api/MineApi';
@@ -121,14 +121,34 @@ const sStyles = StyleSheet.create({
 export class ProductDetailAddressModel {
 
     @observable prodCode = null;
+    @observable templateCode = null;
     /*个人地址列表*/
     @observable addressList = [];
     /*手动选择的区域*/
     @observable addressSelectedText = null;
-    @observable addressSelectedCode = null;
+    @observable provinceCode = null;
+    @observable cityCode = null;
+    @observable areaCode = null;
+
+    paramAddressItem = {
+        province: '浙江省', city: '杭州市', area: '萧山区',
+        provinceCode: '330000000', cityCode: '330100000', areaCode: '330109000'
+    };
 
     /*区域库存(地区变化就需要更新)  未请求成功为null*/
     @observable areaSkuList = null;
+
+    @observable freightPrice = null;
+
+    @action setAddressItem = (item) => {
+        this.paramAddressItem = item;
+
+        const { province, city, provinceCode, cityCode, area, areaCode } = item;
+        this.addressSelectedText = `${province || ''}${city || ''}${area || ''}`;
+        this.provinceCode = provinceCode;
+        this.cityCode = cityCode;
+        this.areaCode = areaCode;
+    };
 
     @computed get showAreaText() {
         if (this.addressSelectedText) {
@@ -142,22 +162,46 @@ export class ProductDetailAddressModel {
         return '杭州市萧山区';
     }
 
+    @computed get getProvinceCode() {
+        if (this.provinceCode) {
+            return this.provinceCode;
+        }
+        for (const item of this.addressList) {
+            if (item.defaultStatus === 1) {
+                return item.provinceCode;
+            }
+        }
+        return '330000000';
+    }
+
+    @computed get getCityCode() {
+        if (this.cityCode) {
+            return this.cityCode;
+        }
+        for (const item of this.addressList) {
+            if (item.defaultStatus === 1) {
+                return item.cityCode;
+            }
+        }
+        return '330100000';
+    }
+
     @computed get getAreaCode() {
-        if (this.addressSelectedCode) {
-            return this.addressSelectedCode;
+        if (this.areaCode) {
+            return this.areaCode;
         }
         for (const item of this.addressList) {
             if (item.defaultStatus === 1) {
                 return item.areaCode;
             }
         }
-        return '330109';
+        return '330109000';
     }
 
     /*地址变化自动更新库存*/
     requestSkuByAreaCode = autorun(() => {
         const { prodCode, getAreaCode } = this;
-        if (!this.prodCode) {
+        if (!prodCode) {
             return;
         }
         ProductApi.getProductSkuStockByAreaCode({
@@ -166,12 +210,28 @@ export class ProductDetailAddressModel {
         }).then((data) => {
             this.areaSkuList = data.data || [];
         });
+
+        const { templateCode } = this;
+        ProductApi.freightByTemplateAndArea({
+            prodCode,
+            templateCode,
+            provinceCode: this.getProvinceCode,
+            cityCode: this.getCityCode,
+            areaCode: getAreaCode
+        }).then((data) => {
+            this.freightPrice = data.data;
+        });
     });
 
     /*获取收货地址*/
     requestAddress = () => {
         MineAPI.queryAddrList().then((data) => {
             this.addressList = data.data || [];
+            for (const item of this.addressList) {
+                if (item.defaultStatus === 1) {
+                    this.paramAddressItem = item;
+                }
+            }
         });
     };
 }

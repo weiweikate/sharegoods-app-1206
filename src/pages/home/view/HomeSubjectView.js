@@ -19,6 +19,7 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import { MRText as Text } from '../../../components/ui/index';
 import HomeTitleView from './HomeTitleView';
 import res from '../res/index';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 const MoneyItems = ({ money }) => {
     if (EmptyUtils.isEmpty(money)) {
@@ -46,7 +47,7 @@ const GoodItems = ({ img, title, money, press }) => {
     </TouchableWithoutFeedback>;
 };
 
-const MoreItem = ({ press }) => <TouchableOpacity style={styles.moreView} onPress={() => {
+const MoreItem = ({ press }) => <TouchableOpacity activeOpacity={0.7} style={styles.moreView} onPress={() => {
     press && press();
 }}>
     <Image source={res.home_right} style={{ width: 18, height: 18 }}/>
@@ -111,6 +112,7 @@ export default class HomeSubjectView extends Component {
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(item);
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
+        params = {...params,...getSGspm_home(HomeSource.hot, index)}
         navigate(router, params);
     }
 

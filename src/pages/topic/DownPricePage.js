@@ -2,13 +2,13 @@ import React from 'react';
 import BasePage from '../../BasePage';
 
 import {
-    View,
-    StyleSheet,
-    ScrollView,
-    RefreshControl,
+    Image,
     InteractionManager,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
     TouchableOpacity,
-    Image
+    View
 } from 'react-native';
 import { observer } from 'mobx-react';
 import { ActivityOneView, TopBannerView } from './components/SbSectiontHeaderView';
@@ -74,6 +74,7 @@ export default class DownPricePage extends BasePage {
         return (
 
             <TouchableOpacity
+                activeOpacity={0.7}
                 style={{
                     width: px2dp(40),
                     height: px2dp(44),
@@ -84,7 +85,7 @@ export default class DownPricePage extends BasePage {
                     this.shareModal && this.shareModal.open();
                 }}
             >
-                <Image source={message_three} style={{width: 22}}
+                <Image source={message_three} style={{ width: 22 }}
                        resizeMode={'contain'}/>
             </TouchableOpacity>
         );
@@ -311,7 +312,7 @@ export default class DownPricePage extends BasePage {
                             backgroundColor: 'red',
                             height: px2dp(40) + tabBarHeight - px2dp(49)
                         }}>
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
                                 this.gotoAdverPage();
                             }
                             }>

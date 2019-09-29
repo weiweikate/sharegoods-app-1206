@@ -16,7 +16,7 @@ import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
-import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { UIText } from '../../../components/ui/index';
 import PropTypes from 'prop-types';
 import user from '../../../model/user';
@@ -24,6 +24,7 @@ import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterM
 import bridge from '../../../utils/bridge';
 import LinearGradient from 'react-native-linear-gradient';
 import { TrackApi } from '../../../utils/SensorsTrack';
+import EmptyUtils from '../../../utils/EmptyUtils';
 
 const dismissKeyboard = require('dismissKeyboard');
 const { px2dp } = ScreenUtils;
@@ -57,6 +58,7 @@ export default class BottomMenu extends Component {
                 ]}>
                 <View style={styles.CartBottomContainer}>
                     <TouchableOpacity
+                        activeOpacity={0.7}
                         style={styles.touchableOpacity}
                         onPress={() => this._selectAll()}
                     >
@@ -86,7 +88,9 @@ export default class BottomMenu extends Component {
                         </View>
 
 
-                        <TouchableOpacity onPress={() => this._toBuyImmediately()}>
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            onPress={() => this._toBuyImmediately()}>
                             <LinearGradient colors={['rgba(255, 0, 80, 1)', 'rgba(252, 93, 57, 1)']}
                                             style={styles.selectGoodsNum}
                                             start={{ x: 0, y: 0 }}
@@ -107,6 +111,22 @@ export default class BottomMenu extends Component {
     _selectAll = () => {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
     };
+
+    /**
+     * 获取已选skus
+     * @param arr
+     * @private
+     */
+    _getSelectedSkus(arr){
+        let skus = [];
+        if(!EmptyUtils.isEmptyArr(arr)){
+            arr.forEach((item)=>{
+                skus.push(item.skuCode);
+            })
+        }
+        return skus;
+    }
+
     _toBuyImmediately = () => {
         dismissKeyboard();
         // routeNavigate(RouterMap.PaymentResultPage,{ payResult: PaymentResult.fail, payMsg: '订单支付超时，下单金额已原路退回' });
@@ -114,7 +134,10 @@ export default class BottomMenu extends Component {
         if (!user.isLogin) {
             routeNavigate(RouterMap.LoginPage);
             TrackApi.CartCheckoutClick({
-                cartCheckoutBtnActive: false
+                cartCheckoutBtnActive: false,
+                cartSkuQuantity:shopCartStore.getCartSkuCodes,
+                chooseSkuQuantity:[],
+                isChooseAll:shopCartStore.computedSelect
             });
             return;
         }
@@ -122,7 +145,10 @@ export default class BottomMenu extends Component {
         if (selectArr.length <= 0) {
             bridge.$toast('请先选择结算商品~');
             TrackApi.CartCheckoutClick({
-                cartCheckoutBtnActive: false
+                cartCheckoutBtnActive: false,
+                cartSkuQuantity:shopCartStore.getCartSkuCodes,
+                chooseSkuQuantity:[],
+                isChooseAll:shopCartStore.computedSelect
             });
             return;
         }
@@ -145,14 +171,20 @@ export default class BottomMenu extends Component {
         if (haveNaNGood) {
             bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~');
             TrackApi.CartCheckoutClick({
-                cartCheckoutBtnActive: false
+                cartCheckoutBtnActive: false,
+                cartSkuQuantity:shopCartStore.getCartSkuCodes,
+                chooseSkuQuantity:this._getSelectedSkus(selectArr),
+                isChooseAll:shopCartStore.computedSelect
             });
             return;
         }
         if (!isCanSettlement) {
             bridge.$toast('商品库存不足请确认~');
             TrackApi.CartCheckoutClick({
-                cartCheckoutBtnActive: false
+                cartCheckoutBtnActive: false,
+                cartSkuQuantity:shopCartStore.getCartSkuCodes,
+                chooseSkuQuantity:this._getSelectedSkus(selectArr),
+                isChooseAll:shopCartStore.computedSelect
             });
             return;
         }
@@ -166,10 +198,12 @@ export default class BottomMenu extends Component {
                     batchNo: '1',
                     shoppingCartId: goods.id,
                     activityCode: goods.activityCode || '',
-                    specImg:goods.imgUrl,
-                    productName:goods.productName,
-                    unitPrice:goods.price,
-                    productType:goods.type
+                    specImg: goods.imgUrl,
+                    productName: goods.productName,
+                    unitPrice: goods.price,
+                    productType: goods.type,
+                    sgspm : goods.sgspm,
+                    sgscm : goods.sgscm
                 });
             });
             routePush(RouterMap.ConfirOrderPage, {
@@ -181,7 +215,10 @@ export default class BottomMenu extends Component {
             });
 
             TrackApi.CartCheckoutClick({
-                cartCheckoutBtnActive: true
+                cartCheckoutBtnActive: true,
+                cartSkuQuantity:shopCartStore.getCartSkuCodes,
+                chooseSkuQuantity:this._getSelectedSkus(selectArr),
+                isChooseAll:shopCartStore.computedSelect
             });
         }
     };

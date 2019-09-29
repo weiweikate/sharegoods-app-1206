@@ -107,6 +107,9 @@ export default class GoodsListItem extends React.Component {
         });
 
         nameArr = nameArr.filter((item) => {
+            if (!merchantOrder.existLogistics && item.operation === '查看物流') {
+                return false;
+            }
             if (!isAllVirtual){
                 return true;
             }
@@ -150,7 +153,7 @@ export default class GoodsListItem extends React.Component {
                             this.setState({isShow: !this.state.isShow})
                         }}
                     >
-                        <Text style={{color: '#666666', fontSize: 12}}>更多</Text>
+                        <Text style={{color: '#666666', fontSize: 12}}>更多></Text>
                     </NoMoreClick> : null}
                 {nameArr.map((item, i) => {
                         return <NoMoreClick key={i} style={{
@@ -158,10 +161,10 @@ export default class GoodsListItem extends React.Component {
                             borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd,
                             height: ScreenUtils.autoSizeWidth(24),
                             borderRadius: ScreenUtils.autoSizeWidth(12),
-                            marginRight: ScreenUtils.autoSizeWidth(15),
+                            marginRight: ScreenUtils.autoSizeWidth(10),
                             justifyContent: 'center',
                             alignItems: 'center',
-                            paddingHorizontal:  ScreenUtils.autoSizeWidth(10)
+                            width:  ScreenUtils.autoSizeWidth(70)
                         }} onPress={() => {
                             this.setState({isShow: false})
                             operationMenuClick(item);
@@ -177,7 +180,7 @@ export default class GoodsListItem extends React.Component {
                 )}
             {
                 this.state.isShow ?
-                    <View style={{bottom: ScreenUtils.autoSizeWidth(40), right: ScreenUtils.autoSizeWidth(95*3-10), position: 'absolute',alignItems: 'center'}}>
+                    <View style={{bottom: ScreenUtils.autoSizeWidth(40), right: ScreenUtils.autoSizeWidth(90*3-10), position: 'absolute',alignItems: 'center'}}>
                         {moreArr.map((item, i) => {
                                 return <NoMoreClick key={i} style={{
                                     backgroundColor: '#999999',

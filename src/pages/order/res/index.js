@@ -30,6 +30,8 @@ const index = {
     empty_icon: require('./emptyIcon.png'),
     kefu_icon: require('./kefu_icon.png'),
     step_header: require('./step_header.png'),
+    activate_icon: require('./activate_icon.png'),
+    activate_text: require('./activate_text.png'),
     afterSaleService: {
         ...afterSaleService
     },

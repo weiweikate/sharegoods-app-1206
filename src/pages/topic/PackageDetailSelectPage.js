@@ -93,6 +93,7 @@ export default class TopicDetailSelectPage extends Component {
             tagList.push(
                 <View key={index}>
                     <TouchableOpacity
+                        activeOpacity={0.7}
                         style={[styles.btn, { backgroundColor: obj.isSelected ? DesignRule.mainColor : DesignRule.lineColor_inColorBg }]}
                         onPress={() => {
                             this._clickItemAction(obj, indexOfTop);
@@ -216,8 +217,9 @@ export default class TopicDetailSelectPage extends Component {
                                         marginTop: 6
                                     }} numberOfLines={2} allowFontScaling={false}>{specs.join(',')}</Text>
                                 </View>
-                                <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
-                                                  onPress={this._close}>
+                                <TouchableOpacity
+                                    activeOpacity={0.7} style={{ position: 'absolute', top: 16, right: 16 }}
+                                    onPress={this._close}>
                                     <Image source={icon_close}/>
                                 </TouchableOpacity>
                             </View>
@@ -245,7 +247,8 @@ export default class TopicDetailSelectPage extends Component {
                                         borderRadius: 2,
                                         marginRight: 16
                                     }}>
-                                        <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                        <TouchableOpacity activeOpacity={0.7}
+                                                          style={{ justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{
                                                 color: DesignRule.lineColor_inGrayBg,
                                                 fontSize: 15,
@@ -268,7 +271,9 @@ export default class TopicDetailSelectPage extends Component {
                                             width: 1,
                                             backgroundColor: DesignRule.lineColor_inGrayBg
                                         }}/>
-                                        <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                        <TouchableOpacity
+                                            activeOpacity={0.7}
+                                            style={{ justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{
                                                 color: DesignRule.lineColor_inGrayBg,
                                                 fontSize: 15,

@@ -59,7 +59,7 @@ export default class ShowVideoPage extends BasePage {
     _renderNormalTitle() {
         return (
             <View style={styles.navTitle}>
-                <TouchableOpacity style={styles.backView} onPress={() => routePop()}>
+                <TouchableOpacity activeOpacity={0.7} style={styles.backView} onPress={() => routePop()}>
                     <Image source={res.button.icon_header_back} style={{ width: 30, height: 30 }}/>
                 </TouchableOpacity>
             </View>
@@ -105,13 +105,14 @@ export default class ShowVideoPage extends BasePage {
             });
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
                 const { prodCode, name, originalPrice } = addCartModel;
+                const { showNo, userInfoVO } = detail;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
                     'skuCode': skuCode,
-                    'productCode': detail.prodCode
+                    'productCode': detail.prodCode,
+                    'sgscm':`2.${showNo}.none.none`
                 });
                 /*加入购物车埋点*/
-                const { showNo, userInfoVO } = detail;
                 const { userNo } = userInfoVO || {};
                 track(trackEvent.XiuChangAddToCart, {
                     xiuChangBtnLocation: '2',
@@ -304,7 +305,8 @@ export default class ShowVideoPage extends BasePage {
                                                                          this.$navigate(RouterMap.ProductDetailPage, {
                                                                              productCode: prodCode,
                                                                              trackType: 3,
-                                                                             trackCode: detail.showNo
+                                                                             trackCode: detail.showNo,
+                                                                             sgscm:`2.${detail.showNo}.none.none`
                                                                          });
                                                                      }}
                                                                      addCart={this.addCart}

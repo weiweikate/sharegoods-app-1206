@@ -11,6 +11,7 @@ import ImageLoader from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui/index';
 import StringUtils from '../../../utils/StringUtils';
 import { topicAdOnPress } from '../HomeTypes';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 export const kHomeGoodsViewHeight = px2dp(247);
 const goodsWidth = (ScreenUtils.width - px2dp(35)) / 2;
@@ -27,7 +28,7 @@ const MoneyItems = ({ money }) => {
 
 export const Goods = ({ goods, press }) => {
     if (goods.linkType === 2) {
-        return <TouchableOpacity onPress={() => press && press()}>
+        return <TouchableOpacity activeOpacity={0.7} onPress={() => press && press()}>
             <ReuserImage style={styles.container} source={{ uri: goods.topicImage ? goods.topicImage : '' }}/>
         </TouchableOpacity>;
     }
@@ -63,7 +64,7 @@ export default class GoodsCell extends Component {
             contentIndex: index,
             tabName: homeModule.tabName
         });
-        topicAdOnPress({},{linkType: data.linkType, linkValue: [data.linkCode]});
+        topicAdOnPress({},{linkType: data.linkType, linkValue: [data.linkCode]},null,null,{...getSGspm_home(HomeSource.recommend,index)});
     }
 
     render() {
@@ -74,12 +75,12 @@ export default class GoodsCell extends Component {
         }
         let index = goodsRowIndex - otherLen;
         return <View style={[styles.cell]}>
-            <Goods goods={itemData[0]} press={() => this._goodsAction(itemData[0], 2 * index - 1)}/>
+            <Goods goods={itemData[0]} press={() => this._goodsAction(itemData[0], 2 * index)}/>
             <View style={{ width: px2dp(5) }}/>
             {
                 itemData[1]
                     ?
-                    <Goods goods={itemData[1]} press={() => this._goodsAction(itemData[1], 2 * index)}/>
+                    <Goods goods={itemData[1]} press={() => this._goodsAction(itemData[1], 2 * index + 1)}/>
                     :
                     <View style={[styles.container, { backgroundColor: '' }]}/>
             }

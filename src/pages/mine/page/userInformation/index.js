@@ -10,9 +10,8 @@ import GongMallContractPage from './GongMallContractPage';
 import SetWechatPage from './SetWechatPage';
 import WithdrawRecordPage from './WithdrawRecordPage';
 import WithdrawRecordDetailPage from './WithdrawRecordDetailPage';
-
-
-
+import ReturnCashAccountPage from './ReturnCashAccountPage';
+import ReturnCashRulePage from './ReturnCashRulePage';
 
 export default {
     moduleName: 'userInformation',    //模块名称
@@ -27,6 +26,8 @@ export default {
         GongMallContractPage,
         SetWechatPage,
         WithdrawRecordPage,
-        WithdrawRecordDetailPage
+        WithdrawRecordDetailPage,
+        ReturnCashAccountPage,
+        ReturnCashRulePage
     }
 };

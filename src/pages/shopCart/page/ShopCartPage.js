@@ -2,7 +2,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { BackHandler, Image, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { BackHandler, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -18,6 +18,7 @@ import { TrackApi } from '../../../utils/SensorsTrack';
 import BottomMenu from '../components/BottomMenu';
 import { shopCartEmptyModel } from '../model/ShopCartEmptyModel';
 import res from '../res';
+import HeaderLoading from '../../../comm/components/lottieheader/ListHeaderLoading';
 
 const { px2dp } = ScreenUtils;
 const { shopCartNoGoods } = res;
@@ -116,7 +117,6 @@ export default class ShopCartPage extends BasePage {
         if (!this.pageFocus) {
             return;
         }
-        const { statusBarHeight } = ScreenUtils;
         return (
             <View style={styles.listBgContent}>
                 <SwipeListView
@@ -139,20 +139,11 @@ export default class ShopCartPage extends BasePage {
                     listViewRef={(listView) => this.contentList = listView}
                     rightOpenValue={-75}
                     showsVerticalScrollIndicator={false}
-                    swipeRefreshControl={
-                        <RefreshControl
-                            refreshing={shopCartStore.isRefresh}
-                            onRefresh={() => {
-                                this._refreshFun();
-                            }
-                            }
-                            progressViewOffset={statusBarHeight + 44}
-                            colors={[DesignRule.mainColor]}
-                            title="下拉刷新"
-                            tintColor={DesignRule.textColor_instruction}
-                            titleColor={DesignRule.textColor_instruction}
-                        />
-                    }
+                    swipeRefreshControl={<HeaderLoading
+                        isRefreshing={shopCartStore.isRefresh}
+                        onRefresh={this._refreshFun}
+                    />}
+
                 />
             </View>
         );
@@ -164,7 +155,7 @@ export default class ShopCartPage extends BasePage {
                 onPress={() => {
                     rowMap[data.item.key].closeRow();
                     this._deleteFromShoppingCartByProductId(data);
-                }}>
+                }} activeOpacity={0.7} >
                 <View style={[styles.hideBgView, { marginTop: data.item.topSpace }]}>
                     <View style={styles.hideTextBgView}>
                         <UIText style={styles.backUITextWhite} value='删除'/>
@@ -201,10 +192,33 @@ export default class ShopCartPage extends BasePage {
 
     _refreshFun = () => {
         shopCartStore.setRefresh(true);
+        setTimeout(() => {
+            shopCartStore.setRefresh(false);
+        }, 1000);
         shopCartCacheTool.getShopCartGoodsListData();
         shopCartEmptyModel.getRecommendProducts(true);
     };
+
+
+    /**
+     * 判断商品是否有效
+     * @param item
+     * @private
+     */
+    _isValidProduct = (item)=>{
+        if (item.productStatus === 0 || item.productStatus === 2 || item.productStatus === 3 || item.sellStock === 0 || item.orderOnProduct === 0){
+            return false;
+        }
+        return true;
+    }
+
     _jumpToProductDetailPage = (itemData) => {
+        TrackApi.CartProductOper({
+            spuCode:itemData.spuCode,
+            spuName:itemData.productName,
+            spuStatus:this._isValidProduct(itemData) ? 1 : 2,
+            operType:1
+        });
         if (itemData.productStatus === 0) {
             return;
         }
@@ -223,6 +237,13 @@ export default class ShopCartPage extends BasePage {
     _deleteFromShoppingCartByProductId = (itemData) => {
         console.log('删除前');
         console.log(itemData);
+        const {item} = itemData;
+        TrackApi.CartProductOper({
+            spuCode:item.spuCode,
+            spuName:item.productName,
+            spuStatus:this._isValidProduct(item) ? 1 : 2,
+            operType:2
+        })
         let delteCode = [
             { 'skuCode': itemData.item.skuCode }
         ];

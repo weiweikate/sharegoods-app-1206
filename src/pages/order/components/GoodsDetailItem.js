@@ -1,15 +1,9 @@
 import React from 'react';
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 // import GoodsItem from './GoodsItem';
 import GoodsGrayItem from './GoodsGrayItem';
 import DesignRule from '../../../constants/DesignRule';
-import {
-    MRText as Text
-} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
 // status,//账单状态：0出账中，1待支付，2已支付，3逾期
 const GoodsDetailItem = props => {
     let {
@@ -22,9 +16,9 @@ const GoodsDetailItem = props => {
         afterSaleService,
         afterSaleServiceClick,
         style,
-        activityCodes,
+        activityCodes
     } = props;
-    afterSaleService = afterSaleService || []
+    afterSaleService = afterSaleService || [];
     this.renderLine = () => {
         return (
             <View style={{
@@ -41,13 +35,15 @@ const GoodsDetailItem = props => {
         let itemArr = [];
         for (let i = 0; i < afterSaleService.length; i++) {
             itemArr.push(
-                <TouchableOpacity key={i}
-                                  style={[styles.grayView, { borderColor: afterSaleService[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
-                                  onPress={() => {
-                                      afterSaleServiceClick(afterSaleService[i]);
-                                  }}>
+                <TouchableOpacity
+                    activeOpacity={0.7} key={i}
+                    style={[styles.grayView, { borderColor: afterSaleService[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
+                    onPress={() => {
+                        afterSaleServiceClick(afterSaleService[i]);
+                    }}>
                     <Text
-                        style={[styles.grayText, { color: afterSaleService[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }]} allowFontScaling={false}>{afterSaleService[i].operation}</Text>
+                        style={[styles.grayText, { color: afterSaleService[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }]}
+                        allowFontScaling={false}>{afterSaleService[i].operation}</Text>
                 </TouchableOpacity>
             );
         }
@@ -68,11 +64,11 @@ const GoodsDetailItem = props => {
                         height: 48,
                         justifyContent: 'flex-end',
                         alignItems: 'center',
-                        backgroundColor: 'white'
+                        backgroundColor: 'white',
+                        marginBottom: 1,
                     }}>
                         {this.renderMenu()}
                     </View>
-                    {this.renderLine()}
                 </View>
         );
     };

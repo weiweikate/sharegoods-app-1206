@@ -61,7 +61,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                 </View>
             </View>
 
-            <TouchableOpacity style={{
+            <TouchableOpacity activeOpacity={0.7} style={{
                 marginTop: 54,
                 backgroundColor: DesignRule.mainColor,
                 width: ScreenUtils.width - 84,
