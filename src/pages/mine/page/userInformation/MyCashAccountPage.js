@@ -497,7 +497,11 @@ export default class MyCashAccountPage extends BasePage {
 
     }
 
+
+
     jumpToWithdrawCashPage = () => {
+
+
         MineApi.getUserBankInfo().then((data) => {
             if (data.data && data.data.length > 0) {
                 MineApi.gongmallResult().then((data) => {
@@ -507,8 +511,28 @@ export default class MyCashAccountPage extends BasePage {
                         this.$navigate(RouterMap.WithdrawCashPage);
                     }
                 }).catch(error => {
-                    this.$toastShow(error.msg);
+                    //跳转到协议页面
+                    if (error.code === 40440) {
+                        Alert.alert('提示', error.msg,
+                            [
+                                {
+                                    text: '取消', onPress: () => {
+                                    }
+                                },
+                                {
+                                    text: '同意并继续', onPress: () => {
+                                        this.$navigate(RouterMap.WithdrawalAgreementPage);
+                                    }
+                                }
+                            ]
+                        );
+                    } else {
+                        this.$toastShow(error.msg);
+                    }
                 });
+
+
+
             } else {
                 Alert.alert('未绑定银行卡', '你还没有绑定银行卡', [{
                     text: '稍后设置', onPress: () => {
