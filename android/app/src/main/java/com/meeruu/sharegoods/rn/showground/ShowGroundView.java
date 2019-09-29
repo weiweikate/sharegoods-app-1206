@@ -37,6 +37,7 @@ import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
