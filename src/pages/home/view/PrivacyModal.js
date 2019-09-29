@@ -13,18 +13,18 @@
 
 import React from 'react';
 import { routePush } from '../../../navigation/RouterMap';
-
+import Modal from '../../../comm/components/CommModal';
 import {
     StyleSheet,
     View,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Platform
 } from 'react-native';
 
 import {
     MRText
 } from '../../../components/ui';
 import HomeModalManager from '../manager/HomeModalManager';
-import Modal from '../../../comm/components/CommModal';
 
 import ScreenUtils from '../../../utils/ScreenUtils';
 
@@ -67,7 +67,7 @@ export default class PrivacyModal extends React.Component {
                         <MRText style={{ fontSize: 13,
                             color:'#666666',}}>
                             {"      如您同意此政策，请点击“同意”并开始使用我们的产品和服务，我们尽全力保护您的个人信息安全。\n" +
-                            "       请放心，秀购坚决保障您的隐私信息安全，您的信息仅用于为您提供服务或改善服务体验。\n" +
+                            "       请放心，秀购坚决保障您的隐私信息安全，您的信息仅在您授权范围内使用。\n" +
                             "       如果您确定无法认同此政策，可点击“不同意“并退出应用。"}
                         </MRText>
                     </MRText>
@@ -106,18 +106,27 @@ export default class PrivacyModal extends React.Component {
 
 
     render() {
+        if (Platform.OS !== 'ios'){
+            return (
+                <Modal
+                    animationType='slide'
+                    ref={(ref) => {
+                        this.modal = ref;
+                    }}
+                    onRequestClose={() => {
+                        HomeModalManager.closePrize();
+                    }}
+                    visible={ HomeModalManager.isShowPrivacyModal && HomeModalManager.isHome}>
+                    {this.renderContent()}
+                </Modal>
+            );
+        }
+
+        if (!HomeModalManager.isShowPrivacyModal || !HomeModalManager.isHome){
+            return <View />;
+        }
         return (
-            <Modal
-                animationType='slide'
-                ref={(ref) => {
-                    this.modal = ref;
-                }}
-                onRequestClose={() => {
-                    HomeModalManager.closePrize();
-                }}
-                visible={ HomeModalManager.isShowPrivacyModal && HomeModalManager.isHome}>
-                {this.renderContent()}
-            </Modal>
+            this.renderContent()
         );
     }
 }
@@ -129,9 +138,9 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        backgroundColor: 'rgba(0,0,0,0.5)',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
 
     },
     bg: {

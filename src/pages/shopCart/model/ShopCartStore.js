@@ -5,6 +5,7 @@ import MineApi from '../../mine/api/MineApi';
 import user from '../../../model/user';
 import shopCartCacheTool from './ShopCartCacheTool';
 import { QYChatTool } from '../../../utils/QYModule/QYChatTool';
+import EmptyUtils from '../../../utils/EmptyUtils';
 class ShopCartStore {
 
     needSelectGoods = [];
@@ -41,6 +42,24 @@ class ShopCartStore {
     get cartData() {
         return this.data.slice();
         // return this.data;
+    }
+
+    /**
+     * 获取购物车skus
+     */
+    @computed
+    get getCartSkuCodes(){
+        let skus = [];
+        if(!EmptyUtils.isEmptyArr(this.data)){
+            this.data.forEach((item)=>{
+                if(!EmptyUtils.isEmptyArr(item.products)){
+                    item.products.forEach((product)=>{
+                        skus.push(product.skuCode);
+                    })
+                }
+            })
+        }
+        return skus;
     }
 
     @computed
