@@ -237,12 +237,13 @@ export default class MyCashAccountPage extends BasePage {
         //判断当前用户状态
         let status = NO_CASH_NO_SUPMEMBER;
         let returnCash = 0;
-        if(returnCashInfo){
-            if(Number(returnCashInfo.historySelfReturnAmount)+Number(returnCashInfo.preSettleSelfReturn)>0){
-                returnCash = Number(returnCashInfo.historySelfReturnAmount)+Number(returnCashInfo.preSettleSelfReturn);
+        if (returnCashInfo) {
+            if (returnCashInfo.selfReturnToBalanceAmount && returnCashInfo.selfReturnToBalanceAmount > 0) {
                 if (returnCashInfo.convertSwitchStatus === 1) {
+                    returnCash = returnCashInfo.historySelfReturnAmount;
                     status = HAVE_CASH_HAVE_SUPMEMBER;
-                }else {
+                } else {
+                    returnCash = returnCashInfo.selfReturnToBalanceAmount;
                     status = HAVE_CASH_NO_SUPMEMBER;
                 }
             }
