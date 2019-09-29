@@ -295,11 +295,11 @@ export default class MyCashAccountPage extends BasePage {
                             </Text> : null}
                         {status === HAVE_CASH_HAVE_SUPMEMBER ?
                             <Text style={styles.returnCashTextStyle}>
-                                累计已有{returnCashInfo.historySelfReturnAmount}元自返金转到余额</Text>
+                                累计已有{StringUtils.formatMoneyString(returnCash, false)}元自返金转到余额</Text>
                             : null}
 
                         {status === NO_CASH_NO_SUPMEMBER ?
-                            <Text style={{fontSize: 13, color: '#999999',}}>快去获取</Text> : null}
+                            <Text style={{fontSize: 13, color: '#999999',}}>如何获取</Text> : null}
                         {status === HAVE_CASH_NO_SUPMEMBER ?
                             <Text style={{fontSize: 13, color: '#999999'}}>去提取</Text> : null}
                         {status === HAVE_CASH_HAVE_SUPMEMBER ?
