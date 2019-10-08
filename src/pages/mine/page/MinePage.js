@@ -471,7 +471,7 @@ export default class MinePage extends BasePage {
                             return;
                         }
                         if (beVip) {
-                            this.$navigate(RouterMap.HtmlPage, {uri: '/custom/:ZDYZT201909251743341'});
+                            this.$navigate(RouterMap.HtmlPage, {uri: '/custom/ZDYZT201909251743341'});
                         } else {
                             this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
                         }
