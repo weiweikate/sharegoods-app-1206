@@ -23,7 +23,7 @@ import user from '../../../model/user';
 import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
 import { trackEvent } from '../../../utils/SensorsTrack';
-import { ShopCardView, ShopProductItemView } from './components/ShopDetailItemView';
+import { ShopProductItemView } from './components/ShopDetailItemView';
 import MyShopDetailModel from './MyShopDetailModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import StringUtils from '../../../utils/StringUtils';
@@ -300,8 +300,6 @@ export default class MyShopPage extends BasePage {
                             />}>
                     <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement}
                                 MyShopDetailModel={this.MyShopDetailModel}/>
-                    {isNoEmpty(roleType) &&
-                    <ShopCardView/>}
                     <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                     <MembersRow MyShopDetailModel={this.MyShopDetailModel}
                                 onPressAllMembers={this._clickAllMembers}/>
