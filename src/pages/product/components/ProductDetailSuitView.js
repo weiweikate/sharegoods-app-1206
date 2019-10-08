@@ -87,6 +87,10 @@ export class ProductDetailSuitGiftView extends Component {
         if (isGroupIn) {
             routePush(RouterMap.ProductDetailPage, { productCode: item.prodCode });
         } else {
+            if (!user.isLogin) {
+                routeNavigate(RouterMap.LoginPage);
+                return;
+            }
             routePush(RouterMap.MemberProductPage, { productCode: item.prodCode });
         }
     };

@@ -24,6 +24,7 @@ import DesignRule from '../../../constants/DesignRule';
 import SuitExplainModal from './components/SuitExplainModal';
 import { MemberSubAlert } from './components/MemberSubAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
+import RouterMap from '../../../navigation/RouterMap';
 
 @observer
 export default class MemberProductPage extends BasePage {
@@ -59,9 +60,33 @@ export default class MemberProductPage extends BasePage {
     };
 
     _buyAction = () => {
-        const { mainProduct, totalProPrice } = this.memberProductModel;
-        this.SelectionPage.show(mainProduct, (amount, skuCode, skuItem) => {
-
+        const { mainProduct, totalProPrice, productCode, activityCode, subProducts } = this.memberProductModel;
+        this.SelectionPage.show(mainProduct, (amount, skuCode) => {
+            let orderProductList = (subProducts || []).map((subProduct) => {
+                const { skuList, prodCode } = subProduct || {};
+                const skuItem = (skuList || [])[0];
+                const { skuCode } = skuItem || {};
+                return {
+                    activityCode,
+                    batchNo: 1,
+                    productCode: prodCode,
+                    skuCode: skuCode,
+                    quantity: amount
+                };
+            });
+            this.$navigate(RouterMap.ConfirOrderPage, {
+                orderParamVO: {
+                    orderType: 1,
+                    source: 2,
+                    orderProducts: [{
+                        activityCode,
+                        batchNo: 1,
+                        productCode: productCode,
+                        skuCode: skuCode,
+                        quantity: amount
+                    }, ...orderProductList]
+                }
+            });
         }, { priceShow: totalProPrice });
     };
 
