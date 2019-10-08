@@ -50,7 +50,7 @@ class SettingModel {
     messageState = 0;
 
     @observable
-    memberSwitchState =  true//!DateUtils.getDateDiffFun('2019/10/25 00:00:00', '');
+    memberSwitchState =  false//!DateUtils.getDateDiffFun('2019/10/25 00:00:00', '');
 
 
     @action
@@ -199,14 +199,11 @@ class SettingModel {
     @action
     memberSwitch(){
         if(DateUtils.getDateDiffFun('2019/10/25 00:00:00', '')){
-            return
-        }
-
-        MineAPI.getMemberCenterShow().then((res)=>{
-            this.messageState = res.data && res.data.showNewMemberBenefit ? res.data.showNewMemberBenefit : false;
-        }).catch(error=>{
             this.memberSwitchState = false
-        })
+        }else {
+            this.memberSwitchState = true
+
+        }
     }
 
 

@@ -67,7 +67,7 @@ const {
     mine_showOrder
 } = res.homeBaseImg;
 
-const vipBg = res.homeBaseImg.mine_vip_bg;
+const vipBg1 = res.homeBaseImg.mine_vip_bg;
 const vipStatus = {
     'beVIP': {img: res.homeBaseImg.mine_bevip,  width: 63, height: 25, text:' · 超值特惠，收益翻倍', title:'beVIP'},
     'VIP': {img: res.homeBaseImg.mine_vip,      width: 64, height: 25, text:' · 超值特惠，收益翻倍', title:'VIP'},
@@ -80,7 +80,16 @@ const eumState={
     'benefit_package_store_partner':'diamondVIP',    // 会员合伙人 = 钻石会员
     'benefit_package_ready_shopkeeper':'supremeVIP', //见习店长 =  至尊会员
     'benefit_package_shopkeeper':'supremeVIP',       //店长 = 至尊会员
-}
+};
+
+const vipBg = [
+    res.homeBaseImg.mine_line_v0,
+    res.homeBaseImg.mine_line_v1,
+    res.homeBaseImg.mine_line_v2,
+    res.homeBaseImg.mine_line_v3,
+    res.homeBaseImg.mine_line_v4,
+    res.homeBaseImg.mine_line_v5];
+
 /**
  * @author chenxiang
  * @date on 2018/9/13
@@ -379,6 +388,14 @@ export default class MinePage extends BasePage {
             </Text>
         ) : null;
 
+        let levelArr = ['V0', 'V1', 'V2', 'V3', 'V4', 'V5'];
+        let index = 10;
+        for (let i = 0; i < levelArr.length; i++) {
+            if (levelArr[i] === user.levelRemark) {
+                index = i;
+            }
+        }
+
         let name = '';
 
         if (EmptyUtils.isEmpty(user.nickname)) {
@@ -433,27 +450,26 @@ export default class MinePage extends BasePage {
                     {this.accountRender()}
                 </View>
                 {this.copyModalRender()}
-                {this.renderLevelName()}
+                {this.renderLevelName(index)}
             </View>
         );
     };
 
-    renderLevelName = () => {
+    renderLevelName = (index) => {
         const {currentUserState} = this.state;
         let data = !EmptyUtils.isEmpty(currentUserState) && vipStatus[currentUserState] ? vipStatus[currentUserState] : vipStatus.beVIP;
         let beVip = data && data.title === 'beVIP';
         console.log('currentUserState',currentUserState)
-
         return (
             <View style={{flex: 1, marginTop: 10, justifyContent: 'flex-end'}}>
                 <TouchableOpacity
                     activeOpacity={0.8}
                     style={{alignItems: 'center'}}
                     onPress={() => {
-                        if(!settingModel.memberSwitchState){
+                        if (!settingModel.memberSwitchState) {
+                            this.$navigate(RouterMap.MyPromotionPage);
                             return;
                         }
-
                         if (beVip) {
                             this.$navigate(RouterMap.HtmlPage, {uri: '/custom/:ZDYZT201909251743341'});
                         } else {
@@ -461,20 +477,21 @@ export default class MinePage extends BasePage {
                         }
                         TrackApi.ViewLevelInterest({moduleSource: 2});
                     }}>
-                    <ImageBackground style={{
-                        alignSelf: 'center',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        width: ScreenUtils.width,
-                        height: (ScreenUtils.width) * 54 / 381,
-                        borderRadius: 10
-                    }} source={vipBg}>
-                        <View style={{flexDirection: 'row', marginLeft: 33, alignItems: 'center'}}>
-                            <Text style={{color: 'white', fontSize: 12}}>{beVip ? '开启' : ''}</Text>
-                            <Image style={{width: data.width, height: data.height}}
-                                   source={data.img}/>
-                            <Text style={{color: 'white', fontSize: 12}}>{data.text}</Text>
-                            {settingModel.memberSwitchState ?
+                    {settingModel.memberSwitchState ?
+                        <ImageBackground style={{
+                            alignSelf: 'center',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            width: ScreenUtils.width,
+                            height: (ScreenUtils.width) * 54 / 381,
+                            borderRadius: 10
+                        }} source={vipBg1}>
+                            <View style={{flexDirection: 'row', marginLeft: 33, alignItems: 'center'}}>
+                                <Text style={{color: 'white', fontSize: 12}}>{beVip ? '开启' : ''}</Text>
+                                <Image style={{width: data.width, height: data.height}}
+                                       source={data.img}/>
+                                <Text style={{color: 'white', fontSize: 12}}>{data.text}</Text>
+
                                 <View style={{flex: 1, alignItems: 'flex-end', marginRight: 27}}>
                                     <LinearGradient style={styles.btnStyle}
                                                     start={{x: 0, y: 0}}
@@ -490,11 +507,54 @@ export default class MinePage extends BasePage {
                                                    style={{width: 12, height: 12}}/>
                                         </View>
                                     </LinearGradient>
-                                </View> :
-                                null
-                            }
-                        </View>
-                    </ImageBackground>
+                                </View>
+                            </View>
+                        </ImageBackground>
+                        :
+                        <ImageBackground style={{
+                            alignSelf: 'center',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            height: (ScreenUtils.width - px2dp(30)) * 37 / 346,
+                            marginHorizontal: px2dp(15),
+                            borderRadius: 10
+                        }} source={index !== 10 ? vipBg[index] : vipBg[2]}>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                marginLeft: 20,
+                                marginRight: 20
+                            }}>
+                                <Text style={{
+                                    flex: 1,
+                                    color: index === 2 || index === 4 || index === 5 ? '#FFE6B1' : DesignRule.textColor_mainTitle,
+                                    fontSize: DesignRule.fontSize_threeTitle,
+                                    fontWeight: '600'
+                                }}>
+                                    {user.token ? index !== 10 ? `V${index}${user.levelName ? user.levelName : ''}品鉴官` : '' : ''}
+                                </Text>
+                                <TouchableWithoutFeedback onPress={() => {
+                                    this.$navigate(RouterMap.MyPromotionPage);
+                                    TrackApi.ViewLevelInterest({moduleSource: 2});
+                                }}>
+                                    <View>
+                                        <ImageBackground style={{
+                                            height: 20, width: 73, justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }} source={res.homeBaseImg.mine_btn_yellow}>
+                                            <Text
+                                                style={{
+                                                    color: DesignRule.textColor_mainTitle,
+                                                    fontSize: DesignRule.fontSize_22
+                                                }}>
+                                                查看权益>
+                                            </Text>
+                                        </ImageBackground>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View>
+                        </ImageBackground>
+                    }
                 </TouchableOpacity>
             </View>
         );
@@ -526,7 +586,7 @@ export default class MinePage extends BasePage {
                 backgroundColor: '#ffffff'
             }}>
                 {icon}
-                <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, marginLeft: px2dp(10) }}>
+                <View style={{flexDirection: 'row', alignItems: 'center', flex: 1, marginLeft: px2dp(10)}}>
                     <Text maxLength={8}
                           style={{
                               color: DesignRule.textColor_mainTitle,
@@ -536,21 +596,29 @@ export default class MinePage extends BasePage {
                         {name}
                     </Text>
                 </View>
-                {settingModel.memberSwitchState ? <TouchableWithoutFeedback onPress={() => {
-                        this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
-                        TrackApi.ViewLevelInterest({moduleSource: 2});
+                <TouchableWithoutFeedback onPress={() => {
+                    if (!settingModel.memberSwitchState) {
+                        this.$navigate(RouterMap.MyPromotionPage);
+                        return;
+                    }
+                    this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
+                    TrackApi.ViewLevelInterest({moduleSource: 2});
+                }}>
+                    <View style={{
+                        height: 24, width: 85, justifyContent: 'center',
+                        alignItems: 'center', marginRight: 15, backgroundColor: '#FFE6B1', borderRadius: 12
                     }}>
-                        <View style={{
-                            height: 24, width: 85, justifyContent: 'center',
-                            alignItems: 'center', marginRight: 15, backgroundColor: '#FFE6B1', borderRadius: 12
-                        }}>
+                        {settingModel.memberSwitchState ?
                             <Text style={{color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22}}>
-                                查看权益
+                                查看权益>
                             </Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                    : null
-                }
+                            :
+                            <Text style={{color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22}}>
+                                {user.token ? `${user.levelName ? user.levelName : ''}品鉴官>` : ''}
+                            </Text>
+                        }
+                    </View>
+                </TouchableWithoutFeedback>
             </View>
         );
     };
