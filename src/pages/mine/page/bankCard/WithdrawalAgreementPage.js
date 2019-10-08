@@ -23,7 +23,6 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import MineApi from '../../api/MineApi';
-import RouterMap from '../../../../navigation/RouterMap';
 import WebView from '@mr/webview';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 
@@ -47,7 +46,7 @@ export default class WithdrawalAgreementPage extends BasePage {
         MineApi.gongmallEnter().then((data) => {
             if (data.data) {
                 NativeModules.commModule.goGongmallPage(data.data).then(()=>{
-                    this.$navigateBack(RouterMap.MyCashAccountPage);
+                    this.$navigateBack(2);
                 });
             }
         }).catch(error => {
