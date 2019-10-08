@@ -46,7 +46,7 @@ export default class WithdrawalAgreementPage extends BasePage {
         MineApi.gongmallEnter().then((data) => {
             if (data.data) {
                 NativeModules.commModule.goGongmallPage(data.data).then(()=>{
-                    this.$navigateBack(2);
+                    this.$navigateBack();
                 });
             }
         }).catch(error => {
