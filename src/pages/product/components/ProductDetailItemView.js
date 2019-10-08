@@ -101,6 +101,7 @@ export class HeaderItemView extends Component {
     render() {
         const { navigation, productDetailModel, shopAction } = this.props;
         const {
+            imgFileList, videoUrl, imgUrl,
             freight, monthSaleCount, originalPrice, minPrice, groupPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
             secondName, levelText, priceType, activityType, activityStatus, type, isHuaFei
         } = productDetailModel;
@@ -119,7 +120,7 @@ export class HeaderItemView extends Component {
         const freightPriceShow = isNoEmpty(freightPrice) ? freightPrice : freight;
         return (
             <View style={styles.bgView}>
-                <DetailBanner data={productDetailModel} navigation={navigation}/>
+                <DetailBanner data={{ imgFileList, videoUrl, imgUrl }} navigation={navigation}/>
                 {showWill && <ActivityWillBeginView productDetailModel={productDetailModel}/>}
                 {showIn && <ActivityDidBeginView productDetailModel={productDetailModel}/>}
                 {showPinWill && <GroupActivityWillBeginView productDetailModel={productDetailModel}/>}

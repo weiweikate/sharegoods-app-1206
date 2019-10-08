@@ -23,7 +23,8 @@ const { add } = StringUtils;
 
 export const suitType = {
     fixedSuit: '11',
-    chooseSuit: '12'
+    chooseSuit: '12',
+    memberSuit: '13'
 };
 
 /**老礼包**/
@@ -81,12 +82,19 @@ export class ProductDetailSuitGiftView extends Component {
     };
 
     _goProductPage = (item) => {
-        routePush(RouterMap.ProductDetailPage, { productCode: item.prodCode });
+        const { productDetailModel } = this.props;
+        const { isGroupIn } = productDetailModel;
+        if (isGroupIn) {
+            routePush(RouterMap.ProductDetailPage, { productCode: item.prodCode });
+        } else {
+            routePush(RouterMap.MemberProductPage, { productCode: item.prodCode });
+        }
     };
 
     render() {
         const { productDetailModel } = this.props;
-        const { groupActivity } = productDetailModel;
+        const { isGroupIn, groupActivity, productDetailSuitModel } = productDetailModel;
+        const showList = isGroupIn ? (groupActivity.subProductList || []) : (productDetailSuitModel.packages[0].subProducts || []);
         return (
             <View style={SuitGiftStyles.bgView}>
                 <View style={SuitGiftStyles.tittleView}>
@@ -94,7 +102,7 @@ export class ProductDetailSuitGiftView extends Component {
                 </View>
                 <FlatList
                     style={SuitGiftStyles.flatList}
-                    data={groupActivity.subProductList || []}
+                    data={showList}
                     keyExtractor={(item) => item.prodCode + ''}
                     renderItem={this._renderItem}
                     horizontal={true}
