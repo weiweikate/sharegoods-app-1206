@@ -461,7 +461,7 @@ export default class MinePage extends BasePage {
         let beVip = data && data.title === 'beVIP';
         console.log('currentUserState',currentUserState)
         return (
-            <View style={{flex: 1, marginTop: 10, justifyContent: 'flex-end'}}>
+            <View style={{marginTop: 10, justifyContent: 'flex-end'}}>
                 <TouchableOpacity
                     activeOpacity={0.8}
                     style={{alignItems: 'center'}}
