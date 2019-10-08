@@ -505,8 +505,6 @@ export default class MyCashAccountPage extends BasePage {
 
 
     jumpToWithdrawCashPage = () => {
-
-
         MineApi.getUserBankInfo().then((data) => {
             if (data.data && data.data.length > 0) {
                 MineApi.gongmallResult().then((data) => {
@@ -535,9 +533,6 @@ export default class MyCashAccountPage extends BasePage {
                         this.$toastShow(error.msg);
                     }
                 });
-
-
-
             } else {
                 Alert.alert('未绑定银行卡', '你还没有绑定银行卡', [{
                     text: '稍后设置', onPress: () => {

@@ -15,7 +15,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TouchableWithoutFeedback,
     NativeModules
 } from 'react-native';
 import { MRText as Text } from '../../../../components/ui';
@@ -26,10 +25,10 @@ import apiEnvironment from '../../../../api/ApiEnvironment';
 import MineApi from '../../api/MineApi';
 import RouterMap from '../../../../navigation/RouterMap';
 import WebView from '@mr/webview';
+import NoMoreClick from '../../../../components/ui/NoMoreClick';
 
 const { px2dp } = ScreenUtils;
-type Props = {};
-export default class WithdrawalAgreementPage extends BasePage<Props> {
+export default class WithdrawalAgreementPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {};
@@ -66,13 +65,13 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
                          style={styles.webViewWrapper}
                          showsVerticalScrollIndicator={false}
                 />
-                <TouchableWithoutFeedback onPress={this._getSignUrl}>
+                <NoMoreClick onPress={this._getSignUrl}>
                     <View style={styles.bottomButtonWrapper}>
                         <Text style={styles.buttonTextStyle}>
                             同意协议
                         </Text>
                     </View>
-                </TouchableWithoutFeedback>
+                </NoMoreClick>
             </View>
         );
     }

@@ -63,19 +63,20 @@ export class ShopBannerView extends Component {
         });
 
         return (
-            <MRBannerView style={styles.bannerView}
-                          interceptTouchEvent={true}//android端起作用，是否拦截touch事件
-                          itemWidth={ScreenUtils.width + 0.5}
-                          itemSpace={0}
-                          imgUrlArray={items}
-                          onDidSelectItemAtIndex={(index) => {
-                              bannerList[index] && this._onPress(bannerList[index]);
-                          }}
-                          onDidScrollToIndex={(index) => {
-                              this._onDidScrollToIndex(index);
-                          }}>
+            <View>
+                <MRBannerView style={styles.bannerView}
+                              interceptTouchEvent={true}//android端起作用，是否拦截touch事件
+                              itemWidth={ScreenUtils.width + 0.5}
+                              itemSpace={0}
+                              imgUrlArray={items}
+                              onDidSelectItemAtIndex={(index) => {
+                                  bannerList[index] && this._onPress(bannerList[index]);
+                              }}
+                              onDidScrollToIndex={(index) => {
+                                  this._onDidScrollToIndex(index);
+                              }}/>
                 {this.renderIndexView()}
-            </MRBannerView>
+            </View>
         );
     }
 }
