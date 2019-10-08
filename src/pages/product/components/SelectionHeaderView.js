@@ -51,7 +51,8 @@ export default class SelectionHeaderView extends Component {
 
     render() {
         const { imgUrl, minPrice, promotionMinPrice, stockSysConfig } = this.props.product || {};
-        const { productIsPromotionPrice } = this.props;
+        //priceShow写死 会员礼包
+        const { productIsPromotionPrice, priceShow } = this.props;
         let stock = 0;
         let specImg;
         this.props.selectSpecList.forEach((item) => {
@@ -95,7 +96,7 @@ export default class SelectionHeaderView extends Component {
                             <Text style={{
                                 color: DesignRule.mainColor,
                                 fontSize: 16
-                            }}>{`￥${price}`}</Text>
+                            }}>{`￥${priceShow || price}`}</Text>
                             {
                                 StringUtils.isNoEmpty(this.props.priceDesc) &&
                                 <View style={{

@@ -5,7 +5,7 @@ import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 
 const { add, mul } = StringUtils;
 
-const afterSaleLimitType = {
+export const afterSaleLimitType = {
     '01': '支持退货退款',
     '02': '支持退款',
     '03': '支持换货',

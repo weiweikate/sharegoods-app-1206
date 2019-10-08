@@ -121,29 +121,44 @@ export default class ProductDetailModel {
     @observable monthSaleCount;
     /*商品库存全*/
     @observable skuList = [];
+    //根据活动接口返回的促销信息
+    @observable promotionSkuList = null;
     //位置来源
     @observable sgspm = null;
     //业务来源
     @observable sgscm = null;
 
-    /**根据现有库存和地区库存结合成新德skuList**/
+    /**根据现有库存和地区库存结合成新的skuList,结合营销信息**/
     @computed get skuListByArea() {
-        const { productDetailAddressModel, skuList } = this;
-        const { areaSkuList } = productDetailAddressModel;
+        let realSkuList = this.skuList;
+        if (this.promotionSkuList && this.promotionSkuList.length > 0) {
+            //把活动信息合并进来
+            realSkuList = realSkuList.map((skuItem) => {
+                for (const proSkuItem of this.promotionSkuList) {
+                    if (proSkuItem.skuCode === skuItem.skuCode) {
+                        return { ...skuItem, ...proSkuItem };
+                    }
+                }
+                return { ...skuItem };
+            });
+        }
+        const { areaSkuList } = this.productDetailAddressModel;
         if (areaSkuList) {
             if (areaSkuList.length > 0) {
-                return areaSkuList.map((areaSkuItem) => {
-                    for (const skuItem of skuList) {
+                realSkuList = areaSkuList.map((areaSkuItem) => {
+                    for (const skuItem of realSkuList) {
                         if (skuItem.skuCode === areaSkuItem.skuCode) {
                             return { ...skuItem, ...areaSkuItem };
                         }
                     }
                     return null;
                 });
+            } else {
+                //无货
+                realSkuList = [];
             }
-            return [];
         }
-        return skuList;
+        return realSkuList;
     }
 
     /*商品规格*/
@@ -459,9 +474,7 @@ export default class ProductDetailModel {
                 groupPrice, v0Price, shareMoney, selfReturning,
                 monthSaleCount, skuList, specifyList, stockSysConfig, promoteInfoVOList,
                 paramList, comment, totalComment, overtimeComment,
-                upTime, now, content, sevenDayReturn, weekendDelivery, orderOnProduct,
-                promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
-                promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice, promotionAttentionNum, promotionSaleRate
+                upTime, now, content, sevenDayReturn, weekendDelivery, orderOnProduct
             } = data || {};
 
             let contentArr = isNoEmpty(content) ? content.split(',') : [];
@@ -499,47 +512,6 @@ export default class ProductDetailModel {
             this.weekendDelivery = weekendDelivery;
             this.orderOnProduct = orderOnProduct;
 
-            const { singleActivity, groupActivity, tags } = promotionResult || {};
-            this.singleActivity = singleActivity || {};
-            this.groupActivity = groupActivity || {};
-            this.tags = tags;
-            this.promotionDecreaseAmount = promotionDecreaseAmount;
-
-            this.promotionLimitNum = StringUtils.isNoEmpty(promotionLimitNum) ? (promotionLimitNum < 0 ? 0 : promotionLimitNum) : null;
-            this.promotionPrice = promotionPrice;
-            this.promotionSaleNum = promotionSaleNum;
-            this.promotionStockNum = promotionStockNum;
-            this.promotionMinPrice = promotionMinPrice;
-            this.promotionMaxPrice = promotionMaxPrice;
-            this.promotionAttentionNum = promotionAttentionNum;
-            this.promotionSaleRate = promotionSaleRate;
-
-            let typeT, endTimeT, startTimeT;
-            if ((groupActivity || {}).type) {
-                const { endTime, startTime, type } = groupActivity || {};
-                typeT = type;
-                endTimeT = endTime;
-                startTimeT = startTime;
-            } else {
-                const { endTime, startTime, type } = singleActivity || {};
-                typeT = type;
-                endTimeT = endTime;
-                startTimeT = startTime;
-            }
-
-            this.startTime = startTimeT;
-            this.endTime = endTimeT;
-            this.activityType = typeT;
-            if (now < startTimeT) {
-                this.activityStatus = activity_status.unBegin;
-                this._startSkillInterval(now, startTimeT);
-            } else if (now >= startTimeT && now < endTimeT) {
-                this.activityStatus = activity_status.inSell;
-                this._startSkillInterval(now, endTimeT);
-            } else {
-                this.activityStatus = null;
-            }
-
             /*未开售的时候需要刷新*/
             if (productStatus === product_status.future && upTime && now) {
                 this.needUpdateDate && clearTimeout(this.needUpdateDate);
@@ -547,20 +519,94 @@ export default class ProductDetailModel {
                     this.requestProductDetail();
                 }, upTime - now + 500);
             }
-
-            /*商品详情埋点*/
-            track(trackEvent.ProductDetail, {
-                productShowSource: this.trackType || 0,
-                sourceAttributeCode: this.trackCode || 0,
-                spuCode: this.prodCode,
-                spuName: name,
-                productType: this.trackProductStatus(),
-                priceShareStore: groupPrice,
-                productStatus: this.activityStatus || 0,
-                priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : minPrice,
-                priceType: priceType === price_type.shop ? '100' : user.levelRemark
-            });
         }
+    };
+
+    //根据地址获取
+    @action productPromotionSuccess = (promotionInfo) => {
+        const {
+            promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
+            promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice,
+            promotionAttentionNum, promotionSaleRate,
+            selfReturning, shareMoney, now, skuList
+        } = promotionInfo;
+        const { singleActivity, groupActivity, tags } = promotionResult || {};
+        this.singleActivity = singleActivity || {};
+        this.groupActivity = groupActivity || {};
+        this.tags = tags;
+        this.promotionDecreaseAmount = promotionDecreaseAmount;
+
+        this.promotionLimitNum = StringUtils.isNoEmpty(promotionLimitNum) ? (promotionLimitNum < 0 ? 0 : promotionLimitNum) : null;
+        this.promotionPrice = promotionPrice;
+        this.promotionSaleNum = promotionSaleNum;
+        this.promotionStockNum = promotionStockNum;
+        this.promotionMinPrice = promotionMinPrice;
+        this.promotionMaxPrice = promotionMaxPrice;
+        this.promotionAttentionNum = promotionAttentionNum;
+        this.promotionSaleRate = promotionSaleRate;
+        this.promotionSkuList = skuList;
+
+        let typeT, endTimeT, startTimeT;
+        if ((groupActivity || {}).type) {
+            const { endTime, startTime, type } = groupActivity || {};
+            typeT = type;
+            startTimeT = startTime;
+            endTimeT = endTime;
+        } else {
+            const { endTime, startTime, type } = singleActivity || {};
+            typeT = type;
+            startTimeT = startTime;
+            endTimeT = endTime;
+        }
+
+        this.activityType = typeT;
+        this.startTime = startTimeT;
+        this.endTime = endTimeT;
+        if (now < startTimeT) {
+            this.activityStatus = activity_status.unBegin;
+            this._startSkillInterval(now, startTimeT);
+        } else if (now >= startTimeT && now < endTimeT) {
+            this.activityStatus = activity_status.inSell;
+            this._startSkillInterval(now, endTimeT);
+        } else {
+            this.activityStatus = null;
+        }
+
+        //自返金额和分享金额 有值就覆盖商品详情的值
+        if (selfReturning) {
+            this.selfReturning = selfReturning;
+        }
+        if (shareMoney) {
+            this.shareMoney = shareMoney;
+        }
+
+        //拼团
+        const { activityType } = this;
+        if (activityType !== activity_type.pinGroup) {
+            return;
+        }
+        const { code, activityTag } = singleActivity;
+        this.productGroupModel.requestCheckStartJoinUser({
+            prodCode: this.prodCode,
+            activityCode: code,
+            activityTag
+        });
+        this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
+        this.productGroupModel.requestGroupProduct({ activityCode: code, prodCode: this.prodCode });
+        this.productGroupModel.requestGroupDesc();
+
+        /*商品详情埋点*/
+        track(trackEvent.ProductDetail, {
+            productShowSource: this.trackType || 0,
+            sourceAttributeCode: this.trackCode || 0,
+            spuCode: this.prodCode,
+            spuName: this.name,
+            productType: this.trackProductStatus(),
+            priceShareStore: this.groupPrice,
+            productStatus: this.activityStatus || 0,
+            priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : this.minPrice,
+            priceType: this.priceType === price_type.shop ? '100' : user.levelRemark
+        });
     };
 
     trackProductStatus = () => {
@@ -648,7 +694,7 @@ export default class ProductDetailModel {
     /**请求商品**/
     requestProductDetailReal = (code) => {
         this.prodCode = code;
-        ProductApi.getProductDetailByCodeV2({
+        ProductApi.getProductDetailByCodeV3({
             code: this.prodCode
         }).then((data) => {
             let tempData = data.data || {};
@@ -657,24 +703,10 @@ export default class ProductDetailModel {
             this.requestShopInfo(tempData.merchantCode);
             /**赋值prodCode会autoRun自动拉取库存**/
             if (tempData && tempData.type !== 3) {
+                this.productDetailAddressModel.productPromotionSuccess = this.productPromotionSuccess;
                 this.productDetailAddressModel.templateCode = tempData.freightTemplateCode;
                 this.productDetailAddressModel.prodCode = this.prodCode;
             }
-
-            //拼团
-            const { activityType, singleActivity } = this;
-            if (activityType !== activity_type.pinGroup) {
-                return;
-            }
-            const { code, activityTag } = singleActivity;
-            this.productGroupModel.requestCheckStartJoinUser({
-                prodCode: this.prodCode,
-                activityCode: code,
-                activityTag
-            });
-            this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
-            this.productGroupModel.requestGroupProduct({ activityCode: code, prodCode: this.prodCode });
-            this.productGroupModel.requestGroupDesc();
         }).catch((e) => {
             this.productError(e);
         });

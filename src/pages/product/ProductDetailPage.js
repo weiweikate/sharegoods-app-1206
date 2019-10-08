@@ -188,8 +188,8 @@ export default class ProductDetailPage extends BasePage {
                 'amount': amount,
                 'skuCode': skuCode,
                 'productCode': prodCode,
-                'sgscm':this.productDetailModel.sgscm,
-                'sgspm':this.productDetailModel.sgspm,
+                'sgscm': this.productDetailModel.sgscm,
+                'sgspm': this.productDetailModel.sgspm
             });
             /*加入购物车埋点*/
             track(trackEvent.AddToShoppingcart, {
@@ -225,8 +225,8 @@ export default class ProductDetailPage extends BasePage {
                             productCode: prodCode,
                             skuCode: skuCode,
                             quantity: amount,
-                            sgscm:this.productDetailModel.sgscm,
-                            sgspm:this.productDetailModel.sgspm
+                            sgscm: this.productDetailModel.sgscm,
+                            sgspm: this.productDetailModel.sgspm
                         }, ...orderProductList]
                     }
                 });
@@ -234,19 +234,28 @@ export default class ProductDetailPage extends BasePage {
             }
             const { type, couponId } = this.params;
             const { specImg, promotionPrice, price, propertyValues } = item;
+            const { productDetailAddressModel } = this.productDetailModel;
+            const { promotionInfoItem, promotionInfoS } = productDetailAddressModel;
+            const activityList = promotionInfoS.map((item) => {
+                const { activityTag, promotionId, activityCode } = item;
+                return { activityTag, promotionId, activityCode };
+            });
             let orderProducts = [{
                 productType: this.productDetailModel.type,
-                sgscm:this.productDetailModel.sgscm,
-                sgspm:this.productDetailModel.sgspm,
+                sgscm: this.productDetailModel.sgscm,
+                sgspm: this.productDetailModel.sgspm,
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,
-                activityCode: '',
                 batchNo: 1,
                 specImg,
                 productName: name,
                 unitPrice: productIsPromotionPrice ? promotionPrice : price,
-                spec: (propertyValues || '').replace(/@/g, '-')
+                spec: (propertyValues || '').replace(/@/g, '-'),
+                promotionId: promotionInfoItem.promotionId,
+                activityTag: promotionInfoItem.activityTag,
+                activityCode: promotionInfoItem.activityCode,
+                activityList
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
@@ -263,8 +272,8 @@ export default class ProductDetailPage extends BasePage {
             const { id, initiatorUserName } = this.groupItem || {};
             let orderProducts = [{
                 productType: this.productDetailModel.type,
-                sgscm:this.productDetailModel.sgscm,
-                sgspm:this.productDetailModel.sgspm,
+                sgscm: this.productDetailModel.sgscm,
+                sgspm: this.productDetailModel.sgspm,
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,
@@ -324,10 +333,10 @@ export default class ProductDetailPage extends BasePage {
                                        }}/>;
             }
             case productItemType.suit: {
-                if (isGroupIn) {
+                const { extraType } = productDetailSuitModel;
+                if (isGroupIn || extraType === suitType.memberSuit) {
                     return <ProductDetailSuitGiftView productDetailModel={this.productDetailModel}/>;
                 }
-                const { extraType } = productDetailSuitModel;
                 if (extraType === suitType.fixedSuit) {
                     return <ProductDetailSuitFixedView productDetailSuitModel={productDetailSuitModel}/>;
                 } else if (extraType === suitType.chooseSuit) {
