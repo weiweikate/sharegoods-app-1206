@@ -18,7 +18,7 @@ export default class OrderDetailPriceView extends Component {
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 2, backgroundColor: DesignRule.bgColor }}/>
+            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
     render(){

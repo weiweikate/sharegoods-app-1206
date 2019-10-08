@@ -20,6 +20,7 @@
 #import "NSString+UrlAddParams.h"
 #import "NSDictionary+Util.h"
 #import <YYKit.h>
+#import "XGRefreshView.h"
 
 #define SystemUpgradeCode 9999
 
@@ -87,13 +88,7 @@ static NSString *IDType = @"TypeCell";
  */
 - (void)setupRefresh{
 
-  MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
-  [header setTitle:@"下拉刷新" forState:MJRefreshStateIdle];
-  [header setTitle:@"松开刷新" forState:MJRefreshStatePulling];
-  [header setTitle:@"正在刷新 ..." forState:MJRefreshStateRefreshing];
-  header.lastUpdatedTimeLabel.hidden = YES;
-  header.stateLabel.font = [UIFont systemFontOfSize:11];
-  header.stateLabel.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
+  XGRefreshView *header = [XGRefreshView headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
   self.tableView.mj_header = header;
   [self.tableView.mj_header beginRefreshing];
 
@@ -176,6 +171,9 @@ static NSString *IDType = @"TypeCell";
   }
   [dic addEntriesFromDictionary:@{@"size": @"10"}];
   __weak RecommendedView * weakSelf = self;
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [weakSelf.tableView.mj_header endRefreshing];
+      });
   [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary * result) {
 
     JXModel* model = [JXModel modelWithJSON:result];
@@ -186,8 +184,6 @@ static NSString *IDType = @"TypeCell";
     if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
       weakSelf.callBackArr = [[result valueForKey:@"data"] mutableCopy];
     }
-
-    [self.tableView.mj_header endRefreshing];
     if(model.data.count < 10){
       [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
     }else{
@@ -204,7 +200,6 @@ static NSString *IDType = @"TypeCell";
   } failure:^(NSString *msg, NSInteger code) {
     weakSelf.errCode = code;
     [MBProgressHUD showSuccess:msg];
-    [weakSelf.tableView.mj_header endRefreshing];
   } showLoading:nil];
 }
 

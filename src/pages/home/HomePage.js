@@ -6,7 +6,8 @@ import {
     ScrollView,
     StyleSheet,
     TouchableOpacity,
-    View
+    View,
+    Platform
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './model/Modules';
@@ -37,7 +38,6 @@ import HomeNormalList from './view/List/HomeNormalList';
 import DIYTopicList from './view/List/DIYTopicList';
 import { observer } from 'mobx-react';
 import ImageLoader from '@mr/image-placeholder';
-import PrivacyModal from './view/PrivacyModal';
 
 
 /**
@@ -231,9 +231,8 @@ class HomePage extends BasePage {
                 <GiftModal/>
                 <UserLevelModalView/>
                 <IntervalMsgView pageType={IntervalType.home}/>
-                <HomeAdModal/>
+                {Platform.OS !== 'ios'?  <HomeAdModal/>:null}
                 <HomeMessageModalView/>
-                <PrivacyModal />
                 <VersionUpdateModalView/>
             </View>
         );

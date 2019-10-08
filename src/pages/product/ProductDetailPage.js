@@ -181,7 +181,8 @@ export default class ProductDetailPage extends BasePage {
 
     //选择规格确认
     _selectionViewConfirm = (amount, skuCode, item, productIsPromotionPrice) => {
-        const { prodCode, name, originalPrice, isGroupIn, groupActivity } = this.productDetailModel;
+        const { prodCode, name, originalPrice, isGroupIn, groupActivity, productDetailAddressModel } = this.productDetailModel;
+        const { paramAddressItem } = productDetailAddressModel;
         const { goType } = this.state;
         if (goType === 'gwc') {
             shopCartCacheTool.addGoodItem({
@@ -217,6 +218,7 @@ export default class ProductDetailPage extends BasePage {
                 });
                 this.$navigate(RouterMap.ConfirOrderPage, {
                     orderParamVO: {
+                        address: paramAddressItem,
                         orderType: 1,
                         source: 2,
                         orderProducts: [{
@@ -259,7 +261,7 @@ export default class ProductDetailPage extends BasePage {
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
-                    orderType: 99,
+                    address: paramAddressItem,
                     orderProducts: orderProducts,
                     source: parseInt(type) === 9 ? 4 : 2,
                     couponsId: parseInt(couponId)
@@ -288,6 +290,7 @@ export default class ProductDetailPage extends BasePage {
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
                     bizTag: 'group',
+                    address: paramAddressItem,
                     groupData: {
                         isSponsor: StringUtils.isEmpty(this.groupItem),
                         sponsor: initiatorUserName
@@ -297,6 +300,9 @@ export default class ProductDetailPage extends BasePage {
                     source: 2
                 }
             });
+        }
+        if (paramAddressItem &&!paramAddressItem.id) {
+            productDetailAddressModel.paramAddressItem = null;
         }
     };
 

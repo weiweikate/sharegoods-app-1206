@@ -203,7 +203,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         <View style={{
                         position: 'absolute',
                         bottom: 45,
-                        right: ScreenUtils.autoSizeWidth(180) - 100,
+                        right: ScreenUtils.autoSizeWidth(180) - 50,
                         backgroundColor: 'white',
                         borderRadius: 5,
                             borderWidth: 1,
