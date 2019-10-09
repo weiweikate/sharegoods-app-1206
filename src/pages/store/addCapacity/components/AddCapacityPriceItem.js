@@ -101,7 +101,7 @@ class AmountView extends Component {
         return (
             <View style={stylesAmount.container}>
                 <NoMoreClick style={stylesAmount.clickBtn} onPress={() => {
-                    itemData.amount > 0 && itemData.amount--;
+                    itemData.amount > 1 && itemData.amount--;
                 }}>
                     <MRText style={{ fontSize: 12, color: DesignRule.textColor_placeholder }}>-</MRText>
                 </NoMoreClick>
