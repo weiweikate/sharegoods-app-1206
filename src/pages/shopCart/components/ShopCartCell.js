@@ -11,21 +11,21 @@
 
 'use strict';
 
-import React, {Component} from 'react';
-import {Image, StyleSheet, TouchableHighlight, TouchableOpacity, View} from 'react-native';
+import React, { Component } from 'react';
+import { Image, Keyboard, StyleSheet, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
-import {MRText, MRTextInput as TextInput, UIImage, UIText} from '../../../components/ui';
+import { MRText, MRTextInput as TextInput, UIImage, UIText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import shopCartStore from '../model/ShopCartStore';
-import {getSelectImage, getTipString, statueImage} from '../model/ShopCartMacro';
+import { getSelectImage, getTipString, statueImage } from '../model/ShopCartMacro';
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import shopRes from '../res';
 
-const dismissKeyboard = require('dismissKeyboard');
+const dismissKeyboard = Keyboard.dismiss;
 
-const {px2dp} = ScreenUtils;
+const { px2dp } = ScreenUtils;
 const Cell_Height = px2dp(150);
 
 export default class ShopCartCell extends Component {
@@ -34,7 +34,7 @@ export default class ShopCartCell extends Component {
     }
 
     render() {
-        const {itemData, rowMap, rowId, cellClickAction, sectionData} = this.props;
+        const { itemData, rowMap, rowId, cellClickAction, sectionData } = this.props;
         return (
             <View>
                 {this._renderCellView(itemData, rowMap, rowId, cellClickAction, sectionData)}
@@ -57,16 +57,16 @@ export default class ShopCartCell extends Component {
                     cellClickAction(itemData);
                 }}
                 >
-                    <View style={[styles.standaloneRowFront, {borderRadius: itemData.topSpace ? px2dp(5) : 0}]}>
-                        <View style={{flexDirection: 'row', paddingTop: px2dp(10), height: Cell_Height}}>
-                            <View style={{height: px2dp(80), alignItems: 'center', justifyContent: 'center'}}>
+                    <View style={[styles.standaloneRowFront, { borderRadius: itemData.topSpace ? px2dp(5) : 0 }]}>
+                        <View style={{ flexDirection: 'row', paddingTop: px2dp(10), height: Cell_Height }}>
+                            <View style={{ height: px2dp(80), alignItems: 'center', justifyContent: 'center' }}>
                                 <UIImage source={getSelectImage(itemData)} style={styles.itemSelectImg}
                                          onPress={() => {
                                              this._selectImageClick(sectionData, rowId);
                                          }}/>
                             </View>
 
-                            <UIImage source={{uri: itemData.imgUrl ? itemData.imgUrl : ''}}
+                            <UIImage source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
                                      style={[styles.validProductImg]}/>
                             {
                                 (itemData.productStatus !== 1) ?
@@ -77,18 +77,18 @@ export default class ShopCartCell extends Component {
                             }
                         </View>
                         <View style={styles.validContextContainer}>
-                            <View style={{flex: 1}}>
+                            <View style={{ flex: 1 }}>
                                 <UIText value={itemData.productName ? itemData.productName : ''} numberOfLines={2}
                                         style={styles.productName}/>
                                 <UIText value={itemData.specifyContent ? itemData.specifyContent : ''} numberOfLines={2}
                                         style={styles.specifyContent}/>
                                 <UIText value={getTipString(itemData).tipString} numberOfLines={2}
                                         style={styles.topTipString}/>
-                                <View style={{flexDirection: 'row'}}>{this._getTipArrView(itemData)}</View>
+                                <View style={{ flexDirection: 'row' }}>{this._getTipArrView(itemData)}</View>
                             </View>
                             <View style={styles.priceBgView}>
                                 <UIText value={'￥' + itemData.price} style={styles.priceText}/>
-                                <View style={{flexDirection: 'row'}}>
+                                <View style={{ flexDirection: 'row' }}>
                                     <TouchableOpacity activeOpacity={0.7} style={styles.rectangle} onPress={() => {
                                         this._reduceProductNum(itemData, rowId);
                                     }}>
@@ -179,7 +179,7 @@ export default class ShopCartCell extends Component {
             <View rowMap={rowMap} style={{
                 backgroundColor: DesignRule.bgColor,
                 marginTop: itemData.topSpace,
-                alignItems: 'center',
+                alignItems: 'center'
             }}>
                 <TouchableHighlight onPress={() => {
                     cellClickAction(itemData);
@@ -191,7 +191,7 @@ export default class ShopCartCell extends Component {
                             borderBottomLeftRadius: itemData.isLastInvalid ? px2dp(5) : 0,
                             borderBottomRightRadius: itemData.isLastInvalid ? px2dp(5) : 0
                         }]}>
-                        <View style={{flexDirection: 'row', paddingTop: px2dp(10)}}>
+                        <View style={{ flexDirection: 'row', paddingTop: px2dp(10) }}>
 
                             <View style={styles.invalidTextBg}>
                                 <MRText style={styles.invalidText}>
@@ -199,18 +199,18 @@ export default class ShopCartCell extends Component {
                                 </MRText>
                             </View>
 
-                            <UIImage source={{uri: itemData.imgUrl ? itemData.imgUrl : ''}}
-                                     style={[styles.validProductImg, {opacity: 0.5}]}/>
+                            <UIImage source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
+                                     style={[styles.validProductImg, { opacity: 0.5 }]}/>
                         </View>
                         <View style={styles.invalidContextContainer}>
-                            <View style={{flex: 1}}>
+                            <View style={{ flex: 1 }}>
                                 <UIText value={itemData.productName ? itemData.productName : ''} numberOfLines={2}
                                         style={styles.productName}/>
                                 <UIText value={itemData.specifyContent ? itemData.specifyContent : ''} numberOfLines={2}
                                         style={styles.specifyContent}/>
                                 <UIText value={getTipString(itemData).tipString} numberOfLines={2}
                                         style={styles.topTipString}/>
-                                <View style={{flexDirection: 'row'}}>{this._getTipArrView(itemData)}</View>
+                                <View style={{ flexDirection: 'row' }}>{this._getTipArrView(itemData)}</View>
                             </View>
                             <MRText style={styles.invalidText}>
                                 宝贝已不能购买
@@ -225,7 +225,7 @@ export default class ShopCartCell extends Component {
     _getTipArrView = (itemData) => {
         let tipArr = itemData.displayItem && itemData.displayItem.tags !== null ? itemData.displayItem.tags.slice() : [];
         return tipArr.map((tipItem, index) => {
-            return (<View style={[styles.labelBgView, {marginLeft: index === 0 ? 0 : 3}]}>
+            return (<View style={[styles.labelBgView, { marginLeft: index === 0 ? 0 : 3 }]}>
                 <UIText
                     style={styles.labelTextView}
                     value={tipItem}
@@ -329,15 +329,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         height: Cell_Height,
         width: ScreenUtils.width - px2dp(30),
-        flexDirection: 'row',
+        flexDirection: 'row'
     },
     invalidStandaloneRowFront: {
         alignItems: 'center',
         backgroundColor: '#fff',
         width: ScreenUtils.width - px2dp(30),
-        flexDirection: 'row',
+        flexDirection: 'row'
     },
-    itemSelectImg: {marginLeft: px2dp(10), width: px2dp(18), height: px2dp(18)},
+    itemSelectImg: { marginLeft: px2dp(10), width: px2dp(18), height: px2dp(18) },
     rectangle: {
         height: px2dp(28),
         width: px2dp(40),
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
         width: px2dp(34),
         justifyContent: 'center',
         alignItems: 'center',
-        height: px2dp(24),
+        height: px2dp(24)
     },
     TextInputStyle: {
         fontSize: px2dp(10),

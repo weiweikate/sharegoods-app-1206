@@ -54,5 +54,9 @@
     "rn-animated": {
         "content": "apply from: '../../../android/rn-animated.gradle'",
         "bulid_path": "../node_modules/react-native-reanimated/android/build.gradle"
+    },
+    "rn-viewpager": {
+        "content": "apply from: '../../../../android/rn-viewpager.gradle'",
+        "bulid_path": "../node_modules/@react-native-community/viewpager/android/build.gradle"
     }
 }
