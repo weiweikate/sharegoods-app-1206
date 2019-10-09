@@ -63,6 +63,8 @@ pod 'JSONModel','~> 1.7.0'
 
 #  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+#  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
 end
 
 #    暂时未用,先注释已被后期使用

@@ -1,5 +1,6 @@
-import {NavigationActions, createStackNavigator, createAppContainer} from 'react-navigation';
-import {Platform, NativeModules, Animated, Easing} from 'react-native';
+import { createAppContainer, NavigationActions } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { Animated, Easing, NativeModules, Platform } from 'react-native';
 /**
  * 以下两个对象不可以颠倒引入，会导致全局路由RouterMap不可用
  */
@@ -11,7 +12,7 @@ import showPinFlagModel from '../model/ShowPinFlag';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
 
 //无需转场动画的页面
-const noAnimatedPage = [RouterMap.SearchResultPage,RouterMap.SearchPage,RouterMap.SearchPageOrder];
+const noAnimatedPage = [RouterMap.SearchResultPage, RouterMap.SearchPage, RouterMap.SearchPageOrder];
 /***
  * 无转场动画
  */
@@ -23,11 +24,11 @@ const noAnimatedTransition = (toTransitionProps, fromTransitionProps) => {
         return {
             screenInterpolator: StackViewStyleInterpolator.forNoAnimation,
             transitionSpec: {
-                duration: 10,
-            },
-        }
+                duration: 10
+            }
+        };
     }
-}
+};
 
 const RootStack = createStackNavigator(Router,
     {
@@ -40,8 +41,8 @@ const RootStack = createStackNavigator(Router,
         cardShadowEnabled: true,
         cardOverlayEnabled: true,
         transitionConfig: (toTransitionProps, fromTransitionProps) => {
-            let transition = noAnimatedTransition(toTransitionProps,fromTransitionProps);
-            if(transition){
+            let transition = noAnimatedTransition(toTransitionProps, fromTransitionProps);
+            if (transition) {
                 return transition;
             }
             return {
@@ -52,7 +53,7 @@ const RootStack = createStackNavigator(Router,
                     useNativeDriver: true
                 },
                 screenInterpolator: StackViewStyleInterpolator.forHorizontal
-            }
+            };
         }
     }
 );

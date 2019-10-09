@@ -2,13 +2,15 @@ import recommendSearch from './recommendSearch';
 import openShop from './openShop';
 import myShop from './myShop';
 import shopSetting from './shopSetting';
-import addCapacity from './addCapacity'
-import MyShop_RecruitPage from './MyShop_RecruitPage'
+import addCapacity from './addCapacity';
+import MyShop_RecruitPage from './MyShop_RecruitPage';
+import IsShowNewStore from './IsShowNewStore';
 
 export default {
     //拼店模块
     moduleName: 'store',
     childRoutes: {
+        IsShowNewStore,
         MyShop_RecruitPage,
         //推荐搜索模块
         recommendSearch,

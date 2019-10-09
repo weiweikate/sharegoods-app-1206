@@ -50,7 +50,7 @@ export default class SelectTicketModel extends React.Component {
                 priceCode: item.skuCode,
                 productCode: item.productCode,
                 amount: item.quantity,
-                activityCode: item.activityCode,
+                promotions: item.activityList,
                 batchNo: item.batchNo
             };
         });
@@ -164,6 +164,7 @@ export default class SelectTicketModel extends React.Component {
                                          paramsFunc={() => {
                                              return this.parmas;
                                          }}
+                                         isSupportLoadingMore={false}
                                          renderItem={this.renderItem}
                                          renderHeader={() => <View style={{ height: 20 }}/>}
                                          renderEmpty={() => {

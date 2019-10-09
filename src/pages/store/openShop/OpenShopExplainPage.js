@@ -92,7 +92,7 @@ export default class OpenShopExplainPage extends BasePage {
                         SpellShopApi.checkQualificationOpenStore().then((data) => {
                             bridge.hiddenLoading();
                             if (data.data) {
-                                this.$navigate('store/shopSetting/SetShopNamePage');
+                                this.$navigate('store/shopSetting/SetShopNamePage', { isSplit: this.params.isSplit });
                             }
                         }).catch((error) => {
                             bridge.hiddenLoading();

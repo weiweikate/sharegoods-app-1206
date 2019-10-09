@@ -145,9 +145,7 @@ export default class MyShopPage extends BasePage {
             payload => {
                 const { state } = payload;
                 console.log('willFocus', state);
-                if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
-                    this._loadPageData();
-                }
+                this._loadPageData();
             }
         );
         /*上面的方法第一次_loadPageData不会执行  page已经出现了*/

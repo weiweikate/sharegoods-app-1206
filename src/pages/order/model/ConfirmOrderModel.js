@@ -165,13 +165,13 @@ class ConfirmOrderModel {
             // "quantity":, //int 购买数量
             // "activityCode":, //string 活动code
             // "batchNo": //string 活动批次  (拼团业务传递团id)
-            let { skuCode, quantity, activityCode, batchNo, activityTag, sgspm = '', sgscm = '' } = item;
+            let { skuCode, quantity, batchNo, sgspm = '', sgscm = '',activityList  = []} = item;
             sgspm = sgspm || ''
             sgscm = sgscm || ''
             if (batchNo){
-                return { skuCode, quantity, activityCode,batchNo, activityTag, sgspm, sgscm };
+                return { skuCode, quantity,batchNo, activityList, sgspm, sgscm };
             }else {
-                return { skuCode, quantity, activityCode, activityTag, sgspm,  sgscm};
+                return { skuCode, quantity, activityList, sgspm,  sgscm};
             }
 
         });
@@ -212,8 +212,8 @@ class ConfirmOrderModel {
                 priceCode: item.skuCode,
                 productCode: item.productCode,
                 amount: item.quantity,
-                activityCode: item.activityCode,
                 batchNo: item.batchNo,
+                promotions: item.activityList
             };
         });
         let params = { productPriceIds: arr };
@@ -388,6 +388,8 @@ class ConfirmOrderModel {
         } else if (err.code === 54001) {
             bridge.$toast('商品库存不足！');
         } else if (err.code === 43009) {
+            let addressData = this.orderParamVO.address || {};
+            const { province, city, area, provinceCode, cityCode, areaCode} = addressData;
             this.isNoAddress = true;
             Alert.alert('', '您还没有收货地址，请点击添加',
                 [{
@@ -400,7 +402,14 @@ class ConfirmOrderModel {
                                 callBack: (json) => {
                                     this.selectAddressId(json);
                                 },
-                                from: 'add'
+                                from: 'add',
+                                province,
+                                city,
+                                area,
+                                provinceCode,
+                                cityCode,
+                                areaCode,
+                                areaText: province + city + area
                             });
                         }
                     }
