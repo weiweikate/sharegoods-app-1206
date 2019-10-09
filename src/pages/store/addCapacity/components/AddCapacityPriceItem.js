@@ -58,7 +58,7 @@ export class AddCapacityPriceItem extends Component {
 
 const stylesItem = StyleSheet.create({
     container: {
-        borderRadius: 5, marginHorizontal: 15, marginBottom: 10, backgroundColor: 'white'
+        borderRadius: 10, marginHorizontal: 15, marginBottom: 10, backgroundColor: 'white'
     },
     container1: {
         flexDirection: 'row', marginVertical: 10

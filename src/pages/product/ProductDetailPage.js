@@ -301,7 +301,7 @@ export default class ProductDetailPage extends BasePage {
                 }
             });
         }
-        if (paramAddressItem &&!paramAddressItem.id) {
+        if (paramAddressItem && !paramAddressItem.id) {
             productDetailAddressModel.paramAddressItem = null;
         }
     };

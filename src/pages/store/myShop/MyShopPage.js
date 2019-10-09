@@ -135,7 +135,7 @@ export default class MyShopPage extends BasePage {
                     <TouchableOpacity onPress={() => {
                         this.$navigate('store/recommendSearch/RecommendPage');
                     }}>
-                        <Image style={{ marginRight: 10, width: 18, height: 18 }} source={icons8_Shop_50px}/>
+                        <Image style={{ marginRight: 20, width: 18, height: 18 }} source={icons8_Shop_50px}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this._clickSettingItem}>
                         <Image source={roleType === 0 ? shezhi : my_Shop_gengduo} style={{ width: 18, height: 18 }}/>
@@ -283,7 +283,9 @@ export default class MyShopPage extends BasePage {
         } = this.MyShopDetailModel.storeData;
         return (
             <View style={styles.container}>
-                <LinearGradient colors={['#FF1C89', '#FF156E']}
+                <LinearGradient colors={['#FF0050', '#FC5D39']}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 0 }}
                                 ref={e => this.LinearGradient = e}
                                 style={styles.LinearGradient}/>
                 {this._NavBarRender()}

@@ -37,12 +37,13 @@ export default class AssistantRow extends Component {
 
     renderContent = () => {
         const { headImg, levelName, nickName, roleType, packageStatus, packageImg, status, waitDeadline } = this.props.item;
-        const { showActivityImage } = this.props;
+        const { showActivityImage, index } = this.props;
         const showLinear = roleType === 0 || status === 10;
         const colors = roleType === 0 ? ['#FFCB02', '#FF9502'] : ['#FF0050', '#FC5D39'];
         const linearGradientText = roleType === 0 ? '店主' : '待扩容';
         return (
-            <NoMoreClick style={styles.rowContainer} onPress={this._clickAssistantDetail}>
+            <NoMoreClick style={[styles.rowContainer, index === 0 && { marginTop: 10 }]}
+                         onPress={this._clickAssistantDetail}>
                 <View style={styles.rowView}>
                     <AvatarImage source={{ uri: headImg }} style={styles.headerImg} borderRadius={14}/>
                     <View style={styles.right}>
@@ -138,7 +139,7 @@ export class ExplainView extends Component {
             return null;
         }
         return (
-            <View style={{ backgroundColor: 'white', marginBottom: 15 }}>
+            <View style={{ backgroundColor: 'white' }}>
                 <Text style={stylesE.title}>温馨提示：</Text>
                 <Text
                     style={stylesE.titleContent}>{`1. 扩容后，待扩容成员将成为正式成员；\n2. 待扩容期内，此成员可自由离店；\n3. 若指定时间内不扩容，此成员将自动离店。`}</Text>
