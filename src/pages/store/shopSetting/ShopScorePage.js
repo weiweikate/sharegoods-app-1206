@@ -11,9 +11,9 @@ const SCREEN_WIDTH = ScreenUtils.width;
 const WhitePanelHeight = 128 / 375 * SCREEN_WIDTH;
 
 const StarIcon = res.shopSetting.wjx_03;
-const store_level_1 = res.shopSetting.store_level_1;
-const store_level_2 = res.shopSetting.store_level_2;
-const store_level_3 = res.shopSetting.store_level_3;
+// const store_level_1 = res.shopSetting.store_level_1;
+// const store_level_2 = res.shopSetting.store_level_2;
+// const store_level_3 = res.shopSetting.store_level_3;
 
 
 export default class ShopScorePage extends BasePage {
@@ -32,7 +32,7 @@ export default class ShopScorePage extends BasePage {
             }
         }
 
-        const BgIcon = storeStar === 3 ? store_level_3 : (storeStar === 2 ? store_level_2 : store_level_1);
+        // const BgIcon = storeStar === 3 ? store_level_3 : (storeStar === 2 ? store_level_2 : store_level_1);
 
         return (
             <View style={{ flex: 1 }}>
@@ -51,7 +51,7 @@ export default class ShopScorePage extends BasePage {
                         <Text style={styles.shopLevel}
                               allowFontScaling={false}>{`${starName || ''}店铺`}</Text>
                     </View>
-                    <Image style={styles.img} source={BgIcon}/>
+                    {/*<Image style={styles.img} source={BgIcon}/>*/}
                 </ScrollView>
             </View>
         );
