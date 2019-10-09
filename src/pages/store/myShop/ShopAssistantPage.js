@@ -165,8 +165,9 @@ export default class AssistantListPage extends BasePage {
     };
 
     // 渲染行
-    _renderItem = ({ item }) => {
+    _renderItem = ({ item, index }) => {
         return (<AssistantRow item={item}
+                              index={index}
                               showActivityImage={this.state.showActivityImage}
                               onPress={this._clickAssistantDetail}
                               onPressDelete={this._clickDeleteAssistant}/>);
@@ -193,7 +194,6 @@ export default class AssistantListPage extends BasePage {
         return (
             <View style={styles.container}>
                 <SearchBar placeholder={'搜索用户名'}
-                           style={{ marginBottom: 10 }}
                            onChangeText={this._onChangeText}
                            title={this.state.searchText}/>
                 <ExplainView/>

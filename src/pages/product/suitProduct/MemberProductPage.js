@@ -25,6 +25,8 @@ import SuitExplainModal from './components/SuitExplainModal';
 import { MemberSubAlert } from './components/MemberSubAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import RouterMap from '../../../navigation/RouterMap';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import user from '../../../model/user';
 
 @observer
 export default class MemberProductPage extends BasePage {
@@ -139,6 +141,8 @@ export default class MemberProductPage extends BasePage {
     _renderContent = () => {
         const { detailImages, mainImages } = this.memberProductModel;
         const { afterSaleLimitText, afterSaleTip, shareContent } = this.memberProductModel;
+        const { productCode } = this.params;
+        const htmlUrl = `${apiEnvironment.getCurrentH5Url()}/giftpack-product?spucode=${productCode}&upuserid=${user.code || ''}&index=0`;
         return (
             <View style={{ flex: 1 }}>
                 <MemberNavView showAction={this._rightAction}/>
@@ -157,7 +161,7 @@ export default class MemberProductPage extends BasePage {
                                 webJson={{
                                     title: shareContent,
                                     dec: '',
-                                    linkUrl: '',
+                                    linkUrl: htmlUrl,
                                     thumImage: mainImages[0]
                                 }}/>
             </View>
