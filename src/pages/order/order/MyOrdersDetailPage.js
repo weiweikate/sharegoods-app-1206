@@ -292,6 +292,10 @@ export default class MyOrdersDetailPage extends BasePage {
                 activityCodes={item.activityList || []}
                 style={{ backgroundColor: 'white' }}
                 clickItem={() => {
+                    //拼店扩容商品没有详情  陈阳君修改10.9
+                    if (resourceType === 'GROUP_EXTEND_PRODUCT') {
+                        return;
+                    }
                     this.clickItem(item, isPhoneGood);
                 }}
                 afterSaleService={GetAfterBtns(item)}
