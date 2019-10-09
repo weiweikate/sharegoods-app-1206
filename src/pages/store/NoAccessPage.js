@@ -20,16 +20,36 @@ export default class NoAccessPage extends Component {
 
     componentDidMount() {
         this.fetchStore28();
+
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                const { state } = payload;
+                console.log('willFocus', state);
+                this.fetchStore28();
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     fetchStore28 = () => {
         HomeAPI.getHomeData({ type: homeType.store28 }).then((data) => {
             const dataTemp = data.data || [];
-            const firstItem = dataTemp.length > 0 ? dataTemp[0] : {};
-            const { linkType, linkTypeCode } = firstItem;
+            //有自定义专题显示自定义专题
+            let uri = null;
+            for (const item of dataTemp) {
+                const { linkType, linkTypeCode } = item;
+                if (linkType === homeLinkType.showHtml) {
+                    uri = linkTypeCode;
+                    break;
+                }
+            }
             this.setState({
                 bannerList: dataTemp,
-                uri: linkType === homeLinkType.showHtml ? linkTypeCode : null
+                uri: uri
             });
         });
     };
