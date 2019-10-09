@@ -120,6 +120,8 @@ const sStyles = StyleSheet.create({
 
 export class ProductDetailAddressModel {
 
+    //根据地址返回促销信息商品详情回调
+    productPromotionSuccess = null;
     @observable prodCode = null;
     @observable templateCode = null;
     /*个人地址列表*/
@@ -135,10 +137,14 @@ export class ProductDetailAddressModel {
         provinceCode: '330000000', cityCode: '330100000', areaCode: '330109000'
     };
 
-    /*区域库存(地区变化就需要更新)  未请求成功为null*/
+    /*区域库存(地区变化就需要更新)与商品详情页skuList结合成新的skuList  未请求成功为null*/
     @observable areaSkuList = null;
-
+    //有返回的邮费就显示,没有显示则显示商品详情返回的邮费
     @observable freightPrice = null;
+    //当前显示的活动
+    @observable promotionInfoItem = {};
+    //所有的活动
+    @observable promotionInfoS = [];
 
     @action setAddressItem = (item) => {
         this.paramAddressItem = item;
@@ -212,14 +218,21 @@ export class ProductDetailAddressModel {
         });
 
         const { templateCode } = this;
-        ProductApi.freightByTemplateAndArea({
+
+        ProductApi.product_promotion_info({
             prodCode,
-            templateCode,
             provinceCode: this.getProvinceCode,
             cityCode: this.getCityCode,
-            areaCode: getAreaCode
+            areaCode: getAreaCode,
+            freightCode: templateCode
         }).then((data) => {
-            this.freightPrice = data.data;
+            const dataList = data.data || [];
+            const tempData = dataList[dataList.length - 1] || {};
+            const { freight } = tempData;
+            this.promotionInfoS = dataList;
+            this.promotionInfoItem = tempData;
+            this.freightPrice = freight;
+            this.productPromotionSuccess && this.productPromotionSuccess(tempData);
         });
     });
 
