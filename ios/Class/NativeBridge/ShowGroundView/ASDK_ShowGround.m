@@ -25,7 +25,7 @@
 #import "MyShowCellNode.h"
 #import "NSObject+Util.h"
 #import "SwichView.h"
-
+#import "XGRefreshView.h"
 #import "NSString+UrlAddParams.h"
 #import "NSDictionary+Util.h"
 #import "MBProgressHUD+PD.h"
@@ -103,13 +103,7 @@
  */
 - (void)setupRefresh{
   
-  MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
-  [header setTitle:@"下拉刷新" forState:MJRefreshStateIdle];
-  [header setTitle:@"松开刷新" forState:MJRefreshStatePulling];
-  [header setTitle:@"正在刷新 ..." forState:MJRefreshStateRefreshing];
-  header.lastUpdatedTimeLabel.hidden = YES;
-  header.stateLabel.font = [UIFont systemFontOfSize:11];
-  header.stateLabel.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
+  XGRefreshView *header = [XGRefreshView headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
   self.collectionNode.view.mj_header = header;
   [self.collectionNode.view.mj_header beginRefreshing];
   
@@ -199,7 +193,10 @@
     dic = [self.params mutableCopy];
   }
   [dic addEntriesFromDictionary:@{@"size": @"20"}];
-  __weak ASDK_ShowGround * weakSelf = self;
+    __weak ASDK_ShowGround * weakSelf = self;
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+       [weakSelf.collectionNode.view.mj_header endRefreshing];
+  });
   [NetWorkTool requestWithURL:[self getCurrentUrl] params:dic  toModel:nil success:^(NSDictionary* result) {
     if(![self.type isEqualToString:@"MyDynamic"]){
       [defaults setObject:[NSString convertNSDictionaryToJsonString:result] forKey:self.type];
@@ -209,8 +206,7 @@
     if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
       weakSelf.callBackArr = [[result valueForKey:@"data"] mutableCopy];
     }
-    
-    [weakSelf.collectionNode.view.mj_header endRefreshing];
+  
     if(model.data.count < 20){
       [weakSelf.collectionNode.view.mj_footer endRefreshingWithNoMoreData];
     }else{
@@ -229,7 +225,6 @@
   } failure:^(NSString *msg, NSInteger code) {
     weakSelf.errCode = code;
     [MBProgressHUD showSuccess:msg];
-    [weakSelf.collectionNode.view.mj_header endRefreshing];
   } showLoading:nil];
   self.isFinish = YES;
 }

@@ -94,10 +94,7 @@ export default class MyShop_RecruitPage extends BasePage {
                 }
                 track(trackEvent.ViewPinShop, { pinShopPageType });
 
-                //tab MyShop_RecruitPage   页面本身spellSHop/MyShop_RecruitPage
-                if (state && state.routeName === 'MyShop_RecruitPage') {
-                    spellStatusModel.requestHome();
-                }
+                spellStatusModel.requestHome();
             }
         );
     }

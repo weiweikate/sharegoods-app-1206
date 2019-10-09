@@ -77,12 +77,19 @@ export default class SearchResultPage extends BasePage {
     }
 
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+            }
+        );
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+            }
+        );
         this._productList(true);
-    }
-
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
 
     handleBackPress=()=>{

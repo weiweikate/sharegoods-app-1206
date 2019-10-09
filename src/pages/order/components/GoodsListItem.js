@@ -95,14 +95,17 @@ export default class GoodsListItem extends React.Component {
         }
 
         let isAllVirtual = true;
-        let isPhoneOrder = true;
+        let canBuyAgain = true;
         merchantOrder.productOrderList.forEach((item) => {
             if (item.orderType != 1){
                 isAllVirtual = false;
             }
 
             if ((item.resource || {}).resourceType !== 'TELEPHONE_CHARGE'){
-                isPhoneOrder = false;
+                canBuyAgain = false;//有手机话费的商品的订单，不能支持再次购买
+            }
+            if ((item.resource || {}).resourceType === 'GROUP_EXTEND_PRODUCT'){
+                canBuyAgain = false;//当商品类型为GROUP_EXTEND_PRODUCT，不能支持再次购买
             }
         });
 
@@ -117,7 +120,7 @@ export default class GoodsListItem extends React.Component {
                 return false;
             }
 
-            if (isPhoneOrder && item.operation === '再次购买') {
+            if ( !canBuyAgain && item.operation === '再次购买') {
                 return false;
             }
             return true;

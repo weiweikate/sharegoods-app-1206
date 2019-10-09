@@ -132,7 +132,7 @@ export default class SetShopNamePage extends BasePage {
             }).then(() => {
                 bridge.hiddenLoading();
                 spellStatusModel.requestHome();
-                this.$navigate(RouterMap.OpenShopSuccessPage);
+                this.$navigate('store/openShop/OpenShopSuccessPage');
             }).catch((error) => {
                 bridge.hiddenLoading();
                 this.$toastShow(error.msg);
@@ -147,7 +147,7 @@ export default class SetShopNamePage extends BasePage {
             }).then(() => {
                 bridge.hiddenLoading();
                 spellStatusModel.requestHome();
-                this.$navigate(RouterMap.OpenShopSuccessPage);
+                this.$navigate('store/openShop/OpenShopSuccessPage');
             }).catch((error) => {
                 bridge.hiddenLoading();
                 this.$toastShow(error.msg);

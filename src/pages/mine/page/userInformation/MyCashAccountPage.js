@@ -237,12 +237,15 @@ export default class MyCashAccountPage extends BasePage {
         //判断当前用户状态
         let status = NO_CASH_NO_SUPMEMBER;
         let returnCash = 0;
-        if(returnCashInfo){
-            if(Number(returnCashInfo.historySelfReturnAmount)+Number(returnCashInfo.preSettleSelfReturn)>0){
-                returnCash = Number(returnCashInfo.historySelfReturnAmount)+Number(returnCashInfo.preSettleSelfReturn);
-                if (returnCashInfo.convertSwitchStatus === 1) {
+        if (!EmptyUtils.isEmpty(returnCashInfo)) {
+            if (returnCashInfo.convertSwitchStatus === 1) {
+                if (returnCashInfo.historySelfReturnAmount > 0 || returnCashInfo.preSettleSelfReturn > 0) {
+                    returnCash = returnCashInfo.selfReturnToBalanceAmount;
                     status = HAVE_CASH_HAVE_SUPMEMBER;
-                }else {
+                }
+            } else {
+                if (returnCashInfo.availableSelfReturnAmount > 0 || returnCashInfo.preSettleSelfReturn > 0) {
+                    returnCash = returnCashInfo.availableSelfReturnAmount + returnCashInfo.preSettleSelfReturn;
                     status = HAVE_CASH_NO_SUPMEMBER;
                 }
             }
@@ -283,7 +286,10 @@ export default class MyCashAccountPage extends BasePage {
                     </View>
                     <NoMoreClick
                         style={{flexDirection: 'row', backgroundColor: '#F7F7F7', height: 32, alignItems: 'center'}}
-                        onPress={() => {this.$navigate(RouterMap.ReturnCashAccountPage)}}>
+                        onPress={() => {
+                            status === NO_CASH_NO_SUPMEMBER ?
+                                this.$navigate(RouterMap.ReturnCashRulePage) : this.$navigate(RouterMap.ReturnCashAccountPage)
+                        }}>
                         {status === NO_CASH_NO_SUPMEMBER ?
                             <Text style={styles.returnCashTextStyle}>您还没有自返金，快去获取</Text> : null}
                         {status === HAVE_CASH_NO_SUPMEMBER ?
@@ -292,11 +298,11 @@ export default class MyCashAccountPage extends BasePage {
                             </Text> : null}
                         {status === HAVE_CASH_HAVE_SUPMEMBER ?
                             <Text style={styles.returnCashTextStyle}>
-                                累计已有{returnCashInfo.historySelfReturnAmount}元自返金转到余额</Text>
+                                累计已有{StringUtils.formatMoneyString(returnCash, false)}元自返金转到余额</Text>
                             : null}
 
                         {status === NO_CASH_NO_SUPMEMBER ?
-                            <Text style={{fontSize: 13, color: '#999999',}}>快去获取</Text> : null}
+                            <Text style={{fontSize: 13, color: '#999999',}}>如何获取</Text> : null}
                         {status === HAVE_CASH_NO_SUPMEMBER ?
                             <Text style={{fontSize: 13, color: '#999999'}}>去提取</Text> : null}
                         {status === HAVE_CASH_HAVE_SUPMEMBER ?
@@ -496,6 +502,8 @@ export default class MyCashAccountPage extends BasePage {
 
     }
 
+
+
     jumpToWithdrawCashPage = () => {
         MineApi.getUserBankInfo().then((data) => {
             if (data.data && data.data.length > 0) {
@@ -506,7 +514,24 @@ export default class MyCashAccountPage extends BasePage {
                         this.$navigate(RouterMap.WithdrawCashPage);
                     }
                 }).catch(error => {
-                    this.$toastShow(error.msg);
+                    //跳转到协议页面
+                    if (error.code === 40440) {
+                        Alert.alert('提示', error.msg,
+                            [
+                                {
+                                    text: '取消', onPress: () => {
+                                    }
+                                },
+                                {
+                                    text: '同意并继续', onPress: () => {
+                                        this.$navigate(RouterMap.WithdrawalAgreementPage);
+                                    }
+                                }
+                            ]
+                        );
+                    } else {
+                        this.$toastShow(error.msg);
+                    }
                 });
             } else {
                 Alert.alert('未绑定银行卡', '你还没有绑定银行卡', [{

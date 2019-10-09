@@ -236,6 +236,12 @@ export default class ProductDetailPage extends BasePage {
             }
             const { type, couponId } = this.params;
             const { specImg, promotionPrice, price, propertyValues } = item;
+            const { productDetailAddressModel } = this.productDetailModel;
+            const { promotionInfoItem, promotionInfoS } = productDetailAddressModel;
+            const activityList = promotionInfoS.map((item) => {
+                const { activityTag, promotionId, activityCode } = item;
+                return { activityTag, promotionId, activityCode };
+            });
             let orderProducts = [{
                 productType: this.productDetailModel.type,
                 sgscm: this.productDetailModel.sgscm,
@@ -243,12 +249,15 @@ export default class ProductDetailPage extends BasePage {
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,
-                activityCode: '',
                 batchNo: 1,
                 specImg,
                 productName: name,
                 unitPrice: productIsPromotionPrice ? promotionPrice : price,
-                spec: (propertyValues || '').replace(/@/g, '-')
+                spec: (propertyValues || '').replace(/@/g, '-'),
+                promotionId: promotionInfoItem.promotionId,
+                activityTag: promotionInfoItem.activityTag,
+                activityCode: promotionInfoItem.activityCode,
+                activityList
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
@@ -330,10 +339,10 @@ export default class ProductDetailPage extends BasePage {
                                        }}/>;
             }
             case productItemType.suit: {
-                if (isGroupIn) {
+                const { extraType } = productDetailSuitModel;
+                if (isGroupIn || extraType === suitType.memberSuit) {
                     return <ProductDetailSuitGiftView productDetailModel={this.productDetailModel}/>;
                 }
-                const { extraType } = productDetailSuitModel;
                 if (extraType === suitType.fixedSuit) {
                     return <ProductDetailSuitFixedView productDetailSuitModel={productDetailSuitModel}/>;
                 } else if (extraType === suitType.chooseSuit) {

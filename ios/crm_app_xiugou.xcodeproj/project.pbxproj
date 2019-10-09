@@ -321,6 +321,8 @@
 		CD6742D821E441D500464549 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD67429821E43F5F00464549 /* libimageCropPicker.a */; };
 		CD6742DB21E4430E00464549 /* AMapFoundationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6742D921E4430E00464549 /* AMapFoundationKit.framework */; };
 		CD6742DC21E4430E00464549 /* AMapLocationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6742DA21E4430E00464549 /* AMapLocationKit.framework */; };
+		CD7A617C23407C6A008448CC /* XGRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7A617B23407C6A008448CC /* XGRefreshView.m */; };
+		CD7A618023408930008448CC /* pullnoline.json in Resources */ = {isa = PBXBuildFile; fileRef = CD7A617F23408930008448CC /* pullnoline.json */; };
 		CD89B18C224B0FCD006CCEF7 /* ASDK_ShowGround.m in Sources */ = {isa = PBXBuildFile; fileRef = CD89B18B224B0FCD006CCEF7 /* ASDK_ShowGround.m */; };
 		CD89B1CD224B1010006CCEF7 /* MosaicCollectionLayoutInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CD89B1CB224B100F006CCEF7 /* MosaicCollectionLayoutInfo.m */; };
 		CD89B1CE224B1010006CCEF7 /* MosaicCollectionLayoutDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CD89B1CC224B100F006CCEF7 /* MosaicCollectionLayoutDelegate.m */; };
@@ -1385,6 +1387,9 @@
 		CD6742D221E4418A00464549 /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD6742D921E4430E00464549 /* AMapFoundationKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AMapFoundationKit.framework; path = "../../../node_modules/@mr/rn-geolocation/lib/ios/AMapFoundationKit.framework"; sourceTree = "<group>"; };
 		CD6742DA21E4430E00464549 /* AMapLocationKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AMapLocationKit.framework; path = "../../../node_modules/@mr/rn-geolocation/lib/ios/AMapLocationKit.framework"; sourceTree = "<group>"; };
+		CD7A617A23407C6A008448CC /* XGRefreshView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XGRefreshView.h; sourceTree = "<group>"; };
+		CD7A617B23407C6A008448CC /* XGRefreshView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XGRefreshView.m; sourceTree = "<group>"; };
+		CD7A617F23408930008448CC /* pullnoline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = pullnoline.json; path = ../../src/comm/components/lottieheader/pullnoline.json; sourceTree = "<group>"; };
 		CD89B18A224B0FCD006CCEF7 /* ASDK_ShowGround.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ASDK_ShowGround.h; sourceTree = "<group>"; };
 		CD89B18B224B0FCD006CCEF7 /* ASDK_ShowGround.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ASDK_ShowGround.m; sourceTree = "<group>"; };
 		CD89B1C9224B100F006CCEF7 /* MosaicCollectionLayoutInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MosaicCollectionLayoutInfo.h; sourceTree = "<group>"; };
@@ -1442,6 +1447,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03A568E621DEFA1E00D6A770 /* libRNGeolocation.a in Frameworks */,
 				BF0998DA232915DD00614E6E /* libRNCSlider.a in Frameworks */,
 				03D474BC2320F37900C74562 /* libRCTVideo.a in Frameworks */,
 				031D5431230E991900F8349C /* libLottieReactNative.a in Frameworks */,
@@ -1455,7 +1461,6 @@
 				104548842239FB5D00E73EF8 /* libCodePush.a in Frameworks */,
 				CD15545622126AB4004C75FB /* libRCTCameraRoll.a in Frameworks */,
 				CD6742D821E441D500464549 /* libimageCropPicker.a in Frameworks */,
-				03A568E621DEFA1E00D6A770 /* libRNGeolocation.a in Frameworks */,
 				CD1AA5FE21D602C9007F045D /* libReact-Native-Webview-Bridge.a in Frameworks */,
 				1872318721CB96E400513B04 /* libRNCookieManagerIOS.a in Frameworks */,
 				10BDD7F8219D6F3E00B56251 /* libRNFetchBlob.a in Frameworks */,
@@ -2998,6 +3003,7 @@
 		CD8FA2302328C5FE00535B8D /* RNRefresh */ = {
 			isa = PBXGroup;
 			children = (
+				CD7A617F23408930008448CC /* pullnoline.json */,
 				CD8FA2312328C5FE00535B8D /* RCTRefreshLayout.m */,
 				CD8FA2322328C5FE00535B8D /* RCTRefreshHeaderManager.h */,
 				CD8FA2332328C5FE00535B8D /* RCTRefreshHeader.h */,
@@ -3008,6 +3014,8 @@
 				CD8FA2382328C5FE00535B8D /* RCTRefreshHeader.m */,
 				CD8FA2392328C5FE00535B8D /* RefreshLineVIew.m */,
 				CD8FA23A2328C5FE00535B8D /* RCTRefreshLayoutManager.m */,
+				CD7A617A23407C6A008448CC /* XGRefreshView.h */,
+				CD7A617B23407C6A008448CC /* XGRefreshView.m */,
 			);
 			path = RNRefresh;
 			sourceTree = "<group>";
@@ -3819,6 +3827,7 @@
 				C4F2E43722BE303100FF6213 /* 短视频_关闭@2x.png in Resources */,
 				C4F2E42422BE303100FF6213 /* btn_video_flash_open@2x.png in Resources */,
 				C48634F622C1B6A00096C8EC /* edit_img_bg@3x.png in Resources */,
+				CD7A618023408930008448CC /* pullnoline.json in Resources */,
 				C4F2E43C22BE303100FF6213 /* README.md in Resources */,
 				C4F2E42D22BE303100FF6213 /* btn_cancel_a.png in Resources */,
 				C4F2E42C22BE303100FF6213 /* sc_btn_take@2x.png in Resources */,
@@ -4078,6 +4087,7 @@
 				C4F2E44F22BE303100FF6213 /* UIButton+IJSUButton.m in Sources */,
 				017FB44F22FBAE8C003677B4 /* JXPagerMainTableView.m in Sources */,
 				C4F2E46222BE303100FF6213 /* IJSImageToolView.m in Sources */,
+				CD7A617C23407C6A008448CC /* XGRefreshView.m in Sources */,
 				C4F2E47E22BE303100FF6213 /* IJSDrawingModel.m in Sources */,
 				50043A8121C79C4900270DFA /* ShopCartListView.m in Sources */,
 				C4F2E41F22BE303100FF6213 /* SGRecordEncoder.m in Sources */,

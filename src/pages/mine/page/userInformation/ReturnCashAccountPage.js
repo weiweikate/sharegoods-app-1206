@@ -142,11 +142,11 @@ export default class CashRewardAccountPage extends BasePage {
                         <Text style={styles.countTextStyle}>
                             累计自返(元)
                         </Text>
-                        {!returnCashInfo.convertSwitchStatus ?
+                        {returnCashInfo.convertSwitchStatus === 2 ?
                             <NoMoreClick
                                 onPress={() => {
-                                    this.$navigate(RouterMap.HtmlPage, {uri: '/custom/:ZDYZT201909251743341'});
-                            }}>
+                                    this.$navigate(RouterMap.HtmlPage, {uri: '/custom/ZDYZT201909251743341'});
+                                }}>
                                 <ImageBackground
                                     style={styles.beSubVipBgStyle}
                                     source={bg_black_img}>
@@ -156,21 +156,20 @@ export default class CashRewardAccountPage extends BasePage {
                                             fontSize: DesignRule.fontSize_threeTitle,
                                             color: '#E9CD8D'
                                         }}>开启超级会员</Text>
-                                </ImageBackground>
-
-                                <ImageBackground
-                                    style={styles.beSubVipTopStyle}
-                                    source={bg_top_img}>
-                                    <Text
-                                        style={{
-                                            fontSize: DesignRule.fontSize_20,
-                                            color: '#333333'
-                                        }}>自动转出余额</Text>
+                                    <ImageBackground
+                                        style={styles.beSubVipTopStyle}
+                                        source={bg_top_img}>
+                                        <Text
+                                            style={{
+                                                fontSize: DesignRule.fontSize_20,
+                                                color: '#333333'
+                                            }}>自动转出余额</Text>
+                                    </ImageBackground>
                                 </ImageBackground>
                             </NoMoreClick> :
                             null
                         }
-                        {returnCashInfo.convertSwitchStatus ?
+                        {returnCashInfo.convertSwitchStatus === 1 ?
                             <View style={styles.subVipBgStyle}>
                                 <Text style={{color: '#FF0050', fontSize: 13}}>自动转到余额</Text>
                             </View> :
@@ -354,7 +353,7 @@ export default class CashRewardAccountPage extends BasePage {
                     flexDirection: 'row'
                 }}>
                     <View style={{justifyContent: 'space-between'}}>
-                        <Text style={{fontSize: 14, color: DesignRule.textColor_secondTitle}}>{ this.params.flag+remark}</Text>
+                        <Text style={{fontSize: 14, color: DesignRule.textColor_secondTitle}}>{remark}</Text>
                         <Text style={{
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{time}</Text>
@@ -544,7 +543,6 @@ const styles = StyleSheet.create({
     countTextStyle: {
         color: DesignRule.textColor_mainTitle,
         fontSize: DesignRule.fontSize_threeTitle,
-        marginTop: px2dp(13),
     },
     beSubVipTopStyle: {
         width: px2dp(74),
@@ -553,16 +551,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         right: -4,
-        top: -19,
+        top:  px2dp(-10),
     },
     beSubVipBgStyle: {
         width: px2dp(115),
         height: px2dp(28),
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'absolute',
-        right: 0,
-        top: -8
     },
     subVipBgStyle: {
         width: px2dp(98),

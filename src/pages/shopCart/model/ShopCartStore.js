@@ -242,6 +242,8 @@ class ShopCartStore {
             invalidObj.data = InvalidArr[0].products;
             invalidObj.data.map((goodItem, goodItemIndex) => {
                 goodItem.isSelected = false;
+                goodItem.isInvalid = true;
+                goodItem.isLastInvalid = InvalidArr[0].products.length === (goodItemIndex+1);
                 goodItem.key = '' + tempAllData.length + goodItemIndex;
                 goodItem.topSpace = 0;
                 // 有一个showPrice 搞活动显示的价格，有就重置掉price，没有你就老实的用原来的 OJBK?

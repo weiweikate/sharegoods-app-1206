@@ -8,23 +8,24 @@
  * Created by huyufeng on 2019/1/3.
  *
  */
+
 'use strict';
 
-import React, { Component } from 'react';
-import { Image, Keyboard, StyleSheet, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import React, {Component} from 'react';
+import {Image, StyleSheet, TouchableHighlight, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
-import { MRTextInput as TextInput, UIImage, UIText } from '../../../components/ui';
+import {MRText, MRTextInput as TextInput, UIImage, UIText} from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import shopCartStore from '../model/ShopCartStore';
-import { getSelectImage, getTipString, statueImage } from '../model/ShopCartMacro';
+import {getSelectImage, getTipString, statueImage} from '../model/ShopCartMacro';
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import shopRes from '../res';
 
-const dismissKeyboard = Keyboard.dismiss;
+const dismissKeyboard = require('dismissKeyboard');
 
-const { px2dp } = ScreenUtils;
+const {px2dp} = ScreenUtils;
 const Cell_Height = px2dp(150);
 
 export default class ShopCartCell extends Component {
@@ -33,7 +34,7 @@ export default class ShopCartCell extends Component {
     }
 
     render() {
-        const { itemData, rowMap, rowId, cellClickAction, sectionData } = this.props;
+        const {itemData, rowMap, rowId, cellClickAction, sectionData} = this.props;
         return (
             <View>
                 {this._renderCellView(itemData, rowMap, rowId, cellClickAction, sectionData)}
@@ -42,27 +43,30 @@ export default class ShopCartCell extends Component {
     }
 
     _renderCellView = (itemData, rowMap, rowId, cellClickAction, sectionData) => {
+        if (itemData.isInvalid) {
+            return this._renderInvalidCellView(itemData, rowMap, rowId, cellClickAction, sectionData);
+        }
         return (
             <View rowMap={rowMap} style={{
                 backgroundColor: DesignRule.bgColor,
-                paddingBottom: px2dp(1),
                 marginTop: itemData.topSpace,
-                alignItems: 'center'
+                alignItems: 'center',
+                paddingBottom: px2dp(1)
             }}>
                 <TouchableHighlight onPress={() => {
                     cellClickAction(itemData);
                 }}
                 >
-                    <View style={styles.standaloneRowFront}>
-                        <View style={{ flexDirection: 'row', paddingTop: px2dp(10), height: Cell_Height }}>
-                            <View style={{ height: px2dp(80), alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={[styles.standaloneRowFront, {borderRadius: itemData.topSpace ? px2dp(5) : 0}]}>
+                        <View style={{flexDirection: 'row', paddingTop: px2dp(10), height: Cell_Height}}>
+                            <View style={{height: px2dp(80), alignItems: 'center', justifyContent: 'center'}}>
                                 <UIImage source={getSelectImage(itemData)} style={styles.itemSelectImg}
                                          onPress={() => {
                                              this._selectImageClick(sectionData, rowId);
                                          }}/>
                             </View>
 
-                            <UIImage source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
+                            <UIImage source={{uri: itemData.imgUrl ? itemData.imgUrl : ''}}
                                      style={[styles.validProductImg]}/>
                             {
                                 (itemData.productStatus !== 1) ?
@@ -73,18 +77,18 @@ export default class ShopCartCell extends Component {
                             }
                         </View>
                         <View style={styles.validContextContainer}>
-                            <View style={{ flex: 1 }}>
+                            <View style={{flex: 1}}>
                                 <UIText value={itemData.productName ? itemData.productName : ''} numberOfLines={2}
                                         style={styles.productName}/>
                                 <UIText value={itemData.specifyContent ? itemData.specifyContent : ''} numberOfLines={2}
                                         style={styles.specifyContent}/>
                                 <UIText value={getTipString(itemData).tipString} numberOfLines={2}
                                         style={styles.topTipString}/>
-                                <View style={{ flexDirection: 'row' }}>{this._getTipArrView(itemData)}</View>
+                                <View style={{flexDirection: 'row'}}>{this._getTipArrView(itemData)}</View>
                             </View>
                             <View style={styles.priceBgView}>
                                 <UIText value={'￥' + itemData.price} style={styles.priceText}/>
-                                <View style={{ flexDirection: 'row' }}>
+                                <View style={{flexDirection: 'row'}}>
                                     <TouchableOpacity activeOpacity={0.7} style={styles.rectangle} onPress={() => {
                                         this._reduceProductNum(itemData, rowId);
                                     }}>
@@ -159,10 +163,69 @@ export default class ShopCartCell extends Component {
         );
     };
 
+
+    /**
+     * 失效商品cell
+     * @param itemData
+     * @param rowMap
+     * @param rowId
+     * @param cellClickAction
+     * @param sectionData
+     * @returns {*}
+     * @private
+     */
+    _renderInvalidCellView = (itemData, rowMap, rowId, cellClickAction, sectionData) => {
+        return (
+            <View rowMap={rowMap} style={{
+                backgroundColor: DesignRule.bgColor,
+                marginTop: itemData.topSpace,
+                alignItems: 'center',
+            }}>
+                <TouchableHighlight onPress={() => {
+                    cellClickAction(itemData);
+                }}
+                >
+                    <View style={[styles.invalidStandaloneRowFront,
+                        {
+                            borderRadius: itemData.topSpace ? px2dp(5) : 0,
+                            borderBottomLeftRadius: itemData.isLastInvalid ? px2dp(5) : 0,
+                            borderBottomRightRadius: itemData.isLastInvalid ? px2dp(5) : 0
+                        }]}>
+                        <View style={{flexDirection: 'row', paddingTop: px2dp(10)}}>
+
+                            <View style={styles.invalidTextBg}>
+                                <MRText style={styles.invalidText}>
+                                    失效
+                                </MRText>
+                            </View>
+
+                            <UIImage source={{uri: itemData.imgUrl ? itemData.imgUrl : ''}}
+                                     style={[styles.validProductImg, {opacity: 0.5}]}/>
+                        </View>
+                        <View style={styles.invalidContextContainer}>
+                            <View style={{flex: 1}}>
+                                <UIText value={itemData.productName ? itemData.productName : ''} numberOfLines={2}
+                                        style={styles.productName}/>
+                                <UIText value={itemData.specifyContent ? itemData.specifyContent : ''} numberOfLines={2}
+                                        style={styles.specifyContent}/>
+                                <UIText value={getTipString(itemData).tipString} numberOfLines={2}
+                                        style={styles.topTipString}/>
+                                <View style={{flexDirection: 'row'}}>{this._getTipArrView(itemData)}</View>
+                            </View>
+                            <MRText style={styles.invalidText}>
+                                宝贝已不能购买
+                            </MRText>
+                        </View>
+                    </View>
+                </TouchableHighlight>
+            </View>
+        );
+    };
+
     _getTipArrView = (itemData) => {
         let tipArr = itemData.displayItem && itemData.displayItem.tags !== null ? itemData.displayItem.tags.slice() : [];
         return tipArr.map((tipItem, index) => {
-            return (<View style={[styles.labelBgView, { marginLeft: index === 0 ? 0 : 3 }]}>
+            return (<View style={[styles.labelBgView, {marginLeft: index === 0 ? 0 : 3}]}>
                 <UIText
                     style={styles.labelTextView}
                     value={tipItem}
@@ -267,9 +330,14 @@ const styles = StyleSheet.create({
         height: Cell_Height,
         width: ScreenUtils.width - px2dp(30),
         flexDirection: 'row',
-        borderRadius: px2dp(5)
     },
-    itemSelectImg: { marginLeft: px2dp(10), width: px2dp(18), height: px2dp(18) },
+    invalidStandaloneRowFront: {
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        width: ScreenUtils.width - px2dp(30),
+        flexDirection: 'row',
+    },
+    itemSelectImg: {marginLeft: px2dp(10), width: px2dp(18), height: px2dp(18)},
     rectangle: {
         height: px2dp(28),
         width: px2dp(40),
@@ -290,25 +358,31 @@ const styles = StyleSheet.create({
         marginRight: px2dp(10)
     },
     textInputBgView: {
-        width: px2dp(40),
+        width: px2dp(34),
         justifyContent: 'center',
         alignItems: 'center',
-        height: px2dp(22)
+        height: px2dp(24),
     },
     TextInputStyle: {
-        height: px2dp(22),
         fontSize: px2dp(10),
         color: DesignRule.textColor_mainTitle,
-        alignSelf: 'center',
-        justifyContent: 'center',
         textAlign: 'center',
-        paddingVertical: 0
+        paddingVertical: 0,
+        marginTop: 2
     },
     validContextContainer: {
         flex: 1,
         height: px2dp(130),
         justifyContent: 'space-between',
         paddingRight: px2dp(15)
+    },
+    invalidContextContainer: {
+        flex: 1,
+        height: px2dp(80),
+        justifyContent: 'space-between',
+        paddingRight: px2dp(15),
+        marginTop: px2dp(10),
+        marginBottom: px2dp(10)
     },
     labelBgView: {
         paddingLeft: px2dp(2),
@@ -338,9 +412,40 @@ const styles = StyleSheet.create({
         marginTop: px2dp(-3),
         color: DesignRule.textColor_mainTitle
     },
-    specifyContent: { fontSize: px2dp(10), lineHeight: px2dp(14), color: DesignRule.textColor_instruction },
-    topTipString: { fontSize: px2dp(10), color: DesignRule.mainColor },
-    priceText: { fontSize: px2dp(17), fontWeight: '400', color: DesignRule.mainColor }
+    invalidProductName: {
+        fontSize: px2dp(13),
+        lineHeight: px2dp(18),
+        marginTop: px2dp(-3),
+        color: DesignRule.textColor_instruction
+    },
+    invalidTextBg: {
+        width: px2dp(30),
+        height: px2dp(18),
+        borderRadius: px2dp(9),
+        backgroundColor: DesignRule.bgColor,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginLeft: px2dp(4)
+    },
+    invalidText: {
+        fontSize: DesignRule.fontSize_20,
+        color: DesignRule.textColor_instruction
+    },
+    specifyContent: {
+        fontSize: px2dp(10),
+        lineHeight: px2dp(14),
+        color: DesignRule.textColor_instruction
+    },
+    topTipString: {
+        fontSize: px2dp(10),
+        color: DesignRule.mainColor
+    },
+    priceText: {
+        fontSize: px2dp(17),
+        fontWeight: '400',
+        color: DesignRule.mainColor
+    }
 });
 
 

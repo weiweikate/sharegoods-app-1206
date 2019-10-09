@@ -14,7 +14,7 @@ const { isNoEmpty } = StringUtils;
 export default class AddCartModel {
 
     requestProductDetail = (code, callback, callback2) => {
-        ProductApi.getProductDetailByCodeV2({
+        ProductApi.getProductDetailByCodeV3({
             code
         }).then((data) => {
             let tempData = data.data || {};

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,11 @@ import com.meeruu.sharegoods.rn.showground.utils.VideoCoverUtils;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
+import com.meeruu.sharegoods.rn.showground.widgets.ShowRefreshHeader;
 import com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -64,7 +69,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
+public class ShowRecommendView implements IShowgroundView, OnRefreshListener {
     private RnRecyclerView recyclerView;
     private ShowRecommendAdapter adapter;
     private EventDispatcher eventDispatcher;
@@ -80,11 +85,12 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     private WeakReference<View> showgroundView;
     private onStartRefreshEvent startRefreshEvent;
     private onItemPressEvent itemPressEvent;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private SmartRefreshLayout swipeRefreshLayout;
     private WeakHandler mHandler;
     private View errView;
     private View errImg;
     public static boolean isLogin;
+    private ShowRefreshHeader mShowRefreshHeader;
 
     private String cursor = null;
 
@@ -92,7 +98,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
 
         LayoutInflater inflater = LayoutInflater.from(reactContext);
-        View view = inflater.inflate(R.layout.view_showground, null);
+        View view = inflater.inflate(R.layout.view_showground1, null);
         initView(reactContext, view);
         initData();
 
@@ -114,12 +120,13 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 onRefresh();
             }
         });
+        mShowRefreshHeader = new ShowRefreshHeader(context);
 
         errView.setVisibility(View.INVISIBLE);
         showgroundView = new WeakReference<>(view);
         startRefreshEvent = new onStartRefreshEvent();
         swipeRefreshLayout = view.findViewById(R.id.refresh_control);
-        swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
+        swipeRefreshLayout.setRefreshHeader(mShowRefreshHeader);
         swipeRefreshLayout.setOnRefreshListener(this);
         final onNineClickEvent onNineClickEvent = new onNineClickEvent();
         final addCartEvent addCartEvent = new addCartEvent();
@@ -325,7 +332,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         onRefresh();
     }
 
-    @Override
     public void onRefresh() {
         if (eventDispatcher != null) {
             View view = showgroundView.get();
@@ -335,8 +341,13 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
             }
         }
         adapter.setEnableLoadMore(false);
-        swipeRefreshLayout.setRefreshing(true);
         mHandler.sendEmptyMessageDelayed(ParameterUtils.REQUEST_DELAY, 200);
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        this.onRefresh();
+        swipeRefreshLayout.finishRefresh(1000);
     }
 
     private void delayHandle(NewestShowGroundBean.DataBean bean, View view, int position,
@@ -429,7 +440,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
     @Override
     public void loadMoreFail(final String code) {
-        swipeRefreshLayout.setRefreshing(false);
         if (adapter != null) {
             adapter.loadMoreFail();
             setEmptyText();
@@ -445,7 +455,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
     @Override
     public void viewLoadMore(final List data) {
-        swipeRefreshLayout.setRefreshing(false);
         showList();
         if (data != null && data.size() > 0) {
             NewestShowGroundBean.DataBean dataBean =(NewestShowGroundBean.DataBean) data.get(data.size()-1);
@@ -472,7 +481,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
     @Override
     public void refreshShowground(final List data) {
-        swipeRefreshLayout.setRefreshing(false);
         if (adapter != null) {
             if(data != null &&  data.size() > 0 ){
                 NewestShowGroundBean.DataBean dataBean =(NewestShowGroundBean.DataBean) data.get(data.size()-1);
