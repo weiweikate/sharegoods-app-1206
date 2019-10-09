@@ -55,7 +55,7 @@ export default class AssistantRow extends Component {
                         <Text style={styles.level}>{levelName || ''}</Text>
                         {status === 10 &&
                         <Text
-                            style={styles.desc}>若未扩容，此成员将在{waitDeadline ? DateUtils.formatDate(waitDeadline) : ''}离店</Text>}
+                            style={styles.desc}>若未扩容，此成员将在{waitDeadline ? DateUtils.formatDate(waitDeadline, 'yyyy-MM-dd HH:mm') : ''}离店</Text>}
                     </View>
                 </View>
                 {showLinear && <LinearGradient style={styles.linearGradient}
