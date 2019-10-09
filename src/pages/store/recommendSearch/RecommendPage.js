@@ -84,9 +84,7 @@ export default class RecommendPage extends BasePage {
             payload => {
                 const { state } = payload;
                 console.log('didFocus', state);
-                if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
-                    this._checkOpenStore();
-                }
+                this._checkOpenStore();
             }
         );
 

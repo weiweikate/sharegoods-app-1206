@@ -68,6 +68,7 @@ const api = {
     waitToNormalUser: ['/app/store/waitToNormalUser', { method: 'get' }],
     // 查询消息
     floatMsg: ['/floatMsg/get', { method: 'get' }],
+    storeConfig_storeSwitch: ['/app/store/config/storeSwitch', { method: 'get' }]
 };
 const StoreApi = ApiUtils(api);
 export default StoreApi;
