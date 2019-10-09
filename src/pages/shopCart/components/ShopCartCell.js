@@ -11,7 +11,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, StyleSheet, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import { Image, Keyboard, StyleSheet, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { MRTextInput as TextInput, UIImage, UIText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
@@ -22,7 +22,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import shopRes from '../res';
 
-const dismissKeyboard = require('dismissKeyboard');
+const dismissKeyboard = Keyboard.dismiss;
 
 const { px2dp } = ScreenUtils;
 const Cell_Height = px2dp(150);
@@ -47,7 +47,7 @@ export default class ShopCartCell extends Component {
                 backgroundColor: DesignRule.bgColor,
                 paddingBottom: px2dp(1),
                 marginTop: itemData.topSpace,
-                alignItems:'center'
+                alignItems: 'center'
             }}>
                 <TouchableHighlight onPress={() => {
                     cellClickAction(itemData);

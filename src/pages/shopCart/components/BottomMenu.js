@@ -16,7 +16,7 @@ import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { UIText } from '../../../components/ui/index';
 import PropTypes from 'prop-types';
 import user from '../../../model/user';
@@ -26,7 +26,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import EmptyUtils from '../../../utils/EmptyUtils';
 
-const dismissKeyboard = require('dismissKeyboard');
+const dismissKeyboard = Keyboard.dismiss;
 const { px2dp } = ScreenUtils;
 
 
@@ -117,12 +117,12 @@ export default class BottomMenu extends Component {
      * @param arr
      * @private
      */
-    _getSelectedSkus(arr){
+    _getSelectedSkus(arr) {
         let skus = [];
-        if(!EmptyUtils.isEmptyArr(arr)){
-            arr.forEach((item)=>{
+        if (!EmptyUtils.isEmptyArr(arr)) {
+            arr.forEach((item) => {
                 skus.push(item.skuCode);
-            })
+            });
         }
         return skus;
     }
@@ -135,9 +135,9 @@ export default class BottomMenu extends Component {
             routeNavigate(RouterMap.LoginPage);
             TrackApi.CartCheckoutClick({
                 cartCheckoutBtnActive: false,
-                cartSkuQuantity:shopCartStore.getCartSkuCodes,
-                chooseSkuQuantity:[],
-                isChooseAll:shopCartStore.computedSelect
+                cartSkuQuantity: shopCartStore.getCartSkuCodes,
+                chooseSkuQuantity: [],
+                isChooseAll: shopCartStore.computedSelect
             });
             return;
         }
@@ -146,9 +146,9 @@ export default class BottomMenu extends Component {
             bridge.$toast('请先选择结算商品~');
             TrackApi.CartCheckoutClick({
                 cartCheckoutBtnActive: false,
-                cartSkuQuantity:shopCartStore.getCartSkuCodes,
-                chooseSkuQuantity:[],
-                isChooseAll:shopCartStore.computedSelect
+                cartSkuQuantity: shopCartStore.getCartSkuCodes,
+                chooseSkuQuantity: [],
+                isChooseAll: shopCartStore.computedSelect
             });
             return;
         }
@@ -172,9 +172,9 @@ export default class BottomMenu extends Component {
             bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~');
             TrackApi.CartCheckoutClick({
                 cartCheckoutBtnActive: false,
-                cartSkuQuantity:shopCartStore.getCartSkuCodes,
-                chooseSkuQuantity:this._getSelectedSkus(selectArr),
-                isChooseAll:shopCartStore.computedSelect
+                cartSkuQuantity: shopCartStore.getCartSkuCodes,
+                chooseSkuQuantity: this._getSelectedSkus(selectArr),
+                isChooseAll: shopCartStore.computedSelect
             });
             return;
         }
@@ -182,9 +182,9 @@ export default class BottomMenu extends Component {
             bridge.$toast('商品库存不足请确认~');
             TrackApi.CartCheckoutClick({
                 cartCheckoutBtnActive: false,
-                cartSkuQuantity:shopCartStore.getCartSkuCodes,
-                chooseSkuQuantity:this._getSelectedSkus(selectArr),
-                isChooseAll:shopCartStore.computedSelect
+                cartSkuQuantity: shopCartStore.getCartSkuCodes,
+                chooseSkuQuantity: this._getSelectedSkus(selectArr),
+                isChooseAll: shopCartStore.computedSelect
             });
             return;
         }
@@ -202,8 +202,8 @@ export default class BottomMenu extends Component {
                     productName: goods.productName,
                     unitPrice: goods.price,
                     productType: goods.type,
-                    sgspm : goods.sgspm,
-                    sgscm : goods.sgscm
+                    sgspm: goods.sgspm,
+                    sgscm: goods.sgscm
                 });
             });
             routePush(RouterMap.ConfirOrderPage, {
@@ -216,9 +216,9 @@ export default class BottomMenu extends Component {
 
             TrackApi.CartCheckoutClick({
                 cartCheckoutBtnActive: true,
-                cartSkuQuantity:shopCartStore.getCartSkuCodes,
-                chooseSkuQuantity:this._getSelectedSkus(selectArr),
-                isChooseAll:shopCartStore.computedSelect
+                cartSkuQuantity: shopCartStore.getCartSkuCodes,
+                chooseSkuQuantity: this._getSelectedSkus(selectArr),
+                isChooseAll: shopCartStore.computedSelect
             });
         }
     };

@@ -36,7 +36,7 @@ import { observer } from 'mobx-react';
 const { autoSizeWidth } = ScreenUtils;
 import { homeModule } from '../model/Modules';
 import { routePush } from '../../../navigation/RouterMap';
-import { ImageCacheManager } from 'react-native-cached-image';
+import { ImageCacheManager } from '@mr/react-native-cached-image';
 import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 @observer

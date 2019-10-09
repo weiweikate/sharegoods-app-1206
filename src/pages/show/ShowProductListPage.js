@@ -5,16 +5,16 @@
 
 import React from 'react';
 import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
     FlatList,
     Image,
-    RefreshControl
+    RefreshControl,
+    StyleSheet,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import BasePage from '../../BasePage';
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { DefaultTabBar } from '@mr/react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { MRText, UIImage } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
@@ -287,7 +287,7 @@ var styles = StyleSheet.create({
     validProductImg: {
         width: px2dp(80),
         height: px2dp(80),
-        borderRadius:px2dp(5)
+        borderRadius: px2dp(5)
     },
     itemTitle: {
         color: DesignRule.textColor_mainTitle,
