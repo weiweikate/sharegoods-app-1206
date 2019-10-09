@@ -44,7 +44,7 @@ export class AddCapacityPriceModel {
         SpellShopApi.expand_goodsList().then((data) => {
             let { canBuyExpandGoodsNum, expandGoodsList } = data.data || {};
             expandGoodsList.forEach((item) => {
-                item.amount = 0;
+                item.amount = 1;
                 item.isSelected = false;
             });
             this.loadingState = PageLoadingState.success;

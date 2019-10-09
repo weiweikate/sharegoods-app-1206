@@ -42,10 +42,8 @@ export class AddCapacityPriceItem extends Component {
                             <MRText style={stylesItem.specText}>{`规格: ${specs || ''}`}</MRText>
                         </View>
                         <View style={stylesItem.rightBottomView}>
-                            <MRText style={stylesItem.priceText}>¥
-                                <MRText>{`${salePrice} `}
-                                    <MRText style={stylesItem.oPriceText}>¥{originPrice}</MRText>
-                                </MRText>
+                            <MRText style={stylesItem.priceText}>¥{`${salePrice} `}
+                                <MRText style={stylesItem.oPriceText}>¥{originPrice}</MRText>
                             </MRText>
                             <AmountView itemData={itemData}/>
                         </View>
@@ -58,7 +56,7 @@ export class AddCapacityPriceItem extends Component {
 
 const stylesItem = StyleSheet.create({
     container: {
-        borderRadius: 5, marginHorizontal: 15, marginBottom: 10, backgroundColor: 'white'
+        borderRadius: 10, marginHorizontal: 15, marginBottom: 10, backgroundColor: 'white'
     },
     container1: {
         flexDirection: 'row', marginVertical: 10
@@ -86,7 +84,7 @@ const stylesItem = StyleSheet.create({
         fontSize: 17, color: DesignRule.textColor_redWarn
     },
     oPriceText: {
-        fontSize: 10, color: DesignRule.textColor_instruction, textDecorationLine: 'line-through'
+        fontSize: 10, color: DesignRule.textColor_instruction, textDecorationLine: 'line-through',lineHeight:30
     },
     rightBottomView: {
         flexDirection: 'row', alignItems: 'center', marginRight: 10, justifyContent: 'space-between'
@@ -101,7 +99,7 @@ class AmountView extends Component {
         return (
             <View style={stylesAmount.container}>
                 <NoMoreClick style={stylesAmount.clickBtn} onPress={() => {
-                    itemData.amount > 0 && itemData.amount--;
+                    itemData.amount > 1 && itemData.amount--;
                 }}>
                     <MRText style={{ fontSize: 12, color: DesignRule.textColor_placeholder }}>-</MRText>
                 </NoMoreClick>

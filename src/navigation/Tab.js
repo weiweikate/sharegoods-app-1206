@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import React, { Component } from 'react';
 import {
     DeviceEventEmitter,

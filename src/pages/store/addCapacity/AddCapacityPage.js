@@ -9,6 +9,7 @@ import StringUtils from '../../../utils/StringUtils';
 import { MRText as Text } from '../../../components/ui';
 import { BannersVerticalView } from '../../../comm/components/BannersVerticalView';
 import { homeType } from '../../home/HomeTypes';
+import LinearGradient from 'react-native-linear-gradient';
 
 export class AddCapacityPage extends BasePage {
     $navigationBarOptions = {
@@ -23,7 +24,7 @@ export class AddCapacityPage extends BasePage {
 
             currStoreVolume: '',
             storeUserNum: '',
-            expandDone: false,
+            expandDone: false
         };
     }
 
@@ -79,8 +80,13 @@ export class AddCapacityPage extends BasePage {
                     </View>}
                 </View>
                 {outNum > 0 && <Text style={styles.explainText}>注：扩容后，待扩容成员将成为正式成员</Text>}
-                <NoMoreClick style={styles.addBtn} onPress={this._addBtnAction} disabled={!expandDone}>
-                    <Text style={styles.addText}>立即扩容</Text>
+                <NoMoreClick onPress={this._addBtnAction} disabled={!expandDone}>
+                    <LinearGradient style={styles.addBtn}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 0 }}
+                                    colors={['#FC5D39', '#FF0050']}>
+                        <Text style={styles.addText}>立即扩容</Text>
+                    </LinearGradient>
                 </NoMoreClick>
                 <BannersVerticalView type={homeType.store30} style={{ marginTop: 30 }}/>
             </ScrollView>
@@ -90,7 +96,7 @@ export class AddCapacityPage extends BasePage {
 
 const styles = StyleSheet.create({
     topContainer: {
-        marginTop: 20, borderRadius: 5, marginHorizontal: 15
+        marginTop: 20, borderRadius: 10, marginHorizontal: 15, overflow: 'hidden'
     },
     numView: {
         flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
