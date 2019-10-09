@@ -179,7 +179,7 @@ export default class MyShopPage extends BasePage {
                         this.shareModal && this.shareModal.open();
                     }, 500);
                 } else if (item === '拆分开店') {
-                    routePush('store/shopSetting/SetShopNamePage', { isSplit: true });
+                    routePush('store/openShop/OpenShopExplainPage', { isSplit: true });
                 } else if (item === '举报店铺') {
                     setTimeout(() => {
                         this.reportAlert && this.reportAlert.show({
