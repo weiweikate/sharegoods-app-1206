@@ -73,9 +73,7 @@ export default class MyShopPage extends BasePage {
             payload => {
                 const { state } = payload;
                 console.log('willFocus', state);
-                if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
-                    this.MyShopDetailModel.requestAppStore();
-                }
+                this.MyShopDetailModel.requestAppStore();
             }
         );
         /*上面的方法第一次_loadPageData不会执行  page已经出现了*/
@@ -181,7 +179,7 @@ export default class MyShopPage extends BasePage {
                         this.shareModal && this.shareModal.open();
                     }, 500);
                 } else if (item === '拆分开店') {
-                    routePush('store/shopSetting/SetShopNamePage', { isSplit: true });
+                    routePush('store/openShop/OpenShopExplainPage', { isSplit: true });
                 } else if (item === '举报店铺') {
                     setTimeout(() => {
                         this.reportAlert && this.reportAlert.show({

@@ -33,8 +33,7 @@ export default class NoAccessPage extends Component {
                                                             refreshing={SpellStatusModel.refreshing}
                                                             colors={[DesignRule.mainColor]}
                                                             onRefresh={() => {
-                                                                SpellStatusModel.getUser(1).then().catch((error) => {
-                                                                });
+                                                                SpellStatusModel.getUser(1);
                                                             }}/>}>
                     <ImageBackground
                         style={{ width: imgWidth, height: imgHeight }}

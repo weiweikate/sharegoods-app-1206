@@ -472,7 +472,7 @@ export default class ProductDetailModel {
                 type, videoUrl, imgUrl, imgFileList, minPrice, maxPrice,
                 originalPrice, priceType, name, secondName, freight,
                 groupPrice, v0Price, shareMoney, selfReturning,
-                monthSaleCount, skuList, specifyList, stockSysConfig, promoteInfoVOList,
+                monthSaleCount, skuList, specifyList, stockSysConfig,
                 paramList, comment, totalComment, overtimeComment,
                 upTime, now, content, sevenDayReturn, weekendDelivery, orderOnProduct
             } = data || {};
@@ -499,7 +499,6 @@ export default class ProductDetailModel {
             this.skuList = skuList || [];
             this.specifyList = specifyList || [];
             this.stockSysConfig = stockSysConfig || [];
-            this.promoteInfoVOList = promoteInfoVOList || [];
             this.paramList = paramList || [];
             /*不赋值默认 判空用*/
             this.comment = comment;
@@ -525,6 +524,7 @@ export default class ProductDetailModel {
     //根据地址获取
     @action productPromotionSuccess = (promotionInfo) => {
         const {
+            promoteInfoVOList,
             promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
             promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice,
             promotionAttentionNum, promotionSaleRate,
@@ -535,6 +535,8 @@ export default class ProductDetailModel {
         this.groupActivity = groupActivity || {};
         this.tags = tags;
         this.promotionDecreaseAmount = promotionDecreaseAmount;
+
+        this.promoteInfoVOList = promoteInfoVOList || [];
 
         this.promotionLimitNum = StringUtils.isNoEmpty(promotionLimitNum) ? (promotionLimitNum < 0 ? 0 : promotionLimitNum) : null;
         this.promotionPrice = promotionPrice;

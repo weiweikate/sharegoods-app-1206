@@ -9,6 +9,8 @@ import user from '../../model/user';
 
 class SpellStatusModel {
 
+    @observable showNewStore = false;
+
     @observable hasAlertErr = false;//有无定位弹框
 
     @observable loadingState = PageLoadingState.loading;
@@ -30,6 +32,15 @@ class SpellStatusModel {
             }
             this.storeCode = null;
             this.errorCode = e.code;
+        });
+    };
+
+    requestShow = () => {
+        return SpellShopApi.storeConfig_storeSwitch().then((data) => {
+            this.showNewStore = data.data;
+            return Promise.resolve();
+        }).catch(e => {
+            return Promise.reject(e);
         });
     };
 
