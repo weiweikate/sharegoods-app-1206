@@ -388,6 +388,8 @@ class ConfirmOrderModel {
         } else if (err.code === 54001) {
             bridge.$toast('商品库存不足！');
         } else if (err.code === 43009) {
+            let addressData = this.orderParamVO.address || {};
+            const { province, city, area, provinceCode, cityCode, areaCode} = addressData;
             this.isNoAddress = true;
             Alert.alert('', '您还没有收货地址，请点击添加',
                 [{
@@ -400,7 +402,14 @@ class ConfirmOrderModel {
                                 callBack: (json) => {
                                     this.selectAddressId(json);
                                 },
-                                from: 'add'
+                                from: 'add',
+                                province,
+                                city,
+                                area,
+                                provinceCode,
+                                cityCode,
+                                areaCode,
+                                areaText: province + city + area
                             });
                         }
                     }
