@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         justifyContent: 'center',
-        paddingHorizontal: 5
+        paddingHorizontal: 15
     },
     button: {
         color: DesignRule.textColor_mainTitle,

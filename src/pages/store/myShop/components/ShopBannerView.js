@@ -68,6 +68,7 @@ export class ShopBannerView extends Component {
                               interceptTouchEvent={true}//android端起作用，是否拦截touch事件
                               itemWidth={ScreenUtils.width + 0.5}
                               itemSpace={0}
+                              itemRadius={5}
                               imgUrlArray={items}
                               onDidSelectItemAtIndex={(index) => {
                                   bannerList[index] && this._onPress(bannerList[index]);

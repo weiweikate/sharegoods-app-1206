@@ -56,7 +56,7 @@ export class AddCapacityPriceItem extends Component {
 
 const stylesItem = StyleSheet.create({
     container: {
-        borderRadius: 5, marginHorizontal: 15, marginBottom: 10, backgroundColor: 'white'
+        borderRadius: 10, marginHorizontal: 15, marginBottom: 10, backgroundColor: 'white'
     },
     container1: {
         flexDirection: 'row', marginVertical: 10
@@ -99,7 +99,7 @@ class AmountView extends Component {
         return (
             <View style={stylesAmount.container}>
                 <NoMoreClick style={stylesAmount.clickBtn} onPress={() => {
-                    itemData.amount > 0 && itemData.amount--;
+                    itemData.amount > 1 && itemData.amount--;
                 }}>
                     <MRText style={{ fontSize: 12, color: DesignRule.textColor_placeholder }}>-</MRText>
                 </NoMoreClick>
