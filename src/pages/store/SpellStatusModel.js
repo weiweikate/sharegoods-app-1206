@@ -36,8 +36,11 @@ class SpellStatusModel {
     };
 
     requestShow = () => {
-        SpellShopApi.storeConfig_storeSwitch().then((data) => {
+        return SpellShopApi.storeConfig_storeSwitch().then((data) => {
             this.showNewStore = data.data;
+            return Promise.resolve();
+        }).catch(e => {
+            return Promise.reject(e);
         });
     };
 
