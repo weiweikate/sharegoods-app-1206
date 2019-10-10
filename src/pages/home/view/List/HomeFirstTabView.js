@@ -239,7 +239,7 @@ export default class HomeFirstTabView extends Component {
 
 
     render() {
-        if (Math.abs(tabModel.tabIndex) > 1){
+        if (Math.abs(tabModel.tabIndex) > 1) {
             return null;
         }
         const { homeList } = homeModule;
