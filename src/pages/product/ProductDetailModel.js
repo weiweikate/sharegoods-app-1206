@@ -158,7 +158,8 @@ export default class ProductDetailModel {
                 realSkuList = [];
             }
         }
-        return realSkuList;
+        //过滤null 库存不同步
+        return realSkuList.filter(item => item);
     }
 
     /*商品规格*/
