@@ -64,12 +64,12 @@ export default class DetailBottomView extends Component {
     };
 
     _renderIsOut = () => {
-        const { showSellOut, productStatus, skuList, productIsPromotionPrice } = this.props.pData || {};
+        const { showSellOut, productStatus, skuListByArea, productIsPromotionPrice } = this.props.pData || {};
         //显示已下架
         const isDown = productStatus === product_status.down;
         //总库存
         let stock = 0;
-        (skuList || []).forEach((item) => {
+        (skuListByArea || []).forEach((item) => {
             stock = stock + (productIsPromotionPrice ? item.promotionStockNum : item.sellStock);
         });
         if (showSellOut || isDown || stock === 0) {
