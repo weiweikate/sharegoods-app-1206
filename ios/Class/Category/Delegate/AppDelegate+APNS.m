@@ -439,4 +439,11 @@
   
   [self.currentViewController_XG  presentViewController:alert animated:YES completion:nil];
 }
+
+#pragma mark 前台接收推送通知信息
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler
+{
+  completionHandler(UNAuthorizationOptionAlert | UNAuthorizationOptionSound);
+}
+
 @end
