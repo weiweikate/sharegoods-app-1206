@@ -67,7 +67,7 @@ export default class SetShopNamePage extends BasePage {
                 this.setState({
                     storeHeadUrlOrigin: dataTemp.headUrl,
                     textName: dataTemp.name,
-                    textArea: `${dataTemp.province || ''}${dataTemp.city || ''}`,
+                    textArea: `${dataTemp.provinceName || ''}${dataTemp.cityName || ''}`,
                     textProfile: dataTemp.profile || '',
 
                     provinceCode: dataTemp.provinceCode,
