@@ -127,7 +127,7 @@ public class MRJPushReceiver extends JPushMessageReceiver {
         } else if (objExtra != null && objExtra.has(LINK_NATIVE_URL)) {
             String link = "";
             try {
-                link = objExtra.getString(LINk_KEY);
+                link = objExtra.getString(LINK_NATIVE_URL);
             } catch (Exception e) {
             }
             String uri = "meeruu://path/" + link;
