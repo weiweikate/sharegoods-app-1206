@@ -83,7 +83,7 @@ export class ProductDetailSuitGiftView extends Component {
 
     _goProductPage = (item) => {
         const { productDetailModel } = this.props;
-        const { isGroupIn } = productDetailModel;
+        const { isGroupIn, prodCode } = productDetailModel;
         if (isGroupIn) {
             routePush(RouterMap.ProductDetailPage, { productCode: item.prodCode });
         } else {
@@ -91,7 +91,7 @@ export class ProductDetailSuitGiftView extends Component {
                 routeNavigate(RouterMap.LoginPage);
                 return;
             }
-            routePush(RouterMap.MemberProductPage, { productCode: item.prodCode });
+            routePush(RouterMap.MemberProductPage, { productCode: prodCode });
         }
     };
 
