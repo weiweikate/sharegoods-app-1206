@@ -65,6 +65,8 @@ pod 'JSONModel','~> 1.7.0'
 
 #  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
 
+# pod 'react-native-viewpager', :path => '../node_modules/@react-native-community/viewpager'
+
 end
 
 #    暂时未用,先注释已被后期使用

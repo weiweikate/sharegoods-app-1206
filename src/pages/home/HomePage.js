@@ -25,7 +25,7 @@ import LuckyIcon from '../guide/LuckyIcon';
 import HomeMessageModalView, { GiftModal, HomeAdModal } from './view/HomeMessageModalView';
 import { limitGoModule } from './model/HomeLimitGoModel';
 import PraiseModel from './view/PraiseModel';
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { DefaultTabBar } from '@mr/react-native-scrollable-tab-view';
 import BasePage from '../../BasePage';
 import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
 import taskModel from './model/TaskModel';

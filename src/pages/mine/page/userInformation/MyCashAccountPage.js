@@ -9,7 +9,7 @@ import {
     View
 } from 'react-native';
 import {observer} from 'mobx-react';
-import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
+import ScrollableTabView, {DefaultTabBar} from '@mr/react-native-scrollable-tab-view';
 import LinearGradient from 'react-native-linear-gradient';
 
 import BasePage from '../../../../BasePage';

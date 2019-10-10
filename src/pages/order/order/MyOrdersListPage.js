@@ -1,7 +1,7 @@
 import React from 'react';
 import { DeviceEventEmitter, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import BasePage from '../../../BasePage';
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { DefaultTabBar } from '@mr/react-native-scrollable-tab-view';
 import MyOrdersListView from './../components/MyOrdersListView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';

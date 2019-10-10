@@ -9,7 +9,7 @@ import {
     RefreshControl
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { DefaultTabBar } from '@mr/react-native-scrollable-tab-view';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
