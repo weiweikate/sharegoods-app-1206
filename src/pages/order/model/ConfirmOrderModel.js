@@ -321,7 +321,7 @@ class ConfirmOrderModel {
                 data = data.data || {};
                 let userCouponCode = '';
                 (data.data || []).find((item)=>{
-                    if (item.canInvoke === true && item.type == 5)
+                    if (item.canInvoke === true && item.type == 5 && !this.invokeItem)
                     {
                         this.canInvoke = true;
                         this.invokeItem = item;
