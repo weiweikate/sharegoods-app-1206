@@ -16,6 +16,7 @@ import couponsModel from '../model/CouponsModel';
 import CouponExplainItem from './CouponExplainItem';
 import CouponNormalItem from './CouponNormalItem';
 import RouterMap, { backToHome, routePush } from '../../../navigation/RouterMap';
+import EmptyUtils from '../../../utils/EmptyUtils';
 
 const NoMessage = res.placeholder.noCollect;
 // const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
@@ -129,6 +130,8 @@ export default class MyCouponsItems extends Component {
         const { invokeData, canInvoke } = this.state;
         console.log('time', DateUtils.getDateDiff(invokeData.startTime));
         let time = invokeData.expireTime ? DateUtils.getDateDiff(invokeData.expireTime) : '';
+        //判断是否存在配置地址，存在为true，不存在为false
+        let redirectUrl = !EmptyUtils.isEmpty(invokeData.redirectUrl);
         return (
             <View style={styles.contentStyle}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginHorizontal: 16 }}>
@@ -145,14 +148,16 @@ export default class MyCouponsItems extends Component {
                                       onPress={this.quitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
                     </TouchableOpacity>
-                    <View style={{ height: '100%', width: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
-                    <TouchableOpacity activeOpacity={0.7}
-                                      style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-                                      onPress={() => this.commitTokenCoin(invokeData)}>
-                        <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>
-                            {canInvoke ? '确定' : '去使用'}
-                        </Text>
-                    </TouchableOpacity>
+                    {!canInvoke && !redirectUrl ? null :<View style={{ height: '100%', width: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>}
+                    {!canInvoke && !redirectUrl ? null :
+                        <TouchableOpacity activeOpacity={0.7}
+                                          style={{justifyContent: 'center', alignItems: 'center', flex: 1}}
+                                          onPress={() => this.commitTokenCoin(invokeData)}>
+                            <Text style={{color: '#0076FF', fontSize: px2dp(17)}} allowFontScaling={false}>
+                                {canInvoke ? '确定' : '去使用'}
+                            </Text>
+                        </TouchableOpacity>
+                    }
                 </View>
 
             </View>

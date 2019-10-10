@@ -214,7 +214,7 @@ export default class CouponExplainItem extends Component {
                         marginLeft: 2,
                         borderRadius: 5,
                     }} source={remark} resizeMode='stretch'>
-                        <View style={{ marginLeft: 20, }}>
+                        <View style={{ marginLeft: 20,marginRight:20}}>
                             <Text style={{
                                 marginTop: 10,
                                 color: item.status === 0 ? DesignRule.textColor_secondTitle : DesignRule.textColor_secondTitle,
