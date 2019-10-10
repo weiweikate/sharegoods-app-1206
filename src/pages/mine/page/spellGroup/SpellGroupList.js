@@ -15,7 +15,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { DefaultTabBar } from '@mr/react-native-scrollable-tab-view';
 import DesignRule from '../../../../constants/DesignRule';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import res from '../../res';

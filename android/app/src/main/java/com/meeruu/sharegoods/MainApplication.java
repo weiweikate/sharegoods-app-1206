@@ -6,7 +6,6 @@ import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
-import com.swmansion.reanimated.ReanimatedPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
@@ -31,8 +30,10 @@ import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.reactnativecommunity.slider.ReactSliderPackage;
+import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import com.request.MRNetStatePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.swmansion.reanimated.ReanimatedPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -115,7 +116,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new RNGestureHandlerPackage(),
                     new ReactSliderPackage(),
                     new RCTRefreshLayoutPackage(),
-                    new ReanimatedPackage()
+                    new ReanimatedPackage(),
+                    new RNCViewPagerPackage()
             );
         }
 
