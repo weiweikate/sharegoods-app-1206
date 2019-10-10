@@ -30,6 +30,7 @@
 @property (nonatomic, strong)NSMutableArray *callBackArr;
 @property (nonatomic, strong)UIView *headerView;
 @property (nonatomic, assign)NSInteger errCode;
+@property (nonatomic, assign)NSInteger page;
 @property (nonatomic, strong)UILabel *emptyLb;
 @property (nonatomic, strong)UIView *emptyView;
 @property (nonatomic, assign)BOOL noMore;
@@ -166,8 +167,13 @@ static NSString *IDType = @"TypeCell";
     self.onStartRefresh(@{});
   }
   NSMutableDictionary *dic = [NSMutableDictionary new];
+  self.page = 1;
+
   if (self.params) {
     dic = [self.params mutableCopy];
+  }
+  if([self.type isEqualToString:@"attention"]){
+    [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page]}];
   }
   [dic addEntriesFromDictionary:@{@"size": @"10"}];
   __weak RecommendedView * weakSelf = self;
@@ -210,13 +216,18 @@ static NSString *IDType = @"TypeCell";
 {
   NSMutableDictionary *dic = [NSMutableDictionary new];
   NSString *cursor = [self.dataArr.lastObject valueForKey:@"cursor"];
- 
+  self.page++;
   if (self.params) {
     dic = [self.params mutableCopy];
   }
-  if(cursor){
+  
+  if([self.type isEqualToString:@"attention"]){
+    [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page]}];
+
+  }else if(cursor){
     [dic addEntriesFromDictionary:@{@"cursor":cursor}];
   }
+  
   [dic addEntriesFromDictionary:@{@"size": @"10"}];
     __weak  RecommendedView * weakSelf = self;
     [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary * result) {
