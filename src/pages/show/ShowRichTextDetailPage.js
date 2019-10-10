@@ -115,7 +115,8 @@ export default class ShowRichTextDetailPage extends BasePage {
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
         let { detail } = this.showDetailModule;
-        if(detail){
+
+        if(detail && detail.content){
             this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
             this.params.updateHotNum && this.params.updateHotNum(detail.hotCount);
         }
