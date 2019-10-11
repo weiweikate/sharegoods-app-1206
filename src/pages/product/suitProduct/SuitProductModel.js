@@ -2,6 +2,7 @@ import { observable, computed, action } from 'mobx';
 import StringUtils from '../../../utils/StringUtils';
 import { suitType } from '../components/ProductDetailSuitView';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import ProductApi from '../api/ProductApi';
 
 const { add, mul } = StringUtils;
 
@@ -41,6 +42,8 @@ export default class SuitProductModel {
     * */
     @observable suitProducts = [];
 
+    @observable promotionInfoItem = {};
+
     /*被选中的商品*/
     @computed get selectedProductSkuS() {
         const selectedSkuItems = [];
@@ -75,6 +78,7 @@ export default class SuitProductModel {
         return afterSaleLimitText.slice(1);
     }
 
+    //分享
     @computed get priceRetailTotal() {
         return this.suitProducts.reduce((pre, cur) => {
             const { skuList } = cur;
@@ -82,6 +86,7 @@ export default class SuitProductModel {
         }, 0);
     }
 
+    //分享
     @computed get priceTotal() {
         return this.suitProducts.reduce((pre, cur) => {
             const { originalPrice } = cur;
@@ -89,6 +94,7 @@ export default class SuitProductModel {
         }, 0);
     }
 
+    //分享
     @computed get totalShareMoney() {
         return this.suitProducts.reduce((pre, cur) => {
             const { skuList } = cur;
@@ -195,6 +201,15 @@ export default class SuitProductModel {
             };
         });
         this.suitProducts = [mainTemp, ...(subProductsTemp || [])];
+    };
+
+    promotionInfo = (prodCode, activityCode, groupCode) => {
+        ProductApi.product_promotion_info({
+            prodCode, activityCode, groupCode
+        }).then((data) => {
+            const dataList = data.data || [];
+            this.promotionInfoItem = dataList[0] || {};
+        });
     };
 
     getDefaultSku = (productData) => {
