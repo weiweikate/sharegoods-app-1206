@@ -23,9 +23,9 @@ export default class AssistantRow extends Component {
     state = { open: false };
 
     _clickAssistantDetail = () => {
-        const { userCode } = this.props.item;
+        const { userCode, tutorStatus, roleType } = this.props.item;
         const { onPress } = this.props;
-        onPress && onPress(userCode);
+        onPress && onPress(userCode, tutorStatus, roleType);
     };
 
     _onPressDelete = () => {
@@ -36,11 +36,11 @@ export default class AssistantRow extends Component {
 
 
     renderContent = () => {
-        const { headImg, levelName, nickName, roleType, packageStatus, packageImg, status, waitDeadline } = this.props.item;
+        const {
+            headImg, levelName, nickName, roleType, tutorStatus,
+            packageStatus, packageImg, status, waitDeadline
+        } = this.props.item;
         const { showActivityImage, index } = this.props;
-        const showLinear = roleType === 0 || status === 10;
-        const colors = roleType === 0 ? ['#FFCB02', '#FF9502'] : ['#FF0050', '#FC5D39'];
-        const linearGradientText = roleType === 0 ? '店主' : '待扩容';
         return (
             <NoMoreClick style={[styles.rowContainer, index === 0 && { marginTop: 10 }]}
                          onPress={this._clickAssistantDetail}>
@@ -52,6 +52,20 @@ export default class AssistantRow extends Component {
                             {packageStatus && showActivityImage && roleType === 0 ?
                                 <UIImage source={{ uri: packageImg }}
                                          style={{ width: 59, height: 16, marginLeft: 5 }}/> : null}
+                            {roleType === 0 &&
+                            <LinearGradient style={styles.roleView}
+                                            start={{ x: 0, y: 0 }}
+                                            end={{ x: 1, y: 0 }}
+                                            colors={['#FFCB02', '#FF9502']}>
+                                <Text style={styles.roleText}>店主</Text>
+                            </LinearGradient>}
+                            {tutorStatus === 1 &&
+                            <LinearGradient style={styles.roleView}
+                                            start={{ x: 0, y: 0 }}
+                                            end={{ x: 1, y: 0 }}
+                                            colors={['#FC5D39', '#FF0050']}>
+                                <Text style={styles.roleText}>导师</Text>
+                            </LinearGradient>}
                         </View>
                         <Text style={styles.level}>{levelName || ''}</Text>
                         {status === 10 &&
@@ -59,18 +73,19 @@ export default class AssistantRow extends Component {
                             style={styles.desc}>若未扩容，此成员将在{waitDeadline ? DateUtils.formatDate(waitDeadline, 'yyyy-MM-dd HH:mm') : ''}离店</Text>}
                     </View>
                 </View>
-                {showLinear && <LinearGradient style={styles.linearGradient}
-                                               start={{ x: 0, y: 0 }}
-                                               end={{ x: 1, y: 0 }}
-                                               colors={colors}>
-                    <Text style={{ fontSize: 13, color: 'white' }}>
-                        {linearGradientText}
-                    </Text>
+                {status === 10 && <LinearGradient style={styles.linearGradient}
+                                                  start={{ x: 0, y: 0 }}
+                                                  end={{ x: 1, y: 0 }}
+                                                  colors={['#FF0050', '#FC5D39']}>
+                    <Text style={{ fontSize: 13, color: 'white' }}>待扩容</Text>
                 </LinearGradient>}
             </NoMoreClick>);
     };
 
     render() {
+        if (this.props.roleType !== 0) {
+            return this.renderContent();
+        }
         const swipeOutButtons = [
             {
                 onPress: this._onPressDelete,
@@ -125,6 +140,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center', right: 0, top: 0,
         position: 'absolute',
         width: 50, height: 20, borderTopRightRadius: 10, borderBottomLeftRadius: 10
+    },
+    roleView: {
+        alignItems: 'center', justifyContent: 'center', width: 40, height: 20, borderRadius: 10, marginRight: 5
+    },
+    roleText: {
+        fontSize: 13, color: 'white'
     }
 });
 

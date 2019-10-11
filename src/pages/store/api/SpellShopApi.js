@@ -36,6 +36,7 @@ const api = {
     app_store_close: ['/app/store/close'],
     //举报店铺
     storeTipOffInsert: '/app/store/tipoff/save',
+    manageHomePageList: ['/app/store/user/manageHomePageList', { method: 'get' }],
     //查询店铺人员
     app_store_homePageList: ['/app/store/user/homePageList', { method: 'get' }],
     //查看店铺人员总列表
