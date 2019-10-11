@@ -30,7 +30,7 @@ export class MemberSubAlert extends Component {
     };
 
     _renderItem = ({ item }) => {
-        const { name, imgUrl, originalPrice } = item;
+        const { name, imgUrl, minPrice } = item;
         return (
             <View style={styles.itemView}>
                 <UIImage source={{ uri: imgUrl }} style={styles.itemImg}/>
@@ -41,7 +41,7 @@ export class MemberSubAlert extends Component {
                         <MRText style={{
                             color: DesignRule.textColor_instruction,
                             fontSize: 12
-                        }}>原价:￥{originalPrice}</MRText>
+                        }}>原价:￥{minPrice}</MRText>
                         <MRText style={{ color: DesignRule.textColor_instruction, fontSize: 12 }}>x1</MRText>
                     </View>
                 </View>
