@@ -19,6 +19,7 @@ import { homeType } from '../../pages/home/HomeTypes';
 import LuckyIcon from '../../pages/guide/LuckyIcon';
 import GroupSelectModel from '../../pages/mine/page/spellGroup/components/GroupSelectModel';
 import { MRText } from '../ui';
+import { netState } from '@mr/rn-request';
 
 const moreIcon = res.button.message_three;
 const btn_group = res.button.btn_group;
@@ -30,7 +31,7 @@ export default class RequestDetailPage extends BasePage {
 
     // 页面配置
     $navigationBarOptions = {
-        title: this.params.title || '加载中...',
+        title: this.params.title ||(netState.isConnected ? '加载中...' : '网络异常') ,
         show: !(this.props.params || {}).unShow
     };
 
@@ -179,7 +180,7 @@ export default class RequestDetailPage extends BasePage {
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
             }
         );
-        this.$NavigationBarResetTitle(this.state.title || '加载中...');
+        this.$NavigationBarResetTitle(this.state.title || (netState.isConnected ? '加载中...' : '网络异常'));
     }
 
     handleBackPress = () => {
@@ -285,6 +286,10 @@ export default class RequestDetailPage extends BasePage {
             return;
         }
     };
+
+    $isMonitorNetworkStatus(){
+        return true;
+    }
 
     _render() {
         let WebAdModal = this.WebAdModal;

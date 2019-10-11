@@ -26,15 +26,15 @@ export default class ReturnCashRulePage extends BasePage {
         return (
             <View style={styles.container}>
                 <Text style={styles.title}>1、什么是自返金？</Text>
-                <Text style={styles.content}>{`      自返金指用户在平台进行购物消费，会有部分奖励返回给用户，该奖励可转化为余额，进行余额交易。`}</Text>
+                <Text style={styles.content}>{`       自返金指用户在秀购平台进行购物消费（活动商品及特殊商品除外），秀购给予用户对应的奖励，自返金可用于商品购买抵用，在成为VIP会员后开启自返金兑换。`}</Text>
                 <View style={{width:1,height:20}}/>
 
                 <Text style={styles.title}>2、如何获得自返金？</Text>
-                <Text style={styles.content}>{`      购买自返商品即可获得自返金`}</Text>
+                <Text style={styles.content}>{`       购买指定商品即可获得自返金。`}</Text>
                 <View style={{width:1,height:20}}/>
-                
-                <Text style={styles.title}>3、自返金如何转出到余额？</Text>
-                <Text style={styles.content}>{`      成为VIP会员即可获得自返金自动转出余额。`}</Text>
+
+                <Text style={styles.title}>3、自返金如何可以使用？</Text>
+                <Text style={styles.content}>{`       自返金可用于商品购买抵用，也可用于兑换现金，成为VIP会员后即可开启自返金兑换。`}</Text>
 
             </View>
         );
