@@ -232,7 +232,7 @@ export default class MyCashAccountPage extends BasePage {
      * 页面顶部用户账户余额，及自返金状态
      */
     _accountInfoRender=()=> {
-        const {returnCashInfo}  = ReturnCashModel;
+        const {returnCashInfo, returnCashSwitchState}  = ReturnCashModel;
         const {NO_CASH_NO_SUPMEMBER,HAVE_CASH_NO_SUPMEMBER,HAVE_CASH_HAVE_SUPMEMBER} = eumStatus;
         //判断当前用户状态
         let status = NO_CASH_NO_SUPMEMBER;
@@ -252,7 +252,7 @@ export default class MyCashAccountPage extends BasePage {
         }
         return (
             <View style={styles.headerViewShadow}>
-                <View style={styles.headerViewStyle}>
+                <View style={[styles.headerViewStyle, {height: returnCashSwitchState ? px2dp(206) : px2dp(174),}]}>
                     <View style={styles.withdrawWrapper}>
                         <Text style={styles.countTextStyle}>
                             账户余额（元）
@@ -284,31 +284,33 @@ export default class MyCashAccountPage extends BasePage {
                             <Text style={styles.numRemarkStyle}>累计收益(元)</Text>
                         </View>
                     </View>
-                    <NoMoreClick
-                        style={{flexDirection: 'row', backgroundColor: '#F7F7F7', height: 32, alignItems: 'center'}}
-                        onPress={() => {
-                            status === NO_CASH_NO_SUPMEMBER ?
-                                this.$navigate(RouterMap.ReturnCashRulePage) : this.$navigate(RouterMap.ReturnCashAccountPage)
-                        }}>
-                        {status === NO_CASH_NO_SUPMEMBER ?
-                            <Text style={styles.returnCashTextStyle}>您还没有自返金，快去获取</Text> : null}
-                        {status === HAVE_CASH_NO_SUPMEMBER ?
-                            <Text style={styles.returnCashTextStyle}>
-                                您有<Text style={{fontSize: 16, color: '#FF0050'}}>{StringUtils.formatMoneyString(returnCash, false)}</Text>自返金可转到余额
-                            </Text> : null}
-                        {status === HAVE_CASH_HAVE_SUPMEMBER ?
-                            <Text style={styles.returnCashTextStyle}>
-                                累计已有{StringUtils.formatMoneyString(returnCash, false)}元自返金转到余额</Text>
-                            : null}
+                    {returnCashSwitchState ? <NoMoreClick
+                            style={{flexDirection: 'row', backgroundColor: '#F7F7F7', height: 32, alignItems: 'center'}}
+                            onPress={() => {
+                                status === NO_CASH_NO_SUPMEMBER ?
+                                    this.$navigate(RouterMap.ReturnCashRulePage) : this.$navigate(RouterMap.ReturnCashAccountPage)
+                            }}>
+                            {status === NO_CASH_NO_SUPMEMBER ?
+                                <Text style={styles.returnCashTextStyle}>您还没有自返金，快去获取</Text> : null}
+                            {status === HAVE_CASH_NO_SUPMEMBER ?
+                                <Text style={styles.returnCashTextStyle}>
+                                    您有<Text style={{fontSize: 16, color: '#FF0050'}}>{StringUtils.formatMoneyString(returnCash, false)}</Text>自返金可转到余额
+                                </Text> : null}
+                            {status === HAVE_CASH_HAVE_SUPMEMBER ?
+                                <Text style={styles.returnCashTextStyle}>
+                                    累计已有{StringUtils.formatMoneyString(returnCash, false)}元自返金转到余额</Text>
+                                : null}
 
-                        {status === NO_CASH_NO_SUPMEMBER ?
-                            <Text style={{fontSize: 13, color: '#999999',}}>如何获取</Text> : null}
-                        {status === HAVE_CASH_NO_SUPMEMBER ?
-                            <Text style={{fontSize: 13, color: '#999999'}}>去提取</Text> : null}
-                        {status === HAVE_CASH_HAVE_SUPMEMBER ?
-                            <Text style={{fontSize: 13, color: '#999999'}}>明细</Text> : null}
-                        <Image source={arrowRight} style={{width: 14, height: 14, marginRight: 12,marginLeft:7}}/>
-                    </NoMoreClick>
+                            {status === NO_CASH_NO_SUPMEMBER ?
+                                <Text style={{fontSize: 13, color: '#999999',}}>如何获取</Text> : null}
+                            {status === HAVE_CASH_NO_SUPMEMBER ?
+                                <Text style={{fontSize: 13, color: '#999999'}}>去提取</Text> : null}
+                            {status === HAVE_CASH_HAVE_SUPMEMBER ?
+                                <Text style={{fontSize: 13, color: '#999999'}}>明细</Text> : null}
+                            <Image source={arrowRight} style={{width: 14, height: 14, marginRight: 12, marginLeft: 7}}/>
+                        </NoMoreClick> :
+                        null
+                    }
                 </View>
             </View>
         );
@@ -403,6 +405,7 @@ export default class MyCashAccountPage extends BasePage {
     };
 
     renderItem = (info) => {
+        const {returnCashSwitchState} = ReturnCashModel;
         let item = info.item;
         console.log('item', item);
         let key = info.section.key;
@@ -419,7 +422,11 @@ export default class MyCashAccountPage extends BasePage {
                                     end={{x: 1, y: 0}}
                                     colors={['#FF0050', '#FC5D39']}
                     />
-                    <View style={{height: 48, width: ScreenUtils.width, backgroundColor: 'white'}}/>
+                    <View style={{
+                        height: returnCashSwitchState ? 48 : 14,
+                        width: ScreenUtils.width,
+                        backgroundColor: 'white'
+                    }}/>
                     {this._accountInfoRender()}
                 </View>
             );
@@ -496,6 +503,7 @@ export default class MyCashAccountPage extends BasePage {
             'didFocus',
             payload => {
                 ReturnCashModel.getReturnCashInfo();
+                ReturnCashModel.getReturnCashSwitchState()
                 this.onRefresh();
             }
         );
@@ -729,7 +737,6 @@ const styles = StyleSheet.create({
     },
     headerViewStyle:{
         backgroundColor: 'white',
-        height: px2dp(206),
         width: ScreenUtils.width - 2 * DesignRule.margin_page,
         borderRadius: 15,
         overflow: 'hidden',
