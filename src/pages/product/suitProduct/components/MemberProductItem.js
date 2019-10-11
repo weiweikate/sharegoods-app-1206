@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 @observer
 export class MemberPriceView extends Component {
     render() {
-        const { totalPrice, totalOriginPrice } = this.props.memberProductModel;
+        const { totalProPrice, totalPrice } = this.props.memberProductModel;
         return (
             <LinearGradient style={stylesMem.container}
                             start={{ x: 0, y: 0 }}
@@ -81,7 +81,7 @@ export class MemberPriceView extends Component {
                             colors={['#FC5D39', '#FF0050']}>
                 <View style={stylesMem.leftView}>
                     <MRText style={{ fontSize: 20, color: 'white', lineHeight: 41 }}>¥<MRText
-                        style={{ fontSize: 36, fontWeight: '500' }}>{totalPrice}</MRText></MRText>
+                        style={{ fontSize: 36, fontWeight: '500' }}>{totalProPrice}</MRText></MRText>
                     <View style={{ marginLeft: 10 }}>
                         <View style={stylesMem.liBaoView}>
                             <MRText style={{ fontSize: 11, color: 'white' }}>礼包价</MRText>
@@ -90,7 +90,7 @@ export class MemberPriceView extends Component {
                             fontSize: 12,
                             color: 'white',
                             textDecorationLine: 'line-through'
-                        }}>原价{totalOriginPrice}</MRText>
+                        }}>原价{totalPrice}</MRText>
                     </View>
                 </View>
                 <NoMoreClick style={stylesMem.rightView} onPress={() => {

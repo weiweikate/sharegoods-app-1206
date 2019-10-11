@@ -165,13 +165,14 @@ class ConfirmOrderModel {
             // "quantity":, //int 购买数量
             // "activityCode":, //string 活动code
             // "batchNo": //string 活动批次  (拼团业务传递团id)
-            let { skuCode, quantity, batchNo, sgspm = '', sgscm = '',activityList  = []} = item;
+            let { skuCode, quantity, batchNo, sgspm = '', sgscm = '',activityList  = [],activityCode = '', activityTag = '',promotionId = '' } = item;
             sgspm = sgspm || ''
             sgscm = sgscm || ''
+            //activityList 包含了 activityCode, activityTag promotionId，以后删除activityCode, activityTag promotionId
             if (batchNo){
-                return { skuCode, quantity,batchNo, activityList, sgspm, sgscm };
+                return { skuCode, quantity,batchNo, activityList, sgspm, sgscm, activityCode, activityTag, promotionId};
             }else {
-                return { skuCode, quantity, activityList, sgspm,  sgscm};
+                return { skuCode, quantity, activityList, sgspm,  sgscm,activityTag, activityCode, promotionId};
             }
 
         });

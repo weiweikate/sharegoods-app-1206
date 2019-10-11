@@ -42,7 +42,7 @@ export default class NoAccessPage extends Component {
             let uri = null;
             for (const item of dataTemp) {
                 const { linkType, linkTypeCode } = item;
-                if (linkType === homeLinkType.showHtml) {
+                if (linkType === homeLinkType.link) {
                     uri = linkTypeCode;
                     break;
                 }

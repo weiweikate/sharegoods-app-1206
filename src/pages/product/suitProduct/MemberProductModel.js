@@ -51,18 +51,6 @@ export default class MemberProductModel {
         return afterSaleLimitText.slice(1);
     }
 
-    @computed get totalOriginPrice() {
-        if (!this.mainProduct.skuList) {
-            return '';
-        }
-        const mainPrice = this.mainProduct.skuList[0].originalPrice;
-        const subPrice = this.subProducts.reduce((pre, cur) => {
-            const { skuList } = cur;
-            return add(pre, skuList[0].originalPrice);
-        }, 0);
-        return mainPrice + subPrice;
-    }
-
     @computed get totalPrice() {
         if (!this.mainProduct.skuList) {
             return '';
