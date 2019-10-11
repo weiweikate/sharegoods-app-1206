@@ -72,6 +72,7 @@ class OrderDetailModel {
         let hasAfterSaleService = checkOrderAfterSaleService(this.merchantOrder.productOrderList, this.merchantOrder.status, this.baseInfo.nowTime);
         let isAllVirtual = true;
         let isPhoneOrder = true;
+        let canBuyAgain = true;
         this.merchantOrder.productOrderList.forEach((item) => {
             if (item.orderType != 1){
                 isAllVirtual = false;
@@ -79,6 +80,10 @@ class OrderDetailModel {
 
             if ((item.resource || {}).resourceType !== 'TELEPHONE_CHARGE'){
                 isPhoneOrder = false;
+                canBuyAgain = false;//有手机话费的商品的订单，不能支持再次购买
+            }
+            if ((item.resource || {}).resourceType === 'GROUP_EXTEND_PRODUCT'){
+                canBuyAgain = false;//当商品类型为GROUP_EXTEND_PRODUCT，不能支持再次购买
             }
         });
         this.isPhoneOrder = isPhoneOrder;
@@ -198,7 +203,7 @@ class OrderDetailModel {
                 return false;
             }
 
-            if (isPhoneOrder && item.operation === '再次购买') {
+            if ( !canBuyAgain && item.operation === '再次购买') {
                 return false;
             }
             return true;

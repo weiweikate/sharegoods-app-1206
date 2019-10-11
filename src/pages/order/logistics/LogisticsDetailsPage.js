@@ -70,6 +70,7 @@ export default class LogisticsDetailsPage extends BasePage {
                 content1={item.content1}
                 isTop={index === 0}
                 isBottom={index + 1 === this.state.viewData.length}
+                length={this.state.viewData.length}
             />
         );
     };

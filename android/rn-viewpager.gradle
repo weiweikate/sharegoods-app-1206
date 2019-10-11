@@ -10,20 +10,23 @@ android {
     }
     lintOptions {
         abortOnError false
-        warning 'InvalidPackage'
     }
     buildTypes {
         releaseStaging {}
     }
 }
 
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+}
+
 dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
-    compileOnly 'com.facebook.infer.annotation:infer-annotation:+'
-    implementation "com.drewnoakes:metadata-extractor:2.9.1"
-    implementation "com.google.android.gms:play-services-vision:17.0.2"
-    api rootProject.ext.dependencies.zxing
-    api rootProject.ext.dependencies.exifinterface
 }
+

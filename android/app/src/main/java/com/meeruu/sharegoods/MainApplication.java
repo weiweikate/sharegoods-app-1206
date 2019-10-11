@@ -30,8 +30,10 @@ import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.reactnativecommunity.slider.ReactSliderPackage;
+import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import com.request.MRNetStatePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.swmansion.reanimated.ReanimatedPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -113,7 +115,9 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new AsyncStoragePackage(),
                     new RNGestureHandlerPackage(),
                     new ReactSliderPackage(),
-                    new RCTRefreshLayoutPackage()
+                    new RCTRefreshLayoutPackage(),
+                    new ReanimatedPackage(),
+                    new RNCViewPagerPackage()
             );
         }
 

@@ -42,10 +42,8 @@ export class AddCapacityPriceItem extends Component {
                             <MRText style={stylesItem.specText}>{`规格: ${specs || ''}`}</MRText>
                         </View>
                         <View style={stylesItem.rightBottomView}>
-                            <MRText style={stylesItem.priceText}>¥
-                                <MRText>{`${salePrice} `}
-                                    <MRText style={stylesItem.oPriceText}>¥{originPrice}</MRText>
-                                </MRText>
+                            <MRText style={stylesItem.priceText}>¥{`${salePrice} `}
+                                <MRText style={stylesItem.oPriceText}>¥{originPrice}</MRText>
                             </MRText>
                             <AmountView itemData={itemData}/>
                         </View>
@@ -86,7 +84,7 @@ const stylesItem = StyleSheet.create({
         fontSize: 17, color: DesignRule.textColor_redWarn
     },
     oPriceText: {
-        fontSize: 10, color: DesignRule.textColor_instruction, textDecorationLine: 'line-through'
+        fontSize: 10, color: DesignRule.textColor_instruction, textDecorationLine: 'line-through',lineHeight:30
     },
     rightBottomView: {
         flexDirection: 'row', alignItems: 'center', marginRight: 10, justifyContent: 'space-between'
