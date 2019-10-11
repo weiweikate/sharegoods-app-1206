@@ -11,6 +11,9 @@ import SpellShopApi from '../api/SpellShopApi';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from '../../../constants/DesignRule';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
+import { routePush } from '../../../navigation/RouterMap';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import RouterMap from '../../../navigation/RouterMap';
 
 export default class AssistantListPage extends BasePage {
 
@@ -136,10 +139,18 @@ export default class AssistantListPage extends BasePage {
     };
 
     // 店员详情
-    _clickAssistantDetail = (userCode) => {
+    _clickAssistantDetail = (userCode, tutorStatus, itemRoleType) => {
         const { roleType, storeCode } = this.params.storeData;
         if (roleType === 0) {
-            this.$navigate('store/myShop/ShopAssistantDetailPage', { userCode, storeCode });
+            if (itemRoleType !== 0 && tutorStatus === 1) {
+                //item角色不是店长并且是导师的
+                const uri = apiEnvironment.getCurrentH5Url() + `/spellStore/tutor/homepage/${userCode}`;
+                routePush(RouterMap.HtmlPage, {
+                    uri: uri
+                });
+            } else {
+                this.$navigate('store/myShop/ShopAssistantDetailPage', { userCode, storeCode });
+            }
         }
     };
 
@@ -166,8 +177,10 @@ export default class AssistantListPage extends BasePage {
 
     // 渲染行
     _renderItem = ({ item, index }) => {
+        const { roleType } = this.params.storeData;
         return (<AssistantRow item={item}
                               index={index}
+                              roleType={roleType}
                               showActivityImage={this.state.showActivityImage}
                               onPress={this._clickAssistantDetail}
                               onPressDelete={this._clickDeleteAssistant}/>);

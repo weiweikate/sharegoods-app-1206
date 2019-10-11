@@ -63,6 +63,11 @@
     if (mineTypeDic) {
       [[NSNotificationCenter defaultCenter]postNotificationName:@"MINE_CUSTON_MESSAGE" object:mineTypeDic];
     }
+  }else if (typeString && [@"sendMemberLevelUpEvent" isEqualToString:typeString]){
+    NSDictionary *mineTypeDic = userInfo[@"content"];
+    if (mineTypeDic) {
+      [[NSNotificationCenter defaultCenter]postNotificationName:@"nativeEvent_userUpdate" object:mineTypeDic];
+    }
   }
 }
 -(NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString

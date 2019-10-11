@@ -15,9 +15,11 @@ import user from '../../../../model/user';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import spellStatusModel from '../../SpellStatusModel';
 import bridge from '../../../../utils/bridge';
+import StringUtils from '../../../../utils/StringUtils';
 
 const { myShop } = shopRes;
-const { shopProduct, shopProductShare, shop_card } = myShop;
+const { shopProduct, shopProductShare, shop_card, xjt_03 } = myShop;
+
 const { px2dp, width } = ScreenUtils;
 const itemImgSize = px2dp(100);
 const progressWidth = px2dp(60);
@@ -251,5 +253,100 @@ const cardStyles = StyleSheet.create({
     },
     image: {
         height: px2dp(80), width: width
+    }
+});
+
+@observer
+export class RoleTypeView extends Component {
+
+    onPress = (item) => {
+        const { MyShopDetailModel } = this.props;
+        const { storeCode } = MyShopDetailModel.storeData;
+        const { roleType, userCode } = item;
+        if (roleType === 0) {
+            //跳店长主页 优先
+            routePush('store/myShop/ShopAssistantDetailPage', { userCode, storeCode });
+        } else {
+            //跳导师主页
+            const uri = apiEnvironment.getCurrentH5Url() + `/spellStore/tutor/homepage/${userCode}`;
+            routePush(RouterMap.HtmlPage, {
+                uri: uri
+            });
+        }
+    };
+
+    renderItem = (item, index) => {
+        const { MyShopDetailModel } = this.props;
+        const roleTypeStore = MyShopDetailModel.storeData.roleType;
+        const { headImg, nickName, sign, tutorStatus, roleType } = item;
+        return (
+            <NoMoreClick style={stylesRole.itemContainer} key={index} onPress={() => this.onPress(item)}
+                         disabled={roleTypeStore !== 0}>
+                <View style={stylesRole.leftView}>
+                    <UIImage style={stylesRole.image} isAvatar={true} source={{ uri: headImg }}/>
+                    <View style={{ flex: 1 }}>
+                        <MRText style={stylesRole.nameText} numberOfLines={1}>{nickName}</MRText>
+                        {StringUtils.isNoEmpty(sign) &&
+                        <MRText style={stylesRole.desText} numberOfLines={2}>{sign}</MRText>}
+                    </View>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    {roleType === 0 &&
+                    <LinearGradient style={stylesRole.roleView}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 0 }}
+                                    colors={['#FFCB02', '#FF9502']}>
+                        <MRText style={stylesRole.roleText}>店主</MRText>
+                    </LinearGradient>}
+                    {tutorStatus === 1 &&
+                    <LinearGradient style={stylesRole.roleView}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 0 }}
+                                    colors={['#FC5D39', '#FF0050']}>
+                        <MRText style={stylesRole.roleText}>导师</MRText>
+                    </LinearGradient>}
+                    {roleTypeStore === 0 && <Image source={xjt_03} style={{ width: 10, height: 10, marginRight: 15 }}/>}
+                </View>
+            </NoMoreClick>
+        );
+    };
+
+    render() {
+        const { MyShopDetailModel } = this.props;
+        const { storeManagers } = MyShopDetailModel;
+        return (
+            <View>
+                {
+                    storeManagers.map((item, index) => {
+                        return this.renderItem(item, index);
+                    })
+                }
+            </View>
+        );
+    }
+}
+
+const stylesRole = StyleSheet.create({
+    itemContainer: {
+        marginHorizontal: 15, backgroundColor: 'white', marginBottom: 10, flexDirection: 'row',
+        borderRadius: 10, alignItems: 'center'
+    },
+    leftView: {
+        flexDirection: 'row', alignItems: 'center', flex: 1, marginVertical: 15
+    },
+    image: {
+        height: 50, width: 50, borderRadius: 25, overflow: 'hidden', marginLeft: 15, marginRight: 10
+    },
+    nameText: {
+        fontSize: 15, color: DesignRule.textColor_mainTitle
+    },
+    desText: {
+        fontSize: 13, color: DesignRule.textColor_secondTitle, marginTop: 5
+    },
+    roleView: {
+        alignItems: 'center', justifyContent: 'center', width: 45, height: 24, borderRadius: 12, marginRight: 13
+    },
+    roleText: {
+        fontSize: 13, color: 'white'
     }
 });

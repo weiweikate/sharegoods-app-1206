@@ -23,7 +23,7 @@ import user from '../../../model/user';
 import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
 import { trackEvent } from '../../../utils/SensorsTrack';
-import { ShopProductItemView } from './components/ShopDetailItemView';
+import { RoleTypeView, ShopProductItemView } from './components/ShopDetailItemView';
 import MyShopDetailModel from './MyShopDetailModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import StringUtils from '../../../utils/StringUtils';
@@ -205,6 +205,7 @@ export default class MyShopPage extends BasePage {
                                 SpellShopApi.quitStore().then(() => {
                                     this.$loadingDismiss();
                                     spellStatusModel.requestHome();
+                                    user.updateUserData();
                                 }).catch((error) => {
                                     this.$loadingDismiss();
                                     this.$toastShow(error.msg);
@@ -248,8 +249,9 @@ export default class MyShopPage extends BasePage {
                         this.$loadingShow();
                         SpellShopApi.user_apply({ storeCode: this.MyShopDetailModel.storeCode }).then(() => {
                             this.$loadingDismiss();
-                            navigateBackToStore();
                             spellStatusModel.requestHome();
+                            user.updateUserData();
+                            navigateBackToStore();
                         }).catch((error) => {
                             this.$loadingDismiss();
                             this.$toastShow(error.msg);
@@ -301,6 +303,7 @@ export default class MyShopPage extends BasePage {
                     <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement}
                                 MyShopDetailModel={this.MyShopDetailModel}/>
                     <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
+                    <RoleTypeView MyShopDetailModel={this.MyShopDetailModel}/>
                     <MembersRow MyShopDetailModel={this.MyShopDetailModel}
                                 onPressAllMembers={this._clickAllMembers}/>
                     <View>

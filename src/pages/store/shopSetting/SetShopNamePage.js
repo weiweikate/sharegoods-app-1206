@@ -11,7 +11,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from '../../../constants/DesignRule';
-import res from '../../../comm/res';
+import res from '../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import AvatarImage from '../../../components/ui/AvatarImage';
@@ -19,9 +19,12 @@ import RouterMap from '../../../navigation/RouterMap';
 import bridge from '../../../utils/bridge';
 import LinearGradient from 'react-native-linear-gradient';
 import spellStatusModel from '../SpellStatusModel';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import user from '../../../model/user';
 
 const { px2dp } = ScreenUtils;
 const arrow_right = res.button.arrow_right_black;
+const { addTutor } = res.shopSetting;
 
 export default class SetShopNamePage extends BasePage {
 
@@ -54,7 +57,10 @@ export default class SetShopNamePage extends BasePage {
 
             provinceCode: '',
             cityCode: '',
-            areaCode: ''
+            areaCode: '',
+            tutorCode: null,//导师code
+            tutorImage: '',
+            inviteTutorRemark: ''//导师邀请语
         };
     }
 
@@ -81,8 +87,23 @@ export default class SetShopNamePage extends BasePage {
         }
     }
 
+    tuOnPress = () => {
+        const uri = apiEnvironment.getCurrentH5Url() + '/spellStore/tutor/list?sourceType=setShopTutor';
+        this.$navigate(RouterMap.HtmlPage, {
+            uri: uri,
+            callBack: (msg) => {
+                const { tutorCode, tutorImage, inviteTutorRemark } = msg || {};
+                this.setState({ tutorCode, tutorImage, inviteTutorRemark });
+            }
+        });
+    };
+
     _complete = () => {
-        const { storeHeadUrlOrigin, textName, provinceCode, cityCode } = this.state;
+        const {
+            storeHeadUrlOrigin, textName, provinceCode, cityCode,
+            tutorCode, inviteTutorRemark
+        } = this.state;
+        const { storeData, isSplit } = this.params;
         if (StringUtils.isEmpty(storeHeadUrlOrigin)) {
             this.$toastShow('店铺头像不能为空');
             return;
@@ -105,7 +126,13 @@ export default class SetShopNamePage extends BasePage {
             this.$toastShow('请选择店铺位置');
             return;
         }
-        const { storeData, isSplit } = this.params;
+
+        if (!storeData) {
+            //拆分和新开 需要绑定导师
+            if (!tutorCode) {
+                this.$toastShow('请选择导师');
+            }
+        }
         bridge.showLoading();
         if (storeData) {
             SpellShopApi.app_store_update({
@@ -132,6 +159,7 @@ export default class SetShopNamePage extends BasePage {
             }).then(() => {
                 bridge.hiddenLoading();
                 spellStatusModel.requestHome();
+                user.updateUserData();
                 this.$navigate('store/openShop/OpenShopSuccessPage');
             }).catch((error) => {
                 bridge.hiddenLoading();
@@ -143,10 +171,13 @@ export default class SetShopNamePage extends BasePage {
                 headUrl: storeHeadUrlOrigin,
                 provinceCode: provinceCode,
                 cityCode: cityCode,
-                profile: this.state.textProfile
+                profile: this.state.textProfile,
+                tutorCode,
+                inviteTutorRemark
             }).then(() => {
                 bridge.hiddenLoading();
                 spellStatusModel.requestHome();
+                user.updateUserData();
                 this.$navigate('store/openShop/OpenShopSuccessPage');
             }).catch((error) => {
                 bridge.hiddenLoading();
@@ -210,6 +241,8 @@ export default class SetShopNamePage extends BasePage {
     };
 
     _render() {
+        const { tutorCode, tutorImage } = this.state;
+        const { storeData } = this.params;
         return (
             <View style={styles.container}>
                 <ScrollView keyboardDismissMode='on-drag'>
@@ -240,6 +273,20 @@ export default class SetShopNamePage extends BasePage {
                         <TouchableOpacity style={styles.bntArea}
                                           onPress={this._getCityPicker}/>
                     </View>
+                    {
+                        !storeData ?
+                            <View>
+                                <Text style={styles.textTitle}>选择导师</Text>
+                                <NoMoreClick style={styles.tuBtn} onPress={this.tuOnPress}>
+                                    {
+                                        tutorCode ?
+                                            <AvatarImage source={{ uri: tutorImage }} style={styles.tuUImage}/>
+                                            :
+                                            <Image source={addTutor} style={styles.tuImg}/>
+                                    }
+                                </NoMoreClick>
+                            </View> : null
+                    }
                     {/*简介*/}
                     <Text style={styles.textTitle}>简单介绍下您的拼店店铺</Text>
                     <View style={styles.profileContainer}>
@@ -310,6 +357,17 @@ const styles = StyleSheet.create({
     },
     bntArea: {
         position: 'absolute', bottom: 0, right: 0, left: 0, top: 0
+    },
+    //导师
+    tuBtn: {
+        backgroundColor: 'white', borderRadius: 20, width: 40, height: 40,
+        justifyContent: 'center', alignItems: 'center', overflow: 'hidden', marginBottom: 15, marginLeft: 15
+    },
+    tuImg: {
+        width: 20, height: 20
+    },
+    tuUImage: {
+        width: 40, height: 40
     },
 
     //店铺简介

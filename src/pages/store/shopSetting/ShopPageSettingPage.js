@@ -17,6 +17,8 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../SpellStatusModel';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import RouterMap from '../../../navigation/RouterMap';
 
 const ArrowImg = res.shopSetting.xjt_03;
 
@@ -54,6 +56,13 @@ export default class ShopPageSettingPage extends BasePage {
     // 店铺评分
     _scoreShop = () => {
         this.$navigate('store/shopSetting/ShopScorePage', { storeData: this.state.storeData });
+    };
+
+    _tutor = () => {
+        const uri = apiEnvironment.getCurrentH5Url() + '/spellStore/tutor/list';
+        this.$navigate(RouterMap.HtmlPage, {
+            uri: uri
+        });
     };
 
     _closeStore = () => {
@@ -101,6 +110,10 @@ export default class ShopPageSettingPage extends BasePage {
                             key: '店铺成立时间',
                             showArrow: false,
                             value: buildTime || ''
+                        }, {
+                            key: '导师管理',
+                            showArrow: true,
+                            onPres: this._tutor
                         }].map((item, index) => {
                             return this.renderRow(item, index);
                         })

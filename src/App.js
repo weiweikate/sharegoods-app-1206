@@ -39,9 +39,12 @@ import loginModel from './pages/login/model/LoginModel';
 import { getSGspm_home, HomeSource } from './utils/OrderTrackUtil';
 import PrivacyModal from './pages/home/view/PrivacyModal';
 import { HomeAdModal_IOS } from './pages/home/view/HomeMessageModalView';
+import UserMemberUpdateModal from './pages/home/view/UserMemberUpdateModal';
+import homeModalManager from './pages/home/manager/HomeModalManager';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
+const USERUPDATE ="nativeEvent_userUpdate";
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -167,13 +170,18 @@ class App extends Component {
             }, 3000);
         });
         this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.mineMessageData);
+        this.listenerJSMessage_USERUPDATE = JSManagerEmitter.addListener(USERUPDATE, this.userUpdate);
     }
 
     componentWillUnmount() {
         this.listenerJSMessage && this.listenerJSMessage.remove();
         this.startAdvSubscription && this.startAdvSubscription.remove();
+        this.listenerJSMessage_USERUPDATE &&  this.listenerJSMessage_USERUPDATE.remove();
     }
 
+    userUpdate = (data) => {
+        homeModalManager.getUserMemberUpdate(data)
+    }
 
     mineMessageData = (data) => {
         const { params } = JSON.parse(data) || {};
@@ -224,6 +232,7 @@ class App extends Component {
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
                 {Platform.OS === 'ios'?  <HomeAdModal_IOS/>:null}
+                <UserMemberUpdateModal />
                 <PrivacyModal />
             </View>
         );
