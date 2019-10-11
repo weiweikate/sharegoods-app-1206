@@ -62,13 +62,20 @@ export default class MemberProductPage extends BasePage {
     };
 
     _buyAction = () => {
-        const { mainProduct, totalProPrice, productCode, activityCode, subProducts } = this.memberProductModel;
+        const { mainProduct, totalProPrice, productCode, activityCode, subProducts, promotionInfoItem } = this.memberProductModel;
+        const activityList = [{ activityCode }, {
+            activityTag: promotionInfoItem.activityTag,
+            promotionId: promotionInfoItem.promotionId,
+            activityCode: promotionInfoItem.activityCode
+        }];
+
         this.SelectionPage.show(mainProduct, (amount, skuCode) => {
             let orderProductList = (subProducts || []).map((subProduct) => {
                 const { skuList, prodCode } = subProduct || {};
                 const skuItem = (skuList || [])[0];
                 const { skuCode } = skuItem || {};
                 return {
+                    activityList,
                     activityCode,
                     batchNo: 1,
                     productCode: prodCode,
