@@ -202,14 +202,23 @@ export default class ProductDetailPage extends BasePage {
                 shoppingcartEntrance: 1
             });
         } else if (goType === 'buy') {
+            const { productDetailAddressModel } = this.productDetailModel;
+            const { promotionInfoItem, promotionInfoS } = productDetailAddressModel;
+            const activityList = promotionInfoS.map((item) => {
+                const { activityTag, promotionId, activityCode } = item;
+                return { activityTag, promotionId, activityCode };
+            });
             if (isGroupIn) {
-                const { subProductList, code } = groupActivity;
+                const { subProductList } = groupActivity;
                 let orderProductList = (subProductList || []).map((subProduct) => {
                     const { skuList, prodCode } = subProduct || {};
                     const skuItem = (skuList || [])[0];
                     const { skuCode } = skuItem || {};
                     return {
-                        activityCode: code,
+                        promotionId: promotionInfoItem.promotionId,
+                        activityTag: promotionInfoItem.activityTag,
+                        activityCode: promotionInfoItem.activityCode,
+                        activityList,
                         batchNo: 1,
                         productCode: prodCode,
                         skuCode: skuCode,
@@ -222,7 +231,10 @@ export default class ProductDetailPage extends BasePage {
                         orderType: 1,
                         source: 2,
                         orderProducts: [{
-                            activityCode: code,
+                            promotionId: promotionInfoItem.promotionId,
+                            activityTag: promotionInfoItem.activityTag,
+                            activityCode: promotionInfoItem.activityCode,
+                            activityList,
                             batchNo: 1,
                             productCode: prodCode,
                             skuCode: skuCode,
@@ -236,12 +248,6 @@ export default class ProductDetailPage extends BasePage {
             }
             const { type, couponId } = this.params;
             const { specImg, promotionPrice, price, propertyValues } = item;
-            const { productDetailAddressModel } = this.productDetailModel;
-            const { promotionInfoItem, promotionInfoS } = productDetailAddressModel;
-            const activityList = promotionInfoS.map((item) => {
-                const { activityTag, promotionId, activityCode } = item;
-                return { activityTag, promotionId, activityCode };
-            });
             let orderProducts = [{
                 productType: this.productDetailModel.type,
                 sgscm: this.productDetailModel.sgscm,
