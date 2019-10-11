@@ -267,6 +267,10 @@ export default class RequestDetailPage extends BasePage {
         }
     };
 
+    $isMonitorNetworkStatus(){
+        return true;
+    }
+
     _render() {
         let WebAdModal = this.WebAdModal;
         return (
