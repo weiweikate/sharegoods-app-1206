@@ -78,7 +78,7 @@ export class MemberPriceView extends Component {
             <LinearGradient style={stylesMem.container}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 0 }}
-                            colors={['#FC5D39', '#FF0050']}>
+                            colors={['#FF0050', '#FC5D39']}>
                 <View style={stylesMem.leftView}>
                     <MRText style={{ fontSize: 20, color: 'white', lineHeight: 41 }}>¥<MRText
                         style={{ fontSize: 36, fontWeight: '500' }}>{totalProPrice}</MRText></MRText>

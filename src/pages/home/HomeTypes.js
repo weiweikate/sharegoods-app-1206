@@ -54,7 +54,6 @@ export const homeLinkType = {
     classify: 12,      //分类
     nothing: 13,      //无跳转
     page: 14,      //页面路由
-    showHtml: 16      //当前页面显示网页内容
 };
 
 export const homeRoute = {
