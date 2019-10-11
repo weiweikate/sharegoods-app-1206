@@ -192,8 +192,7 @@ class AddBankCardPage extends BasePage {
         );
     };
     inputCardNum = (cardNo) => {
-        this.setState({ cardNo: formatCardWithSpace(cardNo) });
-        this.getBankType();
+        this.setState({ cardNo: formatCardWithSpace(cardNo) },this.getBankType);
     };
     getBankType = () => {
         const bankCard = this.state.cardNo.replace(/ /g, '');
