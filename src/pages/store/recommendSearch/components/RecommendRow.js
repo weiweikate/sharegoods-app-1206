@@ -50,7 +50,7 @@ export default class RecommendRow extends Component {
                             </View>
                         </View>
                         <Text style={styles.name} numberOfLines={1}>{`店主: ${userName || ''}`}</Text>
-                        <Text style={styles.name} numberOfLines={1}>{`导师: ${tutorName || ''}`}</Text>
+                        {tutorName?<Text style={styles.name} numberOfLines={1}>{`导师: ${tutorName || ''}`}</Text>:null}
                     </View>
                 </View>
                 <View style={styles.bottomContainer}>
