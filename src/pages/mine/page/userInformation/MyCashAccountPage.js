@@ -300,7 +300,7 @@ export default class MyCashAccountPage extends BasePage {
                                 </Text> : null}
                             {status === HAVE_CASH_HAVE_SUPMEMBER ?
                                 <Text style={styles.returnCashTextStyle}>
-                                    累计已有{StringUtils.formatMoneyString(returnCash, false)}元自返金转到余额</Text>
+                                    累计已有{StringUtils.formatMoneyString(returnCash, false)}自返金转到余额</Text>
                                 : null}
 
                             {status === NO_CASH_NO_SUPMEMBER ?
