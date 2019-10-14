@@ -155,7 +155,9 @@ export default class SetShopNamePage extends BasePage {
                 headUrl: storeHeadUrlOrigin,
                 provinceCode: provinceCode,
                 cityCode: cityCode,
-                profile: this.state.textProfile
+                profile: this.state.textProfile,
+                tutorCode,
+                inviteTutorRemark
             }).then(() => {
                 bridge.hiddenLoading();
                 spellStatusModel.requestHome();
