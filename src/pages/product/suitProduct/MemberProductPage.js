@@ -88,6 +88,7 @@ export default class MemberProductPage extends BasePage {
                     orderType: 1,
                     source: 2,
                     orderProducts: [{
+                        activityList,
                         activityCode,
                         batchNo: 1,
                         productCode: productCode,
