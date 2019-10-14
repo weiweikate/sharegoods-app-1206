@@ -23,7 +23,7 @@ pod 'Bugly', '~> 2.5.0'
 #微信支付
 pod 'WechatOpenSDK','~> 1.8.3'
 #友盟统计
-pod 'UMCCommon','~> 2.1.0'
+pod 'UMCCommon','2.1.1'
 pod 'UMCAnalytics','~> 6.0.5'
 pod 'UMCSecurityPlugins','~> 1.0.5'
 #友盟分享
