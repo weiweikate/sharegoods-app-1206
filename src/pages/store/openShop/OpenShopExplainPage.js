@@ -22,7 +22,7 @@ import bridge from '../../../utils/bridge';
 import { BannersVerticalView } from '../../../comm/components/BannersVerticalView';
 import HomeAPI from '../../home/api/HomeAPI';
 import { homeType } from '../../home/HomeTypes';
-
+import LinearGradient from 'react-native-linear-gradient';
 
 const { openShop_yes, openShop_no } = res.openShop;
 
@@ -116,8 +116,13 @@ export default class OpenShopExplainPage extends BasePage {
                 <ScrollView style={styles.scrollView}>
                     <BannersVerticalView bannerList={data}/>
                 </ScrollView>
-                <NoMoreClick onPress={this._clickOpen} style={styles.btnStyle}>
-                    <Text style={styles.btnText}>我要开店</Text>
+                <NoMoreClick onPress={this._clickOpen}>
+                    <LinearGradient style={styles.btnStyle}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 0 }}
+                                    colors={['#FC5D39', '#FF0050']}>
+                        <Text style={styles.btnText}>我要开店</Text>
+                    </LinearGradient>
                 </NoMoreClick>
                 <View style={styles.explainContainer}>
                     <NoMoreClick onPress={() => {
@@ -141,7 +146,7 @@ const styles = StyleSheet.create({
     },
     btnStyle: {
         justifyContent: 'center', alignItems: 'center', marginTop: 20, alignSelf: 'center',
-        width: ScreenUtils.autoSizeWidth(260), height: 44, borderRadius: 22, backgroundColor: DesignRule.mainColor
+        width: ScreenUtils.autoSizeWidth(345), height: 40, borderRadius: 22, backgroundColor: DesignRule.mainColor
     },
     btnText: {
         fontSize: 17, color: 'white'
