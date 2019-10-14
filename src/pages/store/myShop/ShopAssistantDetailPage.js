@@ -1,6 +1,6 @@
 //店员详情页面
 import React from 'react';
-import { Image, ImageBackground, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui';
 import BasePage from '../../../BasePage';
@@ -9,19 +9,8 @@ import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
-import resCommon from '../../../comm/res';
-//Source
-const SCREEN_WIDTH = ScreenUtils.width;
 
-const RingImg = res.myShop.headBg;
-const HeaderBarBgImg = res.myShop.txbg_03;
-const NameIcon = res.myShop.icon_03;
-const StarIcon = res.myShop.icon_03_02;
-const CodeIcon = res.myShop.icon_03_03;
-const PhoneIcon = res.myShop.icon_03_04;
-const QbIcon = res.myShop.dzfhj_03_03;
-const MoneyIcon = res.myShop.ccz_03;
-const NavLeft = resCommon.button.back_white;
+const NavLeft = res.button.back_black;
 
 export default class ShopAssistantDetailPage extends BasePage {
 
@@ -39,7 +28,6 @@ export default class ShopAssistantDetailPage extends BasePage {
     _NavBarRenderRightItem = () => {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
-
                     <TouchableOpacity onPress={() => {
                         this.$navigateBack();
                     }} style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
@@ -65,55 +53,39 @@ export default class ShopAssistantDetailPage extends BasePage {
         });
     }
 
-    _renderDescRow = (icon, title, style = { marginBottom: 15 }) => {
-        return <View style={[{ flexDirection: 'row', alignItems: 'center' }, style]}>
-            <Image source={icon} style={{ width: 15, height: 15 }}/>
-            <Text style={styles.rowTitle} allowFontScaling={false}>{title}</Text>
-        </View>;
-    };
-
-    _renderRow = (icon, title, desc) => {
+    _renderRow = (title, desc) => {
         return (<View style={styles.row}>
-            <Image style={styles.icon} source={icon}/>
             <Text style={styles.title} allowFontScaling={false}>{title}</Text>
             <Text style={styles.desc} allowFontScaling={false}>{desc}</Text>
         </View>);
     };
 
-    renderSepLine = () => {
-        return (<View style={styles.line}/>);
-    };
-
     renderContent = () => {
         const { userInfo } = this.state;
-        const { updateTime, userBonus } = this.state.userInfo;
+        const { updateTime, userBonus, createTime, roleType } = this.state.userInfo;
+        const timeShow = roleType === 0 ? createTime : updateTime;
         return (
-            <ScrollView style={{ flex: 1 }}>
-                <ImageBackground source={HeaderBarBgImg} style={styles.imgBg}>
-                    <View style={{
-                        marginTop: ScreenUtils.headerHeight,
-                        flex: 1,
-                        flexDirection: 'row',
-                        alignItems: 'center'
-                    }}>
-                        <ImageBackground source={RingImg}
-                                         style={styles.headerBg}>
-                            <UIImage
-                                style={styles.headImg}
-                                source={{ uri: userInfo.headImg }}
-                                borderRadius={34}/>
-                        </ImageBackground>
-                        <View style={styles.shopInContainer}>
-                            {this._renderDescRow(NameIcon, `名称：${userInfo.nickName || ''}`)}
-                            {this._renderDescRow(StarIcon, `级别：${userInfo.levelName || ''}`)}
-                            {this._renderDescRow(CodeIcon, `会员号：${userInfo.code || ''}`)}
-                            {this._renderDescRow(PhoneIcon, `手机号：${userInfo.phone || ''}`, null)}
-                        </View>
-                    </View>
-                </ImageBackground>
-                {this._renderRow(QbIcon, '加入店铺时间', updateTime ? DateUtils.formatDate(updateTime, 'yyyy年MM月dd日') : '')}
-                {this.renderSepLine()}
-                {this._renderRow(MoneyIcon, '每月分红总额', `${userBonus || 0}元`)}
+            <ScrollView>
+                <View style={styles.imgBg}>
+                    <UIImage
+                        style={styles.headImg}
+                        source={{ uri: userInfo.headImg }}
+                        isAvatar={true}
+                        borderRadius={34}/>
+                    <Text style={{
+                        fontSize: 16,
+                        color: DesignRule.textColor_mainTitle,
+                        marginBottom: 7
+                    }}>{userInfo.nickName || ''}</Text>
+                    <Text style={{
+                        fontSize: 12,
+                        color: DesignRule.textColor_secondTitle
+                    }}>{userInfo.levelName || ''}</Text>
+                </View>
+                {this._renderRow('会员号', `${userInfo.code || ''}`)}
+                {this._renderRow('手机号', `${userInfo.phone || ''}`, null)}
+                {this._renderRow('加入时间', timeShow ? DateUtils.formatDate(timeShow, 'yyyy年MM月dd日') : '')}
+                {this._renderRow('已获奖励总额', `${userBonus || 0}元`)}
             </ScrollView>);
     };
 
@@ -151,55 +123,24 @@ const styles = StyleSheet.create({
         width: 88
     },
     imgBg: {
-        width: SCREEN_WIDTH,
-        height: ScreenUtils.autoSizeWidth(162) + ScreenUtils.headerHeight,
-        marginBottom: 11
+        height: 156 + ScreenUtils.headerHeight, marginBottom: 15,
+        alignItems: 'center', backgroundColor: 'white'
     },
-    headerBg: {
-        marginLeft: 16,
-        marginRight: 23,
-        width: 105 / 375 * SCREEN_WIDTH,
-        height: 105 / 375 * SCREEN_WIDTH,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
+
     headImg: {
-        width: 68,
-        height: 68,
-        borderRadius: 34
+        marginTop: ScreenUtils.headerHeight, marginBottom: 15,
+        width: 76, height: 76, borderRadius: 38
     },
-    shopInContainer: {
-        height: 105 / 375 * SCREEN_WIDTH,
-        justifyContent: 'center'
-    },
-    rowTitle: {
-        fontSize: 13,
-        color: 'white',
-        marginLeft: 5
-    },
-    line: {
-        height: StyleSheet.hairlineWidth,
-        borderColor: '#fdfcfc'
-    },
+
     row: {
-        height: 44,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'white'
+        height: 44, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white',
+        justifyContent: 'space-between', borderRadius: 10, marginHorizontal: 15, marginBottom: 10
     },
-    icon: {
-        marginLeft: 25, width: 14, height: 14
-    },
+
     title: {
-        fontSize: 13,
-        color: DesignRule.textColor_mainTitle,
-        marginLeft: 4
+        fontSize: 13, color: DesignRule.textColor_secondTitle, marginLeft: 15
     },
     desc: {
-        fontSize: 12,
-        color: DesignRule.textColor_secondTitle,
-        flex: 1,
-        textAlign: 'right',
-        marginRight: 21
+        fontSize: 13, color: DesignRule.textColor_mainTitle, marginRight: 15
     }
 });

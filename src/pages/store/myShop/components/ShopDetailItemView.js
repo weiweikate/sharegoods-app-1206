@@ -305,7 +305,7 @@ export class RoleTypeView extends Component {
                                     colors={['#FC5D39', '#FF0050']}>
                         <MRText style={stylesRole.roleText}>导师</MRText>
                     </LinearGradient>}
-                    {roleTypeStore === 0 && <Image source={xjt_03} style={{ width: 10, height: 10, marginRight: 15 }}/>}
+                    {roleTypeStore === 0 && <Image source={xjt_03} style={{ width: 14, height: 14, marginRight: 15 }}/>}
                 </View>
             </NoMoreClick>
         );
