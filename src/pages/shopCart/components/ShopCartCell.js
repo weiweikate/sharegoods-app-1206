@@ -12,7 +12,7 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {Image, StyleSheet, TouchableHighlight, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View,TouchableWithoutFeedback} from 'react-native';
 import PropTypes from 'prop-types';
 import {MRText, MRTextInput as TextInput, UIImage, UIText} from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
@@ -53,7 +53,7 @@ export default class ShopCartCell extends Component {
                 alignItems: 'center',
                 paddingBottom: px2dp(1)
             }}>
-                <TouchableHighlight onPress={() => {
+                <TouchableWithoutFeedback onPress={() => {
                     cellClickAction(itemData);
                 }}
                 >
@@ -158,7 +158,7 @@ export default class ShopCartCell extends Component {
                             </View>
                         </View>
                     </View>
-                </TouchableHighlight>
+                </TouchableWithoutFeedback>
             </View>
         );
     };
@@ -181,7 +181,7 @@ export default class ShopCartCell extends Component {
                 marginTop: itemData.topSpace,
                 alignItems: 'center',
             }}>
-                <TouchableHighlight onPress={() => {
+                <TouchableWithoutFeedback onPress={() => {
                     cellClickAction(itemData);
                 }}
                 >
@@ -217,7 +217,7 @@ export default class ShopCartCell extends Component {
                             </MRText>
                         </View>
                     </View>
-                </TouchableHighlight>
+                </TouchableWithoutFeedback>
             </View>
         );
     };
