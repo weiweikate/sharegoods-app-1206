@@ -200,6 +200,8 @@ export default class MyCashAccountPage extends BasePage {
             {key: 'A', data: [{title: 'head'}]},
             {key: 'B', data: !EmptyUtils.isEmpty(viewData) ? viewData : [{title: 'empty'}]}
         ];
+        const {availableBalance} = user;
+        console.log(availableBalance);
         return (
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
