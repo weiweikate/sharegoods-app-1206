@@ -377,7 +377,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', height: px2dp(120), borderRadius: 10, marginHorizontal: 15
     },
     profileText: {
-        flex: 1, textAlignVertical: 'top', paddingHorizontal: 15, color: DesignRule.textColor_mainTitle
+        flex: 1, textAlignVertical: 'top', paddingHorizontal: 15, marginVertical: 13,
+        color: DesignRule.textColor_mainTitle, fontSize: 13
     },
     profileTextAbsolute: {
         position: 'absolute', bottom: 10, right: 10, color: DesignRule.textColor_instruction

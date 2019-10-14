@@ -44,6 +44,10 @@ export default class MyShopDetailModel {
             this.storeData = data.data || {};
             this.requestHomePageList();
             this.manageHomePageList();
+            const { roleType } = this.storeData;
+            if (roleType === 0) {
+                this.existsBindTutor();
+            }
             track(trackEvent.PinShopEnter, {
                 pinCode: this.storeData.storeCode,
                 wayToPinType: this.wayToPinType
@@ -74,15 +78,12 @@ export default class MyShopDetailModel {
         const { storeCode } = this.storeData;
         SpellShopApi.manageHomePageList({ storeCode }).then((data) => {
             this.storeManagers = data.data || [];
+        });
+    };
 
-            let hasTutor = false;
-            this.storeManagers.forEach((item) => {
-                if (item.tutorStatus === 1) {
-                    hasTutor = true;
-                }
-            });
-            const { roleType } = this.storeData;
-            if (roleType === 0 && !hasTutor) {
+    existsBindTutor = () => {
+        SpellShopApi.existsBindTutor().then((data) => {
+            if (!data.data) {
                 store.get('@mr/alertToTutor').then((date) => {
                     //一天弹一次
                     if (!DateUtils.isToday(date)) {

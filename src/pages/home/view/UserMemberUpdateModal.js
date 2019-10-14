@@ -71,7 +71,7 @@ export default class UserMemberUpdateModal extends React.Component {
 
     render() {
         if (Platform.OS === 'ios'){
-            if (HomeModalManager.isShowUserMemberUpdate && HomeModalManager.isHome){
+            if (HomeModalManager.isShowUserMemberUpdate){
                 return this.renderContent()
             } else {
                 return <View />
@@ -86,7 +86,7 @@ export default class UserMemberUpdateModal extends React.Component {
                 onRequestClose={() => {
                     HomeModalManager.closeUserMemberUpdate();
                 }}
-                visible={HomeModalManager.isShowUserMemberUpdate && HomeModalManager.isHome}>
+                visible={HomeModalManager.isShowUserMemberUpdate}>
                 {this.renderContent()}
             </Modal>
         );

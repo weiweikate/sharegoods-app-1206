@@ -69,6 +69,8 @@ export default class MemberProductPage extends BasePage {
             activityCode: promotionInfoItem.activityCode
         }];
 
+        const { show, promotionPrice } = promotionInfoItem;
+
         this.SelectionPage.show(mainProduct, (amount, skuCode) => {
             let orderProductList = (subProducts || []).map((subProduct) => {
                 const { skuList, prodCode } = subProduct || {};
@@ -88,6 +90,7 @@ export default class MemberProductPage extends BasePage {
                     orderType: 1,
                     source: 2,
                     orderProducts: [{
+                        activityList,
                         activityCode,
                         batchNo: 1,
                         productCode: productCode,
@@ -96,7 +99,7 @@ export default class MemberProductPage extends BasePage {
                     }, ...orderProductList]
                 }
             });
-        }, { priceShow: totalProPrice });
+        }, { priceShow: show === 1 ? promotionPrice : totalProPrice });
     };
 
     _allAction = () => {
