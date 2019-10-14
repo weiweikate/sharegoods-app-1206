@@ -15,6 +15,7 @@ import SMSTool from '../../../utils/SMSTool';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import { weChatUnusual } from '../model/LoginActionModel';
 import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
+import { track } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 export default class VerifyWXCodePage extends BasePage {
@@ -26,6 +27,7 @@ export default class VerifyWXCodePage extends BasePage {
             downTime: 0,
             code: ''
         };
+        track('ViewLoginException');
     }
 
     // 禁用某个页面的手势
@@ -108,6 +110,7 @@ export default class VerifyWXCodePage extends BasePage {
      * 验证手机号
      */
     verifyPhone = () => {
+        track('LoginExceptionBtnClick', { 'LoginExceptionBtnClick': '验证' });
         if (this.judgeData()) {
             this.$loadingShow();
             let params = {
@@ -119,12 +122,14 @@ export default class VerifyWXCodePage extends BasePage {
             weChatUnusual(params, () => {
                 this.$toastShow('登录成功');
                 this.$loadingDismiss();
+                track('LoginCheckResult', { 'checkResult': true });
             }, (code, data) => {
                 this.$loadingDismiss();
                 if (data && data.weChatBindingStatus === false) {
                     // 跳转到结果页
                     routeNavigate(RouterMap.VerifyResultPage);
                 }
+                track('LoginCheckResult', { 'checkResult': false });
             }, 2);
         }
     };
