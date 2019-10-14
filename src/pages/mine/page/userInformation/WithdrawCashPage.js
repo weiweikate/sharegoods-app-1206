@@ -129,6 +129,7 @@ export default class WithdrawCashPage extends BasePage {
         this.getLastBankInfoSuccess = false;
         this.getRateSuccess = false;
         this.purMoney = '';
+        this.hasLeaved = false;
     }
 
     $navigationBarOptions = {
@@ -314,7 +315,11 @@ export default class WithdrawCashPage extends BasePage {
                 />
                 <WithdrawFinishModal visible={this.state.showFinishModal} onRequestClose={() => {
                     this.setState({ showFinishModal: false });
-                    this.$navigateBack(RouterMap.MyCashAccountPage);
+                    if(!this.hasLeaved){
+                        this.$navigateBack();
+                        this.hasLeaved = true;
+                    }
+
                 }}/>
             </View>
         );
