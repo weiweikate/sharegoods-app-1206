@@ -7,8 +7,6 @@
 //
 
 #import "AppDelegate+APNS.h"
-// 引入 JPush 功能所需头文件
-#import "JPUSHService.h"
 //#import "JSPush"
 
 // iOS10 注册 APNs 所需头文件
@@ -23,10 +21,6 @@
 #import "UIButton+ImageText.h"
 
 #define NotificationStatusTime @"NotificationStatusTime"
-
-@interface AppDelegate (APNS)<JPUSHRegisterDelegate>
-
-@end
 
 @implementation AppDelegate (APNS)
 
@@ -91,38 +85,20 @@
 
 #pragma mark 配置推送
 -(void)configAPNSWithOption:(NSDictionary *)launchOptions{
-  //  //推送消息相关处理
-  //  if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)])
-  //  {
-  //    UIUserNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound |         UIRemoteNotificationTypeAlert;
-  //    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types
-  //                                                                             categories:nil];
-  //    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-  //    [[UIApplication sharedApplication] registerForRemoteNotifications];
-  //  }
-  //  else
-  //  {
-  //    UIRemoteNotificationType types = UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound |         UIRemoteNotificationTypeBadge;
-  //    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
-  //  }
+
   JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
   entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound|JPAuthorizationOptionAlert;
   if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {}
-  __weak typeof(self)  weakSelf = self;
-  [JPUSHService registerForRemoteNotificationConfig:entity delegate:weakSelf];
+  [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
 
-  NSString * appKey ;
   [JPUSHService setupWithOption:launchOptions
                          appKey:KJSPushKey
                         channel:@"App Store"
                apsForProduction:KJisProduction
           advertisingIdentifier:nil];
   
-  // 下边为一键登录相关设置,有问题请联系胡玉峰同志 OK? 如需使用 IDFA 功能请添加此代码并在初始化配置类中设置 advertisingId
-//  NSString *idfaStr = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
   JVAuthConfig *config = [[JVAuthConfig alloc] init];
   config.appKey = KJSPushKey;
-//  config.advertisingId = idfaStr;
   [JVERIFICATIONService setupWithConfig:config];
   [JVERIFICATIONService setDebug:YES];
   [self customUI];
@@ -302,26 +278,6 @@
     [self showChatViewController:userInfo];
   }
 }
-
-//-(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
-//  [self showChatViewController:response.notification.request.content.userInfo];
-//  completionHandler();
-//}
-//
-//- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center openSettingsForNotification:(UNNotification *)notification{
-//  if (notification && [notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
-//     [self showChatViewController:notification.request.content.userInfo];
-//    //从通知界面直接进入应用
-//  }else{
-//    //从通知设置界面进入应用
-//  }
-//}
-
-//-(void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)())completionHandler{
-//  [self showChatViewController:response.notification.request.content.userInfo];
-//  completionHandler();
-//}
-
 
 #pragma mark 推送来的消息解析
 -(void)showChatViewController:(NSDictionary *)userInfo{

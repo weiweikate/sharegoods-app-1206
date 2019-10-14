@@ -200,6 +200,8 @@ export default class MyCashAccountPage extends BasePage {
             {key: 'A', data: [{title: 'head'}]},
             {key: 'B', data: !EmptyUtils.isEmpty(viewData) ? viewData : [{title: 'empty'}]}
         ];
+        const {availableBalance} = user;
+        console.log(availableBalance);
         return (
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
@@ -255,7 +257,7 @@ export default class MyCashAccountPage extends BasePage {
                 <View style={[styles.headerViewStyle, {height: returnCashSwitchState ? px2dp(206) : px2dp(174),}]}>
                     <View style={styles.withdrawWrapper}>
                         <Text style={styles.countTextStyle}>
-                            账户余额（元）
+                            账户余额
                         </Text>
                         <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>
                             <Text
@@ -276,12 +278,12 @@ export default class MyCashAccountPage extends BasePage {
                         <View style={{flex: 1, marginLeft: 15, justifyContent: 'center'}}>
                             <Text
                                 style={styles.numTextStyle}>{user.blockedBalance ? user.blockedBalance : '0.00'}</Text>
-                            <Text style={styles.numRemarkStyle}>待入账(元)</Text>
+                            <Text style={styles.numRemarkStyle}>待入账</Text>
                         </View>
                         <View style={{flex: 1, marginLeft: 15, justifyContent: 'center'}}>
                             <Text
                                 style={styles.numTextStyle}>{user.historicalBalance ? user.historicalBalance : '0.00'}</Text>
-                            <Text style={styles.numRemarkStyle}>累计收益(元)</Text>
+                            <Text style={styles.numRemarkStyle}>累计收益</Text>
                         </View>
                     </View>
                     {returnCashSwitchState ? <NoMoreClick
@@ -298,7 +300,7 @@ export default class MyCashAccountPage extends BasePage {
                                 </Text> : null}
                             {status === HAVE_CASH_HAVE_SUPMEMBER ?
                                 <Text style={styles.returnCashTextStyle}>
-                                    累计已有{StringUtils.formatMoneyString(returnCash, false)}元自返金转到余额</Text>
+                                    累计已有{StringUtils.formatMoneyString(returnCash, false)}自返金转到余额</Text>
                                 : null}
 
                             {status === NO_CASH_NO_SUPMEMBER ?

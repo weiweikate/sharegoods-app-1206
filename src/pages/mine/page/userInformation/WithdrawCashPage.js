@@ -129,6 +129,7 @@ export default class WithdrawCashPage extends BasePage {
         this.getLastBankInfoSuccess = false;
         this.getRateSuccess = false;
         this.purMoney = '';
+        this.hasLeaved = false;
     }
 
     $navigationBarOptions = {
@@ -314,7 +315,11 @@ export default class WithdrawCashPage extends BasePage {
                 />
                 <WithdrawFinishModal visible={this.state.showFinishModal} onRequestClose={() => {
                     this.setState({ showFinishModal: false });
-                    this.$navigateBack(RouterMap.MyCashAccountPage);
+                    if(!this.hasLeaved){
+                        this.$navigateBack();
+                        this.hasLeaved = true;
+                    }
+
                 }}/>
             </View>
         );
@@ -427,18 +432,18 @@ export default class WithdrawCashPage extends BasePage {
     commitAll = () => {
         if (this.state.balance !== null) {
             if (user.availableBalance <= this.state.balance && user.availableBalance <= singleCommit) {
-                this.setState({ money: `${user.availableBalance || 0}` });
+                this.setState({ money: `${user.availableBalance || 0}` },()=>this.onChangeText(this.state.money));
             } else if (this.state.balance <= user.availableBalance && this.state.balance <= singleCommit) {
-                this.setState({ money: `${this.state.balance}` });
+                this.setState({ money: `${this.state.balance}` },()=>this.onChangeText(this.state.money));
             } else {
-                this.setState({ money: `${singleCommit}` });
+                this.setState({ money: `${singleCommit}` },()=>this.onChangeText(this.state.money));
             }
 
         } else {
             if (user.availableBalance < singleCommit) {
-                this.setState({ money: `${user.availableBalance || 0}` });
+                this.setState({ money: `${user.availableBalance || 0}` },()=>this.onChangeText(this.state.money));
             } else {
-                this.setState({ money: `${singleCommit}` });
+                this.setState({ money: `${singleCommit}` },()=>this.onChangeText(this.state.money));
             }
         }
     };
