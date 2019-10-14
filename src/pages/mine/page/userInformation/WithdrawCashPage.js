@@ -427,18 +427,18 @@ export default class WithdrawCashPage extends BasePage {
     commitAll = () => {
         if (this.state.balance !== null) {
             if (user.availableBalance <= this.state.balance && user.availableBalance <= singleCommit) {
-                this.setState({ money: `${user.availableBalance || 0}` });
+                this.setState({ money: `${user.availableBalance || 0}` },()=>this.onChangeText(this.state.money));
             } else if (this.state.balance <= user.availableBalance && this.state.balance <= singleCommit) {
-                this.setState({ money: `${this.state.balance}` });
+                this.setState({ money: `${this.state.balance}` },()=>this.onChangeText(this.state.money));
             } else {
-                this.setState({ money: `${singleCommit}` });
+                this.setState({ money: `${singleCommit}` },()=>this.onChangeText(this.state.money));
             }
 
         } else {
             if (user.availableBalance < singleCommit) {
-                this.setState({ money: `${user.availableBalance || 0}` });
+                this.setState({ money: `${user.availableBalance || 0}` },()=>this.onChangeText(this.state.money));
             } else {
-                this.setState({ money: `${singleCommit}` });
+                this.setState({ money: `${singleCommit}` },()=>this.onChangeText(this.state.money));
             }
         }
     };
