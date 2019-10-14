@@ -18,7 +18,7 @@ import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
 
 const { myShop } = shopRes;
-const { shopProduct, shopProductShare, shop_card, xjt_03 } = myShop;
+const { shopProduct, shopProductShare, shop_card, xjt_03, tutor } = myShop;
 
 const { px2dp, width } = ScreenUtils;
 const itemImgSize = px2dp(100);
@@ -163,7 +163,7 @@ export class ShopProductItemView extends Component {
 
 const ProductItemViewStyles = StyleSheet.create({
     container: {
-        marginBottom: 20
+        marginBottom: 10
     },
     /*标题*/
     headerView: {
@@ -305,7 +305,7 @@ export class RoleTypeView extends Component {
                                     colors={['#FC5D39', '#FF0050']}>
                         <MRText style={stylesRole.roleText}>导师</MRText>
                     </LinearGradient>}
-                    {roleTypeStore === 0 && <Image source={xjt_03} style={{ width: 10, height: 10, marginRight: 15 }}/>}
+                    {roleTypeStore === 0 && <Image source={xjt_03} style={{ width: 14, height: 14, marginRight: 15 }}/>}
                 </View>
             </NoMoreClick>
         );
@@ -314,19 +314,33 @@ export class RoleTypeView extends Component {
     render() {
         const { MyShopDetailModel } = this.props;
         const { storeManagers } = MyShopDetailModel;
-        return (
-            <View>
-                {
-                    storeManagers.map((item, index) => {
-                        return this.renderItem(item, index);
-                    })
-                }
-            </View>
-        );
+        if (storeManagers && storeManagers.length > 0) {
+            return (
+                <View>
+                    <View style={stylesRole.topView}>
+                        <Image source={tutor} style={stylesRole.topImg}/>
+                        <MRText style={{ fontSize: 14, color: DesignRule.textColor_mainTitle }}>管理团队</MRText>
+                    </View>
+                    {
+                        storeManagers.map((item, index) => {
+                            return this.renderItem(item, index);
+                        })
+                    }
+                </View>
+            );
+        } else {
+            return null;
+        }
     }
 }
 
 const stylesRole = StyleSheet.create({
+    topView: {
+        flexDirection: 'row', alignItems: 'center', height: 40
+    },
+    topImg: {
+        width: 13, height: 13, marginLeft: 25, marginRight: 5
+    },
     itemContainer: {
         marginHorizontal: 15, backgroundColor: 'white', marginBottom: 10, flexDirection: 'row',
         borderRadius: 10, alignItems: 'center'

@@ -257,7 +257,7 @@ export default class MyCashAccountPage extends BasePage {
                 <View style={[styles.headerViewStyle, {height: returnCashSwitchState ? px2dp(206) : px2dp(174),}]}>
                     <View style={styles.withdrawWrapper}>
                         <Text style={styles.countTextStyle}>
-                            账户余额（元）
+                            账户余额
                         </Text>
                         <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>
                             <Text
@@ -278,12 +278,12 @@ export default class MyCashAccountPage extends BasePage {
                         <View style={{flex: 1, marginLeft: 15, justifyContent: 'center'}}>
                             <Text
                                 style={styles.numTextStyle}>{user.blockedBalance ? user.blockedBalance : '0.00'}</Text>
-                            <Text style={styles.numRemarkStyle}>待入账(元)</Text>
+                            <Text style={styles.numRemarkStyle}>待入账</Text>
                         </View>
                         <View style={{flex: 1, marginLeft: 15, justifyContent: 'center'}}>
                             <Text
                                 style={styles.numTextStyle}>{user.historicalBalance ? user.historicalBalance : '0.00'}</Text>
-                            <Text style={styles.numRemarkStyle}>累计收益(元)</Text>
+                            <Text style={styles.numRemarkStyle}>累计收益</Text>
                         </View>
                     </View>
                     {returnCashSwitchState ? <NoMoreClick

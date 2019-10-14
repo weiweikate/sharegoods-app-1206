@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         width: 50, height: 20, borderTopRightRadius: 10, borderBottomLeftRadius: 10
     },
     roleView: {
-        alignItems: 'center', justifyContent: 'center', width: 40, height: 20, borderRadius: 10, marginRight: 5
+        alignItems: 'center', justifyContent: 'center', width: 40, height: 20, borderRadius: 10, marginLeft: 5
     },
     roleText: {
         fontSize: 13, color: 'white'
@@ -185,7 +185,7 @@ const stylesE = StyleSheet.create({
         fontSize: 12, color: DesignRule.textColor_secondTitle, marginTop: 5, paddingHorizontal: 15, paddingBottom: 10
     },
     closeBtn: {
-        position: 'absolute', top: 0, right: 15
+        position: 'absolute', top: 0, right: 7
     },
     closeIcon: {
         margin: 8, width: 12, height: 12

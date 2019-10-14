@@ -34,6 +34,7 @@ import { bannerModule } from './PinShopBannerModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import { navigateBackToStore, routePop } from '../../../navigation/RouterMap';
 import { MRText } from '../../../components/ui';
+import LinearGradient from 'react-native-linear-gradient';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -295,7 +296,7 @@ export default class RecommendPage extends BasePage {
     };
 
     _renderNavView1 = () => {
-        return <View style={styles.navView}>
+        return <View style={styles.navView1}>
             <View style={styles.navTitleView}>
                 <View style={styles.barItemContainer}>
                     {!this.props.isHome ?
@@ -322,9 +323,30 @@ export default class RecommendPage extends BasePage {
         </View>;
     };
 
+    _onScroll = (event) => {
+        let Y = event.nativeEvent.contentOffset.y;
+        let oldSt = this.st;
+        if (Y <= 0) {
+            this.st = 0;
+        } else {
+            this.st = 1;
+        }
+        if (oldSt === this.st) {
+            return;
+        }
+        this.LinearGradient.setNativeProps({
+            opacity: this.st
+        });
+    };
+
     _render() {
         return (
             <View style={{ flex: 1 }}>
+                <LinearGradient colors={['#FF0050', '#FC5D39']}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 0 }}
+                                ref={e => this.LinearGradient = e}
+                                style={styles.navView}/>
                 {this._renderNavView1()}
                 <SectionList keyExtractor={(item, index) => `${item.storeCode}${index}`}
                              style={{ backgroundColor: DesignRule.bgColor }}
@@ -338,6 +360,7 @@ export default class RecommendPage extends BasePage {
                                      colors={[DesignRule.mainColor]}/>}
                              onEndReached={this._onEndReached.bind(this)}
                              onEndReachedThreshold={2.5}
+                             onScroll={this._onScroll}
                              ListFooterComponent={this._ListFooterComponent}
                              showsVerticalScrollIndicator={false}
                              ListHeaderComponent={this._renderListHeader}
@@ -359,6 +382,10 @@ const styles = StyleSheet.create({
 
     navView: {
         position: 'absolute', top: 0, left: 0, right: 0, zIndex: 50,
+        height: ScreenUtils.headerHeight, opacity: 0
+    },
+    navView1: {
+        position: 'absolute', top: 0, left: 0, right: 0, zIndex: 51,
         height: ScreenUtils.headerHeight
     },
     navTitleView: {

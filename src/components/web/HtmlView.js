@@ -20,6 +20,7 @@ import LuckyIcon from '../../pages/guide/LuckyIcon';
 import GroupSelectModel from '../../pages/mine/page/spellGroup/components/GroupSelectModel';
 import { MRText } from '../ui';
 import { netState } from '@mr/rn-request';
+import DesignRule from '../../constants/DesignRule';
 
 const moreIcon = res.button.message_three;
 const btn_group = res.button.btn_group;
@@ -31,7 +32,7 @@ export default class RequestDetailPage extends BasePage {
 
     // 页面配置
     $navigationBarOptions = {
-        title: this.params.title ||(netState.isConnected ? '加载中...' : '网络异常') ,
+        title: this.params.title || (netState.isConnected ? '加载中...' : '网络异常'),
         show: !(this.props.params || {}).unShow
     };
 
@@ -140,12 +141,11 @@ export default class RequestDetailPage extends BasePage {
             );
         } else if (this.state.hasRightItem) {
             return <TouchableOpacity onPress={this.showMore} style={{
-                width: ScreenUtils.px2dp(40),
                 height: ScreenUtils.px2dp(44),
-                alignItems: 'center',
                 justifyContent: 'center'
             }} activeOpacity={0.7}>
-                <MRText>{this.state.hasRightItem}</MRText>
+                <MRText
+                    style={{ fontSize: 13, font: DesignRule.textColor_mainTitle }}>{this.state.hasRightItem}</MRText>
             </TouchableOpacity>;
         }
     };
@@ -287,7 +287,7 @@ export default class RequestDetailPage extends BasePage {
         }
     };
 
-    $isMonitorNetworkStatus(){
+    $isMonitorNetworkStatus() {
         return true;
     }
 

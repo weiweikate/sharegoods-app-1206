@@ -140,7 +140,7 @@ export default class CashRewardAccountPage extends BasePage {
                 <View style={styles.headerViewStyle}>
                     <View style={styles.withdrawWrapper}>
                         <Text style={styles.countTextStyle}>
-                            累计自返(元)
+                            累计自返
                         </Text>
                         {returnCashInfo.convertSwitchStatus === 2 ?
                             <NoMoreClick
@@ -188,14 +188,14 @@ export default class CashRewardAccountPage extends BasePage {
                         <View style={{flex: 1, marginLeft: 15, justifyContent: 'center'}}>
                             <Text
                                 style={styles.numTextStyle}>{returnCashInfo.preSettleSelfReturn ? returnCashInfo.preSettleSelfReturn : '0.00'}</Text>
-                            <Text style={styles.numRemarkStyle}>待入账(元)</Text>
+                            <Text style={styles.numRemarkStyle}>待入账</Text>
                         </View>
                         <View style={{flex: 1, marginLeft: 15, justifyContent: 'center'}}>
                             <Text
                                 style={styles.numTextStyle}>
                                 {returnCashInfo.availableSelfReturnAmount ? returnCashInfo.availableSelfReturnAmount : '0.00'}
                                 </Text>
-                            <Text style={styles.numRemarkStyle}>可转金额(元)</Text>
+                            <Text style={styles.numRemarkStyle}>可转金额</Text>
                         </View>
                     </View>
                 </View>

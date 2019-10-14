@@ -8,7 +8,7 @@ const api = {
     app_store_get: ['/app/store/list/type', { method: 'get' }],
     //搜索
     app_store_list: ['/app/store/list', { method: 'get' }],
-    //是否能开店
+    //是否能开店或者拆分
     checkQualificationOpenStore: ['/app/store/user/checkQualificationOpenStore', { method: 'get' }],
     //开启店铺
     app_store_open: '/app/store/open',
@@ -37,6 +37,8 @@ const api = {
     //举报店铺
     storeTipOffInsert: '/app/store/tipoff/save',
     manageHomePageList: ['/app/store/user/manageHomePageList', { method: 'get' }],
+    //是否绑定导师
+    existsBindTutor: ['/app/store/tutor/existsBindTutor', { method: 'get' }],
     //查询店铺人员
     app_store_homePageList: ['/app/store/user/homePageList', { method: 'get' }],
     //查看店铺人员总列表
