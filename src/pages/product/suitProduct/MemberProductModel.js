@@ -42,6 +42,8 @@ export default class MemberProductModel {
     @observable afterSaleTip = '';
     @observable shareContent = '';
 
+    @observable promotionInfoItem = {};
+
     @computed get afterSaleLimitText() {
         let afterSaleLimitText = '';
         const { afterSaleLimit } = this;
@@ -49,18 +51,6 @@ export default class MemberProductModel {
             afterSaleLimitText = `${afterSaleLimitText},${afterSaleLimitType[item]}`;
         });
         return afterSaleLimitText.slice(1);
-    }
-
-    @computed get totalOriginPrice() {
-        if (!this.mainProduct.skuList) {
-            return '';
-        }
-        const mainPrice = this.mainProduct.skuList[0].originalPrice;
-        const subPrice = this.subProducts.reduce((pre, cur) => {
-            const { skuList } = cur;
-            return add(pre, skuList[0].originalPrice);
-        }, 0);
-        return mainPrice + subPrice;
     }
 
     @computed get totalPrice() {
@@ -110,7 +100,7 @@ export default class MemberProductModel {
             this.extraType = extraType;
             this.freight = freight;
             this.mainProduct = mainProduct || {};
-            const { packageVideo, mainImages, detailImages, subProducts, afterSaleLimit, afterSaleTip, shareContent } = packages[0] || {};
+            const { packageVideo, mainImages, detailImages, subProducts, afterSaleLimit, afterSaleTip, shareContent, groupCode } = packages[0] || {};
             this.packageVideo = packageVideo;
             this.mainImages = mainImages;
             this.detailImages = detailImages;
@@ -118,9 +108,21 @@ export default class MemberProductModel {
             this.afterSaleLimit = afterSaleLimit;
             this.afterSaleTip = afterSaleTip;
             this.shareContent = shareContent;
+
+            this.promotionInfo(productCode, activityCode, groupCode);
         }).catch(e => {
             this.loadingState = PageLoadingState.fail;
             this.netFailedInfo = e;
         });
     };
+
+    promotionInfo = (prodCode, activityCode, groupCode) => {
+        ProductApi.product_promotion_info({
+            prodCode, activityCode, groupCode
+        }).then((data) => {
+            const dataList = data.data || [];
+            this.promotionInfoItem = dataList[0] || {};
+        });
+    };
+
 }

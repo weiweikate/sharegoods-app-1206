@@ -3,7 +3,6 @@ package com.meeruu.sharegoods.receiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.widget.TableLayout;
 
 import com.meeruu.commonlib.event.Event;
 import com.meeruu.commonlib.utils.AppUtils;
@@ -43,6 +42,7 @@ public class MRJPushReceiver extends JPushMessageReceiver {
     @Override
     public void onRegister(Context context, String regId) {
         super.onRegister(context, regId);
+        LogUtils.d("=====" + regId);
         // 将推送 ID 保存到用户表中
         SensorsDataAPI.sharedInstance().profilePushId("jgId", regId);
     }
@@ -97,6 +97,9 @@ public class MRJPushReceiver extends JPushMessageReceiver {
                 } catch (JSONException e) {
                 }
                 break;
+            case "sendMemberLevelUpEvent":
+                EventBus.getDefault().post(new Event.MRUserUpdateEvent(content));
+                break;
             case "ActivitySkip":
                 // 跳标
                 EventBus.getDefault().post(new Event.MRNativeTagEvent(content));
@@ -127,7 +130,7 @@ public class MRJPushReceiver extends JPushMessageReceiver {
         } else if (objExtra != null && objExtra.has(LINK_NATIVE_URL)) {
             String link = "";
             try {
-                link = objExtra.getString(LINk_KEY);
+                link = objExtra.getString(LINK_NATIVE_URL);
             } catch (Exception e) {
             }
             String uri = "meeruu://path/" + link;
@@ -153,7 +156,7 @@ public class MRJPushReceiver extends JPushMessageReceiver {
                 jsonObject.put(BIZ_ID, id);
             }
 
-            if(objExtra != null && objExtra.has(BIZ_TYPE)){
+            if (objExtra != null && objExtra.has(BIZ_TYPE)) {
                 String type = objExtra.getString(BIZ_TYPE);
                 jsonObject.put(BIZ_TYPE, type);
             }

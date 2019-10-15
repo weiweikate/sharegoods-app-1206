@@ -30,18 +30,22 @@ export class MemberSubAlert extends Component {
     };
 
     _renderItem = ({ item }) => {
-        const { name, imgUrl, originalPrice } = item;
+        const { name, imgUrl, minPrice, secondName } = item;
         return (
             <View style={styles.itemView}>
                 <UIImage source={{ uri: imgUrl }} style={styles.itemImg}/>
                 <View style={styles.textView}>
                     <MRText style={{ color: DesignRule.textColor_mainTitle, fontSize: 12 }}
                             numberOfLines={2}>{name}</MRText>
+                    <MRText style={{
+                        color: DesignRule.textColor_instruction,
+                        fontSize: 12
+                    }}>{secondName}</MRText>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <MRText style={{
                             color: DesignRule.textColor_instruction,
                             fontSize: 12
-                        }}>原价:￥{originalPrice}</MRText>
+                        }}>原价:￥{minPrice}</MRText>
                         <MRText style={{ color: DesignRule.textColor_instruction, fontSize: 12 }}>x1</MRText>
                     </View>
                 </View>

@@ -158,7 +158,8 @@ export default class ProductDetailModel {
                 realSkuList = [];
             }
         }
-        return realSkuList;
+        //过滤null 库存不同步
+        return realSkuList.filter(item => item);
     }
 
     /*商品规格*/
@@ -195,6 +196,10 @@ export default class ProductDetailModel {
     @observable title;
 
     /**营销活动**/
+    /*显示新活动 1显示*/
+    @observable show;
+    //显示新活动 文案
+    @observable showTag;
     @observable promotionLimitNum;
     /*0:秒杀;1:套餐;2:直降;3:满减;4:满折,5拼团*/
     @observable activityType;
@@ -278,11 +283,11 @@ export default class ProductDetailModel {
         }
     }
 
-    /*产品当前页是否使用活动价格  (直降 秒杀)进行中 (拼团未计算在内,因为有存在正常单独购买流程)*/
+    /*产品当前页是否使用活动价格  (直降 秒杀,新营销活动)进行中 (拼团未计算在内,因为有存在正常单独购买流程)*/
     @computed get productIsPromotionPrice() {
         const { activityType, activityStatus } = this;
         let tempType = activityType === activity_type.skill || activityType === activity_type.verDown;
-        return tempType && activityStatus === activity_status.inSell;
+        return (tempType && activityStatus === activity_status.inSell) || this.show;
     }
 
     @computed get isSkillIn() {
@@ -405,6 +410,9 @@ export default class ProductDetailModel {
 
     @computed get levelText() {
         const { priceType, activityStatus, activityType } = this;
+        if (this.show) {
+            return this.showTag;
+        }
         if (activityStatus === activity_status.inSell && activityType === activity_type.verDown) {
             return this.tags[0] || '';
         }
@@ -528,8 +536,10 @@ export default class ProductDetailModel {
             promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
             promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice,
             promotionAttentionNum, promotionSaleRate,
-            selfReturning, shareMoney, now, skuList
+            selfReturning, shareMoney, now, skuList, show, showTag
         } = promotionInfo;
+        this.showTag = showTag;
+        this.show = show;
         const { singleActivity, groupActivity, tags } = promotionResult || {};
         this.singleActivity = singleActivity || {};
         this.groupActivity = groupActivity || {};

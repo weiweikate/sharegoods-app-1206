@@ -16,6 +16,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res/product';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { routePop } from '../../../../navigation/RouterMap';
+import StringUtils from '../../../../utils/StringUtils';
 
 const { white_go } = res.button;
 const { back, share } = res.pDetailNav;
@@ -73,15 +74,15 @@ const styles = StyleSheet.create({
 @observer
 export class MemberPriceView extends Component {
     render() {
-        const { totalPrice, totalOriginPrice } = this.props.memberProductModel;
+        const { totalProPrice, totalPrice } = this.props.memberProductModel;
         return (
             <LinearGradient style={stylesMem.container}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 0 }}
-                            colors={['#FC5D39', '#FF0050']}>
+                            colors={['#FF0050', '#FC5D39']}>
                 <View style={stylesMem.leftView}>
                     <MRText style={{ fontSize: 20, color: 'white', lineHeight: 41 }}>¥<MRText
-                        style={{ fontSize: 36, fontWeight: '500' }}>{totalPrice}</MRText></MRText>
+                        style={{ fontSize: 36, fontWeight: '500' }}>{totalProPrice}</MRText></MRText>
                     <View style={{ marginLeft: 10 }}>
                         <View style={stylesMem.liBaoView}>
                             <MRText style={{ fontSize: 11, color: 'white' }}>礼包价</MRText>
@@ -90,7 +91,7 @@ export class MemberPriceView extends Component {
                             fontSize: 12,
                             color: 'white',
                             textDecorationLine: 'line-through'
-                        }}>原价{totalOriginPrice}</MRText>
+                        }}>原价{totalPrice}</MRText>
                     </View>
                 </View>
                 <NoMoreClick style={stylesMem.rightView} onPress={() => {
@@ -160,17 +161,25 @@ const stylesName = StyleSheet.create({
 @observer
 export class MemberBuyView extends Component {
     render() {
-        const { totalProPrice, totalDeProPrice } = this.props.memberProductModel;
+        const { totalProPrice, totalDeProPrice, promotionInfoItem } = this.props.memberProductModel;
+        const { show, showTag, promotionPrice } = promotionInfoItem;
+        const priceType = show === 1 ? `${showTag}：` : '套餐价：';
+        //支付
+        const pricePay = show === 1 ? promotionPrice : totalProPrice;
+        //节省
+        const totalPrice = StringUtils.add(totalProPrice, totalDeProPrice);
+        const priceSub = show === 1 ? StringUtils.sub(totalPrice, promotionPrice) : totalDeProPrice;
+
         return (
             <View style={stylesBottom.container}>
                 <View style={stylesBottom.container1}>
                     <View style={stylesBottom.leftView}>
-                        <MRText style={{ fontSize: 12, color: DesignRule.textColor_mainTitle }}>套餐价:
-                            <MRText style={{ fontSize: 17, color: DesignRule.textColor_redWarn }}>￥{totalProPrice}
-                            </MRText>
+                        <MRText style={{ fontSize: 12, color: DesignRule.textColor_mainTitle }}>{priceType}<MRText
+                            style={{ fontSize: 17, color: DesignRule.textColor_redWarn }}>￥{pricePay}
+                        </MRText>
                         </MRText>
                         <MRText
-                            style={{ fontSize: 10, color: DesignRule.textColor_redWarn }}>为你节省{totalDeProPrice}</MRText>
+                            style={{ fontSize: 10, color: DesignRule.textColor_redWarn }}>为你节省{priceSub}</MRText>
                     </View>
                     <NoMoreClick onPress={() => {
                         this.props.buyAction && this.props.buyAction();

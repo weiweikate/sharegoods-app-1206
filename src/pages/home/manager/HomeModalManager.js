@@ -28,6 +28,12 @@ class HomeModalManager {
     @observable
     isShowPrivacyModal = false;
     needShowPrivacyModal = false
+    /** 控制用户升级*/
+    @observable
+    isShowUserMemberUpdate = false;
+    needShowUserMemberUpdate  = false;
+    @observable
+    UserMemberUpdateData = null;
     /** 控制公告*/
     @observable
     isShowNotice = false;
@@ -105,7 +111,9 @@ class HomeModalManager {
             track(trackEvent.HomePagePopShow, {homePagePopType: 5});
         }  else if (this.needShowPrivacyModal === true) {
             this.isShowPrivacyModal = true;
-        }else if (this.needShowNotice === true) {
+        } else if (this.needShowUserMemberUpdate === true) {
+            this.isShowUserMemberUpdate = true;
+        } else if (this.needShowNotice === true) {
             this.isShowNotice = true;
             track(trackEvent.HomePagePopShow, {homePagePopType: 2});
         } else if (this.needShowAd === true) {
@@ -151,6 +159,13 @@ class HomeModalManager {
         } else {
             bridge.exitApp();
         }
+    }
+    @action
+    closeUserMemberUpdate(){
+        this.isShowUserMemberUpdate = false;
+        this.needShowUserMemberUpdate = false;
+        this.UserMemberUpdateData = null;
+        this.openNext();
     }
 
     @action
@@ -352,6 +367,14 @@ class HomeModalManager {
         }).catch(() => {
         });
     }
+
+    @action
+    getUserMemberUpdate(data) {
+        this.needShowUserMemberUpdate = true;
+        this.UserMemberUpdateData = data;
+        this.openNext();
+    }
+
 
     @action
     userLevelUpdate(level) {

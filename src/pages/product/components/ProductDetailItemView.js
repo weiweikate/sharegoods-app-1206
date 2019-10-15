@@ -103,18 +103,16 @@ export class HeaderItemView extends Component {
         const {
             imgFileList, videoUrl, imgUrl,
             freight, monthSaleCount, originalPrice, minPrice, groupPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
-            secondName, levelText, priceType, activityType, activityStatus, type, isHuaFei
+            secondName, levelText, priceType, activityType, activityStatus, type, isHuaFei, productIsPromotionPrice
         } = productDetailModel;
         const showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
         const showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
         const showPinWill = activityType === activity_type.pinGroup && activityStatus === activity_status.unBegin;
         const showPinIn = activityType === activity_type.pinGroup && activityStatus === activity_status.inSell;
         //秒杀或者拼团  不显示价格
-        const showPrice = !((activityType === activity_type.skill || activity_type.pinGroup) && activityStatus === activity_status.inSell);
+        const showPrice = !((activityType === (activity_type.skill || activity_type.pinGroup)) && activityStatus === activity_status.inSell);
         /*秒杀||拼团||话费 || 兑换 不显示拼店*/
-        const showShop = ((activityType === activity_type.skill || activity_type.pinGroup) && activityStatus === activity_status.inSell) || isHuaFei || this.props.paramsType === '9';
-        /*直降中显示活动价 价格区间*/
-        const verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
+        const showShop = ((activityType === (activity_type.skill || activity_type.pinGroup)) && activityStatus === activity_status.inSell) || isHuaFei || this.props.paramsType === '9';
         const { productDetailAddressModel } = productDetailModel;
         const { freightPrice } = productDetailAddressModel;
         const freightPriceShow = isNoEmpty(freightPrice) ? freightPrice : freight;
@@ -127,8 +125,8 @@ export class HeaderItemView extends Component {
                 {showPinIn && <GroupActivityInView productDetailModel={productDetailModel}/>}
                 {showPrice &&
                 this._renderPriceView({
-                    minPrice: verDownInSell ? promotionMinPrice : minPrice,
-                    maxPrice: verDownInSell ? promotionMaxPrice : maxPrice,
+                    minPrice: productIsPromotionPrice ? promotionMinPrice : minPrice,
+                    maxPrice: productIsPromotionPrice ? promotionMaxPrice : maxPrice,
                     originalPrice,
                     levelText,
                     monthSaleCount

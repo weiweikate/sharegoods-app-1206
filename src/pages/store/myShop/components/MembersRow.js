@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     },
     arrow: {
         marginLeft: 5,
-        marginRight: 15, width: 10, height: 10
+        marginRight: 15, width: 14, height: 14
     },
     membersContainer: {
         flexDirection: 'row',

@@ -22,6 +22,7 @@ const index = {
     myShop_join: require('./myShop_join.png'),
     shopProduct: require('./shopProduct.png'),
     shopProductShare: require('./shopProductShare.png'),
-    shop_card: require('./shop_card.png')
+    shop_card: require('./shop_card.png'),
+    tutor: require('./tutor.png')
 };
 export default index;

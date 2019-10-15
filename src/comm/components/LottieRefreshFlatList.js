@@ -192,8 +192,12 @@ export default class RefreshFlatList extends React.Component {
             this.setState({
                 refreshing: false
             });
-        }, 1000)
-        this.setState({ refreshing: refreshing, footerStatus: 'idle' });
+        }, 1000);
+        if(refreshing){
+            this.setState({ refreshing: refreshing, footerStatus: 'idle' });
+        }else {
+            this.setState({  footerStatus: 'idle' });
+        }
         this.allLoadCompleted = false;
         let { onStartRefresh, url, params, defaultPage, onEndRefresh, paramsFunc } = this.props;
         if (paramsFunc) {

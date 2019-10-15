@@ -219,7 +219,7 @@ export default class AddressManagerPage extends BasePage {
             provinceCode: item.provinceCode,
             cityCode: item.cityCode,
             areaCode: item.areaCode,
-            streeCode: item.streeCode,
+            streetCode: item.streetCode,
             isDefault: index === this.state.selectIndex
         });
     };

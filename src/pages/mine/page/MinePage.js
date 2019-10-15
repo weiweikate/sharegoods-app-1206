@@ -471,7 +471,7 @@ export default class MinePage extends BasePage {
                             return;
                         }
                         if (beVip) {
-                            this.$navigate(RouterMap.HtmlPage, {uri: '/custom/ZDYZT201909251743341'});
+                            this.$navigate(RouterMap.HtmlPage, {uri: 'https://h5.sharegoodsmall.com/custom/ZDYZT201909251743341'});
                         } else {
                             this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
                         }
@@ -661,7 +661,7 @@ export default class MinePage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.totalBalance ? user.totalBalance : '0.00', false), '个人账户(元)', 1, () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.totalBalance ? user.totalBalance : '0.00', false), '个人账户', 1, () => {
                         settingModel.availableBalanceAdd();
                         this.go2CashDetailPage(1);
                         TrackApi.ViewAccountBalance();

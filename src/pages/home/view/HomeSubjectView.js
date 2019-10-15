@@ -70,7 +70,7 @@ const ActivityItem = ({ data, press, goodsPress }) => {
                 money={price}
                 img={value.specImg ? value.specImg : ''}
                 press={() => {
-                    goodsPress && goodsPress(value);
+                    goodsPress && goodsPress(value, index);
                 }}
             />
         );
@@ -107,28 +107,28 @@ const ActivityItem = ({ data, press, goodsPress }) => {
 
 @observer
 export default class HomeSubjectView extends Component {
-    _subjectActions(item, index) {
+    _subjectActions(item, index, index2) {
         track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeSubject, index));
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(item);
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
-        params = {...params,...getSGspm_home(HomeSource.hot, index)}
+        params = {...params,...getSGspm_home(HomeSource.hot, index, index2)}
         navigate(router, params);
     }
 
-    _goodAction(good, item, index) {
+    _goodAction(good, item, index,index2) {
         const { navigate } = this.props;
         if (item.linkType === homeLinkType.exp) {
             if (good.endTime >= good.currTime) {
                 const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
-                navigate(router, { activityCode: item.linkTypeCode, productCode: good.prodCode });
+                navigate(router, { activityCode: item.linkTypeCode, productCode: good.prodCode, ...getSGspm_home(HomeSource.hot, index, index2) });
             } else {
                 const router = homeRoute[homeLinkType.good];
-                navigate(router, { productCode: good.prodCode });
+                navigate(router, { productCode: good.prodCode , ...getSGspm_home(HomeSource.hot, index, index2)});
             }
         } else {
             const pageObj = getTopicJumpPageParam(good);
-            navigate(pageObj.pageRoute, { ...pageObj.params });
+            navigate(pageObj.pageRoute, { ...pageObj.params, ...getSGspm_home(HomeSource.hot, index, index2) });
         }
         // 首页超值热卖商品点击
         track(trackEvent.homeTopicProdClick, {
@@ -149,9 +149,9 @@ export default class HomeSubjectView extends Component {
         }
         let items = [];
         subjectList.map((item, index) => {
-            items.push(<ActivityItem data={item} key={index} press={() => this._subjectActions(item, index)}
-                                     goodsPress={(good) => {
-                                         this._goodAction(good, item, index);
+            items.push(<ActivityItem data={item} key={index} press={() => this._subjectActions(item, 0, index)}
+                                     goodsPress={(good, index2) => {
+                                         this._goodAction(good, item, index2+1, index);
                                      }}/>);
         });
         if (items.length === 0) {
