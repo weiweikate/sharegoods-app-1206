@@ -22,10 +22,6 @@ const { px2dp } = ScreenUtils;
 
 
 export default class WithdrawFinishModal extends PureComponent {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <CommModal visible={this.props.visible}

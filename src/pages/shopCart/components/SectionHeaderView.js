@@ -115,15 +115,16 @@ export default class SectionHeaderView extends Component {
     };
     _renderInvaildView = (sectionData) => {
         return (
-            <View style={styles.bgViewStyle}>
+            <View style={styles.invalidHeader}>
                 <View style={styles.invaildTopContentBgStyle}>
                     {/*中部文字*/}
-                    <View style={styles.middleTextBgStyle}>
-                        <UIText style={styles.middleTextStyle} numberOfLines={2}
-                                value={'失效宝贝' + sectionData.data.length + '件'}/>
-                    </View>
+                    <MRText style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_24,marginLeft:px2dp(10)}}>
+                        失效宝贝
+                        <MRText style={{color:DesignRule.mainColor,fontSize:DesignRule.fontSize_24}}>{sectionData.data.length}</MRText>
+                        件
+                    </MRText>
                     <View style={styles.rightTextBgView}>
-                        <UIText value={'清空失效宝贝'} style={styles.rightTextStyle}
+                        <UIText value={'清空失效宝贝'} style={{color:DesignRule.mainColor,fontSize:DesignRule.fontSize_24,marginRight:px2dp(10)}}
                                 onPress={() => {
                                     this.clearAllInvaildGood();
                                 }}/>
@@ -215,6 +216,17 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#fff',
         justifyContent: 'space-between'
+    },
+    invalidHeader: {
+        marginTop: px2dp(15),
+        height: px2dp(40),
+        flexDirection: 'column',
+        backgroundColor: '#fff',
+        justifyContent: 'space-between',
+        width:DesignRule.width-2*DesignRule.margin_page,
+        borderTopLeftRadius:px2dp(5),
+        borderTopRightRadius:px2dp(5),
+        alignSelf:'center'
     },
     topContentBgStyle: {
         flex: 1,

@@ -16,35 +16,28 @@ export default class SearchBar extends Component {
     };
 
     render() {
-        return (<View style={[styles.container, this.props.style]}>
-            <Image style={styles.icon} source={SearchIcon}/>
-            <TextInput value={this.props.title}
-                       onChangeText={this.props.onChangeText}
-                       placeholder={this.props.placeholder}
-                       style={styles.desc}/>
-        </View>);
+        return (<View style = {{backgroundColor: '#FFFFFF'}}>
+                <View style={[styles.container, this.props.style]}>
+                    <Image style={styles.icon} source={SearchIcon}/>
+                    <TextInput value={this.props.title}
+                               onChangeText={this.props.onChangeText}
+                               placeholder={this.props.placeholder}
+                               style={styles.desc}/>
+                </View>
+            </View>
+        );
     }
 
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: 42,
-        borderRadius: 10,
-        backgroundColor: '#FFFFFF',
-        borderStyle: 'solid',
-        borderWidth: 1,
-        borderColor: '#dddddd',
-        shadowColor: 'rgba(0, 0, 0, 0.1)',
-        shadowOffset: {
-            width: 0,
-            height: 0
-        },
-        shadowRadius: 10,
-        shadowOpacity: 1,
+        height: 34,
+        borderRadius: 17,
+        backgroundColor: '#F7F7F7',
         marginHorizontal: 15,
         flexDirection: 'row',
-        marginVertical: 10,
+        marginVertical: 5,
         alignItems: 'center'
     },
     icon: {

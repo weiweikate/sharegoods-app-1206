@@ -1,34 +1,41 @@
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import FlyImageViewer from '../../comm/components/FlyImageViewer';
 import BasePage from '../../BasePage';
+import DesignRule from '../../constants/DesignRule';
 
 export default class CheckBigImagesView extends BasePage {
     $navigationBarOptions = {
         show: false
     };
+
     // 禁用某个页面的手势
     static navigationOptions = {
         gesturesEnabled: false
     };
 
+    // 更换页面背景色
+    $setBackgroundColor() {
+        return DesignRule.textColor_mainTitle;
+    }
 
     _render() {
         return (
             <View style={styles.container}>
                 <FlyImageViewer imageUrls={this.params.imageUrls}
                                 index={this.params.index}
-                                onCancel={() => {this.props.navigation.goBack();}}
+                                onCancel={() => {
+                                    this.props.navigation.goBack();
+                                }}
                                 loadingRender={() => {
-                    return null;
-                    // return (<Image source={"./imgs/common/loading-normal.gif"} style={{ width: 30, height: 30 }}/>);
-                }}
-                                saveToLocalByLongPress = {true}
-                                onSaveToCamera={()=> {this.$toastShow('保存成功')}}
+                                    return null;
+                                    // return (<Image source={"./imgs/common/loading-normal.gif"} style={{ width: 30, height: 30 }}/>);
+                                }}
+                                saveToLocalByLongPress={true}
+                                onSaveToCamera={() => {
+                                    this.$toastShow('保存成功');
+                                }}
 
                 />
 

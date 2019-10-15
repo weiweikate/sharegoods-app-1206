@@ -217,7 +217,7 @@ export default class TopicDetailPage extends BasePage {
                 netFailedInfo: { msg: '该商品走丢了\n去看看别的商品吧' }
             });
         } else {
-            ProductApi.getProductDetailByCodeV2({
+            ProductApi.getProductDetailByCodeV3({
                 code: prodCode
             }).then((data) => {
                 this.setState({

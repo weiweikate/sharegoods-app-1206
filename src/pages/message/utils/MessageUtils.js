@@ -93,6 +93,9 @@ const MessageUtils = {
                 pagParams = {url:params};
                 navigation(RouterMap.GongMallContractPage,pagParams);
                 break;
+            case 301://权益页面
+                navigation(RouterMap.HtmlPage,{uri:'/mine/memberRights'})
+                break;
             default:
                 break;
 

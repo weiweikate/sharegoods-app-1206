@@ -23,7 +23,7 @@ pod 'Bugly', '~> 2.5.0'
 #微信支付
 pod 'WechatOpenSDK','~> 1.8.3'
 #友盟统计
-pod 'UMCCommon','~> 2.1.0'
+pod 'UMCCommon','2.1.1'
 pod 'UMCAnalytics','~> 6.0.5'
 pod 'UMCSecurityPlugins','~> 1.0.5'
 #友盟分享
@@ -62,6 +62,10 @@ pod 'JSONModel','~> 1.7.0'
 #  pod 'react-native-webview', :path => '../node_modules/@mr/react-native-webview'
 
 #  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
+#  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
+# pod 'react-native-viewpager', :path => '../node_modules/@react-native-community/viewpager'
 
 end
 

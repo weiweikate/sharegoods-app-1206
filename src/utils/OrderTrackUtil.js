@@ -40,6 +40,9 @@ export function getSGscm(source = 'none',id = 'none', strategy = 'none', algorit
 }
 
 
-export function getSGspm_home(source,index = 0) {
+export function getSGspm_home(source,index = 0, itemIndex) {
+    if (itemIndex || itemIndex === 0){
+      return  {sgspm:'1.1.'+source+'.'+itemIndex+'_'+index}
+    }
   return {sgspm:'1.1.'+source+'.'+index}
 }

@@ -13,6 +13,11 @@ const  shopCartModular = {
         'des':'购物车推荐商品埋点',
         'name':'RecommendSpuClick',
         'params':{}
+    },
+    'CartProductOper':{
+        'des':'购物车商品操作',
+        'name':'CartProductOper',
+        'params':{}
     }
 }
 export default shopCartModular

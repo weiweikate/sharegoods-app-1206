@@ -94,7 +94,7 @@ export default class HomeLimitGoView extends Component {
     }
 
     _goToDetail(index, value, activityData) {
-        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode,...getSGspm_home(HomeSource.limitGo, index)});
+        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode,...getSGspm_home(HomeSource.limitGo, index, limitGoModule.currentPage)});
         // 限时购商品点击埋点
         track(trackEvent.SpikeProdClick,
             {

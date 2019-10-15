@@ -14,6 +14,19 @@ public class Event {
         }
     }
 
+    public static class MRUserUpdateEvent {
+        private String content;
+
+        public MRUserUpdateEvent(String content) {
+            this.content = content;
+        }
+
+        public String getContent() {
+            return content;
+        }
+    }
+
+
     public static class MRNativeTagEvent {
         private String data;
 

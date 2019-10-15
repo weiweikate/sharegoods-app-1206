@@ -13,7 +13,8 @@ const LogisticsDetailItem = props => {
         time,
         content1,
         isTop,
-        isBottom
+        isBottom,
+        length
     } = props;
 
     this.renderMiddleImage = () => {
@@ -32,13 +33,13 @@ const LogisticsDetailItem = props => {
                     width: 1,
                     backgroundColor: DesignRule.color_ddd,
                     marginTop: px2dp(-19),
-                    height: px2dp(19) + px2dp(26)
+                    height: length > 1 ? px2dp(19) + px2dp(26) : 0,
                 }}/>
         );
     };
     return (
         <View style={{marginRight:px2dp(15),marginLeft:px2dp(15),borderTopLeftRadius:isTop ? 10 : 0,borderTopRightRadius:isTop ? 10 : 0 ,backgroundColor:'white',
-            borderBottomLeftRadius:isBottom ? 10 : 0,borderBottomRightRadius:isBottom ? 10 : 0,paddingBottom:px2dp(19),paddingTop:isTop ? px2dp(15) : 0,marginTop:-1}}>
+            borderBottomLeftRadius:isBottom ? 10 : 0,borderBottomRightRadius:isBottom ? 10 : 0,paddingBottom:px2dp(19),paddingTop:isTop ? px2dp(15) : 0,marginTop:-2}}>
         <View style={{ flexDirection: 'row',paddingLeft: px2dp(10),paddingRight:px2dp(21),}}>
             <View style={{width: px2dp(40), paddingTop: px2dp(10),marginRight:px2dp(15),marginLeft:px2dp(1)}}>
                 <UIText value={time.substr(5,5)} style={{ fontSize: px2dp(13), color: isTop ? DesignRule.textColor_mainTitle_222 : DesignRule.textColor_instruction,textAlign:'right',marginRight:-1}}/>

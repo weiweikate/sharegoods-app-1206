@@ -17,7 +17,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const { px2dp } = ScreenUtils;
 const unUsedBg = res.couponsImg.youhuiquan_bg_unUseBg;
-// const usedBg = res.couponsImg.youhuiquan_bg_usedBg;
+const arrowBg = res.couponsImg.youhuiquan_bg_arrow;
 const dropImg = res.couponsImg.youhuiquan_bg_drop;
 const remark = res.couponsImg.youhuiquan_bg_remark;
 const dropUnuser = res.couponsImg.youhuiquan_bg_drop_unUser;
@@ -209,26 +209,41 @@ export default class CouponExplainItem extends Component {
                         </NoMoreClick> : null}
                 </ImageBackground>
                 {item.tobeextend ?
-                    <ImageBackground style={{
+                    <View style={{
                         width: ScreenUtils.width - px2dp(30),
                         marginLeft: 2,
                         borderRadius: 5,
-                    }} source={remark} resizeMode='stretch'>
-                        <View style={{ marginLeft: 20, }}>
-                            <Text style={{
-                                marginTop: 10,
-                                color: item.status === 0 ? DesignRule.textColor_secondTitle : DesignRule.textColor_secondTitle,
-                                lineHeight: 25,
-                                fontSize: 10
+                    }}>
+                        <ImageBackground style={{}} source={remark} resizeMode='stretch'>
+                            <View style={{marginLeft: 20,marginRight: 20}}>
+                                <Text style={{
+                                    marginTop: 10,
+                                    color: item.status === 0 ? DesignRule.textColor_secondTitle : DesignRule.textColor_secondTitle,
+                                    lineHeight: 25,
+                                    fontSize: 10
 
-                            }} allowFontScaling={false}>{item.remarks}</Text>
-                        </View>
-                        <NoMoreClick style={{ height: px2dp(24), justifyContent: 'center', alignItems: 'center',marginBottom:3 }}
-                                     onPress={() => this.props.toExtendData(item)}><Image
-                            style={{ width: 14, height: 7 }}
-                            source={itemUp}/>
-                        </NoMoreClick>
-                    </ImageBackground> : null}
+                                }}
+                                      allowFontScaling={false}>{item.remarks}</Text>
+                            </View>
+                        </ImageBackground>
+                        <ImageBackground
+                            style={{width: ScreenUtils.width - px2dp(30), height: px2dp(24),}}
+                            source={arrowBg}
+                            resizeMode='stretch'>
+                            <NoMoreClick
+                                style={{
+                                    height: px2dp(24),
+                                    // justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginTop: 4
+                                }}
+                                onPress={() => this.props.toExtendData(item)}>
+                                <Image
+                                    style={{width: 14, height: 7}}
+                                    source={itemUp}/>
+                            </NoMoreClick>
+                        </ImageBackground>
+                    </View> : null}
             </TouchableOpacity>
         );
     }

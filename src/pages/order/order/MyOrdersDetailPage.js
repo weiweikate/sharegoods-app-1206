@@ -203,7 +203,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         <View style={{
                         position: 'absolute',
                         bottom: 45,
-                        right: ScreenUtils.autoSizeWidth(180) - 100,
+                        right: ScreenUtils.autoSizeWidth(180) - 50,
                         backgroundColor: 'white',
                         borderRadius: 5,
                             borderWidth: 1,
@@ -292,6 +292,10 @@ export default class MyOrdersDetailPage extends BasePage {
                 activityCodes={item.activityList || []}
                 style={{ backgroundColor: 'white' }}
                 clickItem={() => {
+                    //拼店扩容商品没有详情  陈阳君修改10.9
+                    if (resourceType === 'GROUP_EXTEND_PRODUCT') {
+                        return;
+                    }
                     this.clickItem(item, isPhoneGood);
                 }}
                 afterSaleService={GetAfterBtns(item)}
