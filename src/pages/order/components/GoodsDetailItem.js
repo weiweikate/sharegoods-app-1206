@@ -64,11 +64,11 @@ const GoodsDetailItem = props => {
                         height: 48,
                         justifyContent: 'flex-end',
                         alignItems: 'center',
-                        backgroundColor: 'white'
+                        backgroundColor: 'white',
+                        marginBottom: 1,
                     }}>
                         {this.renderMenu()}
                     </View>
-                    {this.renderLine()}
                 </View>
         );
     };

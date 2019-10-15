@@ -14,13 +14,30 @@ class ReturnCashModel {
     @observable
     returnCashInfo = {};
 
+    @observable
+    returnCashSwitchState = false;//自返金显示开关
+
+    /**
+     * @func 获取当前用户自返金信息
+     */
     @action getReturnCashInfo() {
         MineAPI.getReturnCashInfo().then(res => {
             console.log('getReturnCashInfo',res)
-            this.returnCashInfo = res.data;
+            this.returnCashInfo = res.data||{};
         }).catch(err => {
             bridge.$toast(err.msg);
         });
+    }
+
+    /**
+     * @func 获取当前用户自返金开关接口请求
+     */
+    @action getReturnCashSwitchState() {
+        MineAPI.getSelfReturnShow().then((res) => {
+            this.returnCashSwitchState = res.data ? res.data : false;
+        }).catch(error => {
+            this.returnCashSwitchState = false;
+        })
     }
 }
 

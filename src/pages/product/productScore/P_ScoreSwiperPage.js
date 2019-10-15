@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import BasePage from '../../../BasePage';
 // import VideoView from '../../../components/ui/video/VideoView';
 import UIImage from '@mr/image-placeholder';
@@ -16,6 +16,11 @@ export default class P_ScoreSwiperPage extends BasePage {
     $navigationBarOptions = {
         show: false
     };
+
+    // 更换页面背景色
+    $setBackgroundColor() {
+        return DesignRule.textColor_mainTitle;
+    }
 
     state = {
         index: this.params.index ? this.params.index + 1 : 1
@@ -42,7 +47,6 @@ export default class P_ScoreSwiperPage extends BasePage {
         // }
         return (
             <View style={styles.containerView}>
-
                 <FlyImageViewer imageUrls={this.videoImageList}
                                 index={this.params.index}
                                 unShowDown={true}
@@ -75,7 +79,6 @@ export default class P_ScoreSwiperPage extends BasePage {
 const styles = StyleSheet.create({
     containerView: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,1)'
     }
 });
 

@@ -14,7 +14,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { observer } from 'mobx-react';
-import RefreshFlatList from '../../comm/components/RefreshFlatList';
+import LottieRefreshFlatList from '../../comm/components/LottieRefreshFlatList';
 import res from './res';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -67,7 +67,7 @@ export default class ShowActivityView extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <RefreshFlatList
+                <LottieRefreshFlatList
                     ref={(ref) => {
                         this.List = ref;
                     }}

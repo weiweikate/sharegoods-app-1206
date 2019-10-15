@@ -28,7 +28,7 @@
         "bulid_path": "../node_modules/@mr/react-native-video/android-exoplayer/build.gradle"
     },
     "extra_dimensions": {
-        "content": "apply from: '../../../android/rn_extra_dimensions.gradle'",
+        "content": "apply from: '../../../android/rn-extra-dimensions.gradle'",
         "bulid_path": "../node_modules/react-native-extra-dimensions-android/android/build.gradle"
     },
     "rn-code-push": {
@@ -36,7 +36,7 @@
         "bulid_path": "../node_modules/react-native-code-push/android/app/build.gradle"
     },
     "@mr/mr-rn-storage": {
-        "content": "apply from: '../../../../android/rn_storage.gradle'",
+        "content": "apply from: '../../../../android/rn-storage.gradle'",
         "bulid_path": "../node_modules/@mr/mr-rn-storage/android/build.gradle"
     },
     "rn-gesture": {
@@ -50,5 +50,14 @@
     "rn-slider": {
         "content": "apply from: '../../../../android/rn-slider.gradle'",
         "bulid_path": "../node_modules/@react-native-community/slider/android/build.gradle"
+    },
+    "rn-animated": {
+        "content": "apply from: '../../../android/rn-animated.gradle'",
+        "bulid_path": "../node_modules/react-native-reanimated/android/build.gradle"
+    },
+    "rn-viewpager": {
+        "content": "apply from: '../../../../android/rn-viewpager.gradle'",
+        "bulid_path": "../node_modules/@react-native-community/viewpager/android/build.gradle"
     }
+
 }

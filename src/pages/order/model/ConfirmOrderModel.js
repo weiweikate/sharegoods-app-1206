@@ -101,8 +101,10 @@ class ConfirmOrderModel {
             if (data) {
                 callBack&&callBack();
                 bridge.$toast('激活成功');
-                this.invokeSelect = true;
-                this.canInvoke = false;
+                if (this.canInvoke ) {
+                    this.invokeSelect = true;
+                    this.canInvoke = false;
+                }
                 this.selectUserCoupon(data.code)
             } else {
                 bridge.$toast('激活失败');
@@ -163,13 +165,14 @@ class ConfirmOrderModel {
             // "quantity":, //int 购买数量
             // "activityCode":, //string 活动code
             // "batchNo": //string 活动批次  (拼团业务传递团id)
-            let { skuCode, quantity, activityCode, batchNo, activityTag, sgspm = '', sgscm = '' } = item;
+            let { skuCode, quantity, batchNo, sgspm = '', sgscm = '',activityList  = [],activityCode = '', activityTag = '',promotionId = '' } = item;
             sgspm = sgspm || ''
             sgscm = sgscm || ''
+            //activityList 包含了 activityCode, activityTag promotionId，以后删除activityCode, activityTag promotionId
             if (batchNo){
-                return { skuCode, quantity, activityCode,batchNo, activityTag, sgspm, sgscm };
+                return { skuCode, quantity,batchNo, activityList, sgspm, sgscm, activityCode, activityTag, promotionId};
             }else {
-                return { skuCode, quantity, activityCode, activityTag, sgspm,  sgscm};
+                return { skuCode, quantity, activityList, sgspm,  sgscm,activityTag, activityCode, promotionId};
             }
 
         });
@@ -210,8 +213,8 @@ class ConfirmOrderModel {
                 priceCode: item.skuCode,
                 productCode: item.productCode,
                 amount: item.quantity,
-                activityCode: item.activityCode,
                 batchNo: item.batchNo,
+                promotions: item.activityList
             };
         });
         let params = { productPriceIds: arr };
@@ -319,7 +322,7 @@ class ConfirmOrderModel {
                 data = data.data || {};
                 let userCouponCode = '';
                 (data.data || []).find((item)=>{
-                    if (item.canInvoke === true && item.type == 5)
+                    if (item.canInvoke === true && item.type == 5 && !this.invokeItem)
                     {
                         this.canInvoke = true;
                         this.invokeItem = item;
@@ -327,13 +330,17 @@ class ConfirmOrderModel {
                         if (item.status !== 0){
                         return;//不可用
                     }
-                    if (item.couponConfigId == couponsId) {
+                    if (item.couponConfigId == couponsId) {//如果是匹配的兑换券，就结束循环
                         userCouponCode = item.code;
+                        this.canInvoke = false
+                        this.invokeItem = null
                         return true;
                     }
-                    if (item.type == 5 && !userCouponCode) {
+                    if (item.type == 5 && !userCouponCode) {//是兑换券，且userCouponCode还没空（为了找第一个可用兑换券）
                         userCouponCode = item.code;
-                        if (!couponsId) {
+                        if (!couponsId) {//id为空，不需要匹配对应的优惠券就结束循环
+                            this.canInvoke = false
+                            this.invokeItem = null
                             return true;
                         }
                     }
@@ -382,6 +389,8 @@ class ConfirmOrderModel {
         } else if (err.code === 54001) {
             bridge.$toast('商品库存不足！');
         } else if (err.code === 43009) {
+            let addressData = this.orderParamVO.address || {};
+            const { province, city, area, provinceCode, cityCode, areaCode} = addressData;
             this.isNoAddress = true;
             Alert.alert('', '您还没有收货地址，请点击添加',
                 [{
@@ -394,7 +403,14 @@ class ConfirmOrderModel {
                                 callBack: (json) => {
                                     this.selectAddressId(json);
                                 },
-                                from: 'add'
+                                from: 'add',
+                                province,
+                                city,
+                                area,
+                                provinceCode,
+                                cityCode,
+                                areaCode,
+                                areaText: province + city + area
                             });
                         }
                     }

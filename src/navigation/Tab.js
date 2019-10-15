@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import React, { Component } from 'react';
 import {
     DeviceEventEmitter,
@@ -12,7 +12,7 @@ import {
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
-import MyShop_RecruitPage from '../pages/spellShop/MyShop_RecruitPage';
+import IsShowNewStore from '../pages/store/IsShowNewStore';
 import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
@@ -204,7 +204,7 @@ export const TabNav = createBottomTabNavigator(
             }
         },
         MyShop_RecruitPage: {
-            screen: MyShop_RecruitPage,
+            screen: IsShowNewStore,
             navigationOptions: {
                 tabBarIcon: ({ focused }) => {
                     return <Tab focused={focused} normalSource={res.tab.group_n} activeSource={res.tab.group_s}

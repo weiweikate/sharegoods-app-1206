@@ -202,14 +202,23 @@ export default class ProductDetailPage extends BasePage {
                 shoppingcartEntrance: 1
             });
         } else if (goType === 'buy') {
+            const { productDetailAddressModel } = this.productDetailModel;
+            const { promotionInfoItem, promotionInfoS } = productDetailAddressModel;
+            const activityList = promotionInfoS.map((item) => {
+                const { activityTag, promotionId, activityCode } = item;
+                return { activityTag, promotionId, activityCode };
+            });
             if (isGroupIn) {
-                const { subProductList, code } = groupActivity;
+                const { subProductList } = groupActivity;
                 let orderProductList = (subProductList || []).map((subProduct) => {
                     const { skuList, prodCode } = subProduct || {};
                     const skuItem = (skuList || [])[0];
                     const { skuCode } = skuItem || {};
                     return {
-                        activityCode: code,
+                        promotionId: promotionInfoItem.promotionId,
+                        activityTag: promotionInfoItem.activityTag,
+                        activityCode: promotionInfoItem.activityCode,
+                        activityList,
                         batchNo: 1,
                         productCode: prodCode,
                         skuCode: skuCode,
@@ -222,7 +231,10 @@ export default class ProductDetailPage extends BasePage {
                         orderType: 1,
                         source: 2,
                         orderProducts: [{
-                            activityCode: code,
+                            promotionId: promotionInfoItem.promotionId,
+                            activityTag: promotionInfoItem.activityTag,
+                            activityCode: promotionInfoItem.activityCode,
+                            activityList,
                             batchNo: 1,
                             productCode: prodCode,
                             skuCode: skuCode,
@@ -243,12 +255,15 @@ export default class ProductDetailPage extends BasePage {
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,
-                activityCode: '',
                 batchNo: 1,
                 specImg,
                 productName: name,
                 unitPrice: productIsPromotionPrice ? promotionPrice : price,
-                spec: (propertyValues || '').replace(/@/g, '-')
+                spec: (propertyValues || '').replace(/@/g, '-'),
+                promotionId: promotionInfoItem.promotionId,
+                activityTag: promotionInfoItem.activityTag,
+                activityCode: promotionInfoItem.activityCode,
+                activityList
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
@@ -292,7 +307,7 @@ export default class ProductDetailPage extends BasePage {
                 }
             });
         }
-        if (paramAddressItem &&!paramAddressItem.id) {
+        if (paramAddressItem && !paramAddressItem.id) {
             productDetailAddressModel.paramAddressItem = null;
         }
     };
@@ -330,10 +345,10 @@ export default class ProductDetailPage extends BasePage {
                                        }}/>;
             }
             case productItemType.suit: {
-                if (isGroupIn) {
+                const { extraType } = productDetailSuitModel;
+                if (isGroupIn || extraType === suitType.memberSuit) {
                     return <ProductDetailSuitGiftView productDetailModel={this.productDetailModel}/>;
                 }
-                const { extraType } = productDetailSuitModel;
                 if (extraType === suitType.fixedSuit) {
                     return <ProductDetailSuitFixedView productDetailSuitModel={productDetailSuitModel}/>;
                 } else if (extraType === suitType.chooseSuit) {

@@ -1,0 +1,25 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+    }
+    lintOptions {
+        abortOnError false
+        warning 'InvalidPackage'
+    }
+    buildTypes {
+        releaseStaging {}
+    }
+}
+
+dependencies {
+    api(rootProject.ext.dependencies.rn) {
+        exclude group: 'com.android.support'
+    }
+    implementation "androidx.transition:transition:1.1.0"
+}

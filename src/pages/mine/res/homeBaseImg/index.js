@@ -31,6 +31,11 @@ const index = {
     mine_invite: require('./invite.png'),
     mine_invite2: require('./invite2.png'),
     mine_moreMoney: require('./moreMoney.png'),
+    mine_vip_bg: require('./vipBg.png'),
+    mine_bevip: require('./beVIP.png'),
+    mine_vip: require('./VIP.png'),
+    mine_diamondvip: require('./diamondVIP.png'),
+    mine_supremevip: require('./supremeVIP.png'),
     mine_line_v0: require('./v0Bgline.png'),
     mine_line_v1: require('./v1Bgline.png'),
     mine_line_v2: require('./v2Bgline.png'),
@@ -39,8 +44,8 @@ const index = {
     mine_line_v5: require('./v5Bgline.png'),
     mine_btn_red: require('./btnRed.png'),
     mine_btn_yellow: require('./btnYellow.png'),
-    mine_levelBg: require('./levelBg.png')
-
+    mine_levelBg: require('./levelBg.png'),
+    mine_arrow_black: require('./mine_vip_arrow_black.png')
 
 };
 export default index;

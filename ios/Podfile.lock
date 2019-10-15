@@ -85,7 +85,7 @@ PODS:
   - UICKeyChainStore (2.1.2)
   - UMCAnalytics (6.0.5):
     - UMCCommon
-  - UMCCommon (2.1.0)
+  - UMCCommon (2.1.1)
   - UMCSecurityPlugins (1.0.6)
   - UMCShare/Core (6.9.6):
     - UMCCommon
@@ -129,7 +129,7 @@ DEPENDENCIES:
   - TYCyclePagerView (~> 1.1.0)
   - UICKeyChainStore (~> 2.1.1)
   - UMCAnalytics (~> 6.0.5)
-  - UMCCommon (~> 2.1.0)
+  - UMCCommon (= 2.1.1)
   - UMCSecurityPlugins (~> 1.0.5)
   - UMCShare/Social/ReducedQQ (~> 6.9.6)
   - UMCShare/Social/ReducedSina (~> 6.9.6)
@@ -202,13 +202,13 @@ SPEC CHECKSUMS:
   TYCyclePagerView: 0f67b0986995fd614843e819bc974cadd7f98008
   UICKeyChainStore: 85db518bb1d294366d15ec9b92a416c4e670518f
   UMCAnalytics: 045be2cd1ec05aa95ad62405a850757f932e2d59
-  UMCCommon: c9637200488c482b30cdebebb0bd595b9adf0847
+  UMCCommon: 971f324a5a99c9d662ae040a815e7e3d7ef8b2a8
   UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
   UMCShare: e0cef55c0fd6051254c8cda1d0630eb578b27bad
   VODUpload: d180069b5fcee002079a892de2f310bacdb8e355
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 53bbc16be7f725eb9d4c993b7f9aa96b87dd7d9b
+PODFILE CHECKSUM: 3d7c28afa71e9318227a1119779fae557025489a
 
 COCOAPODS: 1.7.0.beta.2

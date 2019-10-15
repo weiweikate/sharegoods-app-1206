@@ -144,7 +144,10 @@ const api = {
     getReturnCashInfo:['/account/selfReturn',{method:'get'}],
     //查询自返金列表
     getReturnCashList:['/account/selfReturn/list',{method:'get'}],
-
+    //会员权益开关接口
+    getMemberCenterShow:['/common/config/member/center/show',{method:'get'}],
+    //自返金开关接口
+    getSelfReturnShow:['/account/selfReturn/switch',{method:'get'}],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

@@ -276,7 +276,7 @@ export default class IDVertify2Page extends BasePage {
         let params = {
             frontPhoto: this.state.backIdCard,
             backPhoto: this.state.frontIdCard,
-            idcardNo: this.state.idNumber,
+            idcardNo: this.state.idNumber.toLocaleUpperCase(),
             realName: this.state.name
         };
         this.$loadingShow();

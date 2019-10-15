@@ -45,9 +45,9 @@ export default class GoodsGrayItem extends React.Component {
                                 <Text style={{
                                     fontSize: 10,
                                     marginRight: 6,
-                                    paddingHorizontal: 3,
-                                    paddingVertical: 2,
+                                    height: 14,
                                     borderRadius: 3,
+                                    paddingHorizontal: 4,
                                     overflow: 'hidden',
                                     color: DesignRule.mainColor,
                                     backgroundColor: 'rgba(255,0,80,0.1)'

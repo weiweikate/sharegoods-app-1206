@@ -56,6 +56,10 @@ export default class BasePage extends Component {
         return false;
     }
 
+    $setBackgroundColor() {
+        return DesignRule.bgColor;
+    }
+
     _renderDefaultNoNet() {
         return (
             <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center', flex: 1 }]}>
@@ -129,9 +133,9 @@ export default class BasePage extends Component {
         let navigationBarOptions = this.$navigationBarOptions || {};
         let isShowNavBar = navigationBarOptions.show !== undefined ? navigationBarOptions.show : true;
         // let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
-
+        const bgColor = this.$setBackgroundColor() || DesignRule.bgColor;
         return (
-            <View style={DesignRule.style_container}>
+            <View style={{ flex: 1, backgroundColor: bgColor }}>
                 {
                     isShowNavBar && <NavigatorBar {...navigationBarOptions}
                                                   renderRight={this.$NavBarRenderRightItem || null}
