@@ -12,7 +12,14 @@ import showPinFlagModel from '../model/ShowPinFlag';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
 
 //无需转场动画的页面
-const noAnimatedPage = [RouterMap.SearchResultPage, RouterMap.SearchPage, RouterMap.SearchPageOrder];
+const noAnimatedPage = [
+    RouterMap.SearchResultPage,
+    RouterMap.SearchPage,
+    RouterMap.SearchPageOrder,
+    RouterMap.CheckBigImagesView,
+    RouterMap.P_ScoreSwiperPage,
+    RouterMap.ShowDetailImagePage
+];
 /***
  * 无转场动画
  */
