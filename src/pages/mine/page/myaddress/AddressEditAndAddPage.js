@@ -9,7 +9,8 @@ import UIImage from '../../../../components/ui/UIImage';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
-import RouterMap, { routePop } from '../../../../navigation/RouterMap';
+import  { routePop } from '../../../../navigation/RouterMap';
+import SelectAreaModal from './SelectAreaModal';
 
 const addrSelectedIcon = res.button.selected_circle_red;
 const addrUnSelectedIcon = res.button.unselected_circle;
@@ -160,7 +161,7 @@ export default class AddressEditAndAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from, streetCode, province,  city, area} = this.params;
+        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from, streetCode, province,  city, area,street} = this.params;
         if (from === 'edit') {
             this.$navigationBarOptions.title = '编辑地址';
         } else if (from === 'add') {
@@ -178,7 +179,7 @@ export default class AddressEditAndAddPage extends BasePage {
             areaCode: areaCode,
             areaName: area || '',
             streetCode: streetCode,
-            streetName: '',
+            streetName: street || '',
             isDefault: isDefault || false,
             from
         };
@@ -244,16 +245,21 @@ export default class AddressEditAndAddPage extends BasePage {
                             paddingBottom: 12
                         }} resizeMode={'contain'} onPress={() => this.setState({ isDefault: !this.state.isDefault })}/>
                     </View> : null}
+                    <SelectAreaModal ref={(ref)=>{this.SelectAreaRef = ref}}
+                                     callBack={()=>{}}
+
+                    />
         </View>;
     }
 
     _getCityPicker = () => {
         dismissKeyboard();
-        this.$navigate(RouterMap.SelectAreaPage, {
-            setArea: this.setArea.bind(this),
-            tag: 'province',
-            fatherCode: '0'
-        });
+        this.SelectAreaRef.open(this.state);
+        // this.$navigate(RouterMap.SelectAreaPage, {
+        //     setArea: this.setArea.bind(this),
+        //     tag: 'province',
+        //     fatherCode: '0'
+        // });
     };
 
     setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, streetCode, streetName, areaText) {
