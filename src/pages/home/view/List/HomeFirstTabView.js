@@ -35,7 +35,7 @@ import HomeExpandBannerView from '../HomeExpandBannerView';
 import HomeFocusAdView from '../HomeFocusAdView';
 import HomeLimitGoView from '../HomeLimitGoView';
 import HomeSubjectView from '../HomeSubjectView';
-import TabTitleView from '../TabTitleView';
+import TabTitleView, { StaticTabTitleView } from '../TabTitleView';
 import { TopicImageAdView } from '../TopicImageAdView';
 import GoodsCustomView from '../GoodsCustomView';
 import DesignRule from '../../../../constants/DesignRule';
@@ -53,6 +53,7 @@ const scrollDist = height / 2 - headerHeight;
 const nowTime = new Date().getTime();
 const HOME_REFRESH = 'homeRefresh';
 const HOME_SKIP = 'activitySkip';
+import StickyContainer from 'recyclerlistview/sticky';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
@@ -105,10 +106,10 @@ export default class HomeFirstTabView extends Component {
                 dim.height = recommendList.length > 0 ? recommendHeight : 0;
                 break;
             case homeType.homeHot:
-                dim.height = subjectList.length > 0 ? subjectHeight : 0;
+                dim.height = subjectList.length > 0 ? subjectHeight+ px2dp(13): 0;
                 break;
             case homeType.goodsTitle:
-                dim.height = homeModule.tabList.length > 0 ? px2dp(66) : 0;
+                dim.height = homeModule.tabList.length > 0 ? px2dp(66-13) : 0;
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
@@ -237,6 +238,13 @@ export default class HomeFirstTabView extends Component {
         );
     };
 
+    _overrideRowRenderer = (type, data, index) => {
+                return (
+                    <StaticTabTitleView />
+                );
+
+    };
+
 
     render() {
         if (Math.abs(tabModel.tabIndex) > 1) {
@@ -244,12 +252,22 @@ export default class HomeFirstTabView extends Component {
         }
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
+        let stickyHeaderIndices = []
+        homeList.forEach((item, index)=> {
+           if (item.type === homeType.goodsTitle){
+               stickyHeaderIndices.push(index);
+           }
+
+        });
         return (
+            <StickyContainer stickyHeaderIndices={stickyHeaderIndices}
+                             overrideRowRenderer={this._overrideRowRenderer}
+            >
             <RecyclerListView
                 ref={(ref) => {
                     this.recyclerListView = ref;
                 }}
-                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
+                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1}}
                 refreshControl={this.renderRefreshLoading()}
                 onEndReached={this._onEndReached.bind(this)}
                 onEndReachedThreshold={ScreenUtils.height / 3}
@@ -265,6 +283,7 @@ export default class HomeFirstTabView extends Component {
                     isEnd={homeModule.isEnd}/>
                 }
             />
+            </StickyContainer>
         );
     }
 

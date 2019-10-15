@@ -15,7 +15,8 @@
 import React from 'react';
 
 import { Image, TouchableWithoutFeedback, View } from 'react-native';
-import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
+import { DataProvider, LayoutProvider, RecyclerListView} from 'recyclerlistview';
+import StickyContainer from 'recyclerlistview/sticky';
 
 import { MRText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
@@ -472,8 +473,17 @@ export default class HomeNormalList extends React.Component {
             return null;
         }
         this.dataProvider = this.dataProvider.cloneWithRows(this.state.data);
+        let stickyHeaderIndice = 0;
+        this.state.data.find((item, index)=> {
+            if (item.type === 'header') {
+                stickyHeaderIndice = index
+                return true
+            }
+            return false;
+        })
         return (
             <View style={[DesignRule.style_container, { marginTop: 0 }]}>
+                <StickyContainer stickyHeaderIndices={[stickyHeaderIndice]}>
                 <RecyclerListView
                     refreshControl={<HeaderLoading
                         isRefreshing={this.state.refreshing}
@@ -490,6 +500,7 @@ export default class HomeNormalList extends React.Component {
                     canChangeSize={false}
                     renderFooter={() => <DefaultLoadMoreComponent status={this.state.footerStatus}/>}
                 />
+                </StickyContainer>
             </View>
         );
     }

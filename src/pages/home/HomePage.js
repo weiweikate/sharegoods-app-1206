@@ -242,7 +242,7 @@ class HomePage extends BasePage {
         let itemWidth = 60;
         let tabBarHeight = 42;
         return (
-            <View style={{ height: tabBarHeight, width: ScreenUtils.width, backgroundColor: 'white' }}>
+            <View style={{ height: 0, width: ScreenUtils.width, backgroundColor: 'white' }}>
                 <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}

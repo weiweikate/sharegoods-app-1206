@@ -33,6 +33,7 @@ class HomeModule {
     @observable goodsOtherLen = 0;
     @observable tabList = [];
     @observable tabListIndex = 0;
+    @observable showStatic = false;
     isFetching = false;
     isEnd = false;
     page = 1;
@@ -82,7 +83,9 @@ class HomeModule {
 
     type = 0;
 
-
+    @action changeShowStatic(state){
+        this.showStatic = state;
+    }
     //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
