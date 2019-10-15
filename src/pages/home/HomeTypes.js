@@ -24,6 +24,9 @@ export const homeType = {
     show: 11,            //秀场
     banner: 14,
     limitGo: 300,   //限时秒杀
+    limitGoTop: 391,   //限时秒杀头部，包含标题，免单
+    limitGoTime: 392,   //限时秒杀时间栏
+    limitGoGoods: 393,   //限时秒杀商品列表
     windowAlert: 1, //首页弹框
     guideInfo: 17,
     Alert: 21,//退出的弹窗
@@ -53,7 +56,7 @@ export const homeLinkType = {
     store: 11,      //店铺
     classify: 12,      //分类
     nothing: 13,      //无跳转
-    page: 14,      //页面路由
+    page: 14      //页面路由
 };
 
 export const homeRoute = {
@@ -124,7 +127,7 @@ export function topicAdOnPress(data, item, p, title, orderTrackParams) {
 
     }
     let route = '';
-    let params = {}
+    let params = {};
     switch (linkType) {
         case 1://商品
             p2.contentType = 1;
@@ -165,10 +168,10 @@ export function topicAdOnPress(data, item, p, title, orderTrackParams) {
             break;
     }
     if (route) {
-        if (orderTrackParams){
-            params = {...params,...orderTrackParams}
+        if (orderTrackParams) {
+            params = { ...params, ...orderTrackParams };
         }
-        routePush(route,params)
+        routePush(route, params);
     }
     if (p) {
         p.contentValue = title || '';

@@ -61,8 +61,14 @@ class HomeModule {
     }];
     topTopice = [];
     fixedPartTwo = [{
-        id: 6,
-        type: homeType.limitGo
+        id: 60,
+        type: homeType.limitGoTop
+    }, {
+        id: 61,
+        type: homeType.limitGoTime
+    }, {
+        id: 62,
+        type: homeType.limitGoGoods
     }];
     bottomTopice = [];
     fixedPartThree = [{
@@ -218,7 +224,7 @@ class HomeModule {
     // 加载首页数据
     @action loadHomeList = flow(function* (showLoading = true) {
         //手动下拉展示刷新组件
-        if(showLoading){
+        if (showLoading) {
             this.isRefreshing = true;
             setTimeout(() => {
                 this.isRefreshing = false;
@@ -447,7 +453,7 @@ class HomeModule {
                         this.topTopice = this.handleData(data, isTop, code);
                         store.save(kHomeTopTopic, this.topTopice);
                     } else {
-                        this.bottomTopice = this.handleData(data,false, code);
+                        this.bottomTopice = this.handleData(data, false, code);
                         store.save(kHomeBottomTopic, this.bottomTopice);
                     }
                     this.homeList = this.getHomeListData(true);
@@ -479,10 +485,10 @@ class HomeModule {
         let p = [];
         let count = data.length;
         for (let index = 0; index < count; index++) {
-            getSGspm_home(HomeSource.marketing,index)
+            getSGspm_home(HomeSource.marketing, index);
             let item = data[index];
-            item.sgscm = getSGscm(SGscmSource.topic,code).sgscm;
-            item.sgspm = getSGspm_home(HomeSource.marketing,index).sgspm
+            item.sgscm = getSGscm(SGscmSource.topic, code).sgscm;
+            item.sgspm = getSGspm_home(HomeSource.marketing, index).sgspm;
             if (item.type === homeType.custom_goods) {
                 item.itemHeight = GoodsCustomViewGetHeight(item);
                 item.marginBottom = ScreenUtils.autoSizeWidth(0);
