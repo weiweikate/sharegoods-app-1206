@@ -73,6 +73,13 @@
             android:label="@string/ysf_video_play"
             android:screenOrientation="portrait"
             android:theme="@style/ysf_window_theme" />
+            
+        <activity
+            android:name="com.qiyukf.nim.uikit.session.activity.CaptureVideoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/ysf_video_record"
+            android:screenOrientation="portrait"
+            android:theme="@style/ysf_window_theme" />
 
         <activity
             android:name="com.qiyukf.nim.uikit.session.activity.CaptureVideoActivity"
