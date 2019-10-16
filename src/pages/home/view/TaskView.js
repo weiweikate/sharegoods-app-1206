@@ -482,7 +482,7 @@ export default class TaskView extends React.Component {
                         {this.renderTitle(type)}
                     </View>
                     <TouchableWithoutFeedback onPress={() => {
-                        routePush('HtmlPage', { uri: '/topic/temp/ST20190455' });
+                        routePush('HtmlPage', { uri: '/custom/ZDYZT201910150142381' });
                     }}>
                         <View>
                             <ImageLoader style={{ height: ScreenUtils.autoSizeWidth(120), width: ScreenUtils.width }}
