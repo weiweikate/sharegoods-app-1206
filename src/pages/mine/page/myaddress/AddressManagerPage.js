@@ -219,7 +219,7 @@ export default class AddressManagerPage extends BasePage {
             provinceCode: item.provinceCode,
             cityCode: item.cityCode,
             areaCode: item.areaCode,
-            streeCode: item.streeCode,
+            streetCode: item.streetCode,
             isDefault: index === this.state.selectIndex
         });
     };
@@ -252,7 +252,8 @@ const styles = StyleSheet.create({
         marginRight: 15,
         marginLeft: 15,
         marginTop: 10,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderRadius: 10
     },
     cell_name_tel: {
         flexDirection: 'row',

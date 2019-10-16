@@ -3,14 +3,13 @@ import {
     NativeModules,
     StyleSheet,
     View,
-    ImageBackground,
     TouchableWithoutFeedback,
     Image,
     SectionList,
     RefreshControl
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { DefaultTabBar } from '@mr/react-native-scrollable-tab-view';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -35,7 +34,7 @@ const taskImg = res.cashAccount.renwu_icon;
 const yiyuanImg = res.cashAccount.quan_icon;
 const zensong = res.cashAccount.zengsong_icon;
 const xiugou_reword = res.cashAccount.renwuShuoMing_icon;
-const account_bg_white = res.bankCard.account_bg_white;
+// const account_bg_white = res.bankCard.account_bg_white;
 const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
 const icon_invite = res.myData.icon_invite;
@@ -150,55 +149,50 @@ export default class MyIntegralAccountPage extends BasePage {
 
     _accountInfoRender() {
         return (
-            <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
-                position: 'absolute',
-                top: 0,
-                height: px2dp(184),
-                width: ScreenUtils.width,
-                left: 0,
-                paddingHorizontal: DesignRule.margin_page
-            }}>
-
-                <View style={styles.withdrawWrapper}>
-                    <Text style={styles.countTextStyle}>
-                        秀豆账户（枚）
-                    </Text>
-                    <NoMoreClick style={styles.withdrawButtonWrapper}
-                                 onPress={() => {
-                                     if (!user.isLogin) {
-                                         this.gotoLoginPage();
-                                         return;
-                                     }
-                                     this.$navigate(RouterMap.SignInPage);
-                                 }}>
-                        <Text style={{
-                            fontSize: DesignRule.fontSize_threeTitle,
-                            color: DesignRule.mainColor,
-                            paddingHorizontal: 10
-                        }}>兑换1元现金劵</Text>
-                    </NoMoreClick>
-                </View>
-
-                <Text style={{
-                    color: DesignRule.textColor_mainTitle,
-                    fontSize: 48,
-                    marginLeft: DesignRule.margin_page,
-                    height: 58,
-                    lineHeight: 58
-                }}>{user.userScore ? user.userScore : 0}</Text>
-
-                <View style={{ display: 'flex', flexDirection: 'row', marginTop: 15 }}>
-                    <View style={{ flex: 1, marginLeft: 15, justifyContent: 'center' }}>
-                        <Text
-                            style={styles.numTextStyle}>{user.blockedUserScore ? user.blockedUserScore : '0.00'}</Text>
-                        <Text style={styles.numRemarkStyle}>待入账秀豆（枚）</Text>
+            <View style={styles.headerViewShadow}>
+                <View style={styles.headerViewStyle}>
+                    <View style={styles.withdrawWrapper}>
+                        <Text style={styles.countTextStyle}>
+                            秀豆账户（枚）
+                        </Text>
+                        <NoMoreClick style={styles.withdrawButtonWrapper}
+                                     onPress={() => {
+                                         if (!user.isLogin) {
+                                             this.gotoLoginPage();
+                                             return;
+                                         }
+                                         this.$navigate(RouterMap.SignInPage);
+                                     }}>
+                            <Text style={{
+                                fontSize: DesignRule.fontSize_threeTitle,
+                                color: DesignRule.mainColor,
+                                paddingHorizontal: 10
+                            }}>兑换1元现金劵</Text>
+                        </NoMoreClick>
                     </View>
-                    <View style={{ flex: 1, marginLeft: 15, justifyContent: 'center' }}>
-                        <Text style={styles.numTextStyle}>{user.historicalScore ? user.historicalScore : '0.00'}</Text>
-                        <Text style={styles.numRemarkStyle}>累计秀豆（枚）</Text>
+
+                    <Text style={{
+                        color: DesignRule.textColor_mainTitle,
+                        fontSize: 48,
+                        marginLeft: DesignRule.margin_page,
+                        height: 58,
+                        lineHeight: 58
+                    }}>{user.userScore ? user.userScore : 0}</Text>
+
+                    <View style={{display: 'flex', flexDirection: 'row', marginTop: 15}}>
+                        <View style={{flex: 1, marginLeft: 15, justifyContent: 'center'}}>
+                            <Text
+                                style={styles.numTextStyle}>{user.blockedUserScore ? user.blockedUserScore : '0.00'}</Text>
+                            <Text style={styles.numRemarkStyle}>待入账秀豆（枚）</Text>
+                        </View>
+                        <View style={{flex: 1, marginLeft: 15, justifyContent: 'center'}}>
+                            <Text
+                                style={styles.numTextStyle}>{user.historicalScore ? user.historicalScore : '0.00'}</Text>
+                            <Text style={styles.numRemarkStyle}>累计秀豆（枚）</Text>
+                        </View>
                     </View>
                 </View>
-            </ImageBackground>
+            </View>
         );
     }
 
@@ -251,7 +245,7 @@ export default class MyIntegralAccountPage extends BasePage {
                                     end={{ x: 1, y: 0 }}
                                     colors={['#FF0050', '#FC5D39']}
                     />
-                    <View style={{ height: 10, width: ScreenUtils.width, backgroundColor: 'white' }}/>
+                    <View style={{height: 14, width: ScreenUtils.width, backgroundColor: 'white'}}/>
                     {this._accountInfoRender()}
                 </View>
             );
@@ -299,7 +293,7 @@ export default class MyIntegralAccountPage extends BasePage {
                             </View>
                             <Text style={{
                                 fontSize: 12, color: DesignRule.textColor_instruction
-                            }}>{item.realUserScore == 0 || (item.realUserScore && item.realUserScore >= 0) ? `已入账：${item.realUserScore}` : '待入账：？'}</Text>
+                            }}>{item.realUserScore == 0 || (item.realUserScore && item.realUserScore >= 0) ? `已入账：${item.realUserScore}` : '入账等待'}</Text>
                         </View>
                         :
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -498,7 +492,7 @@ const styles = StyleSheet.create({
         borderColor: DesignRule.mainColor,
         borderWidth: 1,
         position: 'absolute',
-        right: 6,
+        right: 15,
         top: 0
     },
     withdrawWrapper: {
@@ -528,6 +522,23 @@ const styles = StyleSheet.create({
     numRemarkStyle: {
         color: '#999999',
         fontSize: 12
+    },
+    headerViewShadow:{
+        position: 'absolute',
+        top: 10,
+        left: DesignRule.margin_page,
+        shadowColor: 'rgba(104, 0, 0, 0.1)',
+        shadowOffset: {w: 0, h: 4},
+        shadowOpacity: 1,
+        shadowRadius: 8,
+    },
+    headerViewStyle:{
+        backgroundColor: 'white',
+        height: px2dp(174),
+        width: ScreenUtils.width - 2 * DesignRule.margin_page,
+        borderRadius: 15,
+        overflow: 'hidden',
+        elevation: 2,
     }
 });
 

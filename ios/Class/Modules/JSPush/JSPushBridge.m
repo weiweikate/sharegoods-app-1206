@@ -16,6 +16,7 @@
 
 #define MINE_CUSTON_MESSAGE @"MINE_CUSTON_MESSAGE"
 #define MINE_NATIVE_TO_RN_MSG @"MINE_NATIVE_TO_RN_MSG"
+#define USERUPDATE @"nativeEvent_userUpdate"
 
 
 
@@ -30,7 +31,8 @@
   return @[
            HOME_REFRESH,
            HOME_CUSTOM_RN_SKIP,
-           MINE_NATIVE_TO_RN_MSG
+           MINE_NATIVE_TO_RN_MSG,
+           USERUPDATE
            ];
 }
 RCT_EXPORT_MODULE(JSPushBridge)
@@ -49,6 +51,8 @@ RCT_EXPORT_MODULE(JSPushBridge)
   
   [[NSNotificationCenter defaultCenter]addObserver:self
                                           selector:@selector(toMinePageCustomMsg:) name:MINE_CUSTON_MESSAGE object:nil];
+  [[NSNotificationCenter defaultCenter]addObserver:self
+                                          selector:@selector(userUpdate:) name:USERUPDATE object:nil];
 }
 -(void)toHomePageCustomMsg:(NSNotification *)noti{
   if (noti.object) {
@@ -69,6 +73,14 @@ RCT_EXPORT_MODULE(JSPushBridge)
   if (noti.object) {
     dispatch_async(dispatch_get_main_queue(), ^{
       [self sendEventWithName:MINE_NATIVE_TO_RN_MSG body:noti.object];
+    });
+  }
+}
+
+-(void)userUpdate:(NSNotification *)noti{
+  if (noti.object) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self sendEventWithName:USERUPDATE body:noti.object];
     });
   }
 }

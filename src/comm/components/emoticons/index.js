@@ -3,7 +3,7 @@ import { Animated, Image, Platform, Text, TouchableHighlight, TouchableOpacity, 
 import styles from './style';
 import emojiData from 'emoji-datasource';
 import _ from 'lodash';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
+import ScrollableTabView from '@mr/react-native-scrollable-tab-view';
 import TabBar from './tab';
 import TabBarDot from './tabDot';
 import stringify from './stringify';

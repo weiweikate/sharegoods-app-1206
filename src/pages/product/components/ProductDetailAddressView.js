@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import { MRText, NoMoreClick } from '../../../components/ui';
 import res from '../res/product';
 import DesignRule from '../../../constants/DesignRule';
-import { observable, computed, autorun } from 'mobx';
+import { observable, computed, autorun, action } from 'mobx';
 import { observer } from 'mobx-react';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import MineAPI from '../../mine/api/MineApi';
@@ -120,6 +120,8 @@ const sStyles = StyleSheet.create({
 
 export class ProductDetailAddressModel {
 
+    //根据地址返回促销信息商品详情回调
+    productPromotionSuccess = null;
     @observable prodCode = null;
     @observable templateCode = null;
     /*个人地址列表*/
@@ -128,12 +130,31 @@ export class ProductDetailAddressModel {
     @observable addressSelectedText = null;
     @observable provinceCode = null;
     @observable cityCode = null;
-    @observable addressSelectedCode = null;
+    @observable areaCode = null;
 
-    /*区域库存(地区变化就需要更新)  未请求成功为null*/
+    paramAddressItem = {
+        province: '浙江省', city: '杭州市', area: '萧山区',
+        provinceCode: '330000000', cityCode: '330100000', areaCode: '330109000'
+    };
+
+    /*区域库存(地区变化就需要更新)与商品详情页skuList结合成新的skuList  未请求成功为null*/
     @observable areaSkuList = null;
-
+    //有返回的邮费就显示,没有显示则显示商品详情返回的邮费
     @observable freightPrice = null;
+    //当前显示的活动
+    @observable promotionInfoItem = {};
+    //所有的活动
+    @observable promotionInfoS = [];
+
+    @action setAddressItem = (item) => {
+        this.paramAddressItem = item;
+
+        const { province, city, provinceCode, cityCode, area, areaCode } = item;
+        this.addressSelectedText = `${province || ''}${city || ''}${area || ''}`;
+        this.provinceCode = provinceCode;
+        this.cityCode = cityCode;
+        this.areaCode = areaCode;
+    };
 
     @computed get showAreaText() {
         if (this.addressSelectedText) {
@@ -172,8 +193,8 @@ export class ProductDetailAddressModel {
     }
 
     @computed get getAreaCode() {
-        if (this.addressSelectedCode) {
-            return this.addressSelectedCode;
+        if (this.areaCode) {
+            return this.areaCode;
         }
         for (const item of this.addressList) {
             if (item.defaultStatus === 1) {
@@ -197,14 +218,21 @@ export class ProductDetailAddressModel {
         });
 
         const { templateCode } = this;
-        ProductApi.freightByTemplateAndArea({
+
+        ProductApi.product_promotion_info({
             prodCode,
-            templateCode,
             provinceCode: this.getProvinceCode,
             cityCode: this.getCityCode,
-            areaCode: getAreaCode
+            areaCode: getAreaCode,
+            freightCode: templateCode
         }).then((data) => {
-            this.freightPrice = data.data;
+            const dataList = data.data || [];
+            const tempData = dataList[dataList.length - 1] || {};
+            const { freight } = tempData;
+            this.promotionInfoS = dataList;
+            this.promotionInfoItem = tempData;
+            this.freightPrice = freight;
+            this.productPromotionSuccess && this.productPromotionSuccess(tempData);
         });
     });
 
@@ -212,6 +240,11 @@ export class ProductDetailAddressModel {
     requestAddress = () => {
         MineAPI.queryAddrList().then((data) => {
             this.addressList = data.data || [];
+            for (const item of this.addressList) {
+                if (item.defaultStatus === 1) {
+                    this.paramAddressItem = item;
+                }
+            }
         });
     };
 }

@@ -5,6 +5,7 @@ import MineApi from '../../mine/api/MineApi';
 import user from '../../../model/user';
 import shopCartCacheTool from './ShopCartCacheTool';
 import { QYChatTool } from '../../../utils/QYModule/QYChatTool';
+import EmptyUtils from '../../../utils/EmptyUtils';
 class ShopCartStore {
 
     needSelectGoods = [];
@@ -41,6 +42,24 @@ class ShopCartStore {
     get cartData() {
         return this.data.slice();
         // return this.data;
+    }
+
+    /**
+     * 获取购物车skus
+     */
+    @computed
+    get getCartSkuCodes(){
+        let skus = [];
+        if(!EmptyUtils.isEmptyArr(this.data)){
+            this.data.forEach((item)=>{
+                if(!EmptyUtils.isEmptyArr(item.products)){
+                    item.products.forEach((product)=>{
+                        skus.push(product.skuCode);
+                    })
+                }
+            })
+        }
+        return skus;
     }
 
     @computed
@@ -223,6 +242,8 @@ class ShopCartStore {
             invalidObj.data = InvalidArr[0].products;
             invalidObj.data.map((goodItem, goodItemIndex) => {
                 goodItem.isSelected = false;
+                goodItem.isInvalid = true;
+                goodItem.isLastInvalid = InvalidArr[0].products.length === (goodItemIndex+1);
                 goodItem.key = '' + tempAllData.length + goodItemIndex;
                 goodItem.topSpace = 0;
                 // 有一个showPrice 搞活动显示的价格，有就重置掉price，没有你就老实的用原来的 OJBK?

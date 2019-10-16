@@ -72,15 +72,17 @@ export class DetailBanner extends Component {
 
     render() {
         //有视频第一个添加为视频
-        const { imgFileList, videoUrl, imgUrl } = this.props.data || {};
+        const { imgFileList, videoUrl, imgUrl, videoCover } = this.props.data || {};
 
         let productImgListTemp = [...(imgFileList || [])];
         productImgListTemp = productImgListTemp || [];
-        productImgListTemp.unshift({ originalImg: imgUrl });
+        if (StringUtils.isNoEmpty(imgUrl)) {
+            productImgListTemp.unshift({ originalImg: imgUrl });
+        }
         this.productImgListOutVideo = [...productImgListTemp];
         if (StringUtils.isNoEmpty(videoUrl)) {
             this.state.haveVideo = true;
-            productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
+            productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: videoCover || imgUrl });
         } else {
             this.state.haveVideo = false;
         }

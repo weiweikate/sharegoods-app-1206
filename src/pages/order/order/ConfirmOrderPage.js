@@ -24,6 +24,7 @@ import { MRText } from '../../../components/ui';
 import RouterMap from '../../../navigation/RouterMap';
 import res from '../res';
 import ActivateTicketView from '../components/confirmOrder/ActivateTicketView';
+import AddressModal from '../components/confirmOrder/AddressModal';
 const step_header = res.step_header;
 
 @observer
@@ -120,6 +121,7 @@ export default class ConfirmOrderPage extends BasePage {
                     <ActivateTicketView />
                 </ScrollView>
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
+                <AddressModal/>
                 <SelectOneTicketModel ref={(ref)=>{this.oneTicketModel = ref}}/>
                 <SelectTicketModel ref={(ref)=>{this.ticketModel = ref}} />
             </View>
@@ -189,12 +191,13 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-        this.loadPageData(this.params.orderParamVO.couponsId);
+
+        this.loadPageData();
     }
 
     loadPageData = (couponsId) => {
         // 获取订单数据
-        confirmOrderModel.makeSureProduct_selectDefaltCoupon(couponsId);
+        confirmOrderModel.makeSureProduct_selectDefaltAddress();
     };
 
     // 地址重新选择

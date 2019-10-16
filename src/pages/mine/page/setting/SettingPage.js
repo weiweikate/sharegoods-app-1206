@@ -321,8 +321,8 @@ const styles = StyleSheet.create({
     viewStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingLeft: 21,
-        paddingRight: 23,
+        paddingLeft: 15,
+        paddingRight: 15,
         backgroundColor: 'white',
         height: 44,
         alignItems: 'center'

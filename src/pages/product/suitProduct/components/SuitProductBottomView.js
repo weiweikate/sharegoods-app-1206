@@ -6,6 +6,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import LinearGradient from 'react-native-linear-gradient';
+import StringUtils from '../../../../utils/StringUtils';
 
 @observer
 export default class SuitProductBottomView extends Component {
@@ -13,9 +14,16 @@ export default class SuitProductBottomView extends Component {
         const {
             isSuitFixed, totalSubMoney, totalPayMoney,
             selectedAmount, addAmount, subAmount, canAddAmount,
-            packageItem
+            packageItem, promotionInfoItem
         } = this.props.suitProductModel;
+        const totalPrice = StringUtils.add(totalPayMoney, totalSubMoney);
         const { singlePurchaseNumber } = packageItem;
+        const { show, showTag, promotionPrice } = promotionInfoItem;
+        const priceType = show === 1 ? `${showTag}：` : '套餐价：';
+        //支付
+        const pricePay = show === 1 ? promotionPrice : totalPayMoney;
+        //节省
+        const priceSub = show === 1 ? StringUtils.sub(totalPrice, promotionPrice) : totalSubMoney;
         return (
             <View style={styles.bgView}>
                 {
@@ -51,9 +59,9 @@ export default class SuitProductBottomView extends Component {
                 }
                 <View style={styles.container}>
                     <View style={styles.leftView}>
-                        <MRText style={styles.leftTopText1}>套餐价：<MRText
-                            style={styles.leftTopText2}>￥{totalPayMoney}</MRText></MRText>
-                        <MRText style={styles.leftBottomText1}>为你节省￥{totalSubMoney}</MRText>
+                        <MRText style={styles.leftTopText1}>{priceType}<MRText
+                            style={styles.leftTopText2}>￥{pricePay}</MRText></MRText>
+                        <MRText style={styles.leftBottomText1}>为你节省￥{priceSub}</MRText>
                     </View>
                     <NoMoreClick onPress={this.props.bottomAction}>
                         <LinearGradient style={styles.rightBtn}

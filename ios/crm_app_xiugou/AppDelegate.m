@@ -54,7 +54,7 @@
   [self getDynamicBaseUrl];
   [self checkworking];
 
-//  [[CommentTool sharedInstance]checkIsCanComment];
+  [[CommentTool sharedInstance]checkIsCanComment];
 
   return YES;
 }

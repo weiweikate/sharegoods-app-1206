@@ -3,7 +3,6 @@ import BasePage from '../../BasePage';
 
 import {
     Image,
-    InteractionManager,
     RefreshControl,
     ScrollView,
     StyleSheet,
@@ -52,13 +51,6 @@ export default class DownPricePage extends BasePage {
         this.state = {
             selectNav: 0
         };
-        InteractionManager.runAfterInteractions(() => {
-            //初次进入loading
-            if (this.dataModel.isShowLoading) {
-                this.$loadingShow('加载中');
-                this.dataModel.isShowLoading = false;
-            }
-        });
 
         //获取弹出框的信息
         this.manager = new Manager();

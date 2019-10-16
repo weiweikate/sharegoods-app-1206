@@ -108,11 +108,8 @@ export default class MyShop_RecruitPage extends BasePage {
                     this.unFirst = true;
                     return;
                 }
-                //tab MyShop_RecruitPage   页面本身spellSHop/MyShop_RecruitPage
-                if (state && state.routeName === 'MyShop_RecruitPage') {
-                    spellStatusModel.getUser(0).then().catch((error) => {
-                    });
-                }
+                spellStatusModel.getUser(0).then().catch((error) => {
+                });
             }
         );
         this._loadPageData();
