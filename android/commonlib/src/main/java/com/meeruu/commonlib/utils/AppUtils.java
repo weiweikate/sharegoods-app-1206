@@ -322,4 +322,24 @@ public class AppUtils {
         return packageNames.contains(packageName);
     }
 
+    /**
+     * 校验apk是否可安装
+     *
+     * @param context
+     * @param archiveFilePath
+     * @return
+     */
+    public static boolean isApkCanInstall(Context context, String archiveFilePath) {
+        try {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo info = pm.getPackageArchiveInfo(archiveFilePath, PackageManager.GET_ACTIVITIES);
+            if (info != null) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

@@ -31,7 +31,7 @@ import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import {
-    ShopBottomBannerView,
+    ShopBottomBannerView, ShopCardView,
     ShopMoneyExplainView,
     ShopProductItemView
 } from './components/ShopDetailItemView';
@@ -435,6 +435,7 @@ export default class MyShopPage extends BasePage {
                             colors={[DesignRule.mainColor]}
                         />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
+                {userStatus === 1 && <ShopCardView/>}
                 <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <ShopMoneyExplainView MyShopDetailModel={this.MyShopDetailModel}/>
