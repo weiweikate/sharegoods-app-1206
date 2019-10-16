@@ -1,4 +1,11 @@
-import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+/**
+ * @author luoyongming
+ * @date on 2018/9/18
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
+ */
+import { Alert, Image, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import StringUtils from '../../../../utils/StringUtils';
@@ -13,14 +20,8 @@ import RouterMap, { routePop } from '../../../../navigation/RouterMap';
 
 const addrSelectedIcon = res.button.selected_circle_red;
 const addrUnSelectedIcon = res.button.unselected_circle;
-/**
- * @author luoyongming
- * @date on 2018/9/18
- * @describe 设置页面
- * @org www.sharegoodsmall.com
- * @email luoyongming@meeruu.com
- */
-const dismissKeyboard = require('dismissKeyboard');
+
+const dismissKeyboard = Keyboard.dismiss;
 const arrow_right = res.button.arrow_right_black;
 
 export default class AddressEditAndAddPage extends BasePage {
@@ -160,7 +161,7 @@ export default class AddressEditAndAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from, streetCode, province,  city, area} = this.params;
+        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from, streetCode, province, city, area } = this.params;
         if (from === 'edit') {
             this.$navigationBarOptions.title = '编辑地址';
         } else if (from === 'add') {

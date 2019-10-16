@@ -33,7 +33,7 @@ import TaskView from '../TaskView';
 import HomeChannelView from '../HomeChannelView';
 import HomeExpandBannerView from '../HomeExpandBannerView';
 import HomeFocusAdView from '../HomeFocusAdView';
-import HomeLimitGoView from '../HomeLimitGoView';
+import HomeLimitGoGoodsView from '../HomeLimitGoGoodsView';
 import HomeSubjectView from '../HomeSubjectView';
 import TabTitleView, { StaticTabTitleView } from '../TabTitleView';
 import { TopicImageAdView } from '../TopicImageAdView';
@@ -44,6 +44,8 @@ import { MRText as Text } from '../../../../components/ui/index';
 import TextCustomView from '../TextCustomView';
 import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
 import { tabModel } from '../../model/HomeTabModel';
+import HomeLimitGoTopView from '../HomeLimitGoTopView';
+import HomeLimitGoTimeView from '../HomeLimitGoTimeView';
 
 
 const { JSPushBridge } = NativeModules;
@@ -96,8 +98,14 @@ export default class HomeFirstTabView extends Component {
             case homeType.focusGrid:
                 dim.height = foucusHeight > 0 ? (foucusHeight + (homeExpandBnnerModel.expBannerList.length > 0 ? px2dp(20) : px2dp(10))) : 0;
                 break;
-            case homeType.limitGo:
-                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitHeight : 0;
+            case homeType.limitGoTop:
+                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitTopHeight : 0;
+                break;
+            case homeType.limitGoTime:
+                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitTimeHeight : 0;
+                break;
+            case homeType.limitGoGoods:
+                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitGoodsHeight : 0;
                 break;
             case homeType.today:
                 dim.height = todayList.length > 0 ? todayHeight : 0;
@@ -153,8 +161,12 @@ export default class HomeFirstTabView extends Component {
             return <HomeExpandBannerView navigate={routePush}/>;
         } else if (type === homeType.focusGrid) {
             return <HomeFocusAdView navigate={routePush}/>;
-        } else if (type === homeType.limitGo) {
-            return <HomeLimitGoView navigate={routePush}/>;
+        } else if (type === homeType.limitGoTop) {
+            return <HomeLimitGoTopView navigate={routePush}/>;
+        } else if (type === homeType.limitGoTime) {
+            return <HomeLimitGoTimeView navigate={routePush}/>;
+        } else if (type === homeType.limitGoGoods) {
+            return <HomeLimitGoGoodsView navigate={routePush}/>;
         } else if (type === homeType.today) {
             return <HomeTodayView navigate={routePush}/>;
         } else if (type === homeType.fine) {
@@ -239,9 +251,14 @@ export default class HomeFirstTabView extends Component {
     };
 
     _overrideRowRenderer = (type, data, index) => {
-                return (
-                    <StaticTabTitleView />
-                );
+        if (type.type === homeType.goodsTitle ){
+            return (
+                <StaticTabTitleView />
+            );
+        }
+
+
+        return this._renderItem(type, data, index)
 
     };
 
@@ -254,7 +271,7 @@ export default class HomeFirstTabView extends Component {
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         let stickyHeaderIndices = []
         homeList.forEach((item, index)=> {
-           if (item.type === homeType.goodsTitle){
+           if (item.type === homeType.goodsTitle ||  item.type === homeType.limitGoTime){
                stickyHeaderIndices.push(index);
            }
 

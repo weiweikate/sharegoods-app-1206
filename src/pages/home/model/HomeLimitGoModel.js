@@ -20,23 +20,24 @@ export const limitStatus = {
 export class LimitGoModules {
     @observable spikeList = [];
     @observable currentGoodsList = [];
-    @observable initialPage = 0;
     @observable currentPage = -1;
     @observable isShowFreeOrder = false;
 
-    @computed get limitHeight() {
-        const len = (this.currentGoodsList && this.currentGoodsList.length) || 0;
-        let height = 0;
-        if (len > 0) {
-            height = px2dp(97) + len * px2dp(130) + (len - 1) * px2dp(10);
-        } else {
-            height = px2dp(97);
-        }
-
+    @computed get limitTopHeight() {
+        let height = px2dp(42);
         if (this.isShowFreeOrder) {
             height += px2dp(50);
         }
         return height;
+    }
+
+    @computed get limitTimeHeight() {
+        return px2dp(55);
+    }
+
+    @computed get limitGoodsHeight() {
+        const len = (this.currentGoodsList && this.currentGoodsList.length) || 0;
+        return len * px2dp(130) + (len - 1) * px2dp(10);
     }
 
     @action loadLimitGo = flow(function* (change) {
@@ -48,7 +49,6 @@ export class LimitGoModules {
             if (!isShowResult.data) {
                 this.spikeList = [];
                 this.currentGoodsList = [];
-                this.initialPage = 0;
                 this.currentPage = -1;
                 throw new Error('不显示秒杀');
             } else {
@@ -61,7 +61,6 @@ export class LimitGoModules {
 
                 let spikeTime = 0;     // 秒杀开始时间
                 let lastSeckills = 0;  // 最近的秒杀
-                let _initialPage = 0;  // 初始page
                 let _currentPage = -1; // 当前page
                 result.map((data, index) => {
                     spikeTime = (result[index] && result[index].simpleActivity.startTime) || 0;
@@ -71,12 +70,10 @@ export class LimitGoModules {
 
                     if (lastSeckills === 0) {
                         lastSeckills = diffTime;
-                        _initialPage = index;
                         _currentPage = index;
                     } else if (lastSeckills !== 0) {
                         if (lastSeckills > diffTime && date >= parseInt(spikeTime, 0)) {
                             lastSeckills = diffTime;
-                            _initialPage = index;
                             _currentPage = index;
                         }
                     }
@@ -111,7 +108,6 @@ export class LimitGoModules {
                     });
                     timeFormats.push(timeFormat);
                 });
-                this.initialPage = _initialPage;
 
                 let currentTimeFormat = null;
                 //获取当前选中限时购的名称
@@ -130,10 +126,7 @@ export class LimitGoModules {
                 }
                 this.spikeList = _spikeList;
                 this.currentGoodsList = (_spikeList[this.currentPage] && _spikeList[this.currentPage].goods) || [];
-                homeModule.changeHomeList(homeType.limitGo, [{
-                    id: 6,
-                    type: homeType.limitGo
-                }]);
+                this.changeLimitHeight();
             }
         } catch (error) {
             console.log(error);
@@ -165,9 +158,27 @@ export class LimitGoModules {
     @action changeLimitGo(index) {
         this.currentGoodsList = (this.spikeList[index] && this.spikeList[index].goods) || [];
         this.currentPage = index;
-        homeModule.changeHomeList(homeType.limitGo, [{
-            id: 6,
-            type: homeType.limitGo
+        homeModule.changeHomeList(homeType.limitGoGoods, [{
+            id: 62,
+            type: homeType.limitGoGoods
+        }]);
+    }
+
+    /**
+     * 改变限时购高度
+     */
+    changeLimitHeight() {
+        homeModule.changeHomeList(homeType.limitGoTop, [{
+            id: 60,
+            type: homeType.limitGoTop
+        }]);
+        homeModule.changeHomeList(homeType.limitGoTime, [{
+            id: 61,
+            type: homeType.limitGoTime
+        }]);
+        homeModule.changeHomeList(homeType.limitGoGoods, [{
+            id: 62,
+            type: homeType.limitGoGoods
         }]);
     }
 }

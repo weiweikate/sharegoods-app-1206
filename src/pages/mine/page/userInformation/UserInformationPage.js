@@ -1,5 +1,13 @@
 import React from 'react';
-import { Clipboard, RefreshControl, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import {
+    Clipboard,
+    Keyboard,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
 import UserSingleItem from '../../components/UserSingleItem';
@@ -13,7 +21,7 @@ import CommModal from '../../../../comm/components/CommModal';
 import { MRText as Text } from '../../../../components/ui';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
-const dismissKeyboard = require('dismissKeyboard');
+const dismissKeyboard = Keyboard.dismiss;
 
 /**
  * @author chenxiang
@@ -39,7 +47,6 @@ export default class UserInformationPage extends BasePage {
             showCopy: false
         };
     }
-
 
     renderWideLine = () => {
         return (

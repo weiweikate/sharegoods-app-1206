@@ -25,8 +25,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 2104
-        versionName "2.1.4"
+        versionCode 2105
+        versionName "2.1.5"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -53,14 +53,6 @@ android {
             universalApk false  // If true, also generate a universal APK
             include "armeabi-v7a", "x86"
         }
-    }
-    packagingOptions {
-        pickFirst '**/armeabi-v7a/libc++_shared.so'
-        pickFirst '**/x86/libc++_shared.so'
-        pickFirst '**/arm64-v8a/libc++_shared.so'
-        pickFirst '**/x86_64/libc++_shared.so'
-        pickFirst '**/x86/libjsc.so'
-        pickFirst '**/armeabi-v7a/libjsc.so'
     }
     sourceSets {
         main {
@@ -94,7 +86,7 @@ android {
             manifestPlaceholders = [
                     JPUSH_PKGNAME : "com.meeruu.sharegoods",
                     // 开发环境
-                   JPUSH_APPKEY  : "3288c3f3feb6c119e3d88049",
+                    JPUSH_APPKEY  : "3288c3f3feb6c119e3d88049",
                     // 生产环境
 //                     JPUSH_APPKEY  : "7fde54543daf045a209a7abf",
                     JPUSH_CHANNEL : "guanwang", //暂时填写默认值即可.
@@ -177,7 +169,7 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
 
     if (enableHermes) {
-        def hermesPath = "../../node_modules/hermesvm/android/"
+        def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
         releaseImplementation files(hermesPath + "hermes-release.aar")
         releaseStagingImplementation files(hermesPath + "hermes-release.aar")
