@@ -3,11 +3,9 @@ import {
     Animated,
     DeviceEventEmitter,
     InteractionManager,
-    ScrollView,
     StyleSheet,
-    TouchableOpacity,
     View,
-    Platform
+    Platform,
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './model/Modules';
@@ -20,12 +18,11 @@ import homeModalManager from './manager/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 import { homeTabManager } from './manager/HomeTabManager';
-import { MRText as Text } from '../../components/ui';
 import LuckyIcon from '../guide/LuckyIcon';
 import HomeMessageModalView, { GiftModal, HomeAdModal } from './view/HomeMessageModalView';
 import { limitGoModule } from './model/HomeLimitGoModel';
 import PraiseModel from './view/PraiseModel';
-import ScrollableTabView, { DefaultTabBar } from '@mr/react-native-scrollable-tab-view';
+import ScrollableTabView from '@mr/react-native-scrollable-tab-view';
 import BasePage from '../../BasePage';
 import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
 import taskModel from './model/TaskModel';
@@ -37,7 +34,7 @@ import HomeFirstTabView from './view/List/HomeFirstTabView';
 import HomeNormalList from './view/List/HomeNormalList';
 import DIYTopicList from './view/List/DIYTopicList';
 import { observer } from 'mobx-react';
-import ImageLoader from '@mr/image-placeholder';
+import HomeTopTarBar from './HomeTopTarBar';
 
 
 /**
@@ -61,7 +58,7 @@ class HomePage extends BasePage {
         super(props);
         this.state = {
             hasMessage: false,
-            y: new Animated.Value(0)
+            y: new Animated.Value(0),
         };
     }
 
@@ -123,6 +120,13 @@ class HomePage extends BasePage {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
+        this.limitGoTimeViewlistener = DeviceEventEmitter.addListener('staticeLimitGoTimeView', (value)=> {
+            if (value){//限时购是否处于吸顶状态
+                this.topTarBar && this.topTarBar.close();
+            }else {
+                this.topTarBar && this.topTarBar.open();
+            }
+        })
     }
 
     componentWillUnmount() {
@@ -132,6 +136,7 @@ class HomePage extends BasePage {
         this.listener && this.listener.remove();
         this.listenerMessage && this.listenerMessage.remove();
         this.listenerLogout && this.listenerLogout.remove();
+        this.limitGoTimeViewlistener && this.limitGoTimeViewlistener.remove();
     }
 
     loadMessageCount = () => {
@@ -188,6 +193,11 @@ class HomePage extends BasePage {
             onScrollBeginDrag={() => {
                 this.luckyIcon.close();
             }}
+            onScroll={(y) => {
+                if (y <  ScreenUtils.width) {
+                    this.topTarBar && this.topTarBar.open();
+                }
+            }}
         />);
         tabList.map((item, index) => {
             if (item.navType === 2) {
@@ -215,7 +225,8 @@ class HomePage extends BasePage {
                         this.homeList && this.homeList.scrollToTop();
                         //埋点
                         this.trackViewHomePageChannel(tabList, i);
-                        this.tab && this.tab.scrollTo({ x: i * 60 - ScreenUtils.width / 2 + 30 });
+                        this.topTarBar && this.topTarBar.scrollTo({ x: i * 60 - ScreenUtils.width / 2 + 30 });
+                        this.topTarBar && this.topTarBar.open();
                     }}
                     renderTabBar={this._renderTabBar.bind(this)}
                     //进界面的时候打算进第几个
@@ -239,68 +250,7 @@ class HomePage extends BasePage {
     }
 
     _renderTabBar(p) {
-        let itemWidth = 60;
-        let tabBarHeight = 42;
-        return (
-            <View style={{ height: 0, width: ScreenUtils.width, backgroundColor: 'white' }}>
-                <ScrollView
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    ref={ref => {
-                        this.tab = ref;
-                    }}>
-                    <DefaultTabBar
-                        activeTab={p.activeTab}
-                        style={{ width: itemWidth * p.tabs.length, borderBottomWidth: 0, height: tabBarHeight }}
-                        containerWidth={itemWidth * p.tabs.length}
-                        scrollValue={p.scrollValue}
-                        tabs={p.tabs}
-                        underlineStyle={{
-                            backgroundColor: DesignRule.mainColor,
-                            left: (itemWidth - 20) / 2,
-                            width: 18,
-                            height: 2.5,
-                            bottom: 8,
-                            borderRadius: 2
-                        }}
-                        renderTab={(name, page, isTabActive) => {
-                            let item = {};
-                            let showType, navIcon, bottomNavIcon;
-                            if (page === 0) {
-
-                            } else {
-                                item = tabModel.tabList[page - 1] || {};
-                                showType = item.showType;
-                                navIcon = item.navIcon;
-                                bottomNavIcon = item.bottomNavIcon;
-                            }
-                            return (
-                                <TouchableOpacity style={{
-                                    height: 36,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: itemWidth
-                                }} onPress={() => {
-                                    tabModel.changeTabIndex(page)
-                                    p.goToPage(page);
-                                }} activeOpacity={0.7}>
-                                    {showType === 2 ?
-                                        <ImageLoader source={{ uri: isTabActive ? navIcon : bottomNavIcon }}
-                                                     style={{
-                                                         height: 36,
-                                                         width: itemWidth
-                                                     }}
-                                        /> :
-                                        <Text style={isTabActive ? styles.tabSelect : styles.tabNomal}
-                                              numberOfLines={1}>{name}</Text>
-                                    }
-                                </TouchableOpacity>
-                            );
-                        }}
-                    />
-                </ScrollView>
-            </View>
-        );
+      return  <HomeTopTarBar p={p} ref ={(r) => {this.topTarBar = r }}/>
     }
 }
 

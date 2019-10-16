@@ -39,7 +39,8 @@ export const homeType = {
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
     custom_goods: 'WIDGET-GOODS',
-    homeHotTitle: 'homeHotTitle'
+    homeHotTitle: 'homeHotTitle',
+    tabStaticView: 'tabStaticView',//首页类目占位的
 };
 
 export const homeLinkType = {

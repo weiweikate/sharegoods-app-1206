@@ -35,7 +35,7 @@ import HomeExpandBannerView from '../HomeExpandBannerView';
 import HomeFocusAdView from '../HomeFocusAdView';
 import HomeLimitGoGoodsView from '../HomeLimitGoGoodsView';
 import HomeSubjectView from '../HomeSubjectView';
-import TabTitleView, { StaticTabTitleView } from '../TabTitleView';
+import { StaticTabTitleView } from '../TabTitleView';
 import { TopicImageAdView } from '../TopicImageAdView';
 import GoodsCustomView from '../GoodsCustomView';
 import DesignRule from '../../../../constants/DesignRule';
@@ -45,7 +45,8 @@ import TextCustomView from '../TextCustomView';
 import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
 import { tabModel } from '../../model/HomeTabModel';
 import HomeLimitGoTopView from '../HomeLimitGoTopView';
-import HomeLimitGoTimeView from '../HomeLimitGoTimeView';
+import HomeLimitGoTimeView, { StaticLimitGoTimeView } from '../HomeLimitGoTimeView';
+import HomeTitleView from '../HomeTitleView';
 
 
 const { JSPushBridge } = NativeModules;
@@ -80,6 +81,9 @@ export default class HomeFirstTabView extends Component {
         const { foucusHeight } = homeFocusAdModel;
 
         switch (type.type) {
+            case homeType.tabStaticView:
+                dim.height = 42;
+                break;
             case homeType.swiper:
                 dim.height = bannerModule.bannerList.length > 0 ? bannerHeight : 0;
                 break;
@@ -114,10 +118,11 @@ export default class HomeFirstTabView extends Component {
                 dim.height = recommendList.length > 0 ? recommendHeight : 0;
                 break;
             case homeType.homeHot:
-                dim.height = subjectList.length > 0 ? subjectHeight+ px2dp(13): 0;
+                dim.height = subjectList.length > 0 ? subjectHeight: 0;
                 break;
             case homeType.goodsTitle:
-                dim.height = homeModule.tabList.length > 0 ? px2dp(66-13) : 0;
+               // dim.height = homeModule.tabList.length > 0 ? px2dp(66-13) : 0;
+                dim.height = px2dp(42)
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
@@ -178,10 +183,12 @@ export default class HomeFirstTabView extends Component {
                               navigate={routePush}/>;
         } else if (type === homeType.goodsTitle) {
             return <View ref={e => this.toGoods = e}
+                         style={{marginLeft: px2dp(15)}}
                          onLayout={event => {
                              // 保留，不能删除
                          }}>
-                <TabTitleView/>
+                <HomeTitleView title={'为你推荐'}/>
+                {/*<TabTitleView/>*/}
             </View>;
         } else if (type === homeType.custom_goods) {
             return <GoodsCustomView data={item}/>;
@@ -246,6 +253,8 @@ export default class HomeFirstTabView extends Component {
             <HeaderLoading
                 isRefreshing={homeModule.isRefreshing}
                 onRefresh={this._onRefresh.bind(this)}
+                lineTop={42}
+                styled={{marginTop:42,height:headerHeight}}
             />
         );
     };
@@ -257,8 +266,22 @@ export default class HomeFirstTabView extends Component {
             );
         }
 
+        if (type.type === homeType.limitGoTime) {
+            return <StaticLimitGoTimeView />
+        }
+        //
+        // if (index === this.limitGoTimeDismissIndex ) {
+        //     return <View />
+        // }
 
-        return this._renderItem(type, data, index)
+        if (index === this.limitGoTimeIndex-1 ){
+            DeviceEventEmitter.emit('staticeLimitGoTimeView', true)
+        }
+
+        return <View />
+
+
+       // return this._renderItem(type, data, index)
 
     };
 
@@ -269,37 +292,45 @@ export default class HomeFirstTabView extends Component {
         }
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
+        this.limitGoTimeIndex = -1;
         let stickyHeaderIndices = []
         homeList.forEach((item, index)=> {
-           if (item.type === homeType.goodsTitle ||  item.type === homeType.limitGoTime){
-               stickyHeaderIndices.push(index);
-           }
+            // if (item.type === homeType.goodsTitle){
+            //     stickyHeaderIndices.push(index);
+            // }
+
+            if (item.type === homeType.limitGoTime) {
+                this.limitGoTimeIndex = index;
+                stickyHeaderIndices.push(index-1);
+                stickyHeaderIndices.push(index);
+                stickyHeaderIndices.push(index + 2);
+            }
 
         });
         return (
             <StickyContainer stickyHeaderIndices={stickyHeaderIndices}
                              overrideRowRenderer={this._overrideRowRenderer}
             >
-            <RecyclerListView
-                ref={(ref) => {
-                    this.recyclerListView = ref;
-                }}
-                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1}}
-                refreshControl={this.renderRefreshLoading()}
-                onEndReached={this._onEndReached.bind(this)}
-                onEndReachedThreshold={ScreenUtils.height / 3}
-                dataProvider={this.dataProvider}
-                rowRenderer={this._renderItem.bind(this)}
-                layoutProvider={this.layoutProvider}
-                onScrollBeginDrag={this.props.onScrollBeginDrag}
-                showsVerticalScrollIndicator={false}
-                onScroll={this._onListViewScroll}
-                renderFooter={() => <Footer
-                    isFetching={homeModule.isFetching}
-                    errorMsg={homeModule.errorMsg}
-                    isEnd={homeModule.isEnd}/>
-                }
-            />
+                <RecyclerListView
+                    ref={(ref) => {
+                        this.recyclerListView = ref;
+                    }}
+                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1}}
+                    refreshControl={this.renderRefreshLoading()}
+                    onEndReached={this._onEndReached.bind(this)}
+                    onEndReachedThreshold={ScreenUtils.height / 3}
+                    dataProvider={this.dataProvider}
+                    rowRenderer={this._renderItem.bind(this)}
+                    layoutProvider={this.layoutProvider}
+                    onScrollBeginDrag={this.props.onScrollBeginDrag}
+                    showsVerticalScrollIndicator={false}
+                    onScroll={this._onListViewScroll}
+                    renderFooter={() => <Footer
+                        isFetching={homeModule.isFetching}
+                        errorMsg={homeModule.errorMsg}
+                        isEnd={homeModule.isEnd}/>
+                    }
+                />
             </StickyContainer>
         );
     }

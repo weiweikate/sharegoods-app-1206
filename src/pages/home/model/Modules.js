@@ -41,25 +41,30 @@ class HomeModule {
     errorMsg = '';
     tabId = '';
     // id数字不要轻易改，model有对应
-    fixedPartOne = [{
-        id: 0,
-        type: homeType.swiper
-    }, {
-        id: 1,
-        type: homeType.user
-    }, {
-        id: 2,
-        type: homeType.channel
-    }, {
-        id: 3,
-        type: homeType.task
-    }, {
-        id: 4,
-        type: homeType.expandBanner
-    }, {
-        id: 5,
-        type: homeType.focusGrid
-    }];
+    fixedPartOne = [
+        {
+            id: -1,
+            type: homeType.tabStaticView
+        },
+        {
+            id: 0,
+            type: homeType.swiper
+        }, {
+            id: 1,
+            type: homeType.user
+        }, {
+            id: 2,
+            type: homeType.channel
+        }, {
+            id: 3,
+            type: homeType.task
+        }, {
+            id: 4,
+            type: homeType.expandBanner
+        }, {
+            id: 5,
+            type: homeType.focusGrid
+        }];
     topTopice = [];
     fixedPartTwo = [{
         id: 60,

@@ -173,7 +173,7 @@ let styles = StyleSheet.create({
         marginTop: px2dp(15),
         width: ScreenUtil.width - px2dp(30),
         marginLeft: px2dp(15),
-        marginBottom: px2dp(13),
+        // marginBottom: px2dp(13),
         marginRight: px2dp(15),
         borderRadius: 5
     },
