@@ -75,6 +75,13 @@
             android:theme="@style/ysf_window_theme" />
 
         <activity
+            android:name="com.qiyukf.nim.uikit.session.activity.CaptureVideoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/ysf_video_record"
+            android:screenOrientation="portrait"
+            android:theme="@style/ysf_window_theme" />
+
+        <activity
             android:name="com.meeruu.qiyu.activity.QiyuLeaveMessageActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/ysf_leave_activity_label"
