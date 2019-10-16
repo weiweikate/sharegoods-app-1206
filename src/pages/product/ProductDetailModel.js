@@ -609,6 +609,8 @@ export default class ProductDetailModel {
 
         /*商品详情埋点*/
         track(trackEvent.ProductDetail, {
+            sgspm: this.sgspm,
+            sgscm: this.sgscm,
             productShowSource: this.trackType || 0,
             sourceAttributeCode: this.trackCode || 0,
             spuCode: this.prodCode,
