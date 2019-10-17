@@ -110,9 +110,9 @@ export class HeaderItemView extends Component {
         const showPinWill = activityType === activity_type.pinGroup && activityStatus === activity_status.unBegin;
         const showPinIn = activityType === activity_type.pinGroup && activityStatus === activity_status.inSell;
         //秒杀或者拼团  不显示价格
-        const showPrice = !((activityType === (activity_type.skill || activity_type.pinGroup)) && activityStatus === activity_status.inSell);
+        const showPrice = !((activityType === activity_type.skill || activityType === activity_type.pinGroup) && activityStatus === activity_status.inSell);
         /*秒杀||拼团||话费 || 兑换 不显示拼店*/
-        const showShop = ((activityType === (activity_type.skill || activity_type.pinGroup)) && activityStatus === activity_status.inSell) || isHuaFei || this.props.paramsType === '9';
+        const showShop = ((activityType === activity_type.skill || activityType === activity_type.pinGroup) && activityStatus === activity_status.inSell) || isHuaFei || this.props.paramsType === '9';
         const { productDetailAddressModel } = productDetailModel;
         const { freightPrice } = productDetailAddressModel;
         const freightPriceShow = isNoEmpty(freightPrice) ? freightPrice : freight;
