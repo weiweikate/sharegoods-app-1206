@@ -48,7 +48,7 @@
         "@mr/webview": "0.5.0",
         "@react-native-community/netinfo": "^4.2.2",
         "@react-native-community/slider": "2.0.0",
-        "@react-native-community/viewpager": "^2.0.0",
+        "@react-native-community/viewpager": "^2.0.1",
         "@sensors.data/react-native-sensors-analytics": "^1.0.0",
         "axios": "0.19.0",
         "date-fns": "^1.30.1",

@@ -1,86 +1,27 @@
 import React, { Component } from 'react';
-import {
-    Image,
-    ImageBackground,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View
-} from 'react-native';
+import { Image, ImageBackground, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LinearGradient from 'react-native-linear-gradient';
-import HomeTitleView from './HomeTitleView';
 import ImageLoader from '@mr/image-placeholder';
 import { limitGoModule, limitStatus } from '../model/HomeLimitGoModel';
 import DesignRule from '../../../constants/DesignRule';
 import resHome from '../res';
 import res from '../res';
 import { homeLinkType, homeRoute } from '../HomeTypes';
-import { MRText, UIText } from '../../../components/ui';
+import { UIText } from '../../../components/ui';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import user from '../../../model/user';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import productRes from '../../product/res/product';
-import XiuDouResultModal from './XiuDouResultModal';
 import { observer } from 'mobx-react';
-import { autorun } from 'mobx';
 import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 const { px2dp } = ScreenUtils;
 const { saleSmallSkill } = productRes.pSacle;
 
 @observer
-export default class HomeLimitGoView extends Component {
-
-    _onChangeTab(number) {
-        this._selectedLimit(number);
-    }
-
-    selectPage = autorun(() => {
-        const { currentPage } = limitGoModule;
-        setTimeout(() => {
-            this.scrollView && this.scrollView.scrollTo({
-                x: px2dp(67) * (currentPage + 0.5) - DesignRule.width / 2,
-                animated: true
-            });
-        }, 200);
-    });
-
-    _selectedLimit(number) {
-        let index = number !== -1 ? number : this.state.page;
-        let limit = limitGoModule.spikeList[index];
-        if (limit) {
-            limitGoModule.changeLimitGo(number);
-            // 限时购tab点击埋点
-            track(trackEvent.SpikeTimeClick,
-                {
-                    'timeRangeId': limit.activityCode,
-                    'timeRange': limit.time,
-                    'timeRangeStatus': limit.title
-                });
-        }
-    }
-
-    _tabItem(item, index, isTabActive) {
-        const textColor = isTabActive ? 'white' : '#666';
-        return (<TouchableOpacity activeOpacity={0.7} onPress={() => {
-            this._onChangeTab(index);
-        }}>
-            <ImageBackground style={styles.tab}
-                             source={isTabActive ? res.tabBg : null}>
-                <Text style={[styles.time, { color: textColor }]}>
-                    {item.time}
-                </Text>
-                <Text style={[styles.title, { color: textColor }]}>
-                    {item.title}
-                </Text>
-            </ImageBackground>
-        </TouchableOpacity>);
-    }
+export default class HomeLimitGoGoodsView extends Component {
 
     _goodsItem(len, data, index, activityData) {
         return (<TouchableWithoutFeedback key={index}
@@ -94,7 +35,7 @@ export default class HomeLimitGoView extends Component {
     }
 
     _goToDetail(index, value, activityData) {
-        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode,...getSGspm_home(HomeSource.limitGo, index, limitGoModule.currentPage)});
+        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode, ...getSGspm_home(HomeSource.limitGo, index, limitGoModule.currentPage) });
         // 限时购商品点击埋点
         track(trackEvent.SpikeProdClick,
             {
@@ -113,30 +54,8 @@ export default class HomeLimitGoView extends Component {
             });
     }
 
-    openModal() {
-        this.modal && this.modal.open();
-        track(trackEvent.HomePagePopShow, { homePagePopType: 1 });
-    }
-
-    seeMore() {
-        routePush('HtmlPage', {
-            uri: '/spike',
-            ...getSGspm_home(HomeSource.limitGo, -1)
-        });
-    }
-
     render() {
         const { spikeList, currentGoodsList, currentPage } = limitGoModule;
-        // tab视图
-        let tabViews = [];
-        spikeList.map((data, index) => {
-            tabViews.push(
-                this._tabItem(data, index, index === currentPage)
-            );
-        });
-        if (tabViews.length === 0) {
-            return null;
-        }
         // 商品视图
         let goodsViews = [];
         if (spikeList && spikeList[currentPage]) {
@@ -149,40 +68,10 @@ export default class HomeLimitGoView extends Component {
         }
 
         return (
-            <View style={[styles.container, { height: limitGoModule.limitHeight }]}>
-                <View style={{ paddingHorizontal: px2dp(15), flexDirection: 'row', alignItems: 'center' }}>
-                    <HomeTitleView title={'限时购'}/>
-                    <View style={{ flex: 1 }}/>
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                        this.seeMore();
-                    }}>
-                        <MRText style={{ color: DesignRule.textColor_placeholder, fontSize: px2dp(12) }}>更多></MRText>
-                    </TouchableOpacity>
-                </View>
-                {
-                    limitGoModule.isShowFreeOrder ?
-                        <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                            this.openModal();
-                        }}>
-                            <Image source={res.limitGoHeader}
-                                   resizeMode={'contain'}
-                                   style={{ height: px2dp(50), width: ScreenUtils.width }}/>
-                        </TouchableOpacity> : null
-                }
-                <ScrollView
-                    ref={(e) => {
-                        this.scrollView = e;
-                    }}
-                    style={{ alignSelf: 'center', height: px2dp(55) }}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}>
-                    {tabViews}
-                </ScrollView>
+            <View style={{ flex: 1, height: limitGoModule.limitGoodsHeight }}>
                 {goodsViews}
-                <XiuDouResultModal ref={(ref) => {
-                    this.modal = ref;
-                }}/>
-            </View>);
+            </View>
+        );
     }
 }
 
@@ -301,27 +190,6 @@ const GoodsItemButton = ({ data, activityCode, navigate }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        width: ScreenUtils.width,
-        marginTop: px2dp(3)
-    },
-    tab: {
-        minWidth: px2dp(68),
-        alignItems: 'center',
-        height: px2dp(51)
-    },
-    underline: {
-        height: 0
-    },
-    time: {
-        fontWeight: 'bold',
-        fontSize: 17,
-        marginTop: Platform.OS === 'ios' ? 3 : 0
-    },
-    title: {
-        fontSize: 11,
-        marginTop: Platform.OS === 'ios' ? 4 : 2
-    },
     goodsItem: {
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
