@@ -67,12 +67,10 @@ export default class NavigatorBar extends Component {
             rightNavTitle,
             leftNavItemHidden,
             rightNavItemHidden,
-            titleStyle,
             leftImageStyle
         } = props;
         this.state = {
             leftImageStyle,
-            titleStyle,
             title,
             hideNavBar,
             rightNavTitle,
@@ -227,7 +225,8 @@ export default class NavigatorBar extends Component {
     };
 
     _renderTitle = () => {
-        const { title, titleStyle } = this.state;
+        const { title } = this.state;
+        const {titleStyle} =  this.props;
         if (this.props.renderTitle) {
             return <View
                 style={[styles.title, titleStyle]}>
