@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
@@ -187,37 +186,31 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initEvent() {
-        mHandler = new WeakHandler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                switch (msg.what) {
-                    case ParameterUtils.EMPTY_WHAT:
-                        needGo = true;
-                        if (hasBasePer) {
-                            if (!hasGo) {
-                                goIndex();
-                            }
+        mHandler = new WeakHandler(msg -> {
+            switch (msg.what) {
+                case ParameterUtils.EMPTY_WHAT:
+                    needGo = true;
+                    if (hasBasePer) {
+                        if (!hasGo) {
+                            goIndex();
                         }
-                        break;
-                    default:
-                        break;
-                }
-                return false;
+                    }
+                    break;
+                default:
+                    break;
             }
+            return false;
         });
     }
 
     private void initAdvEvent() {
-        ivAdv.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (!TextUtils.isEmpty(adUrl)) {
-                    hasGo = true;
-                    goIndex();
-                    EventBus.getDefault().post(new Event.MR2HTMLEvent(adUrl));
-                }
-                return false;
+        ivAdv.setOnTouchListener((v, event) -> {
+            if (!TextUtils.isEmpty(adUrl)) {
+                hasGo = true;
+                goIndex();
+                EventBus.getDefault().post(new Event.MR2HTMLEvent(adUrl));
             }
+            return false;
         });
         tvGo.setOnClickListener(this);
     }

@@ -40,7 +40,6 @@ import com.qiyukf.unicorn.api.OnBotEventListener;
 import com.qiyukf.unicorn.api.OnMessageItemClickListener;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
-import com.qiyukf.unicorn.api.pop.ShopInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -163,6 +162,8 @@ public class BaseApplication extends MultiDexApplication {
             // 捕获闪退日志
             CrashHandler.getInstance().init(getApplicationContext());
         }
+        // 捕获闪退日志
+//        CrashHandler.getInstance().init(getApplicationContext());
     }
 
     private YSFOptions QiYuOptions() {
@@ -272,7 +273,7 @@ public class BaseApplication extends MultiDexApplication {
                 JSONObject object = JSON.parseObject(result);
                 String shopId = object.getString("shopId");
                 String title = object.getString("title");
-                if(!TextUtils.equals(SHOPID,shopId)){
+                if (!TextUtils.equals(SHOPID, shopId)) {
                     EventBus.getDefault().post(new com.meeruu.qiyu.Event.QiyuShopIdEvent(shopId, title));
                 }
             }

@@ -152,7 +152,6 @@ export default class BasePage extends Component {
                 {this.$isMonitorNetworkStatus() && netState.isConnected === false && this.viewDidLoad === false ?
                     this._renderDefaultNoNet() :
                     this.renderContianer()}
-
                 {this.$renderSecondLeftItem()}
             </View>
         );

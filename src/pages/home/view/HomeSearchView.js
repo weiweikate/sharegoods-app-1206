@@ -56,8 +56,10 @@ let styles = StyleSheet.create({
     navBar: {
         flexDirection: 'column',
         height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
-        backgroundColor: 'white',
-        zIndex: 2
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        zIndex: 4
     },
     navContent: {
         flex: 1,
