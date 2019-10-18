@@ -143,10 +143,11 @@
                                                                           andDebugMode:SA_DEBUG_MODE];
   
   // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
-//  [sdkInstance enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
-//                               SensorsAnalyticsEventTypeAppEnd|
-//                               SensorsAnalyticsEventTypeAppClick|
-//                               SensorsAnalyticsEventTypeAppViewScreen];
+ [sdkInstance enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
+                              SensorsAnalyticsEventTypeAppEnd];
+                            //   |
+                            //   SensorsAnalyticsEventTypeAppClick|
+                            //   SensorsAnalyticsEventTypeAppViewScreen
   /** 设置公共属性*/
   NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
   NSString *app_Name = [infoDictionary objectForKey:@"CFBundleDisplayName"];
