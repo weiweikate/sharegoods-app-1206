@@ -102,10 +102,10 @@ export default class AddressManagerPage extends BasePage {
                                 });
                                 selectIndex = i;
                             }
-                            ids.push(response.data[i].id);
+                            ids.push(response.data[i].id + '');
                         }
-                        let currentAddressId = this.params.currentAddressId || -1;
-                        if (currentAddressId && ids.indexOf(currentAddressId) === -1) {//当前选择地址被删除了
+                        let currentAddressId = this.params.currentAddressId+'' || '-1';
+                        if (currentAddressId && (ids.indexOf(currentAddressId) === -1)) {//当前选择地址被删除了
                             if (selectIndex === -1) {
                                 this.params.callBack && this.params.callBack({});
                             } else {
