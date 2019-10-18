@@ -36,6 +36,48 @@ export default class RequestDetailPage extends BasePage {
         show: !(this.props.params || {}).unShow
     };
 
+    floatBarOptions = {
+        title: this.params.title || (netState.isConnected ? '加载中...' : '网络异常'),
+        show: !(this.props.params || {}).unShow,
+        headerStyle:{
+            position:'absolute',
+            top:0,
+            left:0,
+            zIndex:1,
+            backgroundColor:DesignRule.white,
+            borderBottomWidth:0,
+        },
+        titleStyle:{
+            opacity:1
+        }
+    }
+
+    transparentBarOptions = {
+        title: '',
+        show: !(this.props.params || {}).unShow,
+        headerStyle:{
+            position:'absolute',
+            top:0,
+            left:0,
+            zIndex:1,
+            backgroundColor:'transparent',
+            borderBottomWidth:0
+        },
+        titleStyle:{
+            opacity:0
+        }
+    }
+
+    normalBarOptions = {
+        title: this.params.title || (netState.isConnected ? '加载中...' : '网络异常'),
+        show: !(this.props.params || {}).unShow
+    };
+
+
+    //顶部导航栏类型，'normalBar'，'floatBar'，'transparentBar'
+    currentBarType = 'normalBar'
+
+
     constructor(props) {
         super(props);
         const params = this.props.params || this.params || {};
@@ -285,6 +327,30 @@ export default class RequestDetailPage extends BasePage {
             this.$NavigationBarResetTitle(parmas.title);
             return;
         }
+
+        if(msg.action === 'webviewBarDisplay'){
+            if(msg.type === this.currentBarType){
+                return;
+            }
+            this.currentBarType = msg.type || 'normalBar';
+            if(msg.type === 'floatBar'){
+                this.floatBarOptions.headerStyle.backgroundColor = msg.color || DesignRule.white;
+                this.$navigationBarOptions = this.floatBarOptions;
+                this.forceUpdate();
+                return;
+            }
+            if(msg.type === 'transparentBar'){
+                this.$navigationBarOptions = this.transparentBarOptions;
+                this.forceUpdate();
+                return;
+            }
+            this.$navigationBarOptions = this.normalBarOptions;
+            this.forceUpdate();
+            return
+
+        }
+
+
     };
 
     $isMonitorNetworkStatus() {
@@ -292,6 +358,7 @@ export default class RequestDetailPage extends BasePage {
     }
 
     _render() {
+
         let WebAdModal = this.WebAdModal;
         return (
             <View style={{ flex: 1, overflow: 'hidden' }}>

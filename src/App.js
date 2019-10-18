@@ -42,6 +42,8 @@ import PrivacyModal from './pages/home/view/PrivacyModal';
 import { HomeAdModal_IOS } from './pages/home/view/HomeMessageModalView';
 import UserMemberUpdateModal from './pages/home/view/UserMemberUpdateModal';
 import homeModalManager from './pages/home/manager/HomeModalManager';
+import { marketingUtils } from './pages/marketing/MarketingUtils';
+import MarketingModal from './pages/marketing/components/MarketingModal';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -221,6 +223,7 @@ class App extends Component {
                     onNavigationStateChange={(prevState, currentState) => {
                         // 拦截当前router的名称
                         global.$routes = currentState.routes;
+                        marketingUtils.navigationIntercept(prevState, currentState);
                     }}
                 />
                 <SpellShopFlag isShowFlag={showPinFlagModel.showFlag}/>
@@ -233,6 +236,7 @@ class App extends Component {
                 {Platform.OS === 'ios' ? <HomeAdModal_IOS/> : null}
                 <UserMemberUpdateModal/>
                 <PrivacyModal/>
+                {marketingUtils.isShowModal ? <MarketingModal/> : null}
             </View>
         );
     }
