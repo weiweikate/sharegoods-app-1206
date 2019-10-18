@@ -3,11 +3,11 @@ import {
     Animated,
     DeviceEventEmitter,
     InteractionManager,
+    Platform,
     ScrollView,
     StyleSheet,
     TouchableOpacity,
-    View,
-    Platform
+    View
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './model/Modules';
@@ -48,6 +48,7 @@ import ImageLoader from '@mr/image-placeholder';
  * @email zhangjian@meeruu.com
  */
 
+const tabBarHeight = 42;
 
 @observer
 class HomePage extends BasePage {
@@ -193,19 +194,31 @@ class HomePage extends BasePage {
             if (item.navType === 2) {
                 viewItems.push(<DIYTopicList tabLabel={item.navName}
                                              key={'id' + item.id}
-                                             index={index+1}
+                                             index={index + 1}
                                              data={item}/>);
             } else if (item.navType === 1) {
                 viewItems.push(<HomeNormalList tabLabel={item.navName}
                                                data={item}
-                                               index={index+1}
+                                               index={index + 1}
                                                key={'id' + item.id}/>);
             }
         });
         return (
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
-                <HomeSearchView navigation={routePush}
-                                hasMessage={this.state.hasMessage}/>
+                <View
+                    style={{
+                        width: ScreenUtils.width,
+                        height: ScreenUtils.headerHeight + tabBarHeight,
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: 'white'
+                    }}/>
+                <View style={{
+                    height: ScreenUtils.headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
+                    backgroundColor: 'transparent'
+                }}/>
                 <ScrollableTabView
                     onChangeTab={(obj) => {
 
@@ -217,11 +230,15 @@ class HomePage extends BasePage {
                         this.trackViewHomePageChannel(tabList, i);
                         this.tab && this.tab.scrollTo({ x: i * 60 - ScreenUtils.width / 2 + 30 });
                     }}
+                    style={{ zIndex: 2 }}
                     renderTabBar={this._renderTabBar.bind(this)}
                     //进界面的时候打算进第几个
                     initialPage={0}>
                     {viewItems}
                 </ScrollableTabView>
+                <HomeSearchView navigation={routePush}
+                                hasMessage={this.state.hasMessage}/>
+
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}
@@ -231,7 +248,7 @@ class HomePage extends BasePage {
                 <GiftModal/>
                 <UserLevelModalView/>
                 <IntervalMsgView pageType={IntervalType.home}/>
-                {Platform.OS !== 'ios'?  <HomeAdModal/>:null}
+                {Platform.OS !== 'ios' ? <HomeAdModal/> : null}
                 <HomeMessageModalView/>
                 <VersionUpdateModalView/>
             </View>
@@ -240,10 +257,10 @@ class HomePage extends BasePage {
 
     _renderTabBar(p) {
         let itemWidth = 60;
-        let tabBarHeight = 42;
         return (
-            <View style={{ height: tabBarHeight, width: ScreenUtils.width, backgroundColor: 'white' }}>
+            <View style={{ height: tabBarHeight, width: ScreenUtils.width }}>
                 <ScrollView
+                    style={{ backgroundColor: 'transparent' }}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     ref={ref => {
@@ -260,7 +277,7 @@ class HomePage extends BasePage {
                             left: (itemWidth - 20) / 2,
                             width: 18,
                             height: 2.5,
-                            bottom: 8,
+                            bottom: 6,
                             borderRadius: 2
                         }}
                         renderTab={(name, page, isTabActive) => {
@@ -281,7 +298,7 @@ class HomePage extends BasePage {
                                     justifyContent: 'center',
                                     width: itemWidth
                                 }} onPress={() => {
-                                    tabModel.changeTabIndex(page)
+                                    tabModel.changeTabIndex(page);
                                     p.goToPage(page);
                                 }} activeOpacity={0.7}>
                                     {showType === 2 ?
@@ -308,8 +325,8 @@ class HomePage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: DesignRule.bgColor,
-        width: ScreenUtils.width
+        width: ScreenUtils.width,
+        backgroundColor: DesignRule.bgColor
     },
     tabNomal: {
         fontSize: 12,

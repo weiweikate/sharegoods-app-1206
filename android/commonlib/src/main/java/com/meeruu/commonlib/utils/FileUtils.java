@@ -24,6 +24,12 @@ import java.io.InputStream;
  */
 public class FileUtils {
 
+    /**
+     * 判断文件是否存在
+     *
+     * @param filePath
+     * @return
+     */
     public static boolean fileIsExists(String filePath) {
         try {
             File f = new File(filePath);
@@ -34,6 +40,20 @@ public class FileUtils {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 删除指定文件
+     *
+     * @param filePath
+     * @return
+     */
+    public static boolean deleteFile(String filePath) {
+        File file = new File(filePath);
+        if (file.isFile() && file.exists()) {
+            return file.delete();
+        }
+        return false;
     }
 
 

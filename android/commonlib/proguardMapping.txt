@@ -1,6 +1,6 @@
 # compiler: R8
 # compiler_version: 1.5.64
-# pg_map_id: d61edbf
+# pg_map_id: 110a4e3
 com.meeruu.commonlib.BuildConfig -> com.meeruu.commonlib.BuildConfig:
     1:1:void <init>():6:6 -> <init>
 com.meeruu.commonlib.base.BaseActivity -> com.meeruu.commonlib.base.BaseActivity:
@@ -24,59 +24,59 @@ com.meeruu.commonlib.base.BaseActivity -> com.meeruu.commonlib.base.BaseActivity
     1:1:void setStatusColor(int):110:110 -> setStatusColor
     1:6:void verifyPermission(java.util.List):192:197 -> verifyPermission
 com.meeruu.commonlib.base.BaseApplication -> com.meeruu.commonlib.base.BaseApplication:
-    1:7:void <init>():56:62 -> <init>
-    1:28:com.qiyukf.unicorn.api.YSFOptions QiYuOptions():166:193 -> QiYuOptions
-    1:1:void access$000(com.meeruu.commonlib.base.BaseApplication):56:56 -> a
-    2:2:void access$100(com.meeruu.commonlib.base.BaseApplication,java.lang.String):56:56 -> a
-    1:6:void attachBaseContext(android.content.Context):117:122 -> attachBaseContext
-    1:34:void delayLoad():128:161 -> delayLoad
-    1:1:java.lang.String getDownLoadUrl():73:73 -> getDownLoadUrl
-    1:8:com.meeruu.commonlib.base.BaseApplication getInstance():81:88 -> getInstance
-    1:1:void getShopInfo(com.qiyukf.unicorn.api.YSFOptions):203:203 -> getShopInfo
-    1:1:boolean isDownload():65:65 -> isDownload
-    1:1:void navigateShopServiceByBid(java.lang.String):247:247 -> navigateShopServiceByBid
-    1:10:void onCreate():93:102 -> onCreate
-    1:4:void onLowMemory():290:293 -> onLowMemory
-    1:5:void onTrimMemory(int):277:281 -> onTrimMemory
-    1:1:void setDownLoadUrl(java.lang.String):77:77 -> setDownLoadUrl
-    1:1:void setDownload(boolean):69:69 -> setDownload
+    1:9:void <init>():57:65 -> <init>
+    1:30:com.qiyukf.unicorn.api.YSFOptions QiYuOptions():169:198 -> QiYuOptions
+    1:1:void access$000(com.meeruu.commonlib.base.BaseApplication):57:57 -> a
+    2:2:void access$100(com.meeruu.commonlib.base.BaseApplication,java.lang.String):57:57 -> a
+    1:6:void attachBaseContext(android.content.Context):120:125 -> attachBaseContext
+    1:34:void delayLoad():131:164 -> delayLoad
+    1:1:java.lang.String getDownLoadUrl():76:76 -> getDownLoadUrl
+    1:8:com.meeruu.commonlib.base.BaseApplication getInstance():84:91 -> getInstance
+    1:1:void getShopInfo(com.qiyukf.unicorn.api.YSFOptions):208:208 -> getShopInfo
+    1:1:boolean isDownload():68:68 -> isDownload
+    1:1:void navigateShopServiceByBid(java.lang.String):252:252 -> navigateShopServiceByBid
+    1:10:void onCreate():96:105 -> onCreate
+    1:4:void onLowMemory():297:300 -> onLowMemory
+    1:5:void onTrimMemory(int):284:288 -> onTrimMemory
+    1:1:void setDownLoadUrl(java.lang.String):80:80 -> setDownLoadUrl
+    1:1:void setDownload(boolean):72:72 -> setDownload
 com.meeruu.commonlib.base.BaseApplication$1 -> com.meeruu.commonlib.base.BaseApplication$1:
     com.meeruu.commonlib.base.BaseApplication this$0 -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):102:102 -> <init>
-    1:1:boolean queueIdle():107:107 -> queueIdle
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):105:105 -> <init>
+    1:1:boolean queueIdle():110:110 -> queueIdle
 com.meeruu.commonlib.base.BaseApplication$2 -> com.meeruu.commonlib.base.BaseApplication$2:
     com.meeruu.commonlib.base.BaseApplication this$0 -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):167:167 -> <init>
-    1:14:void onURLClicked(android.content.Context,java.lang.String):172:185 -> onURLClicked
-    15:21:void onURLClicked(android.content.Context,java.lang.String):183:189 -> onURLClicked
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):170:170 -> <init>
+    1:16:void onURLClicked(android.content.Context,java.lang.String):175:190 -> onURLClicked
+    17:25:void onURLClicked(android.content.Context,java.lang.String):186:194 -> onURLClicked
 com.meeruu.commonlib.base.BaseApplication$3 -> com.meeruu.commonlib.base.BaseApplication$3:
     com.meeruu.commonlib.base.BaseApplication this$0 -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):203:203 -> <init>
-    1:33:boolean onUrlClick(android.content.Context,java.lang.String):207:239 -> onUrlClick
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):208:208 -> <init>
+    1:33:boolean onUrlClick(android.content.Context,java.lang.String):212:244 -> onUrlClick
 com.meeruu.commonlib.base.BaseApplication$3$1 -> com.meeruu.commonlib.base.BaseApplication$3$1:
     java.lang.String val$bid -> a
     com.meeruu.commonlib.base.BaseApplication$3 this$1 -> b
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication$3,java.lang.String):211:211 -> <init>
-    1:2:java.util.Map getParams():219:220 -> getParams
-    1:1:java.lang.String getUrl():214:214 -> getUrl
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication$3,java.lang.String):216:216 -> <init>
+    1:2:java.util.Map getParams():224:225 -> getParams
+    1:1:java.lang.String getUrl():219:219 -> getUrl
 com.meeruu.commonlib.base.BaseApplication$3$2 -> com.meeruu.commonlib.base.BaseApplication$3$2:
     com.meeruu.commonlib.base.BaseApplication$3 this$1 -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication$3):223:223 -> <init>
-    1:1:void onErr(java.lang.String,java.lang.String):226:226 -> onErr
-    1:1:void onSuccess(java.lang.Object):223:223 -> onSuccess
-    2:5:void onSuccess(java.lang.String):231:234 -> onSuccess
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication$3):228:228 -> <init>
+    1:1:void onErr(java.lang.String,java.lang.String):231:231 -> onErr
+    1:1:void onSuccess(java.lang.Object):228:228 -> onSuccess
+    2:5:void onSuccess(java.lang.String):236:239 -> onSuccess
 com.meeruu.commonlib.base.BaseApplication$4 -> com.meeruu.commonlib.base.BaseApplication$4:
     com.meeruu.commonlib.base.BaseApplication this$0 -> b
     java.lang.String val$bid -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication,java.lang.String):247:247 -> <init>
-    1:2:java.util.Map getParams():255:256 -> getParams
-    1:1:java.lang.String getUrl():250:250 -> getUrl
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication,java.lang.String):252:252 -> <init>
+    1:2:java.util.Map getParams():260:261 -> getParams
+    1:1:java.lang.String getUrl():255:255 -> getUrl
 com.meeruu.commonlib.base.BaseApplication$5 -> com.meeruu.commonlib.base.BaseApplication$5:
     com.meeruu.commonlib.base.BaseApplication this$0 -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):259:259 -> <init>
-    1:1:void onErr(java.lang.String,java.lang.String):262:262 -> onErr
-    1:1:void onSuccess(java.lang.Object):259:259 -> onSuccess
-    2:5:void onSuccess(java.lang.String):267:270 -> onSuccess
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):264:264 -> <init>
+    1:1:void onErr(java.lang.String,java.lang.String):267:267 -> onErr
+    1:1:void onSuccess(java.lang.Object):264:264 -> onSuccess
+    2:6:void onSuccess(java.lang.String):272:276 -> onSuccess
 com.meeruu.commonlib.base.BaseFragment -> com.meeruu.commonlib.base.BaseFragment:
     1:11:void <init>():16:26 -> <init>
     1:5:void initPrepare():118:122 -> initPrepare
@@ -1054,20 +1054,23 @@ com.meeruu.commonlib.customview.wheelview.view.WheelView$DividerType -> com.meer
 com.meeruu.commonlib.event.Event -> com.meeruu.commonlib.event.Event:
     1:1:void <init>():3:3 -> <init>
 com.meeruu.commonlib.event.Event$MR2HTMLEvent -> com.meeruu.commonlib.event.Event$MR2HTMLEvent:
-    1:2:void <init>(java.lang.String):32:33 -> <init>
-    1:1:java.lang.String getUrl():37:37 -> getUrl
+    1:2:void <init>(java.lang.String):45:46 -> <init>
+    1:1:java.lang.String getUrl():50:50 -> getUrl
 com.meeruu.commonlib.event.Event$MRBaseUrlEvent -> com.meeruu.commonlib.event.Event$MRBaseUrlEvent:
-    1:2:void <init>(java.lang.String):56:57 -> <init>
-    1:1:java.lang.String getUrl():61:61 -> getUrl
+    1:2:void <init>(java.lang.String):69:70 -> <init>
+    1:1:java.lang.String getUrl():74:74 -> getUrl
 com.meeruu.commonlib.event.Event$MRHomeRefreshEvent -> com.meeruu.commonlib.event.Event$MRHomeRefreshEvent:
     1:2:void <init>(int):8:9 -> <init>
     1:1:int getHomeType():13:13 -> getHomeType
 com.meeruu.commonlib.event.Event$MRMineMsgEvent -> com.meeruu.commonlib.event.Event$MRMineMsgEvent:
-    1:2:void <init>(java.lang.String):44:45 -> <init>
-    1:1:java.lang.String getData():49:49 -> getData
+    1:2:void <init>(java.lang.String):57:58 -> <init>
+    1:1:java.lang.String getData():62:62 -> getData
 com.meeruu.commonlib.event.Event$MRNativeTagEvent -> com.meeruu.commonlib.event.Event$MRNativeTagEvent:
+    1:2:void <init>(java.lang.String):33:34 -> <init>
+    1:1:java.lang.String getData():38:38 -> getData
+com.meeruu.commonlib.event.Event$MRUserUpdateEvent -> com.meeruu.commonlib.event.Event$MRUserUpdateEvent:
     1:2:void <init>(java.lang.String):20:21 -> <init>
-    1:1:java.lang.String getData():25:25 -> getData
+    1:1:java.lang.String getContent():25:25 -> getContent
 com.meeruu.commonlib.handler.CrashHandler -> com.meeruu.commonlib.handler.CrashHandler:
     1:7:void <clinit>():35:41 -> <clinit>
     1:1:void <init>():52:52 -> <init>
@@ -1279,46 +1282,46 @@ com.meeruu.commonlib.umeng.LoginAndSharingModule -> com.meeruu.commonlib.umeng.L
     1:1:void access$300(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):69:69 -> access$300
     1:1:void access$400(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):69:69 -> access$400
     1:1:android.graphics.Bitmap access$500(android.content.Context):69:69 -> access$500
-    1:14:void creatQRCodeImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1904:1917 -> creatQRCodeImage
+    1:14:void creatQRCodeImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1919:1932 -> creatQRCodeImage
     1:18:void creatShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):181:198 -> creatShareImage
     1:7:void creatShowShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):416:422 -> creatShowShareImage
-    1:18:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1431:1448 -> createCircleBitmap
-    1:19:android.graphics.Bitmap createCircleImage(android.graphics.Bitmap,int):1302:1320 -> createCircleImage
+    1:18:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1446:1463 -> createCircleBitmap
+    1:19:android.graphics.Bitmap createCircleImage(android.graphics.Bitmap,int):1309:1327 -> createCircleImage
     1:1:void createPromotionShareImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):427:427 -> createPromotionShareImage
-    1:35:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1999:2033 -> createQRImage
-    1:16:void createQRToAlbum(java.lang.String,com.facebook.react.bridge.Promise):1924:1939 -> createQRToAlbum
+    1:24:android.graphics.Bitmap createQRImage(java.lang.String,int,int):2013:2036 -> createQRImage
+    1:16:void createQRToAlbum(java.lang.String,com.facebook.react.bridge.Promise):1939:1954 -> createQRToAlbum
     1:37:void createShowProductImage(java.lang.String,com.facebook.react.bridge.Promise):435:471 -> createShowProductImage
-    1:2:void downloadHeaderImg(android.content.Context,java.lang.String,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1108:1109 -> downloadHeaderImg
-    1:203:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1588:1790 -> draw
+    1:2:void downloadHeaderImg(android.content.Context,java.lang.String,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1115:1116 -> downloadHeaderImg
+    1:203:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1603:1805 -> draw
     1:128:void drawGroup(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):283:410 -> drawGroup
-    1:99:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1328:1426 -> drawInviteFriendsImage
-    1:43:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1459:1501 -> drawPromotionShare
-    1:3:void drawShopInviteFriendsImage(android.content.Context,com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1157:1159 -> drawShopInviteFriendsImage
-    1:95:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1197:1291 -> drawShopInviteFriendsImageWithHeader
-    1:136:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):905:1040 -> drawShow
-    1:142:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):478:619 -> drawShowProduct
-    1:23:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):654:676 -> drawWeb
-    1:99:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):799:897 -> drawWebActivity
-    1:2:void getBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1508:1509 -> getBitmap
-    1:22:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):1047:1068 -> getCircleHeaderBitmap
-    1:1:android.graphics.Bitmap getDefaultIcon(android.content.Context):1192:1192 -> getDefaultIcon
+    1:99:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1343:1441 -> drawInviteFriendsImage
+    1:43:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1474:1516 -> drawPromotionShare
+    1:3:void drawShopInviteFriendsImage(android.content.Context,com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1164:1166 -> drawShopInviteFriendsImage
+    1:95:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1204:1298 -> drawShopInviteFriendsImageWithHeader
+    1:136:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):912:1047 -> drawShow
+    1:141:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):478:618 -> drawShowProduct
+    1:23:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):653:675 -> drawWeb
+    1:99:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):806:904 -> drawWebActivity
+    1:2:void getBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1523:1524 -> getBitmap
+    1:22:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):1054:1075 -> getCircleHeaderBitmap
+    1:1:android.graphics.Bitmap getDefaultIcon(android.content.Context):1199:1199 -> getDefaultIcon
     1:2:void getGroupBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):204:205 -> getGroupBitmap
     1:5:void getGroupHeaderBitmap(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):238:242 -> getGroupHeaderBitmap
-    1:5:void getHeaderBitmap(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1542:1546 -> getHeaderBitmap
-    1:5:void getInviteBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):712:716 -> getInviteBitmap
-    6:7:void getInviteBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):713:714 -> getInviteBitmap
-    1:2:void getShowBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):683:684 -> getShowBitmap
-    1:12:void getShowHeaderBitmap(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):751:762 -> getShowHeaderBitmap
-    1:20:android.graphics.Bitmap getSquareBitmap(android.graphics.Bitmap,int,int,int):1081:1100 -> getSquareBitmap
-    1:2:void getWebActivityBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):721:722 -> getWebActivityBitmap
-    1:2:void getWebBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):625:626 -> getWebBitmap
+    1:5:void getHeaderBitmap(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1557:1561 -> getHeaderBitmap
+    1:5:void getInviteBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):719:723 -> getInviteBitmap
+    6:7:void getInviteBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):720:721 -> getInviteBitmap
+    1:2:void getShowBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):682:683 -> getShowBitmap
+    1:12:void getShowHeaderBitmap(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):758:769 -> getShowHeaderBitmap
+    1:20:android.graphics.Bitmap getSquareBitmap(android.graphics.Bitmap,int,int,int):1089:1108 -> getSquareBitmap
+    1:2:void getWebActivityBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):728:729 -> getWebActivityBitmap
+    1:2:void getWebBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):624:625 -> getWebBitmap
     1:1:void loginWX(com.facebook.react.bridge.Callback):106:106 -> loginWX
-    1:89:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1795:1883 -> parseParam
-    1:3:void saveImage(java.lang.String):1891:1893 -> saveImage
-    1:3:void saveImageAndRefresh(android.net.Uri):1897:1899 -> saveImageAndRefresh
-    1:1:void saveScreen(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1947:1947 -> saveScreen
-    1:1:void saveShopInviteFriendsImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1147:1147 -> saveShopInviteFriendsImage
-    1:29:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1955:1983 -> screenshot
+    1:89:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1810:1898 -> parseParam
+    1:3:void saveImage(java.lang.String):1906:1908 -> saveImage
+    1:3:void saveImageAndRefresh(android.net.Uri):1912:1914 -> saveImageAndRefresh
+    1:1:void saveScreen(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1962:1962 -> saveScreen
+    1:1:void saveShopInviteFriendsImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1154:1154 -> saveShopInviteFriendsImage
+    1:29:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1970:1998 -> screenshot
     1:1:void share(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):101:101 -> share
     1:1:void umengDeleteOauth(com.umeng.socialize.bean.SHARE_MEDIA):152:152 -> umengDeleteOauth
 com.meeruu.commonlib.umeng.LoginAndSharingModule$1 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$1:
@@ -1335,35 +1338,35 @@ com.meeruu.commonlib.umeng.LoginAndSharingModule$10 -> com.meeruu.commonlib.umen
     com.facebook.react.bridge.Callback val$success -> c
     com.meeruu.commonlib.umeng.ShareImageBean val$shareImageBean -> b
     com.meeruu.commonlib.umeng.LoginAndSharingModule this$0 -> e
-    1:1:void <init>(com.meeruu.commonlib.umeng.LoginAndSharingModule,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1109:1109 -> <init>
-    1:3:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):1137:1139 -> onRequestFailure
-    1:20:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1112:1131 -> onRequestSuccess
+    1:1:void <init>(com.meeruu.commonlib.umeng.LoginAndSharingModule,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1116:1116 -> <init>
+    1:3:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):1144:1146 -> onRequestFailure
+    1:20:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1119:1138 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$11 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$11:
     com.facebook.react.bridge.Callback val$success -> d
     com.facebook.react.bridge.Callback val$fail -> a
     android.content.Context val$context -> b
     com.meeruu.commonlib.umeng.LoginAndSharingModule this$0 -> e
     com.facebook.react.bridge.ReadableMap val$map -> c
-    1:1:void <init>(com.meeruu.commonlib.umeng.LoginAndSharingModule,com.facebook.react.bridge.Callback,android.content.Context,com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback):1159:1159 -> <init>
-    1:2:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):1184:1185 -> onRequestFailure
-    1:17:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1162:1178 -> onRequestSuccess
+    1:1:void <init>(com.meeruu.commonlib.umeng.LoginAndSharingModule,com.facebook.react.bridge.Callback,android.content.Context,com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback):1166:1166 -> <init>
+    1:2:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):1191:1192 -> onRequestFailure
+    1:17:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1169:1185 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$12 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$12:
     com.meeruu.commonlib.umeng.ShareImageBean val$shareImageBean -> c
     com.facebook.react.bridge.Callback val$success -> d
     com.facebook.react.bridge.Callback val$fail -> a
     android.content.Context val$context -> b
-    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):1509:1509 -> <init>
-    1:2:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):1534:1535 -> onRequestFailure
-    1:17:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1512:1528 -> onRequestSuccess
+    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):1524:1524 -> <init>
+    1:2:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):1549:1550 -> onRequestFailure
+    1:17:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1527:1543 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$13 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$13:
     android.content.Context val$context -> a
     com.meeruu.commonlib.umeng.ShareImageBean val$shareImageBean -> c
     com.facebook.react.bridge.Callback val$success -> d
     android.graphics.Bitmap val$productBitmap -> b
     com.facebook.react.bridge.Callback val$fail -> e
-    1:1:void <init>(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1546:1546 -> <init>
-    1:3:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):1573:1575 -> onRequestFailure
-    1:19:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1549:1567 -> onRequestSuccess
+    1:1:void <init>(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1561:1561 -> <init>
+    1:3:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):1588:1590 -> onRequestFailure
+    1:19:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1564:1582 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$2 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$2:
     com.meeruu.commonlib.umeng.LoginAndSharingModule this$0 -> a
     1:1:void <init>(com.meeruu.commonlib.umeng.LoginAndSharingModule):152:152 -> <init>
@@ -1401,30 +1404,30 @@ com.meeruu.commonlib.umeng.LoginAndSharingModule$6 -> com.meeruu.commonlib.umeng
     com.facebook.react.bridge.Callback val$success -> d
     com.facebook.react.bridge.Callback val$fail -> a
     android.content.Context val$context -> b
-    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):626:626 -> <init>
-    1:17:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):629:645 -> onRequestSuccess
+    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):625:625 -> <init>
+    1:17:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):628:644 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$7 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$7:
     com.meeruu.commonlib.umeng.ShareImageBean val$shareImageBean -> c
     com.facebook.react.bridge.Callback val$success -> d
     com.facebook.react.bridge.Callback val$fail -> a
     android.content.Context val$context -> b
-    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):684:684 -> <init>
-    1:18:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):687:704 -> onRequestSuccess
+    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):683:683 -> <init>
+    1:18:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):686:703 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$8 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$8:
     com.meeruu.commonlib.umeng.ShareImageBean val$shareImageBean -> c
     com.facebook.react.bridge.Callback val$success -> d
     com.facebook.react.bridge.Callback val$fail -> a
     android.content.Context val$context -> b
-    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):722:722 -> <init>
-    1:18:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):725:742 -> onRequestSuccess
+    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):729:729 -> <init>
+    1:18:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):732:749 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$9 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$9:
     android.content.Context val$context -> c
     com.facebook.react.bridge.Callback val$fail -> a
     com.meeruu.commonlib.umeng.ShareImageBean val$shareImageBean -> b
     com.facebook.react.bridge.Callback val$success -> e
     android.graphics.Bitmap val$mainBitmap -> d
-    1:1:void <init>(com.facebook.react.bridge.Callback,com.meeruu.commonlib.umeng.ShareImageBean,android.content.Context,android.graphics.Bitmap,com.facebook.react.bridge.Callback):762:762 -> <init>
-    1:24:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):765:788 -> onRequestSuccess
+    1:1:void <init>(com.facebook.react.bridge.Callback,com.meeruu.commonlib.umeng.ShareImageBean,android.content.Context,android.graphics.Bitmap,com.facebook.react.bridge.Callback):769:769 -> <init>
+    1:24:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):772:795 -> onRequestSuccess
 com.meeruu.commonlib.umeng.ShareImageBean -> com.meeruu.commonlib.umeng.ShareImageBean:
     1:1:void <init>():5:5 -> <init>
     1:1:java.lang.String getDiamondNum():39:39 -> getDiamondNum
