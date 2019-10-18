@@ -15,6 +15,7 @@ import {
     Animated,
     ScrollView,
     StyleSheet,
+    Image,
     TouchableOpacity,
 } from 'react-native';
 import ImageLoader from '@mr/image-placeholder';
@@ -23,6 +24,10 @@ import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
 import { DefaultTabBar } from '@mr/react-native-scrollable-tab-view';
 import { tabModel } from './model/HomeTabModel';
+import res from './res'
+import { routePush } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
+const category = res.category;
 
 export default class HomeTopTarBar extends React.Component {
 
@@ -87,7 +92,9 @@ export default class HomeTopTarBar extends React.Component {
               position: 'absolute',
               paddingHorizontal: 15,
               zIndex: 1,
-              transform: [{ translateY: this.state.top }]
+              transform: [{ translateY: this.state.top }],
+              flexDirection: 'row',
+              alignItems: 'center'
           }}>
               <ScrollView
                   horizontal={true}
@@ -145,6 +152,14 @@ export default class HomeTopTarBar extends React.Component {
                       }}
                   />
               </ScrollView>
+              <TouchableOpacity
+                  style={{ marginTop: -6}}
+                  activeOpacity={0}
+              onPress={ () => routePush(RouterMap.CategorySearchPage)}>
+              <Image source={category}
+                     style={{height: 30, width: 30}}
+              />
+              </TouchableOpacity>
           </Animated.View>
     );
   }
