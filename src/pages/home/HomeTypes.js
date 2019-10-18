@@ -35,6 +35,7 @@ export const homeType = {
     store28: 28,//拼店权益页面广告
     store29: 29,//拼店开店页面广告
     store30: 30,//拼店扩容页面广告
+    store31: 31,//百万活动
     paySuccess: 27,//订单支付完成页面广告位
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
