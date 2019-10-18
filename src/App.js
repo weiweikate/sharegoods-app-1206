@@ -15,7 +15,8 @@ import {
     Platform,
     StyleSheet,
     Text,
-    View
+    View,
+    BackHandler
 } from 'react-native';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
@@ -174,12 +175,23 @@ class App extends Component {
         });
         this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.mineMessageData);
         this.listenerJSMessage_USERUPDATE = JSManagerEmitter.addListener(USERUPDATE, this.userUpdate);
+        BackHandler.addEventListener('hardwareBackPress',this.handleBackPress)
+    }
+
+    //Android后退键优先关闭全局弹窗
+    handleBackPress = ()=>{
+        if(marketingUtils.isShowModal){
+            marketingUtils.closeModal();
+            return true;
+        }
+        return false;
     }
 
     componentWillUnmount() {
         this.listenerJSMessage && this.listenerJSMessage.remove();
         this.startAdvSubscription && this.startAdvSubscription.remove();
-        this.listenerJSMessage_USERUPDATE && this.listenerJSMessage_USERUPDATE.remove();
+        this.listenerJSMessage_USERUPDATE &&  this.listenerJSMessage_USERUPDATE.remove();
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
 
     userUpdate = (data) => {
