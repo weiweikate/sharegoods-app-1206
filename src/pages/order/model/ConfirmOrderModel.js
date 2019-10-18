@@ -478,7 +478,9 @@ class ConfirmOrderModel {
         }
         this.failProductList = failProductList;
         this.needModifyAddress = ext.needModifyAddress;
-        this.err = '地址失效，需要修改';
+        if (this.needModifyAddress){
+            this.err = '地址失效，需要修改';
+        }
     };
 
     @action submitProduct() {
