@@ -5,9 +5,6 @@ export const homeType = {
     swiper: 2,           // 首页顶部轮播
     expandBanner: 3,     // 首页通栏广告位
     channel: 4,          // 首页频道类目
-    star: 6,             // 明星店铺
-    today: 7,            // 今日榜单
-    fine: 8,             // 精品推荐
     float: 10,           // 右下角浮动框
     goods: 18,           // 为你推荐商品
     pinShop: 12,          // 拼店banner

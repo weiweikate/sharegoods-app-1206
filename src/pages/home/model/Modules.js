@@ -3,12 +3,10 @@ import HomeApi from '../api/HomeAPI';
 import { homeLinkType, homeRoute, homeType } from '../HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
-import { todayModule } from './HomeTodayModel';
 import { channelModules } from './HomeChannelModel';
-import { recommendModule } from './HomeRecommendModel';
 import { limitGoModule } from './HomeLimitGoModel';
-import taskModel from './TaskModel';
 import { tabModel } from './HomeTabModel';
+import taskModel from './TaskModel';
 import store from '@mr/rn-store';
 import { ImageAdViewGetHeight } from '../view/TopicImageAdView';
 import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
@@ -42,9 +40,6 @@ class HomeModule {
         id: 0,
         type: homeType.swiper
     }, {
-        id: 1,
-        type: homeType.user
-    }, {
         id: 2,
         type: homeType.channel
     }, {
@@ -53,9 +48,6 @@ class HomeModule {
     }, {
         id: 4,
         type: homeType.expandBanner
-    }, {
-        id: 5,
-        type: homeType.focusGrid
     }];
     topTopice = [];
     fixedPartTwo = [{
@@ -70,15 +62,6 @@ class HomeModule {
     }];
     bottomTopice = [];
     fixedPartThree = [{
-        id: 7,
-        type: homeType.today
-    }, {
-        id: 8,
-        type: homeType.fine
-    }, {
-        id: 9,
-        type: homeType.homeHot
-    }, {
         id: 10,
         type: homeType.goodsTitle
     }];
@@ -168,12 +151,6 @@ class HomeModule {
             case homeType.expandBanner:
                 homeExpandBnnerModel.loadBannerList();
                 break;
-            case homeType.today:
-                todayModule.loadTodayList(this.firstLoad);
-                break;
-            case homeType.fine:
-                recommendModule.loadRecommendList(this.firstLoad);
-                break;
             case homeType.limitGo:
                 limitGoModule.loadLimitGo(false);
                 break;
@@ -244,10 +221,6 @@ class HomeModule {
         homeExpandBnnerModel.loadBannerList(this.firstLoad);
         // 首页限时秒杀
         limitGoModule.loadLimitGo(true);
-        // 首页今日榜单
-        todayModule.loadTodayList(this.firstLoad);
-        // 首页精品推荐
-        recommendModule.loadRecommendList(this.firstLoad);
 
         taskModel.getData();
 

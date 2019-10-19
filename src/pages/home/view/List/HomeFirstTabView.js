@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import { todayModule } from '../../model/HomeTodayModel';
-import { recommendModule } from '../../model/HomeRecommendModel';
 import { homeType } from '../../HomeTypes';
 import { bannerModule } from '../../model/HomeBannerModel';
 import HomeBannerView, { bannerHeight } from '../HomeBannerView';
@@ -11,8 +9,6 @@ import taskModel from '../../model/TaskModel';
 import { channelModules } from '../../model/HomeChannelModel';
 import { homeExpandBnnerModel } from '../../model/HomeExpandBnnerModel';
 import { limitGoModule } from '../../model/HomeLimitGoModel';
-import HomeTodayView, { todayHeight } from '../HomeTodayView';
-import HomeRecommendView, { recommendHeight } from '../HomeRecommendView';
 import { homeModule } from '../../model/Modules';
 import GoodsCell, { kHomeGoodsViewHeight } from '../HomeGoodsView';
 import { homeTabManager } from '../../manager/HomeTabManager';
@@ -67,8 +63,6 @@ export default class HomeFirstTabView extends Component {
         return this.dataProvider.getDataForIndex(i) || {};
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
-        const { todayList } = todayModule;
-        const { recommendList } = recommendModule;
 
         switch (type.type) {
             case homeType.swiper:
@@ -91,12 +85,6 @@ export default class HomeFirstTabView extends Component {
                 break;
             case homeType.limitGoGoods:
                 dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitGoodsHeight : 0;
-                break;
-            case homeType.today:
-                dim.height = todayList.length > 0 ? todayHeight : 0;
-                break;
-            case homeType.fine:
-                dim.height = recommendList.length > 0 ? recommendHeight : 0;
                 break;
             case homeType.goodsTitle:
                 dim.height = homeModule.tabList.length > 0 ? px2dp(66) : 0;
@@ -145,10 +133,6 @@ export default class HomeFirstTabView extends Component {
             return <HomeLimitGoTimeView navigate={routePush}/>;
         } else if (type === homeType.limitGoGoods) {
             return <HomeLimitGoGoodsView navigate={routePush}/>;
-        } else if (type === homeType.today) {
-            return <HomeTodayView navigate={routePush}/>;
-        } else if (type === homeType.fine) {
-            return <HomeRecommendView navigate={routePush}/>;
         } else if (type === homeType.goods) {
             return <GoodsCell data={item} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
                               navigate={routePush}/>;

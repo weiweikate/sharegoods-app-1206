@@ -181,7 +181,7 @@ class HomePage extends BasePage {
 
         let viewItems = [];
         viewItems.push(<HomeFirstTabView
-            key={'HomeList__flag'}
+            key={'HomeList_flag'}
             tabLabel={'推荐'}
             ref={(ref => {
                 this.homeList = ref;
