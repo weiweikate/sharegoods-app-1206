@@ -2,11 +2,9 @@ import { action, flow, observable } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeLinkType, homeRoute, homeType } from '../HomeTypes';
 import { bannerModule } from './HomeBannerModel';
-import { homeFocusAdModel } from './HomeFocusAdModel';
 import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
 import { todayModule } from './HomeTodayModel';
 import { channelModules } from './HomeChannelModel';
-import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
 import { limitGoModule } from './HomeLimitGoModel';
 import taskModel from './TaskModel';
@@ -170,9 +168,6 @@ class HomeModule {
             case homeType.expandBanner:
                 homeExpandBnnerModel.loadBannerList();
                 break;
-            case homeType.focusGrid:
-                homeFocusAdModel.loadAdList();
-                break;
             case homeType.today:
                 todayModule.loadTodayList(this.firstLoad);
                 break;
@@ -181,9 +176,6 @@ class HomeModule {
                 break;
             case homeType.limitGo:
                 limitGoModule.loadLimitGo(false);
-                break;
-            case homeType.homeHot:
-                subjectModule.loadSubjectList();
                 break;
             default:
                 break;
@@ -250,16 +242,12 @@ class HomeModule {
         channelModules.loadChannel(this.firstLoad);
         // 首页通栏
         homeExpandBnnerModel.loadBannerList(this.firstLoad);
-        // 首焦点广告
-        homeFocusAdModel.loadAdList();
         // 首页限时秒杀
         limitGoModule.loadLimitGo(true);
         // 首页今日榜单
         todayModule.loadTodayList(this.firstLoad);
         // 首页精品推荐
         recommendModule.loadRecommendList(this.firstLoad);
-        // 超值热卖
-        subjectModule.loadSubjectList();
 
         taskModel.getData();
 

@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
     },
     tabNomal: {
         fontSize: 12,
-        color: '#999999'
+        color: '#999'
     },
     tabSelect: {
         fontSize: 14,
