@@ -104,7 +104,7 @@ export default class HttpUtils {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
         if (!this.regId) {
-            this.regId = NativeModules.commModule.regId;
+            this.regId = NativeModules.commModule.regId || '';
         }
         return user.getToken().then(token => {
             let config = {
@@ -155,7 +155,7 @@ export default class HttpUtils {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
         if (!this.regId) {
-            this.regId = NativeModules.commModule.regId;
+            this.regId = NativeModules.commModule.regId || '';
         }
         let timeLineStart = +new Date();
         return user.getToken().then(token => {
