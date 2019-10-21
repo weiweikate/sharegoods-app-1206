@@ -73,7 +73,7 @@ static NSString * regId = nil;
     [[self manager].requestSerializer setValue:[StorageFromRN getSG_Token] forHTTPHeaderField:@"sg-token"];
     if (!regId || regId.length == 0) {
       regId = [JPUSHService registrationID];
-      [[self manager].requestSerializer setValue:regId forHTTPHeaderField:@"regId"];
+      [[self manager].requestSerializer setValue:regId forHTTPHeaderField:@"JPush-RegId"];
     }
     NSArray<NSString *> * arr = [url componentsSeparatedByString:@"@"];
     NSString * URL = [NSString stringWithFormat:@"%@%@",path,arr.firstObject];
