@@ -2,20 +2,13 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import { todayModule } from '../../model/HomeTodayModel';
-import { recommendModule } from '../../model/HomeRecommendModel';
-import { subjectModule } from '../../model/HomeSubjectModel';
-import { homeFocusAdModel } from '../../model/HomeFocusAdModel';
 import { homeType } from '../../HomeTypes';
 import { bannerModule } from '../../model/HomeBannerModel';
 import HomeBannerView, { bannerHeight } from '../HomeBannerView';
-import user from '../../../../model/user';
 import taskModel from '../../model/TaskModel';
 import { channelModules } from '../../model/HomeChannelModel';
 import { homeExpandBnnerModel } from '../../model/HomeExpandBnnerModel';
 import { limitGoModule } from '../../model/HomeLimitGoModel';
-import HomeTodayView, { todayHeight } from '../HomeTodayView';
-import HomeRecommendView, { recommendHeight } from '../HomeRecommendView';
 import { homeModule } from '../../model/Modules';
 import GoodsCell, { kHomeGoodsViewHeight } from '../HomeGoodsView';
 import { homeTabManager } from '../../manager/HomeTabManager';
@@ -28,13 +21,10 @@ import {
     View
 } from 'react-native';
 import { routePush } from '../../../../navigation/RouterMap';
-import HomeUserView from '../HomeUserView';
 import TaskView from '../TaskView';
 import HomeChannelView from '../HomeChannelView';
 import HomeExpandBannerView from '../HomeExpandBannerView';
-import HomeFocusAdView from '../HomeFocusAdView';
 import HomeLimitGoGoodsView from '../HomeLimitGoGoodsView';
-import HomeSubjectView from '../HomeSubjectView';
 import { StaticTabTitleView } from '../TabTitleView';
 import { TopicImageAdView } from '../TopicImageAdView';
 import GoodsCustomView from '../GoodsCustomView';
@@ -75,10 +65,6 @@ export default class HomeFirstTabView extends Component {
         return this.dataProvider.getDataForIndex(i) || {};
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
-        const { todayList } = todayModule;
-        const { recommendList } = recommendModule;
-        const { subjectHeight, subjectList } = subjectModule;
-        const { foucusHeight } = homeFocusAdModel;
 
         switch (type.type) {
             case homeType.tabStaticView:
@@ -86,9 +72,6 @@ export default class HomeFirstTabView extends Component {
                 break;
             case homeType.swiper:
                 dim.height = bannerModule.bannerList.length > 0 ? bannerHeight : 0;
-                break;
-            case homeType.user:
-                dim.height = user.isLogin ? (bannerModule.bannerList.length > 0 ? px2dp(44) : px2dp(31)) : 0;
                 break;
             case homeType.task:
                 dim.height = taskModel.homeHeight;
@@ -99,9 +82,6 @@ export default class HomeFirstTabView extends Component {
             case homeType.expandBanner:
                 dim.height = homeExpandBnnerModel.bannerHeight;
                 break;
-            case homeType.focusGrid:
-                dim.height = foucusHeight > 0 ? (foucusHeight + (homeExpandBnnerModel.expBannerList.length > 0 ? px2dp(20) : px2dp(10))) : 0;
-                break;
             case homeType.limitGoTop:
                 dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitTopHeight : 0;
                 break;
@@ -110,15 +90,6 @@ export default class HomeFirstTabView extends Component {
                 break;
             case homeType.limitGoGoods:
                 dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitGoodsHeight : 0;
-                break;
-            case homeType.today:
-                dim.height = todayList.length > 0 ? todayHeight : 0;
-                break;
-            case homeType.fine:
-                dim.height = recommendList.length > 0 ? recommendHeight : 0;
-                break;
-            case homeType.homeHot:
-                dim.height = subjectList.length > 0 ? subjectHeight: 0;
                 break;
             case homeType.goodsTitle:
                // dim.height = homeModule.tabList.length > 0 ? px2dp(66-13) : 0;
@@ -153,8 +124,6 @@ export default class HomeFirstTabView extends Component {
         type = type.type;
         if (type === homeType.swiper) {
             return <HomeBannerView navigate={routePush}/>;
-        } else if (type === homeType.user) {
-            return <HomeUserView navigate={routePush}/>;
         } else if (type === homeType.task) {
             return <TaskView type={'home'} style={{
                 marginTop: ScreenUtils.autoSizeWidth(5),
@@ -164,20 +133,12 @@ export default class HomeFirstTabView extends Component {
             return <HomeChannelView navigate={routePush}/>;
         } else if (type === homeType.expandBanner) {
             return <HomeExpandBannerView navigate={routePush}/>;
-        } else if (type === homeType.focusGrid) {
-            return <HomeFocusAdView navigate={routePush}/>;
         } else if (type === homeType.limitGoTop) {
             return <HomeLimitGoTopView navigate={routePush}/>;
         } else if (type === homeType.limitGoTime) {
             return <HomeLimitGoTimeView navigate={routePush}/>;
         } else if (type === homeType.limitGoGoods) {
             return <HomeLimitGoGoodsView navigate={routePush}/>;
-        } else if (type === homeType.today) {
-            return <HomeTodayView navigate={routePush}/>;
-        } else if (type === homeType.fine) {
-            return <HomeRecommendView navigate={routePush}/>;
-        } else if (type === homeType.homeHot) {
-            return <HomeSubjectView navigate={routePush} data={item}/>;
         } else if (type === homeType.goods) {
             return <GoodsCell data={item} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
                               navigate={routePush}/>;

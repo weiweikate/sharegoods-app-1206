@@ -3,9 +3,9 @@ import {
     Animated,
     DeviceEventEmitter,
     InteractionManager,
-    StyleSheet,
     View,
     Platform,
+    StyleSheet,
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './model/Modules';
@@ -45,6 +45,7 @@ import HomeTopTarBar from './HomeTopTarBar';
  * @email zhangjian@meeruu.com
  */
 
+const tabBarHeight = 42;
 
 @observer
 class HomePage extends BasePage {
@@ -185,7 +186,7 @@ class HomePage extends BasePage {
 
         let viewItems = [];
         viewItems.push(<HomeFirstTabView
-            key={'HomeList__flag'}
+            key={'HomeList_flag'}
             tabLabel={'推荐'}
             ref={(ref => {
                 this.homeList = ref;
@@ -203,19 +204,31 @@ class HomePage extends BasePage {
             if (item.navType === 2) {
                 viewItems.push(<DIYTopicList tabLabel={item.navName}
                                              key={'id' + item.id}
-                                             index={index+1}
+                                             index={index + 1}
                                              data={item}/>);
             } else if (item.navType === 1) {
                 viewItems.push(<HomeNormalList tabLabel={item.navName}
                                                data={item}
-                                               index={index+1}
+                                               index={index + 1}
                                                key={'id' + item.id}/>);
             }
         });
         return (
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
-                <HomeSearchView navigation={routePush}
-                                hasMessage={this.state.hasMessage}/>
+                <View
+                    style={{
+                        width: ScreenUtils.width,
+                        height: ScreenUtils.headerHeight + tabBarHeight,
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: 'white'
+                    }}/>
+                <View style={{
+                    height: ScreenUtils.headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
+                    backgroundColor: 'transparent'
+                }}/>
                 <ScrollableTabView
                     onChangeTab={(obj) => {
 
@@ -228,11 +241,15 @@ class HomePage extends BasePage {
                         this.topTarBar && this.topTarBar.scrollTo({ x: i * 60 - ScreenUtils.width / 2 + 30 });
                         this.topTarBar && this.topTarBar.open();
                     }}
+                    style={{ zIndex: 2 }}
                     renderTabBar={this._renderTabBar.bind(this)}
                     //进界面的时候打算进第几个
                     initialPage={0}>
                     {viewItems}
                 </ScrollableTabView>
+                <HomeSearchView navigation={routePush}
+                                hasMessage={this.state.hasMessage}/>
+
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}
@@ -242,7 +259,7 @@ class HomePage extends BasePage {
                 <GiftModal/>
                 <UserLevelModalView/>
                 <IntervalMsgView pageType={IntervalType.home}/>
-                {Platform.OS !== 'ios'?  <HomeAdModal/>:null}
+                {Platform.OS !== 'ios' ? <HomeAdModal/> : null}
                 <HomeMessageModalView/>
                 <VersionUpdateModalView/>
             </View>
@@ -258,12 +275,12 @@ class HomePage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: DesignRule.bgColor,
-        width: ScreenUtils.width
+        width: ScreenUtils.width,
+        backgroundColor: DesignRule.bgColor
     },
     tabNomal: {
         fontSize: 12,
-        color: '#999999'
+        color: '#999'
     },
     tabSelect: {
         fontSize: 14,

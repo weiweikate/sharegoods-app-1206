@@ -55,6 +55,8 @@ class ConfirmOrderModel {
     receiveInfo = {};
     @observable
     err = null;
+    @observable
+    needModifyAddress = false;
 
     @action clearData() {
         this.loadingState = PageLoadingState.success;
@@ -78,6 +80,7 @@ class ConfirmOrderModel {
         this.invokeItem = null;
         this.addressModalShow = false;
         this.addressList = [];
+        this.needModifyAddress = true;
 
     }
 
@@ -421,6 +424,18 @@ class ConfirmOrderModel {
         }
     };
 
+    changAddress = () =>{
+        const { province, city, area} = this.addressData;
+        routePush(RouterMap.AddressEditAndAddPage, {
+            callBack: (json) => {
+                this.selectAddressId(json);
+            },
+            from: 'edit',
+            ...this.addressData,
+            areaText: province + city + area
+        });
+    }
+
     handleNetData = (data) => {
         this.data = data;
         this.platformOrderNo = data.platformOrderNo || '';
@@ -430,6 +445,7 @@ class ConfirmOrderModel {
         this.addressId = this.receiveInfo.id ? this.receiveInfo.id + '' : '';
         this.addressData = this.receiveInfo;
         this.tokenCoin = this.payInfo.tokenCoinAmount;
+        let ext = data.ext || {}
         if (this.payInfo.couponAmount === 0) {
             this.userCouponCode = '';
         }
@@ -462,6 +478,10 @@ class ConfirmOrderModel {
             }
         }
         this.failProductList = failProductList;
+        this.needModifyAddress = ext.needModifyAddress;
+        if (this.needModifyAddress){
+            this.err = '地址失效，需要修改';
+        }
     };
 
     @action submitProduct() {

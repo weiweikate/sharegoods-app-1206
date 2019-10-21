@@ -19,7 +19,7 @@ import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorB
 import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 import DetailPromoteModal from './components/DetailPromoteModal';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
-import ProductDetailModel, { productItemType, sectionType } from './ProductDetailModel';
+import ProductDetailModel, { activity_type, productItemType, sectionType } from './ProductDetailModel';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import RouterMap from '../../navigation/RouterMap';
@@ -181,7 +181,7 @@ export default class ProductDetailPage extends BasePage {
 
     //选择规格确认
     _selectionViewConfirm = (amount, skuCode, item, productIsPromotionPrice) => {
-        const { prodCode, name, originalPrice, isGroupIn, groupActivity, productDetailAddressModel } = this.productDetailModel;
+        const { prodCode, name, originalPrice, isGroupIn, groupActivity, productDetailAddressModel, activityType } = this.productDetailModel;
         const { paramAddressItem } = productDetailAddressModel;
         const { goType } = this.state;
         if (goType === 'gwc') {
@@ -248,6 +248,12 @@ export default class ProductDetailPage extends BasePage {
             }
             const { type, couponId } = this.params;
             const { specImg, promotionPrice, price, propertyValues } = item;
+            const activityParams = activityType !== activity_type.pinGroup ? {
+                promotionId: promotionInfoItem.promotionId,
+                activityTag: promotionInfoItem.activityTag,
+                activityCode: promotionInfoItem.activityCode,
+                activityList
+            } : {};
             let orderProducts = [{
                 productType: this.productDetailModel.type,
                 sgscm: this.productDetailModel.sgscm,
@@ -260,10 +266,7 @@ export default class ProductDetailPage extends BasePage {
                 productName: name,
                 unitPrice: productIsPromotionPrice ? promotionPrice : price,
                 spec: (propertyValues || '').replace(/@/g, '-'),
-                promotionId: promotionInfoItem.promotionId,
-                activityTag: promotionInfoItem.activityTag,
-                activityCode: promotionInfoItem.activityCode,
-                activityList
+                ...activityParams
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {

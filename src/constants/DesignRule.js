@@ -11,7 +11,7 @@
 
 import ScreenUtils from '../utils/ScreenUtils';
 
-const {autoSizeWidth, onePixel, safeBottom, width} = ScreenUtils;
+const { autoSizeWidth, onePixel, safeBottom, width } = ScreenUtils;
 
 const colors = {
         mainColor: '#F00050',//主色调
@@ -34,7 +34,7 @@ const colors = {
         lineColor_inGrayBg: '#D4D4D4',//在灰色背景的线的颜色
         textColor_1f2d3d: '#1F2D3D',
         textColor_mainTitle: '#333333',//主标题
-        textColor_mainTitle_222:'#222222',//?黑色的字
+        textColor_mainTitle_222: '#222222',//?黑色的字
         textColor_secondTitle: '#666666',//二级标题
         textColor_instruction: '#999999',//说明文字
         textColor_placeholder: '#CCCCCC',//预填文字
@@ -52,11 +52,11 @@ const colors = {
         color_green: '#47c546', //绿色颜色
         color_ddd: '#dddddd', //ddd颜色
         color_fff: '#ffffff', //fff颜色
-        color_f2: '#f2f2f2' ,//f2颜色
-        color_90:'#909090',//90颜色
+        color_f2: '#f2f2f2',//f2颜色
+        color_90: '#909090',//90颜色
         yellow_FF7: '#FF7E00',//深黄色
         deliveryIncludeBlue: '#0186f5',//深蓝色
-        imgBg_color:'#efefef'
+        imgBg_color: '#efefef'
     }
 ;
 

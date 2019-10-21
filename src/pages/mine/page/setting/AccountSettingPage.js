@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import user from '../../../../model/user';
@@ -29,7 +29,6 @@ export default class AccountSettingPage extends BasePage {
 
     constructor(props) {
         super(props);
-        console.log('-----' + JSON.stringify(user));
         this.state = {
             phonePwdStatus: PhonePwdStatus.Undefined
         };
@@ -271,9 +270,8 @@ export default class AccountSettingPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
-        flexDirection: 'column',
-        marginTop: 11
+        flex: 1,
+        flexDirection: 'column'
     },
     viewStyle: {
         flexDirection: 'row',

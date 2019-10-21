@@ -11,14 +11,16 @@ import {
     InteractionManager,
     NativeAppEventEmitter,
     NativeEventEmitter,
-    NativeModules, Platform,
+    NativeModules,
+    Platform,
     StyleSheet,
     Text,
-    View
+    View,
+    BackHandler
 } from 'react-native';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
-import Navigator, { getCurrentRouteName } from './navigation/Navigator';
+import Navigator from './navigation/Navigator';
 import { SpellShopFlag, SpellShopTab } from './navigation/Tab';
 import RouterMap, { routeNavigate, routePush } from './navigation/RouterMap';
 import user from '../src/model/user';
@@ -41,10 +43,12 @@ import PrivacyModal from './pages/home/view/PrivacyModal';
 import { HomeAdModal_IOS } from './pages/home/view/HomeMessageModalView';
 import UserMemberUpdateModal from './pages/home/view/UserMemberUpdateModal';
 import homeModalManager from './pages/home/manager/HomeModalManager';
+import { marketingUtils } from './pages/marketing/MarketingUtils';
+import MarketingModal from './pages/marketing/components/MarketingModal';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
-const USERUPDATE ="nativeEvent_userUpdate";
+const USERUPDATE = 'nativeEvent_userUpdate';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -109,7 +113,7 @@ class App extends Component {
             (reminder) => {
                 this.timer = setInterval(() => {
                     if (global.$navigator) {
-                        routePush('HtmlPage', { uri: reminder.uri, ...getSGspm_home(HomeSource.launchAd)});
+                        routePush('HtmlPage', { uri: reminder.uri, ...getSGspm_home(HomeSource.launchAd) });
                         clearInterval(this.timer);
                     }
                 }, 100);
@@ -171,17 +175,28 @@ class App extends Component {
         });
         this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.mineMessageData);
         this.listenerJSMessage_USERUPDATE = JSManagerEmitter.addListener(USERUPDATE, this.userUpdate);
+        BackHandler.addEventListener('hardwareBackPress',this.handleBackPress)
+    }
+
+    //Android后退键优先关闭全局弹窗
+    handleBackPress = ()=>{
+        if(marketingUtils.isShowModal){
+            marketingUtils.closeModal();
+            return true;
+        }
+        return false;
     }
 
     componentWillUnmount() {
         this.listenerJSMessage && this.listenerJSMessage.remove();
         this.startAdvSubscription && this.startAdvSubscription.remove();
         this.listenerJSMessage_USERUPDATE &&  this.listenerJSMessage_USERUPDATE.remove();
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
 
     userUpdate = (data) => {
-        homeModalManager.getUserMemberUpdate(data)
-    }
+        homeModalManager.getUserMemberUpdate(data);
+    };
 
     mineMessageData = (data) => {
         const { params } = JSON.parse(data) || {};
@@ -218,10 +233,9 @@ class App extends Component {
                         global.$navigator = e;
                     }}
                     onNavigationStateChange={(prevState, currentState) => {
-                        let curRouteName = getCurrentRouteName(currentState);
                         // 拦截当前router的名称
                         global.$routes = currentState.routes;
-                        this.setState({ curRouteName });
+                        marketingUtils.navigationIntercept(prevState, currentState);
                     }}
                 />
                 <SpellShopFlag isShowFlag={showPinFlagModel.showFlag}/>
@@ -231,9 +245,10 @@ class App extends Component {
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
-                {Platform.OS === 'ios'?  <HomeAdModal_IOS/>:null}
-                <UserMemberUpdateModal />
-                <PrivacyModal />
+                {Platform.OS === 'ios' ? <HomeAdModal_IOS/> : null}
+                <UserMemberUpdateModal/>
+                <PrivacyModal/>
+                {marketingUtils.isShowModal ? <MarketingModal/> : null}
             </View>
         );
     }

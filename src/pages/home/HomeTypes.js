@@ -5,11 +5,6 @@ export const homeType = {
     swiper: 2,           // 首页顶部轮播
     expandBanner: 3,     // 首页通栏广告位
     channel: 4,          // 首页频道类目
-    focusGrid: 5,        // 首页焦点推荐位
-    star: 6,             // 明星店铺
-    today: 7,            // 今日榜单
-    fine: 8,             // 精品推荐
-    homeHot: 9,          // 超值热卖
     float: 10,           // 右下角浮动框
     goods: 18,           // 为你推荐商品
     pinShop: 12,          // 拼店banner
@@ -20,7 +15,6 @@ export const homeType = {
     category: 'category',
     goodsTitle: 'goodsTitle',
     task: 'task',
-    user: 'user',
     show: 11,            //秀场
     banner: 14,
     limitGo: 300,   //限时秒杀
@@ -35,6 +29,7 @@ export const homeType = {
     store28: 28,//拼店权益页面广告
     store29: 29,//拼店开店页面广告
     store30: 30,//拼店扩容页面广告
+    store31: 31,//百万活动
     paySuccess: 27,//订单支付完成页面广告位
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',

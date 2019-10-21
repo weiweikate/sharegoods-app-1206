@@ -13,7 +13,7 @@ import DesignRule from '../../../constants/DesignRule';
 import { homePoint } from '../HomeTypes';
 import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
-const { px2dp, width } = ScreenUtils;
+const { px2dp } = ScreenUtils;
 
 export const bannerHeight = px2dp(120);
 
@@ -31,7 +31,7 @@ export default class HomeBannerView extends Component {
             const { navigate } = this.props;
 
             track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner, index));
-            params = {...params,...getSGspm_home(HomeSource.banner, index)}
+            params = { ...params, ...getSGspm_home(HomeSource.banner, index) };
             navigate(router, params);
         }
     };
@@ -47,19 +47,10 @@ export default class HomeBannerView extends Component {
             items.push(item.image);
         });
         let len = items.length;
-        return <View style={styles.banner}>
-            {len === 0 ?
-                <View style={styles.defaultImg}/> :
-                <View style={{ height: bannerHeight }}>
-                    <View
-                        style={{
-                            backgroundColor: 'white',
-                            height: px2dp(90),
-                            width,
-                            position: 'absolute',
-                            top: 0,
-                            left: 0
-                        }}/>
+        return (
+            <View style={styles.banner}>
+                {len === 0 ?
+                    <View style={styles.defaultImg}/> :
                     <MRBannerViewComponent
                         itemRadius={px2dp(5)}
                         imgUrlArray={items}
@@ -70,12 +61,9 @@ export default class HomeBannerView extends Component {
                         onDidSelectItemAtIndex={(i) => {
                             this._onPressRow(i);
                         }}/>
-                </View>
-
-            }
-        </View>;
+                }
+            </View>);
     }
-
 }
 
 const styles = StyleSheet.create({

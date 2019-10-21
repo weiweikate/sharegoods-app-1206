@@ -20,7 +20,13 @@ import RouterMap, { routePop } from '../../../../navigation/RouterMap';
 
 const addrSelectedIcon = res.button.selected_circle_red;
 const addrUnSelectedIcon = res.button.unselected_circle;
-
+/**
+ * @author luoyongming
+ * @date on 2018/9/18
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
+ */
 const dismissKeyboard = Keyboard.dismiss;
 const arrow_right = res.button.arrow_right_black;
 
@@ -125,6 +131,12 @@ export default class AddressEditAndAddPage extends BasePage {
                 this.isLoadding = false;
                 bridge.$toast('修改成功');
                 refreshing && refreshing();
+                data = data.data || {};
+                data.province = this.state.provinceName;
+                data.city = this.state.cityName;
+                data.area = this.state.areaName;
+                data.street = this.state.streetName;
+                callBack && callBack(data);
                 this.$navigateBack();
             }).catch((data) => {
                 this.isLoadding = false;
@@ -161,7 +173,7 @@ export default class AddressEditAndAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from, streetCode, province, city, area } = this.params;
+        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from, streetCode, province,  city, area, receiverPhone} = this.params;
         if (from === 'edit') {
             this.$navigationBarOptions.title = '编辑地址';
         } else if (from === 'add') {
@@ -169,7 +181,7 @@ export default class AddressEditAndAddPage extends BasePage {
         }
         this.state = {
             receiverText: receiver || '',
-            telText: tel || '',
+            telText: tel || receiverPhone || '',
             areaText: areaText || '',
             addrText: address || '',
             provinceCode: provinceCode,
