@@ -717,12 +717,10 @@ export default class ProductDetailModel {
             /*获取当前商品供应商*/
             this.requestShopInfo(tempData.merchantCode);
             /**赋值prodCode会autoRun自动拉取库存**/
-            if (tempData && tempData.type !== 3) {
-                this.productDetailAddressModel.productPromotionSuccess = this.productPromotionSuccess;
-                this.productDetailAddressModel.productPromotionFail = this.productError;
-                this.productDetailAddressModel.templateCode = tempData.freightTemplateCode;
-                this.productDetailAddressModel.prodCode = this.prodCode;
-            }
+            this.productDetailAddressModel.productPromotionSuccess = this.productPromotionSuccess;
+            this.productDetailAddressModel.productPromotionFail = this.productError;
+            this.productDetailAddressModel.templateCode = tempData.freightTemplateCode;
+            this.productDetailAddressModel.prodCode = this.prodCode;
         }).catch((e) => {
             this.productError(e);
         });
