@@ -66,7 +66,7 @@ export default class HomeFirstTabView extends Component {
 
         switch (type.type) {
             case homeType.swiper:
-                dim.height = bannerModule.bannerList.length > 0 ? bannerHeight : 0;
+                dim.height = bannerModule.bannerList.length > 0 ? bannerHeight + px2dp(5) : 0;
                 break;
             case homeType.task:
                 dim.height = taskModel.homeHeight;

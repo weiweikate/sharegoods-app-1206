@@ -49,6 +49,7 @@ export default class HomeBannerView extends Component {
         let len = items.length;
         return (
             <View style={styles.banner}>
+                <View style={{ height: px2dp(5), backgroundColor: 'transparent' }}/>
                 {len === 0 ?
                     <View style={styles.defaultImg}/> :
                     <MRBannerViewComponent
