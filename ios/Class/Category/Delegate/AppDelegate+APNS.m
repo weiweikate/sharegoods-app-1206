@@ -97,6 +97,14 @@
                apsForProduction:KJisProduction
           advertisingIdentifier:nil];
   
+  [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
+    NSLog(@"registrationID%@",registrationID);
+    if (resCode == 0) {
+      // 将极光推送的 Registration Id 存储在神策分析的用户 Profile "jgId" 中
+      [SensorsAnalyticsSDK.sharedInstance profilePushKey:@"jgId" pushId:registrationID];
+    }
+  }];
+  
   JVAuthConfig *config = [[JVAuthConfig alloc] init];
   config.appKey = KJSPushKey;
   [JVERIFICATIONService setupWithConfig:config];
@@ -240,13 +248,6 @@
 //  [[QYSDK sharedSDK] updateApnsToken:deviceToken];
   //极光提交
   [JPUSHService registerDeviceToken:deviceToken];
-  [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
-    NSLog(@"registrationID%@",registrationID);
-    if (resCode == 0) {
-      // 将极光推送的 Registration Id 存储在神策分析的用户 Profile "jgId" 中
-      [SensorsAnalyticsSDK.sharedInstance profilePushKey:@"jgId" pushId:registrationID];
-    }
-  }];
 }
 //增加神策通知埋点
 -(void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler
