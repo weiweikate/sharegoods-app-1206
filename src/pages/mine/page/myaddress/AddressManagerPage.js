@@ -215,7 +215,7 @@ export default class AddressManagerPage extends BasePage {
             tel: item.receiverPhone + '',
             address: item.address,
             id: item.id,
-            areaText: item.province + item.city + (item.area || ''),
+            areaText: item.province + item.city + (item.area || '') + (item.street || ''),
             provinceCode: item.provinceCode,
             province: item.province || '',
             cityCode: item.cityCode,

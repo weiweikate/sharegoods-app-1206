@@ -88,6 +88,7 @@ export default class SelectAreaModal extends Component {
     };
 
     _renderItem = ({item}) => {
+        const {callBack} = this.props;
         const {requestWithCode, itemIndex, selectItems, clickState, setClickState} = this.addressSelectModel;
         return (
             <NoMoreClick style={{height: 40, justifyContent: 'center'}} onPress={() => {
@@ -99,12 +100,25 @@ export default class SelectAreaModal extends Component {
                 selectItems[itemIndex] = item;
                 if (itemIndex === 3) {
                     this.close();
+                    let areaText = selectItems[0].name + selectItems[1].name + selectItems[2].name + selectItems[3].name||'';
+                    let data = {
+                        provinceCode: selectItems[0].code,
+                        provinceName: selectItems[0].name,
+                        cityCode: selectItems[1].code,
+                        cityName: selectItems[1].name,
+                        areaCode: selectItems[2].code,
+                        areaName: selectItems[2].name,
+                        streetCode: selectItems[3].code,
+                        streetName: selectItems[3].name,
+                        areaText
+                    };
+                    callBack && callBack(data);
                     return;
                 }
                 //下一页
                 requestWithCode(item.code);
             }}>
-                <MRText style={styles.itemText}>{item.name}</MRText>
+                <MRText style={styles.itemText}>{item.code && item.name ? item.name : '暂不选择'}</MRText>
             </NoMoreClick>
         );
     };
@@ -167,12 +181,16 @@ export default class SelectAreaModal extends Component {
 
                                     }}>
                                         <View style={{flex: 1, justifyContent: 'center'}}>
-                                            <MRText style={styles.titleText}>{item.name}</MRText>
+                                            <MRText
+                                                style={[styles.titleText, {color: index === itemIndex ? '#FF0050' : DesignRule.textColor_mainTitle}]}>
+                                                {item.name}
+                                            </MRText>
                                         </View>
                                         <View style={{
                                             height: 2,
                                             marginHorizontal: 15,
-                                            backgroundColor: index === itemIndex ? DesignRule.mainColor : 'white'
+                                            backgroundColor: index === itemIndex ? DesignRule.mainColor : 'white',
+                                            borderRadius: 1
                                         }}/>
                                     </NoMoreClick>
                                 );
@@ -232,11 +250,11 @@ const styles = StyleSheet.create({
     },
     titleText: {
         marginHorizontal: 15,
-        fontSize: 14, color: DesignRule.textColor_mainTitle
+        fontSize: 14,
     },
     itemText: {
         marginLeft: 15,
-        fontSize: 14, color: DesignRule.textColor_mainTitle
+        fontSize: 14,
     },
     separatorView: {
         height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg
@@ -271,9 +289,17 @@ class AddressSelectModel {
     //请求下一页
     @action requestWithCode = (code,type=false) => {
         MineAPI.getAreaList({fatherCode: code}).then((data) => {
+            let dataitem = data.data||[];
             this.clickState = true;
             if(type){
-                this.contentList[this.itemIndex] = data.data || [];
+                if (this.itemIndex === 3) {
+                    dataitem.unshift({
+                        'code': '',
+                        'name': '',
+                        'fatherCode': data.data[0].fatherCode || ''
+                    })
+                }
+                this.contentList[this.itemIndex] = dataitem || [];
                 return;
             }
             //当前列表项数据
@@ -285,8 +311,10 @@ class AddressSelectModel {
                 this.itemIndex = 2;
             } else if (this.itemIndex === 2) {
                 this.itemIndex = 3;
+                dataitem.unshift({'code': '', 'name': '', 'fatherCode': data.data[0].fatherCode || ''})
             }
-            this.contentList[this.itemIndex] = data.data || [];
+
+            this.contentList[this.itemIndex] = dataitem;
             this.selectItems[this.itemIndex] = {name: '请选择'};
 
         });
