@@ -162,6 +162,7 @@ export default class MyShopPage extends BasePage {
             isRefresh: true
         }, () => {
             this._loadPageData();
+            this.BannersVerticalView.fetchBannerList && this.BannersVerticalView.fetchBannerList();
             spellStatusModel.getUser(0);
         });
     };
@@ -437,7 +438,8 @@ export default class MyShopPage extends BasePage {
                             colors={[DesignRule.mainColor]}
                         />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
-                {userStatus === 1 && <BannersVerticalView type={homeType.store31}/>}
+                {userStatus === 1 &&
+                <BannersVerticalView ref={(ref) => this.BannersVerticalView = ref} type={homeType.store31}/>}
                 <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <ShopMoneyExplainView MyShopDetailModel={this.MyShopDetailModel}/>
