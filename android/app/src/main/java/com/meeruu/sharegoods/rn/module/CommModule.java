@@ -331,6 +331,10 @@ public class CommModule extends ReactContextBaseJavaModule {
         String fileName = AppUtils.getAppName() + "_" + lastVersion + ".apk";
         String filePath = apkFile.getAbsolutePath() + File.separator + fileName;
         boolean exist = FileUtils.fileIsExists(filePath);
+        if (!AppUtils.isApkCanInstall(mContext, filePath)) {
+            exist = false;
+            FileUtils.deleteFile(filePath);
+        }
         VersionUpdateEvent event = new VersionUpdateEvent();
         event.setExist(exist);
         event.setApkPath(filePath);
@@ -585,7 +589,7 @@ public class CommModule extends ReactContextBaseJavaModule {
 
         final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture").getAbsolutePath();
         final String fileName = url.substring(url.lastIndexOf('/') + 1);
-        final String destFile = storePath+ File.separator +fileName;
+        final String destFile = storePath + File.separator + fileName;
         RequestManager.getInstance().downLoadFile(url, destFile, new ReqProgressCallBack<Object>() {
             @Override
             public void onErr(String errCode, String msg) {
@@ -624,25 +628,31 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getTextHeightWithWidth(String text,float fontSize,float width, Promise promise) {
+    public void getTextHeightWithWidth(String text, float fontSize, float width, Promise promise) {
         WritableMap map = Arguments.createMap();
-        if(TextUtils.isEmpty(text)){
-            map.putInt("height",0);
+        if (TextUtils.isEmpty(text)) {
+            map.putInt("height", 0);
             promise.resolve(map);
             return;
         }
         Paint paint = new Paint();
         paint.setTextSize(fontSize);
         Rect rect = new Rect();
-        paint.getTextBounds(text,0,text.length(),rect);
+        paint.getTextBounds(text, 0, text.length(), rect);
         int oWidth = rect.width();
-        int oHeight = (int)getFontHeight(paint);
+        int oHeight = (int) getFontHeight(paint);
         width = DensityUtils.px2dip(width);
-        int i = (int)Math.ceil((double)oWidth/(double)width);
-        map.putInt("height",oHeight*i);
+        int i = (int) Math.ceil((double) oWidth / (double) width);
+        map.putInt("height", oHeight * i);
         promise.resolve(map);
     }
-    
+
+    @ReactMethod
+    public void getRegId(Promise promise) {
+        String regId = JPushInterface.getRegistrationID(mContext);
+        promise.resolve(regId);
+    }
+
     /***
      * 获取字体高度
      * @param paint
@@ -650,7 +660,7 @@ public class CommModule extends ReactContextBaseJavaModule {
      */
     public static float getFontHeight(Paint paint) {
         Paint.FontMetrics fm = paint.getFontMetrics();
-        return ((int) Math.ceil(fm.descent - fm.top) + 2) /2 ;
+        return ((int) Math.ceil(fm.descent - fm.top) + 2) / 2;
     }
 
 

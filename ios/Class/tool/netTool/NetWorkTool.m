@@ -16,6 +16,8 @@
 
 #define kTimeOutInterval 10
 
+static NSString * regId = nil;
+
 @implementation NetWorkTool
 +(AFHTTPSessionManager *)manager{
     static AFHTTPSessionManager *manager;
@@ -58,6 +60,7 @@
 
 }
 
+
 + (void)requestWithURL:(NSString *)url
                 params:(NSDictionary *)parmas
                toModel:(Class) modelClass
@@ -68,6 +71,10 @@
   dispatch_async(dispatch_get_main_queue(), ^{
     NSString * path = [StorageFromRN getHost];
     [[self manager].requestSerializer setValue:[StorageFromRN getSG_Token] forHTTPHeaderField:@"sg-token"];
+    if (!regId || regId.length == 0) {
+      regId = [JPUSHService registrationID];
+      [[self manager].requestSerializer setValue:regId forHTTPHeaderField:@"JPush-RegId"];
+    }
     NSArray<NSString *> * arr = [url componentsSeparatedByString:@"@"];
     NSString * URL = [NSString stringWithFormat:@"%@%@",path,arr.firstObject];
     if ([[arr.lastObject uppercaseString] isEqualToString:@"GET"]) {

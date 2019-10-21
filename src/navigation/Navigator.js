@@ -59,7 +59,7 @@ const RootStack = createStackNavigator(Router,
                     timing: Animated.timing,
                     useNativeDriver: true
                 },
-                screenInterpolator: StackViewStyleInterpolator.forHorizontal
+                screenInterpolator: ((Platform.OS === 'android' && Platform.Version < 29) || Platform.OS === 'ios') ? StackViewStyleInterpolator.forHorizontal : null
             };
         }
     }

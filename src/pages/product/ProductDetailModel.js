@@ -487,7 +487,6 @@ export default class ProductDetailModel {
 
             let contentArr = isNoEmpty(content) ? content.split(',') : [];
 
-            this.loadingState = PageLoadingState.success;
             this.type = type;
             this.videoUrl = videoUrl;
             this.imgUrl = imgUrl;
@@ -531,6 +530,7 @@ export default class ProductDetailModel {
 
     //根据地址获取
     @action productPromotionSuccess = (promotionInfo) => {
+        this.loadingState = PageLoadingState.success;
         const {
             promoteInfoVOList,
             promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
@@ -592,6 +592,22 @@ export default class ProductDetailModel {
             this.shareMoney = shareMoney;
         }
 
+        /*浏览商品详情埋点,isTracked上传一次*/
+        !this.isTracked && track(trackEvent.ProductDetail, {
+            sgspm: this.sgspm,
+            sgscm: this.sgscm,
+            productShowSource: this.trackType || 0,
+            sourceAttributeCode: this.trackCode || 0,
+            spuCode: this.prodCode,
+            spuName: this.name,
+            productType: this.trackProductStatus(),
+            priceShareStore: this.groupPrice,
+            productStatus: this.activityStatus || 0,
+            priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : this.minPrice,
+            priceType: this.priceType === price_type.shop ? '100' : user.levelRemark
+        });
+        this.isTracked = true;
+
         //拼团
         const { activityType } = this;
         if (activityType !== activity_type.pinGroup) {
@@ -606,19 +622,6 @@ export default class ProductDetailModel {
         this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
         this.productGroupModel.requestGroupProduct({ activityCode: code, prodCode: this.prodCode });
         this.productGroupModel.requestGroupDesc();
-
-        /*商品详情埋点*/
-        track(trackEvent.ProductDetail, {
-            productShowSource: this.trackType || 0,
-            sourceAttributeCode: this.trackCode || 0,
-            spuCode: this.prodCode,
-            spuName: this.name,
-            productType: this.trackProductStatus(),
-            priceShareStore: this.groupPrice,
-            productStatus: this.activityStatus || 0,
-            priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : this.minPrice,
-            priceType: this.priceType === price_type.shop ? '100' : user.levelRemark
-        });
     };
 
     trackProductStatus = () => {
@@ -714,11 +717,10 @@ export default class ProductDetailModel {
             /*获取当前商品供应商*/
             this.requestShopInfo(tempData.merchantCode);
             /**赋值prodCode会autoRun自动拉取库存**/
-            if (tempData && tempData.type !== 3) {
-                this.productDetailAddressModel.productPromotionSuccess = this.productPromotionSuccess;
-                this.productDetailAddressModel.templateCode = tempData.freightTemplateCode;
-                this.productDetailAddressModel.prodCode = this.prodCode;
-            }
+            this.productDetailAddressModel.productPromotionSuccess = this.productPromotionSuccess;
+            this.productDetailAddressModel.productPromotionFail = this.productError;
+            this.productDetailAddressModel.templateCode = tempData.freightTemplateCode;
+            this.productDetailAddressModel.prodCode = this.prodCode;
         }).catch((e) => {
             this.productError(e);
         });

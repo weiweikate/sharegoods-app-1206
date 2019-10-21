@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -521,9 +522,10 @@ public class RequestManager {
         params.put("channel", channel + "");
         params.put("platform", "Android " + DeviceUtils.getSystemName());
         params.put("Security-Policy", "SIGNATURE");
-        String token =((String) SPCacheUtils.get(ParameterUtils.LOGIN_TOKEN, "")).replaceAll("\"","");
+        String token = ((String) SPCacheUtils.get(ParameterUtils.LOGIN_TOKEN, "")).replaceAll("\"", "");
         params.put("sg-token", token);
         params.put("version", AppUtils.getVersionName() + "");
+        params.put("JPush-RegId", JPushInterface.getRegistrationID(BaseApplication.appContext));
         return params;
     }
 

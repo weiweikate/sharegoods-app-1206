@@ -1,8 +1,5 @@
 import axios from 'axios';
-import {
-    NativeModules,
-    Platform
-} from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import configureResponseError from './interceptors/ResponseError';
 import configureTimeout from './interceptors/timeout';
 import fetchHistory from '../../model/FetchHistory';
@@ -68,7 +65,10 @@ function createHistory(response, requestStamp) {
     };
     return history;
 }
-
+let regId = '';
+NativeModules.commModule.getRegId().then((Id)=> {
+    regId = Id;
+})
 export default class HttpUtils {
     platform = '';
 
@@ -113,7 +113,8 @@ export default class HttpUtils {
                     'sg-token': token ? token : '',
                     'platform': this.platform,
                     'version': rsa_config.version,
-                    'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
+                    'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
+                    'JPush-RegId': regId
                 }
             };
             return axios.get(url, config);
@@ -160,7 +161,8 @@ export default class HttpUtils {
                 'sg-token': token ? token : '',
                 'platform': this.platform,
                 'version': rsa_config.version,
-                'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
+                'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
+                'JPush-RegId': regId
             };
             return axios.post(url, params, config);
         }).then(response => {
@@ -181,8 +183,4 @@ export default class HttpUtils {
             return data;
         });
     }
-
-    doSign = () => {
-
-    };
 }

@@ -82,10 +82,7 @@ export default class ShowImageView extends Component {
         if (!items) {
             return <View/>;
         }
-        return <View style={{
-            width: width,
-            height: this.imageHeight
-        }}>
+        return <View>
             <ViewPager
                 swiperShow={true}
                 arrayData={items}

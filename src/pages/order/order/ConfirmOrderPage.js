@@ -4,7 +4,8 @@ import {
     View,
     ScrollView,
     KeyboardAvoidingView,
-    Image
+    Image,
+    TouchableWithoutFeedback
 } from 'react-native';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -26,6 +27,7 @@ import res from '../res';
 import ActivateTicketView from '../components/confirmOrder/ActivateTicketView';
 import AddressModal from '../components/confirmOrder/AddressModal';
 const step_header = res.step_header;
+const arrow_right = res.arrow_right;
 
 @observer
 export default class ConfirmOrderPage extends BasePage {
@@ -99,6 +101,7 @@ export default class ConfirmOrderPage extends BasePage {
                     ref={(e) => this.listView = e}
                     style={{ flex: 1 }}
                     showsVerticalScrollIndicator={false}>
+                    {this.renderChangeAddressTip()}
                     {this.renderHeaderImage()}
                     {
                         !confirmOrderModel.isAllVirtual ?  <ConfirmAddressView selectAddress={() => this.selectAddress()}/> : null
@@ -127,6 +130,43 @@ export default class ConfirmOrderPage extends BasePage {
             </View>
         );
     };
+
+    renderChangeAddressTip(){
+        if (!confirmOrderModel.needModifyAddress) {
+            return null;
+        }
+
+        return(
+            <TouchableWithoutFeedback
+                onPress={()=>{confirmOrderModel.changAddress()}}
+            >
+            <View style={{
+                backgroundColor: '#FFEFDB',
+                flexDirection: 'row',
+                height: ScreenUtils.autoSizeWidth(32),
+                marginHorizontal: ScreenUtils.autoSizeWidth(15),
+                borderRadius: 5,
+                marginTop: ScreenUtils.autoSizeWidth(10),
+                alignItems: 'center'
+            }}>
+                <MRText style={{fontSize: ScreenUtils.autoSizeWidth(13),
+                    color: '#FF0050',
+                    marginLeft: 10,
+                    flex: 1
+                }}>
+                    该地址已发生变更，请修改地址
+                </MRText>
+                <MRText style={{fontSize: ScreenUtils.autoSizeWidth(13),
+                    color: '#FF0050',
+                    fontWeight: '600'
+                }}>
+                    请修改
+                </MRText>
+                <Image source={arrow_right} style={styles.arrowRightStyle} resizeMode={'contain'}/>
+            </View>
+            </TouchableWithoutFeedback>
+        );
+    }
 
     _renderItem = (item, index) => {
         return (<GoodsItem
@@ -205,7 +245,7 @@ export default class ConfirmOrderPage extends BasePage {
         if (confirmOrderModel.isNoAddress === false){
             this.$navigate('mine/address/AddressManagerPage', {
                 from: 'order',
-                currentId: confirmOrderModel.addressId,
+                currentAddressId: confirmOrderModel.addressId,
                 callBack: (json) => {
                     confirmOrderModel.selectAddressId(json)
                 }
@@ -270,5 +310,10 @@ const styles = StyleSheet.create({
         marginHorizontal: DesignRule.margin_page,
         borderRadius: 10,
         overflow: 'hidden'
-    }
+    },
+    arrowRightStyle: {
+        height: ScreenUtils.autoSizeWidth(12),
+        marginRight: ScreenUtils.autoSizeWidth(15),
+        tintColor: DesignRule.mainColor
+    },
 });
