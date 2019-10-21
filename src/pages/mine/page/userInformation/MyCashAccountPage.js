@@ -30,17 +30,17 @@ import RouterMap, {routeNavigate} from '../../../../navigation/RouterMap';
 
 const {px2dp} = ScreenUtils;
 const renwu = res.cashAccount.renwu_icon;
-const daoshi = res.cashAccount.daoshi_icon;
-const fenhong = res.cashAccount.fenhong_icon;
+// const daoshi = res.cashAccount.daoshi_icon;
+// const fenhong = res.cashAccount.fenhong_icon;
 const hongbao = res.cashAccount.hongbao_icon;
-const tuiguang = res.cashAccount.tuiguang_icon;
+// const tuiguang = res.cashAccount.tuiguang_icon;
 const tixiang = res.cashAccount.tixian_icon;
 const tixiantk = res.cashAccount.tixian_icon;
 const xiaofei = res.cashAccount.xiaofei_icon;
 const xiaofeitk = res.cashAccount.xiaofei_icon;
 const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
-const writer = res.cashAccount.writer_icon;
+// const writer = res.cashAccount.writer_icon;
 const cash_noData = res.cashAccount.cash_noData;
 const qita = res.cashAccount.qita_icon;
 const chengFa = res.cashAccount.chengFa_icon;
@@ -62,24 +62,24 @@ const allType = {
         icon: xiaofei
     },
     4: {
-        title: '导师管理',
-        icon: daoshi
+        title: '推广奖励',
+        icon: shouru
     },
     5: {
-        title: '额外品牌分红奖励',
-        icon: fenhong
+        title: '推广奖励',
+        icon: shouru
     },
     6: {
-        title: '品牌推广奖励',
-        icon: tuiguang
+        title: '推广奖励',
+        icon: shouru
     },
     7: {
         title: '其他',
         icon: hongbao
     },
     8: {
-        title: '任务奖励',
-        icon: renwu
+        title: '推广奖励',
+        icon: shouru
     },
     9: {
         title: '消费退款',
@@ -94,28 +94,28 @@ const allType = {
         icon: hongbao
     },
     12: {
-        title: '写手奖励',
-        icon: writer
+        title: '推广奖励',
+        icon: shouru
     },
     13: {
         title: '系统升级',
         icon: hongbao
     },
     14: {
-        title: '百万补贴奖励金',
+        title: '推广奖励',
         icon: shouru
     },
     15: {
-        title: '活跃任务奖励金',
+        title: '推广奖励',
         icon: shouru
     },
     16: {
-        title: '管理任务奖励金',
+        title: '推广奖励',
         icon: shouru
     },
     17: {
-        title: '抽奖奖励',
-        icon: renwu
+        title: '推广奖励',
+        icon: shouru
     }
 
 };
@@ -578,12 +578,12 @@ export default class MyCashAccountPage extends BasePage {
                     data.data.map((item, index) => {
                         let remark = '';
                         let icon = '';
-                        if (item.useType && allType[item.useType]) {
+                        if (item.remark) {
+                            remark = item.remark;
+                            icon = newTypeIcons[item.tradeType] ? newTypeIcons[item.tradeType].icon : renwu
+                        } else {
                             remark = allType[item.useType] ? allType[item.useType].title : '其他';
                             icon = allType[item.useType] ? allType[item.useType].icon : qita;
-                        } else {
-                            remark = item.remark ? item.remark : '其他';
-                            icon = newTypeIcons[item.tradeType] ? newTypeIcons[item.tradeType].icon : renwu
                         }
                         arrData.push({
                             type: remark,

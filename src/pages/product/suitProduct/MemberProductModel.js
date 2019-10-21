@@ -102,9 +102,9 @@ export default class MemberProductModel {
             this.mainProduct = mainProduct || {};
             const { packageVideo, mainImages, detailImages, subProducts, afterSaleLimit, afterSaleTip, shareContent, groupCode } = packages[0] || {};
             this.packageVideo = packageVideo;
-            this.mainImages = mainImages;
-            this.detailImages = detailImages;
-            this.subProducts = subProducts;
+            this.mainImages = mainImages || [];
+            this.detailImages = detailImages || [];
+            this.subProducts = subProducts || [];
             this.afterSaleLimit = afterSaleLimit;
             this.afterSaleTip = afterSaleTip;
             this.shareContent = shareContent;
