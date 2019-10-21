@@ -118,7 +118,9 @@ export default class SelectAreaModal extends Component {
                 //下一页
                 requestWithCode(item.code);
             }}>
-                <MRText style={styles.itemText}>{item.code && item.name ? item.name : '暂不选择'}</MRText>
+                <MRText style={[styles.itemText, {color: item.code && item.name ? DesignRule.textColor_mainTitle:'#FF0050' }]}>
+                    {item.code && item.name ? item.name : '暂不选择'}
+                </MRText>
             </NoMoreClick>
         );
     };
