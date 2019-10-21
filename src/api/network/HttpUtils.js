@@ -65,10 +65,12 @@ function createHistory(response, requestStamp) {
     };
     return history;
 }
-
+let regId = '';
+NativeModules.commModule.getRegId().then((Id)=> {
+    regId = Id;
+})
 export default class HttpUtils {
     platform = '';
-    regId = '';
 
     static sign(params, isRSA) {
         // if (isRSA) {
@@ -103,9 +105,6 @@ export default class HttpUtils {
         if (!this.platform) {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
-        if (!this.regId) {
-            this.regId = NativeModules.commModule.regId || '';
-        }
         return user.getToken().then(token => {
             let config = {
                 headers: {
@@ -115,7 +114,7 @@ export default class HttpUtils {
                     'platform': this.platform,
                     'version': rsa_config.version,
                     'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
-                    'JPush-regId': this.regId
+                    'JPush-regId': regId
                 }
             };
             return axios.get(url, config);
@@ -154,9 +153,6 @@ export default class HttpUtils {
         if (!this.platform) {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
-        if (!this.regId) {
-            this.regId = NativeModules.commModule.regId || '';
-        }
         let timeLineStart = +new Date();
         return user.getToken().then(token => {
             config.headers = {
@@ -166,7 +162,7 @@ export default class HttpUtils {
                 'platform': this.platform,
                 'version': rsa_config.version,
                 'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
-                'JPush-RegId': this.regId
+                'JPush-RegId': regId
             };
             return axios.post(url, params, config);
         }).then(response => {

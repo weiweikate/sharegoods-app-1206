@@ -18,6 +18,7 @@
 #import "JVERIFICATIONService.h"
 #import <SensorsAnalyticsSDK.h>
 #import "UIView+SDAutoLayout.h"
+#import "MBProgressHUD+PD.h"
 #import "UIButton+ImageText.h"
 
 #define NotificationStatusTime @"NotificationStatusTime"
