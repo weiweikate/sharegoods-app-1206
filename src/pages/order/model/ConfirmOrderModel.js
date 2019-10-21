@@ -79,7 +79,7 @@ class ConfirmOrderModel {
         this.invokeItem = null;
         this.addressModalShow = false;
         this.addressList = [];
-        this.needModifyAddress = true;
+        this.needModifyAddress = false;
 
     }
 
