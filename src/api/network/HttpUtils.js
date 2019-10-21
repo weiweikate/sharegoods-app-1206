@@ -1,8 +1,5 @@
 import axios from 'axios';
-import {
-    NativeModules,
-    Platform
-} from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import configureResponseError from './interceptors/ResponseError';
 import configureTimeout from './interceptors/timeout';
 import fetchHistory from '../../model/FetchHistory';
@@ -71,6 +68,7 @@ function createHistory(response, requestStamp) {
 
 export default class HttpUtils {
     platform = '';
+    regId = '';
 
     static sign(params, isRSA) {
         // if (isRSA) {
@@ -105,6 +103,9 @@ export default class HttpUtils {
         if (!this.platform) {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
+        if (!this.regId) {
+            this.regId = NativeModules.commModule.regId || '';
+        }
         return user.getToken().then(token => {
             let config = {
                 headers: {
@@ -113,7 +114,8 @@ export default class HttpUtils {
                     'sg-token': token ? token : '',
                     'platform': this.platform,
                     'version': rsa_config.version,
-                    'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
+                    'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
+                    'JPush-regId': this.regId
                 }
             };
             return axios.get(url, config);
@@ -152,6 +154,9 @@ export default class HttpUtils {
         if (!this.platform) {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
+        if (!this.regId) {
+            this.regId = NativeModules.commModule.regId || '';
+        }
         let timeLineStart = +new Date();
         return user.getToken().then(token => {
             config.headers = {
@@ -160,7 +165,8 @@ export default class HttpUtils {
                 'sg-token': token ? token : '',
                 'platform': this.platform,
                 'version': rsa_config.version,
-                'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
+                'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
+                'JPush-RegId': this.regId
             };
             return axios.post(url, params, config);
         }).then(response => {
@@ -181,8 +187,4 @@ export default class HttpUtils {
             return data;
         });
     }
-
-    doSign = () => {
-
-    };
 }

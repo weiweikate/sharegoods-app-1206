@@ -168,10 +168,6 @@ export class LimitGoModules {
      * 改变限时购高度
      */
     changeLimitHeight() {
-        homeModule.changeHomeList(homeType.limitGoTop, [{
-            id: 60,
-            type: homeType.limitGoTop
-        }]);
         homeModule.changeHomeList(homeType.limitGoTime, [{
             id: 61,
             type: homeType.limitGoTime
@@ -179,6 +175,10 @@ export class LimitGoModules {
         homeModule.changeHomeList(homeType.limitGoGoods, [{
             id: 62,
             type: homeType.limitGoGoods
+        }]);
+        homeModule.changeHomeList(homeType.limitGoTop, [{
+            id: 60,
+            type: homeType.limitGoTop
         }]);
     }
 }

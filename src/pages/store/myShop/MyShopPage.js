@@ -31,6 +31,8 @@ import NoMoreClick from '../../../components/ui/NoMoreClick';
 import { navigateBackToStore, routePush } from '../../../navigation/RouterMap';
 import DateUtils from '../../../utils/DateUtils';
 import WaitingToNormalModal from './components/WaitingToNormalModal';
+import { BannersVerticalView } from '../../../comm/components/BannersVerticalView';
+import { homeType } from '../../home/HomeTypes';
 // 图片资源
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
@@ -302,6 +304,7 @@ export default class MyShopPage extends BasePage {
                             />}>
                     <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement}
                                 MyShopDetailModel={this.MyShopDetailModel}/>
+                    {isNoEmpty(roleType) && <BannersVerticalView type={homeType.store31}/>}
                     <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                     <RoleTypeView MyShopDetailModel={this.MyShopDetailModel}/>
                     <MembersRow MyShopDetailModel={this.MyShopDetailModel}

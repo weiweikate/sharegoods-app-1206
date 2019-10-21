@@ -670,6 +670,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
         constants.put("baseUrl", SPCacheUtils.get("D_baseUrl", ""));
+        constants.put("regId", JPushInterface.getRegistrationID(mContext));
         return constants;
     }
 }

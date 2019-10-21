@@ -2,15 +2,11 @@ import { action, flow, observable } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeLinkType, homeRoute, homeType } from '../HomeTypes';
 import { bannerModule } from './HomeBannerModel';
-import { homeFocusAdModel } from './HomeFocusAdModel';
 import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
-import { todayModule } from './HomeTodayModel';
 import { channelModules } from './HomeChannelModel';
-import { subjectModule } from './HomeSubjectModel';
-import { recommendModule } from './HomeRecommendModel';
 import { limitGoModule } from './HomeLimitGoModel';
-import taskModel from './TaskModel';
 import { tabModel } from './HomeTabModel';
+import taskModel from './TaskModel';
 import store from '@mr/rn-store';
 import { ImageAdViewGetHeight } from '../view/TopicImageAdView';
 import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
@@ -33,6 +29,7 @@ class HomeModule {
     @observable goodsOtherLen = 0;
     @observable tabList = [];
     @observable tabListIndex = 0;
+    @observable showStatic = false;
     isFetching = false;
     isEnd = false;
     page = 1;
@@ -40,25 +37,24 @@ class HomeModule {
     errorMsg = '';
     tabId = '';
     // id数字不要轻易改，model有对应
-    fixedPartOne = [{
-        id: 0,
-        type: homeType.swiper
-    }, {
-        id: 1,
-        type: homeType.user
-    }, {
-        id: 2,
-        type: homeType.channel
-    }, {
-        id: 3,
-        type: homeType.task
-    }, {
-        id: 4,
-        type: homeType.expandBanner
-    }, {
-        id: 5,
-        type: homeType.focusGrid
-    }];
+    fixedPartOne = [
+        {
+            id: -1,
+            type: homeType.tabStaticView
+        },
+        {
+            id: 0,
+            type: homeType.swiper
+        }, {
+            id: 2,
+            type: homeType.channel
+        }, {
+            id: 3,
+            type: homeType.task
+        }, {
+            id: 4,
+            type: homeType.expandBanner
+        }];
     topTopice = [];
     fixedPartTwo = [{
         id: 60,
@@ -72,15 +68,6 @@ class HomeModule {
     }];
     bottomTopice = [];
     fixedPartThree = [{
-        id: 7,
-        type: homeType.today
-    }, {
-        id: 8,
-        type: homeType.fine
-    }, {
-        id: 9,
-        type: homeType.homeHot
-    }, {
         id: 10,
         type: homeType.goodsTitle
     }];
@@ -88,7 +75,9 @@ class HomeModule {
 
     type = 0;
 
-
+    @action changeShowStatic(state){
+        this.showStatic = state;
+    }
     //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
@@ -170,20 +159,8 @@ class HomeModule {
             case homeType.expandBanner:
                 homeExpandBnnerModel.loadBannerList();
                 break;
-            case homeType.focusGrid:
-                homeFocusAdModel.loadAdList();
-                break;
-            case homeType.today:
-                todayModule.loadTodayList(this.firstLoad);
-                break;
-            case homeType.fine:
-                recommendModule.loadRecommendList(this.firstLoad);
-                break;
             case homeType.limitGo:
                 limitGoModule.loadLimitGo(false);
-                break;
-            case homeType.homeHot:
-                subjectModule.loadSubjectList();
                 break;
             default:
                 break;
@@ -250,16 +227,8 @@ class HomeModule {
         channelModules.loadChannel(this.firstLoad);
         // 首页通栏
         homeExpandBnnerModel.loadBannerList(this.firstLoad);
-        // 首焦点广告
-        homeFocusAdModel.loadAdList();
         // 首页限时秒杀
         limitGoModule.loadLimitGo(true);
-        // 首页今日榜单
-        todayModule.loadTodayList(this.firstLoad);
-        // 首页精品推荐
-        recommendModule.loadRecommendList(this.firstLoad);
-        // 超值热卖
-        subjectModule.loadSubjectList();
 
         taskModel.getData();
 

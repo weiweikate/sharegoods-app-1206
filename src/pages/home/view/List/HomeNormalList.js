@@ -15,7 +15,8 @@
 import React from 'react';
 
 import { Image, TouchableWithoutFeedback, View } from 'react-native';
-import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
+import { DataProvider, LayoutProvider, RecyclerListView} from 'recyclerlistview';
+import StickyContainer from 'recyclerlistview/sticky';
 
 import { MRText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
@@ -472,24 +473,34 @@ export default class HomeNormalList extends React.Component {
             return null;
         }
         this.dataProvider = this.dataProvider.cloneWithRows(this.state.data);
+        let stickyHeaderIndice = 0;
+        this.state.data.find((item, index)=> {
+            if (item.type === 'header') {
+                stickyHeaderIndice = index
+                return true
+            }
+            return false;
+        })
         return (
-            <View style={[DesignRule.style_container, { marginTop: 0 }]}>
-                <RecyclerListView
-                    refreshControl={<HeaderLoading
-                        isRefreshing={this.state.refreshing}
-                        onRefresh={()=> this.refreshData(false)}
-                    />}
-                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0 }}
-                    onEndReached={this.getMoreData.bind(this)}
-                    onEndReachedThreshold={ScreenUtils.height / 3}
-                    dataProvider={this.dataProvider}
-                    rowRenderer={this._renderItem.bind(this)}
-                    layoutProvider={this.layoutProvider}
-                    showsVerticalScrollIndicator={false}
-                    removeClippedSubviews={false}
-                    canChangeSize={false}
-                    renderFooter={() => <DefaultLoadMoreComponent status={this.state.footerStatus}/>}
-                />
+            <View style={[DesignRule.style_container, { marginTop: 42 }]}>
+                <StickyContainer stickyHeaderIndices={[stickyHeaderIndice]}>
+                    <RecyclerListView
+                        refreshControl={<HeaderLoading
+                            isRefreshing={this.state.refreshing}
+                            onRefresh={()=> this.refreshData(false)}
+                        />}
+                        style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0 }}
+                        onEndReached={this.getMoreData.bind(this)}
+                        onEndReachedThreshold={ScreenUtils.height / 3}
+                        dataProvider={this.dataProvider}
+                        rowRenderer={this._renderItem.bind(this)}
+                        layoutProvider={this.layoutProvider}
+                        showsVerticalScrollIndicator={false}
+                        removeClippedSubviews={false}
+                        canChangeSize={false}
+                        renderFooter={() => <DefaultLoadMoreComponent status={this.state.footerStatus}/>}
+                    />
+                </StickyContainer>
             </View>
         );
     }

@@ -73,7 +73,7 @@
         }
         CGFloat y = newPoint.y;
       if (y<=0) {
-        self.line.mj_y = y;
+        self.line.mj_y = y+self.lineTop;
         self.line.strokeEnd = -y/self.height;
       }
     }
