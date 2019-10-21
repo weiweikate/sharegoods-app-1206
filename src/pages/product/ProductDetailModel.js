@@ -487,7 +487,6 @@ export default class ProductDetailModel {
 
             let contentArr = isNoEmpty(content) ? content.split(',') : [];
 
-            this.loadingState = PageLoadingState.success;
             this.type = type;
             this.videoUrl = videoUrl;
             this.imgUrl = imgUrl;
@@ -531,6 +530,7 @@ export default class ProductDetailModel {
 
     //根据地址获取
     @action productPromotionSuccess = (promotionInfo) => {
+        this.loadingState = PageLoadingState.success;
         const {
             promoteInfoVOList,
             promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
@@ -719,6 +719,7 @@ export default class ProductDetailModel {
             /**赋值prodCode会autoRun自动拉取库存**/
             if (tempData && tempData.type !== 3) {
                 this.productDetailAddressModel.productPromotionSuccess = this.productPromotionSuccess;
+                this.productDetailAddressModel.productPromotionFail = this.productError;
                 this.productDetailAddressModel.templateCode = tempData.freightTemplateCode;
                 this.productDetailAddressModel.prodCode = this.prodCode;
             }
