@@ -42,7 +42,6 @@ const RootStack = createStackNavigator(Router,
         initialRouteName: 'Tab',
         initialRouteParams: {},
         headerMode: 'none',
-        mode: Platform.OS === 'ios' ? 'card' : null,
         defaultNavigationOptions: {
             gesturesEnabled: true
         },
@@ -55,12 +54,13 @@ const RootStack = createStackNavigator(Router,
             }
             return {
                 transitionSpec: {
-                    duration: 350,
+                    duration: 260,
                     easing: Easing.out(Easing.poly(3.6)),
                     timing: Animated.timing,
                     useNativeDriver: true
                 },
-                screenInterpolator: (Platform.OS === 'android' && Platform.Version < 29) ? StackViewStyleInterpolator.forHorizontal : null
+                screenInterpolator: ((Platform.OS === 'android' && Platform.Version < 29) || Platform.OS === 'ios')
+                    ? StackViewStyleInterpolator.forHorizontal : null
             };
         }
     }

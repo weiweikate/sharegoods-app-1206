@@ -10,7 +10,6 @@ const resHome = {
     message: require('./message.png'),
     home_notice_bg: require('./home_notice_bg.png'),
     star: require('./star.png'),
-    account_bg: require('./account_bg.png'),
     /** 首页5个icon*/
     school: require('./school.png'),
     share_icon: require('./share.png'),
@@ -28,7 +27,6 @@ const resHome = {
     more: require('./more2.png'),
     arrow_bottom: require('./arrow_bottom.png'),
     arrow_top: require('./arrow_top.png'),
-    tabBg: require('./tabBg.png'),
     icon_shopCar: require('./icon_shopCar.png'),
     home_limit_progress: require('./home_limit_progress.png'),
     discount: require('./discount.png'),

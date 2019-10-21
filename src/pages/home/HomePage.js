@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    Animated,
-    DeviceEventEmitter,
-    InteractionManager,
-    View,
-    Platform,
-    StyleSheet,
-} from 'react-native';
+import { Animated, DeviceEventEmitter, InteractionManager, Platform, StyleSheet, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './model/Modules';
 import HomeSearchView from './view/HomeSearchView';
@@ -45,7 +38,7 @@ import HomeTopTarBar from './HomeTopTarBar';
  * @email zhangjian@meeruu.com
  */
 
-const tabBarHeight = 42;
+const tabBarHeight = ScreenUtils.px2dp(42);
 
 @observer
 class HomePage extends BasePage {
@@ -59,7 +52,7 @@ class HomePage extends BasePage {
         super(props);
         this.state = {
             hasMessage: false,
-            y: new Animated.Value(0),
+            y: new Animated.Value(0)
         };
     }
 
@@ -121,13 +114,13 @@ class HomePage extends BasePage {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
-        this.limitGoTimeViewlistener = DeviceEventEmitter.addListener('staticeLimitGoTimeView', (value)=> {
-            if (value){//限时购是否处于吸顶状态
+        this.limitGoTimeViewlistener = DeviceEventEmitter.addListener('staticeLimitGoTimeView', (value) => {
+            if (value) {//限时购是否处于吸顶状态
                 this.topTarBar && this.topTarBar.close();
-            }else {
+            } else {
                 this.topTarBar && this.topTarBar.open();
             }
-        })
+        });
     }
 
     componentWillUnmount() {
@@ -195,7 +188,7 @@ class HomePage extends BasePage {
                 this.luckyIcon.close();
             }}
             onScroll={(y) => {
-                if (y <  ScreenUtils.width) {
+                if (y < ScreenUtils.width) {
                     this.topTarBar && this.topTarBar.open();
                 }
             }}
@@ -215,16 +208,15 @@ class HomePage extends BasePage {
         });
         return (
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
-                <View
-                    style={{
-                        width: ScreenUtils.width,
-                        height: ScreenUtils.headerHeight + tabBarHeight,
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        zIndex: 1,
-                        backgroundColor: 'white'
-                    }}/>
+                <View style={{
+                    width: ScreenUtils.width,
+                    height: ScreenUtils.headerHeight + tabBarHeight,
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    zIndex: 2,
+                    backgroundColor: 'white'
+                }}/>
                 <View style={{
                     height: ScreenUtils.headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
                     backgroundColor: 'transparent'
@@ -241,7 +233,7 @@ class HomePage extends BasePage {
                         this.topTarBar && this.topTarBar.scrollTo({ x: i * 60 - ScreenUtils.width / 2 + 30 });
                         this.topTarBar && this.topTarBar.open();
                     }}
-                    style={{ zIndex: 2 }}
+                    style={{ zIndex: 3 }}
                     renderTabBar={this._renderTabBar.bind(this)}
                     //进界面的时候打算进第几个
                     initialPage={0}>
@@ -267,7 +259,9 @@ class HomePage extends BasePage {
     }
 
     _renderTabBar(p) {
-      return  <HomeTopTarBar p={p} ref ={(r) => {this.topTarBar = r }}/>
+        return <HomeTopTarBar p={p} ref={(r) => {
+            this.topTarBar = r;
+        }}/>;
     }
 }
 

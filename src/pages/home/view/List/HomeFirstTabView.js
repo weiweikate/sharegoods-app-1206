@@ -37,6 +37,7 @@ import { tabModel } from '../../model/HomeTabModel';
 import HomeLimitGoTopView from '../HomeLimitGoTopView';
 import HomeLimitGoTimeView, { StaticLimitGoTimeView } from '../HomeLimitGoTimeView';
 import HomeTitleView from '../HomeTitleView';
+import StickyContainer from 'recyclerlistview/sticky';
 
 
 const { JSPushBridge } = NativeModules;
@@ -46,7 +47,6 @@ const scrollDist = height / 2 - headerHeight;
 const nowTime = new Date().getTime();
 const HOME_REFRESH = 'homeRefresh';
 const HOME_SKIP = 'activitySkip';
-import StickyContainer from 'recyclerlistview/sticky';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
@@ -68,7 +68,7 @@ export default class HomeFirstTabView extends Component {
 
         switch (type.type) {
             case homeType.tabStaticView:
-                dim.height = 42;
+                dim.height = px2dp(42);
                 break;
             case homeType.swiper:
                 dim.height = bannerModule.bannerList.length > 0 ? bannerHeight + px2dp(5) : 0;
@@ -92,8 +92,8 @@ export default class HomeFirstTabView extends Component {
                 dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitGoodsHeight : 0;
                 break;
             case homeType.goodsTitle:
-               // dim.height = homeModule.tabList.length > 0 ? px2dp(66-13) : 0;
-                dim.height = px2dp(42)
+                // dim.height = homeModule.tabList.length > 0 ? px2dp(66-13) : 0;
+                dim.height = px2dp(42);
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
@@ -144,7 +144,7 @@ export default class HomeFirstTabView extends Component {
                               navigate={routePush}/>;
         } else if (type === homeType.goodsTitle) {
             return <View ref={e => this.toGoods = e}
-                         style={{marginLeft: px2dp(15)}}
+                         style={{ marginLeft: px2dp(15) }}
                          onLayout={event => {
                              // 保留，不能删除
                          }}>
@@ -215,34 +215,34 @@ export default class HomeFirstTabView extends Component {
                 isRefreshing={homeModule.isRefreshing}
                 onRefresh={this._onRefresh.bind(this)}
                 lineTop={42}
-                styled={{marginTop:42,height:headerHeight}}
+                styled={{ marginTop: 42, height: headerHeight }}
             />
         );
     };
 
     _overrideRowRenderer = (type, data, index) => {
-        if (type.type === homeType.goodsTitle ){
+        if (type.type === homeType.goodsTitle) {
             return (
-                <StaticTabTitleView />
+                <StaticTabTitleView/>
             );
         }
 
         if (type.type === homeType.limitGoTime) {
-            return <StaticLimitGoTimeView />
+            return <StaticLimitGoTimeView/>;
         }
         //
         // if (index === this.limitGoTimeDismissIndex ) {
         //     return <View />
         // }
 
-        if (index === this.limitGoTimeIndex-1 ){
-            DeviceEventEmitter.emit('staticeLimitGoTimeView', true)
+        if (index === this.limitGoTimeIndex - 1) {
+            DeviceEventEmitter.emit('staticeLimitGoTimeView', true);
         }
 
-        return <View />
+        return <View/>;
 
 
-       // return this._renderItem(type, data, index)
+        // return this._renderItem(type, data, index)
 
     };
 
@@ -254,15 +254,15 @@ export default class HomeFirstTabView extends Component {
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         this.limitGoTimeIndex = -1;
-        let stickyHeaderIndices = []
-        homeList.forEach((item, index)=> {
+        let stickyHeaderIndices = [];
+        homeList.forEach((item, index) => {
             // if (item.type === homeType.goodsTitle){
             //     stickyHeaderIndices.push(index);
             // }
 
             if (item.type === homeType.limitGoTime) {
                 this.limitGoTimeIndex = index;
-                stickyHeaderIndices.push(index-1);
+                stickyHeaderIndices.push(index - 1);
                 stickyHeaderIndices.push(index);
                 stickyHeaderIndices.push(index + 2);
             }
@@ -276,7 +276,7 @@ export default class HomeFirstTabView extends Component {
                     ref={(ref) => {
                         this.recyclerListView = ref;
                     }}
-                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1}}
+                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
                     refreshControl={this.renderRefreshLoading()}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 3}

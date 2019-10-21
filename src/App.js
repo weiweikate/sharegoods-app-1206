@@ -8,6 +8,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import {
+    BackHandler,
     InteractionManager,
     NativeAppEventEmitter,
     NativeEventEmitter,
@@ -15,8 +16,7 @@ import {
     Platform,
     StyleSheet,
     Text,
-    View,
-    BackHandler
+    View
 } from 'react-native';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
@@ -162,6 +162,7 @@ class App extends Component {
                     store.save('@mr/storage_MrLocation', result);
                 }).catch((error) => {
                 });
+                // 获取首页皮肤信息
             }, 200);
             TimerMixin.setTimeout(() => {
                 ScreenUtils.isNavigationBarExist((data) => {
@@ -175,22 +176,22 @@ class App extends Component {
         });
         this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.mineMessageData);
         this.listenerJSMessage_USERUPDATE = JSManagerEmitter.addListener(USERUPDATE, this.userUpdate);
-        BackHandler.addEventListener('hardwareBackPress',this.handleBackPress)
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
 
     //Android后退键优先关闭全局弹窗
-    handleBackPress = ()=>{
-        if(marketingUtils.isShowModal){
+    handleBackPress = () => {
+        if (marketingUtils.isShowModal) {
             marketingUtils.closeModal();
             return true;
         }
         return false;
-    }
+    };
 
     componentWillUnmount() {
         this.listenerJSMessage && this.listenerJSMessage.remove();
         this.startAdvSubscription && this.startAdvSubscription.remove();
-        this.listenerJSMessage_USERUPDATE &&  this.listenerJSMessage_USERUPDATE.remove();
+        this.listenerJSMessage_USERUPDATE && this.listenerJSMessage_USERUPDATE.remove();
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
 
