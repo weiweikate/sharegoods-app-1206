@@ -29,6 +29,7 @@ class HomeModule {
     @observable goodsOtherLen = 0;
     @observable tabList = [];
     @observable tabListIndex = 0;
+    @observable showStatic = false;
     isFetching = false;
     isEnd = false;
     page = 1;
@@ -36,19 +37,24 @@ class HomeModule {
     errorMsg = '';
     tabId = '';
     // id数字不要轻易改，model有对应
-    fixedPartOne = [{
-        id: 0,
-        type: homeType.swiper
-    }, {
-        id: 2,
-        type: homeType.channel
-    }, {
-        id: 3,
-        type: homeType.task
-    }, {
-        id: 4,
-        type: homeType.expandBanner
-    }];
+    fixedPartOne = [
+        {
+            id: -1,
+            type: homeType.tabStaticView
+        },
+        {
+            id: 0,
+            type: homeType.swiper
+        }, {
+            id: 2,
+            type: homeType.channel
+        }, {
+            id: 3,
+            type: homeType.task
+        }, {
+            id: 4,
+            type: homeType.expandBanner
+        }];
     topTopice = [];
     fixedPartTwo = [{
         id: 60,
@@ -69,7 +75,9 @@ class HomeModule {
 
     type = 0;
 
-
+    @action changeShowStatic(state){
+        this.showStatic = state;
+    }
     //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
