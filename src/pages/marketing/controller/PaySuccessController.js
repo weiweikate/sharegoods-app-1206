@@ -6,7 +6,7 @@ import {getCurrentRouteName} from '../../../navigation/Navigator';
 import RouterMap from '../../../navigation/RouterMap';
 import store from '@mr/rn-store';
 import _ from 'lodash';
-import {marketingUtils} from '../MarketingUtils';
+import {marketingUtils,ModalType} from '../MarketingUtils';
 
 const ONECOREVERY = 'PaySuccessController_OneOrEvery';
 class PaySuccessController {
@@ -50,9 +50,11 @@ class PaySuccessController {
     }
 
 
+    //拉取配置
     showByConfig(){
+        //TODO
         if(true){
-            marketingUtils.openModal();
+            marketingUtils.openModalWithType(ModalType.activity);
         }else {
             this.leaveNeedShow = true;
         }
