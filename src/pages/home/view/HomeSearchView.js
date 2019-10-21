@@ -59,7 +59,7 @@ let styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         right: 0,
-        zIndex: 4
+        zIndex: 4,
     },
     navContent: {
         flex: 1,
