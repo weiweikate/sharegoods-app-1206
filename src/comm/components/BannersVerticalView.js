@@ -22,6 +22,10 @@ export class BannersVerticalView extends Component {
     };
 
     componentDidMount() {
+        this.fetchBannerList();
+    }
+
+    fetchBannerList = () => {
         const { type, bannerList } = this.props;
         !bannerList && HomeAPI.getHomeData({ type: type }).then((data) => {
             this.setState({
@@ -29,7 +33,7 @@ export class BannersVerticalView extends Component {
                 }
             );
         });
-    }
+    };
 
     render() {
         let bannerList = this.props.bannerList || this.state.bannerList;
@@ -39,9 +43,9 @@ export class BannersVerticalView extends Component {
         return (
             <View style={{ marginBottom: 20, ...this.props.style }}>
                 {
-                    bannerList.map((item) => {
+                    bannerList.map((item, index) => {
                         const { image, linkType, linkTypeCode } = item;
-                        return <NoMoreClick onPress={() => {
+                        return <NoMoreClick key={index} onPress={() => {
                             const router = homeModule.homeNavigate(linkType, linkTypeCode);
                             let params = homeModule.paramsNavigate(item);
                             if (router) {

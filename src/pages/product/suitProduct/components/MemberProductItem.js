@@ -179,7 +179,7 @@ export class MemberBuyView extends Component {
                         </MRText>
                         </MRText>
                         <MRText
-                            style={{ fontSize: 10, color: DesignRule.textColor_redWarn }}>为你节省{priceSub}</MRText>
+                            style={{ fontSize: 10, color: DesignRule.textColor_redWarn }}>为你节省￥{priceSub}</MRText>
                     </View>
                     <NoMoreClick onPress={() => {
                         this.props.buyAction && this.props.buyAction();
