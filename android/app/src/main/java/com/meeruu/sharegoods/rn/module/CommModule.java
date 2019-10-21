@@ -647,6 +647,12 @@ public class CommModule extends ReactContextBaseJavaModule {
         promise.resolve(map);
     }
 
+    @ReactMethod
+    public void getRegId(Promise promise) {
+        String regId = JPushInterface.getRegistrationID(mContext);
+        promise.resolve(regId);
+    }
+
     /***
      * 获取字体高度
      * @param paint

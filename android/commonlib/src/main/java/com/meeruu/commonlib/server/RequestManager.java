@@ -525,7 +525,7 @@ public class RequestManager {
         String token = ((String) SPCacheUtils.get(ParameterUtils.LOGIN_TOKEN, "")).replaceAll("\"", "");
         params.put("sg-token", token);
         params.put("version", AppUtils.getVersionName() + "");
-        params.put("regId", JPushInterface.getRegistrationID(BaseApplication.appContext));
+        params.put("JPush-RegId", JPushInterface.getRegistrationID(BaseApplication.appContext));
         return params;
     }
 

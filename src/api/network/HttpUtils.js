@@ -114,7 +114,7 @@ export default class HttpUtils {
                     'platform': this.platform,
                     'version': rsa_config.version,
                     'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel,
-                    'JPush-regId': regId
+                    'JPush-RegId': regId
                 }
             };
             return axios.get(url, config);
