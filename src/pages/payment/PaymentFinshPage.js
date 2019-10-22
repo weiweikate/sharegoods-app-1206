@@ -12,7 +12,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
 import { MRText } from '../../components/ui';
 import LinearGradient from 'react-native-linear-gradient';
-import { TrackApi } from '../../utils/SensorsTrack';
+import {TrackApi} from '../../utils/SensorsTrack';
 import ShareUtil from '../../utils/ShareUtil';
 import user from '../../model/user';
 import PaymentApi from './PaymentApi';
@@ -25,6 +25,8 @@ import RecommendProductView from '../product/productScore/components/RecommendPr
 import { GroupShareView } from './GroupShareView';
 import { BannersVerticalView } from '../../comm/components/BannersVerticalView';
 import { homeType } from '../home/HomeTypes';
+import paySuccessMarketing from '../marketing/controller/PaySuccessController';
+
 
 const { px2dp } = ScreenUtils;
 const {
@@ -77,6 +79,8 @@ export default class PaymentFinshPage extends BasePage {
 
     }
 
+
+
     componentDidMount() {
         PaymentApi.queryOrderGroupData({ platformOrderNo: this.params.platformOrderNo }).then((data) => {
             const { group } = data.data || {};
@@ -84,7 +88,9 @@ export default class PaymentFinshPage extends BasePage {
                 this.setState({
                     groupShareData: data.data
                 });
+                paySuccessMarketing.notifyPayPin();
             } else {
+                paySuccessMarketing.notifyPayNormal();
                 PaymentApi.getUserCouponAmount({ couponIdList: 81 }).then(result => {
                     this.setState({
                         couponIdList: result.data || []
@@ -112,8 +118,20 @@ export default class PaymentFinshPage extends BasePage {
             });
         }).catch(error => {
         });
+
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+               if(this.state.groupShareData && this.state.groupShareData.group){
+                   paySuccessMarketing.notifyPayPinLeave();
+               }
+            }
+        );
     }
 
+    componentWillUnmount(){
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+    }
     _render() {
         return (
             <ScrollView style={Styles.contentStyle}>

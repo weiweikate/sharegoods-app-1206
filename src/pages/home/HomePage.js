@@ -35,6 +35,8 @@ import HomeNormalList from './view/List/HomeNormalList';
 import DIYTopicList from './view/List/DIYTopicList';
 import { observer } from 'mobx-react';
 import HomeTopTarBar from './HomeTopTarBar';
+import homeController from '../marketing/controller/HomeController';
+
 
 
 /**
@@ -95,6 +97,8 @@ class HomePage extends BasePage {
             payload => {
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
+                    //通知HomeController进入首页
+                    homeController.notifyArrivedHome();
                     this.luckyIcon && this.luckyIcon.getLucky(1, '');
                     track(trackEvent.ViewHomePage);
                     homeTabManager.setHomeFocus(true);

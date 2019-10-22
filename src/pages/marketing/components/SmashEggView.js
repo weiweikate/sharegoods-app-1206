@@ -22,7 +22,7 @@ import MarketingApi from '../api/MarketingApi';
 import DesignRule from '../../../constants/DesignRule';
 import {MRText} from '../../../components/ui';
 import LinearGradient from 'react-native-linear-gradient';
-import {marketingUtils} from '../MarketingUtils';
+import marketingUtils from '../MarketingUtils';
 
 const {px2dp} = ScreenUtils;
 const {title, bedplate, egg, firework, hammer, award_bg,award_no} = res;

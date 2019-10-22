@@ -1,10 +1,7 @@
 import {action, observable} from 'mobx';
-import paySuccessMarketing from './controller/PaySuccessController';
+import ModalType from './components/ModalType';
 
-const ModalType = {
-    activity:'activity',
-    egg:'egg'
-}
+
 class MarketingUtils {
     @observable isShowModal = false;
     @observable currentContent = null;
@@ -37,19 +34,8 @@ class MarketingUtils {
         this.isShowModal = true;
     }
 
-    /**
-     * 拦截路由，在合适的页面显示营销弹窗
-     * @param prevState
-     * @param currentState
-     */
-    navigationIntercept = (prevState, currentState) => {
-        if(paySuccessMarketing.check(prevState,currentState)){
-            return;
-        }
-
-    }
 
 }
 
 const marketingUtils = new MarketingUtils();
-export {marketingUtils,ModalType}
+export default marketingUtils;

@@ -9,11 +9,12 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import {marketingUtils, ModalType} from '../MarketingUtils';
 import {autorun} from 'mobx';
 import {observer} from 'mobx-react';
 import ActivityView from './ActivityView';
 import SmashEggView from './SmashEggView';
+import marketingUtils from '../MarketingUtils';
+import ModalType from './ModalType';
 
 @observer
 export default class MarketingModal extends PureComponent {
