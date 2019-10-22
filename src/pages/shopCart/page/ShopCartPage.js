@@ -43,7 +43,7 @@ export default class ShopCartPage extends BasePage {
         this.state = {
             showNav: false
         };
-
+        this.requestdRecommend = false;
         TrackApi.shoppingcart();
     }
 
@@ -54,7 +54,10 @@ export default class ShopCartPage extends BasePage {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 this.pageFocus = true;
                 shopCartCacheTool.getShopCartGoodsListData();
-                shopCartEmptyModel.getRecommendProducts(true);
+                if(!this.requestdRecommend){
+                    shopCartEmptyModel.getRecommendProducts(true);
+                    this.requestdRecommend = true;
+                }
             }
         );
         this.willBlurSubscription = this.props.navigation.addListener(

@@ -5,7 +5,7 @@
 
 
 'use strict';
-import { action, observable, flow } from 'mobx';
+import { action, observable, flow ,computed} from 'mobx';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import MineApi from '../../mine/api/MineApi';
 import HomeAPI from '../api/HomeAPI';
@@ -71,6 +71,10 @@ class HomeModalManager {
 
 
     finishCount = 0;
+
+    @computed get isShowModal(){
+        return this.isShowAd || this.isShowGift || this.isShowNotice || this.isShowPrivacyModal || this.isShowPrize || this.isShowUpdate || this.isShowUser || this.isShowUserMemberUpdate;
+    }
 
     @action
     entryHome() {
