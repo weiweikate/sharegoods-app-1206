@@ -53,6 +53,10 @@ class SettingModel {
     memberSwitchState =  false//!DateUtils.getDateDiffFun('2019/10/25 00:00:00', '');
 
 
+    //战力开关控制 普通用户不显示， 默认不显示
+    @observable
+    myStrengthState = false;
+
     @action
     getLocationState() {
         store.get('@mr/settingWXState').then((data) => {
@@ -213,7 +217,18 @@ class SettingModel {
         })
     }
 
-
+    /**
+     * @func 判断是否显示我的战力
+     * @des 当前判断，显示 true，不显示 false
+     */
+    @action
+    myStrengthSwitch() {
+        MineAPI.myStrengthShow().then((res) => {
+            this.myStrengthState = res.data && res.data.showBenefitFight ? res.data.showBenefitFight : false;
+        }).catch(error => {
+            this.myStrengthState = false
+        });
+    }
 }
 
 

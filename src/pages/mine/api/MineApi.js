@@ -148,6 +148,8 @@ const api = {
     getMemberCenterShow:['/common/config/member/center/show',{method:'get'}],
     //自返金开关接口
     getSelfReturnShow:['/account/selfReturn/switch',{method:'get'}],
+    //我的战力接口开关
+    myStrengthShow:['/common/config/benefits/fight/show',{method:'get'}]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 
