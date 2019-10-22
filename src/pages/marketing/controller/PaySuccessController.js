@@ -43,6 +43,7 @@ class PaySuccessController {
     async getConfig(){
         let oneOrEvery = await store.get(ONECOREVERY);
         if(oneOrEvery === null){
+            //TODO
             setTimeout(()=>{
                 this.showByConfig();
             },1000)
@@ -54,7 +55,7 @@ class PaySuccessController {
     showByConfig(){
         //TODO
         if(true){
-            marketingUtils.openModalWithType(ModalType.activity);
+            marketingUtils.openModalWithType(ModalType.egg);
         }else {
             this.leaveNeedShow = true;
         }
