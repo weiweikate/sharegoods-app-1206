@@ -270,6 +270,7 @@ export default class MyCouponsItems extends Component {
                     initialNumToRender={5}
                     refreshControl={<RefreshControl refreshing={false}
                                                     onRefresh={() => this.onRefresh(this.dataSel)}
+                                                    tintColor={DesignRule.mainColor}
                                                     colors={[DesignRule.mainColor]}/>}
                 />
                 {this.renderDialogModal()}
