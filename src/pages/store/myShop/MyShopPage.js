@@ -98,6 +98,7 @@ export default class MyShopPage extends BasePage {
         this.MyShopDetailModel.isRefresh = true;
         this._loadPageData();
         spellStatusModel.requestHome();
+        this.BannersVerticalView.fetchBannerList && this.BannersVerticalView.fetchBannerList();
     };
 
     _loadPageData = () => {
@@ -304,7 +305,8 @@ export default class MyShopPage extends BasePage {
                             />}>
                     <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement}
                                 MyShopDetailModel={this.MyShopDetailModel}/>
-                    {isNoEmpty(roleType) && <BannersVerticalView type={homeType.store31}/>}
+                    {isNoEmpty(roleType) &&
+                    <BannersVerticalView ref={(ref) => this.BannersVerticalView = ref} type={homeType.store31}/>}
                     <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                     <RoleTypeView MyShopDetailModel={this.MyShopDetailModel}/>
                     <MembersRow MyShopDetailModel={this.MyShopDetailModel}

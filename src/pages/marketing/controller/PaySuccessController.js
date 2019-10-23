@@ -2,65 +2,62 @@
  * @author xzm
  * @date 2019/10/18
  */
-import {getCurrentRouteName} from '../../../navigation/Navigator';
-import RouterMap from '../../../navigation/RouterMap';
 import store from '@mr/rn-store';
-import _ from 'lodash';
-import {marketingUtils} from '../MarketingUtils';
+import marketingUtils from '../MarketingUtils';
+import ModalType from '../components/ModalType';
 
 const ONECOREVERY = 'PaySuccessController_OneOrEvery';
+
 class PaySuccessController {
 
     constructor(){
-        //防止重复请求网络数据
-        this.handleGetConfig = _.throttle(this.getConfig,1000,{trailing:false});
         this.leaveNeedShow = false;
-    }
-    //路由到达支付成功页，获取弹窗规则
-    whenArrivedPaySuccess(prevState, currentState){
-        let result = false;
-        if(getCurrentRouteName(currentState) === RouterMap.SignInPage){
-            result = true;
-            this.handleGetConfig();
-        }
-        return result;
+        //最多弹两次
+        this.residueDegree = 2;
     }
 
-    //路由离开支付成功页，
-    whenLeavedPaySuccess(prevState, currentState){
-        let result = false;
-        if(getCurrentRouteName(currentState) === RouterMap.PaymentFinshPage){
-            result = true;
-            if(this.leaveNeedShow){
-                this.showByConfig();
-                this.leaveNeedShow = false;
-            }
+    notifyPayNormal(){
+        if(this.residueDegree < 1){
+            return;
         }
-        return result;
+        marketingUtils.openModalWithType(ModalType.egg);
+        this.residueDegree--;
+    }
+
+    notifyPayPin(){
+        if(this.residueDegree < 1){
+            return;
+        }
+        this.leaveNeedShow = true;
+    }
+
+    notifyPayPinLeave(){
+        if(this.leaveNeedShow && this.residueDegree > 0){
+            marketingUtils.openModalWithType(ModalType.egg);
+            this.leaveNeedShow = false;
+            this.residueDegree--;
+        }
     }
 
     //获取支付成功营销弹窗配置
     async getConfig(){
         let oneOrEvery = await store.get(ONECOREVERY);
         if(oneOrEvery === null){
+            //TODO
             setTimeout(()=>{
                 this.showByConfig();
             },1000)
         }
     }
 
-
+    //拉取配置
     showByConfig(){
+        //TODO
         if(true){
-            marketingUtils.openModal();
+            marketingUtils.openModalWithType(ModalType.egg);
         }else {
             this.leaveNeedShow = true;
         }
-    }
-
-
-    check(prevState, currentState){
-        return this.whenArrivedPaySuccess(prevState,currentState) || this.whenLeavedPaySuccess(prevState,currentState);
     }
 }
 

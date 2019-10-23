@@ -4,6 +4,7 @@ import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.config.BaseRequestConfig;
 import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.utils.HttpUrlUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +36,7 @@ public class BaseModel {
 
             @Override
             public void onSuccess(String result) {
+                LogUtils.d("======" + result);
             }
         });
     }

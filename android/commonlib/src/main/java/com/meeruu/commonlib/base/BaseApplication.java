@@ -162,8 +162,6 @@ public class BaseApplication extends MultiDexApplication {
             // 捕获闪退日志
             CrashHandler.getInstance().init(getApplicationContext());
         }
-        // 捕获闪退日志
-//        CrashHandler.getInstance().init(getApplicationContext());
     }
 
     private YSFOptions QiYuOptions() {

@@ -1,17 +1,8 @@
 import React from 'react';
-import {
-    Animated,
-    DeviceEventEmitter,
-    InteractionManager,
-    View,
-    Platform,
-    StyleSheet,
-} from 'react-native';
+import { Animated, DeviceEventEmitter, Platform, StyleSheet, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './model/Modules';
 import HomeSearchView from './view/HomeSearchView';
-import MessageApi from '../message/api/MessageApi';
-import EmptyUtils from '../../utils/EmptyUtils';
 import VersionUpdateModalView from './view/VersionUpdateModalView';
 import DesignRule from '../../constants/DesignRule';
 import homeModalManager from './manager/HomeModalManager';
@@ -28,13 +19,16 @@ import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
 import taskModel from './model/TaskModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
-import { routePush } from '../../navigation/RouterMap';
 import { tabModel } from './model/HomeTabModel';
 import HomeFirstTabView from './view/List/HomeFirstTabView';
 import HomeNormalList from './view/List/HomeNormalList';
 import DIYTopicList from './view/List/DIYTopicList';
 import { observer } from 'mobx-react';
 import HomeTopTarBar from './HomeTopTarBar';
+import ImageLoad from '@mr/image-placeholder';
+import store from '@mr/rn-store';
+import StringUtils from '../../utils/StringUtils';
+import homeController from '../marketing/controller/HomeController';
 
 
 /**
@@ -44,8 +38,6 @@ import HomeTopTarBar from './HomeTopTarBar';
  * @org www.sharegoodsmall.com
  * @email zhangjian@meeruu.com
  */
-
-const tabBarHeight = 42;
 
 @observer
 class HomePage extends BasePage {
@@ -59,7 +51,7 @@ class HomePage extends BasePage {
         super(props);
         this.state = {
             hasMessage: false,
-            y: new Animated.Value(0),
+            y: new Animated.Value(0)
         };
     }
 
@@ -86,6 +78,9 @@ class HomePage extends BasePage {
                     if (homeModule.firstLoad) {
                         homeModule.loadHomeList(false);
                     }
+                    store.get('@mr/homeSkin').then((data) => {
+                        homeModule.setSkinData(data);
+                    });
                 }
             }
         );
@@ -95,19 +90,14 @@ class HomePage extends BasePage {
             payload => {
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
+                    //通知HomeController进入首页
+                    homeController.notifyArrivedHome();
                     this.luckyIcon && this.luckyIcon.getLucky(1, '');
                     track(trackEvent.ViewHomePage);
                     homeTabManager.setHomeFocus(true);
                     homeModule.homeFocused(true);
                     user.getToken().then(() => {//让user初始化完成
                         this.luckyIcon && this.luckyIcon.getLucky(1, '');
-                        if (user.token) {
-                            this.loadMessageCount();
-                        } else {
-                            this.setState({
-                                hasMessage: false
-                            });
-                        }
                         if (!homeModule.firstLoad) {
                             taskModel.getData();
                             limitGoModule.loadLimitGo(false);
@@ -121,13 +111,13 @@ class HomePage extends BasePage {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
-        this.limitGoTimeViewlistener = DeviceEventEmitter.addListener('staticeLimitGoTimeView', (value)=> {
-            if (value){//限时购是否处于吸顶状态
+        this.limitGoTimeViewlistener = DeviceEventEmitter.addListener('staticeLimitGoTimeView', (value) => {
+            if (value) {//限时购是否处于吸顶状态
                 this.topTarBar && this.topTarBar.close();
-            }else {
+            } else {
                 this.topTarBar && this.topTarBar.open();
             }
-        })
+        });
     }
 
     componentWillUnmount() {
@@ -139,24 +129,6 @@ class HomePage extends BasePage {
         this.listenerLogout && this.listenerLogout.remove();
         this.limitGoTimeViewlistener && this.limitGoTimeViewlistener.remove();
     }
-
-    loadMessageCount = () => {
-        if (user.token) {
-            InteractionManager.runAfterInteractions(() => {
-                MessageApi.getNewNoticeMessageCount().then(result => {
-                    if (!EmptyUtils.isEmpty(result.data)) {
-                        this.setState({
-                            hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
-                        });
-                    }
-                }).catch((error) => {
-                    this.setState({
-                        hasMessage: false
-                    });
-                });
-            });
-        }
-    };
 
     trackViewHomePageChannel(tabData, i) {
         // channelType  频道页类型      0：未知 1：推荐 2：专题 3：类目
@@ -195,7 +167,7 @@ class HomePage extends BasePage {
                 this.luckyIcon.close();
             }}
             onScroll={(y) => {
-                if (y <  ScreenUtils.width) {
+                if (y < ScreenUtils.width) {
                     this.topTarBar && this.topTarBar.open();
                 }
             }}
@@ -213,22 +185,33 @@ class HomePage extends BasePage {
                                                key={'id' + item.id}/>);
             }
         });
+
         return (
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
-                <View
-                    style={{
-                        width: ScreenUtils.width,
-                        height: ScreenUtils.headerHeight + tabBarHeight,
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        zIndex: 1,
-                        backgroundColor: 'white'
-                    }}/>
                 <View style={{
-                    height: ScreenUtils.headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
-                    backgroundColor: 'transparent'
-                }}/>
+                    width: ScreenUtils.width,
+                    height: ScreenUtils.headerHeight,
+                    position: 'absolute',
+                    backgroundColor: StringUtils.isEmpty(homeModule.statusImg) ? 'white' : 'transparent',
+                    left: 0,
+                    right: 0
+                }}>
+                    <ImageLoad
+                        style={{
+                            width: ScreenUtils.width,
+                            height: ScreenUtils.statusBarHeight
+                        }}
+                        source={{ uri: homeModule.statusImg }}
+                        showPlaceholder={false}/>
+                    <ImageLoad
+                        style={{
+                            width: ScreenUtils.width,
+                            height: ScreenUtils.autoSizeWidth(44)
+                        }}
+                        source={{ uri: homeModule.titleImg }}
+                        showPlaceholder={false}/>
+                </View>
+                <HomeSearchView/>
                 <ScrollableTabView
                     onChangeTab={(obj) => {
 
@@ -241,14 +224,12 @@ class HomePage extends BasePage {
                         this.topTarBar && this.topTarBar.scrollTo({ x: i * 60 - ScreenUtils.width / 2 + 30 });
                         this.topTarBar && this.topTarBar.open();
                     }}
-                    style={{ zIndex: 2 }}
                     renderTabBar={this._renderTabBar.bind(this)}
+                    style={{ zIndex: -1 }}
                     //进界面的时候打算进第几个
                     initialPage={0}>
                     {viewItems}
                 </ScrollableTabView>
-                <HomeSearchView navigation={routePush}
-                                hasMessage={this.state.hasMessage}/>
 
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
@@ -267,7 +248,9 @@ class HomePage extends BasePage {
     }
 
     _renderTabBar(p) {
-      return  <HomeTopTarBar p={p} ref ={(r) => {this.topTarBar = r }}/>
+        return <HomeTopTarBar p={p} ref={(r) => {
+            this.topTarBar = r;
+        }}/>;
     }
 }
 

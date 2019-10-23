@@ -4528,6 +4528,7 @@
 					"$(PROJECT_DIR)/Class/libs/QIYU_iOS_SDK/SDK",
 					"\"$(SRCROOT)/../node_modules/@mr/rn-webview-bridge/ios/React-Native-Webview-Bridge\"",
 				);
+				MARKETING_VERSION = 2.1.5;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -4708,6 +4709,7 @@
 					"$(PROJECT_DIR)/Class/libs/QIYU_iOS_SDK/SDK",
 					"\"$(SRCROOT)/../node_modules/@mr/rn-webview-bridge/ios/React-Native-Webview-Bridge\"",
 				);
+				MARKETING_VERSION = 2.1.5;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -4788,6 +4790,7 @@
 					"$(PROJECT_DIR)/Class/libs/QIYU_iOS_SDK/SDK",
 					"\"$(SRCROOT)/../node_modules/@mr/rn-webview-bridge/ios/React-Native-Webview-Bridge\"",
 				);
+				MARKETING_VERSION = 2.1.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

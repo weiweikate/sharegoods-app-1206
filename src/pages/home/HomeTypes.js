@@ -42,6 +42,7 @@ export const homeType = {
     homeHotTitle: 'homeHotTitle',
     tabStaticView: 'tabStaticView',//首页类目占位的
     limitStaticViewDismiss: 'limitStaticViewDismiss',//占位，用于标记限时购全部划完了
+    activityCenter: 'activityCenter'// banner下面的活动中心
 };
 
 export const homeLinkType = {

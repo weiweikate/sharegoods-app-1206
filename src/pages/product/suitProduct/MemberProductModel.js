@@ -31,9 +31,12 @@ export default class MemberProductModel {
     * groupCode
     * image
     * shareContent
-    * singlePurchaseNumber
     * subProducts
+    * singlePurchaseNumber
+    * maxPurchaseTimes 最大购买次数限制 0:无限制
+    * purchaseTimes 剩余可买次数
     * */
+    @observable groupCode;
     @observable packageVideo = null;
     @observable mainImages = [];
     @observable detailImages = [];
@@ -41,6 +44,9 @@ export default class MemberProductModel {
     @observable afterSaleLimit = '';
     @observable afterSaleTip = '';
     @observable shareContent = '';
+    @observable singlePurchaseNumber;
+    @observable maxPurchaseTimes;
+    @observable purchaseTimes;
 
     @observable promotionInfoItem = {};
 
@@ -62,7 +68,7 @@ export default class MemberProductModel {
             const { skuList } = cur;
             return add(pre, skuList[0].price);
         }, 0);
-        return mainPrice + subPrice;
+        return add(mainPrice, subPrice);
     }
 
     @computed get totalProPrice() {
@@ -74,7 +80,7 @@ export default class MemberProductModel {
             const { skuList } = cur;
             return add(pre, skuList[0].promotionPrice);
         }, 0);
-        return mainPrice + subPrice;
+        return add(mainPrice, subPrice);
     }
 
     @computed get totalDeProPrice() {
@@ -86,7 +92,7 @@ export default class MemberProductModel {
             const { skuList } = cur;
             return add(pre, skuList[0].promotionDecreaseAmount);
         }, 0);
-        return mainPrice + subPrice;
+        return add(mainPrice, subPrice);
     }
 
     @action request_promotion_detail = (productCode) => {
@@ -100,14 +106,21 @@ export default class MemberProductModel {
             this.extraType = extraType;
             this.freight = freight;
             this.mainProduct = mainProduct || {};
-            const { packageVideo, mainImages, detailImages, subProducts, afterSaleLimit, afterSaleTip, shareContent, groupCode } = packages[0] || {};
+            const {
+                packageVideo, mainImages, detailImages, subProducts, afterSaleLimit, afterSaleTip, shareContent, groupCode
+                , singlePurchaseNumber, maxPurchaseTimes, purchaseTimes
+            } = packages[0] || {};
+            this.groupCode = groupCode;
             this.packageVideo = packageVideo;
-            this.mainImages = mainImages;
-            this.detailImages = detailImages;
-            this.subProducts = subProducts;
+            this.mainImages = mainImages || [];
+            this.detailImages = detailImages || [];
+            this.subProducts = subProducts || [];
             this.afterSaleLimit = afterSaleLimit;
             this.afterSaleTip = afterSaleTip;
             this.shareContent = shareContent;
+            this.singlePurchaseNumber = singlePurchaseNumber;
+            this.maxPurchaseTimes = maxPurchaseTimes;
+            this.purchaseTimes = purchaseTimes;
 
             this.promotionInfo(productCode, activityCode, groupCode);
         }).catch(e => {

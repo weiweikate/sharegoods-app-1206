@@ -20,6 +20,7 @@ export class AutoHeightImage extends React.Component {
     getImgHeight = (props) => {
         const { source, ImgWidth } = props;
         getSize(source.uri, (width, height) => {
+            console.log('----' + height, width);
             height = height / width * ImgWidth;
             this.setState({
                 imgHeight: height
