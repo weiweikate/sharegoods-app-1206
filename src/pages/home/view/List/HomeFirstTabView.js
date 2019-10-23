@@ -239,8 +239,9 @@ export default class HomeFirstTabView extends Component {
         }
 
         if (type.type === homeType.limitGoTime) {
-            return <StaticLimitGoTimeView onPress={()=> {
-                this.recyclerListView&&this.recyclerListView.scrollToIndex(this.limitGoTimeIndex, false)}
+            return <StaticLimitGoTimeView onPress={() => {
+                this.recyclerListView && this.recyclerListView.scrollToIndex(this.limitGoTimeIndex, false);
+            }
             }/>;
         }
 
@@ -264,9 +265,8 @@ export default class HomeFirstTabView extends Component {
             }
 
             if (item.type === homeType.limitGoTime) {
-                stickyHeaderIndices.push(index - 1);
                 this.limitGoTimeIndex = index;
-                stickyHeaderIndices.push(index-1);
+                stickyHeaderIndices.push(index - 1);
                 stickyHeaderIndices.push(index);
             }
 
