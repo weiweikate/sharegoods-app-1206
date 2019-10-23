@@ -73,7 +73,7 @@ export default class NoAccessPage extends Component {
                                                                     this.fetchStore28();
                                                                     SpellStatusModel.requestHome();
                                                                 }}/>}>
-                        <BannersVerticalView bannerList={this.state.bannerList}/>
+                        <BannersVerticalView style={{ marginBottom: 0 }} bannerList={this.state.bannerList}/>
                     </ScrollView>}
             </View>
         );

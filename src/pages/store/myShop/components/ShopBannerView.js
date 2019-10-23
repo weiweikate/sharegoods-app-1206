@@ -66,7 +66,7 @@ export class ShopBannerView extends Component {
             <View>
                 <MRBannerView style={styles.bannerView}
                               interceptTouchEvent={true}//android端起作用，是否拦截touch事件
-                              itemWidth={ScreenUtils.width + 0.5}
+                              itemWidth={px2dp(345) + 0.5}
                               itemSpace={0}
                               itemRadius={5}
                               imgUrlArray={items}
@@ -85,7 +85,7 @@ export class ShopBannerView extends Component {
 const styles = StyleSheet.create({
 
     bannerView: {
-        height: px2dp(160), width: px2dp(345) + 0.5, borderRadius: 5, overflow: 'hidden',
+        height: px2dp(345) * 460 / 750, width: px2dp(345) + 0.5, borderRadius: 5, overflow: 'hidden',
         alignSelf: 'center'
     },
 
