@@ -226,7 +226,7 @@ export default class HomeFirstTabView extends Component {
                 isRefreshing={homeModule.isRefreshing}
                 onRefresh={this._onRefresh.bind(this)}
                 lineTop={ScreenUtils.autoSizeWidth(40) + 1}
-                styled={{ marginTop: ScreenUtils.autoSizeWidth(40) + 1, height: headerHeight }}
+
             />
         );
     };
@@ -266,7 +266,7 @@ export default class HomeFirstTabView extends Component {
 
             if (item.type === homeType.limitGoTime) {
                 this.limitGoTimeIndex = index;
-                stickyHeaderIndices.push(index - 1);
+                stickyHeaderIndices.push(index-1);//把限时购前一条也设成stick，为了提早收起顶部类目导航
                 stickyHeaderIndices.push(index);
             }
 
