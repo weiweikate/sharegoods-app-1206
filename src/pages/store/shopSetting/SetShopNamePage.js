@@ -131,6 +131,7 @@ export default class SetShopNamePage extends BasePage {
             //拆分和新开 需要绑定导师
             if (!tutorCode) {
                 this.$toastShow('请选择导师');
+                return;
             }
         }
         bridge.showLoading();
