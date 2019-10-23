@@ -60,7 +60,7 @@ export class RecommendBanner extends Component {
                        style={[styles.imgBg]}/>
                 <MRBannerView style={styles.bannerView}
                               interceptTouchEvent={true}//android端起作用，是否拦截touch事件
-                              itemWidth={ScreenUtils.width + 0.5}
+                              itemWidth={px2dp(345) + 0.5}
                               itemSpace={0}
                               imgUrlArray={items}
                               onDidSelectItemAtIndex={(index) => {
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width, height: px2dp(210)
     },
     bannerView: {
-        height: px2dp(160), width: px2dp(345) + 0.5, borderRadius: 5, overflow: 'hidden',
+        height: px2dp(345) * 460 / 750, width: px2dp(345) + 0.5, borderRadius: 5, overflow: 'hidden',
         alignSelf: 'center', marginTop: ScreenUtils.headerHeight
     },
 

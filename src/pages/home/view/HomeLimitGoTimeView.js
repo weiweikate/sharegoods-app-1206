@@ -152,6 +152,7 @@ export class StaticLimitGoTimeView extends Component {
         let limit = limitGoModule.spikeList[index];
         if (limit) {
             limitGoModule.changeLimitGo(number);
+            this.props.onPress && this.props.onPress();
             // 限时购tab点击埋点
             track(trackEvent.SpikeTimeClick,
                 {
