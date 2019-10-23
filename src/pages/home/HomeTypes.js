@@ -1,5 +1,10 @@
 import RouterMap, { routePush } from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
+import { GoodsCustomViewGetHeight } from './view/GoodsCustomView';
+import { ImageAdViewGetHeight } from './view/TopicImageAdView';
+import bridge from '../../utils/bridge';
+import ScreenUtils from '../../utils/ScreenUtils';
+const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 export const homeType = {
     swiper: 2,           // 首页顶部轮播
@@ -36,6 +41,7 @@ export const homeType = {
     custom_goods: 'WIDGET-GOODS',
     homeHotTitle: 'homeHotTitle',
     tabStaticView: 'tabStaticView',//首页类目占位的
+    limitStaticViewDismiss: 'limitStaticViewDismiss',//占位，用于标记限时购全部划完了
 };
 
 export const homeLinkType = {
@@ -173,4 +179,56 @@ export function topicAdOnPress(data, item, p, title, orderTrackParams) {
         p.contentValue = title || '';
         track(trackEvent.SpecialTopicBtnClick, { ...p });
     }
+}
+
+/**
+ * 处理自定义专题的数据，获取每项的行高
+ * @param data
+ * @returns {Promise<*[]>}
+ */
+export function asyncHandleTopicData(data){
+    data = data.data.widgets.data || [];
+
+    data = [...data];
+    let p = [];
+    let count = data.length;
+    for (let index = 0; index < count; index++) {
+        let item = data[index];
+        if (item.type === homeType.custom_goods) {
+            item.itemHeight = GoodsCustomViewGetHeight(item);
+            item.marginBottom = ScreenUtils.autoSizeWidth(0);
+            if (count - 1 > index) {
+                let type = data[index + 1].type;
+                if (type === homeType.custom_imgAD || type === homeType.custom_text) {
+                    item.marginBottom = ScreenUtils.autoSizeWidth(15);
+                }
+            }
+            item.itemHeight += item.marginBottom;
+        }
+
+        if (item.type === homeType.custom_imgAD) {
+            item.itemHeight = ImageAdViewGetHeight(item);
+        }
+
+        if (item.type === homeType.custom_text) {
+
+            item.detailHeight = 0;
+            item.textHeight = 0;
+            if (item.text) {
+                p.push(bridge.getTextHeightWithWidth(item.text, autoSizeWidth(14), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
+                    item.textHeight = r.height;
+                    item.itemHeight = r.height + item.detailHeight + autoSizeWidth(20);
+                }));
+            }
+            if (item.subText) {
+                p.push(bridge.getTextHeightWithWidth(item.subText, autoSizeWidth(12), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
+                    item.detailHeight = r.height;
+                    item.itemHeight = r.height + item.textHeight + autoSizeWidth(20);
+                }));
+            }
+        }
+    }
+    return Promise.all(p).then(() => {
+        return data;
+    });
 }

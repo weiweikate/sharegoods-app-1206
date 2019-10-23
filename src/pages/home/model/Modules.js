@@ -62,10 +62,9 @@ class HomeModule {
     }, {
         id: 61,
         type: homeType.limitGoTime
-    }, {
-        id: 62,
-        type: homeType.limitGoGoods
     }];
+    limitGoods = [];
+    limitStaticViewDismiss = {type: homeType.limitStaticViewDismiss}
     bottomTopice = [];
     fixedPartThree = [{
         id: 10,
@@ -139,6 +138,11 @@ class HomeModule {
             }
         }
     };
+    @action
+ changelimitGoods(limitGoods){
+     this.limitGoods = limitGoods;
+     this.homeList = this.getHomeListData()
+ }
 
     @action initHomeParams() {
         this.isFetching = false;
@@ -175,12 +179,16 @@ class HomeModule {
                 ...this.topTopice,
                 ...this.bottomTopice,
                 ...this.fixedPartTwo,
+                ...this.limitGoods,
+                this.limitStaticViewDismiss,
                 ...this.fixedPartThree,
                 ...this.goods
             ];
         } else if (this.type === 2) {
             home = [...this.fixedPartOne,
                 ...this.fixedPartTwo,
+                ...this.limitGoods,
+                this.limitStaticViewDismiss,
                 ...this.topTopice,
                 ...this.bottomTopice,
                 ...this.fixedPartThree,
@@ -190,6 +198,8 @@ class HomeModule {
             home = [...this.fixedPartOne,
                 ...this.topTopice,
                 ...this.fixedPartTwo,
+                ...this.limitGoods,
+                this.limitStaticViewDismiss,
                 ...this.bottomTopice,
                 ...this.fixedPartThree,
                 ...this.goods

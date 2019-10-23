@@ -64,6 +64,7 @@ export default class HomeFirstTabView extends Component {
     layoutProvider = new LayoutProvider((i) => {
         return this.dataProvider.getDataForIndex(i) || {};
     }, (type, dim) => {
+
         dim.width = ScreenUtils.width;
 
         switch (type.type) {
@@ -89,7 +90,7 @@ export default class HomeFirstTabView extends Component {
                 dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitTimeHeight : 0;
                 break;
             case homeType.limitGoGoods:
-                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitGoodsHeight : 0;
+                dim.height = px2dp(140);
                 break;
             case homeType.goodsTitle:
                // dim.height = homeModule.tabList.length > 0 ? px2dp(66-13) : 0;
@@ -138,7 +139,7 @@ export default class HomeFirstTabView extends Component {
         } else if (type === homeType.limitGoTime) {
             return <HomeLimitGoTimeView navigate={routePush}/>;
         } else if (type === homeType.limitGoGoods) {
-            return <HomeLimitGoGoodsView navigate={routePush}/>;
+            return <HomeLimitGoGoodsView navigate={routePush} data={item}/>;
         } else if (type === homeType.goods) {
             return <GoodsCell data={item} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
                               navigate={routePush}/>;
@@ -235,7 +236,7 @@ export default class HomeFirstTabView extends Component {
         //     return <View />
         // }
 
-        if (index === this.limitGoTimeIndex-1 ){
+        if (type.type === homeType.limitStaticViewDismiss ){
             DeviceEventEmitter.emit('staticeLimitGoTimeView', true)
         }
 
@@ -253,18 +254,19 @@ export default class HomeFirstTabView extends Component {
         }
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
-        this.limitGoTimeIndex = -1;
         let stickyHeaderIndices = []
         homeList.forEach((item, index)=> {
-            // if (item.type === homeType.goodsTitle){
-            //     stickyHeaderIndices.push(index);
-            // }
+            if (item.type === homeType.goodsTitle){
+                stickyHeaderIndices.push(index);
+            }
 
             if (item.type === homeType.limitGoTime) {
-                this.limitGoTimeIndex = index;
                 stickyHeaderIndices.push(index-1);
                 stickyHeaderIndices.push(index);
-                stickyHeaderIndices.push(index + 2);
+            }
+
+            if (item.type === homeType.limitStaticViewDismiss) {
+                stickyHeaderIndices.push(index);
             }
 
         });
