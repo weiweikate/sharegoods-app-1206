@@ -62,7 +62,7 @@ export default class MemberProductModel {
             const { skuList } = cur;
             return add(pre, skuList[0].price);
         }, 0);
-        return mainPrice + subPrice;
+        return add(mainPrice, subPrice);
     }
 
     @computed get totalProPrice() {
@@ -74,7 +74,7 @@ export default class MemberProductModel {
             const { skuList } = cur;
             return add(pre, skuList[0].promotionPrice);
         }, 0);
-        return mainPrice + subPrice;
+        return add(mainPrice, subPrice);
     }
 
     @computed get totalDeProPrice() {
@@ -86,7 +86,7 @@ export default class MemberProductModel {
             const { skuList } = cur;
             return add(pre, skuList[0].promotionDecreaseAmount);
         }, 0);
-        return mainPrice + subPrice;
+        return add(mainPrice, subPrice);
     }
 
     @action request_promotion_detail = (productCode) => {
