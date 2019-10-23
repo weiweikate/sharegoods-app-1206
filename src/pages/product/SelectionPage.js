@@ -61,14 +61,14 @@ export default class SelectionPage extends Component {
     show = (data, callBack, propData = {}) => {
         //type afterSpecIds
         //需要重置旧数据
-        const { needUpdate, isAreaSku, productIsPromotionPrice } = propData;
+        const { needUpdate, isAreaSku, productIsPromotionPrice, singlePurchaseNumber } = propData;
         if (needUpdate) {
             this.state.selectStrList = [];
             this.state.selectSpecList = [];
             this.state.maxStock = 0;
         }
         const { specifyList, skuList, skuListByArea, promotionLimitNum } = data;
-        this.state.promotionLimit = productIsPromotionPrice ? promotionLimitNum : null;
+        this.state.promotionLimit = singlePurchaseNumber || (productIsPromotionPrice ? promotionLimitNum : null);
 
         let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
         let skuListTemp = JSON.parse(JSON.stringify((isAreaSku ? skuListByArea : skuList) || []));
