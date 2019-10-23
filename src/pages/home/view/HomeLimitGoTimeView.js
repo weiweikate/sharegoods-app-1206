@@ -208,15 +208,19 @@ export class StaticLimitGoTimeView extends Component {
             return null;
         }
         return (
-            <ScrollView
-                ref={(e) => {
-                    this.scrollView = e;
-                }}
-                style={{ alignSelf: 'center', height: px2dp(45), backgroundColor: 'white' }}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}>
-                {tabViews}
-            </ScrollView>
+            <View
+                style={{ alignItems: 'center', height: px2dp(45), backgroundColor: 'white', width: ScreenUtils.width}}
+            >
+                <ScrollView
+                    ref={(e) => {
+                        this.scrollView = e;
+                    }}
+                    style={{ height: px2dp(45)}}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+                    {tabViews}
+                </ScrollView>
+            </View>
         );
     }
 }

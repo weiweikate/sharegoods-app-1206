@@ -31,6 +31,7 @@
     return self;
 }
 
+
 - (void)setState:(MJRefreshState)state {
   if (state == MJRefreshStateRefreshing) {
     CABasicAnimation * a =[CABasicAnimation animationWithKeyPath:@"strokeStart"];
