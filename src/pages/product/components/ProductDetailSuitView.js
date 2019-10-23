@@ -151,7 +151,7 @@ const SuitFixedView = ({ mainProduct, subProducts, itemIndex, pushCallback }) =>
         });
         /*每个spu里的优惠最大额*/
         const priceArrMax = Math.max.apply(null, priceArr);
-        dePrice = dePrice + priceArrMax;
+        dePrice = add(dePrice, priceArrMax);
     });
     return (
         <NoMoreClick style={fixedStyles.container} onPress={pushCallback}>

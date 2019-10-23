@@ -12,10 +12,11 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import DesignRule from '../../../constants/DesignRule';
 import { homePoint } from '../HomeTypes';
 import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
+import ImageLoad from '@mr/image-placeholder';
 
-const { px2dp } = ScreenUtils;
+const { px2dp, width, autoSizeWidth } = ScreenUtils;
 
-export const bannerHeight = px2dp(120);
+export const bannerHeight = autoSizeWidth(120);
 
 @observer
 export default class HomeBannerView extends Component {
@@ -49,6 +50,10 @@ export default class HomeBannerView extends Component {
         let len = items.length;
         return (
             <View style={styles.banner}>
+                <ImageLoad
+                    style={styles.bgImg}
+                    source={{ uri: homeModule.bannerImg }}
+                    showPlaceholder={false}/>
                 {len === 0 ?
                     <View style={styles.defaultImg}/> :
                     <MRBannerViewComponent
@@ -75,5 +80,11 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: px2dp(5),
         backgroundColor: DesignRule.lineColor_inColorBg
+    },
+    bgImg: {
+        width, height: bannerHeight,
+        position: 'absolute',
+        left: 0,
+        right: 0
     }
 });

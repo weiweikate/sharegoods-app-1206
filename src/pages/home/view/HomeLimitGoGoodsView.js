@@ -29,7 +29,7 @@ export default class HomeLimitGoGoodsView extends Component {
             <View>
                 <GoodsItem key={index} item={data || {}} activityCode={activityData.activityCode}
                            navigate={this.props.navigate}/>
-                <View style={{ height: px2dp(index === len - 1 ? 4.1 : 10) }}/>
+                <View style={{ height:10}}/>
             </View>
         </TouchableWithoutFeedback>);
     }
@@ -55,22 +55,22 @@ export default class HomeLimitGoGoodsView extends Component {
     }
 
     render() {
-        const { spikeList, currentGoodsList, currentPage } = limitGoModule;
-        // 商品视图
-        let goodsViews = [];
+       let {spikeList, currentPage} = limitGoModule
+        let activityData = '';
         if (spikeList && spikeList[currentPage]) {
-            let activityData = spikeList[currentPage];
-            currentGoodsList.map((data, index) => {
-                goodsViews.push(
-                    this._goodsItem(currentGoodsList.length, data, index, activityData)
-                );
-            });
+            activityData = spikeList[currentPage];
         }
 
+        let index = 1;
+        let data = this.props.data;
         return (
-            <View style={{ flex: 1, height: limitGoModule.limitGoodsHeight }}>
-                {goodsViews}
+            <TouchableWithoutFeedback key={index}
+                                          onPress={() => this._goToDetail(index, data || {}, activityData)}>
+            <View style={{marginTop: data.marginTop}}>
+                <GoodsItem key={index} item={data || {}} activityCode={activityData.activityCode}
+                           navigate={this.props.navigate}/>
             </View>
+        </TouchableWithoutFeedback>
         );
     }
 }

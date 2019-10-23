@@ -63,7 +63,7 @@ function RefreshAnimateHeader(props) {
         ) {
             progressRef.current.setValue(offset);
         }
-        }, []);
+    }, []);
 
     const lottie = Platform.OS === 'ios' ? <LottieView
         ref={lottieRef}
@@ -76,7 +76,7 @@ function RefreshAnimateHeader(props) {
         source={source}
         hardwareAccelerationAndroid={true}
         cacheStrategy={'strong'}
-    /> :  <LottieView
+    /> : <LottieView
         ref={lottieRef}
         style={[styles.lottery, {height: headerHeight}]}
         resizeMode={'cover'}
@@ -106,6 +106,7 @@ function RefreshAnimateHeader(props) {
             onIdleRefresh={onIdleRefreshCallBack}
             backgroundColor={backgroundColor}
             lineTop={lineTop}
+            isHome={true}
         >
             <RefreshHeader style={[styles.container, {height: headerHeight+30},styled]}>
                 {lottie}

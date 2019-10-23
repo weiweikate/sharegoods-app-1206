@@ -485,5 +485,18 @@ RCT_EXPORT_METHOD(saveVideoToPhotoAlbumWithUrl:(NSString *) url
   
 
 }
+
+
+#pragma mark - 获取极光设备id
+RCT_EXPORT_METHOD(getRegId:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+{
+  [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
+    if (resCode == 0) {
+      resolve(registrationID);
+    }else{
+      reject(@"-1",@"获取失败",nil);
+    }
+  }];
+}
   
 @end

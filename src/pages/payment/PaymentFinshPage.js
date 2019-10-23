@@ -12,14 +12,13 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
 import {MRText} from '../../components/ui';
 import LinearGradient from 'react-native-linear-gradient';
-import {TrackApi} from '../../utils/SensorsTrack';
+import { TrackApi } from '../../utils/SensorsTrack';
 import ShareUtil from '../../utils/ShareUtil';
 import user from '../../model/user';
 import PaymentApi from './PaymentApi';
 import apiEnvironment from '../../api/ApiEnvironment';
 import bridge from '../../utils/bridge';
-import {replaceRoute} from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import FinshPayAlertView from './FinshPayAlertView';
 import RecommendProductView from '../product/productScore/components/RecommendProductView';
 import {GroupShareView} from './GroupShareView';
@@ -77,7 +76,6 @@ export default class PaymentFinshPage extends BasePage {
         setTimeout(() => {
             bridge.$checkIsCanComment();
         }, 2000);
-
     }
 
     componentDidMount() {

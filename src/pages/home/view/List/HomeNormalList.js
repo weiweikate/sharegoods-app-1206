@@ -30,6 +30,11 @@ import res from '../../res';
 import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
 import { observer } from 'mobx-react';
 import { tabModel } from '../../model/HomeTabModel';
+import { getSGscm, getSGspm_home, HomeSource, SGscmSource } from '../../../../utils/OrderTrackUtil';
+import { asyncHandleTopicData, homeType } from '../../HomeTypes';
+import { TopicImageAdView } from '../TopicImageAdView';
+import GoodsCustomView from '../GoodsCustomView';
+import TextCustomView from '../TextCustomView';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
@@ -247,6 +252,7 @@ export default class HomeNormalList extends React.Component {
         this.itemData = [];
         this.header = [{type: 'header'}]
         this.goods = [];
+        this.topicList = [];
 
         this.index = 0;
         this.isRefreshing = true;
@@ -262,6 +268,14 @@ export default class HomeNormalList extends React.Component {
         this.refreshData(true);
     }
 
+    /**
+     * 处理icon数据逻辑
+     * 1.超出一行，不满2行，显示一行
+     * 2.超出2行，显示2行
+     * 3.未满一行，有多少显示多少
+     * 4.末尾加《全部分类》
+     * @param itemData
+     */
     handleItemData=(itemData)=> {
         let count = itemData.length;
         if (count === 0) {
@@ -287,7 +301,7 @@ export default class HomeNormalList extends React.Component {
     }
 
     changeData= ()=>{
-        this.setState({data: [...this.itemData,...this.header, ...this.goods]})
+        this.setState({data: [...this.itemData,...this.topicList,...this.header, ...this.goods]})
     }
 
     changeIndex(index) {
@@ -336,6 +350,11 @@ export default class HomeNormalList extends React.Component {
             case 'header':
                 dim.height = 50;
                 break;
+            case homeType.custom_text:
+            case homeType.custom_goods:
+            case homeType.custom_imgAD:
+                dim.height = type.itemHeight || 0;
+                break;
             default:
                 dim.height = 0;
         }
@@ -344,7 +363,10 @@ export default class HomeNormalList extends React.Component {
 
     _renderItem = (type, item, index) => {
         type = type.type;
+        item.sgscm = getSGscm(SGscmSource.topic,this.code).sgscm;
+        item.sgspm = getSGspm_home(HomeSource.marketing,index).sgspm
         let p = {firstCategoryId: this.props.data.firstCategoryId, navName: this.props.data.navName};
+        let topic = { specialTopicId: this.props.data.linkCode };
         if (type === 'icon') {
             return <IconView data={item.data} p = {p}/>
         } else if (type === 'goods') {
@@ -356,6 +378,15 @@ export default class HomeNormalList extends React.Component {
                 }}
                 index={this.index}
             />
+        } else if (type === homeType.custom_text) {
+            p.specialTopicArea = 6;
+            return <TextCustomView data={item} p={topic}/>;
+        } else if (type === homeType.custom_imgAD) {
+            p.specialTopicArea = 1;
+            return <TopicImageAdView data={item} p={topic}/>;
+        } else if (type === homeType.custom_goods) {
+            p.specialTopicArea = 3;
+            return <GoodsCustomView data={item} p={topic}/>;
         }
         return <View/>;
     };
@@ -378,9 +409,22 @@ export default class HomeNormalList extends React.Component {
             this.setState({ refreshing: true });
         }
         let data = this.props.data || {};
+        let customTopicCode = data.customTopicCode;
+        //获取顶部的icon数据
         HomeAPI.getSecondaryList({ navId: data.id }).then((result) => {
             this.handleItemData(result.data || []);
         });
+        if (customTopicCode){
+            //请求自定义专题数据
+            HomeAPI.getCustomTopic({topicCode: customTopicCode, page: '1', pageSize: '10'}).then((data)=> {
+                //处理自定义专题的数据
+                asyncHandleTopicData(data).then((topticList)=> {
+                    this.topicList = topticList;
+                    this.changeData();
+                })
+            })
+        }
+
         this.isRefreshing = true;
         this.page = 1;
         setTimeout(()=> {//为了播放完刷新动画
@@ -462,7 +506,7 @@ export default class HomeNormalList extends React.Component {
 
         });
         if (temp.length > 0) {
-            arr.push(temp);
+            arr.push({type: 'goods', data: temp});
         }
         return arr;
     }
