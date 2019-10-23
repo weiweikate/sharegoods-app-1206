@@ -8,8 +8,7 @@ import ModalType from '../components/ModalType';
 import marketingUtils from '../MarketingUtils';
 import HomeModalManager from '../../home/manager/HomeModalManager';
 
-
-const ONECOREVERY = 'HomeController_OneOrEvery';
+const ONECOREVERY = '@homecontroller/oneorevery';
 
 class HomeController {
     constructor() {
@@ -19,7 +18,6 @@ class HomeController {
     }
 
 
-    //路由判断有点问题，先通过通知来判断
     notifyArrivedHome(){
         this.handleGetConfig();
     }
