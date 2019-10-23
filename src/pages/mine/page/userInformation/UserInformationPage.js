@@ -165,6 +165,18 @@ export default class UserInformationPage extends BasePage {
                                 leftTextStyle={styles.blackText} isLine={false} isArrow={true}
                                 onPress={() => this.jumpToSetWechatPage()}/>
                 {this.renderWideLine()}
+
+                <UserSingleItem leftText={'性别'} rightText={''}
+                                rightTextStyle={styles.grayText}
+                                leftTextStyle={styles.blackText} isArrow={true}
+                                onPress={() => {}}/>
+
+                <UserSingleItem leftText={'生日'} rightText={''}
+                                rightTextStyle={styles.grayText}
+                                leftTextStyle={styles.blackText} isLine={false} isArrow={true}
+                                onPress={() =>{}}/>
+                {this.renderWideLine()}
+
                 <UserSingleItem leftText={'所在区域'}
                                 rightText={user.area ? user.province + user.city + user.area : ''}
                                 rightTextStyle={[styles.grayText, {
