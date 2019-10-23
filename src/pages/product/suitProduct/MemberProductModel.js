@@ -34,6 +34,7 @@ export default class MemberProductModel {
     * singlePurchaseNumber
     * subProducts
     * */
+    @observable groupCode;
     @observable packageVideo = null;
     @observable mainImages = [];
     @observable detailImages = [];
@@ -62,7 +63,7 @@ export default class MemberProductModel {
             const { skuList } = cur;
             return add(pre, skuList[0].price);
         }, 0);
-        return mainPrice + subPrice;
+        return add(mainPrice, subPrice);
     }
 
     @computed get totalProPrice() {
@@ -74,7 +75,7 @@ export default class MemberProductModel {
             const { skuList } = cur;
             return add(pre, skuList[0].promotionPrice);
         }, 0);
-        return mainPrice + subPrice;
+        return add(mainPrice, subPrice);
     }
 
     @computed get totalDeProPrice() {
@@ -86,7 +87,7 @@ export default class MemberProductModel {
             const { skuList } = cur;
             return add(pre, skuList[0].promotionDecreaseAmount);
         }, 0);
-        return mainPrice + subPrice;
+        return add(mainPrice, subPrice);
     }
 
     @action request_promotion_detail = (productCode) => {
@@ -101,6 +102,7 @@ export default class MemberProductModel {
             this.freight = freight;
             this.mainProduct = mainProduct || {};
             const { packageVideo, mainImages, detailImages, subProducts, afterSaleLimit, afterSaleTip, shareContent, groupCode } = packages[0] || {};
+            this.groupCode = groupCode;
             this.packageVideo = packageVideo;
             this.mainImages = mainImages || [];
             this.detailImages = detailImages || [];

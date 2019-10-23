@@ -28,6 +28,7 @@ import HomeTopTarBar from './HomeTopTarBar';
 import ImageLoad from '@mr/image-placeholder';
 import store from '@mr/rn-store';
 import StringUtils from '../../utils/StringUtils';
+import homeController from '../marketing/controller/HomeController';
 
 
 /**
@@ -37,7 +38,6 @@ import StringUtils from '../../utils/StringUtils';
  * @org www.sharegoodsmall.com
  * @email zhangjian@meeruu.com
  */
-
 
 @observer
 class HomePage extends BasePage {
@@ -50,6 +50,7 @@ class HomePage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            hasMessage: false,
             y: new Animated.Value(0)
         };
     }
@@ -89,6 +90,8 @@ class HomePage extends BasePage {
             payload => {
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
+                    //通知HomeController进入首页
+                    homeController.notifyArrivedHome();
                     this.luckyIcon && this.luckyIcon.getLucky(1, '');
                     track(trackEvent.ViewHomePage);
                     homeTabManager.setHomeFocus(true);
@@ -225,7 +228,6 @@ class HomePage extends BasePage {
                     style={{ zIndex: -1 }}
                     //进界面的时候打算进第几个
                     initialPage={0}>
-
                     {viewItems}
                 </ScrollableTabView>
 

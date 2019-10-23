@@ -62,7 +62,7 @@ export default class MemberProductPage extends BasePage {
     };
 
     _buyAction = () => {
-        const { mainProduct, totalProPrice, productCode, activityCode, subProducts, promotionInfoItem } = this.memberProductModel;
+        const { mainProduct, totalProPrice, productCode, activityCode, subProducts, promotionInfoItem, groupCode } = this.memberProductModel;
         const activityList = [{ activityCode }, {
             activityTag: promotionInfoItem.activityTag,
             promotionId: promotionInfoItem.promotionId,
@@ -79,7 +79,7 @@ export default class MemberProductPage extends BasePage {
                 return {
                     activityList,
                     activityCode,
-                    batchNo: 1,
+                    batchNo: groupCode,
                     productCode: prodCode,
                     skuCode: skuCode,
                     quantity: amount
@@ -92,7 +92,7 @@ export default class MemberProductPage extends BasePage {
                     orderProducts: [{
                         activityList,
                         activityCode,
-                        batchNo: 1,
+                        batchNo: groupCode,
                         productCode: productCode,
                         skuCode: skuCode,
                         quantity: amount
