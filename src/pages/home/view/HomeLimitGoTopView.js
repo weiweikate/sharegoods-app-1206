@@ -30,6 +30,10 @@ export default class HomeLimitGoTopView extends Component {
     }
 
     render() {
+        const { spikeList } = limitGoModule;
+        if (spikeList.length === 0) {
+            return null;
+        }
         return (
             <View>
                 <View style={{ paddingHorizontal: px2dp(15), flexDirection: 'row', alignItems: 'center' }}>
