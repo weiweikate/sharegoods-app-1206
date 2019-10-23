@@ -205,6 +205,19 @@ export default class UserInformationPage extends BasePage {
     }
 
     takePhoto = () => {
+        if(user.headImg){
+            const params = {
+                type: 'userInfo',
+                getImagePicker:this.getImagePicker
+            };
+            this.$navigate(RouterMap.CheckHeaderImagesView, params);
+
+        }else {
+            this.getImagePicker()
+        }
+    };
+
+    getImagePicker=()=>{
         track(trackEvent.ClickModifyAvatar, {});
         BusinessUtils.getImagePicker(callback => {
             if (callback.imageUrl && callback.imageUrl.length > 0) {
@@ -231,6 +244,7 @@ export default class UserInformationPage extends BasePage {
             }
         }, 1, true);
     };
+
     jumpToIDVertify2Page = () => {
         if (!user.realname) {
             track(trackEvent.ClickRealCodeentityVerify, {});

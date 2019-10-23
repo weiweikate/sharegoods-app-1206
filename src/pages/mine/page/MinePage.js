@@ -40,6 +40,7 @@ import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
 import MineSpellGroupView from './spellGroup/components/MineSpellGroupView';
 import TimeModel from '../model/TimeModel';
 import LinearGradient from 'react-native-linear-gradient';
+import Swiper from 'react-native-swiper';
 
 const {
     // mine_header_bg,
@@ -121,7 +122,7 @@ export default class MinePage extends BasePage {
             hasFansMSGNum: 0,
             modalId: false,
             adArr: [],
-            groupData: {},
+            groupData: [],
             currentUserState:null
         };
 
@@ -248,7 +249,7 @@ export default class MinePage extends BasePage {
         MineApi.getGroupList({ page: 1, size: 10, groupStatus: 2 }).then((result) => {
             if (result.data && !EmptyUtils.isEmpty(result.data.data)) {
                 this.setState({
-                    groupData: result.data.data[0]
+                    groupData: result.data.data
                 });
             } else {
                 this.setState({
@@ -902,15 +903,32 @@ export default class MinePage extends BasePage {
     }
 
     renderBodyView = () => {
-        return (
-            <View style={{ flex: 1, backgroundColor: '#F7F7F7' }}>
-                {this.orderRender()}
-                <MineSpellGroupView data={this.state.groupData}
+        let views = this.state.groupData && this.state.groupData.map((item) => {
+            return (
+                <MineSpellGroupView data={item}
                                     timeEnd={this.loadGroupList}
                                     itemClick={() => {
                                         this.$navigate(RouterMap.SpellGroupList);
                                     }}
                 />
+            )
+        });
+
+        return (
+            <View style={{ flex: 1, backgroundColor: '#F7F7F7' }}>
+                {this.orderRender()}
+                {!EmptyUtils.isEmpty(views) ? <View style={styles.swiper_style}>
+                    <Swiper showsButtons={false}
+                            loop={true}
+                            autoplay={true}
+                            autoplayTimeout={3}
+                            dot={<View/>}
+                            activeDot={<View/>}
+                    >
+                        {views}
+                    </Swiper>
+                </View> : null
+                }
                 {this.activeRender()}
                 {this.utilsRender()}
                 {this.renderADView()}
@@ -1311,5 +1329,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width:73,
         height:20
-    }
+    },
+    swiper_style: {
+        height: 75,
+    },
 });
