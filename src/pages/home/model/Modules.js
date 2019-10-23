@@ -15,6 +15,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import bridge from '../../../utils/bridge';
 import { getSGscm, getSGspm_home, HomeSource, SGscmSource } from '../../../utils/OrderTrackUtil';
 import { getSize } from '../../../utils/OssHelper';
+import { homeNewUserModel } from './HomeNewUserModel';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 const kHomeTopTopic = '@home/topTopic';
@@ -86,7 +87,7 @@ class HomeModule {
         type: homeType.limitGoTime
     }];
     limitGoods = [];
-    limitStaticViewDismiss = {type: homeType.limitStaticViewDismiss}
+    limitStaticViewDismiss = { type: homeType.limitStaticViewDismiss };
     bottomTopice = [];
     fixedPartThree = [{
         id: 10,
@@ -161,11 +162,12 @@ class HomeModule {
             }
         }
     };
+
     @action
- changelimitGoods(limitGoods){
-     this.limitGoods = limitGoods;
-     this.homeList = this.getHomeListData()
- }
+    changelimitGoods(limitGoods) {
+        this.limitGoods = limitGoods;
+        this.homeList = this.getHomeListData();
+    }
 
     @action initHomeParams() {
         this.isFetching = false;
@@ -256,6 +258,8 @@ class HomeModule {
         tabModel.loadTabList(this.firstLoad);
         // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
+        // 新人专区
+        homeNewUserModel.loadNewUserArea(this.firstLoad);
         // 首页频道类目
         channelModules.loadChannel(this.firstLoad);
         // 首页通栏

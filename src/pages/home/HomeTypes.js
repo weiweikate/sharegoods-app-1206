@@ -4,10 +4,12 @@ import { GoodsCustomViewGetHeight } from './view/GoodsCustomView';
 import { ImageAdViewGetHeight } from './view/TopicImageAdView';
 import bridge from '../../utils/bridge';
 import ScreenUtils from '../../utils/ScreenUtils';
+
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 export const homeType = {
     swiper: 2,           // 首页顶部轮播
+    newUserArea: 36,     // 新人专区
     expandBanner: 3,     // 首页通栏广告位
     channel: 4,          // 首页频道类目
     float: 10,           // 右下角浮动框
@@ -187,7 +189,7 @@ export function topicAdOnPress(data, item, p, title, orderTrackParams) {
  * @param data
  * @returns {Promise<*[]>}
  */
-export function asyncHandleTopicData(data){
+export function asyncHandleTopicData(data) {
     data = data.data.widgets.data || [];
 
     data = [...data];

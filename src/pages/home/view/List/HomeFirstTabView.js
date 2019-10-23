@@ -39,6 +39,7 @@ import HomeLimitGoTimeView, { StaticLimitGoTimeView } from '../HomeLimitGoTimeVi
 import HomeTitleView from '../HomeTitleView';
 import StickyContainer from 'recyclerlistview/sticky';
 import HomeActivityCenterView from '../HomeActivityCenterView';
+import { homeNewUserModel } from '../../model/HomeNewUserModel';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -77,6 +78,9 @@ export default class HomeFirstTabView extends Component {
                 break;
             case homeType.activityCenter:
                 dim.height = homeModule.centerImgHeight;
+                break;
+            case homeType.newUserArea:
+                dim.height = homeNewUserModel.imgHeight;
                 break;
             case homeType.task:
                 dim.height = taskModel.homeHeight;
@@ -221,8 +225,8 @@ export default class HomeFirstTabView extends Component {
             <HeaderLoading
                 isRefreshing={homeModule.isRefreshing}
                 onRefresh={this._onRefresh.bind(this)}
-                lineTop={ScreenUtils.autoSizeWidth(40)+1}
-                styled={{ marginTop: ScreenUtils.autoSizeWidth(40)+1, height: headerHeight }}
+                lineTop={ScreenUtils.autoSizeWidth(40) + 1}
+                styled={{ marginTop: ScreenUtils.autoSizeWidth(40) + 1, height: headerHeight }}
             />
         );
     };
@@ -237,20 +241,11 @@ export default class HomeFirstTabView extends Component {
         if (type.type === homeType.limitGoTime) {
             return <StaticLimitGoTimeView/>;
         }
-        //
-        // if (index === this.limitGoTimeDismissIndex ) {
-        //     return <View />
-        // }
 
-        if (type.type === homeType.limitStaticViewDismiss ){
-            DeviceEventEmitter.emit('staticeLimitGoTimeView', true)
+        if (type.type === homeType.limitStaticViewDismiss) {
+            DeviceEventEmitter.emit('staticeLimitGoTimeView', true);
         }
-
         return <View/>;
-
-
-        // return this._renderItem(type, data, index)
-
     };
 
 
@@ -260,14 +255,14 @@ export default class HomeFirstTabView extends Component {
         }
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
-        let stickyHeaderIndices = []
-        homeList.forEach((item, index)=> {
-            if (item.type === homeType.goodsTitle){
+        let stickyHeaderIndices = [];
+        homeList.forEach((item, index) => {
+            if (item.type === homeType.goodsTitle) {
                 stickyHeaderIndices.push(index);
             }
 
             if (item.type === homeType.limitGoTime) {
-                stickyHeaderIndices.push(index-1);
+                stickyHeaderIndices.push(index - 1);
                 stickyHeaderIndices.push(index);
             }
 
@@ -277,9 +272,9 @@ export default class HomeFirstTabView extends Component {
 
         });
         return (
-            <StickyContainer stickyHeaderIndices={stickyHeaderIndices}
-                             overrideRowRenderer={this._overrideRowRenderer}
-            >
+            <StickyContainer
+                stickyHeaderIndices={stickyHeaderIndices}
+                overrideRowRenderer={this._overrideRowRenderer}>
                 <RecyclerListView
                     ref={(ref) => {
                         this.recyclerListView = ref;
