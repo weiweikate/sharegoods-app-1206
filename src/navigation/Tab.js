@@ -1,20 +1,11 @@
 import { BottomTabBar, createBottomTabNavigator } from 'react-navigation-tabs';
 import React, { Component } from 'react';
-import {
-    DeviceEventEmitter,
-    Image,
-    ImageBackground,
-    StyleSheet,
-    Text,
-    TouchableWithoutFeedback,
-    View
-} from 'react-native';
+import { DeviceEventEmitter, Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
 import IsShowNewStore from '../pages/store/IsShowNewStore';
 import res from '../comm/res';
-import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
 import settingModel from '../pages/mine/model/SettingModel';
@@ -23,7 +14,7 @@ import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import Animation from 'lottie-react-native';
-import RouterMap, { navigateBackToStore } from './RouterMap';
+import RouterMap from './RouterMap';
 import { homeModule } from '../pages/home/model/Modules';
 import StringUtils from '../utils/StringUtils';
 
@@ -111,87 +102,6 @@ class HomeTab extends Component {
         homeTabManager.homeFocus;
         this.animation && (this.animation.setNativeProps({ progress: homeTabManager.isAboveRecommend ? 0.5 : 1 }));
     }, { delay: 50 });
-}
-
-const gotoMyShop = () => {
-    navigateBackToStore();
-};
-
-const ShowFlag = () =>
-
-    <TouchableWithoutFeedback onPress={() => {
-        gotoMyShop();
-    }}>
-        <View
-            style={{
-                position: 'absolute',
-                width: ScreenUtils.width,
-                height: ScreenUtils.width * 254 / 559,
-                bottom: ScreenUtils.safeBottom + 46
-            }}>
-            <Animation
-                style={styles.shopFlag}
-                autoPlay={true}
-                loop={true}
-                enableMergePathsAndroidForKitKatAndAbove={true}
-                hardwareAccelerationAndroid={true}
-                source={require('./pin_flag.json')}/>
-        </View>
-    </TouchableWithoutFeedback>;
-
-@observer
-export class SpellShopFlag extends Component {
-
-    render() {
-        if (!this.props.isShowFlag) {
-            return null;
-        }
-        if (!user) {
-            return null;
-        }
-        if (!user.isLogin) {
-            return null;
-        }
-        if (user.levelRemark >= 'V2' && !user.storeCode) {
-            return <ShowFlag/>;
-        }
-        if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
-            return <ShowFlag/>;
-        }
-        return null;
-    }
-}
-
-const ShowTab = () =>
-    <TouchableWithoutFeedback onPress={() => {
-        gotoMyShop();
-    }}>
-        <Image
-            style={styles.shopTab}
-            source={require('./pin_tab.png')}/>
-    </TouchableWithoutFeedback>;
-
-@observer
-export class SpellShopTab extends Component {
-    render() {
-        if (!this.props.isShowTab) {
-            return null;
-        }
-        if (!user) {
-            return null;
-        }
-        if (!user.isLogin) {
-            return null;
-        }
-        if (user.levelRemark >= 'V2' && !user.storeCode) {
-            return <ShowTab/>;
-        }
-        if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
-            return <ShowTab/>;
-        }
-
-        return null;
-    }
 }
 
 @observer
@@ -353,16 +263,6 @@ const styles = StyleSheet.create({
         marginTop: 4,
         width: 60,
         textAlign: 'center'
-    },
-    shopFlag: {
-        flex: 1
-    },
-    shopTab: {
-        position: 'absolute',
-        width: 44,
-        height: 44,
-        left: (ScreenUtils.width / 2) - 22,
-        bottom: ScreenUtils.safeBottom
     },
     mineDot: {
         position: 'absolute',

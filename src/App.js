@@ -21,7 +21,6 @@ import {
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import Navigator from './navigation/Navigator';
-import { SpellShopFlag, SpellShopTab } from './navigation/Tab';
 import RouterMap, { routeNavigate, routePush } from './navigation/RouterMap';
 import user from '../src/model/user';
 import apiEnvironment from './api/ApiEnvironment';
@@ -33,7 +32,6 @@ import store from '@mr/rn-store';
 import ScreenUtils from './utils/ScreenUtils';
 import codePush from 'react-native-code-push';
 import chatModel from './utils/QYModule/QYChatModel';
-import showPinFlagModel from './model/ShowPinFlag';
 import settingModel from './pages/mine/model/SettingModel';
 import StringUtils from './utils/StringUtils';
 import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
@@ -43,7 +41,7 @@ import PrivacyModal from './pages/home/view/PrivacyModal';
 import { HomeAdModal_IOS } from './pages/home/view/HomeMessageModalView';
 import UserMemberUpdateModal from './pages/home/view/UserMemberUpdateModal';
 import homeModalManager from './pages/home/manager/HomeModalManager';
-import marketingUtils  from './pages/marketing/MarketingUtils';
+import marketingUtils from './pages/marketing/MarketingUtils';
 import MarketingModal from './pages/marketing/components/MarketingModal';
 
 const { JSPushBridge } = NativeModules;
@@ -258,8 +256,6 @@ class App extends Component {
                         global.$routes = currentState.routes;
                     }}
                 />
-                <SpellShopFlag isShowFlag={showPinFlagModel.showFlag}/>
-                <SpellShopTab isShowTab={showPinFlagModel.showFlag}/>
                 {
                     showDebugPanel === 'true' ?
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text

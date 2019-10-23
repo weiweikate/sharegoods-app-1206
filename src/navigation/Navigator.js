@@ -9,7 +9,6 @@ import RouterMap from './RouterMap';
 import Router from './Stack';
 import Analytics from '../utils/AnalyticsUtil';
 import bridge from '../utils/bridge';
-import showPinFlagModel from '../model/ShowPinFlag';
 
 //无需转场动画的页面
 const noAnimatedPage = [
@@ -93,18 +92,6 @@ RootStack.router.getStateForAction = (action, lastState) => {
             ...lastState.routes,
             index: routes.length - 1
         };
-    }
-    // 页面navigate场景
-    if (lastState && ((type === NavigationActions.NAVIGATE) || (type === StackActions.COMPLETE_TRANSITION))) {
-        // 拼店显示flag逻辑
-        if (routeName === 'HomePage' || routeName === 'ShowListPage'
-            || routeName === 'ShopCartPage' || routeName === 'MinePage') {
-            // showPinFlagModel.saveShowFlag(true);
-            showPinFlagModel.saveShowFlag(false);
-        } else {
-            showPinFlagModel.saveShowFlag(false);
-        }
-        Analytics.onPageStart(currentPage);
     }
 
     // push模式防止重复跳转到同一个页面
