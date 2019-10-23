@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 11,
-        marginTop: 4,
+        marginTop: 2,
         width: 60,
         textAlign: 'center'
     },
