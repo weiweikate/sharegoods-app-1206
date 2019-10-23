@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { BottomTabBar, createBottomTabNavigator } from 'react-navigation-tabs';
 import React, { Component } from 'react';
 import {
     DeviceEventEmitter,
@@ -47,6 +47,8 @@ class NormalTab extends Component {
 
 @observer
 class ActiveTab extends Component {
+
+
     render() {
         const { source, title } = this.props;
         return <View style={styles.tab}>
@@ -192,6 +194,20 @@ export class SpellShopTab extends Component {
     }
 }
 
+@observer
+export class TabBarComponent extends Component {
+    render() {
+        return <BottomTabBar
+            {...this.props}
+            style={{
+                backgroundColor: StringUtils.isEmpty(homeModule.tabColor) ? '#fff' : homeModule.tabColor,
+                height: 48,
+                borderTopWidth: 0.2,
+                borderTopColor: '#ccc'
+            }}/>;
+    }
+}
+
 export const TabNav = createBottomTabNavigator(
     {
         HomePage: {
@@ -289,17 +305,13 @@ export const TabNav = createBottomTabNavigator(
             pressColor: '#788493',
             //按下tab bar时的不透明度(仅支持iOS和Android < 5.0).
             pressOpacity: 0.8,
-            //tab bar的样式
-            style: {
-                backgroundColor: homeModule.tabColor ? '#ff2626' : '#fff',
-                height: 48,
-                borderTopWidth: 0.2,
-                borderTopColor: '#ccc'
-            },
             allowFontScaling: false,
             //tab 页指示符的样式 (tab页下面的一条线).
             indicatorStyle: { height: 0 }
         },
+        tabBarComponent: props => (
+            <TabBarComponent {...props} />
+        ),
         //tab bar的位置, 可选值： 'top' or 'bottom'
         tabBarPosition: 'bottom',
         //是否允许滑动切换tab页
