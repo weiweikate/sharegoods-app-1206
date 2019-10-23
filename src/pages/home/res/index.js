@@ -6,8 +6,8 @@ import task from './task';
 const resHome = {
     goods: require('./goods.png'),
     home_icon_logo_red: require('./home_icon_logo_red.png'),
+    home_icon_logo_white: require('./home_icon_logo_white.png'),
     icon_search: require('./icon_search.png'),
-    message: require('./message.png'),
     home_notice_bg: require('./home_notice_bg.png'),
     star: require('./star.png'),
     /** 首页5个icon*/
@@ -32,7 +32,9 @@ const resHome = {
     discount: require('./discount.png'),
     user_update_btn_bg: require('./user_update_btn_bg.png'),
     user_update: require('./user_update.png'),
-    category: require('./category.png'),
+    category_white: require('./category_white.png'),
+    category_main: require('./category_main.png'),
+    dou_red: require('./dou_red.png'),
     signIn: {
         ...signIn
     },

@@ -82,6 +82,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
             // 如果用户没有处理则让系统默认的异常处理器来处理
             mDefaultHandler.uncaughtException(thread, ex);
         } else {
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+            }
             // 应用重启
             Class clazz = null;
             try {
@@ -94,6 +98,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 ComponentName componentName = intent.getComponent();
                 Intent mainIntent = Intent.makeRestartActivityTask(componentName);
                 mContext.startActivity(mainIntent);
+                // 退出程序
                 System.exit(0);
                 System.gc();
             }

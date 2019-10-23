@@ -36,6 +36,7 @@ export const homeType = {
     custom_goods: 'WIDGET-GOODS',
     homeHotTitle: 'homeHotTitle',
     tabStaticView: 'tabStaticView',//首页类目占位的
+    activityCenter: 'activityCenter'// banner下面的活动中心
 };
 
 export const homeLinkType = {

@@ -8,22 +8,27 @@
  * Created by huchao on 2019/10/16.
  *
  */
+
+
 'use strict';
 
 import React from 'react';
 import { Animated, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import ImageLoader from '@mr/image-placeholder';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
 import { DefaultTabBar } from '@mr/react-native-scrollable-tab-view';
 import { tabModel } from './model/HomeTabModel';
 import res from './res';
 import RouterMap, { routePush } from '../../navigation/RouterMap';
+import { observer } from 'mobx-react';
+import { homeModule } from './model/Modules';
+import StringUtils from '../../utils/StringUtils';
+import DesignRule from '../../constants/DesignRule';
 
-const category = res.category;
-const tabBarHeight = ScreenUtils.px2dp(42);
+const tabBarHeight = ScreenUtils.autoSizeWidth(40);
 
+@observer
 export default class HomeTopTarBar extends React.Component {
 
     constructor(props) {
@@ -79,17 +84,29 @@ export default class HomeTopTarBar extends React.Component {
     render() {
         let p = this.props.p;
         let itemWidth = 60;
+        const colorNormal = StringUtils.isEmpty(homeModule.categoryImg) ? DesignRule.textColor_instruction : '#fff';
+        const colorSelect = StringUtils.isEmpty(homeModule.categoryImg) ? DesignRule.mainColor : '#fff';
+        const colorUnderLine = StringUtils.isEmpty(homeModule.categoryImg) ? DesignRule.mainColor : '#fff';
+        const resCategory = StringUtils.isEmpty(homeModule.categoryImg) ? res.category_main : res.category_white;
         return (
             <Animated.View style={{
                 height: tabBarHeight,
                 width: ScreenUtils.width,
-                backgroundColor: 'white',
-                position: 'absolute',
-                zIndex: 1,
-                transform: [{ translateY: this.state.top }],
                 flexDirection: 'row',
-                alignItems: 'center'
+                transform: [{ translateY: this.state.top }],
+                alignItems: 'center',
+                backgroundColor: StringUtils.isEmpty(homeModule.categoryImg) ? '#fff' : 'transparent',
+                position: 'absolute',
+                zIndex: 1
             }}>
+                <ImageLoader
+                    style={{
+                        width: ScreenUtils.width,
+                        height: tabBarHeight,
+                        position: 'absolute'
+                    }}
+                    source={{ uri: homeModule.categoryImg }}
+                    showPlaceholder={false}/>
                 <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
@@ -103,7 +120,7 @@ export default class HomeTopTarBar extends React.Component {
                         scrollValue={p.scrollValue}
                         tabs={p.tabs}
                         underlineStyle={{
-                            backgroundColor: DesignRule.mainColor,
+                            backgroundColor: colorUnderLine,
                             left: (itemWidth - 20) / 2,
                             width: 18,
                             height: 2.5,
@@ -138,8 +155,11 @@ export default class HomeTopTarBar extends React.Component {
                                                          width: itemWidth
                                                      }}
                                         /> :
-                                        <Text style={isTabActive ? styles.tabSelect : styles.tabNomal}
-                                              numberOfLines={1}>{name}</Text>
+                                        <Text
+                                            style={isTabActive ? [styles.tabSelect, { color: colorSelect }] : [
+                                                styles.tabNomal, { color: colorNormal }
+                                            ]}
+                                            numberOfLines={1}>{name}</Text>
                                     }
                                 </TouchableOpacity>
                             );
@@ -147,12 +167,15 @@ export default class HomeTopTarBar extends React.Component {
                     />
                 </ScrollView>
                 <TouchableOpacity
-                    style={{ marginTop: -6, width: 50, justifyContent: 'center', alignItems: 'center' }}
-                    activeOpacity={7}
+                    style={{
+                        marginTop: -6,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                    activeOpacity={0.7}
                     onPress={() => routePush(RouterMap.CategorySearchPage)}>
-                    <Image source={category}
-                           style={{ height: 38, width: 38 }}
-                    />
+                    <Image source={resCategory}
+                           style={{ height: 38, width: 38 }}/>
                 </TouchableOpacity>
             </Animated.View>
         );
@@ -161,11 +184,9 @@ export default class HomeTopTarBar extends React.Component {
 
 const styles = StyleSheet.create({
     tabNomal: {
-        fontSize: 13,
-        color: '#999999'
+        fontSize: 13
     },
     tabSelect: {
-        fontSize: 15,
-        color: DesignRule.mainColor
+        fontSize: 15
     }
 });

@@ -38,7 +38,7 @@ import HomeLimitGoTopView from '../HomeLimitGoTopView';
 import HomeLimitGoTimeView, { StaticLimitGoTimeView } from '../HomeLimitGoTimeView';
 import HomeTitleView from '../HomeTitleView';
 import StickyContainer from 'recyclerlistview/sticky';
-
+import HomeActivityCenterView from '../HomeActivityCenterView';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -68,10 +68,14 @@ export default class HomeFirstTabView extends Component {
 
         switch (type.type) {
             case homeType.tabStaticView:
-                dim.height = px2dp(42);
+                // 此处用autoSizeWidth，不要改成px2dp
+                dim.height = ScreenUtils.autoSizeWidth(40);
                 break;
             case homeType.swiper:
-                dim.height = bannerModule.bannerList.length > 0 ? bannerHeight + px2dp(5) : 0;
+                dim.height = bannerModule.bannerList.length > 0 ? bannerHeight : 0;
+                break;
+            case homeType.activityCenter:
+                dim.height = homeModule.centerImgHeight;
                 break;
             case homeType.task:
                 dim.height = taskModel.homeHeight;
@@ -129,6 +133,8 @@ export default class HomeFirstTabView extends Component {
                 marginTop: ScreenUtils.autoSizeWidth(5),
                 marginBottom: ScreenUtils.autoSizeWidth(10)
             }}/>;
+        } else if (type === homeType.activityCenter) {
+            return <HomeActivityCenterView/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={routePush}/>;
         } else if (type === homeType.expandBanner) {
@@ -214,8 +220,8 @@ export default class HomeFirstTabView extends Component {
             <HeaderLoading
                 isRefreshing={homeModule.isRefreshing}
                 onRefresh={this._onRefresh.bind(this)}
-                lineTop={42}
-                styled={{ marginTop: 42, height: headerHeight }}
+                lineTop={40}
+                styled={{ marginTop: 40, height: headerHeight }}
             />
         );
     };
