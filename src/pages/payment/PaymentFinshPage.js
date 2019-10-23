@@ -1,25 +1,18 @@
 import React from 'react';
 import BasePage from '../../BasePage';
-import {
-    View,
-    StyleSheet,
-    ScrollView,
-    Image,
-    TouchableOpacity
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
 import { MRText } from '../../components/ui';
 import LinearGradient from 'react-native-linear-gradient';
-import {TrackApi} from '../../utils/SensorsTrack';
+import { TrackApi } from '../../utils/SensorsTrack';
 import ShareUtil from '../../utils/ShareUtil';
 import user from '../../model/user';
 import PaymentApi from './PaymentApi';
 import apiEnvironment from '../../api/ApiEnvironment';
 import bridge from '../../utils/bridge';
-import { replaceRoute } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import FinshPayAlertView from './FinshPayAlertView';
 import RecommendProductView from '../product/productScore/components/RecommendProductView';
 import { GroupShareView } from './GroupShareView';
@@ -76,10 +69,7 @@ export default class PaymentFinshPage extends BasePage {
         setTimeout(() => {
             bridge.$checkIsCanComment();
         }, 2000);
-
     }
-
-
 
     componentDidMount() {
         PaymentApi.queryOrderGroupData({ platformOrderNo: this.params.platformOrderNo }).then((data) => {
@@ -122,16 +112,17 @@ export default class PaymentFinshPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
-               if(this.state.groupShareData && this.state.groupShareData.group){
-                   paySuccessMarketing.notifyPayPinLeave();
-               }
+                if (this.state.groupShareData && this.state.groupShareData.group) {
+                    paySuccessMarketing.notifyPayPinLeave();
+                }
             }
         );
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
     }
+
     _render() {
         return (
             <ScrollView style={Styles.contentStyle}>
