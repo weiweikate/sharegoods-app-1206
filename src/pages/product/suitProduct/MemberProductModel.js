@@ -31,8 +31,10 @@ export default class MemberProductModel {
     * groupCode
     * image
     * shareContent
-    * singlePurchaseNumber
     * subProducts
+    * singlePurchaseNumber
+    * maxPurchaseTimes 最大购买次数限制 0:无限制
+    * purchaseTimes 剩余可买次数
     * */
     @observable groupCode;
     @observable packageVideo = null;
@@ -42,6 +44,9 @@ export default class MemberProductModel {
     @observable afterSaleLimit = '';
     @observable afterSaleTip = '';
     @observable shareContent = '';
+    @observable singlePurchaseNumber;
+    @observable maxPurchaseTimes;
+    @observable purchaseTimes;
 
     @observable promotionInfoItem = {};
 
@@ -101,7 +106,10 @@ export default class MemberProductModel {
             this.extraType = extraType;
             this.freight = freight;
             this.mainProduct = mainProduct || {};
-            const { packageVideo, mainImages, detailImages, subProducts, afterSaleLimit, afterSaleTip, shareContent, groupCode } = packages[0] || {};
+            const {
+                packageVideo, mainImages, detailImages, subProducts, afterSaleLimit, afterSaleTip, shareContent, groupCode
+                , singlePurchaseNumber, maxPurchaseTimes, purchaseTimes
+            } = packages[0] || {};
             this.groupCode = groupCode;
             this.packageVideo = packageVideo;
             this.mainImages = mainImages;
@@ -110,6 +118,9 @@ export default class MemberProductModel {
             this.afterSaleLimit = afterSaleLimit;
             this.afterSaleTip = afterSaleTip;
             this.shareContent = shareContent;
+            this.singlePurchaseNumber = singlePurchaseNumber;
+            this.maxPurchaseTimes = maxPurchaseTimes;
+            this.purchaseTimes = purchaseTimes;
 
             this.promotionInfo(productCode, activityCode, groupCode);
         }).catch(e => {

@@ -270,7 +270,7 @@ export default class SelectionPage extends Component {
         if (!this.state.modalVisible) {
             return null;
         }
-        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku, isOnlyBuyOne, priceDesc, priceShow } = this.state.propData;
+        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku, isOnlyBuyOne, priceDesc, priceShow, isSinglePurchase } = this.state.propData;
         const { productDetailAddressModel } = this.state.data;
         return (
             <View style={styles.bgView}>
@@ -303,6 +303,7 @@ export default class SelectionPage extends Component {
                                                  maxCount={this.state.maxStock}
                                                  afterAmount={afterAmount}
                                                  promotionLimit={this.state.promotionLimit}
+                                                 isSinglePurchase={isSinglePurchase}
                                                  isOnlyBuyOne={isOnlyBuyOne}
                                                  type={type}/>}
                         </ScrollView>

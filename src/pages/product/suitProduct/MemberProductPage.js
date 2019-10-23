@@ -62,7 +62,15 @@ export default class MemberProductPage extends BasePage {
     };
 
     _buyAction = () => {
-        const { mainProduct, totalProPrice, productCode, activityCode, subProducts, promotionInfoItem, groupCode } = this.memberProductModel;
+        const {
+            mainProduct, totalProPrice, productCode, activityCode, subProducts, promotionInfoItem, groupCode,
+            singlePurchaseNumber, maxPurchaseTimes, purchaseTimes
+        } = this.memberProductModel;
+        //有限购次数&&已买次数>=限购次数
+        if (maxPurchaseTimes && purchaseTimes >= maxPurchaseTimes) {
+            this.$toastShow(`最多可购买${maxPurchaseTimes}次，已超过购买次数`);
+            return;
+        }
         const activityList = [{ activityCode }, {
             activityTag: promotionInfoItem.activityTag,
             promotionId: promotionInfoItem.promotionId,
@@ -99,7 +107,11 @@ export default class MemberProductPage extends BasePage {
                     }, ...orderProductList]
                 }
             });
-        }, { priceShow: show === 1 ? promotionPrice : totalProPrice });
+        }, {
+            priceShow: show === 1 ? promotionPrice : totalProPrice,
+            promotionLimitNum: singlePurchaseNumber,
+            isSinglePurchase: true
+        });
     };
 
     _allAction = () => {
