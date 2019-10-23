@@ -109,7 +109,7 @@ export default class MemberProductPage extends BasePage {
             });
         }, {
             priceShow: show === 1 ? promotionPrice : totalProPrice,
-            promotionLimitNum: singlePurchaseNumber,
+            singlePurchaseNumber: singlePurchaseNumber,
             isSinglePurchase: true
         });
     };
