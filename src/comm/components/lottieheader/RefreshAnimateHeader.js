@@ -106,6 +106,7 @@ function RefreshAnimateHeader(props) {
             onIdleRefresh={onIdleRefreshCallBack}
             backgroundColor={backgroundColor}
             lineTop={lineTop}
+            isHome={true}
         >
             <RefreshHeader style={[styles.container, {height: headerHeight+30},styled]}>
                 {lottie}
