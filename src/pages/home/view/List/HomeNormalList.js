@@ -506,7 +506,7 @@ export default class HomeNormalList extends React.Component {
 
         });
         if (temp.length > 0) {
-            arr.push(temp);
+            arr.push({type: 'goods', data: temp});
         }
         return arr;
     }
