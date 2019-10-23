@@ -34,6 +34,7 @@ export default class MemberProductModel {
     * singlePurchaseNumber
     * subProducts
     * */
+    @observable groupCode;
     @observable packageVideo = null;
     @observable mainImages = [];
     @observable detailImages = [];
@@ -101,6 +102,7 @@ export default class MemberProductModel {
             this.freight = freight;
             this.mainProduct = mainProduct || {};
             const { packageVideo, mainImages, detailImages, subProducts, afterSaleLimit, afterSaleTip, shareContent, groupCode } = packages[0] || {};
+            this.groupCode = groupCode;
             this.packageVideo = packageVideo;
             this.mainImages = mainImages;
             this.detailImages = detailImages;
