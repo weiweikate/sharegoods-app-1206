@@ -48,7 +48,8 @@ export class BannersVerticalView extends Component {
                                 routePush(router, params);
                             }
                         }}>
-                            <AutoHeightImage source={{ uri: image }} ImgWidth={ScreenUtils.width}/>
+                            <AutoHeightImage source={{ uri: image }}
+                                             ImgWidth={this.props.ImgWidth || ScreenUtils.width}/>
                         </NoMoreClick>;
                     })
                 }
