@@ -84,11 +84,13 @@ export default class DetailBottomView extends Component {
     };
 
     _renderAllBtn = () => {
-        const { isGroupIn, isPinGroupIn } = this.props.pData || {};
+        const { isGroupIn, isPinGroupIn, show } = this.props.pData || {};
+        //老礼包 || 拼团 || 会员权益  不显示购物车
+        const noShowCart = isGroupIn || isPinGroupIn || show === 1;
         return (
             <View style={styles.btnContainer}>
-                {this._renderShop()}
-                <View style={[styles.btnView, { width: (isGroupIn || isPinGroupIn) ? px2dp(292) : px2dp(260) }]}>
+                {!noShowCart && this._renderShop()}
+                <View style={[styles.btnView, { width: (noShowCart) ? px2dp(292) : px2dp(260) }]}>
                     {this._renderBuy()}
                     {this._renderShow()}
                 </View>
@@ -97,11 +99,7 @@ export default class DetailBottomView extends Component {
     };
 
     _renderShop = () => {
-        const { orderOnProduct, isGroupIn, isHuaFei, isPinGroupIn } = this.props.pData || {};
-        //老礼包不显示购物车
-        if (isGroupIn || isPinGroupIn) {
-            return null;
-        }
+        const { orderOnProduct, isHuaFei } = this.props.pData || {};
         //不能加购
         const cantJoin = orderOnProduct === 0 || isHuaFei;
         return (
