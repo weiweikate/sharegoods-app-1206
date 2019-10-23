@@ -7,6 +7,10 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import store from '@mr/rn-store/src/index';
 import DateUtils from '../../../utils/DateUtils';
+import { routePush } from '../../../navigation/RouterMap';
+import { Alert } from 'react-native';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import RouterMap from '../../../navigation/RouterMap';
 
 export default class MyShopDetailModel {
 
@@ -21,6 +25,8 @@ export default class MyShopDetailModel {
     @observable storeData = {};
     @observable storeUsers = [];
     @observable storeUserCount = 0;
+
+    @observable storeManagers = [];
 
     @observable waitToNormalUsers = 0;
     wayToPinType = '';
@@ -37,6 +43,11 @@ export default class MyShopDetailModel {
             this.isRefresh = false;
             this.storeData = data.data || {};
             this.requestHomePageList();
+            this.manageHomePageList();
+            const { roleType } = this.storeData;
+            if (roleType === 0) {
+                this.existsBindTutor();
+            }
             track(trackEvent.PinShopEnter, {
                 pinCode: this.storeData.storeCode,
                 wayToPinType: this.wayToPinType
@@ -60,6 +71,38 @@ export default class MyShopDetailModel {
             const { storeUserCount, storeUserList } = data.data || {};
             this.storeUsers = storeUserList || [];
             this.storeUserCount = storeUserCount;
+        });
+    };
+
+    manageHomePageList = () => {
+        const { storeCode } = this.storeData;
+        SpellShopApi.manageHomePageList({ storeCode }).then((data) => {
+            this.storeManagers = data.data || [];
+        });
+    };
+
+    existsBindTutor = () => {
+        SpellShopApi.existsBindTutor().then((data) => {
+            if (!data.data) {
+                store.get('@mr/alertToTutor').then((date) => {
+                    //一天弹一次
+                    if (!DateUtils.isToday(date)) {
+                        Alert.alert('温馨提醒', '专业导师能帮助您更好地管理店铺，轻松赚钱！快去邀请ta和您一起管理店铺吧~',
+                            [
+                                {
+                                    text: '马上邀请', onPress: () => {
+                                        store.save('@mr/alertToTutor', new Date());
+                                        const uri = apiEnvironment.getCurrentH5Url() + '/spellStore/tutor/list';
+                                        routePush(RouterMap.HtmlPage, {
+                                            uri: uri
+                                        });
+                                    }
+                                }
+                            ]
+                        );
+                    }
+                });
+            }
         });
     };
 
@@ -90,6 +133,7 @@ export default class MyShopDetailModel {
         SpellShopApi.waitToNormalUser().then((data) => {
             if (data.data > 0) {
                 store.get('@mr/hasWaitToNormalUser').then((date) => {
+                    //一天弹一次
                     if (!DateUtils.isToday(date)) {
                         this.waitToNormalUsers = data.data;
                     }

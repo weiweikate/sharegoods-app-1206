@@ -196,6 +196,10 @@ export default class ProductDetailModel {
     @observable title;
 
     /**营销活动**/
+    /*显示新活动 1显示*/
+    @observable show;
+    //显示新活动 文案
+    @observable showTag;
     @observable promotionLimitNum;
     /*0:秒杀;1:套餐;2:直降;3:满减;4:满折,5拼团*/
     @observable activityType;
@@ -279,11 +283,11 @@ export default class ProductDetailModel {
         }
     }
 
-    /*产品当前页是否使用活动价格  (直降 秒杀)进行中 (拼团未计算在内,因为有存在正常单独购买流程)*/
+    /*产品当前页是否使用活动价格  (直降 秒杀,新营销活动)进行中 (拼团未计算在内,因为有存在正常单独购买流程)*/
     @computed get productIsPromotionPrice() {
         const { activityType, activityStatus } = this;
         let tempType = activityType === activity_type.skill || activityType === activity_type.verDown;
-        return tempType && activityStatus === activity_status.inSell;
+        return (tempType && activityStatus === activity_status.inSell) || this.show;
     }
 
     @computed get isSkillIn() {
@@ -406,6 +410,9 @@ export default class ProductDetailModel {
 
     @computed get levelText() {
         const { priceType, activityStatus, activityType } = this;
+        if (this.show) {
+            return this.showTag;
+        }
         if (activityStatus === activity_status.inSell && activityType === activity_type.verDown) {
             return this.tags[0] || '';
         }
@@ -480,7 +487,6 @@ export default class ProductDetailModel {
 
             let contentArr = isNoEmpty(content) ? content.split(',') : [];
 
-            this.loadingState = PageLoadingState.success;
             this.type = type;
             this.videoUrl = videoUrl;
             this.imgUrl = imgUrl;
@@ -524,13 +530,16 @@ export default class ProductDetailModel {
 
     //根据地址获取
     @action productPromotionSuccess = (promotionInfo) => {
+        this.loadingState = PageLoadingState.success;
         const {
             promoteInfoVOList,
             promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
             promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice,
             promotionAttentionNum, promotionSaleRate,
-            selfReturning, shareMoney, now, skuList
+            selfReturning, shareMoney, now, skuList, show, showTag
         } = promotionInfo;
+        this.showTag = showTag;
+        this.show = show;
         const { singleActivity, groupActivity, tags } = promotionResult || {};
         this.singleActivity = singleActivity || {};
         this.groupActivity = groupActivity || {};
@@ -583,6 +592,22 @@ export default class ProductDetailModel {
             this.shareMoney = shareMoney;
         }
 
+        /*浏览商品详情埋点,isTracked上传一次*/
+        !this.isTracked && track(trackEvent.ProductDetail, {
+            sgspm: this.sgspm,
+            sgscm: this.sgscm,
+            productShowSource: this.trackType || 0,
+            sourceAttributeCode: this.trackCode || 0,
+            spuCode: this.prodCode,
+            spuName: this.name,
+            productType: this.trackProductStatus(),
+            priceShareStore: this.groupPrice,
+            productStatus: this.activityStatus || 0,
+            priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : this.minPrice,
+            priceType: this.priceType === price_type.shop ? '100' : user.levelRemark
+        });
+        this.isTracked = true;
+
         //拼团
         const { activityType } = this;
         if (activityType !== activity_type.pinGroup) {
@@ -597,19 +622,6 @@ export default class ProductDetailModel {
         this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
         this.productGroupModel.requestGroupProduct({ activityCode: code, prodCode: this.prodCode });
         this.productGroupModel.requestGroupDesc();
-
-        /*商品详情埋点*/
-        track(trackEvent.ProductDetail, {
-            productShowSource: this.trackType || 0,
-            sourceAttributeCode: this.trackCode || 0,
-            spuCode: this.prodCode,
-            spuName: this.name,
-            productType: this.trackProductStatus(),
-            priceShareStore: this.groupPrice,
-            productStatus: this.activityStatus || 0,
-            priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : this.minPrice,
-            priceType: this.priceType === price_type.shop ? '100' : user.levelRemark
-        });
     };
 
     trackProductStatus = () => {
@@ -705,11 +717,10 @@ export default class ProductDetailModel {
             /*获取当前商品供应商*/
             this.requestShopInfo(tempData.merchantCode);
             /**赋值prodCode会autoRun自动拉取库存**/
-            if (tempData && tempData.type !== 3) {
-                this.productDetailAddressModel.productPromotionSuccess = this.productPromotionSuccess;
-                this.productDetailAddressModel.templateCode = tempData.freightTemplateCode;
-                this.productDetailAddressModel.prodCode = this.prodCode;
-            }
+            this.productDetailAddressModel.productPromotionSuccess = this.productPromotionSuccess;
+            this.productDetailAddressModel.productPromotionFail = this.productError;
+            this.productDetailAddressModel.templateCode = tempData.freightTemplateCode;
+            this.productDetailAddressModel.prodCode = this.prodCode;
         }).catch((e) => {
             this.productError(e);
         });

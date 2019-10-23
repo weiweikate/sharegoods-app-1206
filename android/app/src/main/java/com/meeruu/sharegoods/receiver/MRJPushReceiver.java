@@ -97,6 +97,9 @@ public class MRJPushReceiver extends JPushMessageReceiver {
                 } catch (JSONException e) {
                 }
                 break;
+            case "sendMemberLevelUpEvent":
+                EventBus.getDefault().post(new Event.MRUserUpdateEvent(content));
+                break;
             case "ActivitySkip":
                 // 跳标
                 EventBus.getDefault().post(new Event.MRNativeTagEvent(content));

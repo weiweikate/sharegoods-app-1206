@@ -64,6 +64,7 @@ const {
     mine_icon_fans,
     mine_icon_show,
     // mine_levelBg,
+    my_strength,
     mine_showOrder
 } = res.homeBaseImg;
 
@@ -150,7 +151,8 @@ export default class MinePage extends BasePage {
             'didFocus',
             payload => {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-                settingModel.memberSwitch();//请求后台会员权益开关状态
+                settingModel.memberSwitch(); //请求后台会员权益开关状态
+                settingModel.myStrengthSwitch(); // 请求后台是否展示我的战力入口
                 const { state } = payload;
                 this.loadMessageCount();
                 this.loadAd();
@@ -413,19 +415,19 @@ export default class MinePage extends BasePage {
         return (
             <View style={styles.headerBgStyle}>
                 <View
-                    style={{ height: px2dp(68), flexDirection: 'row', marginRight: px2dp(5), alignItems: 'flex-end' }}>
+                    style={{height: px2dp(68), flexDirection: 'row', marginRight: px2dp(5), alignItems: 'flex-end'}}>
                     <TouchableOpacity onPress={this.jumpToUserInformationPage} activeOpacity={1}>
                         {icon}
                     </TouchableOpacity>
                     <View style={{
-                        flex: 1,
+                        flex: 3,
                         height: px2dp(54),
                         marginLeft: px2dp(10),
                         justifyContent: 'center'
                     }}>
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
                             <View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                     <Text maxLength={8}
                                           style={{
                                               color: DesignRule.textColor_mainTitle,
@@ -435,15 +437,21 @@ export default class MinePage extends BasePage {
                                         {name}
                                     </Text>
                                     <UIImage source={res.button.white_go}
-                                             style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12) }}
+                                             style={{height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12)}}
                                              resizeMode={'stretch'}/>
                                 </View>
-                                <View style={{ flexDirection: 'row' }}>
+                                <View style={{flexDirection: 'row'}}>
                                     {xiuOld}
                                     {accreditID}
                                 </View>
                             </View>
                         </TouchableWithoutFeedback>
+                    </View>
+                    <View style={{flex: 1, height: px2dp(68), alignItems: 'flex-end', marginRight: 9}}>
+                        <TouchableOpacity onPress={this.jumpToSettingPage} activeOpacity={1}
+                                          style={{width: 24, height: 24}}>
+                            <Image style={{width: 24, height: 24, }} source={mine_setting_icon_gray}/>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', flex: 1 }}>
@@ -471,7 +479,7 @@ export default class MinePage extends BasePage {
                             return;
                         }
                         if (beVip) {
-                            this.$navigate(RouterMap.HtmlPage, {uri: '/custom/ZDYZT201909251743341'});
+                            this.$navigate(RouterMap.HtmlPage, {uri: 'https://h5.sharegoodsmall.com/custom/ZDYZT201909251743341'});
                         } else {
                             this.$navigate(RouterMap.HtmlPage, {uri: '/mine/memberRights'});
                         }
@@ -661,7 +669,7 @@ export default class MinePage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.totalBalance ? user.totalBalance : '0.00', false), '个人账户(元)', 1, () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.totalBalance ? user.totalBalance : '0.00', false), '个人账户', 1, () => {
                         settingModel.availableBalanceAdd();
                         this.go2CashDetailPage(1);
                         TrackApi.ViewAccountBalance();
@@ -1075,14 +1083,6 @@ export default class MinePage extends BasePage {
             }
         };
 
-        let setting = {
-            text: '设置',
-            icon: mine_setting_icon_gray,
-            onPress: () => {
-                this.jumpToSettingPage();
-            }
-        };
-
         let spellGroup = {
             text: '我的拼团',
             icon: mine_icon_group,
@@ -1091,9 +1091,20 @@ export default class MinePage extends BasePage {
             }
         };
 
-        let menu = [message, address, service, collect, spellGroup, setting];
+        let myStrength = {
+            text: '我的战力',
+            icon: my_strength,
+            onPress: () => {
+                this.$navigate(RouterMap.HtmlPage, {uri: '/mine/strength'});
+            }
+        };
+
+        let menu = [message, address, service, collect, spellGroup];
 
 
+        if(settingModel.myStrengthState){
+            menu.push(myStrength);
+        }
         if (this.state.hasFans) {
             menu.unshift(fans);
         }

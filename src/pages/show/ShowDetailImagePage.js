@@ -1,11 +1,9 @@
 import React from 'react';
-import {
-    StyleSheet,
-    View
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import FlyImageViewer from '../../comm/components/FlyImageViewer';
 import BasePage from '../../BasePage';
+import DesignRule from '../../constants/DesignRule';
 
 export default class ShowDetailImagePage extends BasePage {
     $navigationBarOptions = {
@@ -16,6 +14,11 @@ export default class ShowDetailImagePage extends BasePage {
     static navigationOptions = {
         gesturesEnabled: false
     };
+
+    // 更换页面背景色
+    $setBackgroundColor() {
+        return DesignRule.textColor_mainTitle;
+    }
 
     _render() {
         return (

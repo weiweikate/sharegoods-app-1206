@@ -32,6 +32,8 @@ const resHome = {
     icon_shopCar: require('./icon_shopCar.png'),
     home_limit_progress: require('./home_limit_progress.png'),
     discount: require('./discount.png'),
+    user_update_btn_bg: require('./user_update_btn_bg.png'),
+    user_update: require('./user_update.png'),
     signIn: {
         ...signIn
     },

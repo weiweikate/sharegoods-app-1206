@@ -122,6 +122,7 @@ export class ProductDetailAddressModel {
 
     //根据地址返回促销信息商品详情回调
     productPromotionSuccess = null;
+    productPromotionFail = null;
     @observable prodCode = null;
     @observable templateCode = null;
     /*个人地址列表*/
@@ -233,6 +234,8 @@ export class ProductDetailAddressModel {
             this.promotionInfoItem = tempData;
             this.freightPrice = freight;
             this.productPromotionSuccess && this.productPromotionSuccess(tempData);
+        }).catch(e => {
+            this.productPromotionFail && this.productPromotionFail(e);
         });
     });
 

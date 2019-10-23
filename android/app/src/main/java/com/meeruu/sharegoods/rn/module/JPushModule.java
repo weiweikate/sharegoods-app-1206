@@ -46,4 +46,10 @@ public class JPushModule extends ReactContextBaseJavaModule {
         this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("MINE_NATIVE_TO_RN_MSG", event.getData());
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUserUpdate(Event.MRUserUpdateEvent event) {
+        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("nativeEvent_userUpdate", event.getContent());
+    }
 }

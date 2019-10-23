@@ -1,8 +1,6 @@
 'use strict';
 
-import React, {
-    Component,
-} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     Dimensions,
@@ -11,7 +9,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     ViewPropTypes,
-    View
+    View,
 } from 'react-native';
 
 const DEFAULT_PREVIEW_OPEN_DELAY = 700;
@@ -30,11 +28,11 @@ const SCROLL_LOCK_MILLISECONDS = 300;
  </SwipeRow>
  */
 class SwipeRow extends Component {
-
     constructor(props) {
         super(props);
         this.isOpen = false;
         this.previousTrackedTranslateX = 0;
+        this.currentTranslateX = 0;
         this.previousTrackedDirection = null;
         this.horizontalSwipeGestureBegan = false;
         this.swipeInitialX = null;
@@ -44,53 +42,76 @@ class SwipeRow extends Component {
         this.isForceClosing = false;
         this.state = {
             dimensionsSet: false,
-            hiddenHeight: this.props.disableHiddenLayoutCalculation ? '100%' : 0,
-            hiddenWidth: this.props.disableHiddenLayoutCalculation ? '100%' : 0
+            hiddenHeight: this.props.disableHiddenLayoutCalculation
+                ? '100%'
+                : 0,
+            hiddenWidth: this.props.disableHiddenLayoutCalculation ? '100%' : 0,
         };
         this._translateX = new Animated.Value(0);
 
         this._panResponder = PanResponder.create({
-            onMoveShouldSetPanResponder: (e, gs) => this.handleOnMoveShouldSetPanResponder(e, gs),
+            onMoveShouldSetPanResponder: (e, gs) =>
+                this.handleOnMoveShouldSetPanResponder(e, gs),
             onPanResponderMove: (e, gs) => this.handlePanResponderMove(e, gs),
             onPanResponderRelease: (e, gs) => this.handlePanResponderEnd(e, gs),
-            onPanResponderTerminate: (e, gs) => this.handlePanResponderEnd(e, gs),
-            onShouldBlockNativeResponder: _ => false,
+            onPanResponderTerminate: (e, gs) =>
+                this.handlePanResponderEnd(e, gs),
+            onShouldBlockNativeResponder: () => false,
         });
 
-        if (this.props.onSwipeValueChange) {
-            this._translateX.addListener(({ value }) => {
+        this._translateX.addListener(({ value }) => {
+            this.currentTranslateX = value;
+            if (this.props.onSwipeValueChange) {
                 let direction = this.previousTrackedDirection;
                 if (value !== this.previousTrackedTranslateX) {
-                    direction = value > this.previousTrackedTranslateX ? 'right' : 'left';
+                    direction =
+                        value > this.previousTrackedTranslateX
+                            ? 'right'
+                            : 'left';
                 }
-                this.props.onSwipeValueChange && this.props.onSwipeValueChange({
+                this.props.onSwipeValueChange &&
+                this.props.onSwipeValueChange({
                     isOpen: this.isOpen,
                     direction,
                     value,
                 });
                 this.previousTrackedTranslateX = value;
                 this.previousTrackedDirection = direction;
-            });
-        }
+            }
+        });
 
-        if (this.props.forceCloseToRightThreshold && this.props.forceCloseToRightThreshold > 0) {
+        if (
+            this.props.forceCloseToRightThreshold &&
+            this.props.forceCloseToRightThreshold > 0
+        ) {
             this._translateX.addListener(({ value }) => {
-                if(!this.isForceClosing && (Dimensions.get('window').width + value) < this.props.forceCloseToRightThreshold) {
+                if (
+                    !this.isForceClosing &&
+                    Dimensions.get('window').width + value <
+                    this.props.forceCloseToRightThreshold
+                ) {
                     this.isForceClosing = true;
                     this.forceCloseRow('right');
-                    if(this.props.onForceCloseToRight) {
+                    if (this.props.onForceCloseToRight) {
                         this.props.onForceCloseToRight();
                     }
                 }
             });
         }
 
-        if (this.props.forceCloseToLeftThreshold && this.props.forceCloseToRightThreshold > 0) {
+        if (
+            this.props.forceCloseToLeftThreshold &&
+            this.props.forceCloseToRightThreshold > 0
+        ) {
             this._translateX.addListener(({ value }) => {
-                if(!this.isForceClosing && (Dimensions.get('window').width - value) < this.props.forceCloseToLeftThreshold) {
+                if (
+                    !this.isForceClosing &&
+                    Dimensions.get('window').width - value <
+                    this.props.forceCloseToLeftThreshold
+                ) {
                     this.isForceClosing = true;
                     this.forceCloseRow('left');
-                    if(this.props.onForceCloseToLeft) {
+                    if (this.props.onForceCloseToLeft) {
                         this.props.onForceCloseToLeft();
                     }
                 }
@@ -99,44 +120,54 @@ class SwipeRow extends Component {
     }
 
     componentWillUnmount() {
-        clearTimeout(this._ensureScrollEnabledTimer)
+        clearTimeout(this._ensureScrollEnabledTimer);
         this._translateX.removeAllListeners();
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.state.hiddenHeight !== nextState.hiddenHeight ||
+        if (
+            this.state.hiddenHeight !== nextState.hiddenHeight ||
             this.state.hiddenWidth !== nextState.hiddenWidth ||
             !this.props.shouldItemUpdate ||
-            (this.props.shouldItemUpdate && this.props.shouldItemUpdate(this.props.item, nextProps.item))) {
-            return true
+            (this.props.shouldItemUpdate &&
+                this.props.shouldItemUpdate(this.props.item, nextProps.item))
+        ) {
+            return true;
         }
 
         return false;
     }
 
     getPreviewAnimation(toValue, delay) {
-        return Animated.timing(
-            this._translateX,
-            { duration: this.props.previewDuration, toValue, delay, useNativeDriver: this.props.useNativeDriver }
-        );
+        return Animated.timing(this._translateX, {
+            duration: this.props.previewDuration,
+            toValue,
+            delay,
+            useNativeDriver: this.props.useNativeDriver,
+        });
     }
 
     onContentLayout(e) {
         this.setState({
             dimensionsSet: !this.props.recalculateHiddenLayout,
-            ...(!this.props.disableHiddenLayoutCalculation ? {
-                hiddenHeight: e.nativeEvent.layout.height,
-                hiddenWidth: e.nativeEvent.layout.width,
-            } : {})
+            ...(!this.props.disableHiddenLayoutCalculation
+                ? {
+                    hiddenHeight: e.nativeEvent.layout.height,
+                    hiddenWidth: e.nativeEvent.layout.width,
+                }
+                : {}),
         });
 
         if (this.props.preview && !this.ranPreview) {
             this.ranPreview = true;
-            let previewOpenValue = this.props.previewOpenValue || this.props.rightOpenValue * 0.5;
-            this.getPreviewAnimation(previewOpenValue, this.props.previewOpenDelay)
-                .start( _ => {
-                    this.getPreviewAnimation(0, PREVIEW_CLOSE_DELAY).start();
-                });
+            const previewOpenValue =
+                this.props.previewOpenValue || this.props.rightOpenValue * 0.5;
+            this.getPreviewAnimation(
+                previewOpenValue,
+                this.props.previewOpenDelay
+            ).start(() => {
+                this.getPreviewAnimation(0, PREVIEW_CLOSE_DELAY).start();
+            });
         }
     }
 
@@ -157,7 +188,7 @@ class SwipeRow extends Component {
 
     handlePanResponderMove(e, gestureState) {
         /* If the view is force closing, then ignore Moves. Return */
-        if(this.isForceClosing) {
+        if (this.isForceClosing) {
             return;
         }
 
@@ -168,7 +199,10 @@ class SwipeRow extends Component {
 
         // this check may not be necessary because we don't capture the move until we pass the threshold
         // just being extra safe here
-        if (absDx > this.props.directionalDistanceChangeThreshold || absDy > this.props.directionalDistanceChangeThreshold) {
+        if (
+            absDx > this.props.directionalDistanceChangeThreshold ||
+            absDy > this.props.directionalDistanceChangeThreshold
+        ) {
             // we have enough to determine direction
             if (absDy > absDx && !this.horizontalSwipeGestureBegan) {
                 // user is moving vertically, do nothing, listView will handle
@@ -179,12 +213,13 @@ class SwipeRow extends Component {
             if (this.parentScrollEnabled) {
                 // disable scrolling on the listView parent
                 this.parentScrollEnabled = false;
-                this.props.setScrollEnabled && this.props.setScrollEnabled(false);
+                this.props.setScrollEnabled &&
+                this.props.setScrollEnabled(false);
             }
 
             if (this.swipeInitialX === null) {
                 // set tranlateX value when user started swiping
-                this.swipeInitialX = this._translateX._value
+                this.swipeInitialX = this.currentTranslateX;
             }
             if (!this.horizontalSwipeGestureBegan) {
                 this.horizontalSwipeGestureBegan = true;
@@ -192,12 +227,22 @@ class SwipeRow extends Component {
             }
 
             let newDX = this.swipeInitialX + dx;
-            if (this.props.disableLeftSwipe  && newDX < 0) { newDX = 0; }
-            if (this.props.disableRightSwipe && newDX > 0) { newDX = 0; }
+            if (this.props.disableLeftSwipe && newDX < 0) {
+                newDX = 0;
+            }
+            if (this.props.disableRightSwipe && newDX > 0) {
+                newDX = 0;
+            }
 
-
-            if (this.props.stopLeftSwipe && newDX > this.props.stopLeftSwipe) { newDX = this.props.stopLeftSwipe; }
-            if (this.props.stopRightSwipe && newDX < this.props.stopRightSwipe) { newDX = this.props.stopRightSwipe; }
+            if (this.props.stopLeftSwipe && newDX > this.props.stopLeftSwipe) {
+                newDX = this.props.stopLeftSwipe;
+            }
+            if (
+                this.props.stopRightSwipe &&
+                newDX < this.props.stopRightSwipe
+            ) {
+                newDX = this.props.stopRightSwipe;
+            }
 
             this._translateX.setValue(newDX);
         }
@@ -208,45 +253,70 @@ class SwipeRow extends Component {
             this.parentScrollEnabled = true;
             this.props.setScrollEnabled && this.props.setScrollEnabled(true);
         }
-    }
+    };
 
     handlePanResponderEnd(e, gestureState) {
         /* PandEnd will reset the force-closing state when it's true. */
-        if(this.isForceClosing) {
+        if (this.isForceClosing) {
             this.isForceClosing = false;
         }
         // decide how much the velocity will affect the final position that the list item settles in.
-        const swipeToOpenVelocityContribution = this.props.swipeToOpenVelocityContribution;
-        const possibleExtraPixels = this.props.rightOpenValue * (swipeToOpenVelocityContribution);
-        const clampedVelocity = Math.min(gestureState.vx, MAX_VELOCITY_CONTRIBUTION);
-        const projectedExtraPixels = possibleExtraPixels * (clampedVelocity / MAX_VELOCITY_CONTRIBUTION);
+        const swipeToOpenVelocityContribution = this.props
+            .swipeToOpenVelocityContribution;
+        const possibleExtraPixels =
+            this.props.rightOpenValue * swipeToOpenVelocityContribution;
+        const clampedVelocity = Math.min(
+            gestureState.vx,
+            MAX_VELOCITY_CONTRIBUTION
+        );
+        const projectedExtraPixels =
+            possibleExtraPixels * (clampedVelocity / MAX_VELOCITY_CONTRIBUTION);
 
         // re-enable scrolling on listView parent
-        this._ensureScrollEnabledTimer = setTimeout(this.ensureScrollEnabled, SCROLL_LOCK_MILLISECONDS);
+        this._ensureScrollEnabledTimer = setTimeout(
+            this.ensureScrollEnabled,
+            SCROLL_LOCK_MILLISECONDS
+        );
 
         // finish up the animation
         let toValue = 0;
-        if (this._translateX._value >= 0) {
+        if (this.currentTranslateX >= 0) {
             // trying to swipe right
-            if (this.swipeInitialX < this._translateX._value) {
-                if ((this._translateX._value - projectedExtraPixels) > this.props.leftOpenValue * (this.props.swipeToOpenPercent / 100)) {
+            if (this.swipeInitialX < this.currentTranslateX) {
+                if (
+                    this.currentTranslateX - projectedExtraPixels >
+                    this.props.leftOpenValue *
+                    (this.props.swipeToOpenPercent / 100)
+                ) {
                     // we're more than halfway
                     toValue = this.props.leftOpenValue;
                 }
             } else {
-                if ((this._translateX._value - projectedExtraPixels) > this.props.leftOpenValue * (1 - (this.props.swipeToClosePercent / 100))) {
+                if (
+                    this.currentTranslateX - projectedExtraPixels >
+                    this.props.leftOpenValue *
+                    (1 - this.props.swipeToClosePercent / 100)
+                ) {
                     toValue = this.props.leftOpenValue;
                 }
             }
         } else {
             // trying to swipe left
-            if (this.swipeInitialX > this._translateX._value) {
-                if ((this._translateX._value - projectedExtraPixels) < this.props.rightOpenValue * (this.props.swipeToOpenPercent / 100)) {
+            if (this.swipeInitialX > this.currentTranslateX) {
+                if (
+                    this.currentTranslateX - projectedExtraPixels <
+                    this.props.rightOpenValue *
+                    (this.props.swipeToOpenPercent / 100)
+                ) {
                     // we're more than halfway
                     toValue = this.props.rightOpenValue;
                 }
             } else {
-                if ((this._translateX._value - projectedExtraPixels) < this.props.rightOpenValue * (1 - (this.props.swipeToClosePercent / 100))) {
+                if (
+                    this.currentTranslateX - projectedExtraPixels <
+                    this.props.rightOpenValue *
+                    (1 - this.props.swipeToClosePercent / 100)
+                ) {
                     toValue = this.props.rightOpenValue;
                 }
             }
@@ -268,10 +338,12 @@ class SwipeRow extends Component {
      */
     forceCloseRow(direction) {
         this.manuallySwipeRow(0, () => {
-            if(direction === 'right' && this.props.onForceCloseToRightEnd) {
+            if (direction === 'right' && this.props.onForceCloseToRightEnd) {
                 this.props.onForceCloseToRightEnd();
-            }
-            else if(direction === 'left' && this.props.onForceCloseToLeftEnd) {
+            } else if (
+                direction === 'left' &&
+                this.props.onForceCloseToLeftEnd
+            ) {
                 this.props.onForceCloseToLeftEnd();
             }
         });
@@ -291,16 +363,13 @@ class SwipeRow extends Component {
     }
 
     manuallySwipeRow(toValue, onAnimationEnd) {
-        Animated.spring(
-            this._translateX,
-            {
-                toValue,
-                friction: this.props.friction,
-                tension: this.props.tension,
-                useNativeDriver: this.props.useNativeDriver,
-            }
-        ).start( _ => {
-            this.ensureScrollEnabled()
+        Animated.spring(this._translateX, {
+            toValue,
+            friction: this.props.friction,
+            tension: this.props.tension,
+            useNativeDriver: this.props.useNativeDriver,
+        }).start(() => {
+            this.ensureScrollEnabled();
             if (toValue === 0) {
                 this.isOpen = false;
                 this.props.onRowDidClose && this.props.onRowDidClose();
@@ -308,7 +377,7 @@ class SwipeRow extends Component {
                 this.isOpen = true;
                 this.props.onRowDidOpen && this.props.onRowDidOpen(toValue);
             }
-            if(onAnimationEnd) {
+            if (onAnimationEnd) {
                 onAnimationEnd();
             }
         });
@@ -324,33 +393,32 @@ class SwipeRow extends Component {
         this.horizontalSwipeGestureBegan = false;
     }
 
+    combinedOnPress = () => {
+        const onPress = this.props.children[1].props.onPress;
+        this.onRowPress();
+        onPress && onPress();
+    };
+
     renderVisibleContent() {
+        if (!this.props.closeOnRowPress) {
+            return this.props.children[1];
+        }
+
         // handle touchables
         const onPress = this.props.children[1].props.onPress;
 
         if (onPress) {
-            const newOnPress = (...args) => {
-                this.onRowPress();
-                onPress(...args);
-            }
-            return React.cloneElement(
-                this.props.children[1],
-                {
-                    ...this.props.children[1].props,
-                    onPress: newOnPress
-                }
-            );
+            return React.cloneElement(this.props.children[1], {
+                ...this.props.children[1].props,
+                onPress: this.combinedOnPress,
+            });
         }
 
         return (
-            <TouchableOpacity
-                activeOpacity={1}
-                onPress={ _ => this.onRowPress() }
-            >
+            <TouchableOpacity activeOpacity={1} onPress={this.combinedOnPress}>
                 {this.props.children[1]}
             </TouchableOpacity>
-        )
-
+        );
     }
 
     renderRowContent() {
@@ -363,9 +431,7 @@ class SwipeRow extends Component {
                     {...this._panResponder.panHandlers}
                     style={{
                         zIndex: 2,
-                        transform: [
-                            {translateX: this._translateX}
-                        ]
+                        transform: [{ translateX: this._translateX }],
                     }}
                 >
                     {this.renderVisibleContent()}
@@ -376,12 +442,10 @@ class SwipeRow extends Component {
                 <Animated.View
                     manipulationModes={['translateX']}
                     {...this._panResponder.panHandlers}
-                    onLayout={ (e) => this.onContentLayout(e) }
+                    onLayout={e => this.onContentLayout(e)}
                     style={{
                         zIndex: 2,
-                        transform: [
-                            {translateX: this._translateX}
-                        ]
+                        transform: [{ translateX: this._translateX }],
                     }}
                 >
                     {this.renderVisibleContent()}
@@ -392,21 +456,24 @@ class SwipeRow extends Component {
 
     render() {
         return (
-            <View style={this.props.style ? this.props.style : styles.container}>
-                <View style={[
-                    styles.hidden,
-                    {
-                        height: this.state.hiddenHeight,
-                        width: this.state.hiddenWidth,
-                    }
-                ]}>
+            <View
+                style={this.props.style ? this.props.style : styles.container}
+            >
+                <View
+                    style={[
+                        styles.hidden,
+                        {
+                            height: this.state.hiddenHeight,
+                            width: this.state.hiddenWidth,
+                        },
+                    ]}
+                >
                     {this.props.children[0]}
                 </View>
                 {this.renderRowContent()}
             </View>
         );
     }
-
 }
 
 const styles = StyleSheet.create({
@@ -569,6 +636,10 @@ SwipeRow.propTypes = {
      * useNativeDriver: true for all animations where possible
      */
     useNativeDriver: PropTypes.bool,
+    /**
+     * Children
+     */
+    children: PropTypes.node.isRequired,
 };
 
 SwipeRow.defaultProps = {

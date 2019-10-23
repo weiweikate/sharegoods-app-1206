@@ -38,6 +38,8 @@ import {
 import MyShopDetailModel from './MyShopDetailModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import RouterMap from '../../../navigation/RouterMap';
+import { homeType } from '../../home/HomeTypes';
+import { BannersVerticalView } from '../../../comm/components/BannersVerticalView';
 // 图片资源
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
@@ -160,6 +162,7 @@ export default class MyShopPage extends BasePage {
             isRefresh: true
         }, () => {
             this._loadPageData();
+            this.BannersVerticalView.fetchBannerList && this.BannersVerticalView.fetchBannerList();
             spellStatusModel.getUser(0);
         });
     };
@@ -435,6 +438,8 @@ export default class MyShopPage extends BasePage {
                             colors={[DesignRule.mainColor]}
                         />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
+                {userStatus === 1 &&
+                <BannersVerticalView ref={(ref) => this.BannersVerticalView = ref} type={homeType.store31}/>}
                 <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <ShopMoneyExplainView MyShopDetailModel={this.MyShopDetailModel}/>

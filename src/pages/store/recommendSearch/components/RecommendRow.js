@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import AvatarImage from '../../../../components/ui/AvatarImage';
+import UIImage from '@mr/image-placeholder';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import LinearGradient from 'react-native-linear-gradient';
@@ -25,7 +25,7 @@ export default class RecommendRow extends Component {
     };
 
     render() {
-        const { headUrl, name, userName, level, users, tradeBalanceOfMonth, totalTradeBalance } = this.props.RecommendRowItem;
+        const { headUrl, name, userName, level, users, tradeBalanceOfMonth, totalTradeBalance, tutorName } = this.props.RecommendRowItem;
         /*星星*/
         const starsArr = [];
         if (level && typeof level === 'number') {
@@ -37,7 +37,7 @@ export default class RecommendRow extends Component {
         return (
             <NoMoreClick style={styles.viewContainer} onPress={this._onPress}>
                 <View style={styles.headerViewContainer}>
-                    <AvatarImage style={styles.icon} source={{ uri: headUrl || '' }}/>
+                    <UIImage style={styles.icon} source={{ uri: headUrl || '' }} isAvatar={true}/>
                     <View style={styles.tittleContainer}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Text style={styles.shopName} numberOfLines={1}>{name || ''}</Text>
@@ -50,17 +50,18 @@ export default class RecommendRow extends Component {
                             </View>
                         </View>
                         <Text style={styles.name} numberOfLines={1}>{`店主: ${userName || ''}`}</Text>
+                        {tutorName?<Text style={styles.name} numberOfLines={1}>{`导师: ${tutorName || ''}`}</Text>:null}
                     </View>
                 </View>
                 <View style={styles.bottomContainer}>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>{`${tradeBalanceOfMonth || '0.00'}`}</Text>
-                        <Text style={styles.containBottom}>店铺本月销售额(元)</Text>
+                        <Text style={styles.containBottom}>店铺本月销售额</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>{`${totalTradeBalance || '0.00'}`}</Text>
-                        <Text style={styles.containBottom}>店铺累计销售额(元)</Text>
+                        <Text style={styles.containBottom}>店铺累计销售额</Text>
                     </View>
                 </View>
                 <View style={styles.iconView}>
@@ -75,9 +76,22 @@ export default class RecommendRow extends Component {
                                         <Text style={styles.moreIconText}>...</Text>
                                     </View>;
                                 }
-                                return <AvatarImage key={index}
-                                                    style={[styles.itemIcon, index === 0 && { marginLeft: 0 }]}
-                                                    source={{ uri: item.headImg }}/>;
+                                const { tutorStatus, roleType, headImg } = item;
+                                const showMore = tutorStatus === 1 || roleType === 0;
+                                return <UIImage key={index}
+                                                style={[styles.itemIcon, index === 0 && { marginLeft: 0 }]}
+                                                isAvatar={true}
+                                                source={{ uri: headImg }}>
+                                    {showMore && <LinearGradient style={styles.roleView}
+                                                                 start={{ x: 0, y: 0 }}
+                                                                 end={{ x: 1, y: 0 }}
+                                                                 colors={roleType === 0 ? ['#FC5D39', '#FF0050'] : ['#FFCB02', '#FF9502']}>
+                                        <Text style={{
+                                            fontSize: 10,
+                                            color: 'white'
+                                        }}>{roleType === 0 ? '店主' : '导师'}</Text>
+                                    </LinearGradient>}
+                                </UIImage>;
                             })
                         }
                     </View>
@@ -137,8 +151,14 @@ const styles = StyleSheet.create({
     },
 
     itemIcon: {
-        width: 32, height: 32, borderRadius: 16, overflow: 'hidden', marginLeft: -15
+        width: 32, height: 32, borderRadius: 16, overflow: 'hidden', marginLeft: -15,
+        justifyContent: 'flex-end', alignItems: 'center'
     },
+
+    roleView: {
+        alignItems: 'center', justifyContent: 'center', width: 26, height: 14, borderRadius: 7
+    },
+
     moreIconView: {
         width: 32, height: 32, borderRadius: 16, marginLeft: -15, backgroundColor: '#E5E5E5',
         justifyContent: 'center', alignItems: 'center'

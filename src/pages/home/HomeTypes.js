@@ -32,6 +32,7 @@ export const homeType = {
     store28: 28,//拼店权益页面广告
     store29: 29,//拼店开店页面广告
     store30: 30,//拼店扩容页面广告
+    store31: 31,//百万活动
     paySuccess: 27,//订单支付完成页面广告位
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
@@ -53,8 +54,7 @@ export const homeLinkType = {
     store: 11,      //店铺
     classify: 12,      //分类
     nothing: 13,      //无跳转
-    page: 14,      //页面路由
-    showHtml: 16      //当前页面显示网页内容
+    page: 14      //页面路由
 };
 
 export const homeRoute = {
@@ -125,7 +125,7 @@ export function topicAdOnPress(data, item, p, title, orderTrackParams) {
 
     }
     let route = '';
-    let params = {}
+    let params = {};
     switch (linkType) {
         case 1://商品
             p2.contentType = 1;
@@ -166,10 +166,10 @@ export function topicAdOnPress(data, item, p, title, orderTrackParams) {
             break;
     }
     if (route) {
-        if (orderTrackParams){
-            params = {...params,...orderTrackParams}
+        if (orderTrackParams) {
+            params = { ...params, ...orderTrackParams };
         }
-        routePush(route,params)
+        routePush(route, params);
     }
     if (p) {
         p.contentValue = title || '';
