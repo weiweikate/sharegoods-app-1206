@@ -1,10 +1,16 @@
 import React from 'react';
 import BasePage from '../../BasePage';
-import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    ScrollView,
+    Image,
+    TouchableOpacity, BackHandler
+} from 'react-native';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
-import { MRText } from '../../components/ui';
+import {MRText} from '../../components/ui';
 import LinearGradient from 'react-native-linear-gradient';
 import { TrackApi } from '../../utils/SensorsTrack';
 import ShareUtil from '../../utils/ShareUtil';
@@ -15,13 +21,14 @@ import bridge from '../../utils/bridge';
 import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import FinshPayAlertView from './FinshPayAlertView';
 import RecommendProductView from '../product/productScore/components/RecommendProductView';
-import { GroupShareView } from './GroupShareView';
-import { BannersVerticalView } from '../../comm/components/BannersVerticalView';
-import { homeType } from '../home/HomeTypes';
+import {GroupShareView} from './GroupShareView';
+import {BannersVerticalView} from '../../comm/components/BannersVerticalView';
+import {homeType} from '../home/HomeTypes';
 import paySuccessMarketing from '../marketing/controller/PaySuccessController';
+import marketingUtils from '../marketing/MarketingUtils';
 
 
-const { px2dp } = ScreenUtils;
+const {px2dp} = ScreenUtils;
 const {
     slice_point,
     coupon_bg,
@@ -30,20 +37,20 @@ const {
     share_to_wx
 } = res;
 
-const RenderSeparator = ({ title }) => <View
-    style={{ height: 20, width: ScreenUtils.width, flexDirection: 'row', marginTop: px2dp(20) }}>
-    <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
-        <View style={{ height: px2dp(1), backgroundColor: '#FFE1C8', width: px2dp(28) }}/>
-        <Image source={slice_point} style={{ width: px2dp(10), height: px2dp(9) }}/>
+const RenderSeparator = ({title}) => <View
+    style={{height: 20, width: ScreenUtils.width, flexDirection: 'row', marginTop: px2dp(20)}}>
+    <View style={{flex: 1, justifyContent: 'center', flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{height: px2dp(1), backgroundColor: '#FFE1C8', width: px2dp(28)}}/>
+        <Image source={slice_point} style={{width: px2dp(10), height: px2dp(9)}}/>
     </View>
-    <View style={{ alignItems: 'center', justifyContent: 'center', width: px2dp(225) }}>
-        <MRText style={{ fontSize: px2dp(13), color: DesignRule.textColor_mainTitle }}>
+    <View style={{alignItems: 'center', justifyContent: 'center', width: px2dp(225)}}>
+        <MRText style={{fontSize: px2dp(13), color: DesignRule.textColor_mainTitle}}>
             {title}
         </MRText>
     </View>
-    <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
-        <Image source={slice_point} style={{ width: px2dp(10), height: px2dp(9) }}/>
-        <View style={{ height: px2dp(1), backgroundColor: '#FFE1C8', width: px2dp(28) }}/>
+    <View style={{flex: 1, justifyContent: 'center', flexDirection: 'row', alignItems: 'center'}}>
+        <Image source={slice_point} style={{width: px2dp(10), height: px2dp(9)}}/>
+        <View style={{height: px2dp(1), backgroundColor: '#FFE1C8', width: px2dp(28)}}/>
     </View>
 </View>;
 
@@ -64,7 +71,7 @@ export default class PaymentFinshPage extends BasePage {
             groupShareData: {}
         };
         //orderPayResultPageType 有券无劵
-        TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
+        TrackApi.ViewOrderPayPage({orderPayType: 2, orderPayResultPageType: 2});
         //
         setTimeout(() => {
             bridge.$checkIsCanComment();
@@ -72,8 +79,8 @@ export default class PaymentFinshPage extends BasePage {
     }
 
     componentDidMount() {
-        PaymentApi.queryOrderGroupData({ platformOrderNo: this.params.platformOrderNo }).then((data) => {
-            const { group } = data.data || {};
+        PaymentApi.queryOrderGroupData({platformOrderNo: this.params.platformOrderNo}).then((data) => {
+            const {group} = data.data || {};
             if (group) {
                 this.setState({
                     groupShareData: data.data
@@ -81,7 +88,7 @@ export default class PaymentFinshPage extends BasePage {
                 paySuccessMarketing.notifyPayPin();
             } else {
                 paySuccessMarketing.notifyPayNormal();
-                PaymentApi.getUserCouponAmount({ couponIdList: 81 }).then(result => {
+                PaymentApi.getUserCouponAmount({couponIdList: 81}).then(result => {
                     this.setState({
                         couponIdList: result.data || []
                     });
@@ -110,17 +117,42 @@ export default class PaymentFinshPage extends BasePage {
         });
 
         this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                if (this.state.groupShareData && this.state.groupShareData.group) {
+                    BackHandler.addEventListener('paymentFinish', this.handleBackPress);
+                }
+            }
+        );
+
+        this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
                 if (this.state.groupShareData && this.state.groupShareData.group) {
-                    paySuccessMarketing.notifyPayPinLeave();
+                    BackHandler.removeEventListener('paymentFinish', this.handleBackPress);
                 }
             }
         );
     }
 
+    $NavBarLeftPressed = () => {
+        this.handleBackPress();
+    }
+
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.willBlurSubscription && this.didFocusSubscription.remove();
+    }
+
+    handleBackPress = () => {
+        if (this.state.groupShareData && this.state.groupShareData.group && paySuccessMarketing.leaveNeedShow && paySuccessMarketing.residueDegree > 0) {
+            paySuccessMarketing.notifyPayPinLeave();
+        } else if (marketingUtils.isShowModal) {
+            marketingUtils.closeModal();
+        } else {
+            this.$navigateReplace(RouterMap.MyOrdersListPage);
+        }
+        return true;
     }
 
     _render() {
@@ -143,7 +175,7 @@ export default class PaymentFinshPage extends BasePage {
     }
 
     renderCouponList = () => {
-        const { couponIdList } = this.state;
+        const {couponIdList} = this.state;
         let couponItemViewList = [];
         if (Array.isArray(couponIdList) && couponIdList.length > 0) {
 
@@ -159,21 +191,21 @@ export default class PaymentFinshPage extends BasePage {
      * @returns {*}
      */
     renderTopSuccessView = () => {
-        const { group } = this.state.groupShareData || {};
+        const {group} = this.state.groupShareData || {};
         return (
             <View style={Styles.topSuccessBgStyle}>
-                <View style={{ justifyContent: 'center', alignItems: 'center', height: px2dp(180) }}>
-                    <Image source={pay_success_icon} style={{ height: px2dp(72), width: px2dp(72) }}/>
+                <View style={{justifyContent: 'center', alignItems: 'center', height: px2dp(180)}}>
+                    <Image source={pay_success_icon} style={{height: px2dp(72), width: px2dp(72)}}/>
                     <MRText style={{
                         fontSize: px2dp(23),
                         color: DesignRule.textColor_mainTitle,
                         marginTop: px2dp(22)
                     }}>支付成功</MRText>
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1}}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <TouchableOpacity
-                            activeOpacity={0.7} style={{ width: px2dp(100), height: px2dp(34) }}
+                            activeOpacity={0.7} style={{width: px2dp(100), height: px2dp(34)}}
                             onPress={() => {
                                 if (group) {
                                     replaceRoute(RouterMap.HtmlPage, {
@@ -193,14 +225,14 @@ export default class PaymentFinshPage extends BasePage {
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
-                                <MRText style={{ color: DesignRule.textColor_instruction, fontSize: px2dp(15) }}>
+                                <MRText style={{color: DesignRule.textColor_instruction, fontSize: px2dp(15)}}>
                                     {group ? '拼团首页' : '返回首页'}
                                 </MRText>
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <TouchableOpacity activeOpacity={0.7} style={{ width: px2dp(100), height: px2dp(34) }}
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <TouchableOpacity activeOpacity={0.7} style={{width: px2dp(100), height: px2dp(34)}}
                                           onPress={() => {
                                               this._toOrder();
                                           }}>
@@ -214,7 +246,7 @@ export default class PaymentFinshPage extends BasePage {
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
-                                <MRText style={{ color: DesignRule.mainColor, fontSize: px2dp(15) }}>
+                                <MRText style={{color: DesignRule.mainColor, fontSize: px2dp(15)}}>
                                     查看订单
                                 </MRText>
                             </View>
@@ -245,7 +277,7 @@ export default class PaymentFinshPage extends BasePage {
             orderPayType: 2,
             orderPayResultBtnType: 2
         });
-        replaceRoute('order/order/MyOrdersListPage', { index: 0 });
+        replaceRoute('order/order/MyOrdersListPage', {index: 0});
     };
 
     /**
@@ -268,20 +300,20 @@ export default class PaymentFinshPage extends BasePage {
      */
     _renderCouponItem = (itemData) => {
         return (
-            <View style={{ height: px2dp(95), justifyContent: 'center', alignItems: 'center', marginTop: px2dp(10) }}>
+            <View style={{height: px2dp(95), justifyContent: 'center', alignItems: 'center', marginTop: px2dp(10)}}>
                 <View style={Styles.couponItemBgStyle}>
-                    <View style={{ width: px2dp(70), alignItems: 'center', justifyContent: 'center' }}>
-                        <Image source={coupon_bg} style={{ width: px2dp(65), height: px2dp(65) }}/>
+                    <View style={{width: px2dp(70), alignItems: 'center', justifyContent: 'center'}}>
+                        <Image source={coupon_bg} style={{width: px2dp(65), height: px2dp(65)}}/>
                     </View>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <MRText style={{ color: '#AD4604', fontSize: px2dp(16) }}>
+                    <View style={{flex: 1, justifyContent: 'center'}}>
+                        <MRText style={{color: '#AD4604', fontSize: px2dp(16)}}>
                             商品兑换券
                         </MRText>
-                        <MRText style={{ color: '#B4B4B4', fontSize: px2dp(12), marginTop: px2dp(3) }}>
+                        <MRText style={{color: '#B4B4B4', fontSize: px2dp(12), marginTop: px2dp(3)}}>
                             有效期：{this.format(itemData.expireTime)}
                         </MRText>
                     </View>
-                    <View style={{ width: px2dp(90), alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{width: px2dp(90), alignItems: 'center', justifyContent: 'center'}}>
                         <TouchableOpacity activeOpacity={0.7} onPress={() => {
                             this._couponItemClick(itemData);
                         }}>
@@ -293,9 +325,9 @@ export default class PaymentFinshPage extends BasePage {
                                                 justifyContent: 'center',
                                                 borderRadius: px2dp(13)
                                             }}
-                                            start={{ x: 0, y: 0 }}
-                                            end={{ x: 1, y: 1 }}>
-                                <MRText style={{ color: DesignRule.color_fff, fontSize: px2dp(13) }}>
+                                            start={{x: 0, y: 0}}
+                                            end={{x: 1, y: 1}}>
+                                <MRText style={{color: DesignRule.color_fff, fontSize: px2dp(13)}}>
                                     立即使用
                                 </MRText>
                             </LinearGradient>
@@ -327,9 +359,9 @@ export default class PaymentFinshPage extends BasePage {
      */
     _renderShareView = () => {
         return (
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 <RenderSeparator title={'分享给好友，即可获得三张券'}/>
-                <MRText style={{ color: '#AD4604', SizeSize: px2dp(14), marginTop: px2dp(10) }}>立即分享至</MRText>
+                <MRText style={{color: '#AD4604', SizeSize: px2dp(14), marginTop: px2dp(10)}}>立即分享至</MRText>
                 <TouchableOpacity activeOpacity={0.7} onPress={() => {
                     this._shareToWX();
                 }}>
@@ -343,10 +375,10 @@ export default class PaymentFinshPage extends BasePage {
                                         flexDirection: 'row',
                                         marginTop: px2dp(10)
                                     }}
-                                    start={{ x: 0, y: 0 }}
-                                    end={{ x: 1, y: 1 }}>
-                        <Image source={share_to_wx} style={{ height: px2dp(20), width: px2dp(24) }}/>
-                        <MRText style={{ color: DesignRule.color_fff, fontSize: px2dp(14), marginLeft: px2dp(10) }}>
+                                    start={{x: 0, y: 0}}
+                                    end={{x: 1, y: 1}}>
+                        <Image source={share_to_wx} style={{height: px2dp(20), width: px2dp(24)}}/>
+                        <MRText style={{color: DesignRule.color_fff, fontSize: px2dp(14), marginLeft: px2dp(10)}}>
                             分享微信好友
                         </MRText>
                     </LinearGradient>
@@ -364,8 +396,8 @@ export default class PaymentFinshPage extends BasePage {
                         flexDirection: 'row',
                         marginTop: px2dp(10)
                     }}>
-                        <Image source={share_to_friend_circle} style={{ height: px2dp(20), width: px2dp(24) }}/>
-                        <MRText style={{ color: '#AD4604', fontSize: px2dp(14), marginLeft: px2dp(10) }}>
+                        <Image source={share_to_friend_circle} style={{height: px2dp(20), width: px2dp(24)}}/>
+                        <MRText style={{color: '#AD4604', fontSize: px2dp(14), marginLeft: px2dp(10)}}>
                             分享到朋友圈
                         </MRText>
                     </View>
@@ -460,7 +492,7 @@ const Styles = StyleSheet.create({
     },
     couponItemBgStyle: {
         elevation: 20,
-        shadowOffset: { width: 0, height: 0 },
+        shadowOffset: {width: 0, height: 0},
         shadowOpacity: 1,
         shadowRadius: 5,
         shadowColor: DesignRule.textColor_secondTitle,

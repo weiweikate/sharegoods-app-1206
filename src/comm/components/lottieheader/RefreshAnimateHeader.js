@@ -18,7 +18,7 @@ const RefreshStatus = {
 }
 
 function RefreshAnimateHeader(props) {
-    const {refreshing, onRefresh, source, headerHeight = 50, backgroundColor,styled,lineTop} = props;
+    const {refreshing, onRefresh, source, headerHeight = 50, backgroundColor,lineTop} = props;
 
     const lottieRef = useRef(React.createRef());
     const progressRef = useRef(new Animated.Value(1));
@@ -106,9 +106,10 @@ function RefreshAnimateHeader(props) {
             onIdleRefresh={onIdleRefreshCallBack}
             backgroundColor={backgroundColor}
             lineTop={lineTop}
-            isHome={true}
+            height={headerHeight+30}
+
         >
-            <RefreshHeader style={[styles.container, {height: headerHeight+30},styled]}>
+            <RefreshHeader style={[styles.container, {height: headerHeight+30}]}>
                 {lottie}
                 <MRText style={{height:20,color:DesignRule.textColor_instruction,fontSize:DesignRule.fontSize_20,marginBottom:10}}>{status}</MRText>
             </RefreshHeader>

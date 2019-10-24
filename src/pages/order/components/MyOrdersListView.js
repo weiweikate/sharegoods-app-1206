@@ -69,10 +69,10 @@ export default class MyOrdersListView extends Component {
                         return result.data.isMore ? 10 : 0;
                     }}
                     onStartRefresh={() => {
-                        Toast.showLoading();
+                        // Toast.showLoading();
                     }}
                     onEndRefresh={() => {
-                        Toast.hiddenLoading();
+                        // Toast.hiddenLoading();
                     }}
                     emptyHeight={ScreenUtils.height - ScreenUtils.headerHeight - 200}
                 />

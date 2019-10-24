@@ -45,7 +45,9 @@ const index = {
     mine_btn_red: require('./btnRed.png'),
     mine_btn_yellow: require('./btnYellow.png'),
     mine_levelBg: require('./levelBg.png'),
-    mine_arrow_black: require('./mine_vip_arrow_black.png')
+    mine_arrow_black: require('./mine_vip_arrow_black.png'),
+    my_strength: require('./my_strength.png')
+
 
 };
 export default index;

@@ -98,9 +98,6 @@ export default class HomeFirstTabView extends Component {
             case homeType.limitGoTime:
                 dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitTimeHeight : 0;
                 break;
-            case homeType.limitGoGoods:
-                dim.height = px2dp(140);
-                break;
             case homeType.goodsTitle:
                 // dim.height = homeModule.tabList.length > 0 ? px2dp(66-13) : 0;
                 dim.height = px2dp(42);
@@ -111,6 +108,7 @@ export default class HomeFirstTabView extends Component {
             case homeType.custom_text:
             case homeType.custom_goods:
             case homeType.custom_imgAD:
+            case homeType.limitGoGoods:
                 dim.height = type.itemHeight || 0;
                 break;
             default:
@@ -229,7 +227,7 @@ export default class HomeFirstTabView extends Component {
                 isRefreshing={homeModule.isRefreshing}
                 onRefresh={this._onRefresh.bind(this)}
                 lineTop={ScreenUtils.autoSizeWidth(40) + 1}
-                styled={{ marginTop: ScreenUtils.autoSizeWidth(40) + 1, height: headerHeight }}
+
             />
         );
     };
@@ -249,7 +247,7 @@ export default class HomeFirstTabView extends Component {
         }
 
         if (type.type === homeType.limitStaticViewDismiss) {
-            DeviceEventEmitter.emit('staticeLimitGoTimeView', true);
+            DeviceEventEmitter.emit('staticeLimitGoTimeView', false);
         }
         return <View/>;
     };
@@ -263,13 +261,13 @@ export default class HomeFirstTabView extends Component {
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         let stickyHeaderIndices = [];
         homeList.forEach((item, index) => {
-            if (item.type === homeType.goodsTitle) {
-                stickyHeaderIndices.push(index);
-            }
+            // if (item.type === homeType.goodsTitle) {
+            //     stickyHeaderIndices.push(index);
+            // }
 
             if (item.type === homeType.limitGoTime) {
                 this.limitGoTimeIndex = index;
-                stickyHeaderIndices.push(index - 1);
+                stickyHeaderIndices.push(index-1);//把限时购前一条也设成stick，为了提早收起顶部类目导航
                 stickyHeaderIndices.push(index);
             }
 

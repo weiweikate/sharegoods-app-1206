@@ -360,6 +360,7 @@ export default class RequestDetailPage extends BasePage {
     _render() {
 
         let WebAdModal = this.WebAdModal;
+        console.log(this.state.uri)
         return (
             <View style={{ flex: 1, overflow: 'hidden' }}>
                 <WebViewBridge
