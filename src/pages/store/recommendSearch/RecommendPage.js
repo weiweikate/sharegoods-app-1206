@@ -373,7 +373,7 @@ export default class RecommendPage extends BasePage {
                              renderSectionHeader={this._renderSectionHeader}
                              renderItem={this._renderItem}
                              sections={[{ data: this.state.dataList }]}
-                             stickySectionHeadersEnabled={false}
+                             stickySectionHeadersEnabled={true}
                              initialNumToRender={5}/>
                 <IntervalMsgView pageType={IntervalType.shopHome}/>
             </View>
