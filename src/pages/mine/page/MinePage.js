@@ -903,13 +903,15 @@ export default class MinePage extends BasePage {
     }
 
     renderBodyView = () => {
-        let views = this.state.groupData && this.state.groupData.map((item) => {
+        let views = this.state.groupData && this.state.groupData.map((item, index) => {
             return (
-                <MineSpellGroupView data={item}
-                                    timeEnd={this.loadGroupList}
-                                    itemClick={() => {
-                                        this.$navigate(RouterMap.SpellGroupList);
-                                    }}
+                <MineSpellGroupView
+                    key={'GroupView' + index}
+                    data={item}
+                    timeEnd={this.loadGroupList}
+                    itemClick={() => {
+                        this.$navigate(RouterMap.SpellGroupList);
+                    }}
                 />
             )
         });

@@ -1,5 +1,8 @@
 import React from 'react';
-import { Clipboard, RefreshControl, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import {
+     Clipboard, RefreshControl, ScrollView, StyleSheet, TouchableWithoutFeedback,
+    View,
+} from 'react-native';
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
 import UserSingleItem from '../../components/UserSingleItem';
@@ -12,6 +15,8 @@ import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 import CommModal from '../../../../comm/components/CommModal';
 import { MRText as Text } from '../../../../components/ui';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
+import  DatePicker from 'react-native-datepicker';
+import ActionSheetView from '../../../spellShop/components/ActionSheetView';
 
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -27,8 +32,7 @@ export default class UserInformationPage extends BasePage {
 
     $navigationBarOptions = {
         title: '个人资料',
-        show: true // false则隐藏导航
-        // hiddenNav:false
+        show: true, // false则隐藏导航
     };
 
     constructor(props) {
@@ -166,15 +170,19 @@ export default class UserInformationPage extends BasePage {
                                 onPress={() => this.jumpToSetWechatPage()}/>
                 {this.renderWideLine()}
 
-                <UserSingleItem leftText={'性别'} rightText={''}
+                <UserSingleItem leftText={'性别'} rightText={user.sex === 1 ? '男' : user.sex === 2 ? '女' : '去设置'}
                                 rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isArrow={true}
-                                onPress={() => {}}/>
-
-                <UserSingleItem leftText={'生日'} rightText={''}
+                                onPress={() => {
+                                    this.setUserSex()
+                                }}/>
+                <UserSingleItem leftText={'生日'} rightText={user.birthday || '去设置'}
                                 rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isLine={false} isArrow={true}
-                                onPress={() =>{}}/>
+                                onPress={() => {
+                                    this.setUserBirthday()
+                                }}/>
+
                 {this.renderWideLine()}
 
                 <UserSingleItem leftText={'所在区域'}
@@ -199,6 +207,33 @@ export default class UserInformationPage extends BasePage {
                                     numberOfLines: 2
                                 }]} leftTextStyle={styles.blackText} isLine={false}
                                 onPress={() => this.editProfile()}/>
+                <DatePicker
+                    ref={(e)=>{this.datePicker = e}}
+                    customStyles={{dateTouchBody:{height:0,width:0}}}
+                    mode="date"
+                    date={user.birthday}
+                    format="YYYY-MM-DD"
+                    minDate="1949-05-01"
+                    maxDate="2040-06-01"
+                    showIcon={false}
+                    onDateChange={(date) => {
+                        MineApi.upSexAndBirthday({birthday: date}).then((response) => {
+                            this.$loadingDismiss();
+                            if (response.code === 10000) {
+                                user.birthday = date;
+                                this.$toastShow('生日修改成功');
+                            }
+                        }).catch(error => {
+                            this.$loadingDismiss();
+                            if (error.code === 10009) {
+                                this.gotoLoginPage();
+                            }else {
+                                this.$toastShow(error.msg);
+                            }
+                        });
+                    }}
+                />
+                <ActionSheetView ref={ref => {this.actionSheetRef = ref;}} />
                 {this.copyModal()}
             </ScrollView>
         );
@@ -258,6 +293,32 @@ export default class UserInformationPage extends BasePage {
 
     jumpToSetWechatPage = () => {
         this.$navigate(RouterMap.SetWechatPage, { weChatNumber: user.weChatNumber });
+    };
+
+    setUserSex = () => {
+        this.actionSheetRef.show({
+            items: ['男', '女']
+        }, (item, index) => {
+            this.$loadingShow();
+            MineApi.upSexAndBirthday({sex: index + 1}).then((response) => {
+                this.$loadingDismiss();
+                if (response.code === 10000) {
+                    user.sex = index + 1;
+                    this.$toastShow('性别修改成功');
+                }
+            }).catch(error => {
+                this.$loadingDismiss();
+                if (error.code === 10009) {
+                    this.gotoLoginPage();
+                }else {
+                    this.$toastShow(error.msg);
+                }
+            });
+        });
+    };
+
+    setUserBirthday= ()=>{
+        this.datePicker.onPressDate&&this.datePicker.onPressDate();
     };
 
     renderGetCityPicker = () => {

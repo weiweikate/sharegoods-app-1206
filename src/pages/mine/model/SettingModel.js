@@ -49,6 +49,7 @@ class SettingModel {
     @observable
     messageState = 0;
 
+    //判断是否显示新版会员权益
     @observable
     memberSwitchState =  false//!DateUtils.getDateDiffFun('2019/10/25 00:00:00', '');
 
