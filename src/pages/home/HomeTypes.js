@@ -21,7 +21,6 @@ export const homeType = {
     classify: 'classify',
     category: 'category',
     goodsTitle: 'goodsTitle',
-    task: 'task',
     show: 11,            //秀场
     banner: 14,
     limitGo: 300,   //限时秒杀

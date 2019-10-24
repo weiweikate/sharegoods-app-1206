@@ -5,7 +5,6 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import { homeType } from '../../HomeTypes';
 import { bannerModule } from '../../model/HomeBannerModel';
 import HomeBannerView, { bannerHeight } from '../HomeBannerView';
-import taskModel from '../../model/TaskModel';
 import { channelModules } from '../../model/HomeChannelModel';
 import { homeExpandBnnerModel } from '../../model/HomeExpandBnnerModel';
 import { limitGoModule } from '../../model/HomeLimitGoModel';
@@ -21,7 +20,6 @@ import {
     View
 } from 'react-native';
 import { routePush } from '../../../../navigation/RouterMap';
-import TaskView from '../TaskView';
 import HomeChannelView from '../HomeChannelView';
 import HomeExpandBannerView from '../HomeExpandBannerView';
 import HomeLimitGoGoodsView from '../HomeLimitGoGoodsView';
@@ -82,9 +80,6 @@ export default class HomeFirstTabView extends Component {
             case homeType.newUserArea:
                 dim.height = homeNewUserModel.imgHeight;
                 break;
-            case homeType.task:
-                dim.height = taskModel.homeHeight;
-                break;
             case homeType.channel:
                 dim.height = channelModules.channelHeight;
                 break;
@@ -131,11 +126,6 @@ export default class HomeFirstTabView extends Component {
         type = type.type;
         if (type === homeType.swiper) {
             return <HomeBannerView navigate={routePush}/>;
-        } else if (type === homeType.task) {
-            return <TaskView type={'home'} style={{
-                marginTop: ScreenUtils.autoSizeWidth(5),
-                marginBottom: ScreenUtils.autoSizeWidth(10)
-            }}/>;
         } else if (type === homeType.activityCenter) {
             return <HomeActivityCenterView/>;
         } else if (type === homeType.channel) {
@@ -177,7 +167,6 @@ export default class HomeFirstTabView extends Component {
     _onRefresh() {
         homeModule.isRefreshing = true;
         homeModule.loadHomeList();
-        taskModel.getData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
     }
 

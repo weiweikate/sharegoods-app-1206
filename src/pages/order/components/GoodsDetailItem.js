@@ -16,7 +16,8 @@ const GoodsDetailItem = props => {
         afterSaleService,
         afterSaleServiceClick,
         style,
-        activityCodes
+        activityCodes,
+        msgList
     } = props;
     afterSaleService = afterSaleService || [];
     this.renderLine = () => {
@@ -77,6 +78,7 @@ const GoodsDetailItem = props => {
             <GoodsGrayItem
                 uri={uri}
                 activityCodes={activityCodes}
+                msgList={msgList}
                 goodsName={goodsName}
                 salePrice={salePrice}
                 category={category}

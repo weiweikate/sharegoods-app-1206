@@ -18,12 +18,19 @@ export const limitStatus = {
 };
 
 export class LimitGoModules {
-    @observable
-    spikeList = [];
+    //所有限时购的数据
+    @observable spikeList = [];
+    //当前也数据
     currentGoodsList = [];
+    //当前在哪一页
     @observable currentPage = -1;
+    //是否显示免单
     @observable isShowFreeOrder = false;
 
+    /**
+     * 返回限时购顶部高度
+     * @returns {Number}
+     */
     @computed get limitTopHeight() {
         let height = px2dp(42);
         if (this.isShowFreeOrder) {
@@ -32,39 +39,25 @@ export class LimitGoModules {
         return height;
     }
 
+    /**
+     * 返回限时购时间组件的高度
+     * @returns {Number}
+     */
     @computed get limitTimeHeight() {
         return px2dp(55);
     }
 
-    @computed get limitGoodsHeight() {
-        const len = (this.currentGoodsList && this.currentGoodsList.length) || 0;
-        return len * px2dp(130) + (len - 1) * px2dp(10);
+    /**
+     * 选中限时购
+     * @param index 选中限时购的下巴
+     */
+    @action changeLimitGo(index) {
+        this.currentGoodsList = (this.spikeList[index] && this.spikeList[index].goods) || [];
+        this.currentPage = index;
+        homeModule.changelimitGoods(this.currentGoodsList);
     }
 
-    handleData(data){
-        let promises = []
-        data.forEach((sbuData)=> {
-            (sbuData.productDetailList || [] ).forEach((item, index) => {
-                //处理自定义专题
-                if (item.specialSubject) {
-                    promises.push(asyncHandleTopicData({data: item.specialSubject}).then((data)=>{
-                        //将处理完的数组插回原来的数组，替代原来老自定义专题数据
-                        sbuData.productDetailList.splice(sbuData.productDetailList.indexOf(item),1,...data)
-                    }));
-                    //处理限时购商品数据
-                }else if (!item.type) {
-                    item.type = homeType.limitGoGoods;
-                    //第一个marginTop为0,其余都为10
-                    item.itemHeight = (index === 0? px2dp(130):px2dp(140));
-                    item.marginTop = (index === 0? px2dp(0):px2dp(10));
-                }
-            })
-        })
 
-        return  Promise.all(promises).then(() => {
-            return data;
-        })
-    }
 
     @action loadLimitGo = flow(function* (change) {
         HomeApi.freeOrderSwitch().then((data) => {
@@ -82,7 +75,7 @@ export class LimitGoModules {
                     type: 0
                 });
                 let result = res.data || [];
-                result = yield this.handleData(result)
+                result = yield this._handleData(result)
 
                 let _spikeList = [];
                 let timeFormats = [];
@@ -183,10 +176,29 @@ export class LimitGoModules {
         });
     }
 
-    @action changeLimitGo(index) {
-        this.currentGoodsList = (this.spikeList[index] && this.spikeList[index].goods) || [];
-        this.currentPage = index;
-        homeModule.changelimitGoods(this.currentGoodsList);
+    _handleData(data){
+        let promises = []
+        data.forEach((sbuData)=> {
+            (sbuData.productDetailList || [] ).forEach((item, index) => {
+                //处理自定义专题
+                if (item.specialSubject) {
+                    promises.push(asyncHandleTopicData({data: item.specialSubject}).then((data)=>{
+                        //将处理完的数组插回原来的数组，替代原来老自定义专题数据
+                        sbuData.productDetailList.splice(sbuData.productDetailList.indexOf(item),1,...data)
+                    }));
+                    //处理限时购商品数据
+                }else if (!item.type) {
+                    item.type = homeType.limitGoGoods;
+                    //第一个marginTop为0,其余都为10
+                    item.itemHeight = (index === 0? px2dp(130):px2dp(140));
+                    item.marginTop = (index === 0? px2dp(0):px2dp(10));
+                }
+            })
+        })
+
+        return  Promise.all(promises).then(() => {
+            return data;
+        })
     }
 
 }

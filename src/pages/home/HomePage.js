@@ -16,7 +16,6 @@ import PraiseModel from './view/PraiseModel';
 import ScrollableTabView from '@mr/react-native-scrollable-tab-view';
 import BasePage from '../../BasePage';
 import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
-import taskModel from './model/TaskModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
 import { tabModel } from './model/HomeTabModel';
@@ -99,7 +98,6 @@ class HomePage extends BasePage {
                     user.getToken().then(() => {//让user初始化完成
                         this.luckyIcon && this.luckyIcon.getLucky(1, '');
                         if (!homeModule.firstLoad) {
-                            taskModel.getData();
                             limitGoModule.loadLimitGo(false);
                         }
                         homeModalManager.refreshPrize();
