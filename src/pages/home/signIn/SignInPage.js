@@ -17,26 +17,28 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import SignInCircleView from './components/SignInCircleView';
 import ImageLoader from '@mr/image-placeholder';
 import HomeAPI from '../api/HomeAPI';
-import { homeType } from '../HomeTypes';
-import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import {homeType} from '../HomeTypes';
+import {PageLoadingState} from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
-import { observer } from 'mobx-react';
+import {observer} from 'mobx-react';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import MineApi from '../../mine/api/MineApi';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import apiEnvironment from '../../../api/ApiEnvironment';
-import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
-import { MRText as Text } from '../../../components/ui';
+import {track, TrackApi, trackEvent} from '../../../utils/SensorsTrack';
+import {MRText as Text} from '../../../components/ui';
 import CommModal from '../../../comm/components/CommModal';
-import { homeModule } from '../model/Modules';
-import RouterMap from '../../../navigation/RouterMap';
+import {homeModule} from '../model/Modules';
+import RouterMap, {routePush} from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import TaskView from '../view/TaskView';
-import taskModel,{ mineTaskModel } from '../model/TaskModel';
+import taskModel, {mineTaskModel} from '../model/TaskModel';
 import {SafeAreaView} from 'react-navigation';
+import SignInBannerView from './components/SignInBannerView';
+import RollNumTextView from '../../../comm/components/rollnumtext/RollNumTextView';
 
-const { px2dp } = ScreenUtils;
+const {px2dp} = ScreenUtils;
 
 const platformHeight = 10;
 
@@ -44,9 +46,11 @@ const {
     coupons_bg: couponBackground,
     modal_close: modalClose,
     signin_header: headerBg,
-    white_bg: whiteBg,
     signinButton,
-    noSigninButton
+    noSigninButton,
+    bean,
+    top,
+    bottom
 } = res.signIn;
 const {
     back_white,
@@ -55,10 +59,14 @@ const {
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 const size = {
     width: 375,
-    height: 241
+    height: 161
 };
+const adSize = {
+    width: 345,
+    height: 115
+}
 const headerBgHeight = ScreenUtils.getImgHeightWithWidth(size);
-
+const adHeight = ScreenUtils.getImgHeightWithWidth(adSize);
 @observer
 export default class SignInPage extends BasePage {
     constructor(props) {
@@ -72,7 +80,14 @@ export default class SignInPage extends BasePage {
             exchangeData: null,
             showModal: false,
             modalInfo: null,
-            changeHeader: true
+            changeHeader: true,
+            //顶部广告位热区
+            adData: null,
+            //顶部广告图片路径
+            adSource: null,
+            //banner
+            bannerData: null,
+            showMore: true
         };
     }
 
@@ -123,10 +138,41 @@ export default class SignInPage extends BasePage {
         this.reSaveUserInfo();
         this.getExchange();
         this.getModalInfo();
+        this.getAdData();
+        this.getBanner();
     };
 
+
+    //广告位
+    getAdData = () => {
+        HomeAPI.getHomeData({type: homeType.signInAD}).then((data) => {
+            if (!EmptyUtils.isEmptyArr(data.data)) {
+                let adData = data.data[0] || {};
+                if (adData.expand) {
+                    this.setState({
+                        adData: JSON.parse(adData.expand),
+                        adSource: adData.image
+                    })
+                }
+            }
+        }).catch((err) => {
+
+        })
+    }
+
+    //Banner
+    getBanner = () => {
+        HomeAPI.getHomeData({type: homeType.signInBanner}).then((data) => {
+            this.setState({
+                bannerData: data.data
+            })
+        }).catch((err) => {
+
+        })
+    }
+
     getModalInfo = () => {
-        HomeAPI.getHomeData({ type: homeType.signIn }).then((data) => {
+        HomeAPI.getHomeData({type: homeType.signIn}).then((data) => {
             this.setState({
                 modalInfo: data.data
             });
@@ -150,7 +196,7 @@ export default class SignInPage extends BasePage {
 
     getSignData = () => {
         let callback = this.loadPageData;
-        HomeAPI.querySignList(null, { callback }).then((data) => {
+        HomeAPI.querySignList(null, {callback}).then((data) => {
             this.setState({
                 signInData: data.data,
                 // loading: false,
@@ -169,7 +215,7 @@ export default class SignInPage extends BasePage {
     };
 
     reSaveUserInfo = () => {
-        MineApi.getUser({}, { nav: this.props.navigation, callback: this.loadPageData }).then(res => {
+        MineApi.getUser({}, {nav: this.props.navigation, callback: this.loadPageData}).then(res => {
             if (res.code === 10000) {
                 let data = res.data;
                 user.saveUserInfo(data);
@@ -230,7 +276,7 @@ export default class SignInPage extends BasePage {
             showDouDeduct: 'exchange',
             showDouAmount: this.state.signInData[3] && this.state.signInData[3].canReward
         });
-        track(trackEvent.receiveOneyuan, { yiYuanCouponsAmount: 1, yiYuanCouponsGetMethod: 'exchange' });
+        track(trackEvent.receiveOneyuan, {yiYuanCouponsAmount: 1, yiYuanCouponsGetMethod: 'exchange'});
         HomeAPI.exchangeTokenCoin().then((data) => {
             this.exchangeing = false;
             this.$toastShow('成功兑换一张1元现金券');
@@ -292,7 +338,7 @@ export default class SignInPage extends BasePage {
             } else {
                 return (
                     <View key={'circle' + index} style={styles.signInItemWrapper}>
-                        <View style={{ flex: 1 }}/>
+                        <View style={{flex: 1}}/>
                         <SignInCircleView count={count} kind={kind}/>
                     </View>
                 );
@@ -308,17 +354,65 @@ export default class SignInPage extends BasePage {
         });
 
         return (
-            <ImageBackground source={whiteBg} resizeMode={'stretch'} style={styles.signInInfoWrapper}>
-                <View style={styles.dateWrapper}>
-                    {datesView}
+            <View style={styles.signInInfoWrapper}>
+                <View style={styles.accountWrapper}>
+                    <Image style={styles.beanStyle} source={bean}/>
+                    <RollNumTextView
+                        speed={100}
+                        fontSize={px2dp(30)}
+                        num={user.userScore ? user.userScore : 0}
+                        singleStyle={{color: '#FF9502'}}
+                        contentStyle={{marginLeft: px2dp(10)}}/>
                 </View>
-                <View style={styles.circleWrapper}>
-                    {circlesView}
-                </View>
-                {this._signButton()}
-            </ImageBackground>
+                {this.state.showMore ? <View>
+                    <View style={styles.circleWrapper}>
+                        {circlesView}
+                    </View>
+                    <View style={styles.dateWrapper}>
+                        {datesView}
+                    </View>
+                    {this._signButton()}
+                </View> : null}
+                {this._signInInfoProfileRender()}
+                {this._showMoreRender()}
+            </View>
         );
     };
+
+    _signInInfoProfileRender = () => {
+        const {showMore} = this.state;
+        if (showMore) {
+            return null;
+        }
+        let count;
+        if (this.state.signInData[3].continuous) {
+            count = this.state.signInData[3].continuous;
+        } else {
+            count = this.state.signInData[2].continuous ? this.state.signInData[2].continuous : 0;
+        }
+        return (
+            <Text style={styles.signInInfoText}>
+                {`已签到1天，连续签到${count}天`}
+            </Text>
+        )
+    }
+
+    _showMoreRender = () => {
+        const {showMore} = this.state;
+        let hasSign = !EmptyUtils.isEmpty(this.state.signInData[3].continuous);
+        if (hasSign) {
+            return (
+                <TouchableWithoutFeedback onPress={() => {
+                    this.setState({showMore: !showMore})
+                }}>
+                    <View style={styles.showMoreButtonWrapper}>
+                        {showMore ? <Image source={top} style={styles.showMoreButtonStyle}/> :
+                            <Image source={bottom} style={styles.showMoreButtonStyle}/>}
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        }
+    }
 
     _signButton = () => {
         let hasSign = !EmptyUtils.isEmpty(this.state.signInData[3].continuous);
@@ -379,7 +473,7 @@ export default class SignInPage extends BasePage {
 
     _couponRender() {
         let bgWidth = DesignRule.width - px2dp(14);
-        let bgHeight = ScreenUtils.getImgHeightWithWidth({ width: 361, height: 96 }, bgWidth);
+        let bgHeight = ScreenUtils.getImgHeightWithWidth({width: 361, height: 96}, bgWidth);
         return (
             <View>
                 <View style={{
@@ -389,7 +483,7 @@ export default class SignInPage extends BasePage {
                     marginTop: px2dp(15),
                     marginLeft: DesignRule.margin_page
                 }}>
-                    <View style={{ width: 2, height: 8, borderRadius: 2, backgroundColor: DesignRule.mainColor }}/>
+                    <View style={{width: 2, height: 8, borderRadius: 2, backgroundColor: DesignRule.mainColor}}/>
                     <Text
                         style={{
                             marginLeft: px2dp(10),
@@ -414,9 +508,9 @@ export default class SignInPage extends BasePage {
                             {`${this.state.exchangeData}秀豆兑换1张劵\n无兑换限制，点击即可兑换`}
                         </Text>
                     </View>
-                    <View style={{ flex: 1 }}/>
+                    <View style={{flex: 1}}/>
                     <TouchableWithoutFeedback onPress={this.exchangeCoupon}>
-                        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                        <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
                                         colors={['#FC5D39', '#FF0050']}
                                         style={styles.convertButtonStyle}>
                             <Text style={styles.convertTextStyle}>
@@ -432,7 +526,7 @@ export default class SignInPage extends BasePage {
     navRender = () => {
         return (
             <View
-                style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
+                style={{position: 'absolute', top: 0, left: 0, right: 0}}>
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -441,17 +535,17 @@ export default class SignInPage extends BasePage {
                     height: headerHeight,
                     paddingTop: ScreenUtils.statusBarHeight
                 }}>
-                    <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
+                    <View style={{flex: 1, alignItems: 'center', flexDirection: 'row'}}>
                         <TouchableOpacity
                             activeOpacity={0.7}
-                            style={[styles.left, { width: 40 }]}
+                            style={[styles.left, {width: 40}]}
                             onPress={() => {
                                 this.props.navigation.goBack();
                             }}>
                             <Image
                                 source={this.state.changeHeader ? back_white : back_black}
                                 resizeMode={'stretch'}
-                                style={{ height: 30, width: 30 }}
+                                style={{height: 30, width: 30}}
                             />
                         </TouchableOpacity>
                     </View>
@@ -462,7 +556,7 @@ export default class SignInPage extends BasePage {
                     }}>
                         签到
                     </Text>
-                    <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row' }}>
+                    <View style={{flex: 1, justifyContent: 'flex-end', flexDirection: 'row'}}>
                         <TouchableWithoutFeedback onPress={this.showMore}>
                             <Text style={{
                                 color: this.state.changeHeader ? DesignRule.white : DesignRule.textColor_mainTitle,
@@ -497,26 +591,7 @@ export default class SignInPage extends BasePage {
     _headerIconRender() {
 
         return (
-            <ImageBackground source={headerBg} style={{ width: DesignRule.width, height: headerBgHeight }}>
-                <Text style={{
-                    marginTop: px2dp(70),
-                    color: DesignRule.white,
-                    marginLeft: px2dp(34),
-                    fontSize: DesignRule.fontSize_threeTitle
-                }}>
-                    我的秀豆
-                </Text>
-                <Text style={{
-                    color: DesignRule.white,
-                    fontSize: px2dp(50),
-                    marginLeft: px2dp(34),
-                    marginTop: px2dp(5),
-                    fontWeight: 'bold',
-                    includeFontPadding: false
-                }}>
-                    {user.userScore ? user.userScore : 0}
-                </Text>
-            </ImageBackground>
+            <Image source={headerBg} style={{width: DesignRule.width, height: headerBgHeight}}/>
         );
 
 
@@ -531,7 +606,7 @@ export default class SignInPage extends BasePage {
             const item = this.state.modalInfo[0];
             let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
             let params = homeModule.paramsNavigate(item);
-            this.$navigate(router, { ...params });
+            this.$navigate(router, {...params});
         }
     };
 
@@ -542,12 +617,12 @@ export default class SignInPage extends BasePage {
                     showModal: false
                 });
             }} visible={this.state.showModal}>
-                <View style={{ alignItems: 'center' }}>
+                <View style={{alignItems: 'center'}}>
                     <TouchableOpacity onPress={() => {
                         this._modalPress();
                     }} activeOpacity={0.7}>
                         <ImageLoader
-                            source={{ uri: this.state.modalInfo[0].image }}
+                            source={{uri: this.state.modalInfo[0].image}}
                             showPlaceholder={false}
                             style={styles.modalImageStyle}
                             resizeMode={'contain'}
@@ -565,8 +640,46 @@ export default class SignInPage extends BasePage {
         ) : null;
     }
 
+    adTouch = (data) => {
+        return (
+            <TouchableWithoutFeedback onPress={() => {
+                const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+                let params = homeModule.paramsNavigate(data);
+                routePush(router, params);
+            }}>
+                <View style={styles.adTouchStyle}/>
+            </TouchableWithoutFeedback>
+        )
+    }
+
+    adViewRender = () => {
+        if (this.state.adSource) {
+            const {linkOne, linkTwo, linkThree} = this.state.adData;
+            return (
+                <ImageLoader source={{uri: this.state.adSource}} style={styles.adContain}>
+                    {linkOne ? this.adTouch(linkOne) : null}
+                    {linkTwo ? this.adTouch(linkTwo) : null}
+                    {linkThree ? this.adTouch(linkThree) : null}
+                </ImageLoader>
+            )
+        }
+        return null;
+    }
+
+    bannerRender = () => {
+        if (EmptyUtils.isEmptyArr(this.state.bannerData)) {
+            return null;
+        }
+        return (
+            <View style={{marginTop: px2dp(10)}}>
+                <SignInBannerView bannerList={this.state.bannerData} navigate={routePush}/>
+            </View>
+        )
+    }
+
     _render() {
 
+        console.log(user);
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView
@@ -575,6 +688,8 @@ export default class SignInPage extends BasePage {
                     showsVerticalScrollIndicator={false}>
                     {this._headerIconRender()}
                     {this.state.signInData ? this._signInInfoRender() : null}
+                    {this.adViewRender()}
+                    {this.bannerRender()}
                     <TaskView type={'home'} style={{
                         marginTop: ScreenUtils.autoSizeWidth(5),
                         marginBottom: ScreenUtils.autoSizeWidth(10)
@@ -582,7 +697,7 @@ export default class SignInPage extends BasePage {
                     <TaskView type={'mine'}
                               isSignIn={true}
                               signIn={this.userSign}
-                              style={{ marginTop: platformHeight, backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
+                              style={{marginTop: platformHeight, backgroundColor: '#F7F7F7', paddingBottom: 0}}/>
                     {this.state.exchangeData ? this._couponRender() : null}
                     {/*{this.state.exchangeData ? this._reminderRender() : null}*/}
                 </ScrollView>
@@ -624,17 +739,18 @@ const styles = StyleSheet.create({
         marginTop: px2dp(10)
     },
     signInInfoWrapper: {
-        width: ScreenUtils.width - px2dp(14),
-        paddingTop: px2dp(29),
-        marginTop: px2dp(-67),
-        marginLeft: px2dp(7),
-        paddingBottom: px2dp(37)
+        width: ScreenUtils.width - px2dp(30),
+        marginTop: -(headerBgHeight - ScreenUtils.headerHeight),
+        marginLeft: px2dp(15),
+        backgroundColor: DesignRule.white,
+        borderBottomLeftRadius: px2dp(5),
+        borderBottomRightRadius: px2dp(5)
     },
     circleWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: px2dp(21),
-        marginTop: px2dp(15)
+        paddingHorizontal: px2dp(15),
+        marginTop: px2dp(20)
     },
     signInItemWrapper: {
         flexDirection: 'row',
@@ -643,8 +759,9 @@ const styles = StyleSheet.create({
     },
     dateWrapper: {
         flexDirection: 'row',
-        paddingHorizontal: px2dp(23),
-        justifyContent: 'space-between'
+        paddingHorizontal: px2dp(15),
+        justifyContent: 'space-between',
+        marginTop: px2dp(10)
     },
     dateTextStyle: {
         color: DesignRule.textColor_mainTitle,
@@ -724,6 +841,44 @@ const styles = StyleSheet.create({
     modalImageStyle: {
         width: ScreenUtils.autoSizeWidth(310),
         height: ScreenUtils.autoSizeHeight(410)
+    },
+    adContain: {
+        height: adHeight,
+        width: DesignRule.width - px2dp(30),
+        marginLeft: px2dp(15),
+        flexDirection: 'row',
+        marginTop: px2dp(10)
+    },
+    adTouchStyle: {
+        flex: 1,
+        height: adHeight
+    },
+    accountWrapper: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingTop: px2dp(10),
+        paddingLeft: px2dp(10)
+    },
+    beanStyle: {
+        width: px2dp(26),
+        height: px2dp(25)
+    },
+    showMoreButtonWrapper: {
+        width: px2dp(30),
+        height: px2dp(30),
+        justifyContent: 'center',
+        paddingTop: 5,
+        alignSelf: 'center'
+    },
+    showMoreButtonStyle: {
+        width: px2dp(15),
+        height: px2dp(15)
+    },
+    signInInfoText: {
+        color: DesignRule.textColor_secondTitle,
+        fontSize: DesignRule.fontSize_threeTitle,
+        marginTop: px2dp(5),
+        marginLeft: px2dp(15)
     }
 
 });
