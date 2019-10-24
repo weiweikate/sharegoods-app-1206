@@ -43,6 +43,8 @@ import UserMemberUpdateModal from './pages/home/view/UserMemberUpdateModal';
 import homeModalManager from './pages/home/manager/HomeModalManager';
 import marketingUtils from './pages/marketing/MarketingUtils';
 import MarketingModal from './pages/marketing/components/MarketingModal';
+import HomeApi from './pages/home/api/HomeAPI';
+import { homeType } from './pages/home/HomeTypes';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -160,27 +162,22 @@ class App extends Component {
                     store.save('@mr/storage_MrLocation', result);
                 }).catch((error) => {
                 });
-                // 获取首页皮肤数据
-                let skinData = {
-                    statusImg: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/center_01.png',
-                    titleImg: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/center_02.png',
-                    categoryImg: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/center_03.png',
-                    bannerImg: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/center_04.png',
-                    centerImg: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/center_05.png',
-                    douImg: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/dou_yellow.png',
-                    homeIconN: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/home_icon_n.png',
-                    homeIconS: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/home_icon_s.png',
-                    showIconN: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/show_icon_n.png',
-                    showIconS: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/show_icon_s.png',
-                    pinIconN: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/pin_icon_n.png',
-                    pinIconS: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/pin_icon_s.png',
-                    cartIconN: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/cart_icon_n.png',
-                    cartIconS: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/cart_icon_s.png',
-                    mineIconN: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/mine_icon_n.png',
-                    mineIconS: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/mine_icon_s.png',
-                    tabColor: '#ff2626'
-                };
-                store.save('@mr/homeSkin', skinData);
+                // 获取首页顶部皮肤数据
+                HomeApi.getHomeData({ type: homeType.homeTopBg })
+                    .then((resp) => {
+                        let [data = {}] = resp.data || [];
+                        store.save('@mr/homeTopSkin', StringUtils.str2Json(data.expand));
+                    })
+                    .catch(error => {
+                    });
+                // 获取首页底部皮肤数据
+                HomeApi.getHomeData({ type: homeType.homeBottomBg })
+                    .then((resp) => {
+                        let data = resp.data || [];
+                        store.save('@mr/homeBottomSkin', data);
+                    })
+                    .catch(error => {
+                    });
             }, 200);
             TimerMixin.setTimeout(() => {
                 ScreenUtils.isNavigationBarExist((data) => {

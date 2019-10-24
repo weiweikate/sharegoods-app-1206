@@ -9,6 +9,8 @@ const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 export const homeType = {
     swiper: 2,           // 首页顶部轮播
+    homeTopBg: 34,       // 首页顶部皮肤
+    homeBottomBg: 35,    // 首页底部皮肤
     newUserArea: 36,     // 新人专区
     expandBanner: 3,     // 首页通栏广告位
     channel: 4,          // 首页频道类目

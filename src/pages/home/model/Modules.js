@@ -36,19 +36,9 @@ class HomeModule {
     @observable titleImg = null;
     @observable categoryImg = null;
     @observable bannerImg = null;
-    @observable centerImg = null;
-    @observable douImg = null;
-    @observable homeIconN = null;
-    @observable homeIconS = null;
-    @observable showIconN = null;
-    @observable showIconS = null;
-    @observable pinIconN = null;
-    @observable pinIconS = null;
-    @observable cartIconN = null;
-    @observable cartIconS = null;
-    @observable mineIconN = null;
-    @observable mineIconS = null;
-    @observable tabColor = null;
+    @observable centerData = {};
+    @observable douData = {};
+    @observable bottomIcons = [];
     @observable centerImgHeight = 0;
     isFetching = false;
     isEnd = false;
@@ -68,6 +58,9 @@ class HomeModule {
         }, {
             id: 1,
             type: homeType.activityCenter
+        }, {
+            id: 21,
+            type: homeType.newUserArea
         }, {
             id: 2,
             type: homeType.channel
@@ -543,32 +536,21 @@ class HomeModule {
         });
     };
 
-    @action setSkinData(data) {
-        this.statusImg = data.statusImg || '';
-        this.titleImg = data.titleImg || '';
-        this.categoryImg = data.categoryImg || '';
-        this.bannerImg = data.bannerImg || '';
-        this.centerImg = data.centerImg || '';
-        this.douImg = data.douImg || '';
-        this.homeIconN = data.homeIconN || '';
-        this.homeIconS = data.homeIconS || '';
-        this.showIconN = data.showIconN || '';
-        this.showIconS = data.showIconS || '';
-        this.pinIconN = data.pinIconN || '';
-        this.pinIconS = data.pinIconS || '';
-        this.cartIconN = data.cartIconN || '';
-        this.cartIconS = data.cartIconS || '';
-        this.mineIconN = data.mineIconN || '';
-        this.mineIconS = data.mineIconS || '';
-        this.tabColor = data.tabColor || '';
-        if (StringUtils.isEmpty(this.centerImg)) {
+    @action setTopSkinData(data) {
+        this.statusImg = data.statusBarBackground || '';
+        this.titleImg = data.searchBarBackground || '';
+        this.categoryImg = data.categoryNavBackground || '';
+        this.bannerImg = data.carouselBackground || '';
+        this.centerData = data.carouselBottom || {};
+        this.douData = data.searchBar || {};
+        if (StringUtils.isEmpty(this.centerData.icon)) {
             this.centerImgHeight = 0;
             this.changeHomeList(homeType.activityCenter, [{
                 id: 1,
                 type: homeType.activityCenter
             }]);
         } else {
-            getSize(this.centerImg, (width, height) => {
+            getSize(this.centerData.icon, (width, height) => {
                 this.centerImgHeight = autoSizeWidth(height / 2);
                 this.changeHomeList(homeType.activityCenter, [{
                     id: 1,
@@ -576,6 +558,10 @@ class HomeModule {
                 }]);
             });
         }
+    }
+
+    @action setBottomSkinData(data) {
+        this.bottomIcons = data || [];
     }
 }
 

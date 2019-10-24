@@ -22,6 +22,7 @@ import StringUtils from '../utils/StringUtils';
 class NormalTab extends Component {
     render() {
         const { source, title } = this.props;
+        const { assistantImage } = homeModule.bottomIcons[0] || {};
         return <View style={styles.tab}>
             <View>
                 <Image style={styles.tabBarIcon} source={source}/>
@@ -30,7 +31,7 @@ class NormalTab extends Component {
                     <Image source={res.other.dot} style={styles.mineDot}/> : null}
             </View>
             <Text
-                style={[styles.text, { color: StringUtils.isEmpty(homeModule.mineIconN) ? '#666' : '#fff' }]}
+                style={[styles.text, { color: StringUtils.isEmpty(assistantImage) ? '#666' : '#fff' }]}
             >{title}</Text>
         </View>;
     }
@@ -39,13 +40,13 @@ class NormalTab extends Component {
 @observer
 class ActiveTab extends Component {
 
-
     render() {
         const { source, title } = this.props;
+        const { assistantImage } = homeModule.bottomIcons[0] || {};
         return <View style={styles.tab}>
             <Image style={styles.tabBarIcon} source={source}/>
             <Text
-                style={[styles.text, { color: StringUtils.isEmpty(homeModule.mineIconN) ? '#666' : '#fff' }]}
+                style={[styles.text, { color: StringUtils.isEmpty(assistantImage) ? '#666' : '#fff' }]}
             >{title}</Text>
         </View>;
     }
@@ -65,10 +66,11 @@ class Tab extends Component {
 class HomeTab extends Component {
 
     render() {
-        if (StringUtils.isNoEmpty(homeModule.homeIconN)) {
+        const { assistantImage, image } = homeModule.bottomIcons[0] || {};
+        if (StringUtils.isNoEmpty(assistantImage)) {
             return <Tab
-                normalSource={{ uri: homeModule.homeIconN }}
-                activeSource={{ uri: homeModule.homeIconS }}
+                normalSource={{ uri: assistantImage }}
+                activeSource={{ uri: image }}
                 focused={homeTabManager.homeFocus || this.props.focused}
                 title={'首页'}/>;
         } else {
@@ -107,10 +109,12 @@ class HomeTab extends Component {
 @observer
 export class TabBarComponent extends Component {
     render() {
+        const { expand } = homeModule.bottomIcons[0] || {};
+        const { navColor } = StringUtils.str2Json(expand);
         return <BottomTabBar
             {...this.props}
             style={{
-                backgroundColor: StringUtils.isEmpty(homeModule.tabColor) ? '#fff' : homeModule.tabColor,
+                backgroundColor: StringUtils.isEmpty(navColor) ? '#fff' : navColor,
                 height: 48,
                 borderTopWidth: 0.2,
                 borderTopColor: '#ccc'
@@ -139,13 +143,16 @@ export const TabNav = createBottomTabNavigator(
             screen: ShowListPage,
             navigationOptions: {
                 tabBarLabel: '秀场',
-                tabBarIcon: ({ focused }) => <Tab
-                    focused={focused}
-                    normalSource={StringUtils.isEmpty(homeModule.showIconN) ?
-                        res.tab.discover_n : { uri: homeModule.showIconN }}
-                    activeSource={StringUtils.isEmpty(homeModule.showIconS) ?
-                        res.tab.discover_s : { uri: homeModule.showIconS }}
-                    title={'秀场'}/>,
+                tabBarIcon: ({ focused }) => {
+                    const { assistantImage, image } = homeModule.bottomIcons[1] || {};
+                    return <Tab
+                        focused={focused}
+                        normalSource={StringUtils.isEmpty(assistantImage) ?
+                            res.tab.discover_n : { uri: assistantImage }}
+                        activeSource={StringUtils.isEmpty(image) ?
+                            res.tab.discover_s : { uri: image }}
+                        title={'秀场'}/>;
+                },
                 tabBarOnPress: ({ navigation }) => {
                     if (navigation.isFocused()) {
                         DeviceEventEmitter.emit('retouch_show');
@@ -159,12 +166,13 @@ export const TabNav = createBottomTabNavigator(
             screen: IsShowNewStore,
             navigationOptions: {
                 tabBarIcon: ({ focused }) => {
+                    const { assistantImage, image } = homeModule.bottomIcons[2] || {};
                     return <Tab
                         focused={focused}
-                        normalSource={StringUtils.isEmpty(homeModule.pinIconN) ?
-                            res.tab.group_n : { uri: homeModule.pinIconN }}
-                        activeSource={StringUtils.isEmpty(homeModule.pinIconS) ?
-                            res.tab.group_s : { uri: homeModule.pinIconS }}
+                        normalSource={StringUtils.isEmpty(assistantImage) ?
+                            res.tab.group_n : { uri: assistantImage }}
+                        activeSource={StringUtils.isEmpty(image) ?
+                            res.tab.group_s : { uri: image }}
                         title={'拼店'}/>;
                 }
             }
@@ -172,25 +180,31 @@ export const TabNav = createBottomTabNavigator(
         ShopCartPage: {
             screen: ShopCart,
             navigationOptions: {
-                tabBarIcon: ({ focused }) => <Tab
-                    focused={focused}
-                    normalSource={StringUtils.isEmpty(homeModule.cartIconN) ?
-                        res.tab.cart_n : { uri: homeModule.cartIconN }}
-                    activeSource={StringUtils.isEmpty(homeModule.cartIconS) ?
-                        res.tab.cart_s : { uri: homeModule.cartIconS }}
-                    title={'购物车'}/>
+                tabBarIcon: ({ focused }) => {
+                    const { assistantImage, image } = homeModule.bottomIcons[3] || {};
+                    return <Tab
+                        focused={focused}
+                        normalSource={StringUtils.isEmpty(assistantImage) ?
+                            res.tab.group_n : { uri: assistantImage }}
+                        activeSource={StringUtils.isEmpty(image) ?
+                            res.tab.cart_s : { uri: image }}
+                        title={'购物车'}/>;
+                }
             }
         },
         MinePage: {
             screen: Mine,
             navigationOptions: {
-                tabBarIcon: ({ focused }) => <Tab
-                    focused={focused}
-                    normalSource={StringUtils.isEmpty(homeModule.mineIconN) ?
-                        res.tab.mine_n : { uri: homeModule.mineIconN }}
-                    activeSource={StringUtils.isEmpty(homeModule.mineIconN) ?
-                        res.tab.mine_s : { uri: homeModule.mineIconS }}
-                    title={'我的'}/>,
+                tabBarIcon: ({ focused }) => {
+                    const { assistantImage, image } = homeModule.bottomIcons[4] || {};
+                    return <Tab
+                        focused={focused}
+                        normalSource={StringUtils.isEmpty(assistantImage) ?
+                            res.tab.mine_n : { uri: assistantImage }}
+                        activeSource={StringUtils.isEmpty(image) ?
+                            res.tab.mine_s : { uri: image }}
+                        title={'我的'}/>;
+                },
                 tabBarOnPress: ({ navigation }) => {
                     if (!navigation.isFocused()) {
                         if (user && user.isLogin) {

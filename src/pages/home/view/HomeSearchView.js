@@ -20,11 +20,15 @@ const searchImg = res.icon_search;
 @observer
 export default class HomeSearchView extends Component {
 
+    _jumpPage(data) {
+
+    }
+
     render() {
         const resLogo = StringUtils.isEmpty(homeModule.titleImg)
             ? res.home_icon_logo_red : res.home_icon_logo_white;
-        const resDou = StringUtils.isEmpty(homeModule.douImg)
-            ? res.dou_red : { uri: homeModule.douImg };
+        const resDou = StringUtils.isEmpty(homeModule.douData.icon)
+            ? res.dou_red : { uri: homeModule.douData.icon };
         const colorDou = StringUtils.isEmpty(homeModule.titleImg) ? DesignRule.textColor_secondTitle : '#fff';
         const colorIput = StringUtils.isEmpty(homeModule.titleImg) ? DesignRule.textColor_placeholder : '#fff';
         return (
@@ -32,8 +36,12 @@ export default class HomeSearchView extends Component {
                 <View style={styles.navContent}>
                     <Image source={resLogo}
                            style={styles.logo}/>
-                    <Image source={resDou}
-                           style={styles.dou}/>
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => this._jumpPage(homeModule.douData)}>
+                        <Image source={resDou}
+                               style={styles.dou}/>
+                    </TouchableOpacity>
                     <UIText style={[styles.douText, { color: colorDou }]} value={'233333' + '秀豆'}/>
                     <TouchableOpacity
                         onPress={() => {
