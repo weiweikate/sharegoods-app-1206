@@ -39,6 +39,8 @@ export const homeType = {
     store30: 30,//拼店扩容页面广告
     store31: 31,//百万活动
     paySuccess: 27,//订单支付完成页面广告位
+    signInAD:37,
+    signInBanner:38,
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
     custom_goods: 'WIDGET-GOODS',
