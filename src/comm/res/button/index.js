@@ -34,6 +34,8 @@ const button = {
     inputtext_clear: require('./inputtext_clear.png'),
     btn_group: require('./btn_icon_group.png'), //我的拼团列表页
     share_group: require('./share_icon_group.png'), //我的拼团列表页
+    btn_more_white: require('./icon_share_nor.png'), //点击更多
+    new_close_white: require('./icon_close_nor.png'), //点击关闭
 
 };
 export default button;

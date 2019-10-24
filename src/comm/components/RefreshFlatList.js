@@ -25,7 +25,8 @@ import PropTypes from 'prop-types';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from '../res';
-import bridge from '../../utils/bridge';
+import LoadingView from '../../components/pageDecorator/BaseView/LoadingView';
+
 import store from '@mr/rn-store';
 
 const cache = '@mr/cache';
@@ -96,7 +97,8 @@ export default class RefreshFlatList extends React.Component {
             loadingMore: false,
             footerStatus: 'idle',
             data: [],
-            error: null
+            error: null,
+            loadingState: null
         };
         this.page = props.defaultPage;
         this.allLoadCompleted = false;
@@ -188,7 +190,7 @@ export default class RefreshFlatList extends React.Component {
         if (this.state.refreshing === true || this.isNetLoading === true) {
             return;
         }
-        this.setState({ refreshing: refreshing, footerStatus: 'idle' });
+        this.setState({refreshing: refreshing, footerStatus: 'idle', loadingState: !refreshing });
         this.allLoadCompleted = false;
         let { onStartRefresh, url, params, defaultPage, onEndRefresh, paramsFunc } = this.props;
         if (paramsFunc) {
@@ -196,9 +198,9 @@ export default class RefreshFlatList extends React.Component {
         }
         this.page = defaultPage;
         onStartRefresh && onStartRefresh();
-        if (!refreshing) {
-            bridge.showLoading();
-        }
+        // if (!refreshing) {
+        //     bridge.showLoading();
+        // }
         delete params.cursor;
         if (url) {
             this._getData(url, params, true);
@@ -258,7 +260,6 @@ export default class RefreshFlatList extends React.Component {
             params[sizeKey] = pageSize;
         }
         url(params).then((result => {
-            bridge.hiddenLoading();
             let netData = [];
             let allLoadCompleted = false;
             this.isNetLoading = false;
@@ -296,10 +297,10 @@ export default class RefreshFlatList extends React.Component {
                 loadingMore: false,
                 footerStatus,
                 data,
-                error: null
+                error: null,
+                loadingState: false
             });
         })).catch((error) => {
-            bridge.hiddenLoading();
             if (isRefresh === false) {
                 onEndLoadMore && onEndLoadMore();
             } else {
@@ -312,8 +313,9 @@ export default class RefreshFlatList extends React.Component {
                 refreshing: false,
                 loadingMore: false,
                 footerStatus: 'noMoreData',
-                error: error
-            });
+                error: error,
+                loadingState: false
+            },()=>{ });
         })
         ;
     }
@@ -322,6 +324,9 @@ export default class RefreshFlatList extends React.Component {
     render() {
         if (this.state.data.length === 0 && this.state.error && this.props.renderError) {
             return this.props.renderError(this.state.error || {});
+        }
+        if(this.state.loadingState){
+            return <LoadingView style={{paddingBottom: ScreenUtils.height / 2-25, justifyContent: 'flex-end'}}/>
         }
         return (
             <FlatList
@@ -345,6 +350,7 @@ export default class RefreshFlatList extends React.Component {
                     <RefreshControl
                         refreshing={this.state.refreshing}
                         onRefresh={this._onRefresh.bind(this)}
+                        tintColor={DesignRule.mainColor}
                         colors={[DesignRule.mainColor]}
                     />
                 }

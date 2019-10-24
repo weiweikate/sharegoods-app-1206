@@ -27,7 +27,7 @@ import { MRText as Text } from '../../components/ui';
 import res from '../res';
 import { getSize } from '../../utils/OssHelper';
 
-const { down_icon, close_icon } = res.button;
+const { down_icon, new_close_white, btn_more_white } = res.button;
 
 let staticStyle = {
     show: false,
@@ -516,6 +516,12 @@ export default class FlyImageViewer extends Component {
      * 长按
      */
     handleLongPress(image) {
+
+        if(this.props.type==='userInfo'){
+            this.props.getImagePicker&&this.props.getImagePicker();
+            return;
+        }
+
         if (this.props.saveToLocalByLongPress) {
             // 出现保存到本地的操作框
             // this.setState({
@@ -617,6 +623,27 @@ export default class FlyImageViewer extends Component {
                 const HeightPixel = screenHeight / height;
                 width *= HeightPixel;
                 height *= HeightPixel;
+            }
+
+            if (this.props.type ==='userInfo' && this.props.enableImageZoom) {
+                return (
+                    <ImageZoom key={index}
+                               style={this.styles.modalContainer}
+                               cropWidth={this.width}
+                               cropHeight={this.height}
+                               imageWidth={ScreenUtils.width}
+                               imageHeight={ScreenUtils.width}
+                               longPressTime={600}
+                               maxOverflow={this.props.maxOverflow}
+                               horizontalOuterRangeOffset={this.handleHorizontalOuterRangeOffset.bind(this)}
+                               responderRelease={this.handleResponderRelease.bind(this)}
+                               onLongPress={this.handleLongPress.bind(this, image)}
+                               onClick={this.handleClick.bind(this)}
+                               onDoubleClick={this.handleDoubleClick.bind(this)}>
+                        <ImageLoad style={[this.styles.imageStyle, { width: ScreenUtils.width, height: ScreenUtils.width  }]}
+                                   source={{ uri: image }}/>
+                    </ImageZoom>
+                );
             }
 
             if (imageInfo.status === 'success' && this.props.enableImageZoom) {
@@ -794,10 +821,24 @@ export default class FlyImageViewer extends Component {
                 width: 22,
                 height: 22,
                 position: 'absolute',
-                top: 16 + ScreenUtils.statusBarHeight,
+                top: 18 + ScreenUtils.statusBarHeight,
                 left: 16
             }}
-                   source={close_icon}/>
+                   source={new_close_white}/>
+        </TouchableWithoutFeedback>);
+    };
+
+    moreClick = () => {
+        return (<TouchableWithoutFeedback
+            onPress={() => this.handleLongPress()}>
+            <Image style={{
+                width: 22,
+                height: 22,
+                position: 'absolute',
+                top: 18 + ScreenUtils.statusBarHeight,
+                right: 16
+            }}
+                   source={btn_more_white}/>
         </TouchableWithoutFeedback>);
     };
 
@@ -810,6 +851,7 @@ export default class FlyImageViewer extends Component {
                 {this.getMenu()}
                 {this.props.unShowDown !== true && this.downloadIcon()}
                 {this.closeIcon()}
+                {this.props.type === 'userInfo' && this.moreClick()}
                 {this.props.children}
             </View>
         );

@@ -16,7 +16,8 @@ import UIImage from '../../../../components/ui/UIImage';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
-import RouterMap, { routePop } from '../../../../navigation/RouterMap';
+import  { routePop } from '../../../../navigation/RouterMap';
+import SelectAreaModal from './SelectAreaModal';
 
 const addrSelectedIcon = res.button.selected_circle_red;
 const addrUnSelectedIcon = res.button.unselected_circle;
@@ -173,7 +174,7 @@ export default class AddressEditAndAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from, streetCode, province,  city, area, receiverPhone} = this.params;
+        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from, streetCode, province,  city, area, street, receiverPhone} = this.params;
         if (from === 'edit') {
             this.$navigationBarOptions.title = '编辑地址';
         } else if (from === 'add') {
@@ -191,7 +192,7 @@ export default class AddressEditAndAddPage extends BasePage {
             areaCode: areaCode,
             areaName: area || '',
             streetCode: streetCode,
-            streetName: '',
+            streetName: street || '',
             isDefault: isDefault || false,
             from
         };
@@ -221,7 +222,10 @@ export default class AddressEditAndAddPage extends BasePage {
             <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             <TouchableOpacity activeOpacity={0.7} style={styles.horizontalItem} onPress={() => this._getCityPicker()}>
                 <Text style={[styles.itemLeftText]}>所在地区</Text>
-                <Text style={{ flex: 1 }}>{this.state.areaText}</Text>
+                <Text style={{flex: 1}}>
+                    {this.state.areaText}
+                    <Text style={{color: '#FF0050', marginLeft: 10}}>{this.state.areaText && !this.state.streetName ? `  街道信息待完善` : ''}</Text>
+                </Text>
                 <Image source={arrow_right} style={{ height: 12, marginLeft: 4 }}
                        resizeMode={'contain'}/>
             </TouchableOpacity>
@@ -257,30 +261,34 @@ export default class AddressEditAndAddPage extends BasePage {
                             paddingBottom: 12
                         }} resizeMode={'contain'} onPress={() => this.setState({ isDefault: !this.state.isDefault })}/>
                     </View> : null}
+                    <SelectAreaModal ref={(ref)=>{this.SelectAreaRef = ref}}
+                                     callBack={(data)=>{this.setArea(data)}}
+
+                    />
         </View>;
     }
 
     _getCityPicker = () => {
         dismissKeyboard();
-        this.$navigate(RouterMap.SelectAreaPage, {
-            setArea: this.setArea.bind(this),
-            tag: 'province',
-            fatherCode: '0'
-        });
+        this.SelectAreaRef.open(this.state);
+        // this.$navigate(RouterMap.SelectAreaPage, {
+        //     setArea: this.setArea.bind(this),
+        //     tag: 'province',
+        //     fatherCode: '0'
+        // });
     };
 
-    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, streetCode, streetName, areaText) {
-        console.log(areaText);
+    setArea(data) {
         this.setState({
-            areaText: areaText,
-            provinceCode: provinceCode,
-            provinceName: provinceName,
-            cityCode: cityCode,
-            cityName: cityName,
-            areaCode: areaCode,
-            areaName: areaName,
-            streetCode,
-            streetName
+            areaText: data.areaText || '',
+            provinceCode: data.provinceCode || '',
+            provinceName: data.provinceName || '',
+            cityCode: data.cityCode || '',
+            cityName: data.cityName || '',
+            areaCode: data.areaCode || '',
+            areaName: data.areaName || '',
+            streetCode: data.streetCode || '',
+            streetName: data.streetName || ''
         });
     }
 }

@@ -89,7 +89,7 @@ export default class MineSpellGroupView extends PureComponent {
                                   onPress={() => {
                                       itemClick && itemClick()
                                   }}>
-                    <LinearGradient style={{borderRadius: 17, marginRight: 27}}
+                    <LinearGradient style={{borderRadius: 17, marginRight: 15}}
                                     start={{x: 0, y: 0}}
                                     end={{x: 1, y: 1}}
                                     colors={['#FC5D39', '#FF0050']}
