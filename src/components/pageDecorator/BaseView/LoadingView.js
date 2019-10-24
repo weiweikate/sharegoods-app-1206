@@ -6,11 +6,11 @@
  * <LoadingView style={'这里是style，可以自定义'} source={GifImg} imgStyle={{width: 100, height: 100}}/>
  */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    StyleSheet,
+    StyleSheet
 } from 'react-native';
 import DesignRule from '../../../constants/DesignRule';
 import LottieView from 'lottie-react-native';
@@ -27,7 +27,7 @@ export default class LoadingView extends Component {
     _renderLoading = () => {
         return (
             <LottieView
-                style={{width: 50, height: 50, justifyContent: 'center', alignItems: 'center'}}
+                style={{ width: 55, height: 55, justifyContent: 'center', alignItems: 'center' }}
                 loop={true}
                 autoPlay={true}
                 source={require('../../../comm/components/lottieheader/loading.json')}/>

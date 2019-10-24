@@ -72,6 +72,8 @@ dependencies {
     api rootProject.ext.dependencies.design
     api rootProject.ext.dependencies.okhttp
     api rootProject.ext.dependencies.sensors
+    api rootProject.ext.dependencies.lottie
+
     // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'

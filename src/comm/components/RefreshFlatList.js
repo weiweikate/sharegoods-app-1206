@@ -12,15 +12,7 @@
 
 import React from 'react';
 
-import {
-    StyleSheet,
-    View,
-    FlatList,
-    ActivityIndicator,
-    Text,
-    Image,
-    RefreshControl
-} from 'react-native';
+import { ActivityIndicator, FlatList, Image, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -190,7 +182,7 @@ export default class RefreshFlatList extends React.Component {
         if (this.state.refreshing === true || this.isNetLoading === true) {
             return;
         }
-        this.setState({refreshing: refreshing, footerStatus: 'idle', loadingState: !refreshing });
+        this.setState({ refreshing: refreshing, footerStatus: 'idle', loadingState: !refreshing });
         this.allLoadCompleted = false;
         let { onStartRefresh, url, params, defaultPage, onEndRefresh, paramsFunc } = this.props;
         if (paramsFunc) {
@@ -232,13 +224,13 @@ export default class RefreshFlatList extends React.Component {
 
 
     _onLoadMore() {
-        let { onStartLoadMore, url, params, isSupportLoadingMore ,paramsFunc} = this.props;
+        let { onStartLoadMore, url, params, isSupportLoadingMore, paramsFunc } = this.props;
 
         if (!isSupportLoadingMore || this.allLoadCompleted || this.isNetLoading) {
             return;
         }
 
-        if(paramsFunc){
+        if (paramsFunc) {
             params = paramsFunc();
         }
         this.page++;
@@ -283,7 +275,7 @@ export default class RefreshFlatList extends React.Component {
                 onEndLoadMore && onEndLoadMore();
             } else {
                 data = netData;
-                if(this.props.cache) {
+                if (this.props.cache) {
                     store.save(cache, netData);
                 }
                 onEndRefresh && onEndRefresh();
@@ -315,7 +307,8 @@ export default class RefreshFlatList extends React.Component {
                 footerStatus: 'noMoreData',
                 error: error,
                 loadingState: false
-            },()=>{ });
+            }, () => {
+            });
         })
         ;
     }
@@ -325,8 +318,8 @@ export default class RefreshFlatList extends React.Component {
         if (this.state.data.length === 0 && this.state.error && this.props.renderError) {
             return this.props.renderError(this.state.error || {});
         }
-        if(this.state.loadingState){
-            return <LoadingView style={{paddingBottom: ScreenUtils.height / 2-25, justifyContent: 'flex-end'}}/>
+        if (this.state.loadingState) {
+            return <LoadingView style={{ paddingBottom: ScreenUtils.height / 2 - 25, justifyContent: 'flex-end' }}/>;
         }
         return (
             <FlatList
