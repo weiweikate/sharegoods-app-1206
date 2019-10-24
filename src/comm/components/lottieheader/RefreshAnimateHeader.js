@@ -101,10 +101,14 @@ function RefreshAnimateHeader(props) {
             onIdleRefresh={onIdleRefreshCallBack}
             backgroundColor={backgroundColor}
             lineTop={lineTop}
-            height={headerHeight + 30}
+            height={headerHeight}
 
         >
-            <RefreshHeader style={[styles.container, { height: headerHeight + 30 }]}>
+            <RefreshHeader
+                style={[styles.container,
+                    {
+                        height: headerHeight
+                    }]}>
                 {lottie}
                 <MRText style={{
                     height: 20,
