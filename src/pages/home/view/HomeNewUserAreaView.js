@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
 import ImageLoad from '@mr/image-placeholder';
@@ -30,14 +30,16 @@ export default class HomeNewUserAreaView extends Component {
             return null;
         }
         return (
-            <TouchableWithoutFeedback onPress={() => {
-                this._adAction(newUserData);
-            }}>
+            <TouchableOpacity
+                onPress={() => {
+                    this._adAction(newUserData);
+                }}
+                activeOpacity={1}>
                 <ImageLoad
                     style={{ width, height: homeNewUserModel.imgHeight }}
                     source={{ uri: newUserData.image }}
                     showPlaceholder={false}/>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         );
     }
 }
