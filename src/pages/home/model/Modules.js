@@ -145,14 +145,18 @@ class HomeModule {
     };
 
     @action
-    changelimitGoods(limitGoods) {
-        this.fixedPartTwo = [{
-            id: 60,
-            type: homeType.limitGoTop
-        }, {
-            id: 61,
-            type: homeType.limitGoTime
-        },...limitGoods, { type: homeType.limitStaticViewDismiss }];
+    changelimitGoods(limitGoods, isShow=true) {
+        if (isShow) {
+            this.fixedPartTwo = [{
+                id: 60,
+                type: homeType.limitGoTop
+            }, {
+                id: 61,
+                type: homeType.limitGoTime
+            },...limitGoods, { type: homeType.limitStaticViewDismiss }];
+        }else {
+            this.fixedPartTwo = [];
+        }
         this.homeList = this.getHomeListData();
     }
 
@@ -161,7 +165,6 @@ class HomeModule {
         this.isEnd = false;
         this.isRefreshing = false;
         this.firstLoad = true;
-        limitGoModule.spikeList = [];
     }
 
     @action refreshHome = (type) => {
