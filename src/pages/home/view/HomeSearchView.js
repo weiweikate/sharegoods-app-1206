@@ -37,7 +37,7 @@ export default class HomeSearchView extends Component {
             ? res.home_icon_logo_red : res.home_icon_logo_white;
         const resDou = StringUtils.isEmpty(homeModule.douData.icon)
             ? res.dou_red : { uri: homeModule.douData.icon };
-        const colorDou = StringUtils.isEmpty(homeModule.titleImg) ? DesignRule.textColor_secondTitle : '#fff';
+        const colorDou = StringUtils.isEmpty(homeModule.titleImg) ? DesignRule.mainColor : '#fff';
         const colorIput = StringUtils.isEmpty(homeModule.titleImg) ? DesignRule.textColor_placeholder : '#fff';
         return (
             <View style={styles.navBar}>
@@ -45,24 +45,24 @@ export default class HomeSearchView extends Component {
                     <Image source={resLogo}
                            style={styles.logo}/>
                     <TouchableOpacity
+                        onPress={() => {
+                            routePush('home/search/SearchPage');
+                        }}
+                        activeOpacity={0.8}
+                        style={{ flex: 1 }}>
+                        <View style={[styles.searchBox, { backgroundColor: '#F2F2F2' }]}>
+                            <Image source={searchImg} style={styles.searchIcon}/>
+                            <UIText style={[styles.inputText, { color: colorIput }]} value={'请输入关键词'}/>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
                         activeOpacity={0.8}
                         onPress={() => this._jumpPage(homeModule.douData)}>
                         <Image source={resDou}
                                style={styles.dou}/>
                     </TouchableOpacity>
                     <UIText style={[styles.douText, { color: colorDou }]}
-                            value={(user.isLogin ? user.userScore : '我的') + '秀豆'}/>
-                    <TouchableOpacity
-                        onPress={() => {
-                            routePush('home/search/SearchPage');
-                        }}
-                        activeOpacity={0.8}
-                        style={{ flex: 1, alignItems: 'flex-end' }}>
-                        <View style={[styles.searchBox, { backgroundColor: '#F2F2F2' }]}>
-                            <Image source={searchImg} style={styles.searchIcon}/>
-                            <UIText style={[styles.inputText, { color: colorIput }]} value={'请输入关键词搜索'}/>
-                        </View>
-                    </TouchableOpacity>
+                            value={(user.isLogin ? 1234 : '我的') + '秀豆'}/>
                 </View>
             </View>
         );
@@ -82,7 +82,7 @@ let styles = StyleSheet.create({
         backgroundColor: 'transparent',
         justifyContent: 'center',
         paddingTop: statusBarHeight,
-        marginLeft: px2dp(15)
+        marginHorizontal: px2dp(15)
     },
     logo: {
         height: 22,
@@ -95,31 +95,28 @@ let styles = StyleSheet.create({
     },
     douText: {
         fontSize: 14,
-        marginLeft: 8,
+        marginLeft: 5,
         fontWeight: 'bold'
     },
     searchBox: {
         height: 30,
-        width: px2dp(170),
         flexDirection: 'row',
-        borderBottomLeftRadius: 15,  // 设置圆角边
-        borderTopLeftRadius: 15,  // 设置圆角边
+        borderRadius: 15,  // 设置圆角边
         alignItems: 'center',
+        justifyContent: 'center',
         marginLeft: px2dp(10),
-        opacity: 0.8
+        opacity: 0.6
     },
     msgIcon: {
         height: 24,
         width: 24
     },
     searchIcon: {
-        marginLeft: 10,
-        marginRight: 10,
+        marginRight: 8,
         width: 16,
         height: 16
     },
     inputText: {
-        flex: 1,
         fontSize: px2dp(12)
     }
 });
