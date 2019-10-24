@@ -216,7 +216,6 @@ export default class HomeFirstTabView extends Component {
                 isRefreshing={homeModule.isRefreshing}
                 onRefresh={this._onRefresh.bind(this)}
                 lineTop={ScreenUtils.autoSizeWidth(40) + 1}
-
             />
         );
     };

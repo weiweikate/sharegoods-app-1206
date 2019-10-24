@@ -14,8 +14,6 @@ class HomeNewUserModel {
     @observable newUserData = [];
     @observable imgHeight = 0;
 
-    imgUrls = [];
-
     @action loadNewUserArea = flow(function* (isCache) {
         try {
             if (isCache) {

@@ -58,7 +58,6 @@ export class LimitGoModules {
     }
 
 
-
     @action loadLimitGo = flow(function* (change) {
         HomeApi.freeOrderSwitch().then((data) => {
             this.isShowFreeOrder = data.data || false;
@@ -75,7 +74,7 @@ export class LimitGoModules {
                     type: 0
                 });
                 let result = res.data || [];
-                result = yield this._handleData(result)
+                result = yield this._handleData(result);
 
                 let _spikeList = [];
                 let timeFormats = [];
@@ -124,6 +123,7 @@ export class LimitGoModules {
                         id: index,
                         time: timeFormat,
                         diff: diff,
+                        labelUrl: (result[index] && result[index].labelUrl),
                         activityCode: (result[index] && result[index].simpleActivity.code) || '',
                         goods: (result[index] && result[index].productDetailList) || []
                     });
@@ -176,29 +176,29 @@ export class LimitGoModules {
         });
     }
 
-    _handleData(data){
-        let promises = []
-        data.forEach((sbuData)=> {
-            (sbuData.productDetailList || [] ).forEach((item, index) => {
+    _handleData(data) {
+        let promises = [];
+        data.forEach((sbuData) => {
+            (sbuData.productDetailList || []).forEach((item, index) => {
                 //处理自定义专题
                 if (item.specialSubject) {
-                    promises.push(asyncHandleTopicData({data: item.specialSubject}).then((data)=>{
+                    promises.push(asyncHandleTopicData({ data: item.specialSubject }).then((data) => {
                         //将处理完的数组插回原来的数组，替代原来老自定义专题数据
-                        sbuData.productDetailList.splice(sbuData.productDetailList.indexOf(item),1,...data)
+                        sbuData.productDetailList.splice(sbuData.productDetailList.indexOf(item), 1, ...data);
                     }));
                     //处理限时购商品数据
-                }else if (!item.type) {
+                } else if (!item.type) {
                     item.type = homeType.limitGoGoods;
                     //第一个marginTop为0,其余都为10
-                    item.itemHeight = (index === 0? px2dp(130):px2dp(140));
-                    item.marginTop = (index === 0? px2dp(0):px2dp(10));
+                    item.itemHeight = (index === 0 ? px2dp(130) : px2dp(140));
+                    item.marginTop = (index === 0 ? px2dp(0) : px2dp(10));
                 }
-            })
-        })
+            });
+        });
 
-        return  Promise.all(promises).then(() => {
+        return Promise.all(promises).then(() => {
             return data;
-        })
+        });
     }
 
 }

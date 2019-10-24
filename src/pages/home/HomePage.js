@@ -28,6 +28,7 @@ import ImageLoad from '@mr/image-placeholder';
 import store from '@mr/rn-store';
 import StringUtils from '../../utils/StringUtils';
 import homeController from '../marketing/controller/HomeController';
+import { homeNewUserModel } from './model/HomeNewUserModel';
 
 
 /**
@@ -95,6 +96,8 @@ class HomePage extends BasePage {
                     //通知HomeController进入首页
                     homeController.notifyArrivedHome();
                     this.luckyIcon && this.luckyIcon.getLucky(1, '');
+                    // 新人专区实时刷，新老用户变换
+                    homeNewUserModel.loadNewUserArea();
                     track(trackEvent.ViewHomePage);
                     homeTabManager.setHomeFocus(true);
                     homeModule.homeFocused(true);

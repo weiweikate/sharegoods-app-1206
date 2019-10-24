@@ -13,26 +13,13 @@ import NoMoreClick from '../../../components/ui/NoMoreClick';
 import user from '../../../model/user';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
-import productRes from '../../product/res/product';
 import { observer } from 'mobx-react';
 import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 const { px2dp } = ScreenUtils;
-const { saleSmallSkill } = productRes.pSacle;
 
 @observer
 export default class HomeLimitGoGoodsView extends Component {
-
-    _goodsItem(len, data, index, activityData) {
-        return (<TouchableWithoutFeedback key={index}
-                                          onPress={() => this._goToDetail(index, data || {}, activityData)}>
-            <View>
-                <GoodsItem key={index} item={data || {}} activityCode={activityData.activityCode}
-                           navigate={this.props.navigate}/>
-                <View style={{ height:10}}/>
-            </View>
-        </TouchableWithoutFeedback>);
-    }
 
     _goToDetail(index, value, activityData) {
         routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode, ...getSGspm_home(HomeSource.limitGo, index, limitGoModule.currentPage) });
@@ -55,7 +42,7 @@ export default class HomeLimitGoGoodsView extends Component {
     }
 
     render() {
-       let {spikeList, currentPage} = limitGoModule
+        let { spikeList, currentPage } = limitGoModule;
         let activityData = '';
         if (spikeList && spikeList[currentPage]) {
             activityData = spikeList[currentPage];
@@ -65,17 +52,21 @@ export default class HomeLimitGoGoodsView extends Component {
         let data = this.props.data;
         return (
             <TouchableWithoutFeedback key={index}
-                                          onPress={() => this._goToDetail(index, data || {}, activityData)}>
-            <View style={{marginTop: data.marginTop}}>
-                <GoodsItem key={index} item={data || {}} activityCode={activityData.activityCode}
-                           navigate={this.props.navigate}/>
-            </View>
-        </TouchableWithoutFeedback>
+                                      onPress={() => this._goToDetail(index, data || {}, activityData)}>
+                <View style={{ marginTop: data.marginTop }}>
+                    <GoodsItem
+                        key={index}
+                        item={data || {}}
+                        activityCode={activityData.activityCode}
+                        labelUrl={activityData.labelUrl}
+                        navigate={this.props.navigate}/>
+                </View>
+            </TouchableWithoutFeedback>
         );
     }
 }
 
-const GoodsItem = ({ item, activityCode, navigate }) => {
+const GoodsItem = ({ item, activityCode, labelUrl, navigate }) => {
     const promotionSaleRateS = item.promotionSaleRate || 0;
     const discountString = (item.promotionPrice / item.originalPrice * 10) + '';
     let discountNum = discountString.substring(0, discountString.indexOf('.') + 2);
@@ -91,7 +82,9 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
             {item.promotionStatus === limitStatus.end ?
                 <Image source={resHome.home_sallout}
                        style={styles.goodsTag}/> : null}
-            <Image source={saleSmallSkill} style={{ width: 50, height: 18, top: 5, left: 0, position: 'absolute' }}/>
+            <Image source={{ uri: labelUrl }}
+                   resizeMode={'contain'}
+                   style={{ height: 18, top: 5, left: 0, position: 'absolute' }}/>
         </ImageLoader>
         <View style={styles.goodsContent}>
             <Text style={styles.goodsTitle} numberOfLines={1}>{item.name}</Text>

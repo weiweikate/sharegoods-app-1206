@@ -6,6 +6,5 @@ const pSale = {
     saleSmall_501: require('./saleSmall_501.png'),
     saleSmall_1001: require('./saleSmall_1001.png'),
     saleLargeSkill: require('./saleLargeSkill.png'),
-    saleSmallSkill: require('./saleSmallSkill.png'),
 }
 export default pSale

@@ -1,29 +1,25 @@
 'use strict';
-import React, {useRef, useCallback,useState} from 'react';
-import {StyleSheet, Animated,Platform} from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import { Animated, Platform, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
-import {
-    RefreshLayout,
-    RefreshHeader,
-    RefreshState,
-} from '@mr/react-native-refresh';
-import {MRText} from '../../../components/ui';
+import { RefreshHeader, RefreshLayout, RefreshState } from '@mr/react-native-refresh';
+import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 
 const RefreshStatus = {
-    PULLDOWN:'下拉刷新',
-    LOOSEN:'松开刷新',
-    REFRESHING:'刷新中...',
-    REFRESHED:'刷新完成'
-}
+    PULLDOWN: '下拉刷新',
+    LOOSEN: '松开刷新',
+    REFRESHING: '刷新中...',
+    REFRESHED: '刷新完成'
+};
 
 function RefreshAnimateHeader(props) {
-    const {refreshing, onRefresh, source, headerHeight = 50, backgroundColor,lineTop} = props;
+    const { refreshing, onRefresh, source, headerHeight = 50, backgroundColor, lineTop } = props;
 
     const lottieRef = useRef(React.createRef());
     const progressRef = useRef(new Animated.Value(1));
     const currentState = useRef(RefreshState.Idle);
-    const [status,setStatus] = useState(RefreshStatus.PULLDOWN);
+    const [status, setStatus] = useState(RefreshStatus.PULLDOWN);
 
     const onPullingRefreshCallBack = useCallback((state) => {
         currentState.current = state;
@@ -32,12 +28,12 @@ function RefreshAnimateHeader(props) {
 
     const onRefreshCallBack = useCallback(
         (state) => {
-            Platform.OS === 'ios' ? lottieRef.current.play():lottieRef.current.play(24, 150);
+            Platform.OS === 'ios' ? lottieRef.current.play() : lottieRef.current.play(24, 150);
             onRefresh && onRefresh(state);
             currentState.current = state;
             setStatus(RefreshStatus.REFRESHING);
         },
-        [onRefresh],
+        [onRefresh]
     );
 
     const onEndRefreshCallBack = useCallback((state) => {
@@ -56,7 +52,7 @@ function RefreshAnimateHeader(props) {
     }, []);
 
     const onChangeOffsetCallBack = useCallback((event) => {
-        const {offset} = event.nativeEvent;
+        const { offset } = event.nativeEvent;
         if (
             currentState.current !== RefreshState.Refreshing &&
             currentState.current !== RefreshState.End
@@ -67,7 +63,7 @@ function RefreshAnimateHeader(props) {
 
     const lottie = Platform.OS === 'ios' ? <LottieView
         ref={lottieRef}
-        style={[styles.lottery, {height: headerHeight}]}
+        style={[styles.lottery, { height: headerHeight }]}
         resizeMode={'cover'}
         loop={false}
         autoSize={false}
@@ -78,7 +74,7 @@ function RefreshAnimateHeader(props) {
         cacheStrategy={'strong'}
     /> : <LottieView
         ref={lottieRef}
-        style={[styles.lottery, {height: headerHeight}]}
+        style={[styles.lottery, { height: headerHeight }]}
         resizeMode={'cover'}
         loop={false}
         autoSize={false}
@@ -88,12 +84,11 @@ function RefreshAnimateHeader(props) {
         hardwareAccelerationAndroid={true}
         cacheStrategy={'strong'}
         progress={progressRef.current.interpolate({
-            inputRange: [0, headerHeight+30, headerHeight * 3],
+            inputRange: [0, headerHeight + 30, headerHeight * 3],
             outputRange: [0, 0.10, 0.10],
-            extrapolate: 'clamp',
+            extrapolate: 'clamp'
         })}
-    />
-
+    />;
 
 
     return (
@@ -106,12 +101,17 @@ function RefreshAnimateHeader(props) {
             onIdleRefresh={onIdleRefreshCallBack}
             backgroundColor={backgroundColor}
             lineTop={lineTop}
-            height={headerHeight+30}
+            height={headerHeight + 30}
 
         >
-            <RefreshHeader style={[styles.container, {height: headerHeight+30}]}>
+            <RefreshHeader style={[styles.container, { height: headerHeight + 30 }]}>
                 {lottie}
-                <MRText style={{height:20,color:DesignRule.textColor_instruction,fontSize:DesignRule.fontSize_20,marginBottom:10}}>{status}</MRText>
+                <MRText style={{
+                    height: 20,
+                    color: DesignRule.textColor_instruction,
+                    fontSize: DesignRule.fontSize_20,
+                    marginBottom: 10
+                }}>{status}</MRText>
             </RefreshHeader>
             {props.children}
         </RefreshLayout>
@@ -121,11 +121,11 @@ function RefreshAnimateHeader(props) {
 const styles = StyleSheet.create({
     container: {
         height: 50,
-        alignItems: 'center',
+        alignItems: 'center'
     },
     lottery: {
-        height: 50,
-    },
+        height: 50
+    }
 });
 
 export default React.memo(RefreshAnimateHeader);
