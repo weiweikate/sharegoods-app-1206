@@ -14,6 +14,7 @@ import { MRText as Text } from '../../../components/ui';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import { homeModule } from '../model/Modules';
 import RouterMap from '../../../navigation/RouterMap';
+import {PageLoadingState} from '../../../components/pageDecorator/PageState';
 
 const icon_search = res.search;
 
@@ -32,7 +33,8 @@ export default class CategorySearchPage extends BasePage {
             swiperShow: false,
             bannerData: [],
             nameArr: [],
-            sectionArr: []
+            sectionArr: [],
+            loadingState: PageLoadingState.loading,
         };
     }
 
@@ -40,8 +42,16 @@ export default class CategorySearchPage extends BasePage {
         title: '商品分类'
     };
 
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            loadingProps:{
+            },
+        };
+    };
+
     componentDidMount() {
-        this.$loadingShow('加载中');
+        // this.$loadingShow('加载中');
         setTimeout(() => {
             let typeId = this.params.typeId;
             this.getTypeList(typeId);
@@ -66,7 +76,8 @@ export default class CategorySearchPage extends BasePage {
             let item = { id: -10, name: '为您推荐' };
             datas.unshift(item);
             this.setState({
-                nameArr: datas || []
+                nameArr: datas || [],
+                loadingState: PageLoadingState.success
             }, () => {
                 // 滚动到指定位置
                 if (typeId) {
@@ -87,7 +98,7 @@ export default class CategorySearchPage extends BasePage {
                 }
             });
         }).catch((data) => {
-            this.$loadingDismiss();
+            this.setState({loadingState: PageLoadingState.fail})
             bridge.$toast(data.msg);
         });
     };

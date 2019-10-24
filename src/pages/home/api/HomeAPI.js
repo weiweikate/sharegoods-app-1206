@@ -41,7 +41,7 @@ const api = {
     //商品页面用户领取红包-->杨小猛
     givingPackageToUser: ['/promotion/promotionPromoter/givingPackageToUser', { method: 'get' }],
     //秒杀
-    getLimitGo: ['/product/queryProductDetailByActivity', { method: 'post' }],
+    getLimitGo: ['/product/queryProductDetailByActivityV2', { method: 'post' }],
     //是否显示秒杀
     isShowLimitGo: ['/advertising/timeLimitSecKill', { method: 'get' }],
     freeOrderSwitch: ['/promotion/freeOrderSwitch', { method: 'get' }],

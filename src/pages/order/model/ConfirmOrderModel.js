@@ -514,7 +514,7 @@ class ConfirmOrderModel {
         }).catch(err => {
             bridge.hiddenLoading();
             if (err.code !== -1){
-                Alert.alert(err.msg+'，请刷新页面或返回修改？',null,[{
+                Alert.alert(err.msg,null,[{
                     text: '返回', onPress: () => {
                         routePop();
                     }

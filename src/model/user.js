@@ -58,6 +58,11 @@ class User {
     @observable
     address = null;         //详细地址
     @observable
+    sex = null;             //用户性别 1：男，2：女
+    @observable
+    birthday = null;        //用户生日
+
+    @observable
     device = null;          //最后登录_手机型号
     @observable
     systemVersion = null;   //最后登录_系统型号
@@ -200,7 +205,7 @@ class User {
     weChatNumber = null;
 
     @observable newUser = null;
-    
+
     //用户是否开启短信通道
     @observable
     showPhone = 0;
@@ -262,6 +267,8 @@ class User {
         this.headImg = info.headImg;                //头像
         this.idcard = info.idcard;                  //身份证号码
         this.address = info.address;                //详细地址
+        this.sex = info.sex;                        //用户性别
+        this.birthday = info.birthday;              //用户生日
         this.device = info.device;                  //最后登录_手机型号
         this.systemVersion = info.systemVersion;    //最后登录_系统型号
         this.wechatVersion = info.wechatVersion;    //微信版本
@@ -398,6 +405,8 @@ class User {
         this.headImg = null;         //头像
         this.idcard = null;          //身份证号码
         this.address = null;         //详细地址
+        this.sex = null;             //用户性别
+        this.birthday = null;        //用户生日
         this.device = null;          //最后登录_手机型号
         this.systemVersion = null;   //最后登录_系统型号
         this.wechatVersion = null;   //微信版本

@@ -215,11 +215,15 @@ export default class AddressManagerPage extends BasePage {
             tel: item.receiverPhone + '',
             address: item.address,
             id: item.id,
-            areaText: item.province + item.city + (item.area || ''),
+            areaText: item.province + item.city + (item.area || '') + (item.street || ''),
             provinceCode: item.provinceCode,
+            province: item.province || '',
             cityCode: item.cityCode,
+            city: item.city || '',
             areaCode: item.areaCode,
+            area: item.area||'',
             streetCode: item.streetCode,
+            street: item.street || '',
             isDefault: index === this.state.selectIndex
         });
     };
@@ -227,9 +231,7 @@ export default class AddressManagerPage extends BasePage {
     _onDelAddress = (item) => {
         Alert.alert('', '是否确认删除此地址？', [
             {
-                text: '取消', onPress: () => {
-                    style: 'cancel';
-                }
+                text: '取消', onPress: () => {}
             },
             {
                 text: '确定', onPress: () => {

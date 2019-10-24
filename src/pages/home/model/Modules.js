@@ -6,7 +6,6 @@ import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
 import { channelModules } from './HomeChannelModel';
 import { limitGoModule } from './HomeLimitGoModel';
 import { tabModel } from './HomeTabModel';
-import taskModel from './TaskModel';
 import store from '@mr/rn-store';
 import { ImageAdViewGetHeight } from '../view/TopicImageAdView';
 import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
@@ -72,22 +71,11 @@ class HomeModule {
             id: 2,
             type: homeType.channel
         }, {
-            id: 3,
-            type: homeType.task
-        }, {
             id: 4,
             type: homeType.expandBanner
         }];
     topTopice = [];
-    fixedPartTwo = [{
-        id: 60,
-        type: homeType.limitGoTop
-    }, {
-        id: 61,
-        type: homeType.limitGoTime
-    }];
-    limitGoods = [];
-    limitStaticViewDismiss = { type: homeType.limitStaticViewDismiss };
+    fixedPartTwo = [];
     bottomTopice = [];
     fixedPartThree = [{
         id: 10,
@@ -165,7 +153,13 @@ class HomeModule {
 
     @action
     changelimitGoods(limitGoods) {
-        this.limitGoods = limitGoods;
+        this.fixedPartTwo = [{
+            id: 60,
+            type: homeType.limitGoTop
+        }, {
+            id: 61,
+            type: homeType.limitGoTime
+        },...limitGoods, { type: homeType.limitStaticViewDismiss }];
         this.homeList = this.getHomeListData();
     }
 
@@ -204,16 +198,12 @@ class HomeModule {
                 ...this.topTopice,
                 ...this.bottomTopice,
                 ...this.fixedPartTwo,
-                ...this.limitGoods,
-                this.limitStaticViewDismiss,
                 ...this.fixedPartThree,
                 ...this.goods
             ];
         } else if (this.type === 2) {
             home = [...this.fixedPartOne,
                 ...this.fixedPartTwo,
-                ...this.limitGoods,
-                this.limitStaticViewDismiss,
                 ...this.topTopice,
                 ...this.bottomTopice,
                 ...this.fixedPartThree,
@@ -223,8 +213,6 @@ class HomeModule {
             home = [...this.fixedPartOne,
                 ...this.topTopice,
                 ...this.fixedPartTwo,
-                ...this.limitGoods,
-                this.limitStaticViewDismiss,
                 ...this.bottomTopice,
                 ...this.fixedPartThree,
                 ...this.goods
@@ -266,8 +254,6 @@ class HomeModule {
         homeExpandBnnerModel.loadBannerList(this.firstLoad);
         // 首页限时秒杀
         limitGoModule.loadLimitGo(true);
-
-        taskModel.getData();
 
         this.firstLoad = false;
         this.page = 1;

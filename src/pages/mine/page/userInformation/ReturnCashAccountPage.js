@@ -20,6 +20,7 @@ import {observer} from 'mobx-react';
 import ScrollableTabView, {DefaultTabBar} from '@mr/react-native-scrollable-tab-view';
 import LinearGradient from 'react-native-linear-gradient';
 
+import LoadingView from '../../../../components/pageDecorator/BaseView/LoadingView';
 import BasePage from '../../../../BasePage';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -27,7 +28,6 @@ import DataUtils from '../../../../utils/DateUtils';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
-import Toast from './../../../../utils/bridge';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import {MRText as Text} from '../../../../components/ui';
@@ -68,7 +68,8 @@ export default class CashRewardAccountPage extends BasePage {
             currentPage: 1,
             isEmpty: false,
             changeHeader: false,
-            refreshing: false
+            refreshing: false,
+            isloadingState: true,
 
         };
         this.currentPage = 0;
@@ -121,6 +122,7 @@ export default class CashRewardAccountPage extends BasePage {
                         <RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={this.onLoad}
+                            tintColor={DesignRule.mainColor}
                             colors={[DesignRule.mainColor]}
                         />
                     }
@@ -325,6 +327,10 @@ export default class CashRewardAccountPage extends BasePage {
             );
         }
 
+        if (this.state.isloadingState) {
+            return <LoadingView style={{paddingTop: 150, justifyContent: 'flex-end', backgroundColor: 'white'}}/>
+        }
+
         if (item.title && item.title === 'empty') {
             return <EmptyView style={{flex: 1}} imageStyle={{width: 267, height: 192}} description={''}
                               subDescription={'暂无明细数据～'} source={cash_noData}/>;
@@ -415,7 +421,6 @@ export default class CashRewardAccountPage extends BasePage {
             pageSize: 20,
             ...this.params
         }).then((response) => {
-            Toast.hiddenLoading();
             console.log(response);
             if (response.code === 10000) {
                 let data = response.data;
@@ -427,18 +432,19 @@ export default class CashRewardAccountPage extends BasePage {
                 this.setState({
                     refreshing: false,
                     viewData: arrData,
-                    isEmpty: data.data && data.data.length > 0 ? false : true
+                    isEmpty: data.data && data.data.length > 0 ? false : true,
+                    isloadingState: false
                 });
             } else {
-                this.setState({refreshing: false});
+                this.setState({refreshing: false, isloadingState: false});
                 this.$toastShow(response.msg);
             }
         }).catch(e => {
-            Toast.hiddenLoading();
             this.setState({
                 refreshing: false,
                 viewData: arrData,
-                isEmpty: true
+                isEmpty: true,
+                isloadingState: false
             });
         });
     };

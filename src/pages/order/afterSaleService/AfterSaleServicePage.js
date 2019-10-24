@@ -32,6 +32,7 @@ import res from '../res';
 import { trackEvent, track } from '../../../utils/SensorsTrack';
 import ProductApi from '../../product/api/ProductApi';
 import RouterMap from '../../../navigation/RouterMap';
+import {PageLoadingState} from '../../../components/pageDecorator/PageState';
 
 const { arrow_right } = res;
 
@@ -54,6 +55,7 @@ class AfterSaleServicePage extends BasePage {
             applyRefundAmount: this.params.isEdit === true ? this.params.applyRefundAmount : 0,//退款金额,
             editable: false,
             addressStr: '',
+            loadingState: PageLoadingState.loading
             /** 换货需要的数据*/
             // selectionData: {}, //规格数据
             // exchangeSpec: this.params.exchangeSpec,
@@ -67,6 +69,13 @@ class AfterSaleServicePage extends BasePage {
     componentDidMount() {
         this.loadPageData();
     }
+
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            loadingProps:{},
+        };
+    };
 
     $isMonitorNetworkStatus() {
         return true;
@@ -480,7 +489,6 @@ class AfterSaleServicePage extends BasePage {
 
     loadPageData() {
         let that = this;
-        this.$loadingShow();
         OrderApi.afterSaleProduceDetail({ productOrderNo: this.params.orderProductNo + '' }).then((result) => {
             that.$loadingDismiss();
             let productData = result.data || {};
@@ -498,12 +506,12 @@ class AfterSaleServicePage extends BasePage {
                 editable = false;
             }
             if (that.params.isEdit) {
-                that.setState({ productData, editable });
+                that.setState({ productData, editable, loadingState: PageLoadingState.success });
             } else {
-                that.setState({ productData, editable, applyRefundAmount: payAmount + '' });
+                that.setState({ productData, editable, applyRefundAmount: payAmount + '' ,loadingState: PageLoadingState.success});
             }
         }).catch(error => {
-            that.$loadingDismiss();
+            that.setState({ loadingState: PageLoadingState.fail });
         });
     }
 

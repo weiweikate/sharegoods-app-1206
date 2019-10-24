@@ -29,6 +29,8 @@ const api = {
     cancelCollection: '/user/storeCollection/cancel',
     //修改用户个人信息 type:1:修改头像 2:修改名字 3:修改省市区 4:微信绑定(openid 和 wechatName) 6:修改简介
     updateUserById: '/user/updateUserById',
+    //修改用户个人信息 性别 sex：1：男，2：女 birthday：2019-10-24
+    upSexAndBirthday: '/user/setUpSexAndBirthday',
     // 删除地址
     delAddress: ['/user/userAddress/delete', { method: 'post' }],
     // 查询地址
@@ -148,6 +150,8 @@ const api = {
     getMemberCenterShow:['/common/config/member/center/show',{method:'get'}],
     //自返金开关接口
     getSelfReturnShow:['/account/selfReturn/switch',{method:'get'}],
+    //我的战力接口开关
+    myStrengthShow:['/common/config/benefits/fight/show',{method:'get'}]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

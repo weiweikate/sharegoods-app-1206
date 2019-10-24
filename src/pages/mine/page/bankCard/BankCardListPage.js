@@ -29,6 +29,7 @@ import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import bridge from '../../../../utils/bridge';
 import { formatCardWithSpace } from './AddBankCardPage';
 import CommonUtils from '../../../../utils/CommonUtils';
+import {PageLoadingState} from '../../../../components/pageDecorator/PageState';
 
 const {
     bankcard_empty,
@@ -44,7 +45,8 @@ export default class BankCardListPage extends BasePage {
             viewData: [],
             isShowUnbindCardModal: false,
             isShowBindModal: false,
-            isRefreshing: false
+            isRefreshing: false,
+            loadingState: PageLoadingState.loading
         };
 
         this.selectBankCard = null;
@@ -54,6 +56,13 @@ export default class BankCardListPage extends BasePage {
     $navigationBarOptions = {
         title: '银行卡管理',
         show: true
+    };
+
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            loadingProps:{},
+        };
     };
 
     $NavBarRenderRightItem = () => {
@@ -76,7 +85,6 @@ export default class BankCardListPage extends BasePage {
         this.bindListener = DeviceEventEmitter.addListener('bindBank', (bankId) => {
             this._getBankInfo();
         });
-        this.$loadingShow();
         this._getBankInfo();
     }
 
@@ -90,14 +98,15 @@ export default class BankCardListPage extends BasePage {
         MineApi.getUserBankInfo().then((data) => {
             this.setState({
                 viewData: data.data,
-                isRefreshing: false
+                isRefreshing: false,
+                loadingState: PageLoadingState.success
+
             });
-            this.$loadingDismiss();
         }).catch((error) => {
             this.setState({
-                isRefreshing: false
+                isRefreshing: false,
+                loadingState: PageLoadingState.fail
             });
-            this.$loadingDismiss();
         });
     };
 
@@ -113,7 +122,7 @@ export default class BankCardListPage extends BasePage {
                                     progressViewOffset={ScreenUtils.statusBarHeight + 44}
                                     colors={[DesignRule.mainColor]}
                                     title="下拉刷新"
-                                    tintColor={DesignRule.textColor_instruction}
+                                    tintColor={DesignRule.mainColor}
                                     titleColor={DesignRule.textColor_instruction}
                                 />}>
                     <View style={{ alignItems: 'center' }}>

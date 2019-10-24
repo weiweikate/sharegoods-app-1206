@@ -5,7 +5,6 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import { homeType } from '../../HomeTypes';
 import { bannerModule } from '../../model/HomeBannerModel';
 import HomeBannerView, { bannerHeight } from '../HomeBannerView';
-import taskModel from '../../model/TaskModel';
 import { channelModules } from '../../model/HomeChannelModel';
 import { homeExpandBnnerModel } from '../../model/HomeExpandBnnerModel';
 import { limitGoModule } from '../../model/HomeLimitGoModel';
@@ -21,7 +20,6 @@ import {
     View
 } from 'react-native';
 import { routePush } from '../../../../navigation/RouterMap';
-import TaskView from '../TaskView';
 import HomeChannelView from '../HomeChannelView';
 import HomeExpandBannerView from '../HomeExpandBannerView';
 import HomeLimitGoGoodsView from '../HomeLimitGoGoodsView';
@@ -82,9 +80,6 @@ export default class HomeFirstTabView extends Component {
             case homeType.newUserArea:
                 dim.height = homeNewUserModel.imgHeight;
                 break;
-            case homeType.task:
-                dim.height = taskModel.homeHeight;
-                break;
             case homeType.channel:
                 dim.height = channelModules.channelHeight;
                 break;
@@ -97,9 +92,6 @@ export default class HomeFirstTabView extends Component {
             case homeType.limitGoTime:
                 dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitTimeHeight : 0;
                 break;
-            case homeType.limitGoGoods:
-                dim.height = px2dp(140);
-                break;
             case homeType.goodsTitle:
                 // dim.height = homeModule.tabList.length > 0 ? px2dp(66-13) : 0;
                 dim.height = px2dp(42);
@@ -110,6 +102,7 @@ export default class HomeFirstTabView extends Component {
             case homeType.custom_text:
             case homeType.custom_goods:
             case homeType.custom_imgAD:
+            case homeType.limitGoGoods:
                 dim.height = type.itemHeight || 0;
                 break;
             default:
@@ -133,11 +126,6 @@ export default class HomeFirstTabView extends Component {
         type = type.type;
         if (type === homeType.swiper) {
             return <HomeBannerView navigate={routePush}/>;
-        } else if (type === homeType.task) {
-            return <TaskView type={'home'} style={{
-                marginTop: ScreenUtils.autoSizeWidth(5),
-                marginBottom: ScreenUtils.autoSizeWidth(10)
-            }}/>;
         } else if (type === homeType.activityCenter) {
             return <HomeActivityCenterView/>;
         } else if (type === homeType.channel) {
@@ -179,7 +167,6 @@ export default class HomeFirstTabView extends Component {
     _onRefresh() {
         homeModule.isRefreshing = true;
         homeModule.loadHomeList();
-        taskModel.getData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
     }
 
@@ -226,7 +213,7 @@ export default class HomeFirstTabView extends Component {
                 isRefreshing={homeModule.isRefreshing}
                 onRefresh={this._onRefresh.bind(this)}
                 lineTop={ScreenUtils.autoSizeWidth(40) + 1}
-                styled={{ marginTop: ScreenUtils.autoSizeWidth(40) + 1, height: headerHeight }}
+
             />
         );
     };
@@ -246,7 +233,7 @@ export default class HomeFirstTabView extends Component {
         }
 
         if (type.type === homeType.limitStaticViewDismiss) {
-            DeviceEventEmitter.emit('staticeLimitGoTimeView', true);
+            DeviceEventEmitter.emit('staticeLimitGoTimeView', false);
         }
         return <View/>;
     };
@@ -260,13 +247,13 @@ export default class HomeFirstTabView extends Component {
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         let stickyHeaderIndices = [];
         homeList.forEach((item, index) => {
-            if (item.type === homeType.goodsTitle) {
-                stickyHeaderIndices.push(index);
-            }
+            // if (item.type === homeType.goodsTitle) {
+            //     stickyHeaderIndices.push(index);
+            // }
 
             if (item.type === homeType.limitGoTime) {
                 this.limitGoTimeIndex = index;
-                stickyHeaderIndices.push(index - 1);
+                stickyHeaderIndices.push(index-1);//把限时购前一条也设成stick，为了提早收起顶部类目导航
                 stickyHeaderIndices.push(index);
             }
 
