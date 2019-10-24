@@ -98,7 +98,7 @@ export default class MyShopPage extends BasePage {
         this.MyShopDetailModel.isRefresh = true;
         this._loadPageData();
         spellStatusModel.requestHome();
-        this.BannersVerticalView.fetchBannerList && this.BannersVerticalView.fetchBannerList();
+        this.BannersVerticalView && this.BannersVerticalView.fetchBannerList && this.BannersVerticalView.fetchBannerList();
     };
 
     _loadPageData = () => {

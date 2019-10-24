@@ -324,6 +324,9 @@ export default class RecommendPage extends BasePage {
     };
 
     _onScroll = (event) => {
+        if (bannerModule.bannerList.length === 0) {
+            return;
+        }
         let Y = event.nativeEvent.contentOffset.y;
         let oldSt = this.st;
         if (Y <= 0) {
@@ -346,7 +349,10 @@ export default class RecommendPage extends BasePage {
                                 start={{ x: 0, y: 0 }}
                                 end={{ x: 1, y: 0 }}
                                 ref={e => this.LinearGradient = e}
-                                style={styles.navView}/>
+                                style={[styles.navView, {
+                                    opacity: bannerModule.bannerList.length === 0 ? 1 : 0,
+                                    position: bannerModule.bannerList.length === 0 ? 'relative' : 'absolute'
+                                }]}/>
                 {this._renderNavView1()}
                 <SectionList keyExtractor={(item, index) => `${item.storeCode}${index}`}
                              style={{ backgroundColor: DesignRule.bgColor }}
@@ -367,7 +373,7 @@ export default class RecommendPage extends BasePage {
                              renderSectionHeader={this._renderSectionHeader}
                              renderItem={this._renderItem}
                              sections={[{ data: this.state.dataList }]}
-                             stickySectionHeadersEnabled={true}
+                             stickySectionHeadersEnabled={false}
                              initialNumToRender={5}/>
                 <IntervalMsgView pageType={IntervalType.shopHome}/>
             </View>
@@ -381,8 +387,8 @@ const styles = StyleSheet.create({
     },
 
     navView: {
-        position: 'absolute', top: 0, left: 0, right: 0, zIndex: 50,
-        height: ScreenUtils.headerHeight, opacity: 0
+        top: 0, left: 0, right: 0, zIndex: 50,
+        height: ScreenUtils.headerHeight
     },
     navView1: {
         position: 'absolute', top: 0, left: 0, right: 0, zIndex: 51,
