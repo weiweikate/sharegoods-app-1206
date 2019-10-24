@@ -15,7 +15,7 @@
 import React from 'react';
 
 import { Image, TouchableWithoutFeedback, View } from 'react-native';
-import { DataProvider, LayoutProvider, RecyclerListView} from 'recyclerlistview';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import StickyContainer from 'recyclerlistview/sticky';
 
 import { MRText } from '../../../../components/ui';
@@ -40,7 +40,7 @@ const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 class GoodView extends React.PureComponent {
 
-    render(){
+    render() {
         let item = this.props.data;
         return (
             <View style={{
@@ -107,9 +107,9 @@ class GoodView extends React.PureComponent {
 
 class IconView extends React.PureComponent {
 
-    render(){
+    render() {
         let item = this.props.data;
-        return(
+        return (
             <View style={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
@@ -169,7 +169,7 @@ class IconView extends React.PureComponent {
                     );
                 })}
             </View>
-        )
+        );
     }
 
 }
@@ -245,12 +245,12 @@ export default class HomeNormalList extends React.Component {
         super(props);
 
         this.state = {
-            data: [{type: 'header'}],
+            data: [{ type: 'header' }],
             footerStatus: 'hidden',
-            refreshing: false,
+            refreshing: false
         };
         this.itemData = [];
-        this.header = [{type: 'header'}]
+        this.header = [{ type: 'header' }];
         this.goods = [];
         this.topicList = [];
 
@@ -276,7 +276,7 @@ export default class HomeNormalList extends React.Component {
      * 4.末尾加《全部分类》
      * @param itemData
      */
-    handleItemData=(itemData)=> {
+    handleItemData = (itemData) => {
         let count = itemData.length;
         if (count === 0) {
             itemData = [];
@@ -296,13 +296,13 @@ export default class HomeNormalList extends React.Component {
                 'linkType': 'all'
             });
         }
-        this.itemData = [{type: 'icon', data: itemData}];
+        this.itemData = [{ type: 'icon', data: itemData }];
         this.changeData();
-    }
+    };
 
-    changeData= ()=>{
-        this.setState({data: [...this.itemData,...this.topicList,...this.header, ...this.goods]})
-    }
+    changeData = () => {
+        this.setState({ data: [...this.itemData, ...this.topicList, ...this.header, ...this.goods] });
+    };
 
     changeIndex(index) {
         this.index = index;
@@ -338,14 +338,14 @@ export default class HomeNormalList extends React.Component {
         dim.width = ScreenUtils.width;
         switch (type.type) {
             case 'icon':
-                if (type.data.length === 0){
+                if (type.data.length === 0) {
                     dim.height = 0;
                 } else {
-                    dim.height =  type.data.length> 5? ScreenUtils.autoSizeWidth(93)*2: ScreenUtils.autoSizeWidth(93);
+                    dim.height = type.data.length > 5 ? ScreenUtils.autoSizeWidth(93) * 2 : ScreenUtils.autoSizeWidth(93);
                 }
                 break;
             case 'goods':
-                dim.height =  ScreenUtils.autoSizeWidth(174+60+20);
+                dim.height = ScreenUtils.autoSizeWidth(174 + 60 + 20);
                 break;
             case 'header':
                 dim.height = 50;
@@ -363,21 +363,21 @@ export default class HomeNormalList extends React.Component {
 
     _renderItem = (type, item, index) => {
         type = type.type;
-        item.sgscm = getSGscm(SGscmSource.topic,this.code).sgscm;
-        item.sgspm = getSGspm_home(HomeSource.marketing,index).sgspm
-        let p = {firstCategoryId: this.props.data.firstCategoryId, navName: this.props.data.navName};
+        item.sgscm = getSGscm(SGscmSource.topic, this.code).sgscm;
+        item.sgspm = getSGspm_home(HomeSource.marketing, index).sgspm;
+        let p = { firstCategoryId: this.props.data.firstCategoryId, navName: this.props.data.navName };
         let topic = { specialTopicId: this.props.data.linkCode };
         if (type === 'icon') {
-            return <IconView data={item.data} p = {p}/>
+            return <IconView data={item.data} p={p}/>;
         } else if (type === 'goods') {
-            return <GoodView data = {item.data} p = {p}/>
+            return <GoodView data={item.data} p={p}/>;
         } else if (type === 'header') {
             return <HeaderView
                 onPress={(index) => {
                     this.changeIndex(index);
                 }}
                 index={this.index}
-            />
+            />;
         } else if (type === homeType.custom_text) {
             p.specialTopicArea = 6;
             return <TextCustomView data={item} p={topic}/>;
@@ -401,7 +401,7 @@ export default class HomeNormalList extends React.Component {
         };
     }
 
-    refreshData=(first) =>{
+    refreshData = (first) => {
         if (!first) {
             if (this.isRefreshing || this.isLoadMore) {
                 return;
@@ -414,24 +414,24 @@ export default class HomeNormalList extends React.Component {
         HomeAPI.getSecondaryList({ navId: data.id }).then((result) => {
             this.handleItemData(result.data || []);
         });
-        if (customTopicCode){
+        if (customTopicCode) {
             //请求自定义专题数据
-            HomeAPI.getCustomTopic({topicCode: customTopicCode, page: '1', pageSize: '10'}).then((data)=> {
+            HomeAPI.getCustomTopic({ topicCode: customTopicCode, page: '1', pageSize: '10' }).then((data) => {
                 //处理自定义专题的数据
-                asyncHandleTopicData(data).then((topticList)=> {
+                asyncHandleTopicData(data).then((topticList) => {
                     this.topicList = topticList;
                     this.changeData();
-                })
-            })
+                });
+            });
         }
 
         this.isRefreshing = true;
         this.page = 1;
-        setTimeout(()=> {//为了播放完刷新动画
+        setTimeout(() => {//为了播放完刷新动画
             this.setState({
                 refreshing: false
             });
-        }, 1000)
+        }, 1000);
         HomeAPI.productList(this.getParams()).then((data) => {
             this.isRefreshing = false;
             data = data.data || {};
@@ -441,13 +441,13 @@ export default class HomeNormalList extends React.Component {
             this.goods = dataArr;
             this.changeData();
             this.setState({
-                footerStatus,
+                footerStatus
             });
 
         }).catch((e) => {
             this.isRefreshing = false;
         });
-    }
+    };
 
     getMoreData() {
         if (this.isRefreshing || this.isLoadMore || this.state.footerStatus === 'noMoreData') {
@@ -464,7 +464,7 @@ export default class HomeNormalList extends React.Component {
             dataArr = this.handleMoreData(dataArr);
             this.goods = dataArr;
             this.changeData();
-            this.setState({ footerStatus});
+            this.setState({ footerStatus });
 
         }).catch((e) => {
             this.page--;
@@ -479,7 +479,7 @@ export default class HomeNormalList extends React.Component {
 
         data.forEach((item) => {
             if (temp.length === 2) {
-                arr.push({type: 'goods', data: temp});
+                arr.push({ type: 'goods', data: temp });
                 temp = [];
             }
             temp.push(item);
@@ -499,39 +499,39 @@ export default class HomeNormalList extends React.Component {
         let temp = arr.pop();
         data.forEach((item) => {
             if (temp.length === 2) {
-                arr.push({type: 'goods', data: temp});
+                arr.push({ type: 'goods', data: temp });
                 temp = [];
             }
             temp.push(item);
 
         });
         if (temp.length > 0) {
-            arr.push({type: 'goods', data: temp});
+            arr.push({ type: 'goods', data: temp });
         }
         return arr;
     }
 
 
     render() {
-        if (Math.abs(tabModel.tabIndex - this.props.index) > 1){
+        if (Math.abs(tabModel.tabIndex - this.props.index) > 1) {
             return null;
         }
         this.dataProvider = this.dataProvider.cloneWithRows(this.state.data);
         let stickyHeaderIndice = 0;
-        this.state.data.find((item, index)=> {
+        this.state.data.find((item, index) => {
             if (item.type === 'header') {
-                stickyHeaderIndice = index
-                return true
+                stickyHeaderIndice = index;
+                return true;
             }
             return false;
-        })
+        });
         return (
-            <View style={[DesignRule.style_container, { marginTop: 42 }]}>
+            <View style={[DesignRule.style_container, { marginTop: ScreenUtils.autoSizeWidth(40) }]}>
                 <StickyContainer stickyHeaderIndices={[stickyHeaderIndice]}>
                     <RecyclerListView
                         refreshControl={<HeaderLoading
                             isRefreshing={this.state.refreshing}
-                            onRefresh={()=> this.refreshData(false)}
+                            onRefresh={() => this.refreshData(false)}
                         />}
                         style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0 }}
                         onEndReached={this.getMoreData.bind(this)}

@@ -1,9 +1,11 @@
 import HttpUtils from './HttpUtils';
-import User from '../../model/user';
+import user from '../../model/user';
 import apiEnvironment from '../ApiEnvironment';
-import { routePush } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { routePush } from '../../navigation/RouterMap';
+import store from '@mr/rn-store';
+import envConfig from '../../../config';
 
+const KEY_ApiEnvironment = '@mr/apiEnvironment';
 export default function ApiUtils(Urls) {
     let result = {}, list = [];
     Object.keys(Urls).forEach(function(name) {
@@ -26,7 +28,7 @@ export default function ApiUtils(Urls) {
         result[name] = async function(params, config = {}) {
             let url = item.uri, method = item.method || 'post', isRSA = item.isRSA || false,
                 filter = item.filter, checkLogin = item.checkLogin || false;
-            if (checkLogin === true && !User.isLogin) {
+            if (checkLogin === true && !user.isLogin) {
                 return Promise.reject({
                     code: 10009,
                     msg: '用户登录失效'
@@ -43,15 +45,24 @@ export default function ApiUtils(Urls) {
                 filter && filter(response);
                 return Promise.resolve(response);
             } else {
-                // 假如返回未登陆并且当前页面不是登陆页面则进行跳转
-                if (response.code === 10009) {
-                    User.clearUserInfo();
-                    User.clearToken();
-                }
-                //系统升级中跳转错误网页
-                if (response.code === 9999) {
-                    routePush(RouterMap.HtmlPage, { uri: apiEnvironment.getCurrentH5Url() + '/system-maintenance' });
-                }
+                // 判断缓存的环境是否与当前接口请求的一致，一致是响应code对应动作
+                store.get(KEY_ApiEnvironment).then(envType => {
+                    let configEnv = envConfig.envType;
+                    if (envType === configEnv) {
+                        // 假如返回未登陆并且当前页面不是登陆页面则进行跳转
+                        if (response.code === 10009) {
+                            user.clearUserInfo();
+                            user.clearToken();
+                        }
+                        // 系统升级中跳转错误网页
+                        if (response.code === 9999) {
+                            routePush(RouterMap.HtmlPage,
+                                { uri: apiEnvironment.getCurrentH5Url() + '/system-maintenance' });
+                        }
+                    }
+                }).catch(e => {
+                    console.log('获取环境配置失败！');
+                });
                 return Promise.reject(response);
             }
         };

@@ -93,7 +93,6 @@ export default class MyShop_RecruitPage extends BasePage {
                     pinShopPageType = 2;
                 }
                 track(trackEvent.ViewPinShop, { pinShopPageType });
-
                 spellStatusModel.requestHome();
             }
         );

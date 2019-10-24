@@ -153,14 +153,11 @@ export default class ShowListPage extends BasePage {
 
 
     _gotoPage(number) {
-        // this.setState({ page: number });
         ShowListIndexModel.setIndex(number);
     }
 
     _onChangeTab(number) {
         ShowListIndexModel.setIndex(number.i);
-
-        // this.setState({ page: number.i });
     }
 
     _onLeftPressed() {

@@ -5,6 +5,7 @@ import LottieView from 'lottie-react-native';
 import { RefreshHeader, RefreshLayout, RefreshState } from '@mr/react-native-refresh';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const RefreshStatus = {
     PULLDOWN: '下拉刷新',
@@ -12,9 +13,10 @@ const RefreshStatus = {
     REFRESHING: '刷新中...',
     REFRESHED: '刷新完成'
 };
+const lottieHeight = ScreenUtils.autoSizeWidth(50);
 
 function RefreshAnimateHeader(props) {
-    const { refreshing, onRefresh, source, headerHeight = 50, backgroundColor, lineTop } = props;
+    const { refreshing, onRefresh, source, headerHeight = ScreenUtils.autoSizeWidth(50), backgroundColor, lineTop } = props;
 
     const lottieRef = useRef(React.createRef());
     const progressRef = useRef(new Animated.Value(1));
@@ -84,7 +86,7 @@ function RefreshAnimateHeader(props) {
         hardwareAccelerationAndroid={true}
         cacheStrategy={'strong'}
         progress={progressRef.current.interpolate({
-            inputRange: [0, headerHeight + 30, headerHeight * 3],
+            inputRange: [0, headerHeight + ScreenUtils.autoSizeWidth(30), headerHeight * 3],
             outputRange: [0, 0.10, 0.10],
             extrapolate: 'clamp'
         })}
@@ -124,11 +126,11 @@ function RefreshAnimateHeader(props) {
 
 const styles = StyleSheet.create({
     container: {
-        height: 50,
+        height: lottieHeight,
         alignItems: 'center'
     },
     lottery: {
-        height: 50
+        height: lottieHeight
     }
 });
 

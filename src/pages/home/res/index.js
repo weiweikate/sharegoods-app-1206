@@ -7,7 +7,8 @@ const resHome = {
     goods: require('./goods.png'),
     home_icon_logo_red: require('./home_icon_logo_red.png'),
     home_icon_logo_white: require('./home_icon_logo_white.png'),
-    icon_search: require('./icon_search.png'),
+    icon_search_grey: require('./icon_search_grey.png'),
+    icon_search_white: require('./icon_search_white.png'),
     home_notice_bg: require('./home_notice_bg.png'),
     star: require('./star.png'),
     /** 首页5个icon*/
