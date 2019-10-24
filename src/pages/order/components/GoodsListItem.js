@@ -238,6 +238,7 @@ export default class GoodsListItem extends React.Component {
                     goodsNum={item.quantity}
                     onPress={()=> {goodsItemClick(); this.setState({isShow: false})}}
                     activityCodes={item.activityList || []}
+                    msgList={item.msgList}
                 />)
         })
     };

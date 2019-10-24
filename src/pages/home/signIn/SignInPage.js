@@ -33,7 +33,7 @@ import { homeModule } from '../model/Modules';
 import RouterMap from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import TaskView from '../view/TaskView';
-import { mineTaskModel } from '../model/TaskModel';
+import taskModel,{ mineTaskModel } from '../model/TaskModel';
 import {SafeAreaView} from 'react-navigation';
 
 const { px2dp } = ScreenUtils;
@@ -103,6 +103,7 @@ export default class SignInPage extends BasePage {
                 if (user.token) {
                     this.loadPageData();
                     mineTaskModel.getData();
+                    taskModel.getData();
                 } else {
                     if (this.first) {
                         this.loadPageData();
@@ -212,6 +213,7 @@ export default class SignInPage extends BasePage {
                 });
             }
             mineTaskModel.getData();
+            taskModel.getData();
         }).catch((error) => {
             this.signinRequesting = false;
             this.$toastShow(error.msg);
@@ -573,6 +575,10 @@ export default class SignInPage extends BasePage {
                     showsVerticalScrollIndicator={false}>
                     {this._headerIconRender()}
                     {this.state.signInData ? this._signInInfoRender() : null}
+                    <TaskView type={'home'} style={{
+                        marginTop: ScreenUtils.autoSizeWidth(5),
+                        marginBottom: ScreenUtils.autoSizeWidth(10)
+                    }}/>
                     <TaskView type={'mine'}
                               isSignIn={true}
                               signIn={this.userSign}

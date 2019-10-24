@@ -6,7 +6,6 @@ import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
 import { channelModules } from './HomeChannelModel';
 import { limitGoModule } from './HomeLimitGoModel';
 import { tabModel } from './HomeTabModel';
-import taskModel from './TaskModel';
 import store from '@mr/rn-store';
 import { ImageAdViewGetHeight } from '../view/TopicImageAdView';
 import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
@@ -64,9 +63,6 @@ class HomeModule {
         }, {
             id: 2,
             type: homeType.channel
-        }, {
-            id: 3,
-            type: homeType.task
         }, {
             id: 4,
             type: homeType.expandBanner
@@ -251,8 +247,6 @@ class HomeModule {
         homeExpandBnnerModel.loadBannerList(this.firstLoad);
         // 首页限时秒杀
         limitGoModule.loadLimitGo(true);
-
-        taskModel.getData();
 
         this.firstLoad = false;
         this.page = 1;

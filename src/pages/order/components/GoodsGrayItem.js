@@ -97,6 +97,13 @@ export default class GoodsGrayItem extends React.Component {
                             <UIText value={goodsNum ? ('x' + goodsNum) : ''} style={styles.detail}/>
                         </View>
                         {this._renderTips(tips)}
+                        {(this.props.msgList ||[]).map((item)=> {
+                           return(
+                               <UIText value={item} style={{
+                                   fontSize: 10,
+                                   color: DesignRule.mainColor}}/>
+                           )
+                        })}
                         {this.props.renderExtraView && this.props.renderExtraView()}
                     </View>
                 </View>

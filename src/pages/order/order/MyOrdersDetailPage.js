@@ -290,6 +290,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 category={category}
                 goodsNum={item.quantity}
                 activityCodes={item.activityList || []}
+                msgList = {item.msgList}
                 style={{ backgroundColor: 'white' }}
                 clickItem={() => {
                     //拼店扩容商品没有详情  陈阳君修改10.9
