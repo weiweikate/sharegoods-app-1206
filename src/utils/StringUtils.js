@@ -237,6 +237,17 @@ function checkEmoji(s) {
     return reg.test(s);
 }
 
+// String转json对象
+function str2Json(str) {
+    if (!str) {
+        return {};
+    }
+    if (typeof str === 'object') {
+        return str;
+    }
+    return JSON.parse(str);
+}
+
 //手机号中间4位用*代替
 function encryptPhone(s) {
     if (EmptyUtils.isEmpty(s)) {
@@ -325,8 +336,7 @@ function mul(arg1, arg2) {
         s2 = arg2.toString();
     try {
         m += s1.split('.')[1].length;
-    }
-    catch (e) {
+    } catch (e) {
     }
     try {
         m += s2.split('.')[1].length;
@@ -339,14 +349,12 @@ function sub(arg1, arg2) {
     let r1, r2, m, n;
     try {
         r1 = arg1.toString().split('.')[1].length;
-    }
-    catch (e) {
+    } catch (e) {
         r1 = 0;
     }
     try {
         r2 = arg2.toString().split('.')[1].length;
-    }
-    catch (e) {
+    } catch (e) {
         r2 = 0;
     }
     m = Math.pow(10, Math.max(r1, r2));
@@ -379,7 +387,8 @@ export default {
     sub,
     trimWithChar,
     add,
-    numberFormat
+    numberFormat,
+    str2Json
 };
 
 

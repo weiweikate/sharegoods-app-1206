@@ -229,21 +229,23 @@ export default class AccountSettingPage extends BasePage {
     _toEditWechat = (unionid) => {
         if (StringUtils.isEmpty(unionid)) {
             bridge.$loginWx((data) => {
-                MineAPI.updateUserById({
-                    ...data,
-                    type: 4,
-                    openid: data.openid,
-                    wechatName: data.nickName
-                }).then((resp) => {
-                    if (resp.code === 10000) {
-                        user.untiedWechat(data.nickName, data.appOpenid, data.unionid);
-                        bridge.$toast('绑定成功');
-                    } else {
-                        bridge.$toast(resp.msg);
-                    }
-                }).catch((error) => {
-                    bridge.$toast(error.msg);
-                });
+                if (data) {
+                    MineAPI.updateUserById({
+                        ...data,
+                        type: 4,
+                        openid: data.openid,
+                        wechatName: data.nickName
+                    }).then((resp) => {
+                        if (resp.code === 10000) {
+                            user.untiedWechat(data.nickName, data.appOpenid, data.unionid);
+                            bridge.$toast('绑定成功');
+                        } else {
+                            bridge.$toast(resp.msg);
+                        }
+                    }).catch((error) => {
+                        bridge.$toast(error.msg);
+                    });
+                }
             });
         } else {
             Alert.alert('确定解绑微信账号？', '解绑微信账号后，将无法使用微信登录该账号', [

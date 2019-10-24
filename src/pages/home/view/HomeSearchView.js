@@ -12,6 +12,8 @@ import { routePush } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import { homeModule } from '../model/Modules';
 import DesignRule from '../../../constants/DesignRule';
+import user from '../../../model/user';
+import bridge from '../../../utils/bridge';
 
 const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 
@@ -20,11 +22,21 @@ const searchImg = res.icon_search;
 @observer
 export default class HomeSearchView extends Component {
 
+    _jumpPage(data) {
+        if (!data) {
+            bridge.$toast('获取数据失败！');
+            return;
+        }
+        const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        const params = homeModule.paramsNavigate(data);
+        routePush(router, { ...params });
+    }
+
     render() {
         const resLogo = StringUtils.isEmpty(homeModule.titleImg)
             ? res.home_icon_logo_red : res.home_icon_logo_white;
-        const resDou = StringUtils.isEmpty(homeModule.douImg)
-            ? res.dou_red : { uri: homeModule.douImg };
+        const resDou = StringUtils.isEmpty(homeModule.douData.icon)
+            ? res.dou_red : { uri: homeModule.douData.icon };
         const colorDou = StringUtils.isEmpty(homeModule.titleImg) ? DesignRule.textColor_secondTitle : '#fff';
         const colorIput = StringUtils.isEmpty(homeModule.titleImg) ? DesignRule.textColor_placeholder : '#fff';
         return (
@@ -32,9 +44,14 @@ export default class HomeSearchView extends Component {
                 <View style={styles.navContent}>
                     <Image source={resLogo}
                            style={styles.logo}/>
-                    <Image source={resDou}
-                           style={styles.dou}/>
-                    <UIText style={[styles.douText, { color: colorDou }]} value={'233333' + '秀豆'}/>
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => this._jumpPage(homeModule.douData)}>
+                        <Image source={resDou}
+                               style={styles.dou}/>
+                    </TouchableOpacity>
+                    <UIText style={[styles.douText, { color: colorDou }]}
+                            value={(user.isLogin ? user.userScore : '我的') + '秀豆'}/>
                     <TouchableOpacity
                         onPress={() => {
                             routePush('home/search/SearchPage');

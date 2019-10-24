@@ -77,8 +77,11 @@ class HomePage extends BasePage {
                     if (homeModule.firstLoad) {
                         homeModule.loadHomeList(false);
                     }
-                    store.get('@mr/homeSkin').then((data) => {
-                        homeModule.setSkinData(data);
+                    store.get('@mr/homeTopSkin').then((data) => {
+                        homeModule.setTopSkinData(data);
+                    });
+                    store.get('@mr/homeBottomSkin').then((data) => {
+                        homeModule.setBottomSkinData(data);
                     });
                 }
             }

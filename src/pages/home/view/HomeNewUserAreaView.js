@@ -3,14 +3,15 @@ import { TouchableOpacity } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
 import ImageLoad from '@mr/image-placeholder';
-import { homeModule } from '../model/Modules';
 import StringUtils from '../../../utils/StringUtils';
+import { homeNewUserModel } from '../model/HomeNewUserModel';
+import { homeModule } from '../model/Modules';
 import bridge from '../../../utils/bridge';
 
 const { width } = ScreenUtils;
 
 @observer
-export default class HomeActivityCenterView extends Component {
+export default class HomeNewUserAreaView extends Component {
 
     _adAction(value) {
         if (!value) {
@@ -24,19 +25,19 @@ export default class HomeActivityCenterView extends Component {
     }
 
     render() {
-        const { centerData } = homeModule;
-        if (StringUtils.isEmpty(centerData.icon)) {
+        const { newUserData } = homeNewUserModel;
+        if (newUserData && StringUtils.isEmpty(newUserData.image)) {
             return null;
         }
         return (
             <TouchableOpacity
                 onPress={() => {
-                    this._adAction(centerData);
+                    this._adAction(newUserData);
                 }}
                 activeOpacity={1}>
                 <ImageLoad
-                    style={{ width, height: homeModule.centerImgHeight }}
-                    source={{ uri: centerData.icon }}
+                    style={{ width, height: homeNewUserModel.imgHeight }}
+                    source={{ uri: newUserData.image }}
                     showPlaceholder={false}/>
             </TouchableOpacity>
         );
