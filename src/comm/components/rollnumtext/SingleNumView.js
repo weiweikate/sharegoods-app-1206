@@ -36,6 +36,12 @@ export default class SingleNumView extends PureComponent {
         this._startAnimated();
     }
 
+    componentWillReceiveProps(nextProps) {
+        if(this.props.num !== nextProps.num){
+            setTimeout(this._startAnimated,50);
+        }
+    }
+
     _startAnimated = () => {
         this.state.transformY.setValue(0);
         const {num} = this.props;
