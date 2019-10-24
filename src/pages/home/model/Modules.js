@@ -145,7 +145,7 @@ class HomeModule {
     };
 
     @action
-    changelimitGoods(limitGoods, isShow=true) {
+    changelimitGoods(limitGoods, isShow = true) {
         if (isShow) {
             this.fixedPartTwo = [{
                 id: 60,
@@ -153,8 +153,8 @@ class HomeModule {
             }, {
                 id: 61,
                 type: homeType.limitGoTime
-            },...limitGoods, { type: homeType.limitStaticViewDismiss }];
-        }else {
+            }, ...limitGoods, { type: homeType.limitStaticViewDismiss }];
+        } else {
             this.fixedPartTwo = [];
         }
         this.homeList = this.getHomeListData();

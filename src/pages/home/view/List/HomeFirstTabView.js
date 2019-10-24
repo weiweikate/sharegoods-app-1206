@@ -128,7 +128,7 @@ export default class HomeFirstTabView extends Component {
         if (type === homeType.swiper) {
             return <HomeBannerView navigate={routePush}/>;
         } else if (type === homeType.activityCenter) {
-            return <HomeActivityCenterView/>;
+            return <HomeActivityCenterView navigate={routePush}/>;
         } else if (type === homeType.newUserArea) {
             return <HomeNewUserAreaView navigate={routePush}/>;
         } else if (type === homeType.channel) {
@@ -256,7 +256,7 @@ export default class HomeFirstTabView extends Component {
 
             if (item.type === homeType.limitGoTime) {
                 this.limitGoTimeIndex = index;
-                stickyHeaderIndices.push(index-1);//把限时购前一条也设成stick，为了提早收起顶部类目导航
+                stickyHeaderIndices.push(index - 1);//把限时购前一条也设成stick，为了提早收起顶部类目导航
                 stickyHeaderIndices.push(index);
             }
 

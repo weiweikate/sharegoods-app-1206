@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
 import ImageLoad from '@mr/image-placeholder';
@@ -29,14 +29,16 @@ export default class HomeActivityCenterView extends Component {
             return null;
         }
         return (
-            <TouchableWithoutFeedback onPress={() => {
-                this._adAction(centerData);
-            }}>
+            <TouchableOpacity
+                onPress={() => {
+                    this._adAction(centerData);
+                }}
+                activeOpacity={1}>
                 <ImageLoad
                     style={{ width, height: homeModule.centerImgHeight }}
                     source={{ uri: centerData.icon }}
                     showPlaceholder={false}/>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         );
     }
 }

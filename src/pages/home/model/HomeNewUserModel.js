@@ -43,7 +43,7 @@ class HomeNewUserModel {
             }]);
         } else {
             getSize(data.image, (width, height) => {
-                this.imgHeight = autoSizeWidth(height);
+                this.imgHeight = autoSizeWidth(height / 2);
                 homeModule.changeHomeList(homeType.newUserArea, [{
                     id: 21,
                     type: homeType.newUserArea

@@ -13,6 +13,7 @@ import StringUtils from '../../../utils/StringUtils';
 import { homeModule } from '../model/Modules';
 import DesignRule from '../../../constants/DesignRule';
 import user from '../../../model/user';
+import bridge from '../../../utils/bridge';
 
 const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 
@@ -22,7 +23,13 @@ const searchImg = res.icon_search;
 export default class HomeSearchView extends Component {
 
     _jumpPage(data) {
-
+        if (!data) {
+            bridge.$toast('获取数据失败！');
+            return;
+        }
+        const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        const params = homeModule.paramsNavigate(data);
+        routePush(router, { ...params });
     }
 
     render() {
@@ -43,7 +50,8 @@ export default class HomeSearchView extends Component {
                         <Image source={resDou}
                                style={styles.dou}/>
                     </TouchableOpacity>
-                    <UIText style={[styles.douText, { color: colorDou }]} value={user.userScore + '秀豆'}/>
+                    <UIText style={[styles.douText, { color: colorDou }]}
+                            value={(user.isLogin ? user.userScore : '我的') + '秀豆'}/>
                     <TouchableOpacity
                         onPress={() => {
                             routePush('home/search/SearchPage');
