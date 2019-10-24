@@ -12,6 +12,7 @@ import { routePush } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import { homeModule } from '../model/Modules';
 import DesignRule from '../../../constants/DesignRule';
+import user from '../../../model/user';
 
 const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 
@@ -42,7 +43,7 @@ export default class HomeSearchView extends Component {
                         <Image source={resDou}
                                style={styles.dou}/>
                     </TouchableOpacity>
-                    <UIText style={[styles.douText, { color: colorDou }]} value={'233333' + '秀豆'}/>
+                    <UIText style={[styles.douText, { color: colorDou }]} value={user.userScore + '秀豆'}/>
                     <TouchableOpacity
                         onPress={() => {
                             routePush('home/search/SearchPage');
