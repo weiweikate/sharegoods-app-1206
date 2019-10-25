@@ -105,7 +105,7 @@ class HomeModule {
             }
         }
         const { linkType } = data;
-        return {
+        let params = {
             activityType: linkType === 3 ? 2 : linkType === 4 ? 1 : 3,
             activityCode: data.linkTypeCode,
             linkTypeCode: data.linkTypeCode,
@@ -119,6 +119,10 @@ class HomeModule {
             keywords: data.name,
             trackType: 1
         };
+        if(linkType === 18){
+            params.fromHome = true;
+        }
+        return params;
 
     };
 
