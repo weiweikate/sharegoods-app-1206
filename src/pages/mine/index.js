@@ -19,6 +19,7 @@ import MainShowFansPage from './page/showFans/MainShowFansPage';
 import ExpDetailPage from './page/myData/ExpDetailPage';
 import SetMentorPage from './page/mentor/SetMentorPage';
 import SpellGroupList from './page/spellGroup/SpellGroupList'
+import FaceToFaceQRcode from './page/spellGroup/FaceToFaceQRcode'
 
 export default {
     moduleName: 'mine',    //模块名称
@@ -43,6 +44,7 @@ export default {
         MainShowFansPage,
         GroupShowFansPage,
         SearchShowFansPage,
-        SpellGroupList
+        SpellGroupList,
+        FaceToFaceQRcode
     }
 };

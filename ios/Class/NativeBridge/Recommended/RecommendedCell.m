@@ -162,7 +162,7 @@
 
 -(void)setUI{
   UIView*  bgView = [[UIView alloc] init];
-    bgView.backgroundColor =  [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
+  bgView.backgroundColor =  [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
   [bgView.layer setCornerRadius:4.0];
   [self.contentView addSubview:bgView];
 
@@ -174,8 +174,8 @@
   [bgView addSubview:self.jingpin];
 
   bgView.sd_layout
-    .leftSpaceToView(self.contentView, 0)
-    .rightSpaceToView(self.contentView, 0)
+    .leftSpaceToView(self.contentView, 15)
+    .rightSpaceToView(self.contentView, 15)
     .topSpaceToView(self.contentView, 5)
     .autoHeightRatio(0);
 

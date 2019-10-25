@@ -63,8 +63,8 @@ export class RecommendBanner extends Component {
                               itemWidth={px2dp(345) + 0.5}
                               itemSpace={0}
                               imgUrlArray={items}
-                              onDidSelectItemAtIndex={(index) => {
-                                  bannerList[index] && this._onPress(bannerList[index]);
+                              onDidSelectItemAtIndex={(e) => {
+                                  bannerList[e.nativeEvent.index] && this._onPress(bannerList[e.nativeEvent.index]);
                               }}
                               onDidScrollToIndex={(index) => {
                                   this._onDidScrollToIndex(index);

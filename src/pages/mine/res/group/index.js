@@ -3,6 +3,8 @@ const myData = {
     group_bg: require('./groupbg.png'),
     group_btn: require('./groupBtn.png'),
     arrow_right_white: require('./arrow_right_white.png'),
+    QRcodeHeader: require('./QRcodeHeader.png'),
+
 
 
 };

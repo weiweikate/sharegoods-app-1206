@@ -22,11 +22,13 @@ import {
     MRText as Text
 } from '../../../../components/ui';
 import { ShopBannerView } from './ShopBannerView';
+import { observer } from 'mobx-react';
 
 
 const HeaderBarBgImg = res.myShop.txbg_02;
 const StarImg = res.myShop.dj_03;
 
+@observer
 export default class ShopHeader extends Component {
 
     render() {
