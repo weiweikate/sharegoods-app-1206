@@ -57,7 +57,7 @@ public class ShowRefreshHeader extends LinearLayout implements com.scwang.smartr
     public void onMoving(boolean isDragging, float percent, int offset, int height, int maxDragHeight) {
         int y = DensityUtils.px2dip(offset);
         if (newState == RefreshState.PullDownToRefresh) {
-            if (y > 100) {
+            if (y > DensityUtils.dip2px(76)) {
                 setProgress(0.1f);
             } else {
                 setProgress(y / 1000f);

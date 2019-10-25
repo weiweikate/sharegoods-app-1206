@@ -2,19 +2,18 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
+import { Animated, StyleSheet, View } from 'react-native';
 import { observer } from 'mobx-react';
 import { tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
-
-const { px2dp } = ScreenUtils;
 import ReleaseButton from './components/ReleaseButton';
 import user from '../../model/user';
 import ShowGroundView from './components/ShowGroundView';
-import { routeNavigate, routePush } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
+
+const { px2dp } = ScreenUtils;
 
 @observer
 export default class ShowFoundView extends React.Component {
@@ -68,52 +67,53 @@ export default class ShowFoundView extends React.Component {
         });
         return (
             <View style={styles.container}>
-                <ShowGroundView style={{ flex: 1 }}
-                                ref={(ref) => {
-                                    this.foundList = ref;
-                                }}
-                                uri={'/social/show/content/page/query@GET'}
-                                params={{ spreadPosition: tag.Found + '' }}
-                                type={'found'}
-                                onItemPress={({ nativeEvent }) => {
-                                    const { navigate } = this.props;
-                                    const { showNo , userInfoVO } = nativeEvent;
-                                    const { userNo } = userInfoVO || {};
-                                    let params = {
-                                        data: nativeEvent,
-                                        ref: this.foundList,
-                                        index: nativeEvent.index
-                                    };
-                                    if (nativeEvent.showType === 1) {
-                                        navigate(RouterMap.ShowDetailPage, params);
-                                    } else if(nativeEvent.showType === 3){
-                                        navigate(RouterMap.ShowVideoPage, {code:showNo,tabType:3});
-                                    }else {
-                                        navigate(RouterMap.ShowRichTextDetailPage, params);
-                                    }
+                <ShowGroundView
+                    style={{ flex: 1 }}
+                    ref={(ref) => {
+                        this.foundList = ref;
+                    }}
+                    uri={'/social/show/content/page/query@GET'}
+                    params={{ spreadPosition: tag.Found + '' }}
+                    type={'found'}
+                    onItemPress={({ nativeEvent }) => {
+                        const { navigate } = this.props;
+                        const { showNo, userInfoVO } = nativeEvent;
+                        const { userNo } = userInfoVO || {};
+                        let params = {
+                            data: nativeEvent,
+                            ref: this.foundList,
+                            index: nativeEvent.index
+                        };
+                        if (nativeEvent.showType === 1) {
+                            navigate(RouterMap.ShowDetailPage, params);
+                        } else if (nativeEvent.showType === 3) {
+                            navigate(RouterMap.ShowVideoPage, { code: showNo, tabType: 3 });
+                        } else {
+                            navigate(RouterMap.ShowRichTextDetailPage, params);
+                        }
 
-                                    track(trackEvent.XiuChangEnterClick,{
-                                        xiuChangListType:3,
-                                        articleCode:showNo,
-                                        author:userNo,
-                                        xiuChangEnterBtnName:'秀场列表'
-                                    })
+                        track(trackEvent.XiuChangEnterClick, {
+                            xiuChangListType: 3,
+                            articleCode: showNo,
+                            author: userNo,
+                            xiuChangEnterBtnName: '秀场列表'
+                        });
 
-                                }}
-                                onScrollY={({ nativeEvent }) => {
-                                    this.setState({
-                                        showToTop: nativeEvent.YDistance > ScreenUtils.height
-                                    });
-                                }}
+                    }}
+                    onScrollY={({ nativeEvent }) => {
+                        this.setState({
+                            showToTop: nativeEvent.YDistance > ScreenUtils.height
+                        });
+                    }}
 
-                                onScrollStateChanged={({ nativeEvent }) => {
-                                    const { state } = nativeEvent;
-                                    if (state === 0) {
-                                        this.releaseButtonShow();
-                                    } else {
-                                        this.releaseButtonHidden();
-                                    }
-                                }}
+                    onScrollStateChanged={({ nativeEvent }) => {
+                        const { state } = nativeEvent;
+                        if (state === 0) {
+                            this.releaseButtonShow();
+                        } else {
+                            this.releaseButtonHidden();
+                        }
+                    }}
                 />
                 {
                     user.token ?
