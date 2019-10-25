@@ -469,7 +469,7 @@ export default class TaskView extends React.Component {
     renderTaskView() {
         let expanded = this.model.expanded;
         return (
-            <View style={{ height: expanded === false ? 0 : autoSizeWidth(280) }}>
+            <View style={{ height: expanded === false ? 0 : autoSizeWidth(280-30+10) }}>
                 <View style={{
                     backgroundColor: 'white',
                     borderRadius: 5,
@@ -529,7 +529,6 @@ export default class TaskView extends React.Component {
                         marginHorizontal: 15
                     }}>
                         {this.renderTaskView()}
-                        {this.renderBtn()}
                     </View>
                     <TaskModalView type={type}/>
                 </View>
@@ -547,7 +546,6 @@ export default class TaskView extends React.Component {
                     {this.renderTitle(type)}
                     {this.renderProgressView()}
                     {this.renderTaskView()}
-                    {this.renderBtn()}
                 </View>
                 <ImageBackground
                     source={current_p}
