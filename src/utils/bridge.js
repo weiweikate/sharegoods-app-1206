@@ -152,6 +152,8 @@ export default {
                 NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
             });
         } else {
+            alert('23')
+
             NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
         }
     },

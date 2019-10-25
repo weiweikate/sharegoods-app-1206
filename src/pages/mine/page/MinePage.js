@@ -41,6 +41,8 @@ import MineSpellGroupView from './spellGroup/components/MineSpellGroupView';
 import TimeModel from '../model/TimeModel';
 import LinearGradient from 'react-native-linear-gradient';
 import Swiper from 'react-native-swiper';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import CommGroupShareModal from '../../../comm/components/CommGroupShareModal'
 
 const {
     // mine_header_bg,
@@ -123,7 +125,8 @@ export default class MinePage extends BasePage {
             modalId: false,
             adArr: [],
             groupData: [],
-            currentUserState:null
+            currentUserState:null,
+            selectData:{}
         };
 
     }
@@ -903,14 +906,18 @@ export default class MinePage extends BasePage {
     }
 
     renderBodyView = () => {
+        const {selectData} = this.state;
         let views = this.state.groupData && this.state.groupData.map((item, index) => {
             return (
                 <MineSpellGroupView
                     key={'GroupView' + index}
                     data={item}
                     timeEnd={this.loadGroupList}
-                    itemClick={() => {
-                        this.$navigate(RouterMap.SpellGroupList);
+                    itemClick={(data) => {
+                        this.setState({selectData: data}, () => {
+                            this.ShareModel.open && this.ShareModel.open();
+                        });
+                        // this.$navigate(RouterMap.SpellGroupList);
                     }}
                 />
             )
@@ -934,6 +941,37 @@ export default class MinePage extends BasePage {
                 {this.activeRender()}
                 {this.utilsRender()}
                 {this.renderADView()}
+                <CommGroupShareModal
+                    ref={(ref) => {
+                        this.ShareModel = ref
+                    }}
+                    endTime={selectData.endTime}
+                    needPerson={selectData.surplusPerson}
+                    type={'group'}
+                    imageJson={{ // 分享商品图片的数据
+                        imageUrlStr: selectData.image || 'logo.png',
+                        imageType: 'group', // 为空就是生成商品分享的图片， web：网页分享的图片 group:生成拼团海报
+                        titleStr: selectData.goodsName || '秀一秀，赚到够',
+                        priceStr: selectData.activityAmount + '', // 拼团活动价格
+                        originalPrice: selectData.skuPrice + '',//划线价格
+                        QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${selectData.id ? selectData.id : ''}`,
+                    }}
+                    webJson={{
+                        title: `[仅剩${selectData.surplusPerson}个名额] 我${selectData.activityAmount || ''}元带走了${selectData.goodsName || ''}` || '秀一秀，赚到够',//分享标题(当为图文分享时候使用)
+                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${selectData.id ? selectData.id : ''}`,//(图文分享下的链接)
+                        thumImage: selectData.image || 'logo.png',//(分享图标小图(https链接)图文分享使用)
+                        dec: `我买了${selectData.goodsName || ''}，该商品已拼${selectData.alreadySaleNum || ''}件了，快来参团吧!`
+                    }}
+                    trackEvent={trackEvent.ShareGroupbuy} //分享埋点
+                    trackParmas={{
+                        shareSource: 3,
+                        groupbuyId:selectData.id,
+                        groupbuyStatus: selectData.groupStatus,
+                        spuName: selectData.goodsName,
+                        spuCode: selectData.prodCode,
+                    }}
+
+                />
             </View>
         );
     };

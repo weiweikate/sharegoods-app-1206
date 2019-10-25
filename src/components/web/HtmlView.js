@@ -17,7 +17,7 @@ import SmoothPushHighComponent from '../../comm/components/SmoothPushHighCompone
 import ShareUtil from '../../utils/ShareUtil';
 import { homeType } from '../../pages/home/HomeTypes';
 import LuckyIcon from '../../pages/guide/LuckyIcon';
-import GroupSelectModel from '../../pages/mine/page/spellGroup/components/GroupSelectModel';
+import CommGroupShareModal from '../../comm/components/CommGroupShareModal';
 import { MRText } from '../ui';
 import { netState } from '@mr/rn-request';
 import DesignRule from '../../constants/DesignRule';
@@ -218,7 +218,7 @@ export default class RequestDetailPage extends BasePage {
                 (msg.shareParmas && msg.shareParmas.type && msg.shareParmas.type === 'Group')) {
 
                 this.setState({ shareParmas: msg.shareParams || msg.shareParmas }, () => {
-                    this.SelectModel && this.SelectModel.onOpen();
+                    this.SelectModel && this.SelectModel.open && this.SelectModel.open();
                 });
                 return;
             } else {
@@ -347,28 +347,12 @@ export default class RequestDetailPage extends BasePage {
                     }}
                     postMessage={msg => this._postMessage(msg)}
                 />
-                <GroupSelectModel
+                <CommGroupShareModal
                     ref={(ref) => {
                         this.SelectModel = ref;
                     }}
-                    data={this.state.shareParmas}
-                    createAD={(data) => {
-                        console.log('createAD', data);
-                        this.setState({
-                            shareParmas: data
-                        }, () => {
-                            this.shareModal && this.shareModal.open();
-                        });
-                    }}
-                    inviteShare={(data) => {
-                        console.log('inviteShare', data);
-                        this.setState({
-                            shareParmas: data
-                        }, () => {
-                            this.shareModal && this.shareModal.open();
-                        });
-                    }}
-
+                    successCallBack={this.successCallBack}
+                    {...this.state.shareParmas}
                 />
                 <CommShareModal
                     ref={(ref) => this.shareModal = ref}

@@ -87,7 +87,7 @@ export default class MineSpellGroupView extends PureComponent {
 
                 <TouchableOpacity activeOpacity={0.7}
                                   onPress={() => {
-                                      itemClick && itemClick()
+                                      itemClick && itemClick(data)
                                   }}>
                     <LinearGradient style={{borderRadius: 17, marginRight: 15}}
                                     start={{x: 0, y: 0}}
