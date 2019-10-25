@@ -14,15 +14,14 @@ import ImageLoader from '@mr/image-placeholder';
 import ScreenUtils from '../../../utils/ScreenUtils';
 
 import res from '../../../comm/res';
-import {routePush} from '../../../navigation/RouterMap';
 
 const {btn_close_white} = res.button
 const {px2dp} = ScreenUtils;
 export default function ActivityView(props) {
-    const {source, onClose, target} = props;
+    const {source, onClose, onPress} = props;
     return (
         <TouchableWithoutFeedback onPress={()=>{
-            routePush('HtmlPage', { uri: target });
+            onPress && onPress();
             onClose && onClose();
         }}>
             <View>

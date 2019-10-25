@@ -6,8 +6,9 @@ import store from '@mr/rn-store';
 import marketingUtils from '../MarketingUtils';
 import ModalType from '../components/ModalType';
 import DateUtils from '../../../utils/DateUtils';
+import EmptyUtils from '../../../utils/EmptyUtils';
+import MarketingApi from '../api/MarketingApi';
 
-const ONECOREVERY = '@paysuccesscontroller/oneorevery';
 //支付成功展示次数
 const SHOWTIME = '@paysuccesscontroller/time';
 
@@ -38,9 +39,16 @@ class PaySuccessController {
         if(this.residueDegree < 1){
             return;
         }
-        marketingUtils.openModalWithType(ModalType.activity);
-        this.residueDegree--;
-        this._saveShowTime();
+        MarketingApi.getModalData({type:39,showPage:15}).then((data)=>{
+            if(!EmptyUtils.isEmptyArr(data.data)){
+                marketingUtils.replaceContent(data.data[this.getRandom(data.data.length)]);
+                marketingUtils.openModalWithType(ModalType.activity);
+                this.residueDegree--;
+                this._saveShowTime();
+            }
+        }).catch((err)=>{})
+
+
     }
 
     //拼团营销弹窗，离开弹出
@@ -48,7 +56,12 @@ class PaySuccessController {
         if(this.residueDegree < 1){
             return;
         }
-        this.leaveNeedShow = true;
+        MarketingApi.getModalData({type:39,showPage:15}).then((data)=>{
+            if(!EmptyUtils.isEmptyArr(data.data)){
+                marketingUtils.replaceContent(data.data[0]);
+                this.leaveNeedShow = true;
+            }
+        }).catch((err)=>{})
     }
 
     notifyPayPinLeave(){
@@ -69,25 +82,11 @@ class PaySuccessController {
         store.save(SHOWTIME,showTime);
     }
 
-    //获取支付成功营销弹窗配置
-    async getConfig(){
-        let oneOrEvery = await store.get(ONECOREVERY);
-        if(oneOrEvery === null){
-            //TODO
-            setTimeout(()=>{
-                this.showByConfig();
-            },1000)
-        }
-    }
-
-    //拉取配置
-    showByConfig(){
-        //TODO
-        if(true){
-            marketingUtils.openModalWithType(ModalType.egg);
-        }else {
-            this.leaveNeedShow = true;
-        }
+    //生成随机数
+    getRandom(num){
+        let random = Math.random();
+        num = random*num;
+        return Math.floor(num);
     }
 }
 
