@@ -520,7 +520,8 @@ export default class ProductDetailPage extends BasePage {
                             taskShareParams={{
                                 uri: htmlUrl,
                                 code: IntervalMsgType.productDetail,
-                                data: prodCode
+                                data: prodCode,
+                                sgscm: this.params.sgscm//商品来源
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             <DetailHeaderServiceModal ref={(ref) => this.DetailHeaderServiceModal = ref}/>
