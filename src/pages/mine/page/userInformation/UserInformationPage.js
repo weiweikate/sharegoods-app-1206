@@ -213,7 +213,12 @@ export default class UserInformationPage extends BasePage {
                                 onPress={() => this.editProfile()}/>
                 <DatePicker
                     ref={(e)=>{this.datePicker = e}}
-                    customStyles={{dateTouchBody:{height:0,width:0}}}
+                    customStyles={
+                        {   dateTouchBody:{height:0,width:0},
+                            btnTextConfirm:{color:'#333333'},
+                            btnTextCancel:{color:'#999999'}
+                        }
+                    }
                     mode="date"
                     date={user.birthday}
                     format="YYYY-MM-DD"
