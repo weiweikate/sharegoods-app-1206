@@ -8,8 +8,9 @@ import ModalType from '../components/ModalType';
 import marketingUtils from '../MarketingUtils';
 import HomeModalManager from '../../home/manager/HomeModalManager';
 import DateUtils from '../../../utils/DateUtils';
+import MarketingApi from '../api/MarketingApi';
+import EmptyUtils from '../../../utils/EmptyUtils';
 
-// const ONECOREVERY = '@homecontroller/oneorevery';
 const SHOWTIME = '@homecontroller/time';
 
 class HomeController {
@@ -48,12 +49,14 @@ class HomeController {
             this.showByConfig();
             return;
         }
-        //TODO
-        setTimeout(()=>{
-            this.needShow = true;
-            this.isRequested = true;
-            this.showByConfig();
-        },1000)
+        MarketingApi.getModalData({type:39,showPage:1}).then((data)=>{
+            if(!EmptyUtils.isEmptyArr(data.data)){
+                marketingUtils.replaceContent(data.data[0]);
+                this.needShow = true;
+                this.isRequested = true;
+                this.showByConfig();
+            }
+        }).catch((err)=>{})
     }
 
 

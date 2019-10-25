@@ -9,35 +9,36 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import {autorun} from 'mobx';
 import {observer} from 'mobx-react';
 import ActivityView from './ActivityView';
 import SmashEggView from './SmashEggView';
 import marketingUtils from '../MarketingUtils';
 import ModalType from './ModalType';
+import {homeModule} from '../../home/model/Modules';
+import {routePush} from '../../../navigation/RouterMap';
 
 @observer
 export default class MarketingModal extends PureComponent {
 
-    constructor(props) {
-        super(props);
-        autorun(this._contentRender);
-    }
-
     _contentRender() {
-        // return this._eggRender();
         return (<SmashEggView/>)
-
     }
 
     _activityRender(){
-        //TODO
-        let url = 'https://c-ssl.duitang.com/uploads/item/201208/30/20120830173930_PBfJE.thumb.700_0.jpeg';
-        let target = 'https://test2h5.sharegoodsmall.com/cycle-coupon?debug';
+        if(!marketingUtils.currentContent || !marketingUtils.currentContent.image){
+            return null;
+        }
+
+        const {currentContent} = marketingUtils;
+
         return (
             <ActivityView
-                source={{uri: url}}
-                traget={target}
+                source={{uri: currentContent.image}}
+                onPress={()=>{
+                    const router = homeModule.homeNavigate(currentContent.linkType, currentContent.linkTypeCode);
+                    let params = homeModule.paramsNavigate(currentContent);
+                    routePush(router, params);
+                }}
                 onClose={() => {
                     marketingUtils.closeModal();
                 }}/>
@@ -55,7 +56,7 @@ export default class MarketingModal extends PureComponent {
             }}>
                 <View style={styles.contain}>
                     {marketingUtils.type === ModalType.activity ? this._activityRender() : null}
-                    {marketingUtils.type === ModalType.egg ? this._eggRender() : null}
+                    {marketingUtils.type === ModalType.egg ? this._contentRender() : null}
                 </View>
             </TouchableWithoutFeedback>
         )
