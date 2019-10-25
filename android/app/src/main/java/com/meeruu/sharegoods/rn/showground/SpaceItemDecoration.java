@@ -31,11 +31,11 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
          * 第一列设置左边距为space，右边距为space/2  （第二列反之）
          */
         if (params.getSpanIndex() % 2 == 0) {
-            outRect.left = space + 5;
+            outRect.left = 0;
             outRect.right = space / 2;
         } else {
             outRect.left = space / 2;
-            outRect.right = space + 5;
+            outRect.right = 0;
         }
     }
 }
