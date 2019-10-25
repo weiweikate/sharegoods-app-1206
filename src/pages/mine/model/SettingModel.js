@@ -196,12 +196,16 @@ class SettingModel {
         })
     }
 
+    /**
+    * @func 判断是否显示新版会员权益
+    * @des 当前判断日期是否10月25日前，之后则显示新版 true，之前则为老版 false
+    */
     @action
-    memberSwitch(){
-        if(DateUtils.getDateDiffFun('2019/10/25 00:00:00', '')){
-            this.memberSwitchState = false
-        }else {
-            this.memberSwitchState = true
+    memberSwitch() {
+        if (DateUtils.getDateDiffFun('2019/10/25 00:00:00', '')) {
+            this.memberSwitchState = false;
+        } else {
+            this.memberSwitchState = true;
 
         }
     }

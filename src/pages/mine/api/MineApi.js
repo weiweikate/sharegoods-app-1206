@@ -140,8 +140,6 @@ const api = {
     setMessageStatus:['/user/setContactInformationStatus',{method:'post'}],
     //获取用户下一个会员身份
     getNextBenefitPackageInfo:['/member/benefits/getNextBenefitPackageInfo',{method:'post'}],
-    //会员权益开关接口
-    getMemberCenterShow:['/common/config/member/center/show',{method:'post'}],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 
