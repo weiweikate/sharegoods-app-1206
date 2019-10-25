@@ -13,6 +13,7 @@ import MRBannerView from '../../../../components/ui/bannerView/MRBannerView';
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { homeModule } from '../../../home/model/Modules';
+import { routePush } from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 
@@ -44,7 +45,7 @@ export class ShopBannerView extends Component {
     _onPress = (item) => {
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
         let params = homeModule.paramsNavigate(item);
-        this.$navigate(router, { ...params });
+        routePush(router, { ...params });
     };
 
     _onDidScrollToIndex(e) {
@@ -70,8 +71,8 @@ export class ShopBannerView extends Component {
                               itemSpace={0}
                               itemRadius={5}
                               imgUrlArray={items}
-                              onDidSelectItemAtIndex={(index) => {
-                                  bannerList[index] && this._onPress(bannerList[index]);
+                              onDidSelectItemAtIndex={(e) => {
+                                  bannerList[e.nativeEvent.index] && this._onPress(bannerList[e.nativeEvent.index]);
                               }}
                               onDidScrollToIndex={(index) => {
                                   this._onDidScrollToIndex(index);
