@@ -26,7 +26,7 @@ const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 const HOME_REFRESH = 'homeRefresh';
-const width = ScreenUtils.width - px2dp(30);
+const width = ScreenUtils.width - px2dp(28);
 const height = width * 160 / 345;
 @observer
 export default class ShowBannerView extends Component {
@@ -121,7 +121,7 @@ export default class ShowBannerView extends Component {
             items.push(value.image);
         });
 
-        return <View style={{ height, marginTop: px2dp(10), marginBottom: px2dp(ScreenUtils.isIOS ? 5 : 0) }}>
+        return <View style={{ height,width, marginTop: px2dp(10), marginBottom: px2dp(ScreenUtils.isIOS ? 5 : 0)}}>
             {
                 bannerList.length === 1
                     ?
@@ -140,10 +140,9 @@ export default class ShowBannerView extends Component {
                     <MRBannerView
                         style={{
                             height: height,
-                            width: ScreenUtils.width,
-                            alignSelf: 'center'
-                        }}
-                        itemWidth={width + 0.5}
+                            width: width,
+                            alignSelf: 'center'}}
+                        itemWidth={width}
                         autoInterval={5}
                         itemSpace={px2dp(30)}
                         itemRadius={5}
