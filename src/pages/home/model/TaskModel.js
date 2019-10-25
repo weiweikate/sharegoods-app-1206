@@ -254,7 +254,10 @@ class TaskModel {
 
     /** 埋点相关*/
     boxBtnClickEvent(item) {
-        track(trackEvent.BoxBtnClick, { boxNum: this.boxs.indexOf(item), userValue: this.progress });
+        track(trackEvent.BoxBtnClick, { boxNum: this.boxs.indexOf(item),
+            userValue: this.progress ,
+            missionType: this.missionType
+        });
     }
 
     missionBtnClickEvent(item) {
@@ -263,23 +266,27 @@ class TaskModel {
             missionId: item.no,
             missionName: item.name,
             missionIndex: this.tasks.indexOf(item),
-            userValue: this.progress
+            userValue: this.progress,
+            missionType: this.missionType
         });
     }
 
     expandedEvent() {
         track(trackEvent.MissionFrameBtnClick, {
             missionFrameBtnName: this.expanded ?
-                '收起任务列表' : '做任务赚活跃值', userValue: this.progress
+                '收起任务列表' : '做任务赚活跃值', userValue: this.progress,
+            missionType: this.missionType
         });
     }
 }
 
 const taskModel = new TaskModel();
 taskModel.type = 'home';
+taskModel.missionType = 1;
 taskModel.getLocationExpanded();
 const mineTaskModel = new TaskModel();
 mineTaskModel.type = 'mine';
+mineTaskModel.missionType = 2;
 mineTaskModel.getLocationExpanded();
 
 export default taskModel;
