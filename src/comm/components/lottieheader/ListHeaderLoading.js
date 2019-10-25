@@ -6,12 +6,12 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 
 function ListHeaderLoading(props) {
     const { isRefreshing, onRefresh, ...others } = props;
-    const headerHeight = ScreenUtils.autoSizeWidth(60);
+    const headerHeight = ScreenUtils.autoSizeWidth(100);
     const source = Platform.OS !== 'ios' ? require('./pull3.json') : require('./pullnoline.json');
     return (
         <RefreshAnimateHeader
             refreshing={isRefreshing}
-            headerHeight={headerHeight || 70}
+            headerHeight={headerHeight}
             source={source}
             onRefresh={onRefresh}
             {...others}

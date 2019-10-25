@@ -84,7 +84,7 @@ export default class ShowHotView extends React.Component {
                     'amount': amount,
                     'skuCode': skuCode,
                     'productCode': product.prodCode,
-                    'sgscm':`2.${showNo}.none.none`
+                    'sgscm': `2.${showNo}.none.none`
                 });
                 /*加入购物车埋点*/
                 const { userNo } = userInfoVO || {};
@@ -154,161 +154,162 @@ export default class ShowHotView extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={{ flex: 1, paddingHorizontal: 15 }}>
-                    <ShowRecommendView style={{ flex: 1 }}
-                                       uri={this.props.uri}
-                                       ref={(ref) => {
-                                           this.RecommendShowList = ref;
-                                       }}
-                                       isLogin={!EmptyUtils.isEmpty(user.token)}
-                                       type={this.props.type || ''}
-                                       headerHeight={this.props.hasBanner ? showBannerModules.bannerHeight + 20 : 0}
-                                       renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
-                                       onStartRefresh={() => {
-                                           this.loadData();
-                                       }}
-                                       onCollection={({ nativeEvent }) => {
-                                           if (!user.isLogin) {
-                                               routeNavigate(RouterMap.LoginPage);
-                                               return;
-                                           }
-                                           if (!nativeEvent.detail.collect) {
-                                               ShowApi.reduceCountByType({
-                                                   showNo: nativeEvent.detail.showNo,
-                                                   type: 2
-                                               });
-                                           } else {
-                                               ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 2 });
-                                           }
-                                       }}
-                                       onSeeUser={({ nativeEvent }) => {
-                                           let userNo = nativeEvent.userInfoVO.userNo;
-                                           if (user.code === userNo) {
-                                               routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
-                                           } else {
-                                               routeNavigate(RouterMap.MyDynamicPage, {
-                                                   userType: 'others',
-                                                   userInfo: nativeEvent.userInfoVO
-                                               });
-                                           }
-                                       }}
-                                       params={{ spreadPosition: tag.Recommend + '' }}
-                                       onItemPress={({ nativeEvent }) => {
-                                           const { showNo, userInfoVO } = nativeEvent;
-                                           const { userNo } = userInfoVO || {};
-                                           const { navigate } = this.props;
-                                           let params = {
-                                               data: nativeEvent,
-                                               ref: this.RecommendShowList,
-                                               index: nativeEvent.index
-                                           };
-                                           if (nativeEvent.showType === 1) {
-                                               navigate(RouterMap.ShowDetailPage, params);
-                                           } else if (nativeEvent.showType === 3) {
-                                               navigate(RouterMap.ShowVideoPage, {
-                                                   code: showNo,
-                                                   tabType: this.props.type === 'attention' ? 0 : 1
-                                               });
-                                           } else {
-                                               navigate(RouterMap.ShowRichTextDetailPage, params);
-                                           }
+                    <ShowRecommendView
+                        style={{ flex: 1 }}
+                        uri={this.props.uri}
+                        ref={(ref) => {
+                            this.RecommendShowList = ref;
+                        }}
+                        isLogin={!EmptyUtils.isEmpty(user.token)}
+                        type={this.props.type || ''}
+                        headerHeight={this.props.hasBanner ? showBannerModules.bannerHeight + 20 : 0}
+                        renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
+                        onStartRefresh={() => {
+                            this.loadData();
+                        }}
+                        onCollection={({ nativeEvent }) => {
+                            if (!user.isLogin) {
+                                routeNavigate(RouterMap.LoginPage);
+                                return;
+                            }
+                            if (!nativeEvent.detail.collect) {
+                                ShowApi.reduceCountByType({
+                                    showNo: nativeEvent.detail.showNo,
+                                    type: 2
+                                });
+                            } else {
+                                ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 2 });
+                            }
+                        }}
+                        onSeeUser={({ nativeEvent }) => {
+                            let userNo = nativeEvent.userInfoVO.userNo;
+                            if (user.code === userNo) {
+                                routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                            } else {
+                                routeNavigate(RouterMap.MyDynamicPage, {
+                                    userType: 'others',
+                                    userInfo: nativeEvent.userInfoVO
+                                });
+                            }
+                        }}
+                        params={{ spreadPosition: tag.Recommend + '' }}
+                        onItemPress={({ nativeEvent }) => {
+                            const { showNo, userInfoVO } = nativeEvent;
+                            const { userNo } = userInfoVO || {};
+                            const { navigate } = this.props;
+                            let params = {
+                                data: nativeEvent,
+                                ref: this.RecommendShowList,
+                                index: nativeEvent.index
+                            };
+                            if (nativeEvent.showType === 1) {
+                                navigate(RouterMap.ShowDetailPage, params);
+                            } else if (nativeEvent.showType === 3) {
+                                navigate(RouterMap.ShowVideoPage, {
+                                    code: showNo,
+                                    tabType: this.props.type === 'attention' ? 0 : 1
+                                });
+                            } else {
+                                navigate(RouterMap.ShowRichTextDetailPage, params);
+                            }
 
-                                           track(trackEvent.XiuChangEnterClick, {
-                                               xiuChangListType: 1,
-                                               articleCode: showNo,
-                                               author: userNo,
-                                               xiuChangEnterBtnName: '秀场列表'
-                                           });
+                            track(trackEvent.XiuChangEnterClick, {
+                                xiuChangListType: 1,
+                                articleCode: showNo,
+                                author: userNo,
+                                xiuChangEnterBtnName: '秀场列表'
+                            });
 
-                                       }}
-                                       onNineClick={({ nativeEvent }) => {
-                                           routeNavigate(RouterMap.ShowDetailImagePage, {
-                                               imageUrls: nativeEvent.imageUrls,
-                                               index: nativeEvent.index
-                                           });
-                                       }}
-                                       onAddCartClick={({ nativeEvent }) => {
-                                           this.addCart(nativeEvent.product, nativeEvent.detail);
-                                       }}
+                        }}
+                        onNineClick={({ nativeEvent }) => {
+                            routeNavigate(RouterMap.ShowDetailImagePage, {
+                                imageUrls: nativeEvent.imageUrls,
+                                index: nativeEvent.index
+                            });
+                        }}
+                        onAddCartClick={({ nativeEvent }) => {
+                            this.addCart(nativeEvent.product, nativeEvent.detail);
+                        }}
 
-                                       onPressProduct={({ nativeEvent }) => {
-                                           const detail = JSON.parse(nativeEvent.detail);
-                                           const product = JSON.parse(nativeEvent.product);
-                                           const { showNo } = detail || {};
-                                           track(trackEvent.XiuChangSpuClick, {
-                                               xiuChangBtnLocation: '1',
-                                               xiuChangListType: '1',
-                                               articleCode: showNo,
-                                               spuCode: product.prodCode,
-                                               spuName: product.name,
-                                               author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
-                                           });
-                                           routePush(RouterMap.ProductDetailPage, {
-                                               productCode: product.prodCode,
-                                               trackType: 3,
-                                               trackCode: showNo,
-                                               sgscm:`2.${showNo}.none.none`
-                                           });
-                                       }}
+                        onPressProduct={({ nativeEvent }) => {
+                            const detail = JSON.parse(nativeEvent.detail);
+                            const product = JSON.parse(nativeEvent.product);
+                            const { showNo } = detail || {};
+                            track(trackEvent.XiuChangSpuClick, {
+                                xiuChangBtnLocation: '1',
+                                xiuChangListType: '1',
+                                articleCode: showNo,
+                                spuCode: product.prodCode,
+                                spuName: product.name,
+                                author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
+                            });
+                            routePush(RouterMap.ProductDetailPage, {
+                                productCode: product.prodCode,
+                                trackType: 3,
+                                trackCode: showNo,
+                                sgscm: `2.${showNo}.none.none`
+                            });
+                        }}
 
-                                       onZanPress={({ nativeEvent }) => {
-                                           //app native层提前修改了数据
-                                           if (!nativeEvent.detail.like) {
-                                               ShowApi.reduceCountByType({
-                                                   showNo: nativeEvent.detail.showNo,
-                                                   type: 1
-                                               });
-                                           } else {
-                                               ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 1 });
-                                           }
-                                       }}
+                        onZanPress={({ nativeEvent }) => {
+                            //app native层提前修改了数据
+                            if (!nativeEvent.detail.like) {
+                                ShowApi.reduceCountByType({
+                                    showNo: nativeEvent.detail.showNo,
+                                    type: 1
+                                });
+                            } else {
+                                ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 1 });
+                            }
+                        }}
 
-                                       onDownloadPress={({ nativeEvent }) => {
+                        onDownloadPress={({ nativeEvent }) => {
 
-                                           if (!user.isLogin) {
-                                               routeNavigate(RouterMap.LoginPage);
-                                               return;
-                                           }
-                                           let { detail } = nativeEvent;
-                                           let callback = () => {
-                                               detail.downloadCount += 1;
-                                               ShowApi.incrCountByType({
-                                                   showNo: nativeEvent.detail.showNo,
-                                                   type: 4
-                                               });
-                                               this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
-                                               this.props.onShare(nativeEvent, true);
+                            if (!user.isLogin) {
+                                routeNavigate(RouterMap.LoginPage);
+                                return;
+                            }
+                            let { detail } = nativeEvent;
+                            let callback = () => {
+                                detail.downloadCount += 1;
+                                ShowApi.incrCountByType({
+                                    showNo: nativeEvent.detail.showNo,
+                                    type: 4
+                                });
+                                this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
+                                this.props.onShare(nativeEvent, true);
 
-                                               const { showNo, userInfoVO } = detail;
-                                               const { userNo } = userInfoVO || {};
-                                               track(trackEvent.XiuChangDownLoadClick, {
-                                                   xiuChangBtnLocation: '1',
-                                                   xiuChangListType: '1',
-                                                   articleCode: showNo,
-                                                   author: userNo
-                                               });
-                                           };
-                                           DownloadUtils.downloadShow(detail, callback);
-                                       }}
+                                const { showNo, userInfoVO } = detail;
+                                const { userNo } = userInfoVO || {};
+                                track(trackEvent.XiuChangDownLoadClick, {
+                                    xiuChangBtnLocation: '1',
+                                    xiuChangListType: '1',
+                                    articleCode: showNo,
+                                    author: userNo
+                                });
+                            };
+                            DownloadUtils.downloadShow(detail, callback);
+                        }}
 
-                                       onSharePress={({ nativeEvent }) => {
-                                           this.props.onShare(nativeEvent, false);
-                                       }}
+                        onSharePress={({ nativeEvent }) => {
+                            this.props.onShare(nativeEvent, false);
+                        }}
 
-                                       onScrollY={({ nativeEvent }) => {
-                                           this.setState({
-                                               showToTop: nativeEvent.YDistance > ScreenUtils.height
-                                           });
-                                       }}
+                        onScrollY={({ nativeEvent }) => {
+                            this.setState({
+                                showToTop: nativeEvent.YDistance > ScreenUtils.height
+                            });
+                        }}
 
 
-                                       onScrollStateChanged={({ nativeEvent }) => {
-                                           const { state } = nativeEvent;
-                                           if (state === 0) {
-                                               this.releaseButtonShow();
-                                           } else {
-                                               this.releaseButtonHidden();
-                                           }
-                                       }}
+                        onScrollStateChanged={({ nativeEvent }) => {
+                            const { state } = nativeEvent;
+                            if (state === 0) {
+                                this.releaseButtonShow();
+                            } else {
+                                this.releaseButtonHidden();
+                            }
+                        }}
                     />
                     {
                         user.token ?
