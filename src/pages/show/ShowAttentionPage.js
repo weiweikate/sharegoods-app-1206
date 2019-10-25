@@ -111,9 +111,9 @@ export default class ShowAttentionPage extends React.Component {
 
         return (
             <View style={styles.container}>
-                <View style={{ flex: 1, paddingHorizontal: 15 }}>
+                <View style={{ flex: 1}}>
                     <ShowAttentionView
-                        style={{ flex: 1 }}
+                        style={{ flex: 1}}
                         uri={this.props.uri}
                         ref={(ref) => {
                             this.RecommendShowList = ref;
