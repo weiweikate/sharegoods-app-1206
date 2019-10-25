@@ -8,7 +8,7 @@ import store from '@mr/rn-store';
 import userModel from '../../../model/user';
 import MineAPI from '../api/MineApi';
 import bridge from '../../../utils/bridge';
-
+import DateUtils from '../../../utils/DateUtils';
 
 const mineKey = '@mr/msgmine';
 
@@ -48,6 +48,10 @@ class SettingModel {
     //帐号与安全页 短信开关控制
     @observable
     messageState = 0;
+
+    @observable
+    memberSwitchState =  false//!DateUtils.getDateDiffFun('2019/10/25 00:00:00', '');
+
 
     @action
     getLocationState() {
@@ -189,6 +193,23 @@ class SettingModel {
             this.messageState = type;
         }).catch(error=>{
             bridge.$toast(error.msg);
+        })
+    }
+
+    /**
+    * @func 判断是否显示新版会员权益
+    * @des 当前判断日期是否10月25日前，之后则显示新版 true，之前则为老版 false
+    */
+    @action
+    memberSwitch() {
+        if (DateUtils.getDateDiffFun('2019/10/25 00:00:00', '')) {
+            this.memberSwitchState = false
+            return;
+        }
+        MineAPI.getMemberCenterShow().then((res)=>{
+            this.messageState = res.data && res.data.showNewMemberBenefit ? res.data.showNewMemberBenefit : false;
+        }).catch(error=>{
+            this.memberSwitchState = false
         })
     }
 
