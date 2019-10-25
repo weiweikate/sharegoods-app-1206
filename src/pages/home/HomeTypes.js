@@ -87,7 +87,7 @@ export const homeRoute = {
     [homeLinkType.nothing]: '',  // 不做跳转
     [homeLinkType.page]: '',      // 跳转到页面
     [homeLinkType.pinStore]: 'spellShop/MyShop_RecruitPage',
-    [homeLinkType.showGround]: 'ShowListPage',
+    [homeLinkType.showGround]: 'show/ShowListPage',
     [homeLinkType.pinGroup]: 'HtmlPage',
     [homeLinkType.limitBuy]: 'HtmlPage'
 };
