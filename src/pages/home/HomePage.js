@@ -23,7 +23,7 @@ import HomeFirstTabView from './view/List/HomeFirstTabView';
 import HomeNormalList from './view/List/HomeNormalList';
 import DIYTopicList from './view/List/DIYTopicList';
 import { observer } from 'mobx-react';
-import HomeTopTarBar from './HomeTopTarBar';
+import HomeTopTarBar from './view/HomeTopTarBar';
 import ImageLoad from '@mr/image-placeholder';
 import store from '@mr/rn-store';
 import StringUtils from '../../utils/StringUtils';

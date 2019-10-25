@@ -71,7 +71,6 @@
 		031D5304230D27FF00F8349C /* needSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031D5303230D27FF00F8349C /* needSwift.swift */; };
 		031D5369230D374F00F8349C /* libRNCNetInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 031D535C230D372C00F8349C /* libRNCNetInfo.a */; };
 		031D5431230E991900F8349C /* libLottieReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 031D5430230E98ED00F8349C /* libLottieReactNative.a */; };
-		031D5444230E993B00F8349C /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 031D543B230E992E00F8349C /* Lottie.framework */; };
 		031D5445230E993B00F8349C /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 031D543B230E992E00F8349C /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 033C66B721927ACB00433026 /* MRBannerViewManager.m */; };
 		037DBABE21B0E3030003DA18 /* money_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 037DBABC21B0E3030003DA18 /* money_0.png */; };
@@ -308,6 +307,7 @@
 		CD288A9D230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CD288A9C230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m */; };
 		CD3A8A0721F05DF3003B9803 /* MRLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3A8A0621F05DF3003B9803 /* MRLoadingView.m */; };
 		CD3A8A0A21F05E17003B9803 /* MRLoadingViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3A8A0921F05E17003B9803 /* MRLoadingViewManager.m */; };
+		CD3D46F52361CEF9001D4182 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 031D543B230E992E00F8349C /* Lottie.framework */; };
 		CD5EAF48221BEA9F007AAEE0 /* NetWorkTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF11221BEA9F007AAEE0 /* NetWorkTool.m */; };
 		CD5EAF9D221BFB5E007AAEE0 /* ShowGroundViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF9C221BFB5E007AAEE0 /* ShowGroundViewManager.m */; };
 		CD5EAFA0221BFB8E007AAEE0 /* ShowGroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF9F221BFB8E007AAEE0 /* ShowGroundView.m */; };
@@ -1474,6 +1474,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD3D46F52361CEF9001D4182 /* Lottie.framework in Frameworks */,
 				BF595BF9234EDBBC0028C537 /* libRNReanimated.a in Frameworks */,
 				BF595B66234ED68A0028C537 /* libRNCViewpager.a in Frameworks */,
 				BF595B65234ED68A0028C537 /* libTYCyclePagerView.a in Frameworks */,
@@ -1498,7 +1499,6 @@
 				101157C6219AB715001F5E99 /* libc++.tbd in Frameworks */,
 				101157C4219AB6FD001F5E99 /* ExternalAccessory.framework in Frameworks */,
 				5068364021379DEC001AB175 /* Security.framework in Frameworks */,
-				031D5444230E993B00F8349C /* Lottie.framework in Frameworks */,
 				101157BA219AB489001F5E99 /* SystemConfiguration.framework in Frameworks */,
 				0386E930218C59D900697612 /* libbz2.1.0.tbd in Frameworks */,
 				1073EFBE21798F5800C202AC /* libRNDeviceInfo.a in Frameworks */,

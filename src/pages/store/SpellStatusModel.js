@@ -1,6 +1,6 @@
 //拼店权限或店铺基本状态
 import { Alert, Linking, PermissionsAndroid } from 'react-native';
-import { observable, action, autorun } from 'mobx';
+import { action, autorun, observable } from 'mobx';
 import SpellShopApi from './api/SpellShopApi';
 import ScreenUtils from '../../utils/ScreenUtils';
 import geolocation from '@mr/rn-geolocation';

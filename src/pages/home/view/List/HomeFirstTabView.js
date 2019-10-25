@@ -95,7 +95,7 @@ export default class HomeFirstTabView extends Component {
                 break;
             case homeType.goodsTitle:
                 // dim.height = homeModule.tabList.length > 0 ? px2dp(66-13) : 0;
-                dim.height = px2dp(42);
+                dim.height = homeModule.goods.length > 0 ? px2dp(42) : 0;
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
@@ -216,7 +216,6 @@ export default class HomeFirstTabView extends Component {
                 isRefreshing={homeModule.isRefreshing}
                 onRefresh={this._onRefresh.bind(this)}
                 lineTop={ScreenUtils.autoSizeWidth(40) + 1}
-
             />
         );
     };

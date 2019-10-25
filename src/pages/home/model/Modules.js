@@ -330,11 +330,11 @@ class HomeModule {
             this.goodsOtherLen = temp.length;
             this.homeList = [...temp, ...home];
             this.goods = home;
-            // this.isRefreshing = false;
+            this.isRefreshing = false;
             this.page = 1;
             this.errorMsg = '';
         }).catch(err => {
-            // this.isRefreshing = false;
+            this.isRefreshing = false;
             this.errorMsg = err.msg;
         });
     }
@@ -386,10 +386,10 @@ class HomeModule {
             this.page += 1;
             this.isFetching = false;
             this.errorMsg = '';
-            // this.isRefreshing = false;
+            this.isRefreshing = false;
         } catch (error) {
             this.isFetching = false;
-            // this.isRefreshing = false;
+            this.isRefreshing = false;
             this.errorMsg = error.msg;
             console.log(error);
         }

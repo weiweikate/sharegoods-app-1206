@@ -9,6 +9,8 @@
 #import "XGRefreshView.h"
 #import "RefreshLineVIew.h"
 #import <Lottie/Lottie.h>
+
+#define px2d [UIScreen mainScreen].bounds.size.width/375.0
 @interface XGRefreshView ()
 
 @property (nonatomic, assign) MJRefreshState preState;
@@ -27,13 +29,13 @@
     self = [super init];
     if (self) {
       _preState = MJRefreshStateIdle;
-      self.frame = CGRectMake(0, 0, KScreenWidth, 100);
+      self.frame = CGRectMake(0, 0, KScreenWidth, 90*px2d);
       _line = [RefreshLineVIew new];
       _line.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 1);
       _line.layer.zPosition = 2;
       
       _anView = [LOTAnimationView animationNamed:@"pullnoline.json" inBundle:[NSBundle mainBundle]];
-      _anView.frame = CGRectMake(0, 0, KScreenWidth, 70);
+      _anView.frame = CGRectMake(0, 0, KScreenWidth, 55*px2d);
       _anView.autoReverseAnimation = NO;
       [self addSubview:_anView];
       
@@ -41,7 +43,7 @@
       _stateLb.text = @"下拉刷新";
       _stateLb.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
        _stateLb.font = [UIFont systemFontOfSize:11];
-      _stateLb.frame = CGRectMake(0, 70, KScreenWidth, 30);
+      _stateLb.frame = CGRectMake(0, 55*px2d, KScreenWidth, 20*px2d);
       _stateLb.textAlignment = 1;
         [self addSubview:_stateLb];
     }

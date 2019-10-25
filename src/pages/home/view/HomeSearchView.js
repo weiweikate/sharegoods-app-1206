@@ -8,7 +8,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import UIText from '../../../components/ui/UIText';
 import res from '../res/index';
 import { observer } from 'mobx-react';
-import { routePush } from '../../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import { homeModule } from '../model/Modules';
 import DesignRule from '../../../constants/DesignRule';
@@ -17,22 +17,26 @@ import bridge from '../../../utils/bridge';
 
 const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 
-const searchImg = res.icon_search;
-
 @observer
 export default class HomeSearchView extends Component {
 
     _jumpPage(data) {
-        if (!data) {
-            bridge.$toast('获取数据失败！');
-            return;
+        if (user.isLogin) {
+            if (!data) {
+                bridge.$toast('获取数据失败！');
+                return;
+            }
+            const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+            const params = homeModule.paramsNavigate(data);
+            routePush(router, { ...params });
+        } else {
+            routeNavigate(RouterMap.LoginPage);
         }
-        const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
-        const params = homeModule.paramsNavigate(data);
-        routePush(router, { ...params });
     }
 
     render() {
+        const searchImg = StringUtils.isEmpty(homeModule.titleImg)
+            ? res.icon_search_grey : res.icon_search_white;
         const resLogo = StringUtils.isEmpty(homeModule.titleImg)
             ? res.home_icon_logo_red : res.home_icon_logo_white;
         const resDou = StringUtils.isEmpty(homeModule.douData.icon)
@@ -62,7 +66,7 @@ export default class HomeSearchView extends Component {
                                style={styles.dou}/>
                     </TouchableOpacity>
                     <UIText style={[styles.douText, { color: colorDou }]}
-                            value={(user.isLogin ? 1234 : '我的') + '秀豆'}/>
+                            value={(user.isLogin ? user.userScore : '我的') + '秀豆'}/>
                 </View>
             </View>
         );

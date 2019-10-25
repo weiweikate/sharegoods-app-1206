@@ -21,7 +21,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    View
+    View,
+    Animated, Easing
 } from 'react-native';
 
 import { MRText, UIImage } from '../../../components/ui';
@@ -275,9 +276,30 @@ export default class TaskView extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            transformView: new Animated.Value(0)
+        };
+
+        this.rotateAnimated = Animated.timing(
+            this.state.transformView,
+            {
+                toValue: 1,
+                duration: 1500,
+                easing: Easing.in,
+            }
+        )
         this.model = this.props.type === 'home' ? taskModel : mineTaskModel;
     }
+
+    componentDidMount() {
+        this._startAnimated();
+    }
+
+    _startAnimated = () => {
+        this.state.transformView.setValue(0);
+        this.rotateAnimated.start(() => this._startAnimated());
+    }
+
 
     renderTitle(type) {
         return (
@@ -301,6 +323,10 @@ export default class TaskView extends React.Component {
     }
 
     renderProgressView() {
+        const rotate = this.state.transformView.interpolate({
+            inputRange: [0, 0.5, 1],
+            outputRange: ['0deg', '30deg', '0deg']
+        });
         let progress = this.model.progress / this.model.totalProgress > 1 ? 1 : this.model.progress / this.model.totalProgress;
         return (
             <View style={{ paddingHorizontal: 10 }}>
@@ -350,14 +376,20 @@ export default class TaskView extends React.Component {
                         </View>
                         {
                             this.model.canOpenProgress !== -1 ?
-                                <UIImage source={task_run_people}
-                                         style={{
-                                             position: 'absolute',
-                                             left: this.model.canOpenProgress / this.model.totalProgress * autoSizeWidth(290) - autoSizeWidth(5),
-                                             width: autoSizeWidth(25),
-                                             height: autoSizeWidth(23),
-                                             top: autoSizeWidth(5)
-                                         }}
+                                <Animated.Image source={task_run_people}
+                                                style={{
+                                                    position: 'absolute',
+                                                    left: this.model.canOpenProgress / this.model.totalProgress * autoSizeWidth(290) - autoSizeWidth(5),
+                                                    width: autoSizeWidth(25),
+                                                    height: autoSizeWidth(23),
+                                                    top: autoSizeWidth(5),
+                                                    transform: [
+                                                        {
+                                                            rotateZ: rotate
+                                                        },
+                                                        {translateX: px2dp(-25 / 2)},
+                                                        {translateY: px2dp(-23 / 2)}]
+                                                }}
                                 /> : null
                         }
 
@@ -437,7 +469,7 @@ export default class TaskView extends React.Component {
     renderTaskView() {
         let expanded = this.model.expanded;
         return (
-            <View style={{ height: expanded === false ? 0 : autoSizeWidth(280) }}>
+            <View style={{ height: expanded === false ? 0 : autoSizeWidth(280-30+10) }}>
                 <View style={{
                     backgroundColor: 'white',
                     borderRadius: 5,
@@ -497,7 +529,6 @@ export default class TaskView extends React.Component {
                         marginHorizontal: 15
                     }}>
                         {this.renderTaskView()}
-                        {this.renderBtn()}
                     </View>
                     <TaskModalView type={type}/>
                 </View>
@@ -515,7 +546,6 @@ export default class TaskView extends React.Component {
                     {this.renderTitle(type)}
                     {this.renderProgressView()}
                     {this.renderTaskView()}
-                    {this.renderBtn()}
                 </View>
                 <ImageBackground
                     source={current_p}

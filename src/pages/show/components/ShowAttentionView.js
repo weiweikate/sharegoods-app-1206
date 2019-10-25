@@ -4,10 +4,10 @@
  */
 
 import React, { Component } from 'react';
-import { requireNativeComponent, findNodeHandle, UIManager } from 'react-native';
+import { findNodeHandle, requireNativeComponent, UIManager } from 'react-native';
+import NativeHeader from './ShowHeaderView';
 
 const RCTShowAttention = requireNativeComponent('ShowAttentionView', ShowAttentionView);
-import NativeHeader from './ShowHeaderView';
 
 const RCT_SHOWGROUND_REF = 'showGroundViewRef';
 
@@ -32,21 +32,21 @@ export default class ShowAttentionView extends Component {
         );
     };
 
-    replaceItemData = (index,data)=>{
+    replaceItemData = (index, data) => {
         UIManager.dispatchViewManagerCommand(
             this.getHandle(),
             UIManager.ShowAttentionView.Commands.replaceItemData,
-            [index,data]
+            [index, data]
         );
-    }
+    };
 
-    scrollToTop = ()=>{
+    scrollToTop = () => {
         UIManager.dispatchViewManagerCommand(
             this.getHandle(),
             UIManager.ShowAttentionView.Commands.scrollToTop,
             []
         );
-    }
+    };
 
 
     getHandle = () => {
@@ -55,8 +55,9 @@ export default class ShowAttentionView extends Component {
 
     render() {
         return (
-            <RCTShowAttention {...this.props}
-                               ref={RCT_SHOWGROUND_REF}
+            <RCTShowAttention
+                {...this.props}
+                ref={RCT_SHOWGROUND_REF}
             >
                 {this.props.renderHeader &&
                 <NativeHeader>

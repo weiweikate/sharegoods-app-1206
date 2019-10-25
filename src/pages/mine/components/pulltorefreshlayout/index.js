@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Animated, View, ViewPropTypes } from 'react-native';
-import user from '../../../../model/user';
 import { bool, func, number, string } from 'prop-types';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 
@@ -367,12 +366,9 @@ class ParallaxScrollView extends Component {
     }
 
     _renderFooterSpacer = ({ contentBackgroundColor }) => {
-        let storeStatus = user && ((user.levelRemark >= 'V2' && !user.storeCode) ||
-            (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0));
-        const maxH = storeStatus ? ScreenUtils.width * 254 / 559 : 20;
         const footerHeight = Math.max(
             0,
-            maxH
+            20
         );
         return (
             <View
@@ -381,10 +377,10 @@ class ParallaxScrollView extends Component {
                         this._footerComponent = ref;
                     }
                 }}
-                style={{ backgroundColor: contentBackgroundColor ,height:footerHeight }}
+                style={{ backgroundColor: contentBackgroundColor, height: footerHeight }}
             />
         );
-    }
+    };
 
     _maybeRenderStickyHeader({
                                  parallaxHeaderHeight,

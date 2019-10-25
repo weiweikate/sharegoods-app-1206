@@ -5,7 +5,9 @@
 
 const api = {
     //砸金蛋抽奖
-    getLotteryResultV2:['/activity/lottery/click',{method:'get'}]
+    getLotteryResultV2:['/activity/lottery/click',{method:'get'}],
+    //app弹窗接口
+    getModalData: ['/advertising/queryAdvertisingList', { method: 'post' }],
 }
 import ApiUtils from '../../../api/network/ApiUtils';
 

@@ -10,6 +10,7 @@ class MarketingUtils {
     @action closeModal  ()  {
         this.isShowModal = false;
         this.type = null;
+        this.currentContent = null;
     }
 
     @action openModal  ()  {
@@ -32,6 +33,10 @@ class MarketingUtils {
     @action openModalWithType(type){
         this.type = type;
         this.isShowModal = true;
+    }
+
+    @action replaceContent(params){
+        this.currentContent = params;
     }
 
 

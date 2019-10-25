@@ -1,14 +1,25 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import ScreenUtil from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
+import { homeModule } from '../model/Modules';
+import { observer } from 'mobx-react';
 
 const { px2dp } = ScreenUtil;
-import DesignRule from '../../../constants/DesignRule';
 
-export default ({ title }) => <View style={styles.titleView}>
-    <View style={styles.flag}/>
-    <Text style={styles.title}>{title}</Text>
-</View>
+@observer
+export default class HomeTitleView extends Component {
+    render() {
+        if (homeModule.goods.length === 0) {
+            return null;
+        }
+        return (
+            <View style={styles.titleView}>
+                <View style={styles.flag}/>
+                <Text style={styles.title}>{this.props.title}</Text>
+            </View>);
+    }
+}
 
 const styles = StyleSheet.create({
     flag: {

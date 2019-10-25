@@ -14,14 +14,12 @@
 
 import React from 'react';
 
-import {
-    View
-} from 'react-native';
+import { View } from 'react-native';
 
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { asyncHandleTopicData, homeType } from '../../HomeTypes';
-import {TopicImageAdView } from '../TopicImageAdView';
+import { TopicImageAdView } from '../TopicImageAdView';
 import GoodsCustomView from '../GoodsCustomView';
 import HomeAPI from '../../api/HomeAPI';
 import TextCustomView from '../TextCustomView';
@@ -42,9 +40,9 @@ export default class DIYTopicList extends React.Component {
 
         this.loadMoreDataUtil = new LoadMoreDataUtil();
         this.loadMoreDataUtil.API = HomeAPI.getCustomTopic;
-        this.code = (this.props.data || {}).linkCode
+        this.code = (this.props.data || {}).linkCode;
         this.loadMoreDataUtil.paramsFunc = () => {
-            return { topicCode: this.code};
+            return { topicCode: this.code };
         };
         this.loadMoreDataUtil.asyncHandleData = asyncHandleTopicData;
         this.loadMoreDataUtil.isMoreFunc = (data) => {
@@ -75,8 +73,8 @@ export default class DIYTopicList extends React.Component {
 
     _renderItem = (type, item, index) => {
         type = type.type;
-        item.sgscm = getSGscm(SGscmSource.topic,this.code).sgscm;
-        item.sgspm = getSGspm_home(HomeSource.marketing,index).sgspm
+        item.sgscm = getSGscm(SGscmSource.topic, this.code).sgscm;
+        item.sgspm = getSGspm_home(HomeSource.marketing, index).sgspm;
         let p = { specialTopicId: this.props.data.linkCode };
         if (type === homeType.custom_text) {
             p.specialTopicArea = 6;
@@ -97,14 +95,14 @@ export default class DIYTopicList extends React.Component {
     }
 
     render() {
-        if (Math.abs(tabModel.tabIndex - this.props.index) > 1){
+        if (Math.abs(tabModel.tabIndex - this.props.index) > 1) {
             return null;
         }
         this.dataProvider = this.dataProvider.cloneWithRows(this.loadMoreDataUtil.data);
         return (
-            <View style={[DesignRule.style_container, { marginTop: 42 }]}>
+            <View style={[DesignRule.style_container, { marginTop: ScreenUtils.autoSizeWidth(40) }]}>
                 <RecyclerListView
-                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1}}
+                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
                     refreshControl={<HeaderLoading
                         isRefreshing={this.loadMoreDataUtil.refreshing}
                         onRefresh={this.loadMoreDataUtil.onRefresh}

@@ -15,16 +15,16 @@
 import React from 'react';
 import { Animated, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import ImageLoader from '@mr/image-placeholder';
-import ScreenUtils from '../../utils/ScreenUtils';
-import { MRText as Text } from '../../components/ui';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import { MRText as Text } from '../../../components/ui';
 import { DefaultTabBar } from '@mr/react-native-scrollable-tab-view';
-import { tabModel } from './model/HomeTabModel';
-import res from './res';
-import RouterMap, { routePush } from '../../navigation/RouterMap';
+import { tabModel } from '../model/HomeTabModel';
+import res from '../res';
+import RouterMap, { routePush } from '../../../navigation/RouterMap';
 import { observer } from 'mobx-react';
-import { homeModule } from './model/Modules';
-import StringUtils from '../../utils/StringUtils';
-import DesignRule from '../../constants/DesignRule';
+import { homeModule } from '../model/Modules';
+import StringUtils from '../../../utils/StringUtils';
+import DesignRule from '../../../constants/DesignRule';
 
 const tabBarHeight = ScreenUtils.autoSizeWidth(40);
 
@@ -124,7 +124,7 @@ export default class HomeTopTarBar extends React.Component {
                             left: (itemWidth - 20) / 2,
                             width: 18,
                             height: 2.5,
-                            bottom: 8,
+                            bottom: 6,
                             borderRadius: 2
                         }}
                         renderTab={(name, page, isTabActive) => {
