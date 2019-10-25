@@ -141,7 +141,7 @@ const api = {
     //获取用户下一个会员身份
     getNextBenefitPackageInfo:['/member/benefits/getNextBenefitPackageInfo',{method:'post'}],
     //会员权益开关接口
-    getMemberCenterShow:['/common/config/member/center/show',{method:'post'}],
+    getMemberCenterShow:['/common/config/member/center/show',{method:'get'}],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

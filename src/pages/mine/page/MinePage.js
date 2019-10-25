@@ -219,7 +219,7 @@ export default class MinePage extends BasePage {
     */
     getNextBenefit=()=>{
         MineApi.getNextBenefitPackageInfo().then((res) => {
-            if (res.data && res.data.currentPackageVO && res.data.nextPackageVO) {
+            if (res.data && res.data.currentPackageVO) {
                 let current = res.data.currentPackageVO;
                 if (eumState[current.uniqueId]) {
                     let str = eumState[current.uniqueId];
@@ -228,7 +228,7 @@ export default class MinePage extends BasePage {
                     })
                 } else {
                     this.setState({
-                        currentUserState: vipStatus.beVIP
+                        currentUserState: 'beVIP'
                     })
                 }
             }
