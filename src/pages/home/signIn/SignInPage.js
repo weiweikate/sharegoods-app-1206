@@ -657,9 +657,9 @@ export default class SignInPage extends BasePage {
             const {linkOne, linkTwo, linkThree} = this.state.adData;
             return (
                 <ImageLoader source={{uri: this.state.adSource}} style={styles.adContain}>
-                    {linkOne ? this.adTouch(linkOne) : null}
-                    {linkTwo ? this.adTouch(linkTwo) : null}
-                    {linkThree ? this.adTouch(linkThree) : null}
+                    {linkOne && linkOne.linkType ? this.adTouch(linkOne) : null}
+                    {linkTwo && linkTwo.linkType? this.adTouch(linkTwo) : null}
+                    {linkThree && linkThree.linkType? this.adTouch(linkThree) : null}
                 </ImageLoader>
             )
         }
