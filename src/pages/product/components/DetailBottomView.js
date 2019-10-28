@@ -85,14 +85,14 @@ export default class DetailBottomView extends Component {
     };
 
     _renderAllBtn = () => {
-        const { isGroupIn, isPinGroupIn, show, rebatePrice, rebatePriceDesc } = this.props.pData || {};
+        const { isGroupIn, isPinGroupIn, show, rebateTag } = this.props.pData || {};
         //老礼包 || 拼团 || 会员权益 || 新人  不显示购物车
-        const noShowCart = isGroupIn || isPinGroupIn || show === 1 || isNoEmpty(rebatePrice);
+        const noShowCart = isGroupIn || isPinGroupIn || show === 1 || isNoEmpty(rebateTag);
         return (
             <View style={styles.btnContainer}>
                 {!noShowCart && this._renderShop()}
                 {
-                    isNoEmpty(rebatePrice) ?
+                    isNoEmpty(rebateTag) ?
                         <NoMoreClick
                             style={styles.newPerson}
                             onPress={() => {
@@ -103,7 +103,7 @@ export default class DetailBottomView extends Component {
                                 start={{ x: 0, y: 0 }}
                                 end={{ x: 1, y: 0 }}
                                 colors={['#FC5D39', '#FF0050']}>
-                                <Text style={styles.outText}>{rebatePriceDesc || '立即购买'}</Text>
+                                <Text style={styles.outText}>{'立即购买'}</Text>
                             </LinearGradient>
                         </NoMoreClick>
                         :
