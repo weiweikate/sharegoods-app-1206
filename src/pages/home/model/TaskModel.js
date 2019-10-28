@@ -187,7 +187,13 @@ class TaskModel {
         this.missionBtnClickEvent(item);
         if (item.status === 0) {
             let { interactiveCode, interactiveValue, category } = item;
-            IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue, category === 1);
+            let extraParams = {}
+            if (category === 1) {
+                extraParams={openShareModal: true}
+            }else  if (category === 100){
+                extraParams={paramsStr: '&category=100'}
+            }
+            IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue, extraParams);
             return;
         }
         bridge.showLoading();
