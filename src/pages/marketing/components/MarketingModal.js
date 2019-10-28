@@ -19,6 +19,7 @@ import {routePush} from '../../../navigation/RouterMap';
 import user from '../../../model/user';
 import RouterMap from '../../../navigation/RouterMap';
 import homeController from '../controller/HomeController';
+import {TrackApi} from '../../../utils/SensorsTrack';
 
 @observer
 export default class MarketingModal extends PureComponent {
@@ -38,6 +39,19 @@ export default class MarketingModal extends PureComponent {
             <ActivityView
                 source={{uri: currentContent.image}}
                 onPress={()=>{
+                    if(marketingUtils.openInPage === 'home'){
+                        TrackApi.BannerClick({
+                            bannerType: currentContent.linkType,
+                            bannerContent: currentContent.linkTypeCode,
+                            bannerLocation: 14
+                        });
+                    }else if(marketingUtils.openInPage === 'paySuccess'){
+                        TrackApi.BannerClick({
+                            bannerType: currentContent.linkType,
+                            bannerContent: currentContent.linkTypeCode,
+                            bannerLocation: 72
+                        });
+                    }
 
                     let callback = ()=>{
                         if(user.isLogin && user.newUser){
