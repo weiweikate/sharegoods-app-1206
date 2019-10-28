@@ -67,6 +67,7 @@ class HomeController {
         }
         if(this.needShow && this._isInHome()){
             marketingUtils.checkUser = true;
+            marketingUtils.openInPage = 'home';
             marketingUtils.openModalWithType(ModalType.activity);
             this.needShow = false;
             this.residueDegree--;

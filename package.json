@@ -31,7 +31,7 @@
     },
     "dependencies": {
         "@mr/cookies": "0.0.7",
-        "@mr/image-placeholder": "0.1.50",
+        "@mr/image-placeholder": "0.1.51",
         "@mr/react-native-autoheight-webview": "^1.0.4",
         "@mr/react-native-cached-image": "^1.5.0",
         "@mr/react-native-qrcode": "0.2.8",
