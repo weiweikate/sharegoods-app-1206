@@ -5,14 +5,12 @@ import { Platform } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 
 function ListHeaderLoading(props) {
-    const { isRefreshing, onRefresh, ...others } = props;
+    const { isRefreshing, onRefresh , ...others } = props;
     const headerHeight = ScreenUtils.autoSizeWidth(100);
-    const source = Platform.OS !== 'ios' ? require('./pull3.json') : require('./pullnoline.json');
     return (
         <RefreshAnimateHeader
             refreshing={isRefreshing}
             headerHeight={headerHeight}
-            source={source}
             onRefresh={onRefresh}
             {...others}
         />
@@ -20,7 +18,8 @@ function ListHeaderLoading(props) {
 }
 
 ListHeaderLoading.defaultProps = {
-    isRefreshing: false
+    isRefreshing: false,
+    source: Platform.OS !== 'ios' ? require('./pull3.json') : require('./pullnoline.json')
 };
 
 export default React.memo(ListHeaderLoading);
