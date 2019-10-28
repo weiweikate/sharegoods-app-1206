@@ -82,9 +82,9 @@ const GoodsItem = ({ item, activityCode, labelUrl, navigate }) => {
             {item.promotionStatus === limitStatus.end ?
                 <Image source={resHome.home_sallout}
                        style={styles.goodsTag}/> : null}
-            <Image source={{ uri: labelUrl }}
-                   resizeMode={'contain'}
-                   style={{ height: 18, top: 5, left: 0, position: 'absolute' }}/>
+            <ImageLoader source={{ uri: labelUrl }}
+                         resizeMode={'contain'}
+                         style={{ height: 18, top: 5, left: 0, position: 'absolute' }}/>
         </ImageLoader>
         <View style={styles.goodsContent}>
             <Text style={styles.goodsTitle} numberOfLines={1}>{item.name}</Text>

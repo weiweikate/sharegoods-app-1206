@@ -12,7 +12,7 @@ import UserModel from '../../../model/user';
 import { login, TrackApi } from '../../../utils/SensorsTrack';
 import JPushUtils from '../../../utils/JPushUtils';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
-import RouterMap, { routeNavigate, routePop } from '../../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 
 /**
@@ -40,13 +40,13 @@ const wxLoginAction = (params, okCallBack, failCallBack) => {
  * @param failCallBack  请求失败
  * @param popNumbers  返回页面步数
  */
-const memberLogin = (params, successCallBack, failCallBack, popNumbers) => {
+const memberLogin = (params, successCallBack, failCallBack) => {
     params.device = DeviceInfo.getDeviceName();
     params.systemVersion = (DeviceInfo.getSystemVersion() + '').length > 0 ? DeviceInfo.getSystemVersion() : '暂无';
     LoginAPI.memberLogin(params).then((res) => {
         let data = res.data || {};
         // 登录流程处理
-        handleLoginData(params, data, res.code, successCallBack, failCallBack, popNumbers);
+        handleLoginData(params, data, res.code, successCallBack, failCallBack);
     }).catch((error) => {
         failCallBack && failCallBack(error.code);
         bridge.$toast(error.msg);
@@ -92,11 +92,10 @@ const getWxUserInfo = (callback) => {
     });
 };
 
-const handleLoginData = (params, data, code, successCallBack, failCallBack, popNumber) => {
+const handleLoginData = (params, data, code, successCallBack, failCallBack) => {
     if (data.weChatBindingStatus) {
         // 登录成功
         if (StringUtils.isNoEmpty(data.code)) {
-            routePop(popNumber || 1);
             // 数据存储
             loginDataInit(data);
             // 登录成功
@@ -138,11 +137,11 @@ const handleLoginData = (params, data, code, successCallBack, failCallBack, popN
     }
 };
 
-const weChatUnusual = (params, successCallBack, failCallBack, popNumbers) => {
+const weChatUnusual = (params, successCallBack, failCallBack) => {
     LoginAPI.weChatUnusual(params).then((res) => {
         let data = res.data || {};
         // 登录流程处理
-        handleLoginData(params, data, res.code, successCallBack, failCallBack, popNumbers);
+        handleLoginData(params, data, res.code, successCallBack, failCallBack);
     }).catch((err) => {
         failCallBack && failCallBack(err.code);
         bridge.$toast(err.msg);
