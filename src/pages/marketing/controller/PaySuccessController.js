@@ -43,6 +43,7 @@ class PaySuccessController {
         MarketingApi.getModalData({type:39,showPage:15}).then((data)=>{
             if(!EmptyUtils.isEmptyArr(data.data)){
                 marketingUtils.replaceContent(data.data[this.getRandom(data.data.length)]);
+                marketingUtils.openInPage = 'paySuccess';
                 marketingUtils.openModalWithType(ModalType.activity);
                 this.residueDegree--;
                 this._saveShowTime();
@@ -67,6 +68,7 @@ class PaySuccessController {
 
     notifyPayPinLeave(){
         if(this.leaveNeedShow && this.residueDegree > 0){
+            marketingUtils.openInPage = 'paySuccess';
             marketingUtils.openModalWithType(ModalType.activity);
             this.leaveNeedShow = false;
             this.residueDegree--;
