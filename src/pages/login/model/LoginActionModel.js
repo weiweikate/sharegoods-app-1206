@@ -95,7 +95,7 @@ const getWxUserInfo = (callback) => {
 
 const handleLoginData = (params, data, code, successCallBack, failCallBack, popNumber) => {
     //登录成功home页重新请求弹窗,非新用户
-    if(data && data.newUser){
+    if(data){
         homeController.residueDegree = 1;
         homeController.isRequested = false;
     }
