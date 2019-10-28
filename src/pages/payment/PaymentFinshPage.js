@@ -26,6 +26,7 @@ import { BannersVerticalView } from '../../comm/components/BannersVerticalView';
 import { homeType } from '../home/HomeTypes';
 import paySuccessMarketing from '../marketing/controller/PaySuccessController';
 import marketingUtils from '../marketing/MarketingUtils';
+import HomeAPI from '../home/api/HomeAPI';
 
 
 const { px2dp } = ScreenUtils;
@@ -70,6 +71,8 @@ export default class PaymentFinshPage extends BasePage {
             shareCode: '',
             isShow: false,
 
+            bannerList: [],
+
             groupShareData: {}
         };
         //orderPayResultPageType 有券无劵
@@ -92,11 +95,21 @@ export default class PaymentFinshPage extends BasePage {
                 paySuccessMarketing.notifyPayPin();
             } else {
                 paySuccessMarketing.notifyPayNormal();
-                PaymentApi.getUserCouponAmount({ couponIdList: 81 }).then(result => {
+                HomeAPI.getHomeData({ type: homeType.paySuccess }).then((data) => {
                     this.setState({
-                        couponIdList: result.data || []
+                            bannerList: data.data || []
+                        }
+                    );
+                    if ((data.data || []).length > 0) {
+                        return;
+                    }
+                    PaymentApi.getUserCouponAmount({ couponIdList: 81 }).then(result => {
+                        this.setState({
+                            couponIdList: result.data || []
+                        });
                     });
                 });
+
                 PaymentApi.judgeShare().then(result => {
                     let isShare = result.data && result.data.isShare;
                     let shareCode = result.data && result.data.shareCode;
@@ -171,10 +184,12 @@ export default class PaymentFinshPage extends BasePage {
                         :
                         this.renderTopSuccessView()
                 }
+                {/*兑换券*/}
                 {this.renderCouponList()}
+                {/*分享三张券*/}
                 {this.state.showShareView ? this._renderShareView() : null}
                 {/*广告位*/}
-                <BannersVerticalView type={homeType.paySuccess}/>
+                <BannersVerticalView bannerList={this.state.bannerList}/>
                 {/*推荐*/}
                 <RecommendProductView recommendScene={2}/>
                 {/*弹窗*/}
