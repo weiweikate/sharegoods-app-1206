@@ -49,22 +49,29 @@ export default class ProductGroupModel {
     @observable showAlert = true;
 
     @computed get showRule() {
-        return StringUtils.isNoEmpty(this.ruleValue) && this.ruleValue === '1111';
+        return StringUtils.isNoEmpty(this.ruleValue);
     }
 
     @computed get showRuleText() {
-        let midText = '', lastText = '';
-        if (this.ruleValue === '1110') {
-            midText = '只有新用户才能参团。';
-        } else if (this.ruleValue === '1100') {
-            midText = '只有新用户才能开团、参团。';
-        } else if (this.ruleValue === '1101') {
-            midText = '只有新用户才能开团。';
-        }
-        if (this.sendAmount > 0) {
-            lastText = `团长可额外获得${this.sendAmount}元返现哦〜`;
-        }
-        return midText + lastText;
+        const rule = {
+            '1111': `团长可额外获得${this.sendAmount}元返现哦〜`,
+            '1110': `只有新用户可参团。团长可额外获得${this.sendAmount}元返现哦〜`,
+            '1100': `只有新用户可参加。团长可额外获得${this.sendAmount}元返现哦〜`,
+            '1101': `只有新用户可开团。团长可额外获得${this.sendAmount}元返现哦〜`,
+            '0000': `新/老用户均不可参加此团〜`,
+            '0001': `只有老用户才可参团参加哦〜`,
+            '0010': `只有老用户可开团参加。团长可额外获得${this.sendAmount}元返现哦〜`,
+            '0011': `只有老用户可参加。团长可额外获得${this.sendAmount}元返现哦〜`,
+            '0110': `只有新用户可参团、老用户可开团。团长可额外获得${this.sendAmount}元返现哦〜`,
+            '0100': `只有新用户可参团参加哦〜`,
+            '0101': `此团只能参团哦〜`,
+            '0111': `只有老用户可开团。团长可额外获得${this.sendAmount}元返现哦〜`,
+            '1000': `只有新用户可开团参加。团长可额外获得${this.sendAmount}元返现哦〜`,
+            '1001': `只有新用户可开团、老用户可参团。团长可额外获得${this.sendAmount}元返现哦〜`,
+            '1011': `只有老用户才可参团。团长可额外获得${this.sendAmount}元返现哦〜`,
+            '1010': `此团只能开团哟。团长可额外获得${this.sendAmount}元返现哦〜`
+        };
+        return rule[this.ruleValue];
     }
 
     activityCode;
