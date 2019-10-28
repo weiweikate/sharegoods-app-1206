@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         position: 'absolute',
         width: ScreenUtils.width,
-        height: ScreenUtils.width * 1334 / 750,
+        height: autoSizeWidth(ScreenUtils.width * 1334 / 750),
         alignItems: 'center'
     },
     logo: {
