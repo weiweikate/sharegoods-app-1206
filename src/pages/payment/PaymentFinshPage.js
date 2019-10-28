@@ -87,6 +87,14 @@ export default class PaymentFinshPage extends BasePage {
         PaymentApi.queryOrderGroupData({ platformOrderNo: this.params.platformOrderNo }).then((data) => {
             const { group, endTime } = data.data || {};
             if (group) {
+                if (!this.didFocusSubscription) {
+                    this.didFocusSubscription = this.props.navigation.addListener(
+                        'didFocus',
+                        payload => {
+                            BackHandler.addEventListener('paymentFinish', this.handleBackPress);
+                        }
+                    );
+                }
                 this.setState({
                     groupShareData: data.data
                 }, () => {
@@ -132,15 +140,6 @@ export default class PaymentFinshPage extends BasePage {
             });
         }).catch(error => {
         });
-
-        this.didFocusSubscription = this.props.navigation.addListener(
-            'didFocus',
-            payload => {
-                if (this.state.groupShareData && this.state.groupShareData.group) {
-                    BackHandler.addEventListener('paymentFinish', this.handleBackPress);
-                }
-            }
-        );
 
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
