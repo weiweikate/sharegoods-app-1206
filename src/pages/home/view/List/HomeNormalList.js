@@ -533,7 +533,13 @@ export default class HomeNormalList extends React.Component {
                             isRefreshing={this.state.refreshing}
                             onRefresh={() => this.refreshData(false)}
                         />}
-                        style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0 }}
+                        style={{
+                            minHeight: ScreenUtils.headerHeight,
+                            minWidth: 1,
+                            flex: 1,
+                            marginTop: 0,
+                            backgroundColor: DesignRule.bgColor
+                        }}
                         onEndReached={this.getMoreData.bind(this)}
                         onEndReachedThreshold={ScreenUtils.height / 3}
                         dataProvider={this.dataProvider}

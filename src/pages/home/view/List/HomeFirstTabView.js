@@ -272,7 +272,11 @@ export default class HomeFirstTabView extends Component {
                     ref={(ref) => {
                         this.recyclerListView = ref;
                     }}
-                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
+                    style={{
+                        minHeight: ScreenUtils.headerHeight,
+                        minWidth: 1,
+                        flex: 1
+                    }}
                     refreshControl={this.renderRefreshLoading()}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 3}
