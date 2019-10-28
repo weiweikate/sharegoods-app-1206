@@ -104,6 +104,7 @@ const handleLoginData = (params, data, code, successCallBack, failCallBack) => {
         if (StringUtils.isNoEmpty(data.code)) {
             // 数据存储
             loginDataInit(data);
+            params.callBack && params.callBack();
             // 登录成功
             successCallBack && successCallBack(data);
             // 绑定微信

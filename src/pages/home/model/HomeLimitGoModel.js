@@ -5,6 +5,8 @@ import { homeModule } from './Modules';
 import HomeApi from '../api/HomeAPI';
 import { differenceInCalendarDays, format } from 'date-fns';
 import bridge from '../../../utils/bridge';
+import StringUtils from '../../../utils/StringUtils';
+import { getSize } from '../../../utils/OssHelper';
 
 const { px2dp } = ScreenUtils;
 
@@ -26,6 +28,7 @@ export class LimitGoModules {
     @observable currentPage = -1;
     //是否显示免单
     @observable isShowFreeOrder = false;
+    @observable tabWidth = 0;
 
     /**
      * 返回限时购顶部高度
@@ -82,6 +85,12 @@ export class LimitGoModules {
                 let spikeTime = 0;     // 秒杀开始时间
                 let lastSeckills = 0;  // 最近的秒杀
                 let _currentPage = -1; // 当前page
+                let labelUrl = (result[0] && result[0].labelUrl);
+                if (StringUtils.isNoEmpty(labelUrl)) {
+                    getSize(labelUrl, (width, height) => {
+                        this.tabWidth = width * px2dp(18) / height;
+                    });
+                }
                 result.map((data, index) => {
                     spikeTime = (result[index] && result[index].simpleActivity.startTime) || 0;
                     const date = (result[index] && result[index].simpleActivity.currentTime) || 0;
@@ -122,8 +131,8 @@ export class LimitGoModules {
                         title: title,
                         id: index,
                         time: timeFormat,
-                        diff: diff,
-                        labelUrl: (result[0] && result[0].labelUrl),
+                        diff,
+                        labelUrl,
                         activityCode: (result[index] && result[index].simpleActivity.code) || '',
                         goods: (result[index] && result[index].productDetailList) || []
                     });
