@@ -190,8 +190,8 @@ class TaskModel {
             let extraParams = {}
             if (category === 1) {
                 extraParams={openShareModal: true}
-            }else  if (category === 100){
-                extraParams={paramsStr: '&category=100'}
+            }else  if (interactiveCode == 100){//浏览网页任务
+                extraParams={paramsStr: '&browse=true'}
             }
             IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue, extraParams);
             return;
