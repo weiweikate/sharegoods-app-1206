@@ -36,6 +36,7 @@ export class GroupShareView extends Component {
         }
         const { groupShareViewModal } = this.props;
         const { endTime } = groupShareViewModal;
+        const hasNum = StringUtils.sub(groupNum, surplusPerson);
         return (
             <View style={styles.container}>
                 <View style={{ justifyContent: 'center', alignItems: 'center', height: px2dp(180) }}>
@@ -65,12 +66,12 @@ export class GroupShareView extends Component {
                             <MRText style={styles.leaderText}>团长</MRText>
                         </View>
                     </View>
-                    <Image style={[styles.icon, { marginLeft: px2dp(20) }]}
-                           source={person}/>
-                    <Image style={[styles.icon, { marginLeft: px2dp(20) }]}
-                           source={morePerson}/>
-                    <Image style={[styles.icon, { marginLeft: px2dp(20) }]}
-                           source={person}/>
+                    {hasNum > 1 && <Image style={[styles.icon, { marginLeft: px2dp(20) }]}
+                                          source={person}/>}
+                    {hasNum > 3 && <Image style={[styles.icon, { marginLeft: px2dp(20) }]}
+                                          source={morePerson}/>}
+                    {hasNum > 2 && <Image style={[styles.icon, { marginLeft: px2dp(20) }]}
+                                          source={person}/>}
                 </View>
                 {surplusPerson > 0 && <NoMoreClick onPress={() => {
                     this.ShareModel.open && this.ShareModel.open();
