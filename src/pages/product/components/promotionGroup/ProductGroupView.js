@@ -8,7 +8,6 @@
 
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, FlatList } from 'react-native';
-import newToOld from './newToOld.png';
 import { MRText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
@@ -21,12 +20,14 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 const { arrow_right_black } = RES.button;
 
 /*商详老带新页面*/
+@observer
 export class GroupIsOldView extends Component {
     render() {
+        const { tagName, showRuleText } = this.props.productGroupModel;
         return (
             <View style={stylesOld.container}>
-                <Image source={newToOld} style={stylesOld.img}/>
-                <MRText style={stylesOld.text}>所有用户都能开团，但商城新客才能参团哟</MRText>
+                <MRText style={stylesOld.text}>{tagName}</MRText>
+                <MRText style={stylesOld.text}>{showRuleText}</MRText>
             </View>
         );
     }
