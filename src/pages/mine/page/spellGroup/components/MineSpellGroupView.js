@@ -51,55 +51,54 @@ export default class MineSpellGroupView extends PureComponent {
         let backtime = DateUtils.getDateDiffFun(data.endTime, TimeModel.countdownDate);
 
         return (
-            <View style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: 'white',
-                marginTop: 15,
-                borderRadius: px2dp(10),
-                marginHorizontal: DesignRule.margin_page,
-                height:60
-            }}>
-                {data.image ?
-                    <Image source={{uri: data.image}} style={{
-                        width: 50,
-                        height: 50,
-                        borderRadius: 5,
-                        margin: 5
-                    }}/>
-                    :
-                    <View style={{
-                        width: 50,
-                        height: 50,
-                        borderRadius: 5,
-                        backgroundColor: '#f5f5f5',
-                        margin: 5
-                    }}/>
-                }
+            <TouchableOpacity activeOpacity={0.7}
+                              onPress={() => {
+                                  itemClick && itemClick(data)
+                              }}>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: 'white',
+                    marginTop: 15,
+                    borderRadius: px2dp(10),
+                    marginHorizontal: DesignRule.margin_page,
+                    height: 60
+                }}>
 
-                <View style={{flex: 1,justifyContent:'center'}}>
-                    <Text style={{marginLeft: 5, color: '#333333', fontSize: 13}}>拼团仅剩
-                        <Text style={{marginRight: 5, fontSize: 16, color: '#FF0050', fontWeight: 'bold'}}>
-                            {' ' + this.timeFormat(backtime)}
+                    {data.image ?
+                        <Image source={{uri: data.image}}
+                               style={{
+                                   width: 50, height: 50, borderRadius: 5, margin: 5
+                               }}/>
+                        :
+                        <View style={{width: 50, height: 50, borderRadius: 5, backgroundColor: '#f5f5f5', margin: 5}}/>
+                    }
+
+                    <View style={{flex: 1, justifyContent: 'center'}}>
+                        <Text style={{marginLeft: 5, color: '#333333', fontSize: 13}}>拼团仅剩
+                            <Text style={{marginRight: 5, fontSize: 16, color: '#FF0050', fontWeight: 'bold'}}>
+                                {' ' + this.timeFormat(backtime)}
+                            </Text>
                         </Text>
-                    </Text>
-                </View>
-
-                <TouchableOpacity activeOpacity={0.7}
-                                  onPress={() => {
-                                      itemClick && itemClick(data)
-                                  }}>
+                    </View>
                     <LinearGradient style={{borderRadius: 17, marginRight: 15}}
                                     start={{x: 0, y: 0}}
                                     end={{x: 1, y: 1}}
                                     colors={['#FC5D39', '#FF0050']}
                     >
-                        <View style={{borderRadius: 17, height: 30, width:80, alignItems: 'center', justifyContent: 'center'}}>
+                        <View style={{
+                            borderRadius: 17,
+                            height: 30,
+                            width: 80,
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
                             <Text style={styles.btnTxtStyle}>邀请好友</Text>
                         </View>
                     </LinearGradient>
-                </TouchableOpacity>
-            </View>
+                </View>
+            </TouchableOpacity>
+
         );
     }
 
