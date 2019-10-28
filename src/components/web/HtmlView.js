@@ -81,7 +81,7 @@ export default class RequestDetailPage extends BasePage {
     constructor(props) {
         super(props);
         const params = this.props.params || this.params || {};
-        let { uri, title, sgspm, sgscm } = params;
+        let { uri, title, sgspm, sgscm, paramsStr='' } = params;
         sgspm = sgspm || '';
         sgscm = sgscm || '';
         uri = decodeURIComponent(uri);
@@ -97,6 +97,7 @@ export default class RequestDetailPage extends BasePage {
             '&ts=' + new Date().getTime() +
             '&sgspm=' + sgspm +
             '&sgscm=' + sgscm
+            +paramsStr
         ;
         //拼参数
         if (uri && uri.indexOf('?') > 0) {
