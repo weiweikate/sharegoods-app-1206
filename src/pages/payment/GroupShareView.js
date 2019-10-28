@@ -17,6 +17,7 @@ import StringUtils from '../../utils/StringUtils';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { TimeLabelText } from '../product/components/promotionGroup/ProductGroupItemView';
 import { observable } from 'mobx';
+import { observer } from 'mobx-react';
 import LinearGradient from 'react-native-linear-gradient';
 import person from '../product/components/promotionGroup/person.png';
 import morePerson from '../product/components/promotionGroup/morePerson.png';
@@ -27,6 +28,7 @@ import CommGroupShareModal from '../../comm/components/CommGroupShareModal';
 
 const { px2dp } = ScreenUtils;
 
+@observer
 export class GroupShareView extends Component {
     render() {
         const { groupId, surplusPerson, groupNum, groupUserHeadImg, groupItem } = this.props.groupShareData || {};
