@@ -284,7 +284,7 @@ export default class CommShowShareModal extends React.Component {
         });
 
         arrayWeb.push({
-            image: res.share.weibo, title: '面对面扫码', onPress: () => {
+            image: res.share.FaceToFace, title: '面对面扫码', onPress: () => {
                 this.close();
                 routeNavigate(RouterMap.FaceToFaceQRcode,{data:this.props.imageJson})
             }
