@@ -12,6 +12,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MRBannerViewComponent from '../../../../components/ui/bannerView/MRBannerViewComponent';
 import { homeModule } from '../../model/Modules';
+import {TrackApi} from '../../../../utils/SensorsTrack';
 
 const {px2dp} = ScreenUtils;
 const size = {
@@ -28,6 +29,13 @@ export default class SignInBannerView extends PureComponent {
     _onPressRow = (index) => {
         const {bannerList,navigate} = this.props;
         let data = bannerList[index];
+        TrackApi.BannerClick({
+            bannerType: data.linkType,
+            bannerContent: data.linkTypeCode,
+            bannerId:data.id,
+            bannerRank:data.rank,
+            bannerLocation: 42
+        });
         if (data) {
             const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
             let params = homeModule.paramsNavigate(data);

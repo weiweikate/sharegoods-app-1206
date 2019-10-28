@@ -106,6 +106,12 @@ const mineEvent = {
 const afterEvent = {
     ApplyReturn: 'ApplyReturn' // 0：未知 1：仅退款 2：退货退款 3：换货
 }
+
+const signInEvent = {
+    ViewSignInPage: 'ViewSignInPage',
+    SignInPageBtnClick:'SignInPageBtnClick'
+}
+
 const trackEvent = {
     CategoryClick:'CategoryClick',
     bannerClick: 'BannerClick',
@@ -150,7 +156,8 @@ const trackEvent = {
     ...commonEvent,
     ...homeEvent,
     ...showEvent,
-    ...groupEvent
+    ...groupEvent,
+    ...signInEvent
 };
 
 function track(event_name,parmas) {
