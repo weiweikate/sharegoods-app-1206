@@ -14,6 +14,7 @@ import JPushUtils from '../../../utils/JPushUtils';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import RouterMap, { routeNavigate, routePop } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
+import homeController from '../../marketing/controller/HomeController';
 
 /**
  * 回调code 和 数据 34005 需要去绑定手机号 10000 登录成功
@@ -93,6 +94,11 @@ const getWxUserInfo = (callback) => {
 };
 
 const handleLoginData = (params, data, code, successCallBack, failCallBack, popNumber) => {
+    //登录成功home页重新请求弹窗,非新用户
+    if(data && data.newUser){
+        homeController.residueDegree = 1;
+    }
+
     if (data.weChatBindingStatus) {
         // 登录成功
         if (StringUtils.isNoEmpty(data.code)) {

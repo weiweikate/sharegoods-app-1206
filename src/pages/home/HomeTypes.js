@@ -65,8 +65,6 @@ export const homeLinkType = {
     classify: 12,      //分类
     nothing: 13,      //无跳转
     page: 14,      //页面路由
-    pinStore: 17,      //拼店
-    showGround: 18,      //秀场
     pinGroup: 19,      //拼团
     limitBuy: 20,      //限时购
 };
@@ -86,8 +84,6 @@ export const homeRoute = {
     [homeLinkType.classify]: 'home/search/SearchResultPage',
     [homeLinkType.nothing]: '',  // 不做跳转
     [homeLinkType.page]: '',      // 跳转到页面
-    [homeLinkType.pinStore]: 'spellShop/MyShop_RecruitPage',
-    [homeLinkType.showGround]: 'show/ShowListPage',
     [homeLinkType.pinGroup]: 'HtmlPage',
     [homeLinkType.limitBuy]: 'HtmlPage'
 };

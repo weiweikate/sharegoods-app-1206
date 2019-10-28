@@ -10,6 +10,7 @@ import HomeModalManager from '../../home/manager/HomeModalManager';
 import DateUtils from '../../../utils/DateUtils';
 import MarketingApi from '../api/MarketingApi';
 import EmptyUtils from '../../../utils/EmptyUtils';
+import user from '../../../model/user';
 
 const SHOWTIME = '@homecontroller/time';
 
@@ -24,9 +25,9 @@ class HomeController {
 
 
     notifyArrivedHome(){
-        if(this.residueDegree < 1){
-            return;
-        }
+        // if(this.residueDegree < 1){
+        //     return;
+        // }
         this.handleGetConfig();
     }
 
@@ -34,7 +35,7 @@ class HomeController {
     async getShowTime(){
         //存储格式为{timestamp:?,time:?}
         try {
-            let showTime = await store.get(SHOWTIME);
+            let showTime = await store.get(`${SHOWTIME}${user.code}`);
             if(showTime !== null && DateUtils.isToday(showTime.timestamp)){
                 this.residueDegree = showTime.time;
             }
@@ -64,12 +65,30 @@ class HomeController {
         if(HomeModalManager.isShowModal){
             return;
         }
-        if(this.needShow){
+        if(this.needShow && this._isInHome()){
+            marketingUtils.checkUser = true;
             marketingUtils.openModalWithType(ModalType.activity);
             this.needShow = false;
             this.residueDegree--;
             this._saveShowTime();
         }
+    }
+
+    _isInHome(){
+        let $routes = global.$routes || [];
+
+        if($routes.length === 0){
+            return true;
+        }
+
+        if ($routes.length === 1) {
+            let route = $routes[0];
+            if (route.routeName === 'Tab' && route.index === 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     //保存营销弹窗展示的剩余次数

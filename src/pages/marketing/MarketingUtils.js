@@ -6,11 +6,13 @@ class MarketingUtils {
     @observable isShowModal = false;
     @observable currentContent = null;
     @observable type = null;
+    checkUser = false;
 
     @action closeModal  ()  {
         this.isShowModal = false;
         this.type = null;
         this.currentContent = null;
+        this.checkUser = false;
     }
 
     @action openModal  ()  {
