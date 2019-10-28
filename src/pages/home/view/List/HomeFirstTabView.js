@@ -211,10 +211,12 @@ export default class HomeFirstTabView extends Component {
     };
 
     renderRefreshLoading = () => {
+        const source = require('../../../../comm/components/lottieheader/white_pull3.json')
         return (
             <HeaderLoading
                 isRefreshing={homeModule.isRefreshing}
                 onRefresh={this._onRefresh.bind(this)}
+                source={source}
                 lineTop={ScreenUtils.autoSizeWidth(40) + 1}
             />
         );

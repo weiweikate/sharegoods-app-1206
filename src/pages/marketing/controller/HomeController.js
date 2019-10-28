@@ -20,14 +20,14 @@ class HomeController {
         this.isRequested = false;
         this.needShow = false;
         this.residueDegree = 1;
-        this.getShowTime();
     }
 
 
-    notifyArrivedHome(){
-        // if(this.residueDegree < 1){
-        //     return;
-        // }
+    async notifyArrivedHome(){
+        await this.getShowTime();
+        if(this.residueDegree < 1){
+            return;
+        }
         this.handleGetConfig();
     }
 
@@ -97,7 +97,7 @@ class HomeController {
             time:this.residueDegree,
             timestamp:new Date().getTime()
         }
-        store.save(SHOWTIME,showTime);
+        store.save(`${SHOWTIME}${user.code}`,showTime);
     }
 
 }

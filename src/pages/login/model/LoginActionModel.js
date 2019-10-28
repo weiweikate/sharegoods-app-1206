@@ -97,6 +97,7 @@ const handleLoginData = (params, data, code, successCallBack, failCallBack, popN
     //登录成功home页重新请求弹窗,非新用户
     if(data && data.newUser){
         homeController.residueDegree = 1;
+        homeController.isRequested = false;
     }
 
     if (data.weChatBindingStatus) {
