@@ -87,7 +87,6 @@ export default class PhoneLoginPage extends BasePage {
             this.$loadingShow();
             if (loginModel.authPhone) {
                 // 回退步数2
-                let popNumber = 2;
                 getVerifyToken().then((data => {
                     // token去服务端号码认证，认证通过登录成功
                     let params = { token: data };
@@ -95,6 +94,7 @@ export default class PhoneLoginPage extends BasePage {
                         // 号码认证登录成功
                         TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
                         this.$loadingDismiss();
+                        this.$navigateBack(2);
                         bridge.$toast('登录成功');
                     }, (code) => {
                         // 认证失败，
@@ -103,7 +103,7 @@ export default class PhoneLoginPage extends BasePage {
                             return;
                         }
                         this.goCodeVerifyPage();
-                    }, popNumber);
+                    });
                 })).catch(e => {
                     // 认证失败，
                     this.goCodeVerifyPage();

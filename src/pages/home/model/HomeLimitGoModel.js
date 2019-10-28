@@ -123,7 +123,7 @@ export class LimitGoModules {
                         id: index,
                         time: timeFormat,
                         diff: diff,
-                        labelUrl: (result[index] && result[index].labelUrl),
+                        labelUrl: (result[0] && result[0].labelUrl),
                         activityCode: (result[index] && result[index].simpleActivity.code) || '',
                         goods: (result[index] && result[index].productDetailList) || []
                     });

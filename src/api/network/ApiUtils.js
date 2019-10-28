@@ -3,11 +3,12 @@ import user from '../../model/user';
 import apiEnvironment from '../ApiEnvironment';
 import RouterMap, { routePush } from '../../navigation/RouterMap';
 import store from '@mr/rn-store';
-import envConfig from '../../../config';
 
 const KEY_ApiEnvironment = '@mr/apiEnvironment';
 export default function ApiUtils(Urls) {
     let result = {}, list = [];
+
+
     Object.keys(Urls).forEach(function(name) {
         let value = Urls[name];
         if (typeof value === 'string') {
@@ -39,34 +40,48 @@ export default function ApiUtils(Urls) {
             if (pathValue) {
                 url = url + pathValue;
             }
-            const response = await HttpUtils[method](url, isRSA, paramsOutPathValue, config);
-            // code为0表明请求正常
-            if (!response.code || response.code === 10000) {
-                filter && filter(response);
-                return Promise.resolve(response);
-            } else {
+            const handleRequest = async () => {
+                const response = await HttpUtils[method](url, isRSA, paramsOutPathValue, config);
+                // code为0表明请求正常
+                if (!response.code || response.code === 10000) {
+                    filter && filter(response);
+                    return Promise.resolve(response);
+                } else {
+                    // 假如返回未登陆并且当前页面不是登陆页面则进行跳转
+                    if (response.code === 10009) {
+                        user.clearUserInfo();
+                        user.clearToken();
+                    }
+                    //系统升级中跳转错误网页
+                    if (response.code === 9999) {
+                        routePush(RouterMap.HtmlPage, { uri: apiEnvironment.getCurrentH5Url() + '/system-maintenance' });
+                    }
+                    return Promise.reject(response);
+                }
+            };
+            if (__DEV__) {
                 // 判断缓存的环境是否与当前接口请求的一致，一致是响应code对应动作
-                store.get(KEY_ApiEnvironment).then(envType => {
-                    let configEnv = envConfig.envType;
-                    if (envType === configEnv) {
-                        // 假如返回未登陆并且当前页面不是登陆页面则进行跳转
-                        if (response.code === 10009) {
-                            user.clearUserInfo();
-                            user.clearToken();
+                return store.get(KEY_ApiEnvironment).then(envType => {
+                    if (envType) {
+                        if (envType === apiEnvironment.envType) {
+                            return handleRequest();
+                        } else {
+                            return Promise.reject({
+                                code: -10000,
+                                msg: ''
+                            });
                         }
-                        // 系统升级中跳转错误网页
-                        if (response.code === 9999) {
-                            routePush(RouterMap.HtmlPage,
-                                { uri: apiEnvironment.getCurrentH5Url() + '/system-maintenance' });
-                        }
+                    } else {
+                        return handleRequest();
                     }
                 }).catch(e => {
                     console.log('获取环境配置失败！');
+                    return handleRequest();
                 });
-                return Promise.reject(response);
+            } else {
+                return handleRequest();
             }
         };
     });
     return result;
-
 }

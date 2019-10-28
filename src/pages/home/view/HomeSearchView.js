@@ -95,11 +95,11 @@ let styles = StyleSheet.create({
     dou: {
         height: 30,
         width: 30,
-        marginLeft: 10
+        marginLeft: 5
     },
     douText: {
         fontSize: 14,
-        marginLeft: 5,
+        marginLeft: 3,
         fontWeight: 'bold'
     },
     searchBox: {

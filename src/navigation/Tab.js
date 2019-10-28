@@ -22,7 +22,12 @@ import StringUtils from '../utils/StringUtils';
 class NormalTab extends Component {
     render() {
         const { source, title } = this.props;
-        const { assistantImage } = homeModule.bottomIcons[0] || {};
+        const { expand } = homeModule.bottomIcons[0] || {};
+        const { navColor } = StringUtils.str2Json(expand);
+        let tabColor = '#fff';
+        if (['#fff', '#ffffff', '#FFFFFF', '#FFF', 'white'].includes(navColor)) {
+            tabColor = '#666';
+        }
         return <View style={styles.tab}>
             <View>
                 <Image style={styles.tabBarIcon} source={source}/>
@@ -31,7 +36,7 @@ class NormalTab extends Component {
                     <Image source={res.other.dot} style={styles.mineDot}/> : null}
             </View>
             <Text
-                style={[styles.text, { color: StringUtils.isEmpty(assistantImage) ? '#666' : '#fff' }]}
+                style={[styles.text, { color: StringUtils.isEmpty(navColor) ? '#666' : tabColor }]}
             >{title}</Text>
         </View>;
     }
@@ -42,11 +47,16 @@ class ActiveTab extends Component {
 
     render() {
         const { source, title } = this.props;
-        const { assistantImage } = homeModule.bottomIcons[0] || {};
+        const { expand } = homeModule.bottomIcons[0] || {};
+        const { navColor } = StringUtils.str2Json(expand);
+        let tabColor = '#fff';
+        if (['#fff', '#ffffff', '#FFFFFF', '#FFF', 'white'].includes(navColor)) {
+            tabColor = '#666';
+        }
         return <View style={styles.tab}>
             <Image style={styles.tabBarIcon} source={source}/>
             <Text
-                style={[styles.text, { color: StringUtils.isEmpty(assistantImage) ? '#666' : '#fff' }]}
+                style={[styles.text, { color: StringUtils.isEmpty(navColor) ? '#666' : tabColor }]}
             >{title}</Text>
         </View>;
     }
