@@ -211,13 +211,11 @@ export default class HomeFirstTabView extends Component {
     };
 
     renderRefreshLoading = () => {
-        const source = require('../../../../comm/components/lottieheader/white_pull3.json')
         return (
             <HeaderLoading
                 isRefreshing={homeModule.isRefreshing}
                 onRefresh={this._onRefresh.bind(this)}
-                source={source}
-                lineTop={ScreenUtils.autoSizeWidth(40) + 1}
+                lineTop={ScreenUtils.autoSizeWidth(40)}
             />
         );
     };
@@ -231,9 +229,8 @@ export default class HomeFirstTabView extends Component {
 
         if (type.type === homeType.limitGoTime) {
             return <StaticLimitGoTimeView onPress={() => {
-                this.recyclerListView && this.recyclerListView.scrollToIndex(this.limitGoTimeIndex, false);
-            }
-            }/>;
+               this.recyclerListView&&this.recyclerListView.scrollToIndex(this.limitGoTimeIndex,false,1,0);
+            }}/>;
         }
 
         if (type.type === homeType.limitStaticViewDismiss) {
@@ -274,7 +271,11 @@ export default class HomeFirstTabView extends Component {
                     ref={(ref) => {
                         this.recyclerListView = ref;
                     }}
-                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
+                    style={{
+                        minHeight: ScreenUtils.headerHeight,
+                        minWidth: 1,
+                        flex: 1
+                    }}
                     refreshControl={this.renderRefreshLoading()}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 3}

@@ -1,27 +1,27 @@
 'use strict';
-import React, {useCallback, useRef, useState} from 'react';
-import {Animated, Platform} from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import { Animated, Platform } from 'react-native';
 import LottieView from 'lottie-react-native';
-import {RefreshHeader, RefreshLayout, RefreshState} from '@mr/react-native-refresh';
-import {MRText} from '../../../components/ui';
+import { RefreshHeader, RefreshLayout, RefreshState } from '@mr/react-native-refresh';
+import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 
 const RefreshStatus = {
-    PULLDOWN: '下拉刷新',
     LOOSEN: '松开刷新',
     REFRESHING: '刷新中...',
-    REFRESHED: '刷新完成'
+    REFRESHED: '刷新完成',
+    HIDDEN: ''
 };
 const lottieHeight = ScreenUtils.autoSizeWidth(70);
 
 function RefreshAnimateHeader(props) {
-    const {refreshing, onRefresh, source, headerHeight = ScreenUtils.autoSizeWidth(75), backgroundColor,headerStyle, lineTop} = props;
+    const { refreshing, onRefresh, source, headerHeight = ScreenUtils.autoSizeWidth(75), backgroundColor, lineTop } = props;
 
     const lottieRef = useRef(React.createRef());
     const progressRef = useRef(new Animated.Value(1));
     const currentState = useRef(RefreshState.Idle);
-    const [status, setStatus] = useState(RefreshStatus.PULLDOWN);
+    const [status, setStatus] = useState(RefreshStatus.HIDDEN);
 
     const onPullingRefreshCallBack = useCallback((state) => {
         currentState.current = state;
@@ -48,13 +48,13 @@ function RefreshAnimateHeader(props) {
             lottieRef.current.play(0, 24);
             lottieRef.current.reset();
         }
-        setStatus(RefreshStatus.PULLDOWN);
+        setStatus(RefreshStatus.HIDDEN);
         currentState.current = state;
 
     }, []);
 
     const onChangeOffsetCallBack = useCallback((event) => {
-        const {offset} = event.nativeEvent;
+        const { offset } = event.nativeEvent;
         if (
             currentState.current !== RefreshState.Refreshing &&
             currentState.current !== RefreshState.End
@@ -65,7 +65,7 @@ function RefreshAnimateHeader(props) {
 
     const lottie = Platform.OS === 'ios' ? <LottieView
         ref={lottieRef}
-        style={{height: lottieHeight}}
+        style={{ height: lottieHeight }}
         resizeMode={'cover'}
         loop={false}
         autoSize={false}
@@ -76,7 +76,7 @@ function RefreshAnimateHeader(props) {
         cacheStrategy={'strong'}
     /> : <LottieView
         ref={lottieRef}
-        style={{height: lottieHeight}}
+        style={{ height: lottieHeight }}
         resizeMode={'cover'}
         loop={false}
         autoSize={false}
@@ -107,11 +107,11 @@ function RefreshAnimateHeader(props) {
         >
             <RefreshHeader
                 lineTop={lineTop}
-                style={[{
+                style={{
                     alignItems: 'center',
-                    height: headerHeight,
+                    height: headerHeight
 
-                },headerStyle]}>
+                }}>
                 {lottie}
                 <MRText style={{
                     height: ScreenUtils.autoSizeWidth(20),

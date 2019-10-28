@@ -25,6 +25,7 @@ import { observer } from 'mobx-react';
 import RouterMap, { forceToHome } from '../../../../navigation/RouterMap';
 import Switch from '../../components/SwitchComponent';
 import JPushDeleteUtil from '../../../../utils/JPushDeleteUtil';
+import { confirmOrderModel } from '../../../order/model/ConfirmOrderModel';
 
 const { CachesModule } = NativeModules;
 
@@ -230,6 +231,7 @@ class SettingPage extends BasePage {
                         user.clearUserInfo();
                         user.clearToken();
                         userOrderNum.clean();
+                        confirmOrderModel.clearAddressData();
                         bridge.clearCookies();
                         loginModel.clearPassword();
                         //清空购物车

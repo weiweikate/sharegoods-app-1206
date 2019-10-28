@@ -86,8 +86,8 @@ export default class DetailBottomView extends Component {
 
     _renderAllBtn = () => {
         const { isGroupIn, isPinGroupIn, show, rebatePrice, rebatePriceDesc } = this.props.pData || {};
-        //老礼包 || 拼团 || 会员权益  不显示购物车
-        const noShowCart = isGroupIn || isPinGroupIn || show === 1;
+        //老礼包 || 拼团 || 会员权益 || 新人  不显示购物车
+        const noShowCart = isGroupIn || isPinGroupIn || show === 1 || isNoEmpty(rebatePrice);
         return (
             <View style={styles.btnContainer}>
                 {!noShowCart && this._renderShop()}

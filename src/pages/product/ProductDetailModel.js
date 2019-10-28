@@ -430,11 +430,11 @@ export default class ProductDetailModel {
     @computed get sectionDataList() {
         const {
             promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel,
-            type, isGroupIn, productDetailSuitModel, isHuaFei, isPinGroupIn, singleActivity
+            type, isGroupIn, productDetailSuitModel, isHuaFei, isPinGroupIn, productGroupModel
         } = this;
         const { couponsList } = productDetailCouponsViewModel;
         const { activityCode } = productDetailSuitModel;
-        const { activityTag } = singleActivity;
+        const { showRule } = productGroupModel;
         /*头部*/
         let sectionArr = [
             { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
@@ -462,7 +462,7 @@ export default class ProductDetailModel {
         sectionArr.push({ key: sectionType.sectionSetting, data: settingList });
         /*拼团相关*/
         let groupList = [];
-        activityTag === 101106 && groupList.push({ itemKey: productItemType.groupIsOld });
+        showRule && groupList.push({ itemKey: productItemType.groupIsOld });
         groupList.push({ itemKey: productItemType.groupOpenPersonS });
         groupList.push({ itemKey: productItemType.groupProductList });
         isPinGroupIn && sectionArr.push({ key: sectionType.sectionGroup, data: groupList });
@@ -631,6 +631,7 @@ export default class ProductDetailModel {
         });
         this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
         this.productGroupModel.requestGroupProduct({ activityCode: code, prodCode: this.prodCode });
+        this.productGroupModel.request_rule_info({ activityCode: code });
         this.productGroupModel.requestGroupDesc();
     };
 

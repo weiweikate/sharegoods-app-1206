@@ -102,7 +102,12 @@ export default class DIYTopicList extends React.Component {
         return (
             <View style={[DesignRule.style_container, { marginTop: ScreenUtils.autoSizeWidth(40) }]}>
                 <RecyclerListView
-                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
+                    style={{
+                        minHeight: ScreenUtils.headerHeight,
+                        minWidth: 1,
+                        flex: 1,
+                        backgroundColor: DesignRule.bgColor
+                    }}
                     refreshControl={<HeaderLoading
                         isRefreshing={this.loadMoreDataUtil.refreshing}
                         onRefresh={this.loadMoreDataUtil.onRefresh}
