@@ -271,8 +271,7 @@ export const IntervalMsgType = {
     shopDetail: 23,     //拼店店铺详情页
     sign: 24, //签到
     mineShare: 10,      //分享好友
-    web: 99 ,//网页
-    browse: 100,
+    web: 99 //网页
     /** 下面都是网页*/
     // page: 8,      //新人专享
     // page: 9,      //免费兑换
@@ -303,6 +302,5 @@ const IntervalMsgRouter = {
     [IntervalMsgType.richShowDetail]: 'show/ShowRichTextDetailPage',
     [IntervalMsgType.sign]: 'home/signIn/SignInPage',
     [IntervalMsgType.web]: 'HtmlPage',
-    [IntervalMsgType.browse]: 'HtmlPage',
     [IntervalMsgType.mineShare]: 'mine/InviteFriendsPage'
 };
