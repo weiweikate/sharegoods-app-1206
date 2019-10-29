@@ -15,6 +15,7 @@ import MessageApi from '../../message/api/MessageApi';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
+import homeController from '../../marketing/controller/HomeController';
 
 const requsetCount = 5;
 
@@ -159,6 +160,7 @@ class HomeModalManager {
             });
             this.isShowPrivacyModal = false;
             this.needShowPrivacyModal = false;
+            homeController.notifyArrivedHome();
             this.openNext();
         } else {
             bridge.exitApp();
