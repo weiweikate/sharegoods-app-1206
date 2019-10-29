@@ -8,6 +8,7 @@ import ModalType from '../components/ModalType';
 import DateUtils from '../../../utils/DateUtils';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import MarketingApi from '../api/MarketingApi';
+import user from '../../../model/user';
 
 //支付成功展示次数
 const SHOWTIME = '@paysuccesscontroller/time';
@@ -25,7 +26,7 @@ class PaySuccessController {
     async getShowTime(){
         //存储格式为{timestamp:?,time:?}
         try {
-            let showTime = await store.get(SHOWTIME);
+            let showTime = await store.get(`${SHOWTIME}${user.code}`);
             if(showTime !== null && DateUtils.isToday(showTime.timestamp)){
                 this.residueDegree = showTime.time;
             }
@@ -42,6 +43,7 @@ class PaySuccessController {
         MarketingApi.getModalData({type:39,showPage:15}).then((data)=>{
             if(!EmptyUtils.isEmptyArr(data.data)){
                 marketingUtils.replaceContent(data.data[this.getRandom(data.data.length)]);
+                marketingUtils.openInPage = 'paySuccess';
                 marketingUtils.openModalWithType(ModalType.activity);
                 this.residueDegree--;
                 this._saveShowTime();
@@ -66,6 +68,7 @@ class PaySuccessController {
 
     notifyPayPinLeave(){
         if(this.leaveNeedShow && this.residueDegree > 0){
+            marketingUtils.openInPage = 'paySuccess';
             marketingUtils.openModalWithType(ModalType.activity);
             this.leaveNeedShow = false;
             this.residueDegree--;
@@ -79,14 +82,13 @@ class PaySuccessController {
             time:this.residueDegree,
             timestamp:new Date().getTime()
         }
-        store.save(SHOWTIME,showTime);
+        store.save(`${SHOWTIME}${user.code}`,showTime);
     }
 
     //生成随机数
     getRandom(num){
         let random = Math.random();
-        num = random*num;
-        return Math.floor(num);
+        return ~~(random*num);
     }
 }
 

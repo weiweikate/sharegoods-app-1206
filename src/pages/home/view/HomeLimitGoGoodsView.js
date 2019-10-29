@@ -22,7 +22,7 @@ const { px2dp } = ScreenUtils;
 export default class HomeLimitGoGoodsView extends Component {
 
     _goToDetail(index, value, activityData) {
-        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode, ...getSGspm_home(HomeSource.limitGo, index, limitGoModule.currentPage) });
+        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode, ...getSGspm_home(HomeSource.limitGo, limitGoModule.currentPage, index) });
         // 限时购商品点击埋点
         track(trackEvent.SpikeProdClick,
             {
@@ -42,14 +42,13 @@ export default class HomeLimitGoGoodsView extends Component {
     }
 
     render() {
-        let { spikeList, currentPage } = limitGoModule;
+        let { spikeList, currentPage, tabWidth } = limitGoModule;
         let activityData = '';
         if (spikeList && spikeList[currentPage]) {
             activityData = spikeList[currentPage];
         }
-
-        let index = 1;
-        let data = this.props.data;
+        let data = this.props.data || {};
+        let index = data.index;
         return (
             <TouchableWithoutFeedback key={index}
                                       onPress={() => this._goToDetail(index, data || {}, activityData)}>
@@ -59,6 +58,7 @@ export default class HomeLimitGoGoodsView extends Component {
                         item={data || {}}
                         activityCode={activityData.activityCode}
                         labelUrl={activityData.labelUrl}
+                        labelWidth={tabWidth}
                         navigate={this.props.navigate}/>
                 </View>
             </TouchableWithoutFeedback>
@@ -66,7 +66,7 @@ export default class HomeLimitGoGoodsView extends Component {
     }
 }
 
-const GoodsItem = ({ item, activityCode, labelUrl, navigate }) => {
+const GoodsItem = ({ item, activityCode, labelUrl, labelWidth, navigate }) => {
     const promotionSaleRateS = item.promotionSaleRate || 0;
     const discountString = (item.promotionPrice / item.originalPrice * 10) + '';
     let discountNum = discountString.substring(0, discountString.indexOf('.') + 2);
@@ -84,7 +84,7 @@ const GoodsItem = ({ item, activityCode, labelUrl, navigate }) => {
                        style={styles.goodsTag}/> : null}
             <Image source={{ uri: labelUrl }}
                    resizeMode={'contain'}
-                   style={{ height: 18, top: 5, left: 0, position: 'absolute' }}/>
+                   style={{ height: px2dp(18), width: labelWidth, top: 5, left: 0, position: 'absolute' }}/>
         </ImageLoader>
         <View style={styles.goodsContent}>
             <Text style={styles.goodsTitle} numberOfLines={1}>{item.name}</Text>

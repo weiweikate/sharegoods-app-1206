@@ -1,18 +1,15 @@
 import { action, flow, observable } from 'mobx';
 import HomeApi from '../api/HomeAPI';
-import { homeLinkType, homeRoute, homeType } from '../HomeTypes';
+import { asyncHandleTopicData, homeLinkType, homeRoute, homeType } from '../HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
 import { channelModules } from './HomeChannelModel';
 import { limitGoModule } from './HomeLimitGoModel';
 import { tabModel } from './HomeTabModel';
 import store from '@mr/rn-store';
-import { ImageAdViewGetHeight } from '../view/TopicImageAdView';
-import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
 import StringUtils from '../../../utils/StringUtils';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import bridge from '../../../utils/bridge';
-import { getSGscm, getSGspm_home, HomeSource, SGscmSource } from '../../../utils/OrderTrackUtil';
+import ScreenUtils from '../../../utils/ScreenUtils';;
+import {  HomeSource } from '../../../utils/OrderTrackUtil';
 import { getSize } from '../../../utils/OssHelper';
 import { homeNewUserModel } from './HomeNewUserModel';
 
@@ -472,52 +469,8 @@ class HomeModule {
         if (!data.data || !data.data.widgets) {
             return [];
         }
-        data = data.data.widgets.data || [];
-        data = [...data];
-        let p = [];
-        let count = data.length;
-        for (let index = 0; index < count; index++) {
-            getSGspm_home(HomeSource.marketing, index);
-            let item = data[index];
-            item.sgscm = getSGscm(SGscmSource.topic, code).sgscm;
-            item.sgspm = getSGspm_home(HomeSource.marketing, index).sgspm;
-            if (item.type === homeType.custom_goods) {
-                item.itemHeight = GoodsCustomViewGetHeight(item);
-                item.marginBottom = ScreenUtils.autoSizeWidth(0);
-                if (count - 1 > index) {
-                    let type = data[index + 1].type;
-                    if (type === homeType.custom_imgAD || type === homeType.custom_text) {
-                        item.marginBottom = ScreenUtils.autoSizeWidth(15);
-                    }
-                }
-                item.itemHeight += item.marginBottom;
-            }
 
-            if (item.type === homeType.custom_imgAD) {
-                item.itemHeight = ImageAdViewGetHeight(item);
-            }
-
-            if (item.type === homeType.custom_text) {
-                item.detailHeight = 0;
-                item.textHeight = 0;
-                item.itemHeight = 0;
-                if (item.text) {
-                    p.push(bridge.getTextHeightWithWidth(item.text, autoSizeWidth(14), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
-                        item.textHeight = r.height;
-                        item.itemHeight = r.height + item.detailHeight + autoSizeWidth(20);
-                    }));
-                }
-                if (item.subText) {
-                    p.push(bridge.getTextHeightWithWidth(item.subText, autoSizeWidth(12), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
-                        item.detailHeight = r.height;
-                        item.itemHeight = r.height + item.textHeight + autoSizeWidth(20);
-                    }));
-                }
-            }
-        }
-
-
-        Promise.all(p).then(() => {
+        asyncHandleTopicData(data,HomeSource.marketing,(isTop?0:1)).then((data)=> {
             if (isTop) {
                 this.topTopice = data;
                 store.save(kHomeTopTopic, this.topTopice);
@@ -526,7 +479,7 @@ class HomeModule {
                 store.save(kHomeBottomTopic, this.bottomTopice);
             }
             this.homeList = this.getHomeListData(true);
-        });
+        })
     };
 
     @action setTopSkinData(data) {

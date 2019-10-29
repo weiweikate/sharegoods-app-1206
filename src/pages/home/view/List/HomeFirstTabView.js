@@ -229,9 +229,8 @@ export default class HomeFirstTabView extends Component {
 
         if (type.type === homeType.limitGoTime) {
             return <StaticLimitGoTimeView onPress={() => {
-                this.recyclerListView && this.recyclerListView.scrollToIndex(this.limitGoTimeIndex, false);
-            }
-            }/>;
+               this.recyclerListView&&this.recyclerListView.scrollToIndex(this.limitGoTimeIndex,false,1,0);
+            }}/>;
         }
 
         if (type.type === homeType.limitStaticViewDismiss) {

@@ -58,6 +58,10 @@ class ConfirmOrderModel {
     @observable
     needModifyAddress = false;
 
+    clearAddressData(){
+        this. addressId = '';
+        this.addressData = {};
+    }
     @action clearData() {
         this.loadingState = PageLoadingState.success;
         this.err = null;

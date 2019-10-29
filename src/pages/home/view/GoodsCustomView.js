@@ -84,9 +84,7 @@ export default class GoodsCustomView extends React.Component {
                     {
                         showMore.visible ?
                             <TouchableWithoutFeedback onPress={() => {
-                                let { sgscm, sgspm } = data;
-                                sgspm = sgspm + '_' + (products.length + 1);
-                                topicAdOnPress(data, showMore, null, '', { sgscm, sgspm });
+                                topicAdOnPress(data, showMore, null, '', data.orderTrackParams);
                             }}>
                                 <View style={[style, { alignItems: 'center', justifyContent: 'center' }]}>
                                     <Image source={shouye_icon_gengduo}
@@ -623,15 +621,13 @@ export default class GoodsCustomView extends React.Component {
     }
 
     gotoProduceDetail(item, i) {
-        let { sgscm, sgspm } = this.props.data;
-        sgspm = sgspm + '_' + (i + 1);
-        topicAdOnPress({}, { linkType: 1, linkValue: [item.prodCode] }, this.props.p, item.name, { sgscm, sgspm });
+        topicAdOnPress({}, { linkType: 1, linkValue: [item.prodCode] }, this.props.p, item.name, this.props.data.orderTrackParams);
 
     }
 
     //添加购物车
     addShopCar(item) {
-        topicAdOnPress({}, { linkType: 1, linkValue: [item.prodCode] }, this.props.p, item.name);
+       // topicAdOnPress({}, { linkType: 1, linkValue: [item.prodCode] }, this.props.p, item.name);
     }
 
 

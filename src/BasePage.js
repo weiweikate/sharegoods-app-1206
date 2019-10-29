@@ -17,7 +17,14 @@ import { netState } from '@mr/rn-request';
 import res from './comm/res';
 import bridge from './utils/bridge';
 import DesignRule from './constants/DesignRule';
-import RouterMap, { GoToTabItem, replaceRoute, routeNavigate, routePop, routePush } from './navigation/RouterMap';
+import RouterMap, {
+    GoToTabItem,
+    replaceRoute,
+    routeNavigate,
+    routeOnePage,
+    routePop,
+    routePush
+} from './navigation/RouterMap';
 
 export default class BasePage extends Component {
     constructor(props) {
@@ -234,6 +241,11 @@ export default class BasePage extends Component {
     // 返回
     $navigateBack = (step) => {
         routePop(step);
+    };
+
+    // 只保留路由栈里面存在一个页面
+    $navigateOnlyOnePage = (routeName, params) => {
+        routeOnePage(routeName, params);
     };
 
     // 路由替换

@@ -231,7 +231,7 @@ export default class ShopCartPage extends BasePage {
             });
             return;
         }
-        this.$navigate(RouterMap.ProductDetailPage, {
+        this.$navigateOnlyOnePage(RouterMap.ProductDetailPage, {
             productId: itemData.productId,
             productCode: itemData.spuCode
         });

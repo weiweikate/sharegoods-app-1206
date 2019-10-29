@@ -127,6 +127,7 @@ export default class LoginPage extends BasePage {
             this.$loadingShow();
             let params = { token: data, loginType: 4 };
             memberLogin(params, () => {
+                this.$navigateBack();
                 this.$loadingDismiss();
                 this.$toastShow('登录成功');
             }, () => {

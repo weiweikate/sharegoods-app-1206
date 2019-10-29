@@ -115,7 +115,7 @@ export default class SignInPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                if (user.token) {
+                if (user.isLogin) {
                     this.loadPageData();
                     mineTaskModel.getData();
                     taskModel.getData();
@@ -125,6 +125,7 @@ export default class SignInPage extends BasePage {
                         this.first = false;
                     }
                 }
+                track(trackEvent.ViewSignInPage);
             }
         );
     }
@@ -225,6 +226,7 @@ export default class SignInPage extends BasePage {
     };
 
     showMore = () => {
+        track(trackEvent.SignInPageBtnClick,{signInPageBtnName:'查看规则'});
         this.$navigate(RouterMap.HtmlPage, {
             title: '签到规则',
             uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/signInRule.html`
@@ -236,6 +238,7 @@ export default class SignInPage extends BasePage {
         if (this.signinRequesting) {
             return;
         }
+        track(trackEvent.SignInPageBtnClick,{signInPageBtnName:'点击签到'});
         this.signinRequesting = true;
         let count;
         if (this.state.signInData[3].continuous) {
@@ -643,6 +646,12 @@ export default class SignInPage extends BasePage {
     adTouch = (data) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
+                TrackApi.BannerClick({
+                    bannerType: data.linkType,
+                    bannerContent: data.linkTypeCode,
+                    bannerLocation: 41
+                });
+
                 const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
                 let params = homeModule.paramsNavigate(data);
                 routePush(router, params);

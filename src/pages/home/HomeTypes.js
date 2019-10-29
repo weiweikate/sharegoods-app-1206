@@ -4,6 +4,7 @@ import { GoodsCustomViewGetHeight } from './view/GoodsCustomView';
 import { ImageAdViewGetHeight } from './view/TopicImageAdView';
 import bridge from '../../utils/bridge';
 import ScreenUtils from '../../utils/ScreenUtils';
+import { getSGscm, getSGspm_home, SGscmSource } from '../../utils/OrderTrackUtil';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
@@ -39,8 +40,8 @@ export const homeType = {
     store30: 30,//拼店扩容页面广告
     store31: 31,//百万活动
     paySuccess: 27,//订单支付完成页面广告位
-    signInAD:37,
-    signInBanner:38,
+    signInAD: 37,
+    signInBanner: 38,
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
     custom_goods: 'WIDGET-GOODS',
@@ -65,10 +66,9 @@ export const homeLinkType = {
     classify: 12,      //分类
     nothing: 13,      //无跳转
     page: 14,      //页面路由
-    pinStore: 17,      //拼店
-    showGround: 18,      //秀场
     pinGroup: 19,      //拼团
     limitBuy: 20,      //限时购
+    signPage: 21      // 签到页面
 };
 
 export const homeRoute = {
@@ -86,10 +86,9 @@ export const homeRoute = {
     [homeLinkType.classify]: 'home/search/SearchResultPage',
     [homeLinkType.nothing]: '',  // 不做跳转
     [homeLinkType.page]: '',      // 跳转到页面
-    [homeLinkType.pinStore]: 'spellShop/MyShop_RecruitPage',
-    [homeLinkType.showGround]: 'show/ShowListPage',
     [homeLinkType.pinGroup]: 'HtmlPage',
-    [homeLinkType.limitBuy]: 'HtmlPage'
+    [homeLinkType.limitBuy]: 'HtmlPage',
+    [homeLinkType.signPage]: 'home/signIn/SignInPage'
 };
 
 //埋点
@@ -200,14 +199,23 @@ export function topicAdOnPress(data, item, p, title, orderTrackParams) {
  * @param data
  * @returns {Promise<*[]>}
  */
-export function asyncHandleTopicData(data) {
-    data = data.data.widgets.data || [];
+export function asyncHandleTopicData(data,source,index = 0, itemIndex) {
+    data = data.data || {}
+    let config = data.config || {}
+    let topicCode = config.topicCode;
+    data = data.widgets.data || [];
+
+   let orderTrackParams = getSGscm(SGscmSource.topic, topicCode);
+    if (source){
+        orderTrackParams.sgspm = getSGspm_home(source, index, itemIndex).sgspm;
+    }
 
     data = [...data];
     let p = [];
     let count = data.length;
     for (let index = 0; index < count; index++) {
         let item = data[index];
+        item.orderTrackParams = orderTrackParams;
         if (item.type === homeType.custom_goods) {
             item.itemHeight = GoodsCustomViewGetHeight(item);
             item.marginBottom = ScreenUtils.autoSizeWidth(0);

@@ -61,12 +61,13 @@ export default class HomeSearchView extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         activeOpacity={0.8}
+                        style={{ flexDirection: 'row', alignItems: 'center' }}
                         onPress={() => this._jumpPage(homeModule.douData)}>
                         <Image source={resDou}
                                style={styles.dou}/>
+                        <UIText style={[styles.douText, { color: colorDou }]}
+                                value={(user.isLogin ? user.userScore : '我的') + '秀豆'}/>
                     </TouchableOpacity>
-                    <UIText style={[styles.douText, { color: colorDou }]}
-                            value={(user.isLogin ? user.userScore : '我的') + '秀豆'}/>
                 </View>
             </View>
         );
@@ -95,11 +96,11 @@ let styles = StyleSheet.create({
     dou: {
         height: 30,
         width: 30,
-        marginLeft: 10
+        marginLeft: 5
     },
     douText: {
         fontSize: 14,
-        marginLeft: 5,
+        marginLeft: 3,
         fontWeight: 'bold'
     },
     searchBox: {

@@ -5,7 +5,7 @@
  * @org www.sharegoodsmall.com
  * @email luoyongming@meeruu.com
  */
-import { Alert, Image, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Keyboard, StyleSheet, TouchableOpacity, View, DeviceEventEmitter } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import StringUtils from '../../../../utils/StringUtils';
@@ -114,7 +114,7 @@ export default class AddressEditAndAddPage extends BasePage {
             bridge.$toast('请填写详细地址');
             return;
         }
-        const { refreshing, id, from, callBack } = this.params;
+        const { id, from, callBack } = this.params;
         this.isLoadding = true;
         if (from === 'edit') {
             //编辑地址
@@ -131,7 +131,7 @@ export default class AddressEditAndAddPage extends BasePage {
             }).then((data) => {
                 this.isLoadding = false;
                 bridge.$toast('修改成功');
-                refreshing && refreshing();
+                DeviceEventEmitter.emit('addressRefreshing');
                 data = data.data || {};
                 data.province = this.state.provinceName;
                 data.city = this.state.cityName;
@@ -157,7 +157,7 @@ export default class AddressEditAndAddPage extends BasePage {
             }).then((data) => {
                 this.isLoadding = false;
                 bridge.$toast('添加成功');
-                refreshing && refreshing();
+                DeviceEventEmitter.emit('addressRefreshing');
                 data = data.data || {};
                 data.province = this.state.provinceName;
                 data.city = this.state.cityName;

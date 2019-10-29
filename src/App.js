@@ -258,10 +258,10 @@ class App extends Component {
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
+                {marketingUtils.isShowModal ? <MarketingModal/> : null}
                 {Platform.OS === 'ios' ? <HomeAdModal_IOS/> : null}
                 <UserMemberUpdateModal/>
                 <PrivacyModal/>
-                {marketingUtils.isShowModal ? <MarketingModal/> : null}
             </View>
         );
     }

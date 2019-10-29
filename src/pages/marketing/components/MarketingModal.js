@@ -16,6 +16,10 @@ import marketingUtils from '../MarketingUtils';
 import ModalType from './ModalType';
 import {homeModule} from '../../home/model/Modules';
 import {routePush} from '../../../navigation/RouterMap';
+import user from '../../../model/user';
+import RouterMap from '../../../navigation/RouterMap';
+import homeController from '../controller/HomeController';
+import {TrackApi} from '../../../utils/SensorsTrack';
 
 @observer
 export default class MarketingModal extends PureComponent {
@@ -35,6 +39,35 @@ export default class MarketingModal extends PureComponent {
             <ActivityView
                 source={{uri: currentContent.image}}
                 onPress={()=>{
+                    if(marketingUtils.openInPage === 'home'){
+                        TrackApi.BannerClick({
+                            bannerType: currentContent.linkType,
+                            bannerContent: currentContent.linkTypeCode,
+                            bannerLocation: 14
+                        });
+                    }else if(marketingUtils.openInPage === 'paySuccess'){
+                        TrackApi.BannerClick({
+                            bannerType: currentContent.linkType,
+                            bannerContent: currentContent.linkTypeCode,
+                            bannerLocation: 72
+                        });
+                    }
+
+                    let callback = ()=>{
+                        if(user.isLogin && user.newUser){
+                            const router = homeModule.homeNavigate(currentContent.linkType, currentContent.linkTypeCode);
+                            let params = homeModule.paramsNavigate(currentContent);
+                            routePush(router, params);
+                        }else {
+                            homeController.notifyArrivedHome();
+                        }
+                    }
+                    //检查登录
+                    if(!user.isLogin && marketingUtils.checkUser){
+                        routePush(RouterMap.LoginPage,{callback})
+                        return;
+                    }
+
                     const router = homeModule.homeNavigate(currentContent.linkType, currentContent.linkTypeCode);
                     let params = homeModule.paramsNavigate(currentContent);
                     routePush(router, params);
@@ -43,10 +76,6 @@ export default class MarketingModal extends PureComponent {
                     marketingUtils.closeModal();
                 }}/>
         )
-    }
-
-    _eggRender(){
-        return (<SmashEggView/>)
     }
 
     render() {

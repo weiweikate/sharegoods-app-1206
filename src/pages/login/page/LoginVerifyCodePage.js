@@ -11,7 +11,6 @@ import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import SMSTool from '../../../utils/SMSTool';
 import bridge from '../../../utils/bridge';
 import { memberLogin } from '../model/LoginActionModel';
-import { mediatorCallFunc } from '../../../SGMediator';
 import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
@@ -70,11 +69,10 @@ export default class LoginVerifyCodePage extends BasePage {
 
         memberLogin(loginParams, (data) => {
             this.$loadingDismiss();
+            this.$navigateBack(3);
             if (data.withRegister) {
                 this.$toastShow('注册成功');
                 TrackApi.phoneSignUpSuccess({ 'signUpPhone': this.params.phoneNum });
-                // 新手福利
-                mediatorCallFunc('Home_RequestNoviceGift');
             } else {
                 this.$toastShow('登录成功');
                 TrackApi.codeLoginSuccess();
@@ -82,7 +80,7 @@ export default class LoginVerifyCodePage extends BasePage {
             this.params.callback && this.params.callback();
         }, (code, data) => {
             this.$loadingDismiss();
-        }, 3);
+        });
     };
 
     componentDidMount() {
