@@ -92,6 +92,10 @@ export const getFormatDate = (timestamp, fmt = 'yyyy-MM-dd hh:mm:ss') => {
 };
 
 export const getDateDiff = (endDate) => {
+    if (endDate) {
+        return false;
+    }
+
     let diff = (Date.parse(new Date(endDate)) - Date.parse(new Date())) / 1000;
 
     if (diff <= 0) {
