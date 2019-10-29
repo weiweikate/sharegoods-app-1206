@@ -20,7 +20,6 @@ import {
     ScrollView,
     StyleSheet,
     TouchableOpacity,
-    TouchableWithoutFeedback,
     View,
     Animated, Easing
 } from 'react-native';
@@ -34,7 +33,7 @@ import taskModel, { mineTaskModel } from '../model/TaskModel';
 import TaskModalView from './TaskModalView';
 // import { IntervalMsgNavigate } from '../../../comm/components/IntervalMsgView';
 import ImageLoader from '@mr/image-placeholder';
-import { routePush } from '../../../navigation/RouterMap';
+// import { routePush } from '../../../navigation/RouterMap';
 
 const BoxStatusClose = 0;
 const BoxStatusCanOpen = 1;
@@ -65,7 +64,7 @@ const {
     inform,
     defaultImage
 } = res.task;
-const KTime = new Date().getTime();
+// const KTime = new Date().getTime();
 
 
 // type	string
@@ -508,26 +507,12 @@ export default class TaskView extends React.Component {
                     width: ScreenUtils.width
                 }, this.props.style]}>
                     <View style={{
-                        width: ScreenUtils.width,
-                        paddingHorizontal: 15
-                    }}>
-                        {this.renderTitle(type)}
-                    </View>
-                    <TouchableWithoutFeedback onPress={() => {
-                        routePush('HtmlPage', { uri: '/custom/ZDYZT201910150142381' });
-                    }}>
-                        <View>
-                            <ImageLoader style={{ height: ScreenUtils.autoSizeWidth(120), width: ScreenUtils.width }}
-                                         source={{ uri: ('https://mr-prod-sg.oss-cn-hangzhou.aliyuncs.com/app/10_01_28__08_23_2019.jpg?ts=' + KTime) }}
-                            />
-                        </View>
-                    </TouchableWithoutFeedback>
-                    <View style={{
                         backgroundColor: 'white', borderRadius: 8,
                         overflow: 'hidden',
                         marginTop: 10,
                         marginHorizontal: 15
                     }}>
+                        {this.renderTitle(type)}
                         {this.renderTaskView()}
                     </View>
                     <TaskModalView type={type}/>
@@ -581,6 +566,7 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.mainColor,
         width: px2dp(2),
         height: px2dp(8),
-        borderRadius: px2dp(1)
+        borderRadius: px2dp(1),
+        marginLeft: px2dp(5)
     }
 });
