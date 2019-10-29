@@ -44,8 +44,8 @@ export default function ActivityView(props) {
 
 const styles = StyleSheet.create({
     contain: {
-        width: px2dp(235),
-        height: px2dp(290),
+        width: px2dp(260),
+        height: px2dp(310),
         borderRadius: px2dp(5)
     },
     closeWrapper: {
