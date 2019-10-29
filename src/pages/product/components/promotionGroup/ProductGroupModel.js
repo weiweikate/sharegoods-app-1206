@@ -7,7 +7,13 @@
  */
 import ProductApi from '../../api/ProductApi';
 import { observable, computed } from 'mobx';
+import { Alert } from 'react-native';
 import StringUtils from '../../../../utils/StringUtils';
+import bridge from '../../../../utils/bridge';
+import { backToHome, routeNavigate, routePush } from '../../../../navigation/RouterMap';
+import RouterMap from '../../../../navigation/RouterMap';
+import apiEnvironment from '../../../../api/ApiEnvironment';
+import user from '../../../../model/user';
 
 export const navCode = [
     {
@@ -33,6 +39,86 @@ export const navCode = [
         code: [220207, 220208]
     }
 ];
+
+export const checkGroup = ({ itemData, goToBuy, requestGroupPerson }) => {
+    if (!user.isLogin) {
+        routeNavigate(RouterMap.LoginPage);
+        return;
+    }
+    const { activityTag, activityCode, id } = itemData || {};
+    bridge.showLoading();
+    ProductApi.checkGroupCanJoin({ groupId: id, activityCode }).then((data) => {
+        bridge.hiddenLoading();
+        const { canJoinGroup, queueNum } = data.data || {};
+        if (!id) {
+            goToBuy && goToBuy(null);
+            return;
+        }
+        if (!canJoinGroup) {
+            bridge.$toast(`目前有${queueNum}人排队支付中，暂无法操作〜`);
+            return;
+        }
+        if (activityTag === 101106 && user.newUser !== null && !user.newUser) {
+            setTimeout(() => {
+                Alert.alert(
+                    '无法参团',
+                    '该团仅支持新用户参加，可以开个新团，立享优惠哦~',
+                    [
+                        {
+                            text: '知道了', onPress: () => {
+                            }
+                        },
+                        {
+                            text: '开新团', onPress: () => {
+                                goToBuy && goToBuy(null);
+                            }
+                        }
+                    ]
+                );
+            }, 500);
+            return;
+        }
+        requestGroupPerson && requestGroupPerson({ groupId: id });
+    }).catch(e => {
+        bridge.hiddenLoading();
+        let nav;
+        for (const codeItem of navCode) {
+            if (codeItem.code.indexOf(e.code) !== -1) {
+                nav = codeItem;
+                break;
+            }
+        }
+        if (nav) {
+            setTimeout(() => {
+                Alert.alert(
+                    '',
+                    e.msg,
+                    [
+                        {
+                            text: '知道了', onPress: () => {
+                            }
+                        },
+                        {
+                            text: nav.text, onPress: () => {
+                                if (nav.index === 0) {
+                                    goToBuy && goToBuy(null);
+                                } else if (nav.index === 2) {
+                                    routePush(RouterMap.HtmlPage, {
+                                        uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyHot`
+                                    });
+                                } else if (nav.index === 3) {
+                                    backToHome();
+                                }
+                            }
+                        }
+                    ]
+                );
+            }, 500);
+        } else {
+            bridge.$toast(e.msg);
+        }
+    });
+};
 
 export default class ProductGroupModel {
 
