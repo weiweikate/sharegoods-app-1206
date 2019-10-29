@@ -12,7 +12,7 @@ import UserModel from '../../../model/user';
 import { login, TrackApi } from '../../../utils/SensorsTrack';
 import JPushUtils from '../../../utils/JPushUtils';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
-import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
+import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import homeController from '../../marketing/controller/HomeController';
 
@@ -122,7 +122,7 @@ const handleLoginData = (params, data, code, successCallBack, failCallBack) => {
             // 前往绑定手机号
             failCallBack && failCallBack(code, data);
             bridge.$toast('请绑定手机号');
-            routeNavigate(RouterMap.PhoneLoginPage, {
+            replaceRoute(RouterMap.PhoneLoginPage, {
                 needBottom: false,
                 weChatCode: data.wechatCode || params.weChatCode
             });

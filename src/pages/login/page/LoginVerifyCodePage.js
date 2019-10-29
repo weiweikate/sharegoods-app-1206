@@ -69,7 +69,7 @@ export default class LoginVerifyCodePage extends BasePage {
 
         memberLogin(loginParams, (data) => {
             this.$loadingDismiss();
-            this.$navigateBack(3);
+            this.$navigateBack(2);
             if (data.withRegister) {
                 this.$toastShow('注册成功');
                 TrackApi.phoneSignUpSuccess({ 'signUpPhone': this.params.phoneNum });
