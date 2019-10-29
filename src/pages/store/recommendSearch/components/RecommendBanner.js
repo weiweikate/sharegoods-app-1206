@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MRBannerView from '../../../../components/ui/bannerView/MRBannerView';
 import DesignRule from '../../../../constants/DesignRule';
 import { bannerModule } from '../PinShopBannerModel';
 import { observer } from 'mobx-react';
-import res from '../../res';
 
-const HeaderBarBgImg = res.myShop.txbg_02;
 const { px2dp } = ScreenUtils;
 
 @observer
@@ -56,8 +54,6 @@ export class RecommendBanner extends Component {
 
         return (
             <View>
-                <Image source={HeaderBarBgImg}
-                       style={[styles.imgBg]}/>
                 <MRBannerView style={styles.bannerView}
                               interceptTouchEvent={true}//android端起作用，是否拦截touch事件
                               itemWidth={px2dp(345) + 0.5}
@@ -76,14 +72,9 @@ export class RecommendBanner extends Component {
 }
 
 const styles = StyleSheet.create({
-    imgBg: {
-        position: 'absolute',
-        left: 0, top: 0,
-        width: ScreenUtils.width, height: px2dp(210)
-    },
     bannerView: {
         height: px2dp(345) * 460 / 750, width: px2dp(345) + 0.5, borderRadius: 5, overflow: 'hidden',
-        alignSelf: 'center', marginTop: ScreenUtils.headerHeight
+        alignSelf: 'center'
     },
 
     indexView: {

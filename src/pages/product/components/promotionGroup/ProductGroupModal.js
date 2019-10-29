@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, ScrollView, Alert } from 'react-native';
+import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
@@ -21,11 +21,6 @@ import StringUtils from '../../../../utils/StringUtils';
 import { observer } from 'mobx-react';
 import whoAreYou from './whoAreYou.png';
 import morePerson from './morePerson.png';
-import user from '../../../../model/user';
-import { routeNavigate } from '../../../../navigation/RouterMap';
-import RouterMap from '../../../../navigation/RouterMap';
-import ProductApi from '../../api/ProductApi';
-import bridge from '../../../../utils/bridge';
 
 const { px2dp } = ScreenUtils;
 
@@ -171,47 +166,10 @@ export class GroupJoinView extends Component {
     };
 
     checkGroup = () => {
+        this._close();
         const { itemData } = this.state;
-        const { activityTag } = itemData || {};
         const { goToBuy } = this.props;
-        bridge.showLoading();
-        ProductApi.checkGroupCanJoin({ groupId: itemData.id }).then((data) => {
-            bridge.hiddenLoading();
-            const { canJoinGroup, queueNum } = data.data || {};
-            if (!canJoinGroup) {
-                bridge.$toast(`目前有${queueNum}人排队支付中，暂无法操作〜`);
-                return;
-            }
-            this._close();
-            if (!user.isLogin) {
-                routeNavigate(RouterMap.LoginPage);
-                return;
-            }
-            if (activityTag === 101106 && user.newUser !== null && !user.newUser) {
-                setTimeout(() => {
-                    Alert.alert(
-                        '无法参团',
-                        '该团仅支持新用户参加，可以开个新团，立享优惠哦~',
-                        [
-                            {
-                                text: '知道了', onPress: () => {
-                                }
-                            },
-                            {
-                                text: '开新团', onPress: () => {
-                                    goToBuy && goToBuy(null);
-                                }
-                            }
-                        ]
-                    );
-                }, 500);
-                return;
-            }
-            goToBuy && goToBuy(itemData);
-        }).catch(e => {
-            bridge.hiddenLoading();
-            bridge.$toast(e.msg);
-        });
+        goToBuy && goToBuy(itemData);
     };
 
     render() {
