@@ -6,7 +6,6 @@ import DesignRule from '../../../constants/DesignRule';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
-
 const { px2dp } = ScreenUtils;
 
 @observer

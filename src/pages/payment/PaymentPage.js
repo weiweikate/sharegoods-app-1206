@@ -231,20 +231,27 @@ export default class PaymentPage extends BasePage {
                 }
 
             </View>
-            <TouchableWithoutFeedback disabled={availableBalance <= 0}
-                                      onPress={() => this._selectedBalance()}>
-                <View style={styles.balanceContent}>
-                    <Image style={styles.iconBalance} source={res.balance}/>
-                    <Text style={styles.text}>现金账户</Text>
-                    <View style={{ flex: 1 }}/>
-                    <Text style={styles.name}>可用金额: {availableBalance}元</Text>
-                    <Image style={styles.iconCheck} source={selectedBalace ? res.check : res.uncheck}/>
+            <View style={{
+                marginTop: px2dp(10), marginLeft: px2dp(15), marginRight: px2dp(15),
+                paddingRight: px2dp(10), paddingLeft: px2dp(10), borderRadius: 5, backgroundColor: 'white'
+            }}>
+                <TouchableWithoutFeedback disabled={availableBalance <= 0}
+                                          onPress={() => this._selectedBalance()}>
+                    <View style={styles.balanceContent}>
+                        <Image style={styles.iconBalance} source={res.balance}/>
+                        <Text style={styles.text}>现金账户</Text>
+                        <View style={{ flex: 1 }}/>
+                        <Text style={styles.name}>可用金额: {availableBalance}元</Text>
+                        <Image style={styles.iconCheck} source={selectedBalace ? res.check : res.uncheck}/>
+                    </View>
+                </TouchableWithoutFeedback>
+                <View style={styles.line}/>
+                <View style={styles.needView}>
+                    <Text style={styles.need}>三方需付金额</Text>
+                    <Text style={styles.amount}>￥{channelAmount}</Text>
                 </View>
-            </TouchableWithoutFeedback>
-            <View style={styles.needView}>
-                <Text style={styles.need}>三方需付金额</Text>
-                <Text style={styles.amount}>￥{channelAmount}</Text>
             </View>
+            <View style={{ flex: 1 }}/>
             <TouchableWithoutFeedback onPress={() => {
                 this.goToPay();
             }}>
@@ -286,14 +293,7 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     balanceContent: {
-        marginTop: px2dp(10),
-        marginLeft: px2dp(15),
-        marginRight: px2dp(15),
-        paddingRight: px2dp(10),
-        paddingLeft: px2dp(10),
         height: px2dp(50),
-        backgroundColor: whiteBg,
-        borderRadius: 5,
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -342,8 +342,7 @@ const styles = StyleSheet.create({
         fontWeight: '400'
     },
     needView: {
-        flex: 1,
-        alignItems: 'center'
+        alignItems: 'center', marginBottom: 20
     },
     payBtn: {
         backgroundColor: buttonBg,

@@ -473,7 +473,6 @@ export default class HomeNormalList extends React.Component {
     handleData(data) {
         let arr = [];
         let temp = [];
-
         data.forEach((item) => {
             if (temp.length === 2) {
                 arr.push({ type: 'goods', data: temp });
@@ -483,7 +482,7 @@ export default class HomeNormalList extends React.Component {
 
         });
         if (temp.length > 0) {
-            arr.push(temp);
+            arr.push({ type: 'goods', data: temp });
         }
         return arr;
     }
@@ -493,7 +492,7 @@ export default class HomeNormalList extends React.Component {
             return this.goods;
         }
         let arr = [...this.goods];
-        let temp = arr.pop();
+        let temp = [];
         data.forEach((item) => {
             if (temp.length === 2) {
                 arr.push({ type: 'goods', data: temp });
