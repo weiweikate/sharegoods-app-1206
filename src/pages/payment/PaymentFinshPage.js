@@ -191,7 +191,7 @@ export default class PaymentFinshPage extends BasePage {
                 {/*分享三张券*/}
                 {this.state.showShareView ? this._renderShareView() : null}
                 {/*广告位*/}
-                <BannersVerticalView bannerList={this.state.bannerList}/>
+                <BannersVerticalView bannerList={this.state.bannerList} bannerLocation={71}/>
                 {/*推荐*/}
                 <RecommendProductView recommendScene={2}/>
                 {/*弹窗*/}
