@@ -28,7 +28,6 @@ import { DefaultLoadMoreComponent } from '../../../../comm/components/RefreshFla
 import { observer } from 'mobx-react';
 import { tabModel } from '../../model/HomeTabModel';
 import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
-import { getSGscm, getSGspm_home, HomeSource, SGscmSource } from '../../../../utils/OrderTrackUtil';
 import DesignRule from '../../../../constants/DesignRule';
 
 @observer
@@ -73,8 +72,6 @@ export default class DIYTopicList extends React.Component {
 
     _renderItem = (type, item, index) => {
         type = type.type;
-        item.sgscm = getSGscm(SGscmSource.topic, this.code).sgscm;
-        item.sgspm = getSGspm_home(HomeSource.marketing, index).sgspm;
         let p = { specialTopicId: this.props.data.linkCode };
         if (type === homeType.custom_text) {
             p.specialTopicArea = 6;

@@ -7,6 +7,7 @@ import { differenceInCalendarDays, format } from 'date-fns';
 import bridge from '../../../utils/bridge';
 import StringUtils from '../../../utils/StringUtils';
 import { getSize } from '../../../utils/OssHelper';
+import { HomeSource } from '../../../utils/OrderTrackUtil';
 
 const { px2dp } = ScreenUtils;
 
@@ -187,17 +188,18 @@ export class LimitGoModules {
 
     _handleData(data) {
         let promises = [];
-        data.forEach((sbuData) => {
+        data.forEach((sbuData, i) => {
             (sbuData.productDetailList || []).forEach((item, index) => {
                 //处理自定义专题
                 if (item.specialSubject) {
-                    promises.push(asyncHandleTopicData({ data: item.specialSubject }).then((data) => {
+                    promises.push(asyncHandleTopicData({ data: item.specialSubject},HomeSource.limitGo,i, index).then((data) => {
                         //将处理完的数组插回原来的数组，替代原来老自定义专题数据
                         sbuData.productDetailList.splice(sbuData.productDetailList.indexOf(item), 1, ...data);
                     }));
                     //处理限时购商品数据
                 } else if (!item.type) {
                     item.type = homeType.limitGoGoods;
+                    item.index = index;
                     //第一个marginTop为0,其余都为10
                     item.itemHeight = (index === 0 ? px2dp(130) : px2dp(140));
                     item.marginTop = (index === 0 ? px2dp(0) : px2dp(10));

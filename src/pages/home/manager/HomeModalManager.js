@@ -9,7 +9,7 @@ import { action, observable, flow ,computed} from 'mobx';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import MineApi from '../../mine/api/MineApi';
 import HomeAPI from '../api/HomeAPI';
-import { homeLinkType, homeType } from '../HomeTypes';
+import { homeType } from '../HomeTypes';
 import store from '@mr/rn-store';
 import MessageApi from '../../message/api/MessageApi';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
@@ -47,13 +47,6 @@ class HomeModalManager {
     needShowAd = false;
     @observable
     AdData = null;
-
-    /** 控制首页新手礼包*/
-    @observable
-    isShowGift = false;
-    needShowGift = false;
-    @observable
-    giftData = null;
 
     /** 控制首页中奖*/
     @observable
@@ -124,9 +117,6 @@ class HomeModalManager {
         } else if (this.needShowAd === true) {
             this.isShowAd = true;
             track(trackEvent.HomePagePopShow, {homePagePopType: 7});
-        } else if (this.needShowGift === true) {
-            this.isShowGift = true;
-            track(trackEvent.HomePagePopShow, {homePagePopType: 4});
         } else if (this.needShowPrize === true) {
             this.isShowPrize = true;
             track(trackEvent.HomePagePopShow, {homePagePopType: 6});
@@ -211,17 +201,6 @@ class HomeModalManager {
         this.isShowPrize = false;
         this.needShowPrize = false;
         this.prizeData = null;
-        this.openNext();
-    }
-
-    @action
-    closeGift(open) {
-        if (open){
-            track(trackEvent.HomePagePopBtnClick, {homePagePopType: 4, homePagePopImgURL:  this.giftData.image});
-        }
-        this.isShowGift = false;
-        this.needShowGift = false;
-        this.giftData = null;
         this.openNext();
     }
 
@@ -357,20 +336,6 @@ class HomeModalManager {
 
         }).catch(() => {
 
-        });
-    }
-
-
-    @action
-    getGift() {
-        HomeAPI.getPopupBox({ popupBoxType: 1 }).then(data => {
-            if (data.data) {
-                let item = data.data;
-                this.needShowGift = true;
-                this.giftData = { image: item.imgUrl, linkTypeCode: item.linkTypeCode, linkType: homeLinkType.link };
-            }
-            this.openNext();
-        }).catch(() => {
         });
     }
 

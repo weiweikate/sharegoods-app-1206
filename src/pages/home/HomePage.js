@@ -10,7 +10,7 @@ import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 import { homeTabManager } from './manager/HomeTabManager';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModalView, { GiftModal, HomeAdModal } from './view/HomeMessageModalView';
+import HomeMessageModalView, { HomeAdModal } from './view/HomeMessageModalView';
 import { limitGoModule } from './model/HomeLimitGoModel';
 import PraiseModel from './view/PraiseModel';
 import ScrollableTabView from '@mr/react-native-scrollable-tab-view';
@@ -241,7 +241,6 @@ class HomePage extends BasePage {
                            isHome={true}
                 />
                 <PraiseModel/>
-                <GiftModal/>
                 <UserLevelModalView/>
                 <IntervalMsgView pageType={IntervalType.home}/>
                 {Platform.OS !== 'ios' ? <HomeAdModal/> : null}

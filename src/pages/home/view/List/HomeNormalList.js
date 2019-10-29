@@ -30,7 +30,6 @@ import res from '../../res';
 import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
 import { observer } from 'mobx-react';
 import { tabModel } from '../../model/HomeTabModel';
-import { getSGscm, getSGspm_home, HomeSource, SGscmSource } from '../../../../utils/OrderTrackUtil';
 import { asyncHandleTopicData, homeType } from '../../HomeTypes';
 import { TopicImageAdView } from '../TopicImageAdView';
 import GoodsCustomView from '../GoodsCustomView';
@@ -194,20 +193,20 @@ class HeaderView extends React.PureComponent {
             }}>
                 <TouchableWithoutFeedback onPress={() => this.onPress(0)}>
                     <MRText style={{
-                        fontSize: autoSizeWidth(15),
+                        fontSize: autoSizeWidth(13),
                         color: index === 0 ? DesignRule.mainColor : DesignRule.textColor_instruction
                     }}>综合</MRText>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => this.onPress(1)}>
                     <MRText style={{
-                        fontSize: autoSizeWidth(15),
+                        fontSize: autoSizeWidth(13),
                         color: index === 1 ? DesignRule.mainColor : DesignRule.textColor_instruction
                     }}>销量</MRText>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => this.onPress(this.state.index === 2 ? 3 : 2)}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <MRText style={{
-                            fontSize: autoSizeWidth(15),
+                            fontSize: autoSizeWidth(13),
                             color: (index === 2 || index === 3) ? DesignRule.mainColor : DesignRule.textColor_instruction
                         }}>价格</MRText>
                         <View style={{ marginLeft: 2 }}>
@@ -363,9 +362,7 @@ export default class HomeNormalList extends React.Component {
 
     _renderItem = (type, item, index) => {
         type = type.type;
-        item.sgscm = getSGscm(SGscmSource.topic, this.code).sgscm;
-        item.sgspm = getSGspm_home(HomeSource.marketing, index).sgspm;
-        let p = { firstCategoryId: this.props.data.firstCategoryId, navName: this.props.data.navName };
+        let p = { firstCategoryId: this.props.data.categoryIds, navName: this.props.data.navName };
         let topic = { specialTopicId: this.props.data.linkCode };
         if (type === 'icon') {
             return <IconView data={item.data} p={p}/>;
@@ -396,7 +393,7 @@ export default class HomeNormalList extends React.Component {
         return {
             page: this.page,
             pageSize: 10,
-            categoryId: data.firstCategoryId,
+            categoryId: data.categoryIds,
             sort: this.sort
         };
     }
