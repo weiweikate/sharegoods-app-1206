@@ -168,7 +168,7 @@ export default class UserInformationPage extends BasePage {
                 }}/>
                 <UserSingleItem leftText={'手机号'} rightText={user.phone} rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={true}/>
-                <UserSingleItem leftText={'微信号'} rightText={user.weChatNumber ? user.weChatNumber : '设置微信号'}
+                <UserSingleItem leftText={'微信号'} rightText={user.weChatNumber ? user.weChatNumber : '去设置'}
                                 rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isLine={false} isArrow={true}
                                 onPress={() => this.jumpToSetWechatPage()}/>
@@ -182,9 +182,11 @@ export default class UserInformationPage extends BasePage {
                                 }}/>
                 <UserSingleItem leftText={'生日'} rightText={user.birthday || '去设置'}
                                 rightTextStyle={styles.grayText}
-                                leftTextStyle={styles.blackText} isLine={false} isArrow={true}
+                                leftTextStyle={styles.blackText} isLine={false} isArrow={user.birthday ? false : true}
                                 onPress={() => {
-                                    this.setUserBirthday()
+                                    if(!user.birthday){
+                                        this.setUserBirthday()
+                                    }
                                 }}/>
 
                 {this.renderWideLine()}
@@ -205,7 +207,7 @@ export default class UserInformationPage extends BasePage {
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'简介'}
                                 itemHeightStyle={{ backgroundColor: 'white', paddingVertical: 12 }}
-                                rightText={user.profile ? user.profile : '未填写'}
+                                rightText={user.profile ? user.profile : '去填写'}
                                 rightTextStyle={[styles.grayText, {
                                     maxWidth: ScreenUtils.width / 5 * 3,
                                     numberOfLines: 2
