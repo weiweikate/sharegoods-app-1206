@@ -33,7 +33,7 @@ ext {
             sensors      : 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.0.4',
             okhttp       : 'com.squareup.okhttp3:okhttp:3.12.1',
             exifinterface: 'androidx.exifinterface:exifinterface:+',
-            lottie       : 'com.airbnb.android:lottie:3.0.1',
+            lottie       : 'com.airbnb.android:lottie:3.1.0',
             // 如果你需要支持WebP格式，包括WebP动图
             webpAnimated : 'com.facebook.fresco:animated-webp:2.0.0',
             webp         : 'com.facebook.fresco:webpsupport:2.0.0',

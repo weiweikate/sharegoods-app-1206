@@ -57,7 +57,7 @@ public class ShowRefreshHeader extends LinearLayout implements com.scwang.smartr
     public void onMoving(boolean isDragging, float percent, int offset, int height, int maxDragHeight) {
         int y = DensityUtils.px2dip(offset);
         if (newState == RefreshState.PullDownToRefresh) {
-            if (y > DensityUtils.dip2px(90)) {
+            if (y > DensityUtils.dip2px(100)) {
                 setProgress(0.1f);
             } else {
                 setProgress(y / 1000f);
@@ -111,7 +111,7 @@ public class ShowRefreshHeader extends LinearLayout implements com.scwang.smartr
     private void initView(Context context) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.view_refresh_header, this);
-        lottieAnimationView = (LottieAnimationView) view.findViewById(R.id.lottie_view);
+        lottieAnimationView = view.findViewById(R.id.lottie_view);
         stateText = view.findViewById(R.id.refresh_text);
         stateText.setText(PULLDOWN);
     }
