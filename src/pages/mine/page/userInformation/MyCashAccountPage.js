@@ -260,7 +260,7 @@ export default class MyCashAccountPage extends BasePage {
                 <View style={[styles.headerViewStyle, {height: returnCashSwitchState ? px2dp(206) : px2dp(174),}]}>
                     <View style={styles.withdrawWrapper}>
                         <Text style={styles.countTextStyle}>
-                            账户余额
+                            账户积分
                         </Text>
                         <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>
                             <Text
@@ -296,14 +296,14 @@ export default class MyCashAccountPage extends BasePage {
                                     this.$navigate(RouterMap.ReturnCashRulePage) : this.$navigate(RouterMap.ReturnCashAccountPage)
                             }}>
                             {status === NO_CASH_NO_SUPMEMBER ?
-                                <Text style={styles.returnCashTextStyle}>您还没有自返金，快去获取</Text> : null}
+                                <Text style={styles.returnCashTextStyle}>您还没有自返积分，快去获取</Text> : null}
                             {status === HAVE_CASH_NO_SUPMEMBER ?
                                 <Text style={styles.returnCashTextStyle}>
-                                    您有<Text style={{fontSize: 16, color: '#FF0050'}}>{StringUtils.formatMoneyString(returnCash, false)}</Text>自返金可转到余额
+                                    您有<Text style={{fontSize: 16, color: '#FF0050'}}>{StringUtils.formatMoneyString(returnCash, false)}</Text>自返积分可转到个人账户
                                 </Text> : null}
                             {status === HAVE_CASH_HAVE_SUPMEMBER ?
                                 <Text style={styles.returnCashTextStyle}>
-                                    累计已有{StringUtils.formatMoneyString(returnCash, false)}自返金转到余额</Text>
+                                    累计已有{StringUtils.formatMoneyString(returnCash, false)}自返积分转到个人账户</Text>
                                 : null}
 
                             {status === NO_CASH_NO_SUPMEMBER ?
@@ -346,7 +346,7 @@ export default class MyCashAccountPage extends BasePage {
                         fontSize: px2dp(17),
                         includeFontPadding: false
                     }}>
-                        {this.state.changeHeader ? '账户余额' : ''}
+                        {this.state.changeHeader ? '个人账户' : ''}
                     </Text>
 
                     <TouchableWithoutFeedback onPress={() => {
