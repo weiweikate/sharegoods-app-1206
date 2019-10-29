@@ -43,6 +43,7 @@ export default class SuitProductModel {
     @observable suitProducts = [];
 
     @observable promotionInfoItem = {};
+    @observable promotionInfoItems = [];
 
     /*被选中的商品*/
     @computed get selectedProductSkuS() {
@@ -208,6 +209,7 @@ export default class SuitProductModel {
             prodCode, activityCode, groupCode
         }).then((data) => {
             const dataList = data.data || [];
+            this.promotionInfoItems = dataList;
             this.promotionInfoItem = dataList[0] || {};
         });
     };

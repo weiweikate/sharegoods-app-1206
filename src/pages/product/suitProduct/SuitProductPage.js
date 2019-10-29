@@ -19,7 +19,7 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import { trackEvent } from '../../../utils/SensorsTrack';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import SelectionPage from '../SelectionPage';
-import { ProductDetailSuitModel, suitType } from '../components/ProductDetailSuitView';
+import { ProductDetailSuitModel } from '../components/ProductDetailSuitView';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 
 const { share } = res.pDetailNav;
@@ -79,11 +79,9 @@ export default class SuitProductPage extends BasePage {
             this.suitProductModel.setProductArr(this.productDetailSuitModel, packageIndex);
             this.suitProductModel.loadingState = PageLoadingState.success;
 
-            const { activityCode, extraType, packageItem } = this.suitProductModel;
+            const { activityCode, packageItem } = this.suitProductModel;
             const { groupCode } = packageItem;
-            if (extraType === suitType.fixedSuit) {
-                this.suitProductModel.promotionInfo(productCode, activityCode, groupCode);
-            }
+            this.suitProductModel.promotionInfo(productCode, activityCode, groupCode);
         }).catch((e) => {
             this.suitProductModel.loadingState = PageLoadingState.fail;
             this.suitProductModel.netFailedInfo = e;
@@ -133,12 +131,12 @@ export default class SuitProductPage extends BasePage {
             }
         }
 
-        const { promotionInfoItem } = this.suitProductModel;
-        const activityList = [{ activityCode }, {
-            activityTag: promotionInfoItem.activityTag,
-            promotionId: promotionInfoItem.promotionId,
-            activityCode: promotionInfoItem.activityCode
-        }];
+        const { promotionInfoItems } = this.suitProductModel;
+        const activityList1 = promotionInfoItems.map((item) => {
+            const { activityTag, promotionId, activityCode } = item;
+            return { activityTag, promotionId, activityCode };
+        });
+        const activityList = [{ activityCode }, ...activityList1];
         let orderProductList = selectedProductSkuS.map((item) => {
             const { prodCode, skuCode } = item;
             return {
