@@ -318,7 +318,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         <MRText style={{
                             color: DesignRule.textColor_mainTitle,
                             fontSize: DesignRule.fontSize_threeTitle_28,
-                            marginLeft: ScreenUtils.autoSizeWidth(15)
+                            marginLeft: ScreenUtils.autoSizeWidth(10)
                         }}>{'充值号码:' + orderDetailModel.receiveInfo.receiverPhone}</MRText>
                     </View> : null
                 }
