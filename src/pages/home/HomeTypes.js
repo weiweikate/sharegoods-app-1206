@@ -4,6 +4,7 @@ import { GoodsCustomViewGetHeight } from './view/GoodsCustomView';
 import { ImageAdViewGetHeight } from './view/TopicImageAdView';
 import bridge from '../../utils/bridge';
 import ScreenUtils from '../../utils/ScreenUtils';
+import { getSGscm, getSGspm_home, SGscmSource } from '../../utils/OrderTrackUtil';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
@@ -198,14 +199,23 @@ export function topicAdOnPress(data, item, p, title, orderTrackParams) {
  * @param data
  * @returns {Promise<*[]>}
  */
-export function asyncHandleTopicData(data) {
-    data = data.data.widgets.data || [];
+export function asyncHandleTopicData(data,source,index = 0, itemIndex) {
+    data = data.data || {}
+    let config = data.config || {}
+    let topicCode = config.topicCode;
+    data = data.widgets.data || [];
+
+   let orderTrackParams = getSGscm(SGscmSource.topic, topicCode);
+    if (source){
+        orderTrackParams.sgspm = getSGspm_home(source, index, itemIndex).sgspm;
+    }
 
     data = [...data];
     let p = [];
     let count = data.length;
     for (let index = 0; index < count; index++) {
         let item = data[index];
+        item.orderTrackParams = orderTrackParams;
         if (item.type === homeType.custom_goods) {
             item.itemHeight = GoodsCustomViewGetHeight(item);
             item.marginBottom = ScreenUtils.autoSizeWidth(0);

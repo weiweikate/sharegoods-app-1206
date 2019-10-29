@@ -50,6 +50,7 @@ import {
     GroupShowAlertView
 } from './components/promotionGroup/ProductGroupView';
 import StringUtils from '../../utils/StringUtils';
+import { checkGroup } from './components/promotionGroup/ProductGroupModel';
 
 /**
  * @author chenyangjun
@@ -120,7 +121,7 @@ export default class ProductDetailPage extends BasePage {
     //去购物车
     _bottomViewAction = (type) => {
         const { productIsPromotionPrice, isHuaFei, isPinGroupIn, singleActivity, productDetailBtnClick } = this.productDetailModel;
-        const { groupNum } = singleActivity || {};
+        const { code } = singleActivity || {};
         switch (type) {
             case 'keFu':
                 if (!user.isLogin) {
@@ -151,6 +152,7 @@ export default class ProductDetailPage extends BasePage {
                 break;
             case 'buy':
             case 'pinGroup':
+                this.state.goType = type;
                 if (!user.isLogin) {
                     this.gotoLoginPage();
                     return;
@@ -162,15 +164,16 @@ export default class ProductDetailPage extends BasePage {
                     });
                     return;
                 }
-                this.state.goType = type;
-                this.groupItem = null;
                 //productIsPromotionPrice  拼团需要注意 点击单独购买走普通逻辑
-                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
-                    isOnlyBuyOne: type === 'pinGroup',
-                    productIsPromotionPrice: productIsPromotionPrice || type === 'pinGroup',
-                    isAreaSku: this.productDetailModel.type !== 3,
-                    priceDesc: isPinGroupIn ? (type === 'pinGroup' ? `${groupNum}人拼团价` : '单人购买价') : ''
-                });
+                if (type === 'pinGroup') {
+                    checkGroup({ goToBuy: this._goToBuy, itemData: { activityCode: code } });
+                } else {
+                    this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                        productIsPromotionPrice: productIsPromotionPrice,
+                        isAreaSku: this.productDetailModel.type !== 3,
+                        priceDesc: isPinGroupIn ? '单人购买价' : ''
+                    });
+                }
                 isPinGroupIn && productDetailBtnClick && productDetailBtnClick(type === 'pinGroup' ? '开团' : '单买');
                 break;
             case 'jlj'://分享秀一秀
@@ -315,6 +318,19 @@ export default class ProductDetailPage extends BasePage {
         }
     };
 
+    _goToBuy = (item) => {
+        const { singleActivity } = this.productDetailModel;
+        const { groupNum } = singleActivity || {};
+        this.state.goType = 'pinGroup';
+        this.groupItem = item;
+        this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+            productIsPromotionPrice: true,
+            isOnlyBuyOne: true,
+            isAreaSku: this.productDetailModel.type !== 3,
+            priceDesc: `${groupNum}人拼团价`
+        });
+    };
+
     _renderSectionHeader = ({ section: { key } }) => {
         switch (key) {
             case sectionType.sectionHeader:
@@ -396,16 +412,7 @@ export default class ProductDetailPage extends BasePage {
                 const { groupNum } = singleActivity || {};
                 return <GroupOpenPersonSView productDetailModel={this.productDetailModel}
                                              productGroupModel={productGroupModel} groupNum={groupNum}
-                                             goToBuy={(item) => {
-                                                 this.state.goType = 'pinGroup';
-                                                 this.groupItem = item;
-                                                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
-                                                     productIsPromotionPrice: true,
-                                                     isOnlyBuyOne: true,
-                                                     isAreaSku: this.productDetailModel.type !== 3,
-                                                     priceDesc: `${groupNum}人拼团价`
-                                                 });
-                                             }}/>;
+                                             goToBuy={this._goToBuy}/>;
             }
             case productItemType.groupProductList: {
                 return <GroupProductListView productGroupModel={productGroupModel}

@@ -226,8 +226,7 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
 }
 
 let HomeAdModal = observer(AdViewBindModal(HomeModalManager));
-let GiftModal = observer(AdViewBindModal(HomeModalManager, 'giftData', 'isShowGift', 'closeGift'));
-export { HomeAdModal, AdViewBindModal, GiftModal };
+export { HomeAdModal, AdViewBindModal };
 
 @observer
 export class HomeAdModal_IOS extends React.Component {

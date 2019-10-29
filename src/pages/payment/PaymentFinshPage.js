@@ -75,9 +75,6 @@ export default class PaymentFinshPage extends BasePage {
 
             groupShareData: {}
         };
-        //orderPayResultPageType 有券无劵
-        TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
-        //
         setTimeout(() => {
             bridge.$checkIsCanComment();
         }, 2000);
@@ -86,6 +83,12 @@ export default class PaymentFinshPage extends BasePage {
     componentDidMount() {
         PaymentApi.queryOrderGroupData({ platformOrderNo: this.params.platformOrderNo }).then((data) => {
             const { group, endTime } = data.data || {};
+            TrackApi.orderPayResultPage({
+                isPaySuccess: true,
+                orderPayType: 2,
+                orderPayResultPageType: 0,
+                orderResultPageType: group ? 2 : 1
+            });
             if (group) {
                 if (!this.didFocusSubscription) {
                     this.didFocusSubscription = this.props.navigation.addListener(
@@ -188,7 +191,7 @@ export default class PaymentFinshPage extends BasePage {
                 {/*分享三张券*/}
                 {this.state.showShareView ? this._renderShareView() : null}
                 {/*广告位*/}
-                <BannersVerticalView bannerList={this.state.bannerList}/>
+                <BannersVerticalView bannerList={this.state.bannerList} bannerLocation={71}/>
                 {/*推荐*/}
                 <RecommendProductView recommendScene={2}/>
                 {/*弹窗*/}
@@ -282,7 +285,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 1
+            orderPayResultBtnType: 1,
+            orderResultPageType: 1
         });
         this.$navigateBackToHome();
     };
@@ -293,7 +297,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 2
+            orderPayResultBtnType: 2,
+            orderResultPageType: 1
         });
         replaceRoute('order/order/MyOrdersListPage', { index: 0 });
     };
@@ -363,7 +368,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 5
+            orderPayResultBtnType: 5,
+            orderResultPageType: 1
         });
 
         this.$navigate(RouterMap.HtmlPage, {
@@ -431,7 +437,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 3
+            orderPayResultBtnType: 3,
+            orderResultPageType: 1
         });
 
         ShareUtil.onShare({
@@ -460,7 +467,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 4
+            orderPayResultBtnType: 4,
+            orderResultPageType: 1
         });
 
         ShareUtil.onShare({

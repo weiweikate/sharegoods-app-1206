@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import { MRText } from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -18,12 +18,10 @@ import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
 import StringUtils from '../../../../utils/StringUtils';
 import ProductApi from '../../api/ProductApi';
-import { backToHome, routeNavigate, routePush } from '../../../../navigation/RouterMap';
+import { routePush } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
 import bridge from '../../../../utils/bridge';
-import user from '../../../../model/user';
-import { navCode } from './ProductGroupModel';
-import apiEnvironment from '../../../../api/ApiEnvironment';
+import { checkGroup } from './ProductGroupModel';
 
 const { px2dp } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
@@ -91,88 +89,9 @@ export class TimeLabelText extends Component {
 /*
 * 商详发起拼团的人item
 * */
-
 export class GroupPersonItem extends Component {
-
-    checkGroup = (itemData) => {
-        if (!user.isLogin) {
-            routeNavigate(RouterMap.LoginPage);
-            return;
-        }
-        const { activityTag, activityCode } = itemData || {};
-        const { goToBuy } = this.props;
-        bridge.showLoading();
-        ProductApi.checkGroupCanJoin({ groupId: itemData.id, activityCode }).then((data) => {
-            bridge.hiddenLoading();
-            const { canJoinGroup, queueNum } = data.data || {};
-            if (!canJoinGroup) {
-                bridge.$toast(`目前有${queueNum}人排队支付中，暂无法操作〜`);
-                return;
-            }
-            if (!user.isLogin) {
-                routeNavigate(RouterMap.LoginPage);
-                return;
-            }
-            if (activityTag === 101106 && user.newUser !== null && !user.newUser) {
-                setTimeout(() => {
-                    Alert.alert(
-                        '无法参团',
-                        '该团仅支持新用户参加，可以开个新团，立享优惠哦~',
-                        [
-                            {
-                                text: '知道了', onPress: () => {
-                                }
-                            },
-                            {
-                                text: '开新团', onPress: () => {
-                                    goToBuy && goToBuy(null);
-                                }
-                            }
-                        ]
-                    );
-                }, 500);
-                return;
-            }
-            this.requestGroupPerson({ groupId: itemData.id });
-        }).catch(e => {
-            bridge.hiddenLoading();
-            let nav;
-            for (const codeItem of navCode) {
-                if (codeItem.code.indexOf(e.code) !== -1) {
-                    nav = codeItem;
-                    break;
-                }
-            }
-            if (nav) {
-                setTimeout(() => {
-                    Alert.alert(
-                        '',
-                        e.msg,
-                        [
-                            {
-                                text: '知道了', onPress: () => {
-                                }
-                            },
-                            {
-                                text: nav.text, onPress: () => {
-                                    if (nav.index === 0) {
-                                        goToBuy && goToBuy(null);
-                                    } else if (nav.index === 2) {
-                                        routePush(RouterMap.HtmlPage, {
-                                            uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyHot`
-                                        });
-                                    } else if (nav.index === 3) {
-                                        backToHome();
-                                    }
-                                }
-                            }
-                        ]
-                    );
-                }, 500);
-            } else {
-                bridge.$toast(e.msg);
-            }
-        });
+    _checkGroup = (itemData) => {
+        checkGroup({ itemData, goToBuy: this.props.goToBuy, requestGroupPerson: this.requestGroupPerson });
     };
 
     requestGroupPerson = ({ groupId }) => {
@@ -204,7 +123,7 @@ export class GroupPersonItem extends Component {
                     <MRText style={stylesPerson.nameText}>{initiatorUserName}</MRText>
                 </View>
                 <NoMoreClick style={stylesPerson.rightView} onPress={() => {
-                    this.checkGroup(itemData);
+                    this._checkGroup(itemData);
                 }}>
                     <View>
                         <MRText style={stylesPerson.midNumText}>还差<MRText

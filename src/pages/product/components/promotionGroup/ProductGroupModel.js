@@ -7,7 +7,13 @@
  */
 import ProductApi from '../../api/ProductApi';
 import { observable, computed } from 'mobx';
+import { Alert } from 'react-native';
 import StringUtils from '../../../../utils/StringUtils';
+import bridge from '../../../../utils/bridge';
+import { backToHome, routeNavigate, routePush } from '../../../../navigation/RouterMap';
+import RouterMap from '../../../../navigation/RouterMap';
+import apiEnvironment from '../../../../api/ApiEnvironment';
+import user from '../../../../model/user';
 
 export const navCode = [
     {
@@ -34,6 +40,86 @@ export const navCode = [
     }
 ];
 
+export const checkGroup = ({ itemData, goToBuy, requestGroupPerson }) => {
+    if (!user.isLogin) {
+        routeNavigate(RouterMap.LoginPage);
+        return;
+    }
+    const { activityTag, activityCode, id } = itemData || {};
+    bridge.showLoading();
+    ProductApi.checkGroupCanJoin({ groupId: id, activityCode }).then((data) => {
+        bridge.hiddenLoading();
+        const { canJoinGroup, queueNum } = data.data || {};
+        if (!id) {
+            goToBuy && goToBuy(null);
+            return;
+        }
+        if (!canJoinGroup) {
+            bridge.$toast(`目前有${queueNum}人排队支付中，暂无法操作〜`);
+            return;
+        }
+        if (activityTag === 101106 && user.newUser !== null && !user.newUser) {
+            setTimeout(() => {
+                Alert.alert(
+                    '无法参团',
+                    '该团仅支持新用户参加，可以开个新团，立享优惠哦~',
+                    [
+                        {
+                            text: '知道了', onPress: () => {
+                            }
+                        },
+                        {
+                            text: '开新团', onPress: () => {
+                                goToBuy && goToBuy(null);
+                            }
+                        }
+                    ]
+                );
+            }, 500);
+            return;
+        }
+        requestGroupPerson && requestGroupPerson({ groupId: id });
+    }).catch(e => {
+        bridge.hiddenLoading();
+        let nav;
+        for (const codeItem of navCode) {
+            if (codeItem.code.indexOf(e.code) !== -1) {
+                nav = codeItem;
+                break;
+            }
+        }
+        if (nav) {
+            setTimeout(() => {
+                Alert.alert(
+                    '',
+                    e.msg,
+                    [
+                        {
+                            text: '知道了', onPress: () => {
+                            }
+                        },
+                        {
+                            text: nav.text, onPress: () => {
+                                if (nav.index === 0) {
+                                    goToBuy && goToBuy(null);
+                                } else if (nav.index === 2) {
+                                    routePush(RouterMap.HtmlPage, {
+                                        uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyHot`
+                                    });
+                                } else if (nav.index === 3) {
+                                    backToHome();
+                                }
+                            }
+                        }
+                    ]
+                );
+            }, 500);
+        } else {
+            bridge.$toast(e.msg);
+        }
+    });
+};
+
 export default class ProductGroupModel {
 
     @observable hasOpenGroup = false;
@@ -54,24 +140,28 @@ export default class ProductGroupModel {
 
     @computed get showRuleText() {
         const rule = {
-            '1111': `团长可额外获得${this.sendAmount}元返现哦〜`,
-            '1110': `只有新用户可参团。团长可额外获得${this.sendAmount}元返现哦〜`,
-            '1100': `只有新用户可参加。团长可额外获得${this.sendAmount}元返现哦〜`,
-            '1101': `只有新用户可开团。团长可额外获得${this.sendAmount}元返现哦〜`,
+            '1110': `只有新用户可参团。`,
+            '1100': `只有新用户可参加。`,
+            '1101': `只有新用户可开团。`,
             '0000': `新/老用户均不可参加此团〜`,
             '0001': `只有老用户才可参团参加哦〜`,
-            '0010': `只有老用户可开团参加。团长可额外获得${this.sendAmount}元返现哦〜`,
-            '0011': `只有老用户可参加。团长可额外获得${this.sendAmount}元返现哦〜`,
-            '0110': `只有新用户可参团、老用户可开团。团长可额外获得${this.sendAmount}元返现哦〜`,
+            '0010': `只有老用户可开团参加。`,
+            '0011': `只有老用户可参加。`,
+            '0110': `只有新用户可参团、老用户可开团。`,
             '0100': `只有新用户可参团参加哦〜`,
             '0101': `此团只能参团哦〜`,
-            '0111': `只有老用户可开团。团长可额外获得${this.sendAmount}元返现哦〜`,
-            '1000': `只有新用户可开团参加。团长可额外获得${this.sendAmount}元返现哦〜`,
-            '1001': `只有新用户可开团、老用户可参团。团长可额外获得${this.sendAmount}元返现哦〜`,
-            '1011': `只有老用户才可参团。团长可额外获得${this.sendAmount}元返现哦〜`,
-            '1010': `此团只能开团哟。团长可额外获得${this.sendAmount}元返现哦〜`
+            '0111': `只有老用户可开团。`,
+            '1000': `只有新用户可开团参加。`,
+            '1001': `只有新用户可开团、老用户可参团。`,
+            '1011': `只有老用户才可参团。`,
+            '1010': `此团只能开团哟。`
         };
         return rule[this.ruleValue];
+    }
+
+    @computed get showSendAmount() {
+        const rules = ['0000', '0001', '0100', '0101'];
+        return this.ruleValue && rules.indexOf(this.ruleValue) === -1;
     }
 
     activityCode;

@@ -22,7 +22,7 @@ const { px2dp } = ScreenUtils;
 export default class HomeLimitGoGoodsView extends Component {
 
     _goToDetail(index, value, activityData) {
-        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode, ...getSGspm_home(HomeSource.limitGo, index, limitGoModule.currentPage) });
+        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode, ...getSGspm_home(HomeSource.limitGo, limitGoModule.currentPage, index) });
         // 限时购商品点击埋点
         track(trackEvent.SpikeProdClick,
             {
@@ -47,9 +47,8 @@ export default class HomeLimitGoGoodsView extends Component {
         if (spikeList && spikeList[currentPage]) {
             activityData = spikeList[currentPage];
         }
-
-        let index = 1;
-        let data = this.props.data;
+        let data = this.props.data || {};
+        let index = data.index;
         return (
             <TouchableWithoutFeedback key={index}
                                       onPress={() => this._goToDetail(index, data || {}, activityData)}>

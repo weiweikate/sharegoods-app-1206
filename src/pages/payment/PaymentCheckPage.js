@@ -101,7 +101,6 @@ export default class PaymentCheckPage extends BasePage {
                     replaceRoute(RouterMap.AddCapacitySuccessPage, { payResult: PaymentResult.success });
                 }
                 payment.resetPayment();
-                TrackApi.orderPayResultPage({ isPaySuccess: true });
             } else if (parseInt(resultData.status) === payStatus.payClose) {
                 const { bizType } = payment;
                 if (bizType !== 1) {
