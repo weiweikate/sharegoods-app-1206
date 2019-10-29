@@ -23,7 +23,7 @@ import person from '../product/components/promotionGroup/person.png';
 import morePerson from '../product/components/promotionGroup/morePerson.png';
 import UIImage from '@mr/image-placeholder';
 import { backToHome, replaceRoute } from '../../navigation/RouterMap';
-import { trackEvent } from '../../utils/SensorsTrack';
+import { TrackApi, trackEvent } from '../../utils/SensorsTrack';
 import CommGroupShareModal from '../../comm/components/CommGroupShareModal';
 
 const { px2dp } = ScreenUtils;
@@ -77,6 +77,12 @@ export class GroupShareView extends Component {
                 </View>
                 {surplusPerson > 0 && <NoMoreClick onPress={() => {
                     this.ShareModel.open && this.ShareModel.open();
+                    TrackApi.OrderPayResultBtnClick({
+                        orderPayResultPageType: 0,
+                        orderPayType: 2,
+                        orderPayResultBtnType: 0,
+                        orderResultPageType: 2
+                    });
                 }}>
                     <LinearGradient style={styles.LinearGradient}
                                     start={{ x: 0, y: 0 }}
@@ -91,10 +97,22 @@ export class GroupShareView extends Component {
                         style={[styles.shortBtn, { borderWidth: 0.5, borderColor: '#979797', marginRight: 15 }]}
                         onPress={() => {
                             replaceRoute('order/order/MyOrdersListPage', { index: 0 });
+                            TrackApi.OrderPayResultBtnClick({
+                                orderPayResultPageType: 0,
+                                orderPayType: 2,
+                                orderPayResultBtnType: 2,
+                                orderResultPageType: 2
+                            });
                         }}>
                         <MRText style={{ color: DesignRule.textColor_instruction, fontSize: 14 }}>查看订单</MRText>
                     </NoMoreClick>
                     <NoMoreClick onPress={() => {
+                        TrackApi.OrderPayResultBtnClick({
+                            orderPayResultPageType: 0,
+                            orderPayType: 2,
+                            orderPayResultBtnType: 1,
+                            orderResultPageType: 2
+                        });
                         backToHome();
                     }}>
                         <LinearGradient style={styles.shortBtn}

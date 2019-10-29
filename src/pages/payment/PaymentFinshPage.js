@@ -285,7 +285,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 1
+            orderPayResultBtnType: 1,
+            orderResultPageType: 1
         });
         this.$navigateBackToHome();
     };
@@ -296,7 +297,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 2
+            orderPayResultBtnType: 2,
+            orderResultPageType: 1
         });
         replaceRoute('order/order/MyOrdersListPage', { index: 0 });
     };
@@ -366,7 +368,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 5
+            orderPayResultBtnType: 5,
+            orderResultPageType: 1
         });
 
         this.$navigate(RouterMap.HtmlPage, {
@@ -434,7 +437,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 3
+            orderPayResultBtnType: 3,
+            orderResultPageType: 1
         });
 
         ShareUtil.onShare({
@@ -463,7 +467,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 4
+            orderPayResultBtnType: 4,
+            orderResultPageType: 1
         });
 
         ShareUtil.onShare({
