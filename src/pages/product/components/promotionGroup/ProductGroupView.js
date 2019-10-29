@@ -48,7 +48,7 @@ const stylesOld = StyleSheet.create({
         color: '#FF0050', fontSize: 16, marginLeft: 15, marginRight: 10
     },
     text: {
-        color: DesignRule.textColor_instruction, fontSize: 12, flex: 1
+        color: DesignRule.textColor_instruction, fontSize: 12, flex: 1, marginRight: 15
     }
 });
 
