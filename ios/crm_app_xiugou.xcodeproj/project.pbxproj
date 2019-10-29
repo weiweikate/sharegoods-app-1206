@@ -20,6 +20,7 @@
 		012630E322826C0C008D4F7E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126302122815AEF008D4F7E /* Accelerate.framework */; };
 		014FF1C222708C30008B0094 /* JXBodyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF1C122708C30008B0094 /* JXBodyView.m */; };
 		014FF20122708C57008B0094 /* JXFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF20022708C57008B0094 /* JXFooterView.m */; };
+		015206D8236863FF00CA8E14 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 01520694236863FE00CA8E14 /* loading.json */; };
 		0153BAB122A1078A00BFD8AC /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */; };
 		0153BAB422A110AF00BFD8AC /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */; };
 		0157966B22FAB01400122524 /* ActivetyViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0157961022FAB01400122524 /* ActivetyViewManager.m */; };
@@ -887,6 +888,7 @@
 		014FF1C122708C30008B0094 /* JXBodyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXBodyView.m; sourceTree = "<group>"; };
 		014FF1FF22708C57008B0094 /* JXFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXFooterView.h; sourceTree = "<group>"; };
 		014FF20022708C57008B0094 /* JXFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXFooterView.m; sourceTree = "<group>"; };
+		01520694236863FE00CA8E14 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		0153BAAF22A1078900BFD8AC /* ShowShareImgMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowShareImgMaker.h; sourceTree = "<group>"; };
 		0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowShareImgMaker.m; sourceTree = "<group>"; };
 		0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareImageMaker.m; sourceTree = "<group>"; };
@@ -2082,6 +2084,7 @@
 		5068357021379B78001AB175 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				01520694236863FE00CA8E14 /* loading.json */,
 				CD13656621BA0F4200754B0E /* MBProgressHUD+PD.h */,
 				CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */,
 				CDA2F52F2171D7A0005FD4B3 /* UIViewController */,
@@ -3911,6 +3914,7 @@
 				BF2CCF8D22A5160500A5AD0D /* home_tab_0.png in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				5068363D21379B78001AB175 /* SGQRCode.bundle in Resources */,
+				015206D8236863FF00CA8E14 /* loading.json in Resources */,
 				C4F2E42522BE303100FF6213 /* btn_cancel_a@2x.png in Resources */,
 				C48634F722C1B6A00096C8EC /* edit_img_bg@2x.png in Resources */,
 				C4F2E42E22BE303100FF6213 /* camera_focus_red.png in Resources */,

@@ -8,6 +8,7 @@
 
 #import "MBProgressHUD+PD.h"
 #import "AppDelegate.h"
+#import <Lottie/Lottie.h>
 
 @implementation MBProgressHUD (PD)
 /**
@@ -97,11 +98,27 @@
     // 快速显示一个提示信息
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
     hud.label.text = message;
-    hud.margin = 15;
     hud.contentColor = [UIColor whiteColor];//文字和菊花的颜色
     hud.label.font = [UIFont systemFontOfSize:13.0];
     hud.bezelView.backgroundColor =  [UIColor colorWithHexString:@"000000"];
     hud.layer.opacity = 0.8;
+    hud.minSize = CGSizeMake(90, 90);
+  
+    LOTAnimationView *anView = [LOTAnimationView animationNamed:@"loading.json" inBundle:[NSBundle mainBundle]];
+    anView.contentMode = UIViewContentModeScaleAspectFill;
+    anView.frame = CGRectMake(0, 0, 50, 50);
+    anView.autoReverseAnimation = NO;
+    anView.cacheEnable = NO;
+    anView.loopAnimation = YES;
+    [anView playFromProgress:0
+                 toProgress:1
+             withCompletion:nil];
+    hud.customView = anView;
+  
+    // 再设置模式
+    hud.mode = MBProgressHUDModeCustomView;
+
+    hud.margin = 15;
     //隐藏时候从父控件中移除
     hud.removeFromSuperViewOnHide = YES;
     // YES代表需要蒙版效果
