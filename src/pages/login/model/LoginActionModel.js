@@ -94,14 +94,14 @@ const getWxUserInfo = (callback) => {
 };
 
 const handleLoginData = (params, data, code, successCallBack, failCallBack) => {
-    //登录成功home页重新请求弹窗,非新用户
-    if (data) {
-        homeController.residueDegree = 1;
-        homeController.isRequested = false;
-    }
     if (data.weChatBindingStatus) {
         // 登录成功
         if (StringUtils.isNoEmpty(data.code)) {
+            //登录成功home页重新请求弹窗,非新用户
+            if (data) {
+                homeController.residueDegree = 1;
+                homeController.isRequested = false;
+            }
             // 数据存储
             loginDataInit(data);
             params.callBack && params.callBack();
