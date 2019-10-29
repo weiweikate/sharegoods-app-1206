@@ -4,7 +4,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    ImageBackground,
     Image,
     TouchableWithoutFeedback,
     Clipboard, Linking
@@ -12,7 +11,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import ImageLoad from '@mr/image-placeholder';
 import { ImageCacheManager } from 'react-native-cached-image';
-
+import LinearGradient from 'react-native-linear-gradient'
 const { px2dp } = ScreenUtils;
 import res from '../../../spellShop/res';
 import homeRes from '../../res';
@@ -24,7 +23,7 @@ import bridge from '../../../../utils/bridge';
 import SettingModel from '../../model/SettingModel';
 
 // const HeaderBarBgImg = res.myShop.txbg_03;
-const back_white = res.button.back_white;
+const back_black = res.button.back_black;
 const mine_user_icon = res.placeholder.avatar_default;
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 const { fans_noData } = homeRes.showFans;
@@ -129,12 +128,12 @@ export default class MyMentorPage extends BasePage {
                     <View style={{ flex: 1 }}>
                         <TouchableWithoutFeedback onPress={() => this.$navigateBack()}>
                             <View style={{ width: 40, justifyContent: 'center' }}>
-                                <Image source={back_white} style={{ width: 30, height: 30 }}/>
+                                <Image source={back_black} style={{ width: 30, height: 30 }}/>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
                     <Text style={{
-                        color: DesignRule.white,
+                        color: DesignRule.textColor_mainTitle,
                         fontSize: px2dp(17),
                         includeFontPadding: false
                     }}>
@@ -154,31 +153,32 @@ export default class MyMentorPage extends BasePage {
             <ImageLoad source={{ uri: this.state.headImg }} style={styles.headerIconStyle}/> :
             <Image source={mine_user_icon} style={styles.headerIconStyle}/>;
 
-        let bgImage = this.state.headImg ? { uri: this.state.headImg } : homeRes.mentor.mentor_no_header_icon;
         return (
-            <ImageBackground source={bgImage} style={styles.headerWrapper}
-                             blurRadius={ScreenUtils.isIOS ? px2dp(100) : px2dp(15)}>
+            <LinearGradient style={styles.headerWrapper}
+                            start={{x: 1, y: 1}} end={{x: 0, y: 0}}
+                            colors={['#F7E7E3','#F7DEE6']}
+                             >
                 {image}
                 <Text style={[styles.itemTextStyle, { marginLeft: 20, marginRight: 20 }]}>
                     {this.state.nickName ? this.state.nickName : ''}
                 </Text>
                 {SettingModel.WXChatState ? (this.state.weChatNumber ?
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 20, marginRight: 20 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 20, marginRight: 20, marginTop: 8 }}>
                             <Text style={styles.weChatStyle} numberOfLines={1}>微信号：{this.state.weChatNumber}</Text>
                             <TouchableWithoutFeedback onPress={() => {
                                 this.state.weChatNumber && Clipboard.setString(this.state.weChatNumber);
                                 bridge.$toast('复制到剪切版');
                             }}>
                                 <View style={styles.copyViewStyle}>
-                                    <Text style={styles.copyTextStyle}>复制</Text>
+                                    <Text style={[styles.copyTextStyle,{color:'white'}]}>复制</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View> :
-                        <View>
+                        <View style={{marginTop: 8}}>
                             <Text style={styles.copyTextStyle}>暂无微信号</Text>
                         </View>
                 ) : null}
-            </ImageBackground>
+            </LinearGradient>
         );
     };
 
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     },
     headerWrapper: {
         width: ScreenUtils.width,
-        height: px2dp(250),
+        height: px2dp(230),
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: ScreenUtils.statusBarHeight
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
         width: px2dp(70),
         borderRadius: px2dp(35),
         overflow: 'hidden',
-        marginTop: 20
+        marginTop: 40
     },
     itemWrapper: {
         height: px2dp(40),
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
         paddingLeft: DesignRule.margin_page
     },
     itemTextStyle: {
-        color: 'white',
+        color: DesignRule.textColor_mainTitle,
         fontSize: DesignRule.fontSize_threeTitle_28,
         includeFontPadding: false,
         marginTop: 20
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     profileWrapper: {
         width: ScreenUtils.width - 40,
         backgroundColor: DesignRule.white,
-        marginTop: 42,
+        marginTop: 15,
         marginLeft: 20,
         marginRight: 20,
         borderRadius: px2dp(10)
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
 
     },
     weChatStyle: {
-        color: 'white',
+        color: DesignRule.textColor_mainTitle,
         fontSize: DesignRule.fontSize_threeTitle,
         marginLeft: 8
     },
@@ -310,8 +310,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     copyTextStyle: {
-        color: 'white',
-        fontSize: DesignRule.fontSize_20
+        color: DesignRule.textColor_mainTitle,
+        fontSize: DesignRule.fontSize_threeTitle
     },
     btnBgStyle: {
         flexDirection: 'row',
