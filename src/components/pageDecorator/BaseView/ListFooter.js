@@ -4,8 +4,8 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Animated, Easing, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import LoadingImg from './source/sxin_03.png';
+import { ActivityIndicator, Animated, Easing, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import DesignRule from '../../../constants/DesignRule';
 
 export default class ListFooter extends Component {
     static propTypes = {
@@ -69,18 +69,18 @@ export default class ListFooter extends Component {
         // 是否正在加载
         if (loadingMore) {
             return (
-                <View style={[styles.container, { flexDirection: 'row', alignItems: 'center' }]}>
-                    <Animated.Image style={{
-                        transform: [{
-                            rotateZ: this.state.rotateValue.interpolate({
-                                inputRange: [0, 1],
-                                outputRange: ['0deg', '360deg']
-                            })
-                        }], width: 15, height: 15
-                    }} source={LoadingImg}/>
-                    <Text style={{ marginLeft: 8, color: '#B5B5B5', fontSize: 12 }}
-                          allowFontScaling={false}>加载更多中...</Text>
-                    {/*<ActivityIndicator animating={true} color={'gray'} size={'small'} />*/}
+                <View style={[styles.container, {
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: 50
+                }]}>
+                    <ActivityIndicator style={{ marginRight: 6 }} animating={true} size={'small'}
+                                       color={DesignRule.mainColor}/>
+                    <Text style={{
+                        color: DesignRule.textColor_instruction,
+                        fontSize: DesignRule.fontSize_24
+                    }} allowFontScaling={false}>加载更多中...</Text>
                 </View>
             );
         }
