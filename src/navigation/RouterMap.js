@@ -8,6 +8,7 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import apiEnvironment from '../api/ApiEnvironment';
 import StringUtils from '../utils/StringUtils';
 import ShowListIndexModel from '../pages/show/model/ShowListIndexModel';
+
 let timeStamp = null;
 let errWebtimeStamp = null;
 let perRouteName = null;
@@ -83,6 +84,12 @@ function routePush(routeName, params) {
     global.$navigator && global.$navigator._navigation.push(routeName, params);
 }
 
+// 只保留一个页面导航
+function routeOnePage(routeName, params) {
+    routeNavigate(routeName, params);
+    replaceRoute(routeName, params);
+}
+
 // 新页面直接替换当前页面
 function replaceRoute(routeName, params) {
     if (StringUtils.isEmpty(routeName)) {
@@ -112,7 +119,7 @@ function backToHome() {
 
 // 跳转到秀场tab
 function backToShow(index = -1) {
-    ShowListIndexModel.setIndex(index)
+    ShowListIndexModel.setIndex(index);
     GoToTabItem(1);
 }
 
@@ -172,6 +179,7 @@ export {
     routePush,
     routeNavigate,
     routePop,
+    routeOnePage,
     loginBack,
     popToRouteName
 };
