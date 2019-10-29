@@ -157,7 +157,7 @@ export default class PaymentFinshPage extends BasePage {
 
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
-        this.willBlurSubscription && this.didFocusSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
     handleBackPress = () => {
