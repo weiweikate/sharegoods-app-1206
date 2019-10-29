@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import ImageLoad from '@mr/image-placeholder';
-import { ImageCacheManager } from 'react-native-cached-image';
+import { ImageCacheManager } from '@mr/react-native-cached-image';
 import LinearGradient from 'react-native-linear-gradient'
 const { px2dp } = ScreenUtils;
 import res from '../../../spellShop/res';
