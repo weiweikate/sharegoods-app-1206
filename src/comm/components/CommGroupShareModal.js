@@ -347,13 +347,20 @@ export default class CommShowShareModal extends React.Component {
                                 borderTopLeftRadius: 15,
                                 borderTopRightRadius: 15,
                             }}>
-                                <View style={[styles.contentContainer]}>
+                                <View style={[styles.contentContainer,
+                                        {height: needPerson && endTime ? 230 + ScreenUtils.safeBottom : 195 + ScreenUtils.safeBottom,}]}>
                                     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                                        {this.timeFormat(backtime)}
-                                        <View style={[styles.timeView, {alignItems: 'flex-start'}]}>
-                                            <Text style={{fontSize: 13, color: '#333333'}}>
-                                                还差<Text style={{fontSize: 16, color: '#FF0050'}}>{needPerson}</Text>人，可拼团成功
-                                            </Text>
+                                        {endTime ? this.timeFormat(backtime) : null}
+                                        <View
+                                            style={[styles.timeView, {alignItems: needPerson && endTime? 'flex-start' : 'center'}]}>
+                                            {needPerson ?
+                                                <Text style={{fontSize: 13, color: '#333333'}}>
+                                                    还差<Text style={{fontSize: 16, color: '#FF0050'}}>{needPerson}</Text>人，可拼团成功
+                                                </Text> :
+                                                <Text style={{fontSize: 16, color: '#333333', fontWeight: '400',marginTop: 5}}>
+                                                    邀请好友参加拼团
+                                                </Text>
+                                            }
                                         </View>
                                     </View>
                                     <View style={{
@@ -465,7 +472,6 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         backgroundColor: 'rgba(0,0,0,0)',
-        height: 230 + ScreenUtils.safeBottom,
         paddingBottom: ScreenUtils.safeBottom,
     },
     item: {
