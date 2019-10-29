@@ -22,7 +22,9 @@ const deepLinkPath = {
     /*优惠券*/
     'CouponsPage': 'path/CouponsPage',
     /* 我的拼团 */
-    'SpellGroupList': 'path/SpellGroupList'
+    'SpellGroupList': 'path/SpellGroupList',
+    /* 秀场首页 */
+    'ShowListPage' : 'path/ShowListPage/:initialPage/:fromHome'
 };
 
 export default deepLinkPath;
