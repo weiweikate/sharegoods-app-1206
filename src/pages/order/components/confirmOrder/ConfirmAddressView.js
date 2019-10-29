@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,
-    Image,
-    Text,
-    TouchableOpacity
-} from 'react-native';
-import {
-    UIText, UIImage
-} from '../../../../components/ui';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { UIImage, UIText } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -26,7 +18,12 @@ export default class ConfirmAddressView extends Component {
 
     render() {
         return (
-            <View style={{ marginVertical: 10, marginHorizontal: DesignRule.margin_page, borderRadius: 10, overflow: 'hidden'}}>
+            <View style={{
+                marginVertical: 10,
+                marginHorizontal: DesignRule.margin_page,
+                borderRadius: 10,
+                overflow: 'hidden'
+            }}>
                 {this.renderAddress()}
             </View>
         );
@@ -34,15 +31,16 @@ export default class ConfirmAddressView extends Component {
 
     renderAddress = () => {
 
-      let {receiver,
-          receiverPhone,
-          province,
-          city,
-          area,
-          street,
-          address,
-          id
-      } =  confirmOrderModel.receiveInfo;
+        let {
+            receiver,
+            receiverPhone,
+            province,
+            city,
+            area,
+            street,
+            address,
+            id
+        } = confirmOrderModel.receiveInfo;
         province = province || '';
         city = city || '';
         area = area || '';
@@ -56,7 +54,7 @@ export default class ConfirmAddressView extends Component {
                     <UIImage source={position} style={{
                         height: ScreenUtils.autoSizeHeight(30),
                         width: ScreenUtils.autoSizeWidth(30),
-                        marginLeft: ScreenUtils.autoSizeWidth(20)
+                        marginLeft: ScreenUtils.autoSizeWidth(10)
                     }} resizeMode={'contain'}/>
                     <View style={{
                         flex: 1,
@@ -115,7 +113,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingTop: ScreenUtils.autoSizeWidth(10),
-        paddingBottom: ScreenUtils.autoSizeWidth(10),
+        paddingBottom: ScreenUtils.autoSizeWidth(10)
     },
     commonTextStyle: {
         fontSize: ScreenUtils.px2dp(15),
@@ -123,7 +121,7 @@ const styles = StyleSheet.create({
     },
     arrowRightStyle: {
         height: ScreenUtils.autoSizeWidth(12),
-        marginRight: ScreenUtils.autoSizeWidth(15)
+        marginRight: ScreenUtils.autoSizeWidth(10)
     },
 
     receiverAddressStyle: {
