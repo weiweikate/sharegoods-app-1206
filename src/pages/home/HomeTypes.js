@@ -39,8 +39,8 @@ export const homeType = {
     store30: 30,//拼店扩容页面广告
     store31: 31,//百万活动
     paySuccess: 27,//订单支付完成页面广告位
-    signInAD:37,
-    signInBanner:38,
+    signInAD: 37,
+    signInBanner: 38,
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
     custom_goods: 'WIDGET-GOODS',
@@ -67,6 +67,7 @@ export const homeLinkType = {
     page: 14,      //页面路由
     pinGroup: 19,      //拼团
     limitBuy: 20,      //限时购
+    signPage: 21      // 签到页面
 };
 
 export const homeRoute = {
@@ -85,7 +86,8 @@ export const homeRoute = {
     [homeLinkType.nothing]: '',  // 不做跳转
     [homeLinkType.page]: '',      // 跳转到页面
     [homeLinkType.pinGroup]: 'HtmlPage',
-    [homeLinkType.limitBuy]: 'HtmlPage'
+    [homeLinkType.limitBuy]: 'HtmlPage',
+    [homeLinkType.signPage]: 'home/signIn/SignInPage'
 };
 
 //埋点
