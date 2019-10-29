@@ -35,76 +35,82 @@ export default class RecommendRow extends Component {
         }
 
         return (
-            <NoMoreClick style={styles.viewContainer} onPress={this._onPress}>
-                <View style={styles.headerViewContainer}>
-                    <UIImage style={styles.icon} source={{ uri: headUrl || '' }} isAvatar={true}/>
-                    <View style={styles.tittleContainer}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <Text style={styles.shopName} numberOfLines={1}>{name || ''}</Text>
-                            <View style={styles.starView}>
-                                {
-                                    starsArr.map((item, index) => {
-                                        return <Image key={index} source={StarImg} style={{ width: 16, height: 16 }}/>;
-                                    })
-                                }
+            <View style={{ backgroundColor: DesignRule.bgColor }}>
+                <NoMoreClick style={styles.viewContainer} onPress={this._onPress}>
+                    <View style={styles.headerViewContainer}>
+                        <UIImage style={styles.icon} source={{ uri: headUrl || '' }} isAvatar={true}/>
+                        <View style={styles.tittleContainer}>
+                            <View
+                                style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={styles.shopName} numberOfLines={1}>{name || ''}</Text>
+                                <View style={styles.starView}>
+                                    {
+                                        starsArr.map((item, index) => {
+                                            return <Image key={index} source={StarImg}
+                                                          style={{ width: 16, height: 16 }}/>;
+                                        })
+                                    }
+                                </View>
                             </View>
+                            <Text style={styles.name} numberOfLines={1}>{`店主: ${userName || ''}`}</Text>
+                            {tutorName ?
+                                <Text style={styles.name} numberOfLines={1}>{`导师: ${tutorName || ''}`}</Text> : null}
                         </View>
-                        <Text style={styles.name} numberOfLines={1}>{`店主: ${userName || ''}`}</Text>
-                        {tutorName?<Text style={styles.name} numberOfLines={1}>{`导师: ${tutorName || ''}`}</Text>:null}
                     </View>
-                </View>
-                <View style={styles.bottomContainer}>
-                    <View style={styles.moneyContainer}>
-                        <Text style={styles.containTop}>{`${tradeBalanceOfMonth || '0.00'}`}</Text>
-                        <Text style={styles.containBottom}>店铺本月销售额</Text>
+                    <View style={styles.bottomContainer}>
+                        <View style={styles.moneyContainer}>
+                            <Text style={styles.containTop}>{`${tradeBalanceOfMonth || '0.00'}`}</Text>
+                            <Text style={styles.containBottom}>店铺本月销售额</Text>
+                        </View>
+                        <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
+                        <View style={styles.moneyContainer}>
+                            <Text style={styles.containTop}>{`${totalTradeBalance || '0.00'}`}</Text>
+                            <Text style={styles.containBottom}>店铺累计销售额</Text>
+                        </View>
                     </View>
-                    <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
-                    <View style={styles.moneyContainer}>
-                        <Text style={styles.containTop}>{`${totalTradeBalance || '0.00'}`}</Text>
-                        <Text style={styles.containBottom}>店铺累计销售额</Text>
+                    <View style={styles.iconView}>
+                        <View style={{ flexDirection: 'row' }}>
+                            {
+                                (users || []).map((item, index) => {
+                                    if (index > 4) {
+                                        return;
+                                    }
+                                    if (index === 4) {
+                                        return <View style={styles.moreIconView}>
+                                            <Text style={styles.moreIconText}>...</Text>
+                                        </View>;
+                                    }
+                                    const { tutorStatus, roleType, headImg } = item;
+                                    const showMore = tutorStatus === 1 || roleType === 0;
+                                    return <UIImage key={index}
+                                                    style={[styles.itemIcon, index === 0 && { marginLeft: 0 }]}
+                                                    isAvatar={true}
+                                                    source={{ uri: headImg }}>
+                                        {showMore && <LinearGradient style={styles.roleView}
+                                                                     start={{ x: 0, y: 0 }}
+                                                                     end={{ x: 1, y: 0 }}
+                                                                     colors={roleType === 0 ? ['#FC5D39', '#FF0050'] : ['#FFCB02', '#FF9502']}>
+                                            <Text style={{
+                                                fontSize: 10,
+                                                color: 'white'
+                                            }}>{roleType === 0 ? '店主' : '导师'}</Text>
+                                        </LinearGradient>}
+                                    </UIImage>;
+                                })
+                            }
+                        </View>
+                        <LinearGradient style={styles.joinBtn}
+                                        start={{ x: 0, y: 0 }}
+                                        end={{ x: 1, y: 0 }}
+                                        colors={['#FC5D39', '#FF0050']}>
+                            <Text style={{ fontSize: 13, color: 'white', fontWeight: '500' }}>
+                                申请加入
+                            </Text>
+                        </LinearGradient>
                     </View>
-                </View>
-                <View style={styles.iconView}>
-                    <View style={{ flexDirection: 'row' }}>
-                        {
-                            (users || []).map((item, index) => {
-                                if (index > 4) {
-                                    return;
-                                }
-                                if (index === 4) {
-                                    return <View style={styles.moreIconView}>
-                                        <Text style={styles.moreIconText}>...</Text>
-                                    </View>;
-                                }
-                                const { tutorStatus, roleType, headImg } = item;
-                                const showMore = tutorStatus === 1 || roleType === 0;
-                                return <UIImage key={index}
-                                                style={[styles.itemIcon, index === 0 && { marginLeft: 0 }]}
-                                                isAvatar={true}
-                                                source={{ uri: headImg }}>
-                                    {showMore && <LinearGradient style={styles.roleView}
-                                                                 start={{ x: 0, y: 0 }}
-                                                                 end={{ x: 1, y: 0 }}
-                                                                 colors={roleType === 0 ? ['#FC5D39', '#FF0050'] : ['#FFCB02', '#FF9502']}>
-                                        <Text style={{
-                                            fontSize: 10,
-                                            color: 'white'
-                                        }}>{roleType === 0 ? '店主' : '导师'}</Text>
-                                    </LinearGradient>}
-                                </UIImage>;
-                            })
-                        }
-                    </View>
-                    <LinearGradient style={styles.joinBtn}
-                                    start={{ x: 0, y: 0 }}
-                                    end={{ x: 1, y: 0 }}
-                                    colors={['#FC5D39', '#FF0050']}>
-                        <Text style={{ fontSize: 13, color: 'white', fontWeight: '500' }}>
-                            申请加入
-                        </Text>
-                    </LinearGradient>
-                </View>
-            </NoMoreClick>);
+                </NoMoreClick>
+            </View>
+        );
     }
 
 }
