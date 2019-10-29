@@ -75,9 +75,6 @@ export default class PaymentFinshPage extends BasePage {
 
             groupShareData: {}
         };
-        //orderPayResultPageType 有券无劵
-        TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
-        //
         setTimeout(() => {
             bridge.$checkIsCanComment();
         }, 2000);
@@ -86,6 +83,12 @@ export default class PaymentFinshPage extends BasePage {
     componentDidMount() {
         PaymentApi.queryOrderGroupData({ platformOrderNo: this.params.platformOrderNo }).then((data) => {
             const { group, endTime } = data.data || {};
+            TrackApi.orderPayResultPage({
+                isPaySuccess: true,
+                orderPayType: 2,
+                orderPayResultPageType: 0,
+                orderResultPageType: group ? 2 : 1
+            });
             if (group) {
                 if (!this.didFocusSubscription) {
                     this.didFocusSubscription = this.props.navigation.addListener(
