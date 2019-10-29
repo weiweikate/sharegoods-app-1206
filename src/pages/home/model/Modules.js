@@ -86,7 +86,7 @@ class HomeModule {
             return linkTypeCode ? linkTypeCode.replace(/[\n]/g, '').trim() : '';
         } else if (linkType === homeLinkType.nothing) {
             return;
-        } else {
+        }else {
             return homeRoute[linkType];
         }
     };
@@ -114,7 +114,8 @@ class HomeModule {
             id: data.id,
             code: data.linkTypeCode,
             keywords: data.name,
-            trackType: 1
+            trackType: 1,
+            initialPage:data.linkTypeCode
         };
         if(linkType === 18){
             params.fromHome = true;

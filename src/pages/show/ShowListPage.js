@@ -77,6 +77,13 @@ export default class ShowListPage extends BasePage {
     }
 
     componentDidMount() {
+
+        let initialPage = parseInt(`${this.params.initialPage}`);
+        if([0,1,2,3,4].indexOf(initialPage) === -1){
+            initialPage = 1;
+        }
+        this._gotoPage(initialPage);
+
         this.setState({ left: this.params.fromHome });
         this.didBlurSubscription = this.props.navigation.addListener(
             'willBlur',
@@ -216,6 +223,10 @@ export default class ShowListPage extends BasePage {
 
     _render() {
         const { left, needsExpensive, detail } = this.state;
+        let initialPage = parseInt(`${this.params.initialPage}`);
+        if([0,1,2,3,4].indexOf(initialPage) === -1){
+            initialPage = 1;
+        }
         let HotView = null;
         let AttentionView = null;
         if (needsExpensive) {
@@ -307,7 +318,7 @@ export default class ShowListPage extends BasePage {
             <ScrollableTabView
                 ref={(ref) => this.scrollableTabView = ref}
                 style={styles.tab}
-                initialPage={1}
+                initialPage={initialPage}
                 page={ShowListIndexModel.pageIndex}
                 renderTabBar={() => <DefaultTabBar style={styles.tabBar}/>}
                 tabBarUnderlineStyle={styles.underline}

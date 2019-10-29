@@ -66,9 +66,10 @@ export const homeLinkType = {
     classify: 12,      //分类
     nothing: 13,      //无跳转
     page: 14,      //页面路由
+    showHome:18,    //秀场首页
     pinGroup: 19,      //拼团
     limitBuy: 20,      //限时购
-    signPage: 21      // 签到页面
+    signPage: 21,      // 签到页面
 };
 
 export const homeRoute = {
@@ -88,7 +89,8 @@ export const homeRoute = {
     [homeLinkType.page]: '',      // 跳转到页面
     [homeLinkType.pinGroup]: 'HtmlPage',
     [homeLinkType.limitBuy]: 'HtmlPage',
-    [homeLinkType.signPage]: 'home/signIn/SignInPage'
+    [homeLinkType.signPage]: 'home/signIn/SignInPage',
+    [homeLinkType.showHome]: 'show/ShowListPage',
 };
 
 //埋点
