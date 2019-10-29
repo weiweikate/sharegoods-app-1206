@@ -32,7 +32,7 @@ const { px2dp } = ScreenUtils;
 export class GroupShareView extends Component {
     render() {
         const { groupId, surplusPerson, groupNum, groupUserHeadImg, groupItem } = this.props.groupShareData || {};
-        const { activityAmount, goodsName, goodsImg, v1Price } = groupItem || {};
+        const { activityAmount, goodsName, goodsImg, v1Price, prodCode } = groupItem || {};
         if (!groupId) {
             return null;
         }
@@ -147,9 +147,11 @@ export class GroupShareView extends Component {
                     }}
                     trackEvent={trackEvent.ShareGroupbuy} //分享埋点
                     trackParmas={{
-                        shareSource: 3,
+                        shareSource: 2,
                         groupbuyId: groupId + '',
-                        spuName: goodsName + ''
+                        spuName: goodsName + '',
+                        spuCode: prodCode + '',
+                        groupbuyStatus: surplusPerson > 0 ? 2 : 3
                     }}
                 />
             </View>
