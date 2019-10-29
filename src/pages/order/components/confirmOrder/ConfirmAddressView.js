@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     },
     arrowRightStyle: {
         height: ScreenUtils.autoSizeWidth(12),
-        marginRight: ScreenUtils.autoSizeWidth(15)
+        marginRight: ScreenUtils.autoSizeWidth(10)
     },
 
     receiverAddressStyle: {
