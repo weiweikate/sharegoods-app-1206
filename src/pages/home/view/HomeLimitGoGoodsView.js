@@ -43,7 +43,7 @@ export default class HomeLimitGoGoodsView extends Component {
 
     render() {
         let { spikeList, currentPage, tabWidth } = limitGoModule;
-        let activityData = '';
+        let activityData = {};
         if (spikeList && spikeList[currentPage]) {
             activityData = spikeList[currentPage];
         }
@@ -57,6 +57,8 @@ export default class HomeLimitGoGoodsView extends Component {
                         key={index}
                         item={data || {}}
                         activityCode={activityData.activityCode}
+                        activityData={activityData}
+                        index={index}
                         labelUrl={activityData.labelUrl}
                         labelWidth={tabWidth}
                         navigate={this.props.navigate}/>
@@ -66,7 +68,7 @@ export default class HomeLimitGoGoodsView extends Component {
     }
 }
 
-const GoodsItem = ({ item, activityCode, labelUrl, labelWidth, navigate }) => {
+const GoodsItem = ({ item, activityCode, labelUrl, labelWidth, navigate,index,activityData }) => {
     const promotionSaleRateS = item.promotionSaleRate || 0;
     const discountString = (item.promotionPrice / item.originalPrice * 10) + '';
     let discountNum = discountString.substring(0, discountString.indexOf('.') + 2);
@@ -145,14 +147,15 @@ const GoodsItem = ({ item, activityCode, labelUrl, labelWidth, navigate }) => {
                             null
                     }
                     <View style={{ flex: 1 }}/>
-                    <GoodsItemButton data={item} activityCode={activityCode} navigate={navigate}/>
+                    <GoodsItemButton data={item} activityCode={activityCode} navigate={navigate}
+                                     activityData={activityData} index={index}/>
                 </View>
             </View>
         </View>
     </View>;
 };
 
-const GoodsItemButton = ({ data, activityCode, navigate }) => {
+const GoodsItemButton = ({ data, activityCode, navigate,activityData,index }) => {
     if (data.promotionStatus === limitStatus.doing) {
         return <LinearGradient style={styles.button}
                                start={{ x: 0, y: 0 }}
@@ -163,6 +166,16 @@ const GoodsItemButton = ({ data, activityCode, navigate }) => {
         </LinearGradient>;
     } else if (data.promotionStatus === limitStatus.noBegin) {
         return <NoMoreClick onPress={() => {
+            track(trackEvent.FlashSaleBtnClick,
+                {
+                    'timeRangeId': activityData.activityCode,
+                    'timeRange': activityData.time,
+                    'timeRangeStatus': activityData.title,
+                    'supCode': data.prodCode,
+                    'spuName': data.name,
+                    'flashSaleBtnName': data.promotionAttention ? '已关注' : '提前关注',
+                    'productIndex': index
+                });
             if (user.isLogin) {
                 data.promotionAttention ? limitGoModule.cancleFollow(data.prodCode, activityCode) : limitGoModule.followSpike(data.prodCode, activityCode);
             } else {

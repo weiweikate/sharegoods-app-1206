@@ -20,6 +20,7 @@
 		012630E322826C0C008D4F7E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126302122815AEF008D4F7E /* Accelerate.framework */; };
 		014FF1C222708C30008B0094 /* JXBodyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF1C122708C30008B0094 /* JXBodyView.m */; };
 		014FF20122708C57008B0094 /* JXFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF20022708C57008B0094 /* JXFooterView.m */; };
+		015206D8236863FF00CA8E14 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 01520694236863FE00CA8E14 /* loading.json */; };
 		0153BAB122A1078A00BFD8AC /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */; };
 		0153BAB422A110AF00BFD8AC /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */; };
 		0157966B22FAB01400122524 /* ActivetyViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0157961022FAB01400122524 /* ActivetyViewManager.m */; };
@@ -305,8 +306,6 @@
 		CD24240921F825C1008C7FF4 /* StorageFromRN.m in Sources */ = {isa = PBXBuildFile; fileRef = CD24240821F825C1008C7FF4 /* StorageFromRN.m */; };
 		CD24240F21F837A9008C7FF4 /* NSDictionary+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CD24240E21F837A9008C7FF4 /* NSDictionary+Util.m */; };
 		CD288A9D230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CD288A9C230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m */; };
-		CD3A8A0721F05DF3003B9803 /* MRLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3A8A0621F05DF3003B9803 /* MRLoadingView.m */; };
-		CD3A8A0A21F05E17003B9803 /* MRLoadingViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3A8A0921F05E17003B9803 /* MRLoadingViewManager.m */; };
 		CD3D46F52361CEF9001D4182 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 031D543B230E992E00F8349C /* Lottie.framework */; };
 		CD5EAF48221BEA9F007AAEE0 /* NetWorkTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF11221BEA9F007AAEE0 /* NetWorkTool.m */; };
 		CD5EAF9D221BFB5E007AAEE0 /* ShowGroundViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF9C221BFB5E007AAEE0 /* ShowGroundViewManager.m */; };
@@ -889,6 +888,7 @@
 		014FF1C122708C30008B0094 /* JXBodyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXBodyView.m; sourceTree = "<group>"; };
 		014FF1FF22708C57008B0094 /* JXFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXFooterView.h; sourceTree = "<group>"; };
 		014FF20022708C57008B0094 /* JXFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXFooterView.m; sourceTree = "<group>"; };
+		01520694236863FE00CA8E14 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		0153BAAF22A1078900BFD8AC /* ShowShareImgMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowShareImgMaker.h; sourceTree = "<group>"; };
 		0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowShareImgMaker.m; sourceTree = "<group>"; };
 		0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareImageMaker.m; sourceTree = "<group>"; };
@@ -1384,10 +1384,6 @@
 		CD24240E21F837A9008C7FF4 /* NSDictionary+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Util.m"; sourceTree = "<group>"; };
 		CD288A9B230A450600C2C30E /* CHTCollectionViewWaterfallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTCollectionViewWaterfallLayout.h; sourceTree = "<group>"; };
 		CD288A9C230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTCollectionViewWaterfallLayout.m; sourceTree = "<group>"; };
-		CD3A8A0521F05DF3003B9803 /* MRLoadingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRLoadingView.h; sourceTree = "<group>"; };
-		CD3A8A0621F05DF3003B9803 /* MRLoadingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRLoadingView.m; sourceTree = "<group>"; };
-		CD3A8A0821F05E17003B9803 /* MRLoadingViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRLoadingViewManager.h; sourceTree = "<group>"; };
-		CD3A8A0921F05E17003B9803 /* MRLoadingViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRLoadingViewManager.m; sourceTree = "<group>"; };
 		CD5EAF11221BEA9F007AAEE0 /* NetWorkTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkTool.m; sourceTree = "<group>"; };
 		CD5EAF12221BEA9F007AAEE0 /* NetWorkTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkTool.h; sourceTree = "<group>"; };
 		CD5EAF49221BECA3007AAEE0 /* XG_Api.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XG_Api.h; sourceTree = "<group>"; };
@@ -2088,6 +2084,7 @@
 		5068357021379B78001AB175 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				01520694236863FE00CA8E14 /* loading.json */,
 				CD13656621BA0F4200754B0E /* MBProgressHUD+PD.h */,
 				CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */,
 				CDA2F52F2171D7A0005FD4B3 /* UIViewController */,
@@ -2221,7 +2218,6 @@
 				01091612227053450043E997 /* Recommended */,
 				C4F01EE9222D13F500ACA1B4 /*  PhoneAuther */,
 				CD5EAF9A221BFADF007AAEE0 /* ShowGroundView */,
-				CD3A89D021F05DD3003B9803 /* MRLoadingView */,
 				50043A7721C76D6100270DFA /* ShopCart */,
 				CDAB6D18219AC5F800DE6716 /* WaveProgressView */,
 				506835C521379B78001AB175 /* CachesModule.h */,
@@ -2964,17 +2960,6 @@
 				C44F2CD92252483B00334776 /* SuspensionBtn.m */,
 			);
 			path = tool;
-			sourceTree = "<group>";
-		};
-		CD3A89D021F05DD3003B9803 /* MRLoadingView */ = {
-			isa = PBXGroup;
-			children = (
-				CD3A8A0521F05DF3003B9803 /* MRLoadingView.h */,
-				CD3A8A0621F05DF3003B9803 /* MRLoadingView.m */,
-				CD3A8A0821F05E17003B9803 /* MRLoadingViewManager.h */,
-				CD3A8A0921F05E17003B9803 /* MRLoadingViewManager.m */,
-			);
-			path = MRLoadingView;
 			sourceTree = "<group>";
 		};
 		CD45EDFD21C77E1A00846B39 /* Products */ = {
@@ -3929,6 +3914,7 @@
 				BF2CCF8D22A5160500A5AD0D /* home_tab_0.png in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				5068363D21379B78001AB175 /* SGQRCode.bundle in Resources */,
+				015206D8236863FF00CA8E14 /* loading.json in Resources */,
 				C4F2E42522BE303100FF6213 /* btn_cancel_a@2x.png in Resources */,
 				C48634F722C1B6A00096C8EC /* edit_img_bg@2x.png in Resources */,
 				C4F2E42E22BE303100FF6213 /* camera_focus_red.png in Resources */,
@@ -4088,7 +4074,6 @@
 				5068362E21379B78001AB175 /* JRLoadingAndToastTool.m in Sources */,
 				5068361221379B78001AB175 /* UIView+captureSceen.m in Sources */,
 				017FB44722FBAE8C003677B4 /* OtherArticleCell.m in Sources */,
-				CD3A8A0A21F05E17003B9803 /* MRLoadingViewManager.m in Sources */,
 				0157967222FAB01400122524 /* MBScrollView.m in Sources */,
 				C4F2E46522BE303100FF6213 /* IJSIImputTextView.m in Sources */,
 				CD8FA23B2328C5FE00535B8D /* RCTRefreshLayout.m in Sources */,
@@ -4245,7 +4230,6 @@
 				C4F2E46E22BE303100FF6213 /* IJSAssetModel.m in Sources */,
 				CD5EB149221EA933007AAEE0 /* ShowCollectionReusableView.m in Sources */,
 				017FB50122FBAF8F003677B4 /* AliyunIConfig.m in Sources */,
-				CD3A8A0721F05DF3003B9803 /* MRLoadingView.m in Sources */,
 				C4F2E45722BE303100FF6213 /* IJSVideoCutController.m in Sources */,
 				C4F2E48422BE303100FF6213 /* TOCropViewControllerTransitioning.m in Sources */,
 				0157967622FAB01400122524 /* MBVideoHeaderView.m in Sources */,

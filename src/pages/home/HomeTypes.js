@@ -129,8 +129,10 @@ export const ContentType = {
 };
 
 
-export function topicAdOnPress(data, item, p, title, orderTrackParams) {
+export function topicAdOnPress(data, item, p, title) {
     let p2 = {};
+    let orderTrackParams = data.orderTrackParams;
+    data.topicTrack && data.topicTrack();
     let linkValues = item.linkValue;
     let linkType = item.linkType;
     let linkValue = '';
@@ -194,6 +196,8 @@ export function topicAdOnPress(data, item, p, title, orderTrackParams) {
         p.contentValue = title || '';
         track(trackEvent.SpecialTopicBtnClick, { ...p });
     }
+
+
 }
 
 /**
@@ -201,7 +205,7 @@ export function topicAdOnPress(data, item, p, title, orderTrackParams) {
  * @param data
  * @returns {Promise<*[]>}
  */
-export function asyncHandleTopicData(data,source,index = 0, itemIndex) {
+export function asyncHandleTopicData(data,source,index = 0, itemIndex, topicTrack) {
     data = data.data || {}
     let config = data.config || {}
     let topicCode = config.topicCode;
@@ -218,6 +222,7 @@ export function asyncHandleTopicData(data,source,index = 0, itemIndex) {
     for (let index = 0; index < count; index++) {
         let item = data[index];
         item.orderTrackParams = orderTrackParams;
+        item.topicTrack = topicTrack;
         if (item.type === homeType.custom_goods) {
             item.itemHeight = GoodsCustomViewGetHeight(item);
             item.marginBottom = ScreenUtils.autoSizeWidth(0);

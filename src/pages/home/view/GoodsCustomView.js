@@ -84,7 +84,7 @@ export default class GoodsCustomView extends React.Component {
                     {
                         showMore.visible ?
                             <TouchableWithoutFeedback onPress={() => {
-                                topicAdOnPress(data, showMore, null, '', data.orderTrackParams);
+                                topicAdOnPress(data, showMore, null, '');
                             }}>
                                 <View style={[style, { alignItems: 'center', justifyContent: 'center' }]}>
                                     <Image source={shouye_icon_gengduo}
@@ -621,7 +621,7 @@ export default class GoodsCustomView extends React.Component {
     }
 
     gotoProduceDetail(item, i) {
-        topicAdOnPress({}, { linkType: 1, linkValue: [item.prodCode] }, this.props.p, item.name, this.props.data.orderTrackParams);
+        topicAdOnPress(this.props.data, { linkType: 1, linkValue: [item.prodCode] }, this.props.p, item.name);
 
     }
 
