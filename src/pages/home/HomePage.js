@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, DeviceEventEmitter, Platform, StyleSheet, View } from 'react-native';
+import { Animated, DeviceEventEmitter, StyleSheet, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './model/Modules';
 import HomeSearchView from './view/HomeSearchView';
@@ -10,7 +10,7 @@ import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 import { homeTabManager } from './manager/HomeTabManager';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModalView, { HomeAdModal } from './view/HomeMessageModalView';
+import HomeMessageModalView from './view/HomeMessageModalView';
 import { limitGoModule } from './model/HomeLimitGoModel';
 import PraiseModel from './view/PraiseModel';
 import ScrollableTabView from '@mr/react-native-scrollable-tab-view';
@@ -243,7 +243,6 @@ class HomePage extends BasePage {
                 <PraiseModel/>
                 <UserLevelModalView/>
                 <IntervalMsgView pageType={IntervalType.home}/>
-                {Platform.OS !== 'ios' ? <HomeAdModal/> : null}
                 <HomeMessageModalView/>
                 <VersionUpdateModalView/>
             </View>
