@@ -2,17 +2,11 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ScreenUtil from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
-import { homeModule } from '../model/Modules';
-import { observer } from 'mobx-react';
 
 const { px2dp } = ScreenUtil;
 
-@observer
 export default class HomeTitleView extends Component {
     render() {
-        if (homeModule.goods.length === 0) {
-            return null;
-        }
         return (
             <View style={styles.titleView}>
                 <View style={styles.flag}/>
