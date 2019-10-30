@@ -49,6 +49,7 @@ export default class MemberProductModel {
     @observable purchaseTimes;
 
     @observable promotionInfoItem = {};
+    @observable promotionInfoItems = [];
 
     @computed get afterSaleLimitText() {
         let afterSaleLimitText = '';
@@ -134,6 +135,7 @@ export default class MemberProductModel {
             prodCode, activityCode, groupCode
         }).then((data) => {
             const dataList = data.data || [];
+            this.promotionInfoItems = dataList;
             this.promotionInfoItem = dataList[0] || {};
         });
     };

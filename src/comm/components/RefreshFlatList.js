@@ -319,7 +319,7 @@ export default class RefreshFlatList extends React.Component {
             return this.props.renderError(this.state.error || {});
         }
         if (this.state.loadingState) {
-            return <LoadingView style={{ paddingBottom: ScreenUtils.height / 2 - 25, justifyContent: 'flex-end' }}/>;
+            return (<LoadingView/>)
         }
         return (
             <FlatList

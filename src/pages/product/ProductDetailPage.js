@@ -280,11 +280,18 @@ export default class ProductDetailPage extends BasePage {
                 }
             });
         } else if (goType === 'pinGroup') {
+            const { productDetailAddressModel } = this.productDetailModel;
+            const { promotionInfoS } = productDetailAddressModel;
+            const activityList = promotionInfoS.map((item) => {
+                const { activityTag, promotionId, activityCode } = item;
+                return { activityTag, promotionId, activityCode };
+            });
             const { specImg, promotionPrice, propertyValues } = item;
             const { singleActivity } = this.productDetailModel;
             const { code, activityTag } = singleActivity || {};
             const { id, initiatorUserName } = this.groupItem || {};
             let orderProducts = [{
+                activityList,
                 productType: this.productDetailModel.type,
                 sgscm: this.productDetailModel.sgscm,
                 sgspm: this.productDetailModel.sgspm,
