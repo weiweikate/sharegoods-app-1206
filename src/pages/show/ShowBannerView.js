@@ -7,7 +7,8 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
     NativeModules,
-    NativeEventEmitter
+    NativeEventEmitter,
+    Platform
 } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 import UIImage from '@mr/image-placeholder';
@@ -121,7 +122,7 @@ export default class ShowBannerView extends Component {
             items.push(value.image);
         });
 
-        return <View style={{ height,width, marginTop: px2dp(10), marginBottom: px2dp(ScreenUtils.isIOS ? 5 : 0)}}>
+        return <View style={{ height,width: Platform.OS === 'ios' ? ScreenUtils.width : width, marginTop: px2dp(10), marginBottom: px2dp(ScreenUtils.isIOS ? 5 : 0)}}>
             {
                 bannerList.length === 1
                     ?
