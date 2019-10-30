@@ -10,7 +10,7 @@ const { px2dp } = ScreenUtil;
 @observer
 export default class HomeTitleView extends Component {
     render() {
-        if (homeModule.goods.length === 0) {
+        if (homeModule.goods.length === 0 && this.props.title === '为你推荐') {
             return null;
         }
         return (
