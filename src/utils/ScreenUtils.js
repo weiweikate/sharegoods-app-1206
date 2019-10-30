@@ -119,7 +119,13 @@ function getImgHeightWithWidth(size: Size, width: number = deviceWidth): number 
     return size.height * width / size.width;
 }
 
+const statusBarHeight = Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : RNDeviceInfo.statusBarHeight;
+// 单位转换后的高度
+const statusHeightFix2Width = Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? autoSizeWidth(44) : autoSizeWidth(20)) : RNDeviceInfo.statusBarHeight;
+
+
 export default {
+    statusHeightFix2Width,
     px2dp,
     setBarShow,
     getBarShow,
@@ -136,17 +142,17 @@ export default {
     height: deviceHeight,
     pixelRatio: PixelRatio.get(),
     onePixel: 1 / PixelRatio.get(),
-    statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? autoSizeWidth(44) : autoSizeWidth(20)) : RNDeviceInfo.statusBarHeight,
+    statusBarHeight,
     // 44为头部不包含状态栏高度
-    headerHeight: (Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? autoSizeWidth(44) : autoSizeWidth(20)) : RNDeviceInfo.statusBarHeight) + autoSizeWidth(44),
-    tabBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? autoSizeWidth(83) : autoSizeWidth(49)) : autoSizeWidth(49),
-    tabBarHeightMore: this.tabBarHeight - autoSizeWidth(49),
+    headerHeight: statusBarHeight + 44,
+    tabBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 83 : 49) : 49,
+    tabBarHeightMore: this.tabBarHeight - 49,
     isIOS: Platform.OS === 'ios',
     isIOSSmall: Platform.OS === 'ios' && deviceHeight === 568,// phoneSE,phone4,phone5,phone5s
     isIOSNomarl: Platform.OS === 'ios' && deviceHeight === 667,// phone6,phone7,phone8
     isIOSP: Platform.OS === 'ios' && deviceHeight === 736,//phone6p,phone7p,phone8p
     isIOSX: Platform.OS === 'ios' && deviceHeight === 812,
-    safeBottom: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? autoSizeWidth(36) : 0) : 0,
+    safeBottom: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 36 : 0) : 0,
     isIphoneMax: __ISIPHONEXSMAX__,
     isIphonex: __ISIPHONEX__,
     // saveMarginBottom: Platform.OS === 'ios' && (deviceHeight === 812 || deviceHeight === 736) ? 34 : 0

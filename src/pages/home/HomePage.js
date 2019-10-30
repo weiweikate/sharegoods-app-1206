@@ -38,7 +38,6 @@ import { homeNewUserModel } from './model/HomeNewUserModel';
  * @org www.sharegoodsmall.com
  * @email zhangjian@meeruu.com
  */
-
 @observer
 class HomePage extends BasePage {
 
@@ -189,12 +188,16 @@ class HomePage extends BasePage {
                                                key={'id' + item.id}/>);
             }
         });
+        const headerHeight = ScreenUtils.statusHeightFix2Width + ScreenUtils.autoSizeWidth(44);
 
         return (
-            <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
+            <View style={[styles.container, {
+                minHeight: headerHeight + ScreenUtils.autoSizeWidth(40),
+                minWidth: 1
+            }]}>
                 <View style={{
                     width: ScreenUtils.width,
-                    height: ScreenUtils.headerHeight,
+                    height: headerHeight,
                     position: 'absolute',
                     backgroundColor: StringUtils.isEmpty(homeModule.statusImg) ? 'white' : 'transparent',
                     left: 0,
@@ -203,7 +206,7 @@ class HomePage extends BasePage {
                     <ImageLoad
                         style={{
                             width: ScreenUtils.width,
-                            height: ScreenUtils.statusBarHeight
+                            height: ScreenUtils.statusHeightFix2Width
                         }}
                         source={{ uri: homeModule.statusImg }}
                         showPlaceholder={false}/>
