@@ -194,7 +194,6 @@ class HomePage extends BasePage {
             <View style={[styles.container, { minHeight: headerHeight, minWidth: 1 }]}>
                 <View style={{
                     width: ScreenUtils.width,
-                    height: headerHeight,
                     position: 'absolute',
                     backgroundColor: StringUtils.isEmpty(homeModule.statusImg) ? 'white' : 'transparent',
                     left: 0,
