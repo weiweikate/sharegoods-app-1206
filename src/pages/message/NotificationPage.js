@@ -14,6 +14,8 @@ import MessageApi from './api/MessageApi';
 import Toast from '../../utils/bridge';
 import DesignRule from '../../constants/DesignRule';
 import RES from './res';
+import {PageLoadingState} from '../../components/pageDecorator/PageState';
+
 const emptyIcon = RES.message_empty;
 const {px2dp} = ScreenUtils;
 export default class NotificationPage extends BasePage {
@@ -21,7 +23,10 @@ export default class NotificationPage extends BasePage {
         super(props);
         this.state = {
             viewData: [],
-            isEmpty: false
+            isEmpty: false,
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: null
+
         };
         this.currentPage = 1;
     }
@@ -38,6 +43,19 @@ export default class NotificationPage extends BasePage {
     $isMonitorNetworkStatus() {
         return true;
     }
+
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            loadingProps:{
+                style:{paddingTop:ScreenUtils.height/2-100, justifyContent:'flex-start'}
+            },
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: this.loadPageData
+            }
+        };
+    };
 
     renderItem = ({ item, index }) => {
         return (this.renderNoticeItem({
@@ -78,10 +96,8 @@ export default class NotificationPage extends BasePage {
     //type:200
 
     loadPageData = () => {
-        Toast.showLoading();
         MessageApi.queryNotice({ page: 1, pageSize: 10, type: 200 }).then(res => {
             DeviceEventEmitter.emit('contentViewed');
-            Toast.hiddenLoading();
             if (res.data.data) {
                 let arrs = [];
                 res.data.data.map((item, index) => {
@@ -94,19 +110,30 @@ export default class NotificationPage extends BasePage {
                 });
                 if (arrs.length > 0) {
                     this.setState({
-                        viewData: arrs
+                        viewData: arrs,
+                        netFailedInfo: null,
+                        loadingState: PageLoadingState.success
                     });
                 } else {
-                    this.setState({ isEmpty: true });
+                    this.setState({
+                        isEmpty: true,
+                        netFailedInfo: null,
+                        loadingState: PageLoadingState.success });
                 }
 
             } else {
-                this.setState({ isEmpty: true });
+                this.setState({
+                    isEmpty: true,
+                    netFailedInfo: null,
+                    loadingState: PageLoadingState.success });
             }
 
         }).catch(error => {
-            Toast.hiddenLoading();
-            this.setState({ isEmpty: true });
+            this.setState({
+                isEmpty: true,
+                netFailedInfo: error,
+                loadingState: PageLoadingState.fail
+            });
             this.$toastShow(error.msg);
         });
     };

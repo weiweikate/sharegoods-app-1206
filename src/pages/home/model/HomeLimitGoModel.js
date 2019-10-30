@@ -1,10 +1,14 @@
 import { action, computed, flow, observable } from 'mobx';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import { homeType } from '../HomeTypes';
+import { asyncHandleTopicData, homeType } from '../HomeTypes';
 import { homeModule } from './Modules';
 import HomeApi from '../api/HomeAPI';
 import { differenceInCalendarDays, format } from 'date-fns';
 import bridge from '../../../utils/bridge';
+import StringUtils from '../../../utils/StringUtils';
+import { getSize } from '../../../utils/OssHelper';
+import { HomeSource } from '../../../utils/OrderTrackUtil';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 
@@ -18,26 +22,46 @@ export const limitStatus = {
 };
 
 export class LimitGoModules {
+    //所有限时购的数据
     @observable spikeList = [];
-    @observable currentGoodsList = [];
-    @observable initialPage = 0;
+    //当前也数据
+    currentGoodsList = [];
+    //当前在哪一页
     @observable currentPage = -1;
+    //是否显示免单
     @observable isShowFreeOrder = false;
+    @observable tabWidth = 0;
 
-    @computed get limitHeight() {
-        const len = (this.currentGoodsList && this.currentGoodsList.length) || 0;
-        let height = 0;
-        if (len > 0) {
-            height = px2dp(97) + len * px2dp(130) + (len - 1) * px2dp(10);
-        } else {
-            height = px2dp(97);
-        }
-
+    /**
+     * 返回限时购顶部高度
+     * @returns {Number}
+     */
+    @computed get limitTopHeight() {
+        let height = px2dp(42);
         if (this.isShowFreeOrder) {
             height += px2dp(50);
         }
         return height;
     }
+
+    /**
+     * 返回限时购时间组件的高度
+     * @returns {Number}
+     */
+    @computed get limitTimeHeight() {
+        return px2dp(55);
+    }
+
+    /**
+     * 选中限时购
+     * @param index 选中限时购的下巴
+     */
+    @action changeLimitGo(index) {
+        this.currentGoodsList = (this.spikeList[index] && this.spikeList[index].goods) || [];
+        this.currentPage = index;
+        homeModule.changelimitGoods(this.currentGoodsList);
+    }
+
 
     @action loadLimitGo = flow(function* (change) {
         HomeApi.freeOrderSwitch().then((data) => {
@@ -48,21 +72,27 @@ export class LimitGoModules {
             if (!isShowResult.data) {
                 this.spikeList = [];
                 this.currentGoodsList = [];
-                this.initialPage = 0;
                 this.currentPage = -1;
                 throw new Error('不显示秒杀');
             } else {
                 const res = yield HomeApi.getLimitGo({
                     type: 0
                 });
-                const result = res.data || [];
+                let result = res.data || [];
+                result = yield this._handleData(result);
+
                 let _spikeList = [];
                 let timeFormats = [];
 
                 let spikeTime = 0;     // 秒杀开始时间
                 let lastSeckills = 0;  // 最近的秒杀
-                let _initialPage = 0;  // 初始page
                 let _currentPage = -1; // 当前page
+                let labelUrl = (result[0] && result[0].labelUrl);
+                if (StringUtils.isNoEmpty(labelUrl)) {
+                    getSize(labelUrl, (width, height) => {
+                        this.tabWidth = width * px2dp(18) / height;
+                    });
+                }
                 result.map((data, index) => {
                     spikeTime = (result[index] && result[index].simpleActivity.startTime) || 0;
                     const date = (result[index] && result[index].simpleActivity.currentTime) || 0;
@@ -71,12 +101,10 @@ export class LimitGoModules {
 
                     if (lastSeckills === 0) {
                         lastSeckills = diffTime;
-                        _initialPage = index;
                         _currentPage = index;
                     } else if (lastSeckills !== 0) {
                         if (lastSeckills > diffTime && date >= parseInt(spikeTime, 0)) {
                             lastSeckills = diffTime;
-                            _initialPage = index;
                             _currentPage = index;
                         }
                     }
@@ -105,13 +133,13 @@ export class LimitGoModules {
                         title: title,
                         id: index,
                         time: timeFormat,
-                        diff: diff,
+                        diff,
+                        labelUrl,
                         activityCode: (result[index] && result[index].simpleActivity.code) || '',
                         goods: (result[index] && result[index].productDetailList) || []
                     });
                     timeFormats.push(timeFormat);
                 });
-                this.initialPage = _initialPage;
 
                 let currentTimeFormat = null;
                 //获取当前选中限时购的名称
@@ -130,10 +158,7 @@ export class LimitGoModules {
                 }
                 this.spikeList = _spikeList;
                 this.currentGoodsList = (_spikeList[this.currentPage] && _spikeList[this.currentPage].goods) || [];
-                homeModule.changeHomeList(homeType.limitGo, [{
-                    id: 6,
-                    type: homeType.limitGo
-                }]);
+                homeModule.changelimitGoods(this.currentGoodsList);
             }
         } catch (error) {
             console.log(error);
@@ -162,14 +187,44 @@ export class LimitGoModules {
         });
     }
 
-    @action changeLimitGo(index) {
-        this.currentGoodsList = (this.spikeList[index] && this.spikeList[index].goods) || [];
-        this.currentPage = index;
-        homeModule.changeHomeList(homeType.limitGo, [{
-            id: 6,
-            type: homeType.limitGo
-        }]);
+    _handleData(data) {
+        let promises = [];
+        data.forEach((sbuData, i) => {
+            (sbuData.productDetailList || []).forEach((item, index) => {
+                //处理自定义专题
+                if (item.specialSubject) {
+                    promises.push(asyncHandleTopicData({ data: item.specialSubject},HomeSource.limitGo,i, index, this.topicTrack(i,index)).then((data) => {
+                        //将处理完的数组插回原来的数组，替代原来老自定义专题数据
+                        sbuData.productDetailList.splice(sbuData.productDetailList.indexOf(item), 1, ...data);
+                    }));
+                    //处理限时购商品数据
+                } else if (!item.type) {
+                    item.type = homeType.limitGoGoods;
+                    item.index = index;
+                    //第一个marginTop为0,其余都为10
+                    item.itemHeight = (index === 0 ? px2dp(130) : px2dp(140));
+                    item.marginTop = (index === 0 ? px2dp(0) : px2dp(10));
+                }
+            });
+        });
+
+        return Promise.all(promises).then(() => {
+            return data;
+        });
     }
+
+    topicTrack=(i, index)=>()=>{
+        // 限时购商品点击埋点
+        let activityData = this.spikeList[i];
+        track(trackEvent.SpikeProdClick,
+            {
+                'timeRangeId': activityData.activityCode,
+                'timeRange': activityData.time,
+                'timeRangeStatus': activityData.title,
+                'productIndex': index
+            });
+    }
+
 }
 
 export const limitGoModule = new LimitGoModules();

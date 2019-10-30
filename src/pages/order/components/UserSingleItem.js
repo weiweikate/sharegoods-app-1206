@@ -29,7 +29,7 @@ const UserSingleItem = props => {
         onPress = () => {
 
         },
-        marginLeft = 15
+        marginLeft = 10
     } = props;
     const styles = StyleSheet.create({
         containerStyle: {
@@ -46,7 +46,7 @@ const UserSingleItem = props => {
             marginRight: 15
         },
         rightText_noCircle: {
-            justifyContent: 'center', alignItems: 'center', marginRight: 15
+            justifyContent: 'center', alignItems: 'center', marginRight: 10
         }
     });
 
@@ -73,7 +73,7 @@ const UserSingleItem = props => {
     };
     this.renderArrow = () => {
         return (!isArrow ? null :
-                <View style={{ justifyContent: 'center', marginRight: 15, flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ justifyContent: 'center', marginRight: 10, flexDirection: 'row', alignItems: 'center' }}>
                     {this.renderheadImage()}
                     <Image source={right_arrow} style={{ width: 8, height: 15 }}/>
                 </View>

@@ -1,20 +1,11 @@
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { BottomTabBar, createBottomTabNavigator } from 'react-navigation-tabs';
 import React, { Component } from 'react';
-import {
-    DeviceEventEmitter,
-    Image,
-    ImageBackground,
-    StyleSheet,
-    Text,
-    TouchableWithoutFeedback,
-    View
-} from 'react-native';
+import { DeviceEventEmitter, Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
 import IsShowNewStore from '../pages/store/IsShowNewStore';
 import res from '../comm/res';
-import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
 import settingModel from '../pages/mine/model/SettingModel';
@@ -23,13 +14,20 @@ import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import Animation from 'lottie-react-native';
-import RouterMap, { navigateBackToStore } from './RouterMap';
-
+import RouterMap from './RouterMap';
+import { homeModule } from '../pages/home/model/Modules';
+import StringUtils from '../utils/StringUtils';
 
 @observer
 class NormalTab extends Component {
     render() {
         const { source, title } = this.props;
+        const { expand } = homeModule.bottomIcons[0] || {};
+        const { navColor } = StringUtils.str2Json(expand);
+        let tabColor = '#fff';
+        if (['#fff', '#ffffff', '#FFFFFF', '#FFF', 'white'].includes(navColor)) {
+            tabColor = '#666';
+        }
         return <View style={styles.tab}>
             <View>
                 <Image style={styles.tabBarIcon} source={source}/>
@@ -37,48 +35,74 @@ class NormalTab extends Component {
                     || settingModel.coupons > 0 || settingModel.fansMSG > 0 || settingModel.mainTask > 0) ?
                     <Image source={res.other.dot} style={styles.mineDot}/> : null}
             </View>
-            <Text style={styles.text}>{title}</Text>
+            <Text
+                style={[styles.text, { color: StringUtils.isEmpty(navColor) ? '#666' : tabColor }]}
+            >{title}</Text>
         </View>;
     }
 }
 
+@observer
 class ActiveTab extends Component {
+
     render() {
         const { source, title } = this.props;
+        const { expand } = homeModule.bottomIcons[0] || {};
+        const { navColor } = StringUtils.str2Json(expand);
+        let tabColor = '#fff';
+        if (['#fff', '#ffffff', '#FFFFFF', '#FFF', 'white'].includes(navColor)) {
+            tabColor = '#666';
+        }
         return <View style={styles.tab}>
             <Image style={styles.tabBarIcon} source={source}/>
-            <Text style={styles.text}>{title}</Text>
+            <Text
+                style={[styles.text, { color: StringUtils.isEmpty(navColor) ? '#666' : tabColor }]}
+            >{title}</Text>
         </View>;
     }
 }
 
-const Tab = ({ focused, activeSource, normalSource, title }) => {
-    if (focused) {
-        return <ActiveTab source={activeSource} title={title}/>;
+@observer
+class Tab extends Component {
+    render() {
+        if (this.props.focused) {
+            return <ActiveTab source={this.props.activeSource} title={this.props.title}/>;
+        }
+        return <NormalTab source={this.props.normalSource} title={this.props.title}/>;
     }
-    return <NormalTab source={normalSource} title={title}/>;
-};
+}
 
 @observer
 class HomeTab extends Component {
 
     render() {
-        if (!homeTabManager.homeFocus || !this.props.focus) {
-            return <Tab normalSource={res.tab.home_n} title={'首页'}/>;
+        const { assistantImage, image } = homeModule.bottomIcons[0] || {};
+        if (StringUtils.isNoEmpty(assistantImage)) {
+            return <Tab
+                normalSource={{ uri: assistantImage }}
+                activeSource={{ uri: image }}
+                focused={homeTabManager.homeFocus || this.props.focused}
+                title={'首页'}/>;
+        } else {
+            if (!homeTabManager.homeFocus || !this.props.focused) {
+                return <Tab
+                    normalSource={res.tab.home_n}
+                    title={'首页'}/>;
+            }
+            return (
+                <ImageBackground style={styles.home} source={res.tab.home_s_bg}>
+                    <Animation
+                        ref={animation => {
+                            this.animation = animation;
+                        }}
+                        style={styles.home}
+                        loop={false}
+                        enableMergePathsAndroidForKitKatAndAbove={true}
+                        imageAssetsFolder={'lottie/home'}
+                        source={require('./tab_to_top.json')}/>
+                </ImageBackground>
+            );
         }
-        return (
-            <ImageBackground style={styles.home} source={res.tab.home_s_bg}>
-                <Animation
-                    ref={animation => {
-                        this.animation = animation;
-                    }}
-                    style={styles.home}
-                    loop={false}
-                    enableMergePathsAndroidForKitKatAndAbove={true}
-                    imageAssetsFolder={'lottie/home'}
-                    source={require('./tab_to_top.json')}/>
-            </ImageBackground>
-        );
     }
 
     observeAboveRecommend = autorun(() => {
@@ -92,84 +116,19 @@ class HomeTab extends Component {
     }, { delay: 50 });
 }
 
-const gotoMyShop = () => {
-    navigateBackToStore();
-};
-
-const ShowFlag = () =>
-
-    <TouchableWithoutFeedback onPress={() => {
-        gotoMyShop();
-    }}>
-        <View
+@observer
+export class TabBarComponent extends Component {
+    render() {
+        const { expand } = homeModule.bottomIcons[0] || {};
+        const { navColor } = StringUtils.str2Json(expand);
+        return <BottomTabBar
+            {...this.props}
             style={{
-                position: 'absolute',
-                width: ScreenUtils.width,
-                height: ScreenUtils.width * 254 / 559,
-                bottom: ScreenUtils.safeBottom + 46
-            }}>
-            <Animation
-                style={styles.shopFlag}
-                autoPlay={true}
-                loop={true}
-                enableMergePathsAndroidForKitKatAndAbove={true}
-                hardwareAccelerationAndroid={true}
-                source={require('./pin_flag.json')}/>
-        </View>
-    </TouchableWithoutFeedback>;
-
-@observer
-export class SpellShopFlag extends Component {
-
-    render() {
-        if (!this.props.isShowFlag) {
-            return null;
-        }
-        if (!user) {
-            return null;
-        }
-        if (!user.isLogin) {
-            return null;
-        }
-        if (user.levelRemark >= 'V2' && !user.storeCode) {
-            return <ShowFlag/>;
-        }
-        if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
-            return <ShowFlag/>;
-        }
-        return null;
-    }
-}
-
-const ShowTab = () =>
-    <TouchableWithoutFeedback onPress={() => {
-        gotoMyShop();
-    }}>
-        <Image
-            style={styles.shopTab}
-            source={require('./pin_tab.png')}/>
-    </TouchableWithoutFeedback>;
-
-@observer
-export class SpellShopTab extends Component {
-    render() {
-        if (!this.props.isShowTab) {
-            return null;
-        }
-        if (!user) {
-            return null;
-        }
-        if (!user.isLogin) {
-            return null;
-        }
-        if (user.levelRemark >= 'V2' && !user.storeCode) {
-            return <ShowTab/>;
-        }
-        if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
-            return <ShowTab/>;
-        }
-
-        return null;
+                backgroundColor: StringUtils.isEmpty(navColor) ? '#fff' : navColor,
+                height: 48,
+                borderTopWidth: 0.2,
+                borderTopColor: '#ccc'
+            }}/>;
     }
 }
 
@@ -178,7 +137,9 @@ export const TabNav = createBottomTabNavigator(
         HomePage: {
             screen: Home,
             navigationOptions: {
-                tabBarIcon: ({ focused }) => <HomeTab title={'首页'} focus={focused}/>,
+                tabBarIcon: ({ focused }) => <HomeTab
+                    focused={focused}
+                    title={'首页'}/>,
                 tabBarOnPress: ({ navigation }) => {
                     if (navigation.isFocused()) {
                         DeviceEventEmitter.emit('retouch_home');
@@ -192,8 +153,16 @@ export const TabNav = createBottomTabNavigator(
             screen: ShowListPage,
             navigationOptions: {
                 tabBarLabel: '秀场',
-                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.discover_n}
-                                                  activeSource={res.tab.discover_s} title={'秀场'}/>,
+                tabBarIcon: ({ focused }) => {
+                    const { assistantImage, image } = homeModule.bottomIcons[1] || {};
+                    return <Tab
+                        focused={focused}
+                        normalSource={StringUtils.isEmpty(assistantImage) ?
+                            res.tab.discover_n : { uri: assistantImage }}
+                        activeSource={StringUtils.isEmpty(image) ?
+                            res.tab.discover_s : { uri: image }}
+                        title={'秀场'}/>;
+                },
                 tabBarOnPress: ({ navigation }) => {
                     if (navigation.isFocused()) {
                         DeviceEventEmitter.emit('retouch_show');
@@ -207,23 +176,45 @@ export const TabNav = createBottomTabNavigator(
             screen: IsShowNewStore,
             navigationOptions: {
                 tabBarIcon: ({ focused }) => {
-                    return <Tab focused={focused} normalSource={res.tab.group_n} activeSource={res.tab.group_s}
-                                title={'拼店'}/>;
+                    const { assistantImage, image } = homeModule.bottomIcons[2] || {};
+                    return <Tab
+                        focused={focused}
+                        normalSource={StringUtils.isEmpty(assistantImage) ?
+                            res.tab.group_n : { uri: assistantImage }}
+                        activeSource={StringUtils.isEmpty(image) ?
+                            res.tab.group_s : { uri: image }}
+                        title={'拼店'}/>;
                 }
             }
         },
         ShopCartPage: {
             screen: ShopCart,
             navigationOptions: {
-                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.cart_n}
-                                                  activeSource={res.tab.cart_s} title={'购物车'}/>
+                tabBarIcon: ({ focused }) => {
+                    const { assistantImage, image } = homeModule.bottomIcons[3] || {};
+                    return <Tab
+                        focused={focused}
+                        normalSource={StringUtils.isEmpty(assistantImage) ?
+                            res.tab.group_n : { uri: assistantImage }}
+                        activeSource={StringUtils.isEmpty(image) ?
+                            res.tab.cart_s : { uri: image }}
+                        title={'购物车'}/>;
+                }
             }
         },
         MinePage: {
             screen: Mine,
             navigationOptions: {
-                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.mine_n}
-                                                  activeSource={res.tab.mine_s} title={'我的'}/>,
+                tabBarIcon: ({ focused }) => {
+                    const { assistantImage, image } = homeModule.bottomIcons[4] || {};
+                    return <Tab
+                        focused={focused}
+                        normalSource={StringUtils.isEmpty(assistantImage) ?
+                            res.tab.mine_n : { uri: assistantImage }}
+                        activeSource={StringUtils.isEmpty(image) ?
+                            res.tab.mine_s : { uri: image }}
+                        title={'我的'}/>;
+                },
                 tabBarOnPress: ({ navigation }) => {
                     if (!navigation.isFocused()) {
                         if (user && user.isLogin) {
@@ -248,17 +239,13 @@ export const TabNav = createBottomTabNavigator(
             pressColor: '#788493',
             //按下tab bar时的不透明度(仅支持iOS和Android < 5.0).
             pressOpacity: 0.8,
-            //tab bar的样式
-            style: {
-                backgroundColor: '#fff',
-                height: 48,
-                borderTopWidth: 0.2,
-                borderTopColor: '#ccc'
-            },
             allowFontScaling: false,
             //tab 页指示符的样式 (tab页下面的一条线).
             indicatorStyle: { height: 0 }
         },
+        tabBarComponent: props => (
+            <TabBarComponent {...props} />
+        ),
         //tab bar的位置, 可选值： 'top' or 'bottom'
         tabBarPosition: 'bottom',
         //是否允许滑动切换tab页
@@ -284,9 +271,8 @@ const styles = StyleSheet.create({
         height: 40
     },
     text: {
-        color: '#666',
         fontSize: 11,
-        marginTop: 4,
+        marginTop: 2,
         width: 60,
         textAlign: 'center'
     },
@@ -301,16 +287,6 @@ const styles = StyleSheet.create({
         marginTop: 4,
         width: 60,
         textAlign: 'center'
-    },
-    shopFlag: {
-        flex: 1
-    },
-    shopTab: {
-        position: 'absolute',
-        width: 44,
-        height: 44,
-        left: (ScreenUtils.width / 2) - 22,
-        bottom: ScreenUtils.safeBottom
     },
     mineDot: {
         position: 'absolute',

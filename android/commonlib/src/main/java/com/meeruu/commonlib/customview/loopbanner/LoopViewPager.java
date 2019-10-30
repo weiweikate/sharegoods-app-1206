@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class LoopViewPager extends RecyclerView {
 
-    private static final int FLING_MAX_VELOCITY = 3000; // 最大顺时滑动速度
+    private static final int FLING_MAX_VELOCITY = 5000; // 最大顺时滑动速度
     private static boolean mEnableLimitVelocity = true; // 最大顺时滑动速度
 
     public LoopViewPager(Context context) {

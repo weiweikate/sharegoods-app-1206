@@ -1,4 +1,4 @@
-import { Image, StyleSheet, TouchableOpacity, View, Alert } from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View, Alert, DeviceEventEmitter} from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import MineAPI from '../../api/MineApi';
@@ -43,7 +43,6 @@ export default class AddressManagerPage extends BasePage {
             return;
         }
         this.$navigate(RouterMap.AddressEditAndAddPage, {
-            refreshing: this.refreshing.bind(this),
             from: 'add'
         });
     };
@@ -61,6 +60,17 @@ export default class AddressManagerPage extends BasePage {
         };
         this.limitCount = 20;
         this.count = 0;
+    }
+
+    componentDidMount() {
+        this.listener = DeviceEventEmitter.addListener('addressRefreshing',()=>{
+            this.refreshing();
+        });
+
+    }
+
+    componentWillUnmount() {
+        this.listener&&this.listener.remove();
     }
 
     refreshing() {
@@ -209,17 +219,20 @@ export default class AddressManagerPage extends BasePage {
     _onEditAddress = (item, index) => {
         // 编辑地址页面
         this.$navigate(RouterMap.AddressEditAndAddPage, {
-            refreshing: this.refreshing.bind(this),
             from: 'edit',
             receiver: item.receiver,
             tel: item.receiverPhone + '',
             address: item.address,
             id: item.id,
-            areaText: item.province + item.city + (item.area || ''),
+            areaText: item.province + item.city + (item.area || '') + (item.street || ''),
             provinceCode: item.provinceCode,
+            province: item.province || '',
             cityCode: item.cityCode,
+            city: item.city || '',
             areaCode: item.areaCode,
+            area: item.area||'',
             streetCode: item.streetCode,
+            street: item.street || '',
             isDefault: index === this.state.selectIndex
         });
     };
@@ -227,9 +240,7 @@ export default class AddressManagerPage extends BasePage {
     _onDelAddress = (item) => {
         Alert.alert('', '是否确认删除此地址？', [
             {
-                text: '取消', onPress: () => {
-                    style: 'cancel';
-                }
+                text: '取消', onPress: () => {}
             },
             {
                 text: '确定', onPress: () => {

@@ -196,6 +196,9 @@ export default class ProductDetailModel {
     @observable title;
 
     /**营销活动**/
+
+        //首单标签
+    @observable rebateTag;
     /*显示新活动 1显示*/
     @observable show;
     //显示新活动 文案
@@ -283,11 +286,11 @@ export default class ProductDetailModel {
         }
     }
 
-    /*产品当前页是否使用活动价格  (直降 秒杀,新营销活动)进行中 (拼团未计算在内,因为有存在正常单独购买流程)*/
+    /*产品当前页是否使用活动价格  (直降 秒杀,新营销活动,新人)进行中 (拼团未计算在内,因为有存在正常单独购买流程)*/
     @computed get productIsPromotionPrice() {
-        const { activityType, activityStatus } = this;
+        const { activityType, activityStatus, activityTag } = this;
         let tempType = activityType === activity_type.skill || activityType === activity_type.verDown;
-        return (tempType && activityStatus === activity_status.inSell) || this.show;
+        return (tempType && activityStatus === activity_status.inSell) || this.show || (isNoEmpty(activityTag) && activityType !== activity_type.pinGroup);
     }
 
     @computed get isSkillIn() {
@@ -409,7 +412,10 @@ export default class ProductDetailModel {
     }
 
     @computed get levelText() {
-        const { priceType, activityStatus, activityType } = this;
+        const { priceType, activityStatus, activityType, rebateTag } = this;
+        if (isNoEmpty(rebateTag)) {
+            return rebateTag;
+        }
         if (this.show) {
             return this.showTag;
         }
@@ -422,11 +428,11 @@ export default class ProductDetailModel {
     @computed get sectionDataList() {
         const {
             promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel,
-            type, isGroupIn, productDetailSuitModel, isHuaFei, isPinGroupIn, singleActivity
+            type, isGroupIn, productDetailSuitModel, isHuaFei, isPinGroupIn, productGroupModel
         } = this;
         const { couponsList } = productDetailCouponsViewModel;
         const { activityCode } = productDetailSuitModel;
-        const { activityTag } = singleActivity;
+        const { showRule } = productGroupModel;
         /*头部*/
         let sectionArr = [
             { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
@@ -454,7 +460,7 @@ export default class ProductDetailModel {
         sectionArr.push({ key: sectionType.sectionSetting, data: settingList });
         /*拼团相关*/
         let groupList = [];
-        activityTag === 101106 && groupList.push({ itemKey: productItemType.groupIsOld });
+        showRule && groupList.push({ itemKey: productItemType.groupIsOld });
         groupList.push({ itemKey: productItemType.groupOpenPersonS });
         groupList.push({ itemKey: productItemType.groupProductList });
         isPinGroupIn && sectionArr.push({ key: sectionType.sectionGroup, data: groupList });
@@ -536,10 +542,12 @@ export default class ProductDetailModel {
             promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
             promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice,
             promotionAttentionNum, promotionSaleRate,
-            selfReturning, shareMoney, now, skuList, show, showTag
+            selfReturning, shareMoney, now, skuList, show, showTag, rebateTag, activityTag
         } = promotionInfo;
         this.showTag = showTag;
         this.show = show;
+        this.rebateTag = rebateTag;
+        this.activityTag = activityTag;
         const { singleActivity, groupActivity, tags } = promotionResult || {};
         this.singleActivity = singleActivity || {};
         this.groupActivity = groupActivity || {};
@@ -613,14 +621,15 @@ export default class ProductDetailModel {
         if (activityType !== activity_type.pinGroup) {
             return;
         }
-        const { code, activityTag } = singleActivity;
+        const { code } = singleActivity;
         this.productGroupModel.requestCheckStartJoinUser({
             prodCode: this.prodCode,
             activityCode: code,
-            activityTag
+            activityTag: singleActivity.activityTag
         });
         this.productGroupModel.requestGroupList({ prodCode: this.prodCode, activityCode: code });
         this.productGroupModel.requestGroupProduct({ activityCode: code, prodCode: this.prodCode });
+        this.productGroupModel.request_rule_info({ activityCode: code });
         this.productGroupModel.requestGroupDesc();
     };
 

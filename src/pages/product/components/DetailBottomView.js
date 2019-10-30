@@ -12,6 +12,7 @@ import { formatDate } from '../../../utils/DateUtils';
 import RouterMap, { routePush } from '../../../navigation/RouterMap';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { observer } from 'mobx-react';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
 
 const { xiangqing_btn_gouwuche_nor, jiarugouwuche_no, me_bangzu_kefu_icon } = res;
 const { px2dp } = ScreenUtils;
@@ -84,24 +85,39 @@ export default class DetailBottomView extends Component {
     };
 
     _renderAllBtn = () => {
-        const { isGroupIn, isPinGroupIn } = this.props.pData || {};
+        const { isGroupIn, isPinGroupIn, show, rebateTag } = this.props.pData || {};
+        //老礼包 || 拼团 || 会员权益 || 新人  不显示购物车
+        const noShowCart = isGroupIn || isPinGroupIn || show === 1 || isNoEmpty(rebateTag);
         return (
             <View style={styles.btnContainer}>
-                {this._renderShop()}
-                <View style={[styles.btnView, { width: (isGroupIn || isPinGroupIn) ? px2dp(292) : px2dp(260) }]}>
-                    {this._renderBuy()}
-                    {this._renderShow()}
-                </View>
+                {!noShowCart && this._renderShop()}
+                {
+                    isNoEmpty(rebateTag) ?
+                        <NoMoreClick
+                            style={styles.newPerson}
+                            onPress={() => {
+                                this.props.bottomViewAction('buy');
+                            }}>
+                            <LinearGradient
+                                style={[styles.LinearGradient]}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 0 }}
+                                colors={['#FC5D39', '#FF0050']}>
+                                <Text style={styles.outText}>{'立即购买'}</Text>
+                            </LinearGradient>
+                        </NoMoreClick>
+                        :
+                        <View style={[styles.btnView, { width: (noShowCart) ? px2dp(292) : px2dp(260) }]}>
+                            {this._renderBuy()}
+                            {this._renderShow()}
+                        </View>
+                }
             </View>
         );
     };
 
     _renderShop = () => {
-        const { orderOnProduct, isGroupIn, isHuaFei, isPinGroupIn } = this.props.pData || {};
-        //老礼包不显示购物车
-        if (isGroupIn || isPinGroupIn) {
-            return null;
-        }
+        const { orderOnProduct, isHuaFei } = this.props.pData || {};
         //不能加购
         const cantJoin = orderOnProduct === 0 || isHuaFei;
         return (
@@ -231,6 +247,11 @@ const styles = StyleSheet.create({
     },
     outText: {
         fontSize: 17, color: DesignRule.white
+    },
+
+    newPerson: {
+        flex: 1, marginRight: 15, overflow: 'hidden',
+        borderRadius: 20, height: 40, width: px2dp(260), backgroundColor: DesignRule.mainColor
     },
 
     /*按钮*/

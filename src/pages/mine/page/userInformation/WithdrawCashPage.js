@@ -460,30 +460,30 @@ export default class WithdrawCashPage extends BasePage {
         }
 
         if (!StringUtils.isNumber(money)) {
-            this.setState({ errorTip: '输入金额不可提现' });
+            this.setState({ errorTip: '输入积分不可提现' });
             return;
         }
 
         if ((parseFloat(money) > parseFloat(user.availableBalance))) {
-            this.setState({ errorTip: '输入金额超过可提现余额' });
+            this.setState({ errorTip: '输入积分超过可提现积分' });
             return;
         }
 
         if (parseFloat(money) === 0) {
-            this.setState({ errorTip: '输入金额不可提现' });
+            this.setState({ errorTip: '输入积分不可提现' });
             return;
         }
 
         if (this.state.multiple) {
             if (this.state.minCount !== null && !StringUtils.isEmpty(money)) {
                 if (parseFloat(money) % parseFloat(this.state.minCount) !== 0) {
-                    this.setState({ errorTip: '输入金额不可提现' });
+                    this.setState({ errorTip: '输入积分不可提现' });
                     return;
                 }
             }
         } else {
             if (parseFloat(money) < parseFloat(this.state.minCount)) {
-                this.setState({ errorTip: '输入金额不可提现' });
+                this.setState({ errorTip: '输入积分不可提现' });
                 return;
             }
         }
@@ -495,7 +495,7 @@ export default class WithdrawCashPage extends BasePage {
 
         if (this.state.balance !== null) {
             if (parseFloat(money) > parseFloat(this.state.balance)) {
-                this.setState({ errorTip: '提现金额已超出本月剩余提现额度' });
+                this.setState({ errorTip: '提现积分已超出本月剩余提现额度' });
                 return;
             }
         }
@@ -509,7 +509,7 @@ export default class WithdrawCashPage extends BasePage {
         if (this.state.errorTip !== null) {
             tip2 = this.state.errorTip;
         } else if (!parseFloat(this.state.money)) {
-            tip2 = `可用余额${user.availableBalance || 0}`;
+            tip2 = `可用积分${user.availableBalance || 0}`;
         } else {
             if (!EmptyUtils.isEmpty(this.state.rate)) {
                 // tip2 = `可提现，额外扣除￥${Math.ceil(accMul(this.state.rate / 100, parseFloat(this.state.money)) * 100) / 100}手续费(费率${this.state.rate}%)`;
@@ -527,7 +527,7 @@ export default class WithdrawCashPage extends BasePage {
 
         return (
             <View style={{ backgroundColor: 'white' }}>
-                <UIText value={'提现金额'}
+                <UIText value={'账户提现'}
                         style={{
                             color: DesignRule.textColor_secondTitle,
                             fontSize: 15,

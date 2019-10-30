@@ -1,5 +1,13 @@
 import React from 'react';
-import { Clipboard, RefreshControl, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import {
+    Clipboard,
+    Keyboard,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
 import UserSingleItem from '../../components/UserSingleItem';
@@ -12,8 +20,10 @@ import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 import CommModal from '../../../../comm/components/CommModal';
 import { MRText as Text } from '../../../../components/ui';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
+import  DatePicker from 'react-native-datepicker';
+import ActionSheetView from '../../../spellShop/components/ActionSheetView';
 
-const dismissKeyboard = require('dismissKeyboard');
+const dismissKeyboard = Keyboard.dismiss;
 
 /**
  * @author chenxiang
@@ -27,8 +37,7 @@ export default class UserInformationPage extends BasePage {
 
     $navigationBarOptions = {
         title: '个人资料',
-        show: true // false则隐藏导航
-        // hiddenNav:false
+        show: true, // false则隐藏导航
     };
 
     constructor(props) {
@@ -39,7 +48,6 @@ export default class UserInformationPage extends BasePage {
             showCopy: false
         };
     }
-
 
     renderWideLine = () => {
         return (
@@ -160,11 +168,29 @@ export default class UserInformationPage extends BasePage {
                 }}/>
                 <UserSingleItem leftText={'手机号'} rightText={user.phone} rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={true}/>
-                <UserSingleItem leftText={'微信号'} rightText={user.weChatNumber ? user.weChatNumber : '设置微信号'}
+                <UserSingleItem leftText={'微信号'} rightText={user.weChatNumber ? user.weChatNumber : '去设置'}
                                 rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isLine={false} isArrow={true}
                                 onPress={() => this.jumpToSetWechatPage()}/>
                 {this.renderWideLine()}
+
+                <UserSingleItem leftText={'性别'} rightText={user.sex === 1 ? '男' : user.sex === 2 ? '女' : '去设置'}
+                                rightTextStyle={styles.grayText}
+                                leftTextStyle={styles.blackText} isArrow={true}
+                                onPress={() => {
+                                    this.setUserSex()
+                                }}/>
+                <UserSingleItem leftText={'生日'} rightText={user.birthday || '去设置'}
+                                rightTextStyle={styles.grayText}
+                                leftTextStyle={styles.blackText} isLine={false} isArrow={user.birthday ? false : true}
+                                onPress={() => {
+                                    if(!user.birthday){
+                                        this.setUserBirthday()
+                                    }
+                                }}/>
+
+                {this.renderWideLine()}
+
                 <UserSingleItem leftText={'所在区域'}
                                 rightText={user.area ? user.province + user.city + user.area : ''}
                                 rightTextStyle={[styles.grayText, {
@@ -181,18 +207,63 @@ export default class UserInformationPage extends BasePage {
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'简介'}
                                 itemHeightStyle={{ backgroundColor: 'white', paddingVertical: 12 }}
-                                rightText={user.profile ? user.profile : '未填写'}
+                                rightText={user.profile ? user.profile : '去填写'}
                                 rightTextStyle={[styles.grayText, {
                                     maxWidth: ScreenUtils.width / 5 * 3,
                                     numberOfLines: 2
                                 }]} leftTextStyle={styles.blackText} isLine={false}
                                 onPress={() => this.editProfile()}/>
+                <DatePicker
+                    ref={(e)=>{this.datePicker = e}}
+                    customStyles={
+                        {   dateTouchBody:{height:0,width:0},
+                            btnTextConfirm:{color:'#333333'},
+                            btnTextCancel:{color:'#999999'}
+                        }
+                    }
+                    mode="date"
+                    date={user.birthday}
+                    format="YYYY-MM-DD"
+                    minDate="1949-05-01"
+                    maxDate="2040-06-01"
+                    showIcon={false}
+                    onDateChange={(date) => {
+                        MineApi.upSexAndBirthday({birthday: date}).then((response) => {
+                            this.$loadingDismiss();
+                            if (response.code === 10000) {
+                                user.birthday = date;
+                                this.$toastShow('生日修改成功');
+                            }
+                        }).catch(error => {
+                            this.$loadingDismiss();
+                            if (error.code === 10009) {
+                                this.gotoLoginPage();
+                            }else {
+                                this.$toastShow(error.msg);
+                            }
+                        });
+                    }}
+                />
+                <ActionSheetView ref={ref => {this.actionSheetRef = ref;}} />
                 {this.copyModal()}
             </ScrollView>
         );
     }
 
     takePhoto = () => {
+        if(user.headImg){
+            const params = {
+                type: 'userInfo',
+                getImagePicker:this.getImagePicker
+            };
+            this.$navigate(RouterMap.CheckHeaderImagesView, params);
+
+        }else {
+            this.getImagePicker()
+        }
+    };
+
+    getImagePicker=()=>{
         track(trackEvent.ClickModifyAvatar, {});
         BusinessUtils.getImagePicker(callback => {
             if (callback.imageUrl && callback.imageUrl.length > 0) {
@@ -219,6 +290,7 @@ export default class UserInformationPage extends BasePage {
             }
         }, 1, true);
     };
+
     jumpToIDVertify2Page = () => {
         if (!user.realname) {
             track(trackEvent.ClickRealCodeentityVerify, {});
@@ -232,6 +304,32 @@ export default class UserInformationPage extends BasePage {
 
     jumpToSetWechatPage = () => {
         this.$navigate(RouterMap.SetWechatPage, { weChatNumber: user.weChatNumber });
+    };
+
+    setUserSex = () => {
+        this.actionSheetRef.show({
+            items: ['男', '女']
+        }, (item, index) => {
+            this.$loadingShow();
+            MineApi.upSexAndBirthday({sex: index + 1}).then((response) => {
+                this.$loadingDismiss();
+                if (response.code === 10000) {
+                    user.sex = index + 1;
+                    this.$toastShow('性别修改成功');
+                }
+            }).catch(error => {
+                this.$loadingDismiss();
+                if (error.code === 10009) {
+                    this.gotoLoginPage();
+                }else {
+                    this.$toastShow(error.msg);
+                }
+            });
+        });
+    };
+
+    setUserBirthday= ()=>{
+        this.datePicker.onPressDate&&this.datePicker.onPressDate();
     };
 
     renderGetCityPicker = () => {

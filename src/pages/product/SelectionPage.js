@@ -61,14 +61,14 @@ export default class SelectionPage extends Component {
     show = (data, callBack, propData = {}) => {
         //type afterSpecIds
         //需要重置旧数据
-        const { needUpdate, isAreaSku, productIsPromotionPrice } = propData;
+        const { needUpdate, isAreaSku, productIsPromotionPrice, singlePurchaseNumber } = propData;
         if (needUpdate) {
             this.state.selectStrList = [];
             this.state.selectSpecList = [];
             this.state.maxStock = 0;
         }
         const { specifyList, skuList, skuListByArea, promotionLimitNum } = data;
-        this.state.promotionLimit = productIsPromotionPrice ? promotionLimitNum : null;
+        this.state.promotionLimit = singlePurchaseNumber || (productIsPromotionPrice ? promotionLimitNum : null);
 
         let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
         let skuListTemp = JSON.parse(JSON.stringify((isAreaSku ? skuListByArea : skuList) || []));
@@ -270,7 +270,7 @@ export default class SelectionPage extends Component {
         if (!this.state.modalVisible) {
             return null;
         }
-        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku, isOnlyBuyOne, priceDesc, priceShow } = this.state.propData;
+        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku, isOnlyBuyOne, priceDesc, priceShow, isSinglePurchase } = this.state.propData;
         const { productDetailAddressModel } = this.state.data;
         return (
             <View style={styles.bgView}>
@@ -303,6 +303,7 @@ export default class SelectionPage extends Component {
                                                  maxCount={this.state.maxStock}
                                                  afterAmount={afterAmount}
                                                  promotionLimit={this.state.promotionLimit}
+                                                 isSinglePurchase={isSinglePurchase}
                                                  isOnlyBuyOne={isOnlyBuyOne}
                                                  type={type}/>}
                         </ScrollView>

@@ -12,6 +12,7 @@ import {observer} from 'mobx-react';
 import ScrollableTabView, {DefaultTabBar} from '@mr/react-native-scrollable-tab-view';
 import LinearGradient from 'react-native-linear-gradient';
 
+import LoadingView from '../../../../components/pageDecorator/BaseView/LoadingView';
 import BasePage from '../../../../BasePage';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -144,7 +145,8 @@ export default class MyCashAccountPage extends BasePage {
             currentPage: 1,
             isEmpty: false,
             changeHeader: false,
-            refreshing: false
+            refreshing: false,
+            isloadingState: true,
 
         };
         this.currentPage = 0;
@@ -222,6 +224,7 @@ export default class MyCashAccountPage extends BasePage {
                         <RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={this.onLoad}
+                            tintColor={DesignRule.mainColor}
                             colors={[DesignRule.mainColor]}
                         />
                     }
@@ -257,7 +260,7 @@ export default class MyCashAccountPage extends BasePage {
                 <View style={[styles.headerViewStyle, {height: returnCashSwitchState ? px2dp(206) : px2dp(174),}]}>
                     <View style={styles.withdrawWrapper}>
                         <Text style={styles.countTextStyle}>
-                            账户余额
+                            账户积分
                         </Text>
                         <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>
                             <Text
@@ -293,14 +296,14 @@ export default class MyCashAccountPage extends BasePage {
                                     this.$navigate(RouterMap.ReturnCashRulePage) : this.$navigate(RouterMap.ReturnCashAccountPage)
                             }}>
                             {status === NO_CASH_NO_SUPMEMBER ?
-                                <Text style={styles.returnCashTextStyle}>您还没有自返金，快去获取</Text> : null}
+                                <Text style={styles.returnCashTextStyle}>您还没有自返积分，快去获取</Text> : null}
                             {status === HAVE_CASH_NO_SUPMEMBER ?
                                 <Text style={styles.returnCashTextStyle}>
-                                    您有<Text style={{fontSize: 16, color: '#FF0050'}}>{StringUtils.formatMoneyString(returnCash, false)}</Text>自返金可转到余额
+                                    您有<Text style={{fontSize: 16, color: '#FF0050'}}>{StringUtils.formatMoneyString(returnCash, false)}</Text>自返积分可转到个人账户
                                 </Text> : null}
                             {status === HAVE_CASH_HAVE_SUPMEMBER ?
                                 <Text style={styles.returnCashTextStyle}>
-                                    累计已有{StringUtils.formatMoneyString(returnCash, false)}自返金转到余额</Text>
+                                    累计已有{StringUtils.formatMoneyString(returnCash, false)}自返积分转到个人账户</Text>
                                 : null}
 
                             {status === NO_CASH_NO_SUPMEMBER ?
@@ -343,7 +346,7 @@ export default class MyCashAccountPage extends BasePage {
                         fontSize: px2dp(17),
                         includeFontPadding: false
                     }}>
-                        {this.state.changeHeader ? '账户余额' : ''}
+                        {this.state.changeHeader ? '个人账户' : ''}
                     </Text>
 
                     <TouchableWithoutFeedback onPress={() => {
@@ -433,6 +436,11 @@ export default class MyCashAccountPage extends BasePage {
                 </View>
             );
         }
+
+        if (this.state.isloadingState) {
+            return <LoadingView style={{paddingTop: 150, justifyContent: 'flex-end', backgroundColor: 'white'}}/>
+        }
+
         if (item.title && item.title === 'empty') {
             return <EmptyView style={{flex: 1}} imageStyle={{width: 267, height: 192}} description={''}
                               subDescription={'暂无明细数据～'} source={cash_noData}/>;
@@ -600,10 +608,11 @@ export default class MyCashAccountPage extends BasePage {
                 this.setState({
                     refreshing: false,
                     viewData: arrData,
-                    isEmpty: data.data && data.data.length !== 0 ? false : true
+                    isEmpty: data.data && data.data.length !== 0 ? false : true,
+                    isloadingState: false
                 });
             } else {
-                this.setState({refreshing: false});
+                this.setState({refreshing: false, isloadingState: false});
                 this.$toastShow(response.msg);
 
             }

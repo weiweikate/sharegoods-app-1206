@@ -2,62 +2,83 @@
 * 首页查询
 */
 
-import React from 'react';
-import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import React, { Component } from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import UIText from '../../../components/ui/UIText';
-import DesignRule from '../../../constants/DesignRule';
 import res from '../res/index';
-import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
+import { observer } from 'mobx-react';
+import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
+import StringUtils from '../../../utils/StringUtils';
+import { homeModule } from '../model/Modules';
+import DesignRule from '../../../constants/DesignRule';
 import user from '../../../model/user';
+import bridge from '../../../utils/bridge';
 
 const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 
-const logoRed = res.home_icon_logo_red;
-const searchImg = res.icon_search;
-const messageImg = res.message;
+@observer
+export default class HomeSearchView extends Component {
 
-export default ({ navigation, hasMessage }) =>
-    <View style={styles.navBar}>
-        <View style={styles.navContent}>
-            <Image source={logoRed} style={styles.logo}/>
-            <TouchableWithoutFeedback onPress={() => {
-                navigation('home/search/SearchPage');
-            }}>
-                <View style={[styles.searchBox, { backgroundColor: '#F2F2F2' }]}>
-                    <Image source={searchImg} style={styles.searchIcon}/>
-                    <UIText style={styles.inputText} value={'请输入关键词搜索'}/>
+    _jumpPage(data) {
+        if (user.isLogin) {
+            if (!data) {
+                bridge.$toast('获取数据失败！');
+                return;
+            }
+            const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+            const params = homeModule.paramsNavigate(data);
+            routePush(router, { ...params });
+        } else {
+            routeNavigate(RouterMap.LoginPage);
+        }
+    }
+
+    render() {
+        const searchImg = StringUtils.isEmpty(homeModule.titleImg)
+            ? res.icon_search_grey : res.icon_search_white;
+        const resLogo = StringUtils.isEmpty(homeModule.titleImg)
+            ? res.home_icon_logo_red : res.home_icon_logo_white;
+        const resDou = StringUtils.isEmpty(homeModule.douData.icon)
+            ? res.dou_red : { uri: homeModule.douData.icon };
+        const colorDou = StringUtils.isEmpty(homeModule.titleImg) ? DesignRule.mainColor : '#fff';
+        const colorIput = StringUtils.isEmpty(homeModule.titleImg) ? DesignRule.textColor_placeholder : '#fff';
+        return (
+            <View style={styles.navBar}>
+                <View style={styles.navContent}>
+                    <Image source={resLogo}
+                           style={styles.logo}/>
+                    <TouchableOpacity
+                        onPress={() => {
+                            routePush('home/search/SearchPage');
+                        }}
+                        activeOpacity={0.8}
+                        style={{ flex: 1 }}>
+                        <View style={[styles.searchBox, { backgroundColor: '#F2F2F2' }]}>
+                            <Image source={searchImg} style={styles.searchIcon}/>
+                            <UIText style={[styles.inputText, { color: colorIput }]} value={'请输入关键词'}/>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        style={{ flexDirection: 'row', alignItems: 'center' }}
+                        onPress={() => this._jumpPage(homeModule.douData)}>
+                        <Image source={resDou}
+                               style={styles.dou}/>
+                        <UIText style={[styles.douText, { color: colorDou }]}
+                                value={(user.isLogin ? user.userScore : '我的') + '秀豆'}/>
+                    </TouchableOpacity>
                 </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => {
-                if (!user.isLogin) {
-                    routeNavigate(RouterMap.LoginPage);
-                    return;
-                }
-                navigation(RouterMap.MessageCenterPage);
-            }}>
-                <View style={{ height: 32, width: 32, justifyContent: 'center', alignItems: 'center' }}>
-                    <Image source={messageImg} style={styles.msgIcon}/>
-                    {hasMessage ? <View style={{
-                        width: 10,
-                        height: 10,
-                        backgroundColor: DesignRule.mainColor,
-                        position: 'absolute',
-                        top: 2,
-                        right: 2,
-                        borderRadius: 5
-                    }}/> : null}
-                </View>
-            </TouchableWithoutFeedback>
-        </View>
-    </View>
+            </View>
+        );
+    }
+}
 
 let styles = StyleSheet.create({
     navBar: {
         flexDirection: 'column',
-        height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
-        backgroundColor: 'white',
-        zIndex: 2
+        height: headerHeight,
+        zIndex: 5
     },
     navContent: {
         flex: 1,
@@ -65,37 +86,42 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'transparent',
         justifyContent: 'center',
-        paddingTop: statusBarHeight - (ScreenUtils.isIOSX ? 10 : 0),
-        marginLeft: px2dp(15),
-        marginRight: px2dp(11)
+        paddingTop: statusBarHeight,
+        marginHorizontal: px2dp(15)
     },
     logo: {
         height: 22,
         width: 30
     },
+    dou: {
+        height: 30,
+        width: 30,
+        marginLeft: 5
+    },
+    douText: {
+        fontSize: 14,
+        marginLeft: 3,
+        fontWeight: 'bold'
+    },
     searchBox: {
         height: 30,
         flexDirection: 'row',
-        flex: 1,  // 类似于android中的layout_weight,设置为1即自动拉伸填充
         borderRadius: 15,  // 设置圆角边
         alignItems: 'center',
+        justifyContent: 'center',
         marginLeft: px2dp(10),
-        marginRight: px2dp(5),
-        opacity: 0.8
+        opacity: 0.6
     },
     msgIcon: {
         height: 24,
         width: 24
     },
     searchIcon: {
-        marginLeft: 10,
-        marginRight: 10,
+        marginRight: 8,
         width: 16,
         height: 16
     },
     inputText: {
-        flex: 1,
-        color: DesignRule.textColor_placeholder,
         fontSize: px2dp(12)
     }
 });

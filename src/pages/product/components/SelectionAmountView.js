@@ -116,7 +116,7 @@ export default class SelectionAmountView extends Component {
 
 
     render() {
-        const { type, maxCount, isOnlyBuyOne } = this.props;
+        const { type, maxCount, isOnlyBuyOne, isSinglePurchase } = this.props;
 
         let leftEnable = this.state.amount > 1;
         let rightEnable = this.state.amount !== maxCount && !isOnlyBuyOne;
@@ -133,7 +133,7 @@ export default class SelectionAmountView extends Component {
                         color: DesignRule.textColor_secondTitle,
                         marginLeft: 16,
                         fontSize: 13
-                    }}>购买数量<Text>{promotionLimit !== null ? `(限购${promotionLimit}件)` : ''}</Text></Text>
+                    }}>购买数量<Text>{promotionLimit !== null ? (isSinglePurchase ? `(单次最多可购买${promotionLimit}件)` : `(限购${promotionLimit}件)`) : ''}</Text></Text>
                 <View style={{
                     flexDirection: 'row',
                     borderColor: DesignRule.lineColor_inGrayBg,

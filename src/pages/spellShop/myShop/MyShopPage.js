@@ -162,7 +162,7 @@ export default class MyShopPage extends BasePage {
             isRefresh: true
         }, () => {
             this._loadPageData();
-            this.BannersVerticalView.fetchBannerList && this.BannersVerticalView.fetchBannerList();
+            this.BannersVerticalView && this.BannersVerticalView.fetchBannerList && this.BannersVerticalView.fetchBannerList();
             spellStatusModel.getUser(0);
         });
     };

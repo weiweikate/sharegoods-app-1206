@@ -1,23 +1,17 @@
 import { action, flow, observable } from 'mobx';
 import HomeApi from '../api/HomeAPI';
-import { homeLinkType, homeRoute, homeType } from '../HomeTypes';
+import { asyncHandleTopicData, homeLinkType, homeRoute, homeType } from '../HomeTypes';
 import { bannerModule } from './HomeBannerModel';
-import { homeFocusAdModel } from './HomeFocusAdModel';
 import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
-import { todayModule } from './HomeTodayModel';
 import { channelModules } from './HomeChannelModel';
-import { subjectModule } from './HomeSubjectModel';
-import { recommendModule } from './HomeRecommendModel';
 import { limitGoModule } from './HomeLimitGoModel';
-import taskModel from './TaskModel';
 import { tabModel } from './HomeTabModel';
 import store from '@mr/rn-store';
-import { ImageAdViewGetHeight } from '../view/TopicImageAdView';
-import { GoodsCustomViewGetHeight } from '../view/GoodsCustomView';
 import StringUtils from '../../../utils/StringUtils';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import bridge from '../../../utils/bridge';
-import { getSGscm, getSGspm_home, HomeSource, SGscmSource } from '../../../utils/OrderTrackUtil';
+import ScreenUtils from '../../../utils/ScreenUtils';;
+import {  HomeSource } from '../../../utils/OrderTrackUtil';
+import { getSize } from '../../../utils/OssHelper';
+import { homeNewUserModel } from './HomeNewUserModel';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 const kHomeTopTopic = '@home/topTopic';
@@ -33,6 +27,15 @@ class HomeModule {
     @observable goodsOtherLen = 0;
     @observable tabList = [];
     @observable tabListIndex = 0;
+    @observable showStatic = false;
+    @observable statusImg = null;
+    @observable titleImg = null;
+    @observable categoryImg = null;
+    @observable bannerImg = null;
+    @observable centerData = {};
+    @observable douData = {};
+    @observable bottomIcons = [];
+    @observable centerImgHeight = 0;
     isFetching = false;
     isEnd = false;
     page = 1;
@@ -40,41 +43,31 @@ class HomeModule {
     errorMsg = '';
     tabId = '';
     // id数字不要轻易改，model有对应
-    fixedPartOne = [{
-        id: 0,
-        type: homeType.swiper
-    }, {
-        id: 1,
-        type: homeType.user
-    }, {
-        id: 2,
-        type: homeType.channel
-    }, {
-        id: 3,
-        type: homeType.task
-    }, {
-        id: 4,
-        type: homeType.expandBanner
-    }, {
-        id: 5,
-        type: homeType.focusGrid
-    }];
+    fixedPartOne = [
+        {
+            id: -1,
+            type: homeType.tabStaticView
+        },
+        {
+            id: 0,
+            type: homeType.swiper
+        }, {
+            id: 1,
+            type: homeType.activityCenter
+        }, {
+            id: 21,
+            type: homeType.newUserArea
+        }, {
+            id: 2,
+            type: homeType.channel
+        }, {
+            id: 4,
+            type: homeType.expandBanner
+        }];
     topTopice = [];
-    fixedPartTwo = [{
-        id: 6,
-        type: homeType.limitGo
-    }];
+    fixedPartTwo = [];
     bottomTopice = [];
     fixedPartThree = [{
-        id: 7,
-        type: homeType.today
-    }, {
-        id: 8,
-        type: homeType.fine
-    }, {
-        id: 9,
-        type: homeType.homeHot
-    }, {
         id: 10,
         type: homeType.goodsTitle
     }];
@@ -82,6 +75,9 @@ class HomeModule {
 
     type = 0;
 
+    @action changeShowStatic(state) {
+        this.showStatic = state;
+    }
 
     //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
@@ -90,7 +86,7 @@ class HomeModule {
             return linkTypeCode ? linkTypeCode.replace(/[\n]/g, '').trim() : '';
         } else if (linkType === homeLinkType.nothing) {
             return;
-        } else {
+        }else {
             return homeRoute[linkType];
         }
     };
@@ -106,7 +102,7 @@ class HomeModule {
             }
         }
         const { linkType } = data;
-        return {
+        let params = {
             activityType: linkType === 3 ? 2 : linkType === 4 ? 1 : 3,
             activityCode: data.linkTypeCode,
             linkTypeCode: data.linkTypeCode,
@@ -118,8 +114,13 @@ class HomeModule {
             id: data.id,
             code: data.linkTypeCode,
             keywords: data.name,
-            trackType: 1
+            trackType: 1,
+            initialPage:data.linkTypeCode
         };
+        if(linkType === 18){
+            params.fromHome = true;
+        }
+        return params;
 
     };
 
@@ -145,12 +146,27 @@ class HomeModule {
         }
     };
 
+    @action
+    changelimitGoods(limitGoods, isShow = true) {
+        if (isShow) {
+            this.fixedPartTwo = [{
+                id: 60,
+                type: homeType.limitGoTop
+            }, {
+                id: 61,
+                type: homeType.limitGoTime
+            }, ...limitGoods, { type: homeType.limitStaticViewDismiss }];
+        } else {
+            this.fixedPartTwo = [];
+        }
+        this.homeList = this.getHomeListData();
+    }
+
     @action initHomeParams() {
         this.isFetching = false;
         this.isEnd = false;
         this.isRefreshing = false;
         this.firstLoad = true;
-        limitGoModule.spikeList = [];
     }
 
     @action refreshHome = (type) => {
@@ -164,20 +180,8 @@ class HomeModule {
             case homeType.expandBanner:
                 homeExpandBnnerModel.loadBannerList();
                 break;
-            case homeType.focusGrid:
-                homeFocusAdModel.loadAdList();
-                break;
-            case homeType.today:
-                todayModule.loadTodayList(this.firstLoad);
-                break;
-            case homeType.fine:
-                recommendModule.loadRecommendList(this.firstLoad);
-                break;
             case homeType.limitGo:
                 limitGoModule.loadLimitGo(false);
-                break;
-            case homeType.homeHot:
-                subjectModule.loadSubjectList();
                 break;
             default:
                 break;
@@ -218,7 +222,7 @@ class HomeModule {
     // 加载首页数据
     @action loadHomeList = flow(function* (showLoading = true) {
         //手动下拉展示刷新组件
-        if(showLoading){
+        if (showLoading) {
             this.isRefreshing = true;
             setTimeout(() => {
                 this.isRefreshing = false;
@@ -240,22 +244,14 @@ class HomeModule {
         tabModel.loadTabList(this.firstLoad);
         // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
+        // 新人专区
+        homeNewUserModel.loadNewUserArea(this.firstLoad);
         // 首页频道类目
         channelModules.loadChannel(this.firstLoad);
         // 首页通栏
         homeExpandBnnerModel.loadBannerList(this.firstLoad);
-        // 首焦点广告
-        homeFocusAdModel.loadAdList();
         // 首页限时秒杀
         limitGoModule.loadLimitGo(true);
-        // 首页今日榜单
-        todayModule.loadTodayList(this.firstLoad);
-        // 首页精品推荐
-        recommendModule.loadRecommendList(this.firstLoad);
-        // 超值热卖
-        subjectModule.loadSubjectList();
-
-        taskModel.getData();
 
         this.firstLoad = false;
         this.page = 1;
@@ -336,11 +332,11 @@ class HomeModule {
             this.goodsOtherLen = temp.length;
             this.homeList = [...temp, ...home];
             this.goods = home;
-            // this.isRefreshing = false;
+            this.isRefreshing = false;
             this.page = 1;
             this.errorMsg = '';
         }).catch(err => {
-            // this.isRefreshing = false;
+            this.isRefreshing = false;
             this.errorMsg = err.msg;
         });
     }
@@ -392,10 +388,10 @@ class HomeModule {
             this.page += 1;
             this.isFetching = false;
             this.errorMsg = '';
-            // this.isRefreshing = false;
+            this.isRefreshing = false;
         } catch (error) {
             this.isFetching = false;
-            // this.isRefreshing = false;
+            this.isRefreshing = false;
             this.errorMsg = error.msg;
             console.log(error);
         }
@@ -447,7 +443,7 @@ class HomeModule {
                         this.topTopice = this.handleData(data, isTop, code);
                         store.save(kHomeTopTopic, this.topTopice);
                     } else {
-                        this.bottomTopice = this.handleData(data,false, code);
+                        this.bottomTopice = this.handleData(data, false, code);
                         store.save(kHomeBottomTopic, this.bottomTopice);
                     }
                     this.homeList = this.getHomeListData(true);
@@ -474,52 +470,8 @@ class HomeModule {
         if (!data.data || !data.data.widgets) {
             return [];
         }
-        data = data.data.widgets.data || [];
-        data = [...data];
-        let p = [];
-        let count = data.length;
-        for (let index = 0; index < count; index++) {
-            getSGspm_home(HomeSource.marketing,index)
-            let item = data[index];
-            item.sgscm = getSGscm(SGscmSource.topic,code).sgscm;
-            item.sgspm = getSGspm_home(HomeSource.marketing,index).sgspm
-            if (item.type === homeType.custom_goods) {
-                item.itemHeight = GoodsCustomViewGetHeight(item);
-                item.marginBottom = ScreenUtils.autoSizeWidth(0);
-                if (count - 1 > index) {
-                    let type = data[index + 1].type;
-                    if (type === homeType.custom_imgAD || type === homeType.custom_text) {
-                        item.marginBottom = ScreenUtils.autoSizeWidth(15);
-                    }
-                }
-                item.itemHeight += item.marginBottom;
-            }
 
-            if (item.type === homeType.custom_imgAD) {
-                item.itemHeight = ImageAdViewGetHeight(item);
-            }
-
-            if (item.type === homeType.custom_text) {
-                item.detailHeight = 0;
-                item.textHeight = 0;
-                item.itemHeight = 0;
-                if (item.text) {
-                    p.push(bridge.getTextHeightWithWidth(item.text, autoSizeWidth(14), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
-                        item.textHeight = r.height;
-                        item.itemHeight = r.height + item.detailHeight + autoSizeWidth(20);
-                    }));
-                }
-                if (item.subText) {
-                    p.push(bridge.getTextHeightWithWidth(item.subText, autoSizeWidth(12), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
-                        item.detailHeight = r.height;
-                        item.itemHeight = r.height + item.textHeight + autoSizeWidth(20);
-                    }));
-                }
-            }
-        }
-
-
-        Promise.all(p).then(() => {
+        asyncHandleTopicData(data,HomeSource.marketing,(isTop?0:1)).then((data)=> {
             if (isTop) {
                 this.topTopice = data;
                 store.save(kHomeTopTopic, this.topTopice);
@@ -528,9 +480,36 @@ class HomeModule {
                 store.save(kHomeBottomTopic, this.bottomTopice);
             }
             this.homeList = this.getHomeListData(true);
-        });
-
+        })
     };
+
+    @action setTopSkinData(data) {
+        this.statusImg = data.statusBarBackground || '';
+        this.titleImg = data.searchBarBackground || '';
+        this.categoryImg = data.categoryNavBackground || '';
+        this.bannerImg = data.carouselBackground || '';
+        this.centerData = data.carouselBottom || {};
+        this.douData = data.searchBar || {};
+        if (StringUtils.isEmpty(this.centerData.icon)) {
+            this.centerImgHeight = 0;
+            this.changeHomeList(homeType.activityCenter, [{
+                id: 1,
+                type: homeType.activityCenter
+            }]);
+        } else {
+            getSize(this.centerData.icon, (width, height) => {
+                this.centerImgHeight = autoSizeWidth(height / 2);
+                this.changeHomeList(homeType.activityCenter, [{
+                    id: 1,
+                    type: homeType.activityCenter
+                }]);
+            });
+        }
+    }
+
+    @action setBottomSkinData(data) {
+        this.bottomIcons = data || [];
+    }
 }
 
 export const homeModule = new HomeModule();

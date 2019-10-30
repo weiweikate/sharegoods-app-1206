@@ -237,14 +237,23 @@ export default class ChannelPage extends BasePage {
         const { orderChecking } = this.state;
         let payMoney = this.state.remainMoney;
         return <View style={styles.container}>
-            <View style={styles.content}>
-                <View style={styles.row}>
-                    <Text style={styles.name} numberOfLines={1}>订单名称：{name}</Text>
+            <View style={{
+                marginTop: px2dp(10),
+                marginLeft: px2dp(15),
+                marginRight: px2dp(15),
+                backgroundColor: whiteBg,
+                borderRadius: 5
+            }}>
+                <View style={styles.content}>
+                    <View style={styles.row}>
+                        <Text style={styles.name} numberOfLines={1}>订单名称：{name}</Text>
+                    </View>
                 </View>
-            </View>
-            <View style={styles.needView}>
-                <Text style={styles.need}>支付金额</Text>
-                <Text style={styles.amount}>￥{payMoney.toFixed(2)}</Text>
+                <View style={styles.line}/>
+                <View style={styles.needView}>
+                    <Text style={styles.need}>支付金额</Text>
+                    <Text style={styles.amount}>￥{payMoney.toFixed(2)}</Text>
+                </View>
             </View>
             <View style={styles.channelView}>
                 <TouchableWithoutFeedback onPress={() => this._selectedType(paymentType.wechat)}>
@@ -303,19 +312,14 @@ const styles = StyleSheet.create({
         backgroundColor: bgColor
     },
     content: {
-        marginTop: px2dp(10),
-        marginLeft: px2dp(15),
-        marginRight: px2dp(15),
-        height: px2dp(50),
-        backgroundColor: whiteBg,
-        borderRadius: 5
+        height: px2dp(50)
     },
     channelView: {
         height: px2dp(100),
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
         backgroundColor: whiteBg,
-        borderRadius: 5
+        borderRadius: 5, marginTop: 15
     },
     icon: {
         width: px2dp(24),

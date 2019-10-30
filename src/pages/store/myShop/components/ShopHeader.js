@@ -22,11 +22,11 @@ import {
     MRText as Text
 } from '../../../../components/ui';
 import { ShopBannerView } from './ShopBannerView';
+import { observer } from 'mobx-react';
 
-
-const HeaderBarBgImg = res.myShop.txbg_02;
 const StarImg = res.myShop.dj_03;
 
+@observer
 export default class ShopHeader extends Component {
 
     render() {
@@ -41,11 +41,8 @@ export default class ShopHeader extends Component {
         }
         const showTicker = StringUtils.isNoEmpty(content) && StringUtils.isNoEmpty(roleType);
         return <View>
-            <Image source={HeaderBarBgImg}
-                   style={[styles.imgBg]}/>
             <View style={{
-                height: showTicker ? px2dp(20) : 0,
-                marginTop: ScreenUtils.headerHeight, marginBottom: 8,
+                height: showTicker ? px2dp(20) : 0, marginBottom: 8,
                 backgroundColor: 'rgba(255,255,255,0.4)',
                 justifyContent: 'center'
             }}>
@@ -112,11 +109,6 @@ export default class ShopHeader extends Component {
 }
 
 const styles = StyleSheet.create({
-    imgBg: {
-        position: 'absolute',
-        left: 0, top: 0,
-        width: ScreenUtils.width, height: px2dp(210)
-    },
     whiteBg: {
         marginTop: px2dp(25),
         marginBottom: px2dp(15),

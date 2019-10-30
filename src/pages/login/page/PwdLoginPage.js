@@ -74,6 +74,7 @@ export default class PwdLoginPage extends BasePage {
             this.$toastShow('登录成功');
             this.params.callback && this.params.callback();
             this.$loadingDismiss();
+            this.$navigateBack();
             loginModel.savePhoneNumber(this.state.phoneNum);
             TrackApi.pwdLoginSuccess();
         }, () => {

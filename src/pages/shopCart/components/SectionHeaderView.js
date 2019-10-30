@@ -19,7 +19,7 @@ import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
-import RouterMap, { routePush } from '../../../navigation/RouterMap';
+import RouterMap, { routeOnePage } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import { shopCartEmptyModel } from '../model/ShopCartEmptyModel';
@@ -79,7 +79,7 @@ export default class SectionHeaderView extends Component {
         const recommdListData = shopCartEmptyModel.emptyViewList;
         viewItemList = recommdListData.map((itemData, index) => {
             return (<ShopCartEmptyCell recommendScene={1} selectedIndex={index} itemData={itemData} onClick={() => {
-                routePush(RouterMap.ProductDetailPage, { productCode: itemData.prodCode });
+                routeOnePage(RouterMap.ProductDetailPage, { productCode: itemData.prodCode });
             }}/>);
         });
         //删除头部视图
@@ -93,7 +93,7 @@ export default class SectionHeaderView extends Component {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
-                alignSelf:'center'
+                alignSelf: 'center'
             }}>
                 <View style={{ width: section_width, height: px2dp(15) }}/>
                 <View
@@ -118,13 +118,24 @@ export default class SectionHeaderView extends Component {
             <View style={styles.invalidHeader}>
                 <View style={styles.invaildTopContentBgStyle}>
                     {/*中部文字*/}
-                    <MRText style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_24,marginLeft:px2dp(10)}}>
+                    <MRText style={{
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: DesignRule.fontSize_24,
+                        marginLeft: px2dp(10)
+                    }}>
                         失效宝贝
-                        <MRText style={{color:DesignRule.mainColor,fontSize:DesignRule.fontSize_24}}>{sectionData.data.length}</MRText>
+                        <MRText style={{
+                            color: DesignRule.mainColor,
+                            fontSize: DesignRule.fontSize_24
+                        }}>{sectionData.data.length}</MRText>
                         件
                     </MRText>
                     <View style={styles.rightTextBgView}>
-                        <UIText value={'清空失效宝贝'} style={{color:DesignRule.mainColor,fontSize:DesignRule.fontSize_24,marginRight:px2dp(10)}}
+                        <UIText value={'清空失效宝贝'} style={{
+                            color: DesignRule.mainColor,
+                            fontSize: DesignRule.fontSize_24,
+                            marginRight: px2dp(10)
+                        }}
                                 onPress={() => {
                                     this.clearAllInvaildGood();
                                 }}/>
@@ -223,10 +234,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#fff',
         justifyContent: 'space-between',
-        width:DesignRule.width-2*DesignRule.margin_page,
-        borderTopLeftRadius:px2dp(5),
-        borderTopRightRadius:px2dp(5),
-        alignSelf:'center'
+        width: DesignRule.width - 2 * DesignRule.margin_page,
+        borderTopLeftRadius: px2dp(5),
+        borderTopRightRadius: px2dp(5),
+        alignSelf: 'center'
     },
     topContentBgStyle: {
         flex: 1,

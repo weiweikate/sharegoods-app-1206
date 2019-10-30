@@ -8,18 +8,19 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import {
+    BackHandler,
     InteractionManager,
     NativeAppEventEmitter,
     NativeEventEmitter,
-    NativeModules, Platform,
+    NativeModules,
+    Platform,
     StyleSheet,
     Text,
     View
 } from 'react-native';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
-import Navigator, { getCurrentRouteName } from './navigation/Navigator';
-import { SpellShopFlag, SpellShopTab } from './navigation/Tab';
+import Navigator from './navigation/Navigator';
 import RouterMap, { routeNavigate, routePush } from './navigation/RouterMap';
 import user from '../src/model/user';
 import apiEnvironment from './api/ApiEnvironment';
@@ -31,7 +32,6 @@ import store from '@mr/rn-store';
 import ScreenUtils from './utils/ScreenUtils';
 import codePush from 'react-native-code-push';
 import chatModel from './utils/QYModule/QYChatModel';
-import showPinFlagModel from './model/ShowPinFlag';
 import settingModel from './pages/mine/model/SettingModel';
 import StringUtils from './utils/StringUtils';
 import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
@@ -41,10 +41,14 @@ import PrivacyModal from './pages/home/view/PrivacyModal';
 import { HomeAdModal_IOS } from './pages/home/view/HomeMessageModalView';
 import UserMemberUpdateModal from './pages/home/view/UserMemberUpdateModal';
 import homeModalManager from './pages/home/manager/HomeModalManager';
+import marketingUtils from './pages/marketing/MarketingUtils';
+import MarketingModal from './pages/marketing/components/MarketingModal';
+import HomeApi from './pages/home/api/HomeAPI';
+import { homeType } from './pages/home/HomeTypes';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
-const USERUPDATE ="nativeEvent_userUpdate";
+const USERUPDATE = 'nativeEvent_userUpdate';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -109,7 +113,7 @@ class App extends Component {
             (reminder) => {
                 this.timer = setInterval(() => {
                     if (global.$navigator) {
-                        routePush('HtmlPage', { uri: reminder.uri, ...getSGspm_home(HomeSource.launchAd)});
+                        routePush('HtmlPage', { uri: reminder.uri, ...getSGspm_home(HomeSource.launchAd) });
                         clearInterval(this.timer);
                     }
                 }, 100);
@@ -158,6 +162,22 @@ class App extends Component {
                     store.save('@mr/storage_MrLocation', result);
                 }).catch((error) => {
                 });
+                // 获取首页顶部皮肤数据
+                HomeApi.getHomeData({ type: homeType.homeTopBg })
+                    .then((resp) => {
+                        let [data = {}] = resp.data || [];
+                        store.save('@mr/homeTopSkin', StringUtils.str2Json(data.expand));
+                    })
+                    .catch(error => {
+                    });
+                // 获取首页底部皮肤数据
+                HomeApi.getHomeData({ type: homeType.homeBottomBg })
+                    .then((resp) => {
+                        let data = resp.data || [];
+                        store.save('@mr/homeBottomSkin', data);
+                    })
+                    .catch(error => {
+                    });
             }, 200);
             TimerMixin.setTimeout(() => {
                 ScreenUtils.isNavigationBarExist((data) => {
@@ -171,17 +191,28 @@ class App extends Component {
         });
         this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.mineMessageData);
         this.listenerJSMessage_USERUPDATE = JSManagerEmitter.addListener(USERUPDATE, this.userUpdate);
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
+
+    //Android后退键优先关闭全局弹窗
+    handleBackPress = () => {
+        if (marketingUtils.isShowModal) {
+            marketingUtils.closeModal();
+            return true;
+        }
+        return false;
+    };
 
     componentWillUnmount() {
         this.listenerJSMessage && this.listenerJSMessage.remove();
         this.startAdvSubscription && this.startAdvSubscription.remove();
-        this.listenerJSMessage_USERUPDATE &&  this.listenerJSMessage_USERUPDATE.remove();
+        this.listenerJSMessage_USERUPDATE && this.listenerJSMessage_USERUPDATE.remove();
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
 
     userUpdate = (data) => {
-        homeModalManager.getUserMemberUpdate(data)
-    }
+        homeModalManager.getUserMemberUpdate(data);
+    };
 
     mineMessageData = (data) => {
         const { params } = JSON.parse(data) || {};
@@ -218,22 +249,19 @@ class App extends Component {
                         global.$navigator = e;
                     }}
                     onNavigationStateChange={(prevState, currentState) => {
-                        let curRouteName = getCurrentRouteName(currentState);
                         // 拦截当前router的名称
                         global.$routes = currentState.routes;
-                        this.setState({ curRouteName });
                     }}
                 />
-                <SpellShopFlag isShowFlag={showPinFlagModel.showFlag}/>
-                <SpellShopTab isShowTab={showPinFlagModel.showFlag}/>
                 {
                     showDebugPanel === 'true' ?
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
-                {Platform.OS === 'ios'?  <HomeAdModal_IOS/>:null}
-                <UserMemberUpdateModal />
-                <PrivacyModal />
+                {marketingUtils.isShowModal ? <MarketingModal/> : null}
+                {Platform.OS === 'ios' ? <HomeAdModal_IOS/> : null}
+                <UserMemberUpdateModal/>
+                <PrivacyModal/>
             </View>
         );
     }

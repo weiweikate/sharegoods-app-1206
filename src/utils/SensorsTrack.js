@@ -39,6 +39,7 @@ const productTrack = {
     Share:'Share',//分享商品
     SpikeTimeClick:'FlashSaleTimeRangeClick',// 限时购tab
     SpikeProdClick:'FlashSaleProductClick',// 限时购商品
+    FlashSaleBtnClick: 'FlashSaleBtnClick',
     homeTopicProdClick:'SpecialTopicProductClick',// 专题商品
     HomePagePopShow: 'HomePagePopShow',//homePagePopType 首页弹窗展示  0：未知 1：限时购免单 2：公告 3：用户等级升级 4：新手礼包  5：APP升级 6：奖池中奖弹框
     HomePagePopBtnClick: 'HomePagePopBtnClick',//homePagePopType homePagePopImgURL  图片地址
@@ -106,6 +107,12 @@ const mineEvent = {
 const afterEvent = {
     ApplyReturn: 'ApplyReturn' // 0：未知 1：仅退款 2：退货退款 3：换货
 }
+
+const signInEvent = {
+    ViewSignInPage: 'ViewSignInPage',
+    SignInPageBtnClick:'SignInPageBtnClick'
+}
+
 const trackEvent = {
     CategoryClick:'CategoryClick',
     bannerClick: 'BannerClick',
@@ -150,7 +157,8 @@ const trackEvent = {
     ...commonEvent,
     ...homeEvent,
     ...showEvent,
-    ...groupEvent
+    ...groupEvent,
+    ...signInEvent
 };
 
 function track(event_name,parmas) {

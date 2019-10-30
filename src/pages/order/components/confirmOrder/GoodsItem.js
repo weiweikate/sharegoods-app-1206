@@ -75,7 +75,7 @@ const GoodsItem = props => {
             backgroundColor: 'white',
             paddingRight: 10
         }} onPress={() => onPress()}>
-            <View style={{ height: 80, width: 80, marginLeft: 15 }}>
+            <View style={{ height: 80, width: 80, marginLeft: 10 }}>
                 <UIImage style={{ height: 80, width: 80 }} source={{ uri: uri }}/>
             </View>
             <View style={{ justifyContent: 'space-between', flex: 1 }}>

@@ -34,7 +34,6 @@ import { bannerModule } from './PinShopBannerModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import { navigateBackToStore, routePop } from '../../../navigation/RouterMap';
 import { MRText } from '../../../components/ui';
-import LinearGradient from 'react-native-linear-gradient';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -44,7 +43,7 @@ const HOME_REFRESH = 'homeRefresh';
 const ShopItemLogo = res.recommendSearch.dp_03;
 const SearchItemLogo = res.recommendSearch.pdss_03;
 const NavLeft = res.button.back_white;
-
+const HeaderBarBgImg = res.myShop.txbg_02;
 
 @observer
 export default class RecommendPage extends BasePage {
@@ -259,7 +258,7 @@ export default class RecommendPage extends BasePage {
         if (this.state.loadingState === PageLoadingState.success) {
             return (<RecommendRow RecommendRowItem={item} RecommendRowOnPress={this._RecommendRowOnPress}/>);
         } else {
-            return <View style={{ height: 300 }}>
+            return <View style={{ height: 300 ,backgroundColor:DesignRule.bgColor}}>
                 {renderViewByLoadingState(this._getPageStateOptions(), null)}
             </View>;
         }
@@ -323,44 +322,15 @@ export default class RecommendPage extends BasePage {
         </View>;
     };
 
-    _onScroll = (event) => {
-        let Y = event.nativeEvent.contentOffset.y;
-        let oldSt = this.st;
-        if (Y <= 0) {
-            this.st = 0;
-        } else {
-            this.st = 1;
-        }
-        if (oldSt === this.st) {
-            return;
-        }
-        this.LinearGradient.setNativeProps({
-            opacity: this.st
-        });
-    };
-
     _render() {
         return (
             <View style={{ flex: 1 }}>
-                <LinearGradient colors={['#FF0050', '#FC5D39']}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 0 }}
-                                ref={e => this.LinearGradient = e}
-                                style={styles.navView}/>
+                <Image source={HeaderBarBgImg}
+                       style={[styles.imgBg]}/>
                 {this._renderNavView1()}
                 <SectionList keyExtractor={(item, index) => `${item.storeCode}${index}`}
-                             style={{ backgroundColor: DesignRule.bgColor }}
-                             refreshControl={
-                                 <RefreshControl
-                                     refreshing={this.state.refreshing}
-                                     onRefresh={this._refreshing.bind(this)}
-                                     title="下拉刷新"
-                                     tintColor={DesignRule.textColor_instruction}
-                                     titleColor={DesignRule.textColor_instruction}
-                                     colors={[DesignRule.mainColor]}/>}
+                             style={{ marginTop: ScreenUtils.headerHeight }}
                              onEndReached={this._onEndReached.bind(this)}
-                             onEndReachedThreshold={2.5}
-                             onScroll={this._onScroll}
                              ListFooterComponent={this._ListFooterComponent}
                              showsVerticalScrollIndicator={false}
                              ListHeaderComponent={this._renderListHeader}
@@ -368,7 +338,11 @@ export default class RecommendPage extends BasePage {
                              renderItem={this._renderItem}
                              sections={[{ data: this.state.dataList }]}
                              stickySectionHeadersEnabled={true}
-                             initialNumToRender={5}/>
+                             initialNumToRender={5}
+                             refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                                                             onRefresh={this._refreshing.bind(this)}
+                                                             colors={['white']}
+                                                             tintColor={'white'}/>}/>
                 <IntervalMsgView pageType={IntervalType.shopHome}/>
             </View>
         );
@@ -379,10 +353,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-
-    navView: {
-        position: 'absolute', top: 0, left: 0, right: 0, zIndex: 50,
-        height: ScreenUtils.headerHeight, opacity: 0
+    imgBg: {
+        left: 0, top: 0, position: 'absolute',
+        width: ScreenUtils.width, height: ScreenUtils.px2dp(210)
     },
     navView1: {
         position: 'absolute', top: 0, left: 0, right: 0, zIndex: 51,
@@ -404,12 +377,5 @@ const styles = StyleSheet.create({
     },
     barItemBtn: {
         width: 44, height: 44, justifyContent: 'center', alignItems: 'center'
-    },
-
-    ViewPager: {
-        height: ScreenUtils.autoSizeWidth(230),
-        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-        width: ScreenUtils.width
     }
-
 });

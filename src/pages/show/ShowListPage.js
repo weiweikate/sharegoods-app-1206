@@ -77,6 +77,13 @@ export default class ShowListPage extends BasePage {
     }
 
     componentDidMount() {
+
+        let initialPage = parseInt(`${this.params.initialPage}`);
+        if([0,1,2,3,4].indexOf(initialPage) === -1){
+            initialPage = 1;
+        }
+        this._gotoPage(initialPage);
+
         this.setState({ left: this.params.fromHome });
         this.didBlurSubscription = this.props.navigation.addListener(
             'willBlur',
@@ -153,14 +160,11 @@ export default class ShowListPage extends BasePage {
 
 
     _gotoPage(number) {
-        // this.setState({ page: number });
         ShowListIndexModel.setIndex(number);
     }
 
     _onChangeTab(number) {
         ShowListIndexModel.setIndex(number.i);
-
-        // this.setState({ page: number.i });
     }
 
     _onLeftPressed() {
@@ -219,6 +223,10 @@ export default class ShowListPage extends BasePage {
 
     _render() {
         const { left, needsExpensive, detail } = this.state;
+        let initialPage = parseInt(`${this.params.initialPage}`);
+        if([0,1,2,3,4].indexOf(initialPage) === -1){
+            initialPage = 1;
+        }
         let HotView = null;
         let AttentionView = null;
         if (needsExpensive) {
@@ -233,9 +241,10 @@ export default class ShowListPage extends BasePage {
 
         let message = (
             <View>
-                <UIImage source={mine_message_icon_gray}
-                         style={{ height: px2dp(21), width: px2dp(21) }}
-                         onPress={() => this.jumpToServicePage()}/>
+                <UIImage
+                    source={mine_message_icon_gray}
+                    style={{ height: px2dp(21), width: px2dp(21) }}
+                    onPress={() => this.jumpToServicePage()}/>
                 {this.state.hasMessage ? <View style={{
                     width: 10,
                     height: 10,
@@ -254,8 +263,9 @@ export default class ShowListPage extends BasePage {
                 {
                     left
                         ?
-                        <TouchableOpacity activeOpacity={0.7} style={styles.backImg}
-                                          onPress={() => this._onLeftPressed()}>
+                        <TouchableOpacity
+                            activeOpacity={0.7} style={styles.backImg}
+                            onPress={() => this._onLeftPressed()}>
                             <Image source={icon_header_back} style={{ width: 30, height: 30 }}/>
                         </TouchableOpacity>
                         :
@@ -308,7 +318,7 @@ export default class ShowListPage extends BasePage {
             <ScrollableTabView
                 ref={(ref) => this.scrollableTabView = ref}
                 style={styles.tab}
-                initialPage={1}
+                initialPage={initialPage}
                 page={ShowListIndexModel.pageIndex}
                 renderTabBar={() => <DefaultTabBar style={styles.tabBar}/>}
                 tabBarUnderlineStyle={styles.underline}
@@ -319,17 +329,18 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <AttentionView ref={(ref) => {
-                                this.attention = ref;
-                            }}
-                                           type={'attention'}
-                                           uri={'/social/show/content/page/query/attention@GET'}
-                                           hasBanner={false}
-                                           navigate={this.$navigate}
-                                           pageFocus={this.state.pageFocused}
-                                           onShare={(item, showText) => {
-                                               this._setDetail(item.detail, showText);
-                                           }}/>
+                            <AttentionView
+                                ref={(ref) => {
+                                    this.attention = ref;
+                                }}
+                                type={'attention'}
+                                uri={'/social/show/content/page/query/attention@GET'}
+                                hasBanner={false}
+                                navigate={this.$navigate}
+                                pageFocus={this.state.pageFocused}
+                                onShare={(item, showText) => {
+                                    this._setDetail(item.detail, showText);
+                                }}/>
                             :
                             null
                     }
@@ -338,17 +349,18 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <HotView ref={(ref) => {
-                                this.hotList = ref;
-                            }}
-                                     hasBanner={true}
-                                     type={'recommend'}
-                                     uri={'/social/show/content/page/query@GET'}
-                                     navigate={this.$navigate}
-                                     pageFocus={this.state.pageFocused}
-                                     onShare={(item, showText) => {
-                                         this._setDetail(item.detail, showText);
-                                     }}/>
+                            <HotView
+                                ref={(ref) => {
+                                    this.hotList = ref;
+                                }}
+                                hasBanner={true}
+                                type={'recommend'}
+                                uri={'/social/show/content/page/query@GET'}
+                                navigate={this.$navigate}
+                                pageFocus={this.state.pageFocused}
+                                onShare={(item, showText) => {
+                                    this._setDetail(item.detail, showText);
+                                }}/>
                             :
                             null
                     }
@@ -375,9 +387,12 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <ShowFoundView ref={(ref) => {
-                                this.foundList = ref;
-                            }} navigate={this.$navigate} pageFocus={this.state.pageFocused}/>
+                            <ShowFoundView
+                                ref={(ref) => {
+                                    this.foundList = ref;
+                                }}
+                                navigate={this.$navigate}
+                                pageFocus={this.state.pageFocused}/>
                             :
                             null
                     }
@@ -386,73 +401,75 @@ export default class ShowListPage extends BasePage {
                 <View key={4} style={styles.container} tabLabel="   ">
                     {
                         needsExpensive
-                            ? <ShowActivityViewIOS ref={(ref) => {
-                                this.activityList = ref;
-                            }}
-                                                   clickItem={(index, data) => {
-                                                       const navigate = this.$navigate;
-                                                       let params = {
-                                                           data,
-                                                           ref: this.activityList,
-                                                           index
-                                                       };
-                                                       if (data.showType === 1) {
-                                                           navigate(RouterMap.ShowDetailPage, params);
-                                                       } else if (data.showType === 3) {
-                                                           navigate(RouterMap.ShowVideoPage, { code: data.showNo });
-                                                       } else if (data.showType === 4) {
-                                                           navigate(RouterMap.TagDetailPage, {
-                                                               tagId: data.tagId,
-                                                               name: data.tagName
-                                                           });
-                                                       } else {
-                                                           navigate(RouterMap.ShowRichTextDetailPage, params);
-                                                       }
-                                                       const { showNo, userInfoVO } = data;
-                                                       const { userNo } = userInfoVO || {};
-                                                       track(trackEvent.XiuChangEnterClick, {
-                                                           xiuChangListType: 4,
-                                                           articleCode: showNo,
-                                                           author: userNo,
-                                                           xiuChangEnterBtnName: '秀场列表'
-                                                       });
-                                                   }}
-                                                   navigate={this.$navigate}/> : null
+                            ? <ShowActivityViewIOS
+                                ref={(ref) => {
+                                    this.activityList = ref;
+                                }}
+                                clickItem={(index, data) => {
+                                    const navigate = this.$navigate;
+                                    let params = {
+                                        data,
+                                        ref: this.activityList,
+                                        index
+                                    };
+                                    if (data.showType === 1) {
+                                        navigate(RouterMap.ShowDetailPage, params);
+                                    } else if (data.showType === 3) {
+                                        navigate(RouterMap.ShowVideoPage, { code: data.showNo });
+                                    } else if (data.showType === 4) {
+                                        navigate(RouterMap.TagDetailPage, {
+                                            tagId: data.tagId,
+                                            name: data.tagName
+                                        });
+                                    } else {
+                                        navigate(RouterMap.ShowRichTextDetailPage, params);
+                                    }
+                                    const { showNo, userInfoVO } = data;
+                                    const { userNo } = userInfoVO || {};
+                                    track(trackEvent.XiuChangEnterClick, {
+                                        xiuChangListType: 4,
+                                        articleCode: showNo,
+                                        author: userNo,
+                                        xiuChangEnterBtnName: '秀场列表'
+                                    });
+                                }}
+                                navigate={this.$navigate}/> : null
                     }
                 </View>
             </ScrollableTabView>
             <IntervalMsgView pageType={IntervalType.xiuChang}/>
             {detail ?
-                <CommShowShareModal ref={(ref) => this.shareModal = ref}
-                                    shareName={detail && detail.userInfoVO && detail.userInfoVO.userName}
-                                    type={ShareUtil.showSharedetailDataType(detail && detail.showType, this.state.showText)}
-                                    trackEvent={trackEvent.XiuChangShareClick}
-                                    trackParmas={{
-                                        articleCode: detail.code,
-                                        author: (detail.userInfoVO || {}).userNo,
-                                        xiuChangBtnLocation: '1',
-                                        xiuChangListType: ShowListIndexModel.pageIndex + 1
-                                    }}
-                                    imageJson={{
-                                        imageType: 'show',
-                                        imageUrlStr: ShowUtils.getCover(detail),
-                                        titleStr: detail.showType === 1 ? detail.content : detail.title,
-                                        QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                        headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
-                                        userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
-                                        dec: '好物不独享，内有惊喜福利~'
-                                    }}
-                                    taskShareParams={{
-                                        uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                        code: detail.showType === 1 ? 22 : 25,
-                                        data: detail.showNo
-                                    }}
-                                    webJson={{
-                                        title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
-                                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                        thumImage: ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
-                                        dec: '好物不独享，内有惊喜福利~'
-                                    }}
+                <CommShowShareModal
+                    ref={(ref) => this.shareModal = ref}
+                    shareName={detail && detail.userInfoVO && detail.userInfoVO.userName}
+                    type={ShareUtil.showSharedetailDataType(detail && detail.showType, this.state.showText)}
+                    trackEvent={trackEvent.XiuChangShareClick}
+                    trackParmas={{
+                        articleCode: detail.code,
+                        author: (detail.userInfoVO || {}).userNo,
+                        xiuChangBtnLocation: '1',
+                        xiuChangListType: ShowListIndexModel.pageIndex + 1
+                    }}
+                    imageJson={{
+                        imageType: 'show',
+                        imageUrlStr: ShowUtils.getCover(detail),
+                        titleStr: detail.showType === 1 ? detail.content : detail.title,
+                        QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                        headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
+                        userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
+                        dec: '好物不独享，内有惊喜福利~'
+                    }}
+                    taskShareParams={{
+                        uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                        code: detail.showType === 1 ? 22 : 25,
+                        data: detail.showNo
+                    }}
+                    webJson={{
+                        title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
+                        thumImage: ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
+                        dec: '好物不独享，内有惊喜福利~'
+                    }}
                 /> : null}
 
         </View>;

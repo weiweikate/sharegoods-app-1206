@@ -10,7 +10,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.provider.Settings;
@@ -182,19 +181,16 @@ public class MainRNActivity extends ReactActivity {
 
     private void initEvent() {
         // 初始化handler
-        myHandler = new WeakHandler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                switch (msg.what) {
-                    case ParameterUtils.FLAG_UPDATE:
-                        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit("UpdateEvent", msg.arg1);
-                        break;
-                    default:
-                        break;
-                }
-                return false;
+        myHandler = new WeakHandler(msg -> {
+            switch (msg.what) {
+                case ParameterUtils.FLAG_UPDATE:
+                    mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("UpdateEvent", msg.arg1);
+                    break;
+                default:
+                    break;
             }
+            return false;
         });
     }
 

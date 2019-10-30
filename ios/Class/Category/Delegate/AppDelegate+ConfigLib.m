@@ -45,8 +45,8 @@
   Method xmg_imageNamedMethod = class_getInstanceMethod(self, @selector(track_webView:shouldStartLoadWithRequest:navigationType:));
   // 交互方法:runtime
   method_exchangeImplementations(imageNamedMethod, xmg_imageNamedMethod);
-  
-  
+
+
 }
 
 - (BOOL)track_webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
@@ -83,7 +83,7 @@
 #if DEBUG
   [MobClick setCrashReportEnabled:NO];
 #endif
-  
+
   [[UMSocialManager defaultManager] openLog:YES];
   /* 设置微信的appKey和appSecret */
   [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession
@@ -102,10 +102,10 @@
                                         appKey:KWeiboKey
                                      appSecret:KWeiboAppSecret
                                    redirectURL:@"https://sns.whalecloud.com/sina2/callback"];
-  
+
 }
 -(void)configQYLib{
-  
+
   [[QYSDK sharedSDK] registerAppId:KQiYuKey appName:@"秀购"];
   [QYCustomUIConfig sharedInstance].customMessageTextColor=[UIColor whiteColor];
   //  [QYCustomUIConfig sharedInstance].customerMessageBubbleNormalImage = [[UIImage imageNamed:@"qipao"] resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
@@ -113,7 +113,7 @@
   [QYCustomUIConfig sharedInstance].serviceMessageHyperLinkColor = [UIColor colorWithHexString:@"#FF0050"];
   [QYCustomUIConfig sharedInstance].serviceMessageTextFontSize = 13.0f;
   //  [QYCustomUIConfig sharedInstance].showShopEntrance = YES;
-  
+
 }
 #pragma mark - delegate
 //支持目前所有iOS系统
@@ -124,7 +124,7 @@
   if (!result) {
     [[JRPay sharedPay] handleOpenUrl:url];
   }
-  
+
   if ([[SensorsAnalyticsSDK sharedInstance] handleSchemeUrl:url]) {
     return YES;
   }
@@ -136,12 +136,12 @@
 }
 
 - (void)initSensorsAnalyticsWithLaunchOptions:(NSDictionary *)launchOptions {
-  
+
   // 初始化 SDK
   SensorsAnalyticsSDK * sdkInstance = [SensorsAnalyticsSDK sharedInstanceWithServerURL:[StorageFromRN getTrackAddress]
                                                                       andLaunchOptions:launchOptions
                                                                           andDebugMode:SA_DEBUG_MODE];
-  
+
   // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
  [sdkInstance enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
                               SensorsAnalyticsEventTypeAppEnd];
@@ -156,14 +156,14 @@
                                     @"product": [NSString stringWithFormat:@"%@-App", app_Name]
                                     };
   NSString *uuid = [BGKeychainTool getDeviceIDInKeychain];
-  
+
   [sdkInstance registerSuperProperties:superProperties];
   [sdkInstance trackInstallation:@"AppInstall" withProperties:@{@"DownloadChannel": @"appStore"}];
   // 忽略单个页面
   [sdkInstance ignoreAutoTrackViewControllers:@[[JRBaseVC class]]];
   [sdkInstance identify: uuid];
   [[SensorsAnalyticsSDK sharedInstance] addWebViewUserAgentSensorsDataFlag];
-  
+
 }
 
 

@@ -59,7 +59,7 @@ export default class RecommendSegmentView extends Component {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',backgroundColor:DesignRule.bgColor
     },
     itemContainer: {
         height: 40,

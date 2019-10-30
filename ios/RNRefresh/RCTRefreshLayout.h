@@ -16,6 +16,7 @@
 @property (nonatomic, copy) RCTDirectEventBlock onRefresh;
 @property (nonatomic, copy) RCTDirectEventBlock onChangeState;
 @property (nonatomic, copy) RCTDirectEventBlock onChangeOffset;
+@property (nonatomic, assign)NSInteger lineTop;
 
 @end
 

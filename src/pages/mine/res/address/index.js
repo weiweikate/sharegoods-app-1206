@@ -5,5 +5,7 @@ const address = {
     dizhi_icon_moren_sel: require('./dizhi_icon_moren_sel.png'),
     dizhi_img_nor: require('./dizhi_img_nor.png'),
     dizhi_img_sel: require('./dizhi_img_sel.png'),
+    dizhi_img_Close: require('./dizhi_close.png'),
+
 };
 export default address;

@@ -14,6 +14,7 @@ import NoMoreClick from '../../components/ui/NoMoreClick';
 import { AutoHeightImage } from '../../components/ui/AutoHeightImage';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { routePush } from '../../navigation/RouterMap';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 export class BannersVerticalView extends Component {
 
@@ -51,8 +52,17 @@ export class BannersVerticalView extends Component {
                             if (router) {
                                 routePush(router, params);
                             }
+                            track(trackEvent.bannerClick, {
+                                bannerName: item.imgUrl || '',
+                                bannerId: item.id || '',
+                                bannerRank: index,
+                                bannerType: item.linkType || '',
+                                bannerContent: item.linkTypeCode || '',
+                                bannerLocation: this.props.bannerLocation || 0
+                            });
                         }}>
-                            <AutoHeightImage source={{ uri: image }} ImgWidth={ScreenUtils.width}/>
+                            <AutoHeightImage source={{ uri: image }}
+                                             ImgWidth={this.props.ImgWidth || ScreenUtils.width}/>
                         </NoMoreClick>;
                     })
                 }

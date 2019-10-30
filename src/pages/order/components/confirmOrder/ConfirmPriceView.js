@@ -159,8 +159,8 @@ const styles = StyleSheet.create({
     couponsStyle: {
         height: ScreenUtils.autoSizeWidth(44),
         flexDirection: 'row',
-        paddingLeft: ScreenUtils.autoSizeWidth(15),
-        paddingRight: ScreenUtils.autoSizeWidth(15),
+        paddingLeft: ScreenUtils.autoSizeWidth(10),
+        paddingRight: ScreenUtils.autoSizeWidth(10),
         justifyContent: 'space-between',
         alignItems: 'center'
     },

@@ -1,3 +1,4 @@
+
 import { action, observable } from 'mobx';
 import OrderApi from '../api/orderApi';
 import StringUtils from '../../../utils/StringUtils';
@@ -57,6 +58,10 @@ class ConfirmOrderModel {
     @observable
     needModifyAddress = false;
 
+    clearAddressData(){
+        this. addressId = '';
+        this.addressData = {};
+    }
     @action clearData() {
         this.loadingState = PageLoadingState.success;
         this.err = null;
@@ -513,7 +518,7 @@ class ConfirmOrderModel {
         }).catch(err => {
             bridge.hiddenLoading();
             if (err.code !== -1){
-                Alert.alert(err.msg+'，请刷新页面或返回修改？',null,[{
+                Alert.alert(err.msg,null,[{
                     text: '返回', onPress: () => {
                         routePop();
                     }

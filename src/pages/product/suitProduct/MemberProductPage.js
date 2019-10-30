@@ -62,12 +62,21 @@ export default class MemberProductPage extends BasePage {
     };
 
     _buyAction = () => {
-        const { mainProduct, totalProPrice, productCode, activityCode, subProducts, promotionInfoItem } = this.memberProductModel;
-        const activityList = [{ activityCode }, {
-            activityTag: promotionInfoItem.activityTag,
-            promotionId: promotionInfoItem.promotionId,
-            activityCode: promotionInfoItem.activityCode
-        }];
+        const {
+            mainProduct, totalProPrice, productCode, activityCode, subProducts, promotionInfoItem, promotionInfoItems, groupCode,
+            singlePurchaseNumber, maxPurchaseTimes, purchaseTimes
+        } = this.memberProductModel;
+        //有限购次数&&已买次数>=限购次数
+        if (maxPurchaseTimes && purchaseTimes >= maxPurchaseTimes) {
+            this.$toastShow(`最多可购买${maxPurchaseTimes}次，已超过购买次数`);
+            return;
+        }
+
+        const activityList1 = promotionInfoItems.map((item) => {
+            const { activityTag, promotionId, activityCode } = item;
+            return { activityTag, promotionId, activityCode };
+        });
+        const activityList = [{ activityCode }, ...activityList1];
 
         const { show, promotionPrice } = promotionInfoItem;
 
@@ -79,7 +88,7 @@ export default class MemberProductPage extends BasePage {
                 return {
                     activityList,
                     activityCode,
-                    batchNo: 1,
+                    batchNo: groupCode,
                     productCode: prodCode,
                     skuCode: skuCode,
                     quantity: amount
@@ -92,14 +101,18 @@ export default class MemberProductPage extends BasePage {
                     orderProducts: [{
                         activityList,
                         activityCode,
-                        batchNo: 1,
+                        batchNo: groupCode,
                         productCode: productCode,
                         skuCode: skuCode,
                         quantity: amount
                     }, ...orderProductList]
                 }
             });
-        }, { priceShow: show === 1 ? promotionPrice : totalProPrice });
+        }, {
+            priceShow: show === 1 ? promotionPrice : totalProPrice,
+            singlePurchaseNumber: singlePurchaseNumber,
+            isSinglePurchase: true
+        });
     };
 
     _allAction = () => {

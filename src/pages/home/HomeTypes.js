@@ -1,15 +1,20 @@
 import RouterMap, { routePush } from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
+import { GoodsCustomViewGetHeight } from './view/GoodsCustomView';
+import { ImageAdViewGetHeight } from './view/TopicImageAdView';
+import bridge from '../../utils/bridge';
+import ScreenUtils from '../../utils/ScreenUtils';
+import { getSGscm, getSGspm_home, SGscmSource } from '../../utils/OrderTrackUtil';
+
+const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 export const homeType = {
     swiper: 2,           // 首页顶部轮播
+    homeTopBg: 34,       // 首页顶部皮肤
+    homeBottomBg: 35,    // 首页底部皮肤
+    newUserArea: 36,     // 新人专区
     expandBanner: 3,     // 首页通栏广告位
     channel: 4,          // 首页频道类目
-    focusGrid: 5,        // 首页焦点推荐位
-    star: 6,             // 明星店铺
-    today: 7,            // 今日榜单
-    fine: 8,             // 精品推荐
-    homeHot: 9,          // 超值热卖
     float: 10,           // 右下角浮动框
     goods: 18,           // 为你推荐商品
     pinShop: 12,          // 拼店banner
@@ -19,11 +24,12 @@ export const homeType = {
     classify: 'classify',
     category: 'category',
     goodsTitle: 'goodsTitle',
-    task: 'task',
-    user: 'user',
     show: 11,            //秀场
     banner: 14,
     limitGo: 300,   //限时秒杀
+    limitGoTop: 391,   //限时秒杀头部，包含标题，免单
+    limitGoTime: 392,   //限时秒杀时间栏
+    limitGoGoods: 393,   //限时秒杀商品列表
     windowAlert: 1, //首页弹框
     guideInfo: 17,
     Alert: 21,//退出的弹窗
@@ -34,10 +40,15 @@ export const homeType = {
     store30: 30,//拼店扩容页面广告
     store31: 31,//百万活动
     paySuccess: 27,//订单支付完成页面广告位
+    signInAD: 37,
+    signInBanner: 38,
     custom_imgAD: 'WIDGET-IMAGE-ADV',
     custom_text: 'WIDGET-TEXT',
     custom_goods: 'WIDGET-GOODS',
-    homeHotTitle: 'homeHotTitle'
+    homeHotTitle: 'homeHotTitle',
+    tabStaticView: 'tabStaticView',//首页类目占位的
+    limitStaticViewDismiss: 'limitStaticViewDismiss',//占位，用于标记限时购全部划完了
+    activityCenter: 'activityCenter'// banner下面的活动中心
 };
 
 export const homeLinkType = {
@@ -54,7 +65,11 @@ export const homeLinkType = {
     store: 11,      //店铺
     classify: 12,      //分类
     nothing: 13,      //无跳转
-    page: 14      //页面路由
+    page: 14,      //页面路由
+    showHome:18,    //秀场首页
+    pinGroup: 19,      //拼团
+    limitBuy: 20,      //限时购
+    signPage: 21,      // 签到页面
 };
 
 export const homeRoute = {
@@ -71,7 +86,11 @@ export const homeRoute = {
     [homeLinkType.exp]: 'product/xpProduct/XpDetailPage',
     [homeLinkType.classify]: 'home/search/SearchResultPage',
     [homeLinkType.nothing]: '',  // 不做跳转
-    [homeLinkType.page]: ''      // 跳转到页面
+    [homeLinkType.page]: '',      // 跳转到页面
+    [homeLinkType.pinGroup]: 'HtmlPage',
+    [homeLinkType.limitBuy]: 'HtmlPage',
+    [homeLinkType.signPage]: 'home/signIn/SignInPage',
+    [homeLinkType.showHome]: 'show/ShowListPage',
 };
 
 //埋点
@@ -110,8 +129,10 @@ export const ContentType = {
 };
 
 
-export function topicAdOnPress(data, item, p, title, orderTrackParams) {
+export function topicAdOnPress(data, item, p, title) {
     let p2 = {};
+    let orderTrackParams = data.orderTrackParams;
+    data.topicTrack && data.topicTrack();
     let linkValues = item.linkValue;
     let linkType = item.linkType;
     let linkValue = '';
@@ -175,4 +196,68 @@ export function topicAdOnPress(data, item, p, title, orderTrackParams) {
         p.contentValue = title || '';
         track(trackEvent.SpecialTopicBtnClick, { ...p });
     }
+
+
+}
+
+/**
+ * 处理自定义专题的数据，获取每项的行高
+ * @param data
+ * @returns {Promise<*[]>}
+ */
+export function asyncHandleTopicData(data,source,index = 0, itemIndex, topicTrack) {
+    data = data.data || {}
+    let config = data.config || {}
+    let topicCode = config.topicCode;
+    data = data.widgets.data || [];
+
+   let orderTrackParams = getSGscm(SGscmSource.topic, topicCode);
+    if (source){
+        orderTrackParams.sgspm = getSGspm_home(source, index, itemIndex).sgspm;
+    }
+
+    data = [...data];
+    let p = [];
+    let count = data.length;
+    for (let index = 0; index < count; index++) {
+        let item = data[index];
+        item.orderTrackParams = orderTrackParams;
+        item.topicTrack = topicTrack;
+        if (item.type === homeType.custom_goods) {
+            item.itemHeight = GoodsCustomViewGetHeight(item);
+            item.marginBottom = ScreenUtils.autoSizeWidth(0);
+            if (count - 1 > index) {
+                let type = data[index + 1].type;
+                if (type === homeType.custom_imgAD || type === homeType.custom_text) {
+                    item.marginBottom = ScreenUtils.autoSizeWidth(15);
+                }
+            }
+            item.itemHeight += item.marginBottom;
+        }
+
+        if (item.type === homeType.custom_imgAD) {
+            item.itemHeight = ImageAdViewGetHeight(item);
+        }
+
+        if (item.type === homeType.custom_text) {
+
+            item.detailHeight = 0;
+            item.textHeight = 0;
+            if (item.text) {
+                p.push(bridge.getTextHeightWithWidth(item.text, autoSizeWidth(14), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
+                    item.textHeight = r.height;
+                    item.itemHeight = r.height + item.detailHeight + autoSizeWidth(20);
+                }));
+            }
+            if (item.subText) {
+                p.push(bridge.getTextHeightWithWidth(item.subText, autoSizeWidth(12), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
+                    item.detailHeight = r.height;
+                    item.itemHeight = r.height + item.textHeight + autoSizeWidth(20);
+                }));
+            }
+        }
+    }
+    return Promise.all(p).then(() => {
+        return data;
+    });
 }
