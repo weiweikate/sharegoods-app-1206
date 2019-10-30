@@ -1,26 +1,25 @@
 'use strict';
 import React from 'react';
 import RefreshAnimateHeader from './RefreshAnimateHeader';
-import DesignRule from '../../../constants/DesignRule';
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 function ListHeaderLoading(props) {
-  const { isRefreshing, onRefresh, ...others } = props;
-  const headerHeight = DesignRule.width/750*120;
-  const source = Platform.OS !== 'ios' ?  require('./pull3.json') :  require('./pullnoline.json')
-  return (
-    <RefreshAnimateHeader
-      refreshing={isRefreshing}
-      headerHeight={headerHeight || 70}
-      source={source}
-      onRefresh={onRefresh}
-      {...others}
-    />
-  );
+    const { isRefreshing, onRefresh , ...others } = props;
+    const headerHeight = ScreenUtils.autoSizeWidth(100);
+    return (
+        <RefreshAnimateHeader
+            refreshing={isRefreshing}
+            headerHeight={headerHeight}
+            onRefresh={onRefresh}
+            {...others}
+        />
+    );
 }
 
 ListHeaderLoading.defaultProps = {
-  isRefreshing: false,
+    isRefreshing: false,
+    source: Platform.OS !== 'ios' ? require('./pull3.json') : require('./pullnoline.json')
 };
 
 export default React.memo(ListHeaderLoading);

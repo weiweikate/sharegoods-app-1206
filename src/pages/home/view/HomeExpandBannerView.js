@@ -8,7 +8,6 @@ import bridge from '../../../utils/bridge';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { homePoint } from '../HomeTypes';
 import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
-// import { getSource } from '@mr/image-placeholder/oos';
 
 const { px2dp } = ScreenUtils;
 
@@ -26,7 +25,7 @@ export default class HomeExpandBannerView extends Component {
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);
-        navigate(router, { ...params, ...getSGspm_home(HomeSource.expandBnner, index)});
+        navigate(router, { ...params, ...getSGspm_home(HomeSource.expandBnner, index) });
     }
 
     _renderBanner() {

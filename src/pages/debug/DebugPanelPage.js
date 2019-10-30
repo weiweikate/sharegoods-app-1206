@@ -48,6 +48,7 @@ export default class DebugPanelPage extends BasePage {
         }
         // 清空用户信息
         await user.clearUserInfo();
+        await user.clearToken();
         // 保存域名环境
         await apiEnvironment.saveEnv(envType);
         this.setState({

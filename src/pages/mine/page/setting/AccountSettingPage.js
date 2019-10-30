@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import user from '../../../../model/user';
@@ -29,7 +29,6 @@ export default class AccountSettingPage extends BasePage {
 
     constructor(props) {
         super(props);
-        console.log('-----' + JSON.stringify(user));
         this.state = {
             phonePwdStatus: PhonePwdStatus.Undefined
         };
@@ -230,21 +229,23 @@ export default class AccountSettingPage extends BasePage {
     _toEditWechat = (unionid) => {
         if (StringUtils.isEmpty(unionid)) {
             bridge.$loginWx((data) => {
-                MineAPI.updateUserById({
-                    ...data,
-                    type: 4,
-                    openid: data.openid,
-                    wechatName: data.nickName
-                }).then((resp) => {
-                    if (resp.code === 10000) {
-                        user.untiedWechat(data.nickName, data.appOpenid, data.unionid);
-                        bridge.$toast('绑定成功');
-                    } else {
-                        bridge.$toast(resp.msg);
-                    }
-                }).catch((error) => {
-                    bridge.$toast(error.msg);
-                });
+                if (data) {
+                    MineAPI.updateUserById({
+                        ...data,
+                        type: 4,
+                        openid: data.openid,
+                        wechatName: data.nickName
+                    }).then((resp) => {
+                        if (resp.code === 10000) {
+                            user.untiedWechat(data.nickName, data.appOpenid, data.unionid);
+                            bridge.$toast('绑定成功');
+                        } else {
+                            bridge.$toast(resp.msg);
+                        }
+                    }).catch((error) => {
+                        bridge.$toast(error.msg);
+                    });
+                }
             });
         } else {
             Alert.alert('确定解绑微信账号？', '解绑微信账号后，将无法使用微信登录该账号', [
@@ -271,9 +272,8 @@ export default class AccountSettingPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
-        flexDirection: 'column',
-        marginTop: 11
+        flex: 1,
+        flexDirection: 'column'
     },
     viewStyle: {
         flexDirection: 'row',

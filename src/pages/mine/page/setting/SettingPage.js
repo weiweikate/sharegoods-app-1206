@@ -25,6 +25,7 @@ import { observer } from 'mobx-react';
 import RouterMap, { forceToHome } from '../../../../navigation/RouterMap';
 import Switch from '../../components/SwitchComponent';
 import JPushDeleteUtil from '../../../../utils/JPushDeleteUtil';
+import { confirmOrderModel } from '../../../order/model/ConfirmOrderModel';
 
 const { CachesModule } = NativeModules;
 
@@ -59,9 +60,7 @@ class SettingPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '设置',
-        show: true // false则隐藏导航
-        // hiddenNav:false
+        title: '设置'
     };
 
     //CachesModule
@@ -84,15 +83,16 @@ class SettingPage extends BasePage {
     _render = () => {
         return (
             <View style={styles.container}>
-
                 {this.renderWideLine()}
                 <View style={{ backgroundColor: 'white' }}>
-                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle} onPress={() => this.jumpToAccountSettingPage()}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle}
+                                      onPress={() => this.jumpToAccountSettingPage()}>
                         <UIText value={'账号与安全'} style={styles.blackText}/>
                         <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
-                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle} onPress={() => this.jumpToAddressManagePage()}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle}
+                                      onPress={() => this.jumpToAddressManagePage()}>
                         <UIText value={'收货地址管理'} style={styles.blackText}/>
                         <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
                     </TouchableOpacity>
@@ -117,13 +117,15 @@ class SettingPage extends BasePage {
                             </TouchableOpacity>
                             {this.renderLine()}
                         </View>}
-                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle}
+                                      onPress={() => this.clearAllCaches()}>
                         <UIText value={'清除缓存'} style={styles.blackText}/>
                         <UIText value={this.state.memorySize}
                                 style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
-                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.viewStyle}
+                                      onPress={() => this.jumptToAboutUsPage()}>
                         <UIText value={'关于我们'} style={styles.blackText}/>
                         <Image resizeMode={'contain'} source={arrow_right} style={{ height: 12 }}/>
                     </TouchableOpacity>
@@ -150,7 +152,6 @@ class SettingPage extends BasePage {
                 }} onPress={() => this.toLoginOut()}>
                     <Text style={{ fontSize: 17, color: 'white' }}>退出登录</Text>
                 </TouchableOpacity>
-
             </View>
         );
     };
@@ -230,6 +231,7 @@ class SettingPage extends BasePage {
                         user.clearUserInfo();
                         user.clearToken();
                         userOrderNum.clean();
+                        confirmOrderModel.clearAddressData();
                         bridge.clearCookies();
                         loginModel.clearPassword();
                         //清空购物车
@@ -314,9 +316,7 @@ class SettingPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: DesignRule.bgColor,
-        flexDirection: 'column',
-        flex: 1
+        flexDirection: 'column'
     },
     viewStyle: {
         flexDirection: 'row',

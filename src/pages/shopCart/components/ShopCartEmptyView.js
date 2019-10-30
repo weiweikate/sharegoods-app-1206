@@ -81,7 +81,7 @@ export default class ShopCartEmptyView extends Component {
         }
     };
     _onRefresh = () => {
-        shopCartEmptyModel.getRecommendProducts(true,true);
+        shopCartEmptyModel.getRecommendProducts(true, true);
     };
     _onEndReached = () => {
         shopCartEmptyModel.getRecommendProducts(false);
@@ -134,7 +134,9 @@ export default class ShopCartEmptyView extends Component {
                     }}
                     refreshControl={<HeaderLoading
                         isRefreshing={shopCartEmptyModel.isRefreshing}
-                        onRefresh={()=>{this._onRefresh()}}
+                        onRefresh={() => {
+                            this._onRefresh();
+                        }}
                     />}
                     onEndReachedThreshold={ScreenUtils.height / 3}
                     dataProvider={this.dataProvider}

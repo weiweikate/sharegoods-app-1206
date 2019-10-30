@@ -12,7 +12,7 @@ import WithdrawRecordPage from './WithdrawRecordPage';
 import WithdrawRecordDetailPage from './WithdrawRecordDetailPage';
 import ReturnCashAccountPage from './ReturnCashAccountPage';
 import ReturnCashRulePage from './ReturnCashRulePage';
-
+import CheckHeaderImagesView from './CheckHeaderImagesView'
 export default {
     moduleName: 'userInformation',    //模块名称
     childRoutes: {          //模块内部子路由
@@ -28,6 +28,7 @@ export default {
         WithdrawRecordPage,
         WithdrawRecordDetailPage,
         ReturnCashAccountPage,
-        ReturnCashRulePage
+        ReturnCashRulePage,
+        CheckHeaderImagesView
     }
 };

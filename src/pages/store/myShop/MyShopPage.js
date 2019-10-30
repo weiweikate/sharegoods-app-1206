@@ -21,7 +21,6 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import user from '../../../model/user';
 import resCommon from '../../../comm/res';
-import LinearGradient from 'react-native-linear-gradient';
 import { trackEvent } from '../../../utils/SensorsTrack';
 import { RoleTypeView, ShopProductItemView } from './components/ShopDetailItemView';
 import MyShopDetailModel from './MyShopDetailModel';
@@ -39,6 +38,7 @@ const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = resCommon.button.back_white;
 const shezhi = res.myShop.shezhi;
 const my_Shop_gengduo = res.myShop.my_Shop_gengduo;
+const HeaderBarBgImg = res.myShop.txbg_02;
 
 const RmbIcon = res.myShop.zje_11;
 const QbIcon = res.myShop.dzfhj_03_03;
@@ -98,7 +98,7 @@ export default class MyShopPage extends BasePage {
         this.MyShopDetailModel.isRefresh = true;
         this._loadPageData();
         spellStatusModel.requestHome();
-        this.BannersVerticalView.fetchBannerList && this.BannersVerticalView.fetchBannerList();
+        this.BannersVerticalView && this.BannersVerticalView.fetchBannerList && this.BannersVerticalView.fetchBannerList();
     };
 
     _loadPageData = () => {
@@ -265,22 +265,6 @@ export default class MyShopPage extends BasePage {
         );
     };
 
-    _onScroll = (event) => {
-        let Y = event.nativeEvent.contentOffset.y;
-        let oldSt = this.st;
-        if (Y <= 0) {
-            this.st = 0;
-        } else {
-            this.st = 1;
-        }
-        if (oldSt === this.st) {
-            return;
-        }
-        this.LinearGradient.setNativeProps({
-            opacity: this.st
-        });
-    };
-
     _render() {
         const {
             name, headUrl, profile, storeCode, storeTotalBonus,
@@ -288,30 +272,25 @@ export default class MyShopPage extends BasePage {
         } = this.MyShopDetailModel.storeData;
         return (
             <View style={styles.container}>
-                <LinearGradient colors={['#FF0050', '#FC5D39']}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 0 }}
-                                ref={e => this.LinearGradient = e}
-                                style={styles.LinearGradient}/>
+                <Image source={HeaderBarBgImg}
+                       style={[styles.imgBg]}/>
                 {this._NavBarRender()}
                 <ScrollView showsVerticalScrollIndicator={false}
-                            onScroll={this._onScroll}
-                            scrollEventThrottle={30}
+                            style={{ marginTop: ScreenUtils.headerHeight }}
                             refreshControl={<RefreshControl
                                 onRefresh={this._onRefresh}
                                 refreshing={this.MyShopDetailModel.isRefresh}
-                                progressViewOffset={ScreenUtils.headerHeight}
-                                colors={[DesignRule.mainColor]}
-                            />}>
+                                colors={['white']}
+                                tintColor={'white'}/>}>
                     <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement}
                                 MyShopDetailModel={this.MyShopDetailModel}/>
-                    {isNoEmpty(roleType) &&
-                    <BannersVerticalView ref={(ref) => this.BannersVerticalView = ref} type={homeType.store31}/>}
-                    <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
-                    <RoleTypeView MyShopDetailModel={this.MyShopDetailModel}/>
-                    <MembersRow MyShopDetailModel={this.MyShopDetailModel}
-                                onPressAllMembers={this._clickAllMembers}/>
-                    <View>
+                    <View style={{ backgroundColor: DesignRule.bgColor }}>
+                        {isNoEmpty(roleType) &&
+                        <BannersVerticalView ref={(ref) => this.BannersVerticalView = ref} type={homeType.store31}/>}
+                        <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
+                        <RoleTypeView MyShopDetailModel={this.MyShopDetailModel}/>
+                        <MembersRow MyShopDetailModel={this.MyShopDetailModel}
+                                    onPressAllMembers={this._clickAllMembers}/>
                         <InfoRow icon={RmbIcon} title={'店铺已完成奖励总额'} desc={`${storeTotalBonus || 0}元`}/>
                         {isNoEmpty(roleType) &&
                         <InfoRow icon={system_charge} title={'个人已获得奖励'} desc={`${storeUserBonus || 0}元`}/>}
@@ -320,11 +299,11 @@ export default class MyShopPage extends BasePage {
                         {isNoEmpty(roleType) &&
                         <InfoRow icon={myShop_join} title={'加入时间'}
                                  desc={joinTime ? DateUtils.formatDate(joinTime, 'yyyy年MM月dd日') : ''}/>}
+                        {!isNoEmpty(roleType) &&
+                        <NoMoreClick style={styles.joinBtn} onPress={this._joinBtnAction}>
+                            <Text style={styles.joinText}>申请加入</Text>
+                        </NoMoreClick>}
                     </View>
-                    {!isNoEmpty(roleType) &&
-                    <NoMoreClick style={styles.joinBtn} onPress={this._joinBtnAction}>
-                        <Text style={styles.joinText}>申请加入</Text>
-                    </NoMoreClick>}
                 </ScrollView>
                 <IntervalMsgView pageType={IntervalType.shopDetail} storeCode={this.MyShopDetailModel.storeCode}/>
                 <ActionSheetView ref={ref => {
@@ -355,12 +334,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    LinearGradient: {
-        opacity: 0,
+    imgBg: {
         position: 'absolute',
-        top: 0, left: 0, right: 0,
-        zIndex: 3,
-        height: ScreenUtils.headerHeight
+        left: 0, top: 0,
+        width: ScreenUtils.width, height: ScreenUtils.px2dp(210)
     },
     transparentView: {
         top: ScreenUtils.statusBarHeight,

@@ -176,7 +176,7 @@ export class PriceBottomView extends Component {
                             已选扩容{totalPerson}人
                         </MRText>
                         <MRText style={{ fontSize: 13, color: DesignRule.textColor_redWarn }}>
-                            {leavePerson > 0 ? `还可扩容${leavePerson}人` : `最高可扩容${canBuyExpandGoodsNum}人`}
+                            {leavePerson >= 0 ? `还可扩容${leavePerson}人` : `最高可扩容${canBuyExpandGoodsNum}人`}
                         </MRText>
                     </View>
                     <View style={{ flex: 1 }}/>

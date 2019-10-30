@@ -36,7 +36,7 @@ import { observer } from 'mobx-react';
 const { autoSizeWidth } = ScreenUtils;
 import { homeModule } from '../model/Modules';
 import { routePush } from '../../../navigation/RouterMap';
-import { ImageCacheManager } from 'react-native-cached-image';
+import { ImageCacheManager } from '@mr/react-native-cached-image';
 import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 @observer
@@ -226,8 +226,7 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
 }
 
 let HomeAdModal = observer(AdViewBindModal(HomeModalManager));
-let GiftModal = observer(AdViewBindModal(HomeModalManager, 'giftData', 'isShowGift', 'closeGift'));
-export { HomeAdModal, AdViewBindModal, GiftModal };
+export { HomeAdModal, AdViewBindModal };
 
 @observer
 export class HomeAdModal_IOS extends React.Component {

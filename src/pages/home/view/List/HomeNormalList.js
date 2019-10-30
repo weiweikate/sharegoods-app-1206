@@ -16,6 +16,7 @@ import React from 'react';
 
 import { Image, TouchableWithoutFeedback, View } from 'react-native';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
+import StickyContainer from 'recyclerlistview/sticky';
 
 import { MRText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
@@ -29,12 +30,16 @@ import res from '../../res';
 import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
 import { observer } from 'mobx-react';
 import { tabModel } from '../../model/HomeTabModel';
+import { asyncHandleTopicData, homeType } from '../../HomeTypes';
+import { TopicImageAdView } from '../TopicImageAdView';
+import GoodsCustomView from '../GoodsCustomView';
+import TextCustomView from '../TextCustomView';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 class GoodView extends React.PureComponent {
 
-    render(){
+    render() {
         let item = this.props.data;
         return (
             <View style={{
@@ -101,9 +106,9 @@ class GoodView extends React.PureComponent {
 
 class IconView extends React.PureComponent {
 
-    render(){
+    render() {
         let item = this.props.data;
-        return(
+        return (
             <View style={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
@@ -163,7 +168,7 @@ class IconView extends React.PureComponent {
                     );
                 })}
             </View>
-        )
+        );
     }
 
 }
@@ -188,20 +193,20 @@ class HeaderView extends React.PureComponent {
             }}>
                 <TouchableWithoutFeedback onPress={() => this.onPress(0)}>
                     <MRText style={{
-                        fontSize: autoSizeWidth(15),
+                        fontSize: autoSizeWidth(13),
                         color: index === 0 ? DesignRule.mainColor : DesignRule.textColor_instruction
                     }}>综合</MRText>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => this.onPress(1)}>
                     <MRText style={{
-                        fontSize: autoSizeWidth(15),
+                        fontSize: autoSizeWidth(13),
                         color: index === 1 ? DesignRule.mainColor : DesignRule.textColor_instruction
                     }}>销量</MRText>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => this.onPress(this.state.index === 2 ? 3 : 2)}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <MRText style={{
-                            fontSize: autoSizeWidth(15),
+                            fontSize: autoSizeWidth(13),
                             color: (index === 2 || index === 3) ? DesignRule.mainColor : DesignRule.textColor_instruction
                         }}>价格</MRText>
                         <View style={{ marginLeft: 2 }}>
@@ -239,13 +244,14 @@ export default class HomeNormalList extends React.Component {
         super(props);
 
         this.state = {
-            data: [{type: 'header'}],
+            data: [{ type: 'header' }],
             footerStatus: 'hidden',
-            refreshing: false,
+            refreshing: false
         };
         this.itemData = [];
-        this.header = [{type: 'header'}]
+        this.header = [{ type: 'header' }];
         this.goods = [];
+        this.topicList = [];
 
         this.index = 0;
         this.isRefreshing = true;
@@ -261,7 +267,15 @@ export default class HomeNormalList extends React.Component {
         this.refreshData(true);
     }
 
-    handleItemData=(itemData)=> {
+    /**
+     * 处理icon数据逻辑
+     * 1.超出一行，不满2行，显示一行
+     * 2.超出2行，显示2行
+     * 3.未满一行，有多少显示多少
+     * 4.末尾加《全部分类》
+     * @param itemData
+     */
+    handleItemData = (itemData) => {
         let count = itemData.length;
         if (count === 0) {
             itemData = [];
@@ -281,13 +295,13 @@ export default class HomeNormalList extends React.Component {
                 'linkType': 'all'
             });
         }
-        this.itemData = [{type: 'icon', data: itemData}];
+        this.itemData = [{ type: 'icon', data: itemData }];
         this.changeData();
-    }
+    };
 
-    changeData= ()=>{
-        this.setState({data: [...this.itemData,...this.header, ...this.goods]})
-    }
+    changeData = () => {
+        this.setState({ data: [...this.itemData, ...this.topicList, ...this.header, ...this.goods] });
+    };
 
     changeIndex(index) {
         this.index = index;
@@ -323,17 +337,22 @@ export default class HomeNormalList extends React.Component {
         dim.width = ScreenUtils.width;
         switch (type.type) {
             case 'icon':
-                if (type.data.length === 0){
+                if (type.data.length === 0) {
                     dim.height = 0;
                 } else {
-                    dim.height =  type.data.length> 5? ScreenUtils.autoSizeWidth(93)*2: ScreenUtils.autoSizeWidth(93);
+                    dim.height = type.data.length > 5 ? ScreenUtils.autoSizeWidth(93) * 2 : ScreenUtils.autoSizeWidth(93);
                 }
                 break;
             case 'goods':
-                dim.height =  ScreenUtils.autoSizeWidth(174+60+20);
+                dim.height = ScreenUtils.autoSizeWidth(174 + 60 + 20);
                 break;
             case 'header':
                 dim.height = 50;
+                break;
+            case homeType.custom_text:
+            case homeType.custom_goods:
+            case homeType.custom_imgAD:
+                dim.height = type.itemHeight || 0;
                 break;
             default:
                 dim.height = 0;
@@ -343,18 +362,28 @@ export default class HomeNormalList extends React.Component {
 
     _renderItem = (type, item, index) => {
         type = type.type;
-        let p = {firstCategoryId: this.props.data.firstCategoryId, navName: this.props.data.navName};
+        let p = { firstCategoryId: this.props.data.categoryIds, navName: this.props.data.navName };
+        let topic = { specialTopicId: this.props.data.linkCode };
         if (type === 'icon') {
-            return <IconView data={item.data} p = {p}/>
+            return <IconView data={item.data} p={p}/>;
         } else if (type === 'goods') {
-            return <GoodView data = {item.data} p = {p}/>
+            return <GoodView data={item.data} p={p}/>;
         } else if (type === 'header') {
             return <HeaderView
                 onPress={(index) => {
                     this.changeIndex(index);
                 }}
                 index={this.index}
-            />
+            />;
+        } else if (type === homeType.custom_text) {
+            p.specialTopicArea = 6;
+            return <TextCustomView data={item} p={topic}/>;
+        } else if (type === homeType.custom_imgAD) {
+            p.specialTopicArea = 1;
+            return <TopicImageAdView data={item} p={topic}/>;
+        } else if (type === homeType.custom_goods) {
+            p.specialTopicArea = 3;
+            return <GoodsCustomView data={item} p={topic}/>;
         }
         return <View/>;
     };
@@ -364,12 +393,12 @@ export default class HomeNormalList extends React.Component {
         return {
             page: this.page,
             pageSize: 10,
-            categoryId: data.firstCategoryId,
+            categoryId: data.categoryIds,
             sort: this.sort
         };
     }
 
-    refreshData=(first) =>{
+    refreshData = (first) => {
         if (!first) {
             if (this.isRefreshing || this.isLoadMore) {
                 return;
@@ -377,16 +406,29 @@ export default class HomeNormalList extends React.Component {
             this.setState({ refreshing: true });
         }
         let data = this.props.data || {};
+        let customTopicCode = data.customTopicCode;
+        //获取顶部的icon数据
         HomeAPI.getSecondaryList({ navId: data.id }).then((result) => {
             this.handleItemData(result.data || []);
         });
+        if (customTopicCode) {
+            //请求自定义专题数据
+            HomeAPI.getCustomTopic({ topicCode: customTopicCode, page: '1', pageSize: '10' }).then((data) => {
+                //处理自定义专题的数据
+                asyncHandleTopicData(data).then((topticList) => {
+                    this.topicList = topticList;
+                    this.changeData();
+                });
+            });
+        }
+
         this.isRefreshing = true;
         this.page = 1;
-        setTimeout(()=> {//为了播放完刷新动画
+        setTimeout(() => {//为了播放完刷新动画
             this.setState({
                 refreshing: false
             });
-        }, 1000)
+        }, 1000);
         HomeAPI.productList(this.getParams()).then((data) => {
             this.isRefreshing = false;
             data = data.data || {};
@@ -396,13 +438,13 @@ export default class HomeNormalList extends React.Component {
             this.goods = dataArr;
             this.changeData();
             this.setState({
-                footerStatus,
+                footerStatus
             });
 
         }).catch((e) => {
             this.isRefreshing = false;
         });
-    }
+    };
 
     getMoreData() {
         if (this.isRefreshing || this.isLoadMore || this.state.footerStatus === 'noMoreData') {
@@ -419,7 +461,7 @@ export default class HomeNormalList extends React.Component {
             dataArr = this.handleMoreData(dataArr);
             this.goods = dataArr;
             this.changeData();
-            this.setState({ footerStatus});
+            this.setState({ footerStatus });
 
         }).catch((e) => {
             this.page--;
@@ -431,17 +473,16 @@ export default class HomeNormalList extends React.Component {
     handleData(data) {
         let arr = [];
         let temp = [];
-
         data.forEach((item) => {
             if (temp.length === 2) {
-                arr.push({type: 'goods', data: temp});
+                arr.push({ type: 'goods', data: temp });
                 temp = [];
             }
             temp.push(item);
 
         });
         if (temp.length > 0) {
-            arr.push(temp);
+            arr.push({ type: 'goods', data: temp });
         }
         return arr;
     }
@@ -451,45 +492,61 @@ export default class HomeNormalList extends React.Component {
             return this.goods;
         }
         let arr = [...this.goods];
-        let temp = arr.pop();
+        let temp = [];
         data.forEach((item) => {
             if (temp.length === 2) {
-                arr.push({type: 'goods', data: temp});
+                arr.push({ type: 'goods', data: temp });
                 temp = [];
             }
             temp.push(item);
 
         });
         if (temp.length > 0) {
-            arr.push(temp);
+            arr.push({ type: 'goods', data: temp });
         }
         return arr;
     }
 
 
     render() {
-        if (Math.abs(tabModel.tabIndex - this.props.index) > 1){
+        if (Math.abs(tabModel.tabIndex - this.props.index) > 1) {
             return null;
         }
         this.dataProvider = this.dataProvider.cloneWithRows(this.state.data);
+        let stickyHeaderIndice = 0;
+        this.state.data.find((item, index) => {
+            if (item.type === 'header') {
+                stickyHeaderIndice = index;
+                return true;
+            }
+            return false;
+        });
         return (
-            <View style={[DesignRule.style_container, { marginTop: 0 }]}>
-                <RecyclerListView
-                    refreshControl={<HeaderLoading
-                        isRefreshing={this.state.refreshing}
-                        onRefresh={()=> this.refreshData(false)}
-                    />}
-                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0 }}
-                    onEndReached={this.getMoreData.bind(this)}
-                    onEndReachedThreshold={ScreenUtils.height / 3}
-                    dataProvider={this.dataProvider}
-                    rowRenderer={this._renderItem.bind(this)}
-                    layoutProvider={this.layoutProvider}
-                    showsVerticalScrollIndicator={false}
-                    removeClippedSubviews={false}
-                    canChangeSize={false}
-                    renderFooter={() => <DefaultLoadMoreComponent status={this.state.footerStatus}/>}
-                />
+            <View style={[DesignRule.style_container, { marginTop: ScreenUtils.autoSizeWidth(40) }]}>
+                <StickyContainer stickyHeaderIndices={[stickyHeaderIndice]}>
+                    <RecyclerListView
+                        refreshControl={<HeaderLoading
+                            isRefreshing={this.state.refreshing}
+                            onRefresh={() => this.refreshData(false)}
+                        />}
+                        style={{
+                            minHeight: ScreenUtils.headerHeight,
+                            minWidth: 1,
+                            flex: 1,
+                            marginTop: 0,
+                            backgroundColor: DesignRule.bgColor
+                        }}
+                        onEndReached={this.getMoreData.bind(this)}
+                        onEndReachedThreshold={ScreenUtils.height / 3}
+                        dataProvider={this.dataProvider}
+                        rowRenderer={this._renderItem.bind(this)}
+                        layoutProvider={this.layoutProvider}
+                        showsVerticalScrollIndicator={false}
+                        removeClippedSubviews={false}
+                        canChangeSize={false}
+                        renderFooter={() => <DefaultLoadMoreComponent status={this.state.footerStatus}/>}
+                    />
+                </StickyContainer>
             </View>
         );
     }

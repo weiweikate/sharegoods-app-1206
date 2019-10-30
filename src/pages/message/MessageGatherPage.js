@@ -22,6 +22,7 @@ import RES from './res';
 const emptyIcon = RES.message_empty;
 import {MRText as Text} from '../../components/ui'
 import { TrackApi } from '../../utils/SensorsTrack';
+import {PageLoadingState} from '../../components/pageDecorator/PageState';
 
 export default class MessageGatherPage extends BasePage {
     constructor(props) {
@@ -30,6 +31,8 @@ export default class MessageGatherPage extends BasePage {
             viewData: [],
             isEmpty: false,
             // currentPage: 1,
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: null
         }
         this.displayTime = null;
         this.currentPage = 1;
@@ -43,6 +46,18 @@ export default class MessageGatherPage extends BasePage {
         return true;
     }
 
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            loadingProps:{
+                style:{paddingTop:ScreenUtils.height/2-100, justifyContent:'flex-start'}
+            },
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: this.loadPageData
+            }
+        };
+    };
 
     componentDidMount() {
         this.loadPageData();
@@ -51,10 +66,8 @@ export default class MessageGatherPage extends BasePage {
 
 
     loadPageData =()=> {
-        Toast.showLoading()
         MessageAPI.queryMessage({page: 1, pageSize: 10, type:100}).then(res => {
             DeviceEventEmitter.emit('contentViewed');
-            Toast.hiddenLoading()
             if(StringUtils.isNoEmpty(res.data.data)){
                 let arrData = [];
                 res.data.data.map((item, index) => {
@@ -63,16 +76,14 @@ export default class MessageGatherPage extends BasePage {
                 if(!EmptyUtils.isEmptyArr(arrData)){
                     this.displayTime = arrData[arrData.length - 1].displayTime;
                 }
-                this.setState({viewData: arrData})
+                this.setState({viewData: arrData ,netFailedInfo: null, loadingState: PageLoadingState.success})
             }else{
+                this.setState({isEmpty:true ,netFailedInfo: null, loadingState: PageLoadingState.success})
                 Toast.toast(res.msg);
-                this.setState({isEmpty:true})
             }
         }).catch(error=>{
             this.$toastShow(error.msg);
-            this.setState({isEmpty:true})
-            Toast.hiddenLoading()
-
+            this.setState({ isEmpty: true, netFailedInfo: error, loadingState: PageLoadingState.fail });
         });
     }
 

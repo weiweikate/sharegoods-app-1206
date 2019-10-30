@@ -40,6 +40,9 @@ import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
 import MineSpellGroupView from './spellGroup/components/MineSpellGroupView';
 import TimeModel from '../model/TimeModel';
 import LinearGradient from 'react-native-linear-gradient';
+import Swiper from 'react-native-swiper';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import CommGroupShareModal from '../../../comm/components/CommGroupShareModal'
 
 const {
     // mine_header_bg,
@@ -64,6 +67,7 @@ const {
     mine_icon_fans,
     mine_icon_show,
     // mine_levelBg,
+    my_strength,
     mine_showOrder
 } = res.homeBaseImg;
 
@@ -120,8 +124,9 @@ export default class MinePage extends BasePage {
             hasFansMSGNum: 0,
             modalId: false,
             adArr: [],
-            groupData: {},
-            currentUserState:null
+            groupData: [],
+            currentUserState:null,
+            selectData:{}
         };
 
     }
@@ -150,7 +155,8 @@ export default class MinePage extends BasePage {
             'didFocus',
             payload => {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-                settingModel.memberSwitch();//请求后台会员权益开关状态
+                settingModel.memberSwitch(); //请求后台会员权益开关状态
+                settingModel.myStrengthSwitch(); // 请求后台是否展示我的战力入口
                 const { state } = payload;
                 this.loadMessageCount();
                 this.loadAd();
@@ -246,7 +252,7 @@ export default class MinePage extends BasePage {
         MineApi.getGroupList({ page: 1, size: 10, groupStatus: 2 }).then((result) => {
             if (result.data && !EmptyUtils.isEmpty(result.data.data)) {
                 this.setState({
-                    groupData: result.data.data[0]
+                    groupData: result.data.data
                 });
             } else {
                 this.setState({
@@ -413,19 +419,19 @@ export default class MinePage extends BasePage {
         return (
             <View style={styles.headerBgStyle}>
                 <View
-                    style={{ height: px2dp(68), flexDirection: 'row', marginRight: px2dp(5), alignItems: 'flex-end' }}>
+                    style={{height: px2dp(68), flexDirection: 'row', marginRight: px2dp(5), alignItems: 'flex-end'}}>
                     <TouchableOpacity onPress={this.jumpToUserInformationPage} activeOpacity={1}>
                         {icon}
                     </TouchableOpacity>
                     <View style={{
-                        flex: 1,
+                        flex: 3,
                         height: px2dp(54),
                         marginLeft: px2dp(10),
                         justifyContent: 'center'
                     }}>
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
                             <View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                     <Text maxLength={8}
                                           style={{
                                               color: DesignRule.textColor_mainTitle,
@@ -435,15 +441,21 @@ export default class MinePage extends BasePage {
                                         {name}
                                     </Text>
                                     <UIImage source={res.button.white_go}
-                                             style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12) }}
+                                             style={{height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12)}}
                                              resizeMode={'stretch'}/>
                                 </View>
-                                <View style={{ flexDirection: 'row' }}>
+                                <View style={{flexDirection: 'row'}}>
                                     {xiuOld}
                                     {accreditID}
                                 </View>
                             </View>
                         </TouchableWithoutFeedback>
+                    </View>
+                    <View style={{flex: 1, height: px2dp(68), alignItems: 'flex-end', marginRight: 9}}>
+                        <TouchableOpacity onPress={this.jumpToSettingPage} activeOpacity={1}
+                                          style={{width: 24, height: 24}}>
+                            <Image style={{width: 24, height: 24, }} source={mine_setting_icon_gray}/>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', flex: 1 }}>
@@ -894,18 +906,72 @@ export default class MinePage extends BasePage {
     }
 
     renderBodyView = () => {
+        const {selectData} = this.state;
+        let views = this.state.groupData && this.state.groupData.map((item, index) => {
+            return (
+                <MineSpellGroupView
+                    key={'GroupView' + index}
+                    data={item}
+                    timeEnd={this.loadGroupList}
+                    itemClick={(data) => {
+                        this.setState({selectData: data}, () => {
+                            this.ShareModel.open && this.ShareModel.open();
+                        });
+                        // this.$navigate(RouterMap.SpellGroupList);
+                    }}
+                />
+            )
+        });
+
         return (
             <View style={{ flex: 1, backgroundColor: '#F7F7F7' }}>
                 {this.orderRender()}
-                <MineSpellGroupView data={this.state.groupData}
-                                    timeEnd={this.loadGroupList}
-                                    itemClick={() => {
-                                        this.$navigate(RouterMap.SpellGroupList);
-                                    }}
-                />
+                {!EmptyUtils.isEmpty(views) ? <View style={styles.swiper_style}>
+                    <Swiper showsButtons={false}
+                            loop={true}
+                            autoplay={true}
+                            autoplayTimeout={3}
+                            dot={<View/>}
+                            activeDot={<View/>}
+                    >
+                        {views}
+                    </Swiper>
+                </View> : null
+                }
                 {this.activeRender()}
                 {this.utilsRender()}
                 {this.renderADView()}
+                <CommGroupShareModal
+                    ref={(ref) => {
+                        this.ShareModel = ref
+                    }}
+                    endTime={selectData.endTime}
+                    needPerson={selectData.surplusPerson}
+                    type={'group'}
+                    imageJson={{ // 分享商品图片的数据
+                        imageUrlStr: selectData.image || 'logo.png',
+                        imageType: 'group', // 为空就是生成商品分享的图片， web：网页分享的图片 group:生成拼团海报
+                        titleStr: selectData.goodsName || '秀一秀，赚到够',
+                        priceStr: selectData.activityAmount + '', // 拼团活动价格
+                        originalPrice: selectData.skuPrice + '',//划线价格
+                        QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${selectData.id ? selectData.id : ''}`,
+                    }}
+                    webJson={{
+                        title: `[仅剩${selectData.surplusPerson}个名额] 我${selectData.activityAmount || ''}元带走了${selectData.goodsName || ''}` || '秀一秀，赚到够',//分享标题(当为图文分享时候使用)
+                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${selectData.id ? selectData.id : ''}`,//(图文分享下的链接)
+                        thumImage: selectData.image || 'logo.png',//(分享图标小图(https链接)图文分享使用)
+                        dec: `我买了${selectData.goodsName || ''}，该商品已拼${selectData.alreadySaleNum || ''}件了，快来参团吧!`
+                    }}
+                    trackEvent={trackEvent.ShareGroupbuy} //分享埋点
+                    trackParmas={{
+                        shareSource: 3,
+                        groupbuyId:selectData.id,
+                        groupbuyStatus: selectData.groupStatus,
+                        spuName: selectData.goodsName,
+                        spuCode: selectData.prodCode,
+                    }}
+
+                />
             </View>
         );
     };
@@ -1075,14 +1141,6 @@ export default class MinePage extends BasePage {
             }
         };
 
-        let setting = {
-            text: '设置',
-            icon: mine_setting_icon_gray,
-            onPress: () => {
-                this.jumpToSettingPage();
-            }
-        };
-
         let spellGroup = {
             text: '我的拼团',
             icon: mine_icon_group,
@@ -1091,9 +1149,20 @@ export default class MinePage extends BasePage {
             }
         };
 
-        let menu = [message, address, service, collect, spellGroup, setting];
+        let myStrength = {
+            text: '我的战力',
+            icon: my_strength,
+            onPress: () => {
+                this.$navigate(RouterMap.HtmlPage, {uri: '/mine/strength'});
+            }
+        };
+
+        let menu = [message, address, service, collect, spellGroup];
 
 
+        if(settingModel.myStrengthState){
+            menu.push(myStrength);
+        }
         if (this.state.hasFans) {
             menu.unshift(fans);
         }
@@ -1300,5 +1369,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width:73,
         height:20
-    }
+    },
+    swiper_style: {
+        height: 75,
+    },
 });

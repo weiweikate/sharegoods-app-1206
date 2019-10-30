@@ -1,5 +1,4 @@
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-// import UIText from '../../../components/ui/UIText';
+import { Image, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { Component } from 'react';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
@@ -13,7 +12,7 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
 
-const dismissKeyboard = require('dismissKeyboard');
+const dismissKeyboard = Keyboard.dismiss;
 
 const {
     close_eye,

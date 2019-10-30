@@ -50,7 +50,7 @@ export default class GroupShareImage extends Component {
                 path:'',
                 error:err
             })
-        })
+        },()=>{},'GroupShareImage');
     }
 
     render() {

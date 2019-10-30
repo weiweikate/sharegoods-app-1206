@@ -37,7 +37,7 @@ export class AddCapacityPriceModel {
 
     @computed get canBuy() {
         const leavePerson = this.canBuyExpandGoodsNum - this.totalPerson;
-        return (leavePerson > 0) && (this.totalPerson > 0);
+        return (leavePerson >= 0) && (this.totalPerson > 0);
     }
 
     requestList = () => {

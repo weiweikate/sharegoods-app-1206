@@ -17,7 +17,7 @@ import SmoothPushHighComponent from '../../comm/components/SmoothPushHighCompone
 import ShareUtil from '../../utils/ShareUtil';
 import { homeType } from '../../pages/home/HomeTypes';
 import LuckyIcon from '../../pages/guide/LuckyIcon';
-import GroupSelectModel from '../../pages/mine/page/spellGroup/components/GroupSelectModel';
+import CommGroupShareModal from '../../comm/components/CommGroupShareModal';
 import { MRText } from '../ui';
 import { netState } from '@mr/rn-request';
 import DesignRule from '../../constants/DesignRule';
@@ -36,10 +36,52 @@ export default class RequestDetailPage extends BasePage {
         show: !(this.props.params || {}).unShow
     };
 
+    floatBarOptions = {
+        title: this.params.title || (netState.isConnected ? '加载中...' : '网络异常'),
+        show: !(this.props.params || {}).unShow,
+        headerStyle:{
+            position:'absolute',
+            top:0,
+            left:0,
+            zIndex:1,
+            backgroundColor:DesignRule.white,
+            borderBottomWidth:0,
+        },
+        titleStyle:{
+            opacity:1
+        }
+    }
+
+    transparentBarOptions = {
+        title: '',
+        show: !(this.props.params || {}).unShow,
+        headerStyle:{
+            position:'absolute',
+            top:0,
+            left:0,
+            zIndex:1,
+            backgroundColor:'transparent',
+            borderBottomWidth:0
+        },
+        titleStyle:{
+            opacity:0
+        }
+    }
+
+    normalBarOptions = {
+        title: this.params.title || (netState.isConnected ? '加载中...' : '网络异常'),
+        show: !(this.props.params || {}).unShow
+    };
+
+
+    //顶部导航栏类型，'normalBar'，'floatBar'，'transparentBar'
+    currentBarType = 'normalBar'
+
+
     constructor(props) {
         super(props);
         const params = this.props.params || this.params || {};
-        let { uri, title, sgspm, sgscm } = params;
+        let { uri, title, sgspm, sgscm, paramsStr='' } = params;
         sgspm = sgspm || '';
         sgscm = sgscm || '';
         uri = decodeURIComponent(uri);
@@ -55,6 +97,7 @@ export default class RequestDetailPage extends BasePage {
             '&ts=' + new Date().getTime() +
             '&sgspm=' + sgspm +
             '&sgscm=' + sgscm
+            +paramsStr
         ;
         //拼参数
         if (uri && uri.indexOf('?') > 0) {
@@ -218,7 +261,7 @@ export default class RequestDetailPage extends BasePage {
                 (msg.shareParmas && msg.shareParmas.type && msg.shareParmas.type === 'Group')) {
 
                 this.setState({ shareParmas: msg.shareParams || msg.shareParmas }, () => {
-                    this.SelectModel && this.SelectModel.onOpen();
+                    this.SelectModel && this.SelectModel.open && this.SelectModel.open();
                 });
                 return;
             } else {
@@ -285,6 +328,30 @@ export default class RequestDetailPage extends BasePage {
             this.$NavigationBarResetTitle(parmas.title);
             return;
         }
+
+        if(msg.action === 'webviewBarDisplay'){
+            if(msg.type === this.currentBarType){
+                return;
+            }
+            this.currentBarType = msg.type || 'normalBar';
+            if(msg.type === 'floatBar'){
+                this.floatBarOptions.headerStyle.backgroundColor = msg.color || DesignRule.white;
+                this.$navigationBarOptions = this.floatBarOptions;
+                this.forceUpdate();
+                return;
+            }
+            if(msg.type === 'transparentBar'){
+                this.$navigationBarOptions = this.transparentBarOptions;
+                this.forceUpdate();
+                return;
+            }
+            this.$navigationBarOptions = this.normalBarOptions;
+            this.forceUpdate();
+            return
+
+        }
+
+
     };
 
     $isMonitorNetworkStatus() {
@@ -292,7 +359,9 @@ export default class RequestDetailPage extends BasePage {
     }
 
     _render() {
+
         let WebAdModal = this.WebAdModal;
+        console.log(this.state.uri)
         return (
             <View style={{ flex: 1, overflow: 'hidden' }}>
                 <WebViewBridge
@@ -346,28 +415,12 @@ export default class RequestDetailPage extends BasePage {
                     }}
                     postMessage={msg => this._postMessage(msg)}
                 />
-                <GroupSelectModel
+                <CommGroupShareModal
                     ref={(ref) => {
                         this.SelectModel = ref;
                     }}
-                    data={this.state.shareParmas}
-                    createAD={(data) => {
-                        console.log('createAD', data);
-                        this.setState({
-                            shareParmas: data
-                        }, () => {
-                            this.shareModal && this.shareModal.open();
-                        });
-                    }}
-                    inviteShare={(data) => {
-                        console.log('inviteShare', data);
-                        this.setState({
-                            shareParmas: data
-                        }, () => {
-                            this.shareModal && this.shareModal.open();
-                        });
-                    }}
-
+                    successCallBack={this.successCallBack}
+                    {...this.state.shareParmas}
                 />
                 <CommShareModal
                     ref={(ref) => this.shareModal = ref}

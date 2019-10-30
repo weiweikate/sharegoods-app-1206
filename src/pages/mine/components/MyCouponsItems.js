@@ -17,6 +17,7 @@ import CouponExplainItem from './CouponExplainItem';
 import CouponNormalItem from './CouponNormalItem';
 import RouterMap, { backToHome, routePush } from '../../../navigation/RouterMap';
 import EmptyUtils from '../../../utils/EmptyUtils';
+import LoadingView from '../../../components/pageDecorator/BaseView/LoadingView';
 
 const NoMessage = res.placeholder.noCollect;
 // const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
@@ -190,12 +191,7 @@ export default class MyCouponsItems extends Component {
     // 空布局
     _renderEmptyView = () => {
         if (this.state.isFirstLoad) {
-            return (
-                <View style={styles.footer_container}>
-                    <ActivityIndicator size="small" color={DesignRule.mainColor} style={{ marginRight: 6 }}/>
-                    <Text style={styles.footer_text}>加载中…</Text>
-                </View>
-            );
+            return (<LoadingView style={{paddingTop: ScreenUtils.height/2-160}}/>);
         } else {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -270,6 +266,7 @@ export default class MyCouponsItems extends Component {
                     initialNumToRender={5}
                     refreshControl={<RefreshControl refreshing={false}
                                                     onRefresh={() => this.onRefresh(this.dataSel)}
+                                                    tintColor={DesignRule.mainColor}
                                                     colors={[DesignRule.mainColor]}/>}
                 />
                 {this.renderDialogModal()}

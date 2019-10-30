@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    View,
-    StyleSheet,
-    InteractionManager,
-    DeviceEventEmitter
-} from 'react-native';
+import { DeviceEventEmitter, InteractionManager, Keyboard, StyleSheet, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import { RecentSearch } from './../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
@@ -13,7 +8,7 @@ import SearchNav from '../../home/search/components/SearchNav';
 import DesignRule from '../../../constants/DesignRule';
 import RouterMap from '../../../navigation/RouterMap';
 
-const dismissKeyboard = require('dismissKeyboard');
+const dismissKeyboard = Keyboard.dismiss;
 //全局变量，历史搜索记录,因为是递加的
 let array = [];
 const recentDataKey = '@mr/orderRecentDataKey';

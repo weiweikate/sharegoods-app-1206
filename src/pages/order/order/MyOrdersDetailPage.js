@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-    Image,
-    ScrollView, Text, Alert, DeviceEventEmitter
-} from 'react-native';
+import { Alert, DeviceEventEmitter, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import { MRText, NoMoreClick, UIText } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
@@ -26,13 +21,12 @@ import DetailAddressView from '../components/orderDetail/DetailAddressView';
 import OrderDetailPriceView from '../components/orderDetail/OrderDetailPriceView';
 import OrderDetailTimeView from '../components/orderDetail/OrderDetailTimeView';
 import OrderDetailBottomButtonView from '../components/orderDetail/OrderDetailBottomButtonView';
-import { orderDetailModel, assistDetailModel } from '../model/OrderDetailModel';
+import { assistDetailModel, orderDetailModel } from '../model/OrderDetailModel';
 import { observer } from 'mobx-react';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
-import { GetAfterBtns, checkOrderAfterSaleService, judgeProduceIsContainActivityTypes } from './OrderType';
+import { checkOrderAfterSaleService, GetAfterBtns, judgeProduceIsContainActivityTypes } from './OrderType';
 import CancelProdectsModal from '../components/orderDetail/CancelProdectsModal';
-import { backToHome, routePush } from '../../../navigation/RouterMap';
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap, { backToHome } from '../../../navigation/RouterMap';
 import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -86,9 +80,9 @@ export default class MyOrdersDetailPage extends BasePage {
         this.loadPageData();
         this.getCancelOrder();
         //接收刷新的通知
-        this.listener = DeviceEventEmitter.addListener('REFRESH_ORDER', ()=> {
+        this.listener = DeviceEventEmitter.addListener('REFRESH_ORDER', () => {
             this.loadPageData();
-        })
+        });
     }
 
     componentWillUnmount() {
@@ -144,7 +138,7 @@ export default class MyOrdersDetailPage extends BasePage {
             {
                 text: '确定', onPress: () => {
                     Toast.showLoading();
-                    OrderApi.deleteOrder({ merchantOrderNo: orderDetailModel.merchantOrderNo}).then((response) => {
+                    OrderApi.deleteOrder({ merchantOrderNo: orderDetailModel.merchantOrderNo }).then((response) => {
                         Toast.hiddenLoading();
                         Toast.$toast('订单已删除');
                         this.$navigateBack();
@@ -179,52 +173,58 @@ export default class MyOrdersDetailPage extends BasePage {
                 <View style={{ flex: 1 }}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         {this.renderHeader()}
-                        {orderDetailModel.productsList().map((item, index ) => {return this.renderItem(item, index )})}
+                        {orderDetailModel.productsList().map((item, index) => {
+                            return this.renderItem(item, index);
+                        })}
                         {this.renderFooter()}
                     </ScrollView>
                     <OrderDetailBottomButtonView
-                        ref={(ref)=>{ this.btnView = ref}}
-                        openCancelModal = {(callBack)=>{
+                        ref={(ref) => {
+                            this.btnView = ref;
+                        }}
+                        openCancelModal={(callBack) => {
                             let isPay = true;
                             if (!callBack) {
                                 isPay = false;
-                                callBack = ()=>{this.cancelModal && this.cancelModal.open()}
+                                callBack = () => {
+                                    this.cancelModal && this.cancelModal.open();
+                                };
                             }
-                            this.cancelProdectsModal && this.cancelProdectsModal.open(orderDetailModel.platformOrderNo,callBack,isPay)
+                            this.cancelProdectsModal && this.cancelProdectsModal.open(orderDetailModel.platformOrderNo, callBack, isPay);
                         }}
                         switchButton={(moreData) => {
-                            this.setState({ showDele: !this.state.showDele, moreData});
+                            this.setState({ showDele: !this.state.showDele, moreData });
                         }}
                         dataHandleDeleteOrder={this.params.dataHandleDeleteOrder}
                         dataHandleConfirmOrder={this.params.dataHandleConfirmOrder}
                         loadPageData={() => this.loadPageData()}/>
                     { //这个代码应该与底部按钮（OrderDetailBottomButtonView）封装在一起
                         !this.state.showDele ? null :
-                        <View style={{
-                        position: 'absolute',
-                        bottom: 45,
-                        right: ScreenUtils.autoSizeWidth(180) - 50,
-                        backgroundColor: 'white',
-                        borderRadius: 5,
-                            borderWidth: 1,
-                            borderColor: DesignRule.bgColor
-                    }}>
-                            {this.state.moreData.map((item) => {
-                               return ( <NoMoreClick style={{
-                                   width: 100,
-                                   height: 40,
-                                   justifyContent: 'center',
-                                   marginLeft: 10
-                               }} onPress={() => {
-                                 this.setState({ showDele: false });
-                                 //与底部button点击用一套逻辑
-                                 this.btnView && this.btnView.operationMenuClick(item);
-                               }}>
-                                   <UIText value={item.operation} style={{ color: '#666666', fontSize: 13 }}/>
-                               </NoMoreClick>)
-                            })}
-                        </View>
-                      }
+                            <View style={{
+                                position: 'absolute',
+                                bottom: 45,
+                                right: ScreenUtils.autoSizeWidth(180) - 50,
+                                backgroundColor: 'white',
+                                borderRadius: 5,
+                                borderWidth: 1,
+                                borderColor: DesignRule.bgColor
+                            }}>
+                                {this.state.moreData.map((item) => {
+                                    return (<NoMoreClick style={{
+                                        width: 100,
+                                        height: 40,
+                                        justifyContent: 'center',
+                                        marginLeft: 10
+                                    }} onPress={() => {
+                                        this.setState({ showDele: false });
+                                        //与底部button点击用一套逻辑
+                                        this.btnView && this.btnView.operationMenuClick(item);
+                                    }}>
+                                        <UIText value={item.operation} style={{ color: '#666666', fontSize: 13 }}/>
+                                    </NoMoreClick>);
+                                })}
+                            </View>
+                    }
                 </View>
             );
         }
@@ -234,10 +234,10 @@ export default class MyOrdersDetailPage extends BasePage {
     _render = () => {
         return (
             <View style={styles.container}>
-                <LinearGradient start={{x: 0, y: 0}}
-                                end={{x: 1, y: 0}}
-                                colors={['#FF0050','#F94B35', '#FF2035','#F80759']}
-                                locations={[0,0.3,0.7,1]}
+                <LinearGradient start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 0 }}
+                                colors={['#FF0050', '#F94B35', '#FF2035', '#F80759']}
+                                locations={[0, 0.3, 0.7, 1]}
                 >
                     <NavigatorBar headerStyle={{
                         backgroundColor: 'rgba(0,0,0,0)',
@@ -248,7 +248,7 @@ export default class MyOrdersDetailPage extends BasePage {
                                       this.$navigateBack();
                                   }}
                                   title={'订单详情'}
-                                  titleStyle={{color: 'white'}}
+                                  titleStyle={{ color: 'white' }}
                                   renderRight={() => {
                                       return (
                                           <View style={{
@@ -259,9 +259,9 @@ export default class MyOrdersDetailPage extends BasePage {
                                           }}>
                                               <Image source={moreIcon}
                                                      resizeMode={'stretch'}
-                                                     style={{width: 20, height: 5, tintColor: 'white'}}/>
+                                                     style={{ width: 20, height: 5, tintColor: 'white' }}/>
                                           </View>
-                                      )
+                                      );
                                   }}
                                   rightPressed={() => {
                                       this.showMore();
@@ -273,13 +273,13 @@ export default class MyOrdersDetailPage extends BasePage {
             </View>
         );
     };
-    renderItem = (item, index ) => {
-        let resource = item.resource || {}
+    renderItem = (item, index) => {
+        let resource = item.resource || {};
         let resourceType = resource.resourceType;
-        let isPhoneGood = false
-        let category = item.spec
-        if (resourceType === 'TELEPHONE_CHARGE'){
-            category = '充值号码：' + orderDetailModel.receiveInfo.receiverPhone
+        let isPhoneGood = false;
+        let category = item.spec;
+        if (resourceType === 'TELEPHONE_CHARGE') {
+            category = '充值号码：' + orderDetailModel.receiveInfo.receiverPhone;
             isPhoneGood = true;
         }
         return (
@@ -290,6 +290,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 category={category}
                 goodsNum={item.quantity}
                 activityCodes={item.activityList || []}
+                msgList={item.msgList}
                 style={{ backgroundColor: 'white' }}
                 clickItem={() => {
                     //拼店扩容商品没有详情  陈阳君修改10.9
@@ -306,13 +307,18 @@ export default class MyOrdersDetailPage extends BasePage {
     };
     renderHeader = () => {
         return (
-            <View style={{marginBottom: 10}}>
+            <View style={{ marginBottom: 10 }}>
                 {this.renderState()}
                 {orderDetailModel.isPhoneOrder ?
-                    <View style={{backgroundColor: 'white', height: ScreenUtils.autoSizeWidth(40), justifyContent: 'center'}}>
-                        <MRText style={{color: DesignRule.textColor_mainTitle,
+                    <View style={{
+                        backgroundColor: 'white',
+                        height: ScreenUtils.autoSizeWidth(40),
+                        justifyContent: 'center'
+                    }}>
+                        <MRText style={{
+                            color: DesignRule.textColor_mainTitle,
                             fontSize: DesignRule.fontSize_threeTitle_28,
-                            marginLeft: ScreenUtils.autoSizeWidth(15)
+                            marginLeft: ScreenUtils.autoSizeWidth(10)
                         }}>{'充值号码:' + orderDetailModel.receiveInfo.receiverPhone}</MRText>
                     </View> : null
                 }
@@ -361,7 +367,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         Toast.showLoading();
                         OrderApi.cancelOrder({
                             cancelReason: assistDetailModel.cancelArr[index],
-                            platformOrderNo: orderDetailModel.platformOrderNo,
+                            platformOrderNo: orderDetailModel.platformOrderNo
                         }).then((response) => {
                             Toast.hiddenLoading();
                             this.params.dataHandlecancel && this.params.dataHandlecancel();
@@ -400,32 +406,33 @@ export default class MyOrdersDetailPage extends BasePage {
     loadPageData() {
         orderDetailModel.loadDetailInfo(this.params.merchantOrderNo || this.params.orderNo || '');
     }
+
     //去商品详情
-    clickItem = (item,isPhoneGood) => {
-        if(isPhoneGood){
-            routePush('HtmlPage',{uri: '/pay/virtual-product'})
+    clickItem = (item, isPhoneGood) => {
+        if (isPhoneGood) {
+            this.$navigateOnlyOnePage('HtmlPage', { uri: '/pay/virtual-product' });
             return;
         }
         // 2://降价拍
         // 3://礼包
-        let activityData = judgeProduceIsContainActivityTypes(item, [2, 3])
+        let activityData = judgeProduceIsContainActivityTypes(item, [2, 3]);
         if (activityData) {
-            if (activityData.activityType === 3){
-                this.$navigate(RouterMap.ProductDeletePage)
-                return
+            if (activityData.activityType === 3) {
+                this.$navigateOnlyOnePage(RouterMap.ProductDeletePage);
+                return;
             }
-            this.$navigate('topic/TopicDetailPage', {
+            this.$navigateOnlyOnePage('topic/TopicDetailPage', {
                 activityType: activityData.activityType,
                 activityCode: activityData.activityCode
             });
-        }else {
-            this.$navigate('product/ProductDetailPage', { productCode: item.prodCode });
+        } else {
+            this.$navigateOnlyOnePage('product/ProductDetailPage', { productCode: item.prodCode });
         }
     };
     //点击售后按钮的处理
     afterSaleServiceClick = (menu, item) => {
         //在按钮就查看售后详情的时候，是不用判断是否支持售后的
-        if (menu.id !== 3 && !checkOrderAfterSaleService([item],item.status,orderDetailModel.baseInfo.nowTime,true)){
+        if (menu.id !== 3 && !checkOrderAfterSaleService([item], item.status, orderDetailModel.baseInfo.nowTime, true)) {
             return;
         }
         switch (menu.id) {

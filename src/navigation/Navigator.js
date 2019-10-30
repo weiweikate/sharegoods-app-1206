@@ -1,6 +1,7 @@
-import { createAppContainer, NavigationActions } from 'react-navigation';
+import { createAppContainer, NavigationActions, StackActions } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Animated, Easing, NativeModules, Platform } from 'react-native';
+import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
 /**
  * 以下两个对象不可以颠倒引入，会导致全局路由RouterMap不可用
  */
@@ -8,8 +9,6 @@ import RouterMap from './RouterMap';
 import Router from './Stack';
 import Analytics from '../utils/AnalyticsUtil';
 import bridge from '../utils/bridge';
-import showPinFlagModel from '../model/ShowPinFlag';
-import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
 
 //无需转场动画的页面
 const noAnimatedPage = [
@@ -59,18 +58,21 @@ const RootStack = createStackNavigator(Router,
                     timing: Animated.timing,
                     useNativeDriver: true
                 },
-                screenInterpolator: ((Platform.OS === 'android' && Platform.Version < 29) || Platform.OS === 'ios') ? StackViewStyleInterpolator.forHorizontal : null
+                screenInterpolator: ((Platform.OS === 'android' && Platform.Version < 29) || Platform.OS === 'ios')
+                    ? StackViewStyleInterpolator.forHorizontal : null
             };
         }
     }
 );
 
+
 // goBack 返回指定的router
 const defaultStateAction = RootStack.router.getStateForAction;
-
-RootStack.router.getStateForAction = (action, state) => {
-    const currentPage = getCurrentRouteName(state);
-    if (state && (action.type === NavigationActions.BACK) && (state.routes.length === 1)) {
+RootStack.router.getStateForAction = (action, lastState) => {
+    const { type, routeName, params } = action;
+    const currentPage = getCurrentRouteName(lastState);
+    // 页面回退场景
+    if (lastState && (type === NavigationActions.BACK) && (lastState.routes.length === 1)) {
         console.log('退出RN页面');
         console.log(`当前页面${currentPage}`);
         if (currentPage === 'HomePage') {
@@ -84,77 +86,42 @@ RootStack.router.getStateForAction = (action, state) => {
                 this.lastBackPressed = Date.now();
             }
         }
-        const routes = [...state.routes];
+        const routes = [...lastState.routes];
         return {
-            ...state,
-            ...state.routes,
+            ...lastState,
+            ...lastState.routes,
             index: routes.length - 1
         };
     }
-    if (state && (action.type === NavigationActions.NAVIGATE)) {
-        // 拼店显示flag逻辑
-        if (action.routeName === 'HomePage' || action.routeName === 'ShowListPage'
-            || action.routeName === 'ShopCartPage' || action.routeName === 'MinePage') {
-            // showPinFlagModel.saveShowFlag(true);
-            showPinFlagModel.saveShowFlag(false);
-        } else {
-            showPinFlagModel.saveShowFlag(false);
-        }
+
+    // push模式防止重复跳转到同一个页面
+    if (lastState &&
+        (type === StackActions.PUSH) &&   //此处原先使用NavigationActions.NAVIGATE
+        routeName === lastState.routes[lastState.routes.length - 1].routeName &&
+        JSON.stringify(params) === JSON.stringify(lastState.routes[lastState.routes.length - 1].params)) {
+        return null;
     }
 
-    if (state && (action.type === NavigationActions.NAVIGATE) ||
-        state && (action.type === 'Navigation/PUSH')) {
-        let length = state.routes.length;
-        let currentRoute = state.routes[length - 1];
-        let nextRoute = action.routeName;
-        // 拼店显示flag逻辑
-        if (nextRoute === 'HomePage' || nextRoute === 'ShowListPage'
-            || nextRoute === 'ShopCartPage' || nextRoute === 'MinePage') {
-            showPinFlagModel.saveShowFlag(true);
-        } else {
-            showPinFlagModel.saveShowFlag(false);
-        }
-        if (currentRoute
-            && nextRoute === RouterMap.LoginPage
-            && currentRoute.routeName === RouterMap.LoginPage) {
-            return null;
-        }
+    if (lastState && (type === NavigationActions.INIT)) {
+        Analytics.onPageStart('HomePage');
     }
 
-    if (state && (action.type === NavigationActions.INIT)) {
-        const currentPage = 'HomePage';
-        console.log('getStateForAction currentpage init', currentPage);
-        Analytics.onPageStart(currentPage);
-    }
-
-    if (state && (action.type === NavigationActions.NAVIGATE || action.type === NavigationActions.BACK)) {
+    if (lastState && (type === NavigationActions.NAVIGATE || type === NavigationActions.BACK)) {
         console.log('getStateForAction currentpage end', currentPage);
         Analytics.onPageEnd(currentPage);
     }
 
-    if (state && (action.type === 'Navigation/COMPLETE_TRANSITION')) {
-        // 拼店显示flag逻辑
-        if (currentPage === 'HomePage' || currentPage === 'ShowListPage'
-            || currentPage === 'ShopCartPage' || currentPage === 'MinePage') {
-            showPinFlagModel.saveShowFlag(true);
-        } else {
-            showPinFlagModel.saveShowFlag(false);
-        }
-        console.log('getStateForAction currentpage start', currentPage);
-        Analytics.onPageStart(currentPage);
-    }
-
     //支付页面路由替换，需要替换2个
-    if (state && (action.type === 'ReplacePayScreen')) {
-        const routes = state.routes.slice(0, state.routes.length - 2);
+    if (lastState && (type === 'ReplacePayScreen')) {
+        const routes = lastState.routes.slice(0, lastState.routes.length - 2);
         routes.push(action);
         return {
-            ...state,
+            ...lastState,
             routes,
             index: routes.length - 1
         };
     }
-    return defaultStateAction(action, state);
+    return defaultStateAction(action, lastState);
 };
 
 export const getCurrentRouteName = (navigationState) => {

@@ -6,11 +6,11 @@ import task from './task';
 const resHome = {
     goods: require('./goods.png'),
     home_icon_logo_red: require('./home_icon_logo_red.png'),
-    icon_search: require('./icon_search.png'),
-    message: require('./message.png'),
+    home_icon_logo_white: require('./home_icon_logo_white.png'),
+    icon_search_grey: require('./icon_search_grey.png'),
+    icon_search_white: require('./icon_search_white.png'),
     home_notice_bg: require('./home_notice_bg.png'),
     star: require('./star.png'),
-    account_bg: require('./account_bg.png'),
     /** 首页5个icon*/
     school: require('./school.png'),
     share_icon: require('./share.png'),
@@ -28,12 +28,14 @@ const resHome = {
     more: require('./more2.png'),
     arrow_bottom: require('./arrow_bottom.png'),
     arrow_top: require('./arrow_top.png'),
-    tabBg: require('./tabBg.png'),
     icon_shopCar: require('./icon_shopCar.png'),
     home_limit_progress: require('./home_limit_progress.png'),
     discount: require('./discount.png'),
     user_update_btn_bg: require('./user_update_btn_bg.png'),
     user_update: require('./user_update.png'),
+    category_white: require('./category_white.png'),
+    category_main: require('./category_main.png'),
+    dou_red: require('./dou_red.png'),
     signIn: {
         ...signIn
     },

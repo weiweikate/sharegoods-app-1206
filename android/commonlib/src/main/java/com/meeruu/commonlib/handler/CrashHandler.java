@@ -10,6 +10,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.util.Log;
 
+import com.meeruu.commonlib.base.BaseModel;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.Utils;
 
@@ -81,6 +82,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
             // 如果用户没有处理则让系统默认的异常处理器来处理
             mDefaultHandler.uncaughtException(thread, ex);
         } else {
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+            }
             // 应用重启
             Class clazz = null;
             try {
@@ -93,6 +98,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 ComponentName componentName = intent.getComponent();
                 Intent mainIntent = Intent.makeRestartActivityTask(componentName);
                 mContext.startActivity(mainIntent);
+                // 退出程序
                 System.exit(0);
                 System.gc();
             }
@@ -133,11 +139,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 infos.put("versionCode", versionCode);
                 infos.put("is_phone", !Utils.isEmulator(mContext) + "");
             }
-            // 便于跟踪反馈
-//            String account = (String) SPCacheUtils.get("user_account", "");
-//            if (!TextUtils.isEmpty(account)) {
-//                infos.put("userAccount", account);
-//            }
         } catch (NameNotFoundException e) {
             Log.e(TAG, "an error occured when collect package info", e);
         }
@@ -183,13 +184,12 @@ public class CrashHandler implements UncaughtExceptionHandler {
         String result = writer.toString();
         sb.append(result);
         // 上传日志内容
-//        BaseModel.uploadCrach(sb.toString());
-        // Util.writeLog(sb.toString());
+        BaseModel.uploadCrach(sb.toString());
 
         try {
             long timestamp = System.currentTimeMillis();
             // 用于格式化日期,作为日志文件名的一部分
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
             String time = formatter.format(new Date());
             // crash日志文件名
             String fileName = "meeruu_" + time + "_" + timestamp + ".log";

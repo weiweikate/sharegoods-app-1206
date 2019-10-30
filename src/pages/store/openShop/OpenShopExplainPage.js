@@ -114,7 +114,8 @@ export default class OpenShopExplainPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView style={styles.scrollView}>
-                    <BannersVerticalView bannerList={data}/>
+                    <BannersVerticalView style={{ marginBottom: 0 }} bannerList={data}
+                                         ImgWidth={ScreenUtils.width - 30}/>
                 </ScrollView>
                 <NoMoreClick onPress={this._clickOpen}>
                     <LinearGradient style={styles.btnStyle}

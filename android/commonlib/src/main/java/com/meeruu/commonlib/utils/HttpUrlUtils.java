@@ -5,8 +5,6 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.meeruu.commonlib.utils.ParameterUtils;
-import com.meeruu.commonlib.utils.SPCacheUtils;
 
 public class HttpUrlUtils {
 
@@ -27,6 +25,7 @@ public class HttpUrlUtils {
     public static final String URL_ATTENTION_LIST = "/social/show/content/page/query/attention"; //取消关注
     public static final String URL_BASE_URL = "/redirect/baseUrl"; // 域名
     public static final String URL_SHOPINFO = "/product/getProductShopInfoBySupplierCode"; // 商家信息
+    public static final String URL_CRASH_INFO = "/errCatch"; // crash信息
 
 
     /*********获取api接口url***********/
@@ -37,6 +36,13 @@ public class HttpUrlUtils {
             JSONObject object = JSON.parseObject(jsonStr);
             SERVER = object.getString("host");
         }
+        return SERVER + url;
+    }
+
+    /*********获取mobile client api接口url***********/
+    public static String getClientUrl(String url) {
+        String SERVER = "http://sharegoods-monitor.sharegoodsmall.com/api";
+//        String SERVER = "http://172.18.11.18:5000/api";
         return SERVER + url;
     }
 

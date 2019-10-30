@@ -121,6 +121,7 @@ export default class VerifyWXCodePage extends BasePage {
             };
             weChatUnusual(params, () => {
                 this.$toastShow('登录成功');
+                this.$navigateBack(2);
                 this.$loadingDismiss();
                 track('LoginCheckResult', { 'checkResult': true });
             }, (code, data) => {
@@ -130,7 +131,7 @@ export default class VerifyWXCodePage extends BasePage {
                     routeNavigate(RouterMap.VerifyResultPage);
                 }
                 track('LoginCheckResult', { 'checkResult': false });
-            }, 2);
+            });
         }
     };
 

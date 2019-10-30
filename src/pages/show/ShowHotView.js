@@ -153,7 +153,7 @@ export default class ShowHotView extends React.Component {
 
         return (
             <View style={styles.container}>
-                <View style={{ flex: 1, paddingHorizontal: 15 }}>
+                <View style={{ flex: 1,  }}>
                     <ShowRecommendView style={{ flex: 1 }}
                                        uri={this.props.uri}
                                        ref={(ref) => {

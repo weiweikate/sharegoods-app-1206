@@ -21,6 +21,7 @@ import ProductApi from '../../api/ProductApi';
 import { routePush } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
 import bridge from '../../../../utils/bridge';
+import { checkGroup } from './ProductGroupModel';
 
 const { px2dp } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
@@ -81,21 +82,24 @@ export class TimeLabelText extends Component {
     };
 
     render() {
-        return <MRText style={stylesPerson.midTimeText}>{this.state.timeOutTime}</MRText>;
+        return <MRText style={[stylesPerson.midTimeText, this.props.style]}>{this.state.timeOutTime}</MRText>;
     }
 }
 
 /*
 * 商详发起拼团的人item
 * */
-
 export class GroupPersonItem extends Component {
+    _checkGroup = (itemData) => {
+        checkGroup({ itemData, goToBuy: this.props.goToBuy, requestGroupPerson: this.requestGroupPerson });
+    };
 
     requestGroupPerson = ({ groupId }) => {
         const { showGroupJoinView, itemData, close } = this.props;
         bridge.showLoading();
         ProductApi.promotion_group_joinUser({ groupId }).then((data) => {
             bridge.hiddenLoading();
+            //有modal先去掉modal
             close && close();
             showGroupJoinView && showGroupJoinView({
                 itemData,
@@ -109,7 +113,7 @@ export class GroupPersonItem extends Component {
 
     render() {
         const { itemData, requestGroupList } = this.props;
-        const { initiatorUserImg, initiatorUserName, surplusPerson, id, endTime } = itemData || {};
+        const { initiatorUserImg, initiatorUserName, surplusPerson, endTime } = itemData || {};
         return (
             <View style={[stylesPerson.container, this.props.style]}>
                 <View style={stylesPerson.nameView}>
@@ -119,7 +123,7 @@ export class GroupPersonItem extends Component {
                     <MRText style={stylesPerson.nameText}>{initiatorUserName}</MRText>
                 </View>
                 <NoMoreClick style={stylesPerson.rightView} onPress={() => {
-                    this.requestGroupPerson({ groupId: id });
+                    this._checkGroup(itemData);
                 }}>
                     <View>
                         <MRText style={stylesPerson.midNumText}>还差<MRText

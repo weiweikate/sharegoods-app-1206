@@ -8,7 +8,6 @@ import com.meeruu.commonlib.umeng.AnalyticsModule;
 import com.meeruu.commonlib.umeng.LoginAndSharingModule;
 import com.meeruu.sharegoods.rn.dottedline.DottedLineManager;
 import com.meeruu.sharegoods.rn.kefu.QYChatModule;
-import com.meeruu.sharegoods.rn.loadingview.MRLoadingViewManager;
 import com.meeruu.sharegoods.rn.module.AppPayModule;
 import com.meeruu.sharegoods.rn.module.CommModule;
 import com.meeruu.sharegoods.rn.module.JPushModule;
@@ -79,7 +78,6 @@ public class RNMRPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(new PopModalManager(),
-                new MRLoadingViewManager(),
                 new MRBannerViewManager(),
                 new RecyclerViewHeaderManager(),
                 new ShowGroundViewManager(),

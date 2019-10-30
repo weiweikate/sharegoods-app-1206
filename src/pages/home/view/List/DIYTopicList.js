@@ -14,26 +14,21 @@
 
 import React from 'react';
 
-import {
-    View
-} from 'react-native';
+import { View } from 'react-native';
 
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
-import { homeType } from '../../HomeTypes';
-import { ImageAdViewGetHeight, TopicImageAdView } from '../TopicImageAdView';
-import GoodsCustomView, { GoodsCustomViewGetHeight } from '../GoodsCustomView';
+import { asyncHandleTopicData, homeType } from '../../HomeTypes';
+import { TopicImageAdView } from '../TopicImageAdView';
+import GoodsCustomView from '../GoodsCustomView';
 import HomeAPI from '../../api/HomeAPI';
 import TextCustomView from '../TextCustomView';
 import LoadMoreDataUtil from '../../../../utils/LoadMoreDataUtil';
 import { DefaultLoadMoreComponent } from '../../../../comm/components/RefreshFlatList';
 import { observer } from 'mobx-react';
-import bridge from '../../../../utils/bridge';
 import { tabModel } from '../../model/HomeTabModel';
-
-const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import HeaderLoading from '../../../../comm/components/lottieheader/ListHeaderLoading';
-import { getSGscm, getSGspm_home, HomeSource, SGscmSource } from '../../../../utils/OrderTrackUtil';
+import DesignRule from '../../../../constants/DesignRule';
 
 @observer
 export default class DIYTopicList extends React.Component {
@@ -44,56 +39,11 @@ export default class DIYTopicList extends React.Component {
 
         this.loadMoreDataUtil = new LoadMoreDataUtil();
         this.loadMoreDataUtil.API = HomeAPI.getCustomTopic;
-        this.code = (this.props.data || {}).linkCode
+        this.code = (this.props.data || {}).linkCode;
         this.loadMoreDataUtil.paramsFunc = () => {
-            return { topicCode: this.code};
+            return { topicCode: this.code };
         };
-        this.loadMoreDataUtil.asyncHandleData = (data) => {
-            data = data.data.widgets.data || [];
-
-            data = [...data];
-            let p = [];
-            let count = data.length;
-            for (let index = 0; index < count; index++) {
-                let item = data[index];
-                if (item.type === homeType.custom_goods) {
-                    item.itemHeight = GoodsCustomViewGetHeight(item);
-                    item.marginBottom = ScreenUtils.autoSizeWidth(0);
-                    if (count - 1 > index) {
-                        let type = data[index + 1].type;
-                        if (type === homeType.custom_imgAD || type === homeType.custom_text) {
-                            item.marginBottom = ScreenUtils.autoSizeWidth(15);
-                        }
-                    }
-                    item.itemHeight += item.marginBottom;
-                }
-
-                if (item.type === homeType.custom_imgAD) {
-                    item.itemHeight = ImageAdViewGetHeight(item);
-                }
-
-                if (item.type === homeType.custom_text) {
-
-                    item.detailHeight = 0;
-                    item.textHeight = 0;
-                    if (item.text) {
-                        p.push(bridge.getTextHeightWithWidth(item.text, autoSizeWidth(14), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
-                            item.textHeight = r.height;
-                            item.itemHeight = r.height + item.detailHeight + autoSizeWidth(20);
-                        }));
-                    }
-                    if (item.subText) {
-                        p.push(bridge.getTextHeightWithWidth(item.subText, autoSizeWidth(12), ScreenUtils.width - autoSizeWidth(30)).then((r) => {
-                            item.detailHeight = r.height;
-                            item.itemHeight = r.height + item.textHeight + autoSizeWidth(20);
-                        }));
-                    }
-                }
-            }
-            return Promise.all(p).then(() => {
-                return data;
-            });
-        };
+        this.loadMoreDataUtil.asyncHandleData = asyncHandleTopicData;
         this.loadMoreDataUtil.isMoreFunc = (data) => {
             return data.data.widgets.isMore;
         };
@@ -122,8 +72,6 @@ export default class DIYTopicList extends React.Component {
 
     _renderItem = (type, item, index) => {
         type = type.type;
-        item.sgscm = getSGscm(SGscmSource.topic,this.code).sgscm;
-        item.sgspm = getSGspm_home(HomeSource.marketing,index).sgspm
         let p = { specialTopicId: this.props.data.linkCode };
         if (type === homeType.custom_text) {
             p.specialTopicArea = 6;
@@ -144,28 +92,35 @@ export default class DIYTopicList extends React.Component {
     }
 
     render() {
-        if (Math.abs(tabModel.tabIndex - this.props.index) > 1){
+        if (Math.abs(tabModel.tabIndex - this.props.index) > 1) {
             return null;
         }
         this.dataProvider = this.dataProvider.cloneWithRows(this.loadMoreDataUtil.data);
         return (
-            <RecyclerListView
-                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0}}
-                refreshControl={<HeaderLoading
-                    isRefreshing={this.loadMoreDataUtil.refreshing}
-                    onRefresh={this.loadMoreDataUtil.onRefresh}
-                />}
-                onEndReached={this.loadMoreDataUtil.getMoreData.bind(this)}
-                onEndReachedThreshold={ScreenUtils.height / 3}
-                dataProvider={this.dataProvider}
-                rowRenderer={this._renderItem.bind(this)}
-                layoutProvider={this.layoutProvider}
-                showsVerticalScrollIndicator={false}
-                removeClippedSubviews={false}
-                canChangeSize={false}
-                renderFooter={() => <DefaultLoadMoreComponent status={this.loadMoreDataUtil.footerStatus}/>
-                }
-            />
+            <View style={[DesignRule.style_container, { marginTop: ScreenUtils.autoSizeWidth(40) }]}>
+                <RecyclerListView
+                    style={{
+                        minHeight: ScreenUtils.headerHeight,
+                        minWidth: 1,
+                        flex: 1,
+                        backgroundColor: DesignRule.bgColor
+                    }}
+                    refreshControl={<HeaderLoading
+                        isRefreshing={this.loadMoreDataUtil.refreshing}
+                        onRefresh={this.loadMoreDataUtil.onRefresh}
+                    />}
+                    onEndReached={this.loadMoreDataUtil.getMoreData.bind(this)}
+                    onEndReachedThreshold={ScreenUtils.height / 3}
+                    dataProvider={this.dataProvider}
+                    rowRenderer={this._renderItem.bind(this)}
+                    layoutProvider={this.layoutProvider}
+                    showsVerticalScrollIndicator={false}
+                    removeClippedSubviews={false}
+                    canChangeSize={false}
+                    renderFooter={() => <DefaultLoadMoreComponent status={this.loadMoreDataUtil.footerStatus}/>
+                    }
+                />
+            </View>
         );
     }
 }

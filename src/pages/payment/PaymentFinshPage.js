@@ -5,7 +5,7 @@ import {
     StyleSheet,
     ScrollView,
     Image,
-    TouchableOpacity
+    TouchableOpacity, BackHandler
 } from 'react-native';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -18,13 +18,16 @@ import user from '../../model/user';
 import PaymentApi from './PaymentApi';
 import apiEnvironment from '../../api/ApiEnvironment';
 import bridge from '../../utils/bridge';
-import { replaceRoute } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import FinshPayAlertView from './FinshPayAlertView';
 import RecommendProductView from '../product/productScore/components/RecommendProductView';
-import { GroupShareView } from './GroupShareView';
+import { GroupShareView, GroupShareViewModal } from './GroupShareView';
 import { BannersVerticalView } from '../../comm/components/BannersVerticalView';
 import { homeType } from '../home/HomeTypes';
+import paySuccessMarketing from '../marketing/controller/PaySuccessController';
+import marketingUtils from '../marketing/MarketingUtils';
+import HomeAPI from '../home/api/HomeAPI';
+
 
 const { px2dp } = ScreenUtils;
 const {
@@ -58,6 +61,8 @@ export default class PaymentFinshPage extends BasePage {
         title: '订单完成'
     };
 
+    groupShareViewModal = new GroupShareViewModal();
+
     constructor(props) {
         super(props);
         this.state = {
@@ -66,30 +71,56 @@ export default class PaymentFinshPage extends BasePage {
             shareCode: '',
             isShow: false,
 
+            bannerList: [],
+
             groupShareData: {}
         };
-        //orderPayResultPageType 有券无劵
-        TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
-        //
         setTimeout(() => {
             bridge.$checkIsCanComment();
         }, 2000);
-
     }
 
     componentDidMount() {
         PaymentApi.queryOrderGroupData({ platformOrderNo: this.params.platformOrderNo }).then((data) => {
-            const { group } = data.data || {};
+            const { group, endTime } = data.data || {};
+            TrackApi.orderPayResultPage({
+                isPaySuccess: true,
+                orderPayType: 2,
+                orderPayResultPageType: 0,
+                orderResultPageType: group ? 2 : 1
+            });
             if (group) {
+                if (!this.didFocusSubscription) {
+                    this.didFocusSubscription = this.props.navigation.addListener(
+                        'didFocus',
+                        payload => {
+                            BackHandler.addEventListener('paymentFinish', this.handleBackPress);
+                        }
+                    );
+                }
                 this.setState({
                     groupShareData: data.data
+                }, () => {
+                    this.groupShareViewModal.endTime = endTime;
                 });
+                paySuccessMarketing.notifyPayPin();
             } else {
-                PaymentApi.getUserCouponAmount({ couponIdList: 81 }).then(result => {
+                paySuccessMarketing.notifyPayNormal();
+                HomeAPI.getHomeData({ type: homeType.paySuccess }).then((data) => {
                     this.setState({
-                        couponIdList: result.data || []
+                            bannerList: data.data || []
+                        }
+                    );
+                    if ((data.data || []).length > 0) {
+                        return;
+                    }
+                    PaymentApi.getUserCouponAmount({ couponIdList: 81 }).then(result => {
+                        this.setState({
+                            couponIdList: result.data || []
+                        });
                     });
                 });
+
                 PaymentApi.judgeShare().then(result => {
                     let isShare = result.data && result.data.isShare;
                     let shareCode = result.data && result.data.shareCode;
@@ -112,17 +143,55 @@ export default class PaymentFinshPage extends BasePage {
             });
         }).catch(error => {
         });
+
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                if (this.state.groupShareData && this.state.groupShareData.group) {
+                    BackHandler.removeEventListener('paymentFinish', this.handleBackPress);
+                }
+            }
+        );
     }
 
+    $NavBarLeftPressed = () => {
+        this.handleBackPress();
+    };
+
+    componentWillUnmount() {
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+    }
+
+    handleBackPress = () => {
+        if (this.state.groupShareData && this.state.groupShareData.group && paySuccessMarketing.leaveNeedShow && paySuccessMarketing.residueDegree > 0) {
+            paySuccessMarketing.notifyPayPinLeave();
+        } else if (marketingUtils.isShowModal) {
+            marketingUtils.closeModal();
+        } else {
+            this.$navigateReplace(RouterMap.MyOrdersListPage);
+        }
+        return true;
+    };
+
     _render() {
+        const { group } = this.state.groupShareData || {};
         return (
             <ScrollView style={Styles.contentStyle}>
-                {this.renderTopSuccessView()}
                 {/*拼团分享 优惠券和分享互斥*/}
-                <GroupShareView groupShareData={this.state.groupShareData}/>
+                {
+                    group ?
+                        <GroupShareView groupShareData={this.state.groupShareData}
+                                        groupShareViewModal={this.groupShareViewModal}/>
+                        :
+                        this.renderTopSuccessView()
+                }
+                {/*兑换券*/}
                 {this.renderCouponList()}
+                {/*分享三张券*/}
                 {this.state.showShareView ? this._renderShareView() : null}
-                <BannersVerticalView type={homeType.paySuccess}/>
+                {/*广告位*/}
+                <BannersVerticalView bannerList={this.state.bannerList} bannerLocation={71}/>
                 {/*推荐*/}
                 <RecommendProductView recommendScene={2}/>
                 {/*弹窗*/}
@@ -150,7 +219,6 @@ export default class PaymentFinshPage extends BasePage {
      * @returns {*}
      */
     renderTopSuccessView = () => {
-        const { group } = this.state.groupShareData || {};
         return (
             <View style={Styles.topSuccessBgStyle}>
                 <View style={{ justifyContent: 'center', alignItems: 'center', height: px2dp(180) }}>
@@ -166,13 +234,7 @@ export default class PaymentFinshPage extends BasePage {
                         <TouchableOpacity
                             activeOpacity={0.7} style={{ width: px2dp(100), height: px2dp(34) }}
                             onPress={() => {
-                                if (group) {
-                                    replaceRoute(RouterMap.HtmlPage, {
-                                        uri: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyHot`
-                                    });
-                                } else {
-                                    this._gotoHome();
-                                }
+                                this._gotoHome();
                             }}>
                             <View style={{
                                 borderWidth: px2dp(0.5),
@@ -185,7 +247,7 @@ export default class PaymentFinshPage extends BasePage {
                                 justifyContent: 'center'
                             }}>
                                 <MRText style={{ color: DesignRule.textColor_instruction, fontSize: px2dp(15) }}>
-                                    {group ? '拼团首页' : '返回首页'}
+                                    返回首页
                                 </MRText>
                             </View>
                         </TouchableOpacity>
@@ -223,7 +285,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 1
+            orderPayResultBtnType: 1,
+            orderResultPageType: 1
         });
         this.$navigateBackToHome();
     };
@@ -234,7 +297,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 2
+            orderPayResultBtnType: 2,
+            orderResultPageType: 1
         });
         replaceRoute('order/order/MyOrdersListPage', { index: 0 });
     };
@@ -304,7 +368,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 5
+            orderPayResultBtnType: 5,
+            orderResultPageType: 1
         });
 
         this.$navigate(RouterMap.HtmlPage, {
@@ -372,7 +437,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 3
+            orderPayResultBtnType: 3,
+            orderResultPageType: 1
         });
 
         ShareUtil.onShare({
@@ -401,7 +467,8 @@ export default class PaymentFinshPage extends BasePage {
         TrackApi.OrderPayResultBtnClick({
             orderPayResultPageType: 0,
             orderPayType: 2,
-            orderPayResultBtnType: 4
+            orderPayResultBtnType: 4,
+            orderResultPageType: 1
         });
 
         ShareUtil.onShare({

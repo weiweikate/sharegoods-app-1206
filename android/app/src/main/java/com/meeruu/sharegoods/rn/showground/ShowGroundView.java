@@ -1,7 +1,6 @@
 package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +15,12 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowGroundAdapter;
@@ -62,7 +61,7 @@ public class ShowGroundView implements IShowgroundView, OnRefreshListener {
     private onEndScrollEvent endScrollEvent;
     private View errView;
     private WeakReference<View> showgroundView;
-    private Handler handler;
+    private WeakHandler handler;
     private View errImg;
     private String cursor = null;
     private ShowRefreshHeader mShowRefreshHeader;
@@ -78,23 +77,15 @@ public class ShowGroundView implements IShowgroundView, OnRefreshListener {
     }
 
     private void initView(Context context, final View view) {
-        handler = new Handler();
+        handler = new WeakHandler();
         mShowRefreshHeader = new ShowRefreshHeader(context);
         showgroundView = new WeakReference<>(view);
         errView = view.findViewById(R.id.err_view);
         errImg = view.findViewById(R.id.errImg);
-        errImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                swipeRefreshLayout.setVisibility(View.VISIBLE);
-                errView.setVisibility(View.INVISIBLE);
-                swipeRefreshLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        onRefresh();
-                    }
-                }, 200);
-            }
+        errImg.setOnClickListener(v -> {
+            swipeRefreshLayout.setVisibility(View.VISIBLE);
+            errView.setVisibility(View.INVISIBLE);
+            swipeRefreshLayout.postDelayed(() -> onRefresh(), 200);
         });
 
         errView.setVisibility(View.INVISIBLE);
@@ -110,12 +101,7 @@ public class ShowGroundView implements IShowgroundView, OnRefreshListener {
 //        swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         recyclerView = view.findViewById(R.id.home_recycler_view);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                onRefresh();
-            }
-        }, 200);
+        swipeRefreshLayout.postDelayed(() -> onRefresh(), 200);
         itemPressEvent = new onItemPressEvent();
         startRefreshEvent = new onStartRefreshEvent();
         startScrollEvent = new onStartScrollEvent();
@@ -131,30 +117,22 @@ public class ShowGroundView implements IShowgroundView, OnRefreshListener {
         View emptyView = LayoutInflater.from(context).inflate(R.layout.show_empty_view, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         adapter.setEmptyView(emptyView);
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                presenter.getShowList(cursor);
-            }
-        }, recyclerView);
+        adapter.setOnLoadMoreListener(() -> presenter.getShowList(cursor), recyclerView);
         adapter.setLoadMoreView(new CustomLoadMoreView());
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
-                final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-                if (data != null) {
-                    NewestShowGroundBean.DataBean item = data.get(position);
-                    String json = JSONObject.toJSONString(item);
-                    Map map = JSONObject.parseObject(json, new TypeReference<Map>() {
-                    });
-                    map.put("index", position);
-                    WritableMap realData = Arguments.makeNativeMap(map);
-                    if (eventDispatcher != null) {
-                        itemPressEvent = new onItemPressEvent();
-                        itemPressEvent.init(view.getId());
-                        itemPressEvent.setData(realData);
-                        eventDispatcher.dispatchEvent(itemPressEvent);
-                    }
+        adapter.setOnItemClickListener((adapter, view1, position) -> {
+            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+            if (data != null) {
+                NewestShowGroundBean.DataBean item = data.get(position);
+                String json = JSONObject.toJSONString(item);
+                Map map = JSONObject.parseObject(json, new TypeReference<Map>() {
+                });
+                map.put("index", position);
+                WritableMap realData = Arguments.makeNativeMap(map);
+                if (eventDispatcher != null) {
+                    itemPressEvent = new onItemPressEvent();
+                    itemPressEvent.init(view.getId());
+                    itemPressEvent.setData(realData);
+                    eventDispatcher.dispatchEvent(itemPressEvent);
                 }
             }
         });
@@ -279,7 +257,7 @@ public class ShowGroundView implements IShowgroundView, OnRefreshListener {
     public void viewLoadMore(final List data) {
         showList();
         if (data != null && data.size() > 0) {
-            NewestShowGroundBean.DataBean dataBean =(NewestShowGroundBean.DataBean) data.get(data.size()-1);
+            NewestShowGroundBean.DataBean dataBean = (NewestShowGroundBean.DataBean) data.get(data.size() - 1);
             this.cursor = dataBean.getCursor();
             adapter.addData(resolveData(data));
         }
@@ -288,8 +266,8 @@ public class ShowGroundView implements IShowgroundView, OnRefreshListener {
     @Override
     public void refreshShowground(final List data) {
         if (adapter != null) {
-            if(data != null &&  data.size() > 0 ){
-                NewestShowGroundBean.DataBean dataBean =(NewestShowGroundBean.DataBean) data.get(data.size()-1);
+            if (data != null && data.size() > 0) {
+                NewestShowGroundBean.DataBean dataBean = (NewestShowGroundBean.DataBean) data.get(data.size() - 1);
                 this.cursor = dataBean.getCursor();
             }
             adapter.setEnableLoadMore(true);
@@ -348,14 +326,11 @@ public class ShowGroundView implements IShowgroundView, OnRefreshListener {
         if (adapter != null) {
             final List<NewestShowGroundBean.DataBean> data = adapter.getData();
 
-            recyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    NewestShowGroundBean.DataBean bean = data.get(index);
-                    bean.setHotCount(clickNum);
-                    adapter.replaceData(data);
+            recyclerView.postDelayed(() -> {
+                NewestShowGroundBean.DataBean bean = data.get(index);
+                bean.setHotCount(clickNum);
+                adapter.replaceData(data);
 
-                }
             }, 200);
         }
     }
@@ -364,14 +339,11 @@ public class ShowGroundView implements IShowgroundView, OnRefreshListener {
     public void addDataToTop(final String value) {
         if (adapter != null && !TextUtils.isEmpty(value)) {
             final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-            recyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
-                    data.add(0, bean);
-                    adapter.replaceData(data);
-                    recyclerView.scrollToPosition(0);
-                }
+            recyclerView.postDelayed(() -> {
+                NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
+                data.add(0, bean);
+                adapter.replaceData(data);
+                recyclerView.scrollToPosition(0);
             }, 200);
         }
     }
@@ -380,13 +352,10 @@ public class ShowGroundView implements IShowgroundView, OnRefreshListener {
     public void repelaceItemData(final int index, final String value) {
         if (adapter != null && !TextUtils.isEmpty(value)) {
             final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-            recyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
-                    data.set(index, bean);
-                    adapter.replaceData(data);
-                }
+            recyclerView.postDelayed(() -> {
+                NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
+                data.set(index, bean);
+                adapter.replaceData(data);
             }, 200);
         }
     }
@@ -419,12 +388,9 @@ public class ShowGroundView implements IShowgroundView, OnRefreshListener {
     }
 
     private void showList() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                errView.setVisibility(View.INVISIBLE);
-                swipeRefreshLayout.setVisibility(View.VISIBLE);
-            }
+        handler.post(() -> {
+            errView.setVisibility(View.INVISIBLE);
+            swipeRefreshLayout.setVisibility(View.VISIBLE);
         });
     }
 

@@ -7,7 +7,7 @@ import OrderApi from '../api/orderApi';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import { MRText as Text } from '../../../components/ui';
-import RouterMap, { routePush } from '../../../navigation/RouterMap';
+import RouterMap, { routeOnePage, routePush } from '../../../navigation/RouterMap';
 import { payment } from '../../payment/Payment';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 import RefreshFlatList from '../../../comm/components/RefreshFlatList';
@@ -69,10 +69,10 @@ export default class MyOrdersListView extends Component {
                         return result.data.isMore ? 10 : 0;
                     }}
                     onStartRefresh={() => {
-                        Toast.showLoading();
+                        // Toast.showLoading();
                     }}
                     onEndRefresh={() => {
-                        Toast.hiddenLoading();
+                        // Toast.hiddenLoading();
                     }}
                     emptyHeight={ScreenUtils.height - ScreenUtils.headerHeight - 200}
                 />
@@ -177,7 +177,7 @@ export default class MyOrdersListView extends Component {
 
     clickItem = (data, index) => {
         orderDetailModel.handleData(data);
-        this.props.nav('order/order/MyOrdersDetailPage', {
+        routeOnePage('order/order/MyOrdersDetailPage', {
             merchantOrderNo: data.merchantOrder.merchantOrderNo,
             dataHandleConfirmOrder: () => this.dataHandleConfirmOrder(data, index),
             dataHandleDeleteOrder: () => this.dataHandleDeleteOrder(data, index),
@@ -276,21 +276,24 @@ export default class MyOrdersListView extends Component {
                 });
                 break;
             case 19://查看拼团
-                OrderApi.getGroupInfoByOrderNum({merchantOrderNo}).then((data)=> {
-                    data = data.data || {}
+                OrderApi.getGroupInfoByOrderNum({ merchantOrderNo }).then((data) => {
+                    data = data.data || {};
                     routePush('HtmlPage', { uri: '/activity/groupBuyDetails/' + data.id });
                 }).catch(e => {
                     Toast.$toast(e.msg);
                 });
                 break;
             case 20://邀请好友
-                OrderApi.getGroupInfoByOrderNum({merchantOrderNo}).then((data)=> {
-                    let orderGroupExt = data.data || {}
-                    ShareUtil.onShare({shareType: 1,
-                        platformType:0,
+                OrderApi.getGroupInfoByOrderNum({ merchantOrderNo }).then((data) => {
+                    let orderGroupExt = data.data || {};
+                    ShareUtil.onShare({
+                        shareType: 1,
+                        platformType: 0,
                         title: `[仅剩${orderGroupExt.surplusPerson}个名额] 我${orderGroupExt.activityAmount || ''}元带走了${orderGroupExt.goodsName || ''}`,
-                        dec:  `我买了${orderGroupExt.goodsName || ''}，该商品已拼${orderGroupExt.alreadySaleNum || ''}件了，快来参团吧!`,
-                        linkUrl:  `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${orderGroupExt.id ? orderGroupExt.id : ''}`,thumImage: 'logo.png' });
+                        dec: `我买了${orderGroupExt.goodsName || ''}，该商品已拼${orderGroupExt.alreadySaleNum || ''}件了，快来参团吧!`,
+                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/groupBuyDetails/${orderGroupExt.id ? orderGroupExt.id : ''}`,
+                        thumImage: 'logo.png'
+                    });
                 }).catch(e => {
                     Toast.$toast(e.msg);
                 });

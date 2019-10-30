@@ -31,6 +31,7 @@
     return self;
 }
 
+
 - (void)setState:(MJRefreshState)state {
   if (state == MJRefreshStateRefreshing) {
     CABasicAnimation * a =[CABasicAnimation animationWithKeyPath:@"strokeStart"];
@@ -73,7 +74,7 @@
         }
         CGFloat y = newPoint.y;
       if (y<=0) {
-        self.line.mj_y = y;
+        self.line.mj_y = y+self.lineTop;
         self.line.strokeEnd = -y/self.height;
       }
     }

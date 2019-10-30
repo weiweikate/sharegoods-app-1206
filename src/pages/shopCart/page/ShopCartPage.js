@@ -43,7 +43,7 @@ export default class ShopCartPage extends BasePage {
         this.state = {
             showNav: false
         };
-
+        this.requestdRecommend = false;
         TrackApi.shoppingcart();
     }
 
@@ -54,7 +54,10 @@ export default class ShopCartPage extends BasePage {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 this.pageFocus = true;
                 shopCartCacheTool.getShopCartGoodsListData();
-                shopCartEmptyModel.getRecommendProducts(true);
+                if (!this.requestdRecommend) {
+                    shopCartEmptyModel.getRecommendProducts(true);
+                    this.requestdRecommend = true;
+                }
             }
         );
         this.willBlurSubscription = this.props.navigation.addListener(
@@ -121,7 +124,6 @@ export default class ShopCartPage extends BasePage {
             <View style={styles.listBgContent}>
                 <SwipeListView
                     extraData={this.state}
-                    style={styles.swipeListView}
                     sections={shopCartStore.cartData}
                     useSectionList={true}
                     disableRightSwipe={true}
@@ -155,7 +157,7 @@ export default class ShopCartPage extends BasePage {
                 onPress={() => {
                     rowMap[data.item.key].closeRow();
                     this._deleteFromShoppingCartByProductId(data);
-                }} activeOpacity={0.7} >
+                }} activeOpacity={0.7}>
                 <View style={[styles.hideBgView, { marginTop: data.item.topSpace }]}>
                     <View style={styles.hideTextBgView}>
                         <UIText style={styles.backUITextWhite} value='删除'/>
@@ -179,14 +181,15 @@ export default class ShopCartPage extends BasePage {
 
     _renderValidItem = (itemData, rowMap) => {
         return (
-            <ShopCartCell itemData={itemData.item}
-                          rowMap={rowMap}
-                          rowId={itemData.index}
-                          sectionData={itemData.section}
-                          cellClickAction={
-                              (itemData) => {
-                                  this._jumpToProductDetailPage(itemData);
-                              }}/>
+            <ShopCartCell
+                itemData={itemData.item}
+                rowMap={rowMap}
+                rowId={itemData.index}
+                sectionData={itemData.section}
+                cellClickAction={
+                    (itemData) => {
+                        this._jumpToProductDetailPage(itemData);
+                    }}/>
         );
     };
 
@@ -205,19 +208,19 @@ export default class ShopCartPage extends BasePage {
      * @param item
      * @private
      */
-    _isValidProduct = (item)=>{
-        if (item.productStatus === 0 || item.productStatus === 2 || item.productStatus === 3 || item.sellStock === 0 || item.orderOnProduct === 0){
+    _isValidProduct = (item) => {
+        if (item.productStatus === 0 || item.productStatus === 2 || item.productStatus === 3 || item.sellStock === 0 || item.orderOnProduct === 0) {
             return false;
         }
         return true;
-    }
+    };
 
     _jumpToProductDetailPage = (itemData) => {
         TrackApi.CartProductOper({
-            spuCode:itemData.spuCode,
-            spuName:itemData.productName,
-            spuStatus:this._isValidProduct(itemData) ? 1 : 2,
-            operType:1
+            spuCode: itemData.spuCode,
+            spuName: itemData.productName,
+            spuStatus: this._isValidProduct(itemData) ? 1 : 2,
+            operType: 1
         });
         if (itemData.productStatus === 0) {
             return;
@@ -228,7 +231,7 @@ export default class ShopCartPage extends BasePage {
             });
             return;
         }
-        this.$navigate(RouterMap.ProductDetailPage, {
+        this.$navigateOnlyOnePage(RouterMap.ProductDetailPage, {
             productId: itemData.productId,
             productCode: itemData.spuCode
         });
@@ -237,13 +240,13 @@ export default class ShopCartPage extends BasePage {
     _deleteFromShoppingCartByProductId = (itemData) => {
         console.log('删除前');
         console.log(itemData);
-        const {item} = itemData;
+        const { item } = itemData;
         TrackApi.CartProductOper({
-            spuCode:item.spuCode,
-            spuName:item.productName,
-            spuStatus:this._isValidProduct(item) ? 1 : 2,
-            operType:2
-        })
+            spuCode: item.spuCode,
+            spuName: item.productName,
+            spuStatus: this._isValidProduct(item) ? 1 : 2,
+            operType: 2
+        });
         let delteCode = [
             { 'skuCode': itemData.item.skuCode }
         ];
@@ -259,7 +262,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1
     },
-    swipeListView: { width: shopCartListWidth },
     standaloneRowBack: {
         alignItems: 'center',
         flex: 1,

@@ -15,10 +15,9 @@ import {
     Text
 } from 'react-native';
 import RefreshFlatList from '../../../../../comm/components/RefreshFlatList';
-import CommShareModal from '../../../../../comm/components/CommShareModal';
+import CommGroupShareModal from '../../../../../comm/components/CommGroupShareModal';
 import LinearGradient from 'react-native-linear-gradient';
 import ListItemView from './ListItemView';
-import GroupSelectModel from './GroupSelectModel';
 import MineApi from '../../../api/MineApi';
 import res from '../../../../show/res';
 import minRes from '../../../res';
@@ -27,7 +26,6 @@ import ScreenUtils from '../../../../../utils/ScreenUtils';
 import apiEnvironment from '../../../../../api/ApiEnvironment';
 import RouterMap from '../../../../../navigation/RouterMap';
 import {track, trackEvent} from '../../../../../utils/SensorsTrack';
-
 
 
 export default class SpellGroupView extends PureComponent {
@@ -55,45 +53,13 @@ export default class SpellGroupView extends PureComponent {
                     params={{groupStatus: params}}
                     renderEmpty={this.renderEmpty}
                 />
-                <GroupSelectModel
-                    ref={(ref) => {
-                        this.SelectModel = ref
-                    }}
-                    createAD={(data) => {
-                        //选中拼团数据，触发弹出分享modal ，生成海报
-                        this.setState({
-                            shareType: data
-                        }, () => {
-                            this.ShareModel.open && this.ShareModel.open();
-                        });
-                    }}
-                    inviteShare={(data) => {
-                        //点击去邀请好友按钮 埋点
-                        if(selectData){
-                            this.groupBtnTrackEvent({
-                                groupbuyId: selectData.id,
-                                groupbuyStatus: selectData.groupStatus,
-                                spuName: selectData.goodsName,
-                                spuCode: selectData.prodCode,
-                                myGroupbuyBtnName: '邀请好友',
-
-                            });
-                        }
-
-                        //选中拼团数据，触发弹出分享modal
-                        this.setState({
-                            shareType: data
-                        }, () => {
-                            this.ShareModel.open && this.ShareModel.open();
-                        })
-                    }}
-
-                />
-                <CommShareModal
+                <CommGroupShareModal
                     ref={(ref) => {
                         this.ShareModel = ref
                     }}
-                    type={this.state.shareType}
+                    endTime={selectData.endTime}
+                    needPerson={selectData.surplusPerson}
+                    type={'group'}
                     imageJson={{ // 分享商品图片的数据
                         imageUrlStr: selectData.image || 'logo.png',
                         imageType: 'group', // 为空就是生成商品分享的图片， web：网页分享的图片 group:生成拼团海报
@@ -116,6 +82,7 @@ export default class SpellGroupView extends PureComponent {
                         spuName: selectData.goodsName,
                         spuCode: selectData.prodCode,
                     }}
+
                 />
             </View>
         );
@@ -164,6 +131,7 @@ export default class SpellGroupView extends PureComponent {
         const {title } = this.props;
         return(
             <ListItemView
+                key={index+'item'}
                 item={item}
                 index={index}
                 title={title}
@@ -171,8 +139,9 @@ export default class SpellGroupView extends PureComponent {
                     if (type) {
                         this.setState({
                             selectData:data
-                            });
-                        this.SelectModel.onOpen && this.SelectModel.onOpen();
+                            },()=>{
+                            this.ShareModel.open && this.ShareModel.open();
+                        });
                     } else {
                         //点击跳转拼团详情  埋点
                         this.groupBtnTrackEvent({

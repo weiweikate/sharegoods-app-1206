@@ -24,6 +24,7 @@ import MessageUtils from './utils/MessageUtils';
 import DesignRule from '../../constants/DesignRule';
 import RES from './res';
 import { TrackApi } from '../../utils/SensorsTrack';
+import {PageLoadingState} from '../../components/pageDecorator/PageState';
 
 const emptyIcon = RES.message_empty;
 export default class ShopMessagePage extends BasePage {
@@ -31,7 +32,9 @@ export default class ShopMessagePage extends BasePage {
         super(props);
         this.state = {
             viewData: [],
-            isEmpty: false
+            isEmpty: false,
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: null
             // currentPage: 1,
         };
         this.createdTime = null;
@@ -47,6 +50,19 @@ export default class ShopMessagePage extends BasePage {
     $isMonitorNetworkStatus() {
         return true;
     }
+
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            loadingProps:{
+                style:{paddingTop:ScreenUtils.height/2-100, justifyContent:'flex-start'}
+            },
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: this.loadPageData
+            }
+        };
+    };
 
     componentDidMount() {
         this.loadPageData();
@@ -71,9 +87,7 @@ export default class ShopMessagePage extends BasePage {
     //100普通，200拼店
     /*加载数据*/
     loadPageData = () => {
-        Toast.showLoading();
         MessageAPI.queryMessage({ page: 1, pageSize: 10, type: 200 }).then(res => {
-            Toast.hiddenLoading();
             DeviceEventEmitter.emit('contentViewed');
             if (StringUtils.isNoEmpty(res.data.data)) {
                 let arrData = [];
@@ -83,14 +97,13 @@ export default class ShopMessagePage extends BasePage {
                 if (!EmptyUtils.isEmptyArr(arrData)) {
                     this.createdTime = arrData[arrData.length - 1].createdTime;
                 }
-                this.setState({ viewData: arrData });
+                this.setState({ viewData: arrData, netFailedInfo: null, loadingState: PageLoadingState.success });
             } else {
+                this.setState({ isEmpty: true ,netFailedInfo: null, loadingState: PageLoadingState.success});
                 Toast.toast(res.msg);
-                this.setState({ isEmpty: true });
             }
         }).catch((error) => {
-            Toast.hiddenLoading();
-            this.setState({ isEmpty: true });
+            this.setState({ isEmpty: true,netFailedInfo: error, loadingState: PageLoadingState.fail });
             this.$toastShow(error.msg);
         });
     };
