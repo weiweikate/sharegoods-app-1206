@@ -120,12 +120,8 @@ function getImgHeightWithWidth(size: Size, width: number = deviceWidth): number 
 }
 
 const statusBarHeight = Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : RNDeviceInfo.statusBarHeight;
-// 单位转换后的高度
-const statusHeightFix2Width = Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? autoSizeWidth(44) : autoSizeWidth(20)) : RNDeviceInfo.statusBarHeight;
-
 
 export default {
-    statusHeightFix2Width,
     px2dp,
     setBarShow,
     getBarShow,
