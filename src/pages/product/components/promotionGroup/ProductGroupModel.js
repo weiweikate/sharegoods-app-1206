@@ -6,7 +6,7 @@
  * @email chenyangjun@meeruu.com
  */
 import ProductApi from '../../api/ProductApi';
-import { observable, computed } from 'mobx';
+import { observable, computed, action } from 'mobx';
 import { Alert } from 'react-native';
 import StringUtils from '../../../../utils/StringUtils';
 import bridge from '../../../../utils/bridge';
@@ -19,7 +19,7 @@ export const navCode = [
     {
         index: 0,
         text: '开新团',
-        code: [220210, 220214, 220216, 220221]
+        code: [220210, 220214, 220216, 220221, 220227, 220228, 220229, 220230, 220231]
 
     },
 
@@ -128,9 +128,16 @@ export default class ProductGroupModel {
     @observable groupProducts = [];
     @observable groupDesc = '';
 
+    //拼团类型
     @observable tagName;
+    //优惠类型
     @observable ruleValue;
+    //优惠金额
     @observable sendAmount;
+    //团长优惠
+    @observable enableGroupLeaderCashBack;
+    //人数
+    @observable newUserNum;
 
     @observable showAlert = true;
 
@@ -161,7 +168,7 @@ export default class ProductGroupModel {
 
     @computed get showSendAmount() {
         const rules = ['0000', '0001', '0100', '0101'];
-        return this.ruleValue && rules.indexOf(this.ruleValue) === -1;
+        return this.ruleValue && rules.indexOf(this.ruleValue) === -1 && this.enableGroupLeaderCashBack;
     }
 
     activityCode;
@@ -199,12 +206,18 @@ export default class ProductGroupModel {
 
     request_rule_info = ({ activityCode }) => {
         ProductApi.product_rule_info({ code: activityCode }).then((data) => {
-            const { tagName, ruleValue, sendAmount } = data.data;
-            this.tagName = tagName;
-            this.ruleValue = ruleValue;
-            this.sendAmount = sendAmount;
+            this.setInfo(data);
         }).catch(e => {
         });
+    };
+
+    @action setInfo = (data) => {
+        const { tagName, ruleValue, sendAmount, enableGroupLeaderCashBack, newUserNum } = data.data;
+        this.tagName = tagName;
+        this.ruleValue = ruleValue;
+        this.sendAmount = sendAmount;
+        this.enableGroupLeaderCashBack = enableGroupLeaderCashBack;
+        this.newUserNum = newUserNum;
     };
 
     requestGroupDesc = () => {

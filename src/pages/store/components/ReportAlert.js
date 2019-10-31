@@ -172,10 +172,10 @@ export default class ReportAlert extends Component {
                                     style={styles.input}/>
                             </View>
                             <View style={styles.btnContainer}>
-                                <TouchableOpacity onPress={this._clickOk} style={styles.submitContainer}>
+                                <TouchableOpacity activeOpacity={0.7} onPress={this._clickOk} style={styles.submitContainer}>
                                     <Text style={styles.submitTitle}>提交</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={this._closeAnimated} style={styles.cancelContainer}>
+                                <TouchableOpacity activeOpacity={0.7} onPress={this._closeAnimated} style={styles.cancelContainer}>
                                     <Text style={styles.cancelTitleText}>取消</Text>
                                 </TouchableOpacity>
                             </View>

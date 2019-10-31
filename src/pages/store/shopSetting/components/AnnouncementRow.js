@@ -50,7 +50,7 @@ export default class AnnouncementRow extends Component {
                 <View style={styles.titleRow}>
                     <Text style={styles.title}>{this._formatDateTime()}</Text>
                     {
-                        roleType === 0 && <TouchableOpacity onPress={this._onPressDelete} style={styles.delBtn}>
+                        roleType === 0 && <TouchableOpacity activeOpacity={0.7} onPress={this._onPressDelete} style={styles.delBtn}>
                             <Image style={styles.delImg} source={DeleteIcon}/>
                             <Text style={styles.delTitle} allowFontScaling={false}>删除</Text>
                         </TouchableOpacity>
