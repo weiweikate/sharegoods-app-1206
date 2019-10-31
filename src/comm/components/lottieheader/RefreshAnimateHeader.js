@@ -16,7 +16,7 @@ const RefreshStatus = {
 const lottieHeight = ScreenUtils.autoSizeWidth(70);
 
 function RefreshAnimateHeader(props) {
-    const { refreshing, onRefresh, source, headerHeight = ScreenUtils.autoSizeWidth(75), backgroundColor, lineTop } = props;
+    const { refreshing, onRefresh, source, headerHeight = ScreenUtils.autoSizeWidth(75), backgroundColor, lineTop, contentWidth = ScreenUtils.width } = props;
 
     const lottieRef = useRef(React.createRef());
     const progressRef = useRef(new Animated.Value(1));
@@ -109,8 +109,8 @@ function RefreshAnimateHeader(props) {
                 lineTop={lineTop}
                 style={{
                     alignItems: 'center',
-                    height: headerHeight
-
+                    height: headerHeight,
+                    width: contentWidth
                 }}>
                 {lottie}
                 <MRText style={{
