@@ -16,6 +16,7 @@ import RES from '../../res/product';
 import { GroupPersonAllList, GroupJoinView, GroupDescView } from './ProductGroupModal';
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import TextTicker from 'react-native-text-ticker';
 
 const { arrow_right_black } = RES.button;
 
@@ -23,17 +24,23 @@ const { arrow_right_black } = RES.button;
 @observer
 export class GroupIsOldView extends Component {
     render() {
-        const { tagName, showRuleText, showSendAmount, sendAmount } = this.props.productGroupModel;
+        const { tagName, showRuleText, showSendAmount, sendAmount, newUserNum } = this.props.productGroupModel;
         return (
             <View style={stylesOld.container}>
                 <MRText style={stylesOld.imgLeft}>{tagName}</MRText>
-                <MRText style={stylesOld.text}>
-                    {showRuleText}
-                    {showSendAmount && '团长可额外获得'}
-                    {showSendAmount && <MRText
-                        style={{ color: DesignRule.textColor_redWarn }}>￥{sendAmount}</MRText>}
-                    {showSendAmount && '返现哦〜'}
-                </MRText>
+                <View style={{ flex: 1, marginRight: 15 }}>
+                    <TextTicker style={stylesOld.text}
+                                loop
+                                duration={4000}
+                                repeatSpacer={100}
+                                marqueeDelay={2000}>
+                        {showRuleText}
+                        {showSendAmount && `团长邀${newUserNum}名新用户参团，可额外获得`}
+                        {showSendAmount &&
+                        <MRText style={{ color: DesignRule.textColor_redWarn }}>￥{sendAmount}</MRText>}
+                        {showSendAmount && '返现哦〜'}
+                    </TextTicker>
+                </View>
             </View>
         );
     }
@@ -48,7 +55,7 @@ const stylesOld = StyleSheet.create({
         color: '#FF0050', fontSize: 16, marginLeft: 15, marginRight: 10
     },
     text: {
-        color: DesignRule.textColor_instruction, fontSize: 12, flex: 1, marginRight: 15
+        color: DesignRule.textColor_instruction, fontSize: 12
     }
 });
 
