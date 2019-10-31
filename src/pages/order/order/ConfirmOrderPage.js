@@ -231,7 +231,6 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-
         this.loadPageData();
     }
 
@@ -262,7 +261,7 @@ export default class ConfirmOrderPage extends BasePage {
 
     // 提交订单
     commitOrder = () => {
-        confirmOrderModel.submitProduct();
+        confirmOrderModel.submitProduct(this.params.from);
     };
 
     // 选择优惠券
