@@ -31,14 +31,20 @@ export class GroupIsOldView extends Component {
                 <View style={{ flex: 1, marginRight: 15 }}>
                     <TextTicker style={stylesOld.text}
                                 loop
-                                duration={4000}
+                                duration={5000}
                                 repeatSpacer={100}
                                 marqueeDelay={2000}>
                         {showRuleText}
-                        {showSendAmount && `团长邀${newUserNum}名新用户参团，可额外获得`}
-                        {showSendAmount &&
-                        <MRText style={{ color: DesignRule.textColor_redWarn }}>￥{sendAmount}</MRText>}
-                        {showSendAmount && '返现哦〜'}
+                        {
+                            showSendAmount &&
+                            <MRText>
+                                团长邀
+                                <MRText style={{ color: DesignRule.textColor_redWarn }}>{newUserNum}</MRText>
+                                名新用户参团，可额外获得
+                                <MRText style={{ color: DesignRule.textColor_redWarn }}>￥{sendAmount}</MRText>
+                                返现哦〜
+                            </MRText>
+                        }
                     </TextTicker>
                 </View>
             </View>
