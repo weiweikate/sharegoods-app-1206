@@ -2,7 +2,7 @@
 //三种角色身份 普通 店长 店员
 
 import React from 'react';
-import { Alert, Image, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Platform, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import BasePage from '../../../BasePage';
@@ -280,7 +280,7 @@ export default class MyShopPage extends BasePage {
                             refreshControl={<RefreshControl
                                 onRefresh={this._onRefresh}
                                 refreshing={this.MyShopDetailModel.isRefresh}
-                                colors={['white']}
+                                colors={[Platform.OS === 'ios' ? 'white' : DesignRule.mainColor]}
                                 tintColor={'white'}/>}>
                     <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement}
                                 MyShopDetailModel={this.MyShopDetailModel}/>

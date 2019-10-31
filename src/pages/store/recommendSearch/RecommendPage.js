@@ -3,12 +3,15 @@
 * */
 import React from 'react';
 import {
-    View,
     Image,
-    StyleSheet,
+    NativeEventEmitter,
+    NativeModules,
+    Platform,
+    RefreshControl,
     SectionList,
+    StyleSheet,
     TouchableOpacity,
-    RefreshControl, NativeModules, NativeEventEmitter
+    View
 } from 'react-native';
 
 import { observer } from 'mobx-react';
@@ -258,7 +261,7 @@ export default class RecommendPage extends BasePage {
         if (this.state.loadingState === PageLoadingState.success) {
             return (<RecommendRow RecommendRowItem={item} RecommendRowOnPress={this._RecommendRowOnPress}/>);
         } else {
-            return <View style={{ height: 300 ,backgroundColor:DesignRule.bgColor}}>
+            return <View style={{ height: 300, backgroundColor: DesignRule.bgColor }}>
                 {renderViewByLoadingState(this._getPageStateOptions(), null)}
             </View>;
         }
@@ -341,7 +344,7 @@ export default class RecommendPage extends BasePage {
                              initialNumToRender={5}
                              refreshControl={<RefreshControl refreshing={this.state.refreshing}
                                                              onRefresh={this._refreshing.bind(this)}
-                                                             colors={['white']}
+                                                             colors={[Platform.OS === 'ios' ? 'white' : DesignRule.mainColor]}
                                                              tintColor={'white'}/>}/>
                 <IntervalMsgView pageType={IntervalType.shopHome}/>
             </View>
