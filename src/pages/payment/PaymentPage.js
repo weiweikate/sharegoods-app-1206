@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, BackHandler, Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import res from './res';
 import BasePage from '../../BasePage';
 import { observer } from 'mobx-react';
@@ -11,7 +11,7 @@ import { payment, paymentType, payStatus, payStatusMsg } from './Payment';
 import PasswordView from './PayPasswordView';
 import { PaymentResult } from './PaymentResultPage';
 import Toast from '../../utils/bridge';
-import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
+import RouterMap, { navigateBackToStore, replaceRoute, routePush } from '../../navigation/RouterMap';
 import StringUtils from '../../utils/StringUtils';
 import { TrackApi } from '../../utils/SensorsTrack';
 
@@ -50,6 +50,17 @@ export default class PaymentPage extends BasePage {
             orderId: payment.orderNo,
             totalPayAmount: payment.amounts
         });
+    }
+
+    componentDidMount() {
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            this._cancelPay();
+            return true;
+        });
+    }
+
+    componentWillUnmount() {
+        this.backHandler && this.backHandler.remove();
     }
 
     $NavBarLeftPressed = () => {
@@ -184,15 +195,26 @@ export default class PaymentPage extends BasePage {
                 ],
                 { cancelable: false }
             );
-        }, 600);
+        }, 500);
     };
 
     _goToOrder(index) {
         const { bizType } = payment;
-        if (bizType === 1) {
-            replaceRoute(RouterMap.AddCapacityHistoryPage);
+        if (this.params.from && this.params.from === 'capacity') {
+            navigateBackToStore();
+            // 入栈
+            if (bizType === 1) {
+                routePush(RouterMap.AddCapacityHistoryPage);
+            } else {
+                routePush('order/order/MyOrdersListPage', { index: index ? index : 0 });
+            }
         } else {
-            replaceRoute('order/order/MyOrdersListPage', { index: index ? index : 0 });
+            // 页面替换
+            if (bizType === 1) {
+                replaceRoute(RouterMap.AddCapacityHistoryPage);
+            } else {
+                replaceRoute('order/order/MyOrdersListPage', { index: index ? index : 0 });
+            }
         }
         payment.resetPayment();
     }

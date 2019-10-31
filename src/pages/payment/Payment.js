@@ -1,10 +1,10 @@
-import { observable, action, flow } from 'mobx';
+import { action, flow, observable } from 'mobx';
 import PaymentApi from './PaymentApi';
 import Toast from '../../utils/bridge';
 import PayUtil from './PayUtil';
 import user from '../../model/user';
 import { track, trackEvent } from '../../utils/SensorsTrack';
-import RouterMap, { replaceRoute, routePush } from '../../navigation/RouterMap';
+import RouterMap, { navigateBackToStore, replaceRoute, routePush } from '../../navigation/RouterMap';
 import { PaymentResult } from './PaymentResultPage';
 
 
@@ -268,32 +268,52 @@ export class Payment {
                     payAmount: result.unpaidAmount
                 });
                 this.platformPay('', this.fundsTradingNo, detailList, title).then(result => {
-                    replaceRoute(RouterMap.PaymentFinshPage, {
-                        payResult: PaymentResult.success,
-                        platformOrderNo: platformOrderNo
-                    });
+                    // 扩容
+                    if (from === 'capacity') {
+                        // 配合routePush一起使用
+                        navigateBackToStore();
+                        routePush(RouterMap.PaymentFinshPage, {
+                            payResult: PaymentResult.success,
+                            platformOrderNo: platformOrderNo
+                        });
+                    } else {
+                        replaceRoute(RouterMap.PaymentFinshPage, {
+                            payResult: PaymentResult.success,
+                            platformOrderNo: platformOrderNo
+                        });
+                    }
                 }).catch(error => {
                     Toast.$toast(error.msg);
                 });
                 return;
             }
             if (result.code === payStatus.payNo) {
-                if (from === 'order'){
+                if (from === 'order') {
                     replaceRoute('payment/PaymentPage', {
                         amounts: result.unpaidAmount,
                         platformOrderNo: platformOrderNo,
                         orderProductList: [],
-                        productTitle: title
+                        productTitle: title,
+                        from
                     });
                 } else {
+                    // 扩容
+                    if (from === 'capacity') {
+                        navigateBackToStore();
+                    }
                     routePush('payment/PaymentPage', {
                         amounts: result.unpaidAmount,
                         platformOrderNo: platformOrderNo,
                         orderProductList: [],
-                        productTitle: title
+                        productTitle: title,
+                        from
                     });
                 }
             } else if (result.code === payStatus.payNeedThrid) {
+                // 扩容
+                if (from === 'capacity') {
+                    navigateBackToStore();
+                }
                 routePush('payment/ChannelPage', {
                     remainMoney: result.unpaidAmount,
                     platformOrderNo: platformOrderNo,
@@ -302,7 +322,14 @@ export class Payment {
                 });
             } else if (result.code === payStatus.payOut) {
                 Toast.$toast(payStatusMsg[result.code]);
-                replaceRoute('order/order/MyOrdersListPage', { index: 2 });
+                // 扩容
+                if (from === 'capacity') {
+                    // 配合routePush一起使用
+                    navigateBackToStore();
+                    routePush('order/order/MyOrdersListPage', { index: 2 });
+                } else {
+                    replaceRoute('order/order/MyOrdersListPage', { index: 2 });
+                }
             } else {
                 Toast.$toast(payStatusMsg[result.code] || '系统处理失败');
             }
