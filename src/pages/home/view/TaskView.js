@@ -15,14 +15,7 @@
 import { IntervalMsgType } from '../../../comm/components/IntervalMsgView';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {
-    ImageBackground,
-    ScrollView,
-    StyleSheet,
-    TouchableOpacity,
-    View,
-    Animated, Easing
-} from 'react-native';
+import { Animated, Easing, ImageBackground, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { MRText, UIImage } from '../../../components/ui';
 import { observer } from 'mobx-react';
@@ -284,9 +277,9 @@ export default class TaskView extends React.Component {
             {
                 toValue: 1,
                 duration: 1500,
-                easing: Easing.in,
+                easing: Easing.in
             }
-        )
+        );
         this.model = this.props.type === 'home' ? taskModel : mineTaskModel;
     }
 
@@ -297,7 +290,7 @@ export default class TaskView extends React.Component {
     _startAnimated = () => {
         this.state.transformView.setValue(0);
         this.rotateAnimated.start(() => this._startAnimated());
-    }
+    };
 
 
     renderTitle(type) {
@@ -375,20 +368,21 @@ export default class TaskView extends React.Component {
                         </View>
                         {
                             this.model.canOpenProgress !== -1 ?
-                                <Animated.Image source={task_run_people}
-                                                style={{
-                                                    position: 'absolute',
-                                                    left: this.model.canOpenProgress / this.model.totalProgress * autoSizeWidth(290) - autoSizeWidth(5),
-                                                    width: autoSizeWidth(25),
-                                                    height: autoSizeWidth(23),
-                                                    top: autoSizeWidth(5),
-                                                    transform: [
-                                                        {
-                                                            rotateZ: rotate
-                                                        },
-                                                        {translateX: px2dp(-25 / 2)},
-                                                        {translateY: px2dp(-23 / 2)}]
-                                                }}
+                                <Animated.Image
+                                    source={task_run_people}
+                                    style={{
+                                        position: 'absolute',
+                                        left: this.model.canOpenProgress / this.model.totalProgress * autoSizeWidth(290) - autoSizeWidth(5),
+                                        width: autoSizeWidth(25),
+                                        height: autoSizeWidth(23),
+                                        top: autoSizeWidth(5),
+                                        transform: [
+                                            {
+                                                rotateZ: rotate
+                                            },
+                                            { translateX: px2dp(-25 / 2) },
+                                            { translateY: px2dp(-23 / 2) }]
+                                    }}
                                 /> : null
                         }
 
@@ -412,17 +406,19 @@ export default class TaskView extends React.Component {
                 break;
         }
         return (
-            <TouchableOpacity activeOpacity={0.7} style={{
-                width: autoSizeWidth(47),
-                height: autoSizeWidth(65),
-                alignItems: 'center',
-                left: autoSizeWidth(290) / this.model.totalProgress * data.value - autoSizeWidth(47 / 2.0),
-                position: 'absolute'
-            }}
-                              disabled={data.prizeStatus !== BoxStatusCanOpen}
-                              onPress={() => {
-                                  this.model.boxClick(data);
-                              }}
+            <TouchableOpacity
+                activeOpacity={0.7}
+                style={{
+                    width: autoSizeWidth(47),
+                    height: autoSizeWidth(65),
+                    alignItems: 'center',
+                    left: autoSizeWidth(290) / this.model.totalProgress * data.value - autoSizeWidth(47 / 2.0),
+                    position: 'absolute'
+                }}
+                disabled={data.prizeStatus !== BoxStatusCanOpen}
+                onPress={() => {
+                    this.model.boxClick(data);
+                }}
             >
                 <UIImage source={icon} style={{
                     width: autoSizeWidth(28),
@@ -468,7 +464,7 @@ export default class TaskView extends React.Component {
     renderTaskView() {
         let expanded = this.model.expanded;
         return (
-            <View style={{ height: expanded === false ? 0 : autoSizeWidth(280-30+10) }}>
+            <View style={{ height: expanded === false ? 0 : autoSizeWidth(280 - 30 + 10) }}>
                 <View style={{
                     backgroundColor: 'white',
                     borderRadius: 5,
@@ -480,10 +476,11 @@ export default class TaskView extends React.Component {
                         showsVerticalScrollIndicator={false}>
                         {
                             this.model.tasks.map((item, index) => {
-                                return <TaskItem key={'TaskItem_' + item.no}
-                                                 data={item} model={this.model}
-                                                 isSignIn={this.props.isSignIn}
-                                                 signIn={this.props.signIn}
+                                return <TaskItem
+                                    key={'TaskItem_' + item.no}
+                                    data={item} model={this.model}
+                                    isSignIn={this.props.isSignIn}
+                                    signIn={this.props.signIn}
                                 />;
                             })
                         }
