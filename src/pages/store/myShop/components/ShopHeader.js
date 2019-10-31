@@ -80,6 +80,7 @@ export default class ShopHeader extends Component {
                     </View>
 
                     {roleType === 0 ? <TouchableOpacity onPress={this.props.onPressShopAnnouncement}
+                                                        activeOpacity={0.7}
                                                         style={styles.announcementContainer}>
                         <Text style={styles.announcementTitle} allowFontScaling={false}>店铺公告</Text>
                     </TouchableOpacity> : null}
