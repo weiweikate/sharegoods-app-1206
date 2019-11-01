@@ -2,7 +2,7 @@
 //三种角色身份 普通 店长 店员
 
 import React from 'react';
-import { Alert, Image, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Platform, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import BasePage from '../../../BasePage';
@@ -115,7 +115,7 @@ export default class MyShopPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!storeCode ?
-                        <TouchableOpacity style={{ width: 40, justifyContent: 'center' }}
+                        <TouchableOpacity activeOpacity={0.7} style={{ width: 40, justifyContent: 'center' }}
                                           onPress={() => {
                                               this.$navigateBack();
                                           }}>
@@ -135,12 +135,12 @@ export default class MyShopPage extends BasePage {
         if (isNoEmpty(roleType)) {
             return (
                 <View style={styles.rightBarItemContainer}>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.$navigate('store/recommendSearch/RecommendPage');
                     }}>
                         <Image style={{ marginRight: 20, width: 18, height: 18 }} source={icons8_Shop_50px}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this._clickSettingItem}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={this._clickSettingItem}>
                         <Image source={roleType === 0 ? shezhi : my_Shop_gengduo} style={{ width: 18, height: 18 }}/>
                     </TouchableOpacity>
                 </View>
@@ -280,7 +280,7 @@ export default class MyShopPage extends BasePage {
                             refreshControl={<RefreshControl
                                 onRefresh={this._onRefresh}
                                 refreshing={this.MyShopDetailModel.isRefresh}
-                                colors={['white']}
+                                colors={[Platform.OS === 'ios' ? 'white' : DesignRule.mainColor]}
                                 tintColor={'white'}/>}>
                     <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement}
                                 MyShopDetailModel={this.MyShopDetailModel}/>

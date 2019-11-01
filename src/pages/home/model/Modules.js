@@ -8,10 +8,12 @@ import { limitGoModule } from './HomeLimitGoModel';
 import { tabModel } from './HomeTabModel';
 import store from '@mr/rn-store';
 import StringUtils from '../../../utils/StringUtils';
-import ScreenUtils from '../../../utils/ScreenUtils';;
-import {  HomeSource } from '../../../utils/OrderTrackUtil';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import { HomeSource } from '../../../utils/OrderTrackUtil';
 import { getSize } from '../../../utils/OssHelper';
 import { homeNewUserModel } from './HomeNewUserModel';
+
+;
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 const kHomeTopTopic = '@home/topTopic';
@@ -20,6 +22,7 @@ const kHomeType = '@home/type';
 
 //首页modules
 class HomeModule {
+    @observable goods = [];
     @observable homeList = [];
     @observable selectedTypeCode = null;
     @observable isRefreshing = false;
@@ -71,7 +74,6 @@ class HomeModule {
         id: 10,
         type: homeType.goodsTitle
     }];
-    goods = [];
 
     type = 0;
 
@@ -86,7 +88,7 @@ class HomeModule {
             return linkTypeCode ? linkTypeCode.replace(/[\n]/g, '').trim() : '';
         } else if (linkType === homeLinkType.nothing) {
             return;
-        }else {
+        } else {
             return homeRoute[linkType];
         }
     };
@@ -115,9 +117,9 @@ class HomeModule {
             code: data.linkTypeCode,
             keywords: data.name,
             trackType: 1,
-            initialPage:data.linkTypeCode
+            initialPage: data.linkTypeCode
         };
-        if(linkType === 18){
+        if (linkType === 18) {
             params.fromHome = true;
         }
         return params;
@@ -471,7 +473,7 @@ class HomeModule {
             return [];
         }
 
-        asyncHandleTopicData(data,HomeSource.marketing,(isTop?0:1)).then((data)=> {
+        asyncHandleTopicData(data, HomeSource.marketing, (isTop ? 0 : 1)).then((data) => {
             if (isTop) {
                 this.topTopice = data;
                 store.save(kHomeTopTopic, this.topTopice);
@@ -480,7 +482,7 @@ class HomeModule {
                 store.save(kHomeBottomTopic, this.bottomTopice);
             }
             this.homeList = this.getHomeListData(true);
-        })
+        });
     };
 
     @action setTopSkinData(data) {

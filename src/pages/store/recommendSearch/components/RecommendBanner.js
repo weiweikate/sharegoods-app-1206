@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MRBannerView from '../../../../components/ui/bannerView/MRBannerView';
 import DesignRule from '../../../../constants/DesignRule';
@@ -58,6 +58,7 @@ export class RecommendBanner extends Component {
                               interceptTouchEvent={true}//android端起作用，是否拦截touch事件
                               itemWidth={px2dp(345) + 0.5}
                               itemSpace={0}
+                              itemRadius={px2dp(5)}
                               imgUrlArray={items}
                               onDidSelectItemAtIndex={(e) => {
                                   bannerList[e.nativeEvent.index] && this._onPress(bannerList[e.nativeEvent.index]);

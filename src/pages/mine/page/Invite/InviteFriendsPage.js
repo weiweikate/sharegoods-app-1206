@@ -12,28 +12,20 @@
 
 'use strict';
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-    Platform,
-    TouchableWithoutFeedback,
-    ImageBackground,
-    Image,
-} from 'react-native';
+import { Image, ImageBackground, Platform, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import { UIImage } from '../../../../components/ui';
-import { MRText as Text } from '../../../../components/ui';
+import { MRText as Text, UIImage } from '../../../../components/ui';
 import CommShareModal from '../../../../comm/components/CommShareModal';
 import bridge from '../../../../utils/bridge';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 // import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import user from '../../../../model/user';
-import {track, trackEvent} from '../../../../utils/SensorsTrack';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
 import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/components/SmoothPushHighComponent';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
@@ -61,7 +53,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
         this.state = {
             disable: false,
             path: '',
-            inviteCode: '',
+            inviteCode: ''
         };
         this._bind();
         this.linkUrl = `${apiEnvironment.getCurrentH5Url()}/register?upuserid=${user.code || ''}&signUpSource=fxhy`;
@@ -78,7 +70,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
     }
 
     componentDidMount() {
-        track(trackEvent.ViewInviteFriends,{});
+        track(trackEvent.ViewInviteFriends, {});
         this.loadPageData();
     }
 
@@ -99,8 +91,8 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 path: Platform.OS === 'android' ? 'file://' + path : '' + path,
                 inviteCode: QRCodeUrl
             });
-        },()=>{
-        },'invite');
+        }, () => {
+        }, 'invite');
     }
 
     // //截屏
@@ -132,57 +124,64 @@ export default class InviteFriendsPage extends BasePage<Props> {
     _render() {
 
         let height = ScreenUtils.height;
-        if(ScreenUtils.isAllScreenDevice && !ScreenUtils.getBarShow()){
-            height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')
-        }else if(ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()) {
+        if (ScreenUtils.isAllScreenDevice && !ScreenUtils.getBarShow()) {
+            height = ExtraDimensions.get('REAL_WINDOW_HEIGHT');
+        } else if (ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()) {
             if (ScreenUtils.getHasNotchScreen()) {
-                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT') - ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT') + ExtraDimensions.get('STATUS_BAR_HEIGHT')
+                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT') - ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT') + ExtraDimensions.get('STATUS_BAR_HEIGHT');
             } else {
-                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT') - ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')
+                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT') - ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT');
             }
         }
 
-        let name =  user.nickname && user.nickname.length > 8 ? user.nickname.replace(/^(\d{3})\d*(\d{4})$/,'$1****$2') : user.nickname;
-        return(
+        let name = user.nickname && user.nickname.length > 8 ? user.nickname.replace(/^(\d{3})\d*(\d{4})$/, '$1****$2') : user.nickname;
+        return (
             <View style={styles.contain}>
-                <ImageBackground source={bgColor} style={{width: ScreenUtils.width, height, alignItems: 'center'}}>
+                <ImageBackground source={bgColor} style={{ width: ScreenUtils.width, height, alignItems: 'center' }}>
                     <View style={styles.headerStyle}>
                         <Image source={wenan} style={styles.wenanStyle}/>
-                        <View style={{alignItems: 'center'}}>
-                            <View style={{width:64,height:64,borderRadius:32,backgroundColor: '#FBF6CF',alignItems:'center',justifyContent:'center'}}>
-                            {
-                                user && user.headImg && user.headImg.length > 4 ?
-                                    <UIImage source={{uri: user.headImg}}
-                                             style={{
-                                                 height: autoSizeWidth(58),
-                                                 width: autoSizeWidth(58),
-                                                 borderRadius: autoSizeWidth(29)
-                                             }}/>
-                                    :
-                                    <UIImage source={defaultHeader}
-                                             style={{
-                                                 height: autoSizeWidth(58),
-                                                 width: autoSizeWidth(58),
-                                                 borderRadius: autoSizeWidth(29)
-                                             }}/>
-                            }
+                        <View style={{ alignItems: 'center' }}>
+                            <View style={{
+                                width: 64,
+                                height: 64,
+                                borderRadius: 32,
+                                backgroundColor: '#FBF6CF',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                {
+                                    user && user.headImg && user.headImg.length > 4 ?
+                                        <UIImage source={{ uri: user.headImg }}
+                                                 style={{
+                                                     height: autoSizeWidth(58),
+                                                     width: autoSizeWidth(58),
+                                                     borderRadius: autoSizeWidth(29)
+                                                 }}/>
+                                        :
+                                        <UIImage source={defaultHeader}
+                                                 style={{
+                                                     height: autoSizeWidth(58),
+                                                     width: autoSizeWidth(58),
+                                                     borderRadius: autoSizeWidth(29)
+                                                 }}/>
+                                }
                             </View>
                             <ImageBackground source={textBg}
                                              style={styles.textBgStyle}>
-                                <Text style={{color: '#B93C3B', fontSize: 13, marginTop: 10}}>{name || ''}</Text>
-                                <Text style={{color: '#B93C3B', fontSize: 13}}>已有4000000+用户领取成功～</Text>
+                                <Text style={{ color: '#B93C3B', fontSize: 13, marginTop: 10 }}>{name || ''}</Text>
+                                <Text style={{ color: '#B93C3B', fontSize: 13 }}>已有4000000+用户领取成功～</Text>
                             </ImageBackground>
                         </View>
                     </View>
-                    {this.state.path ? <UIImage source={{uri: this.state.path}}
+                    {this.state.path ? <UIImage source={{ uri: this.state.path }}
                                                 resizeMode={'stretch'}
                                                 style={{
                                                     width: 144,
-                                                    height: 144,
+                                                    height: 144
                                                 }}/> :
-                        <Image source={QRBg} style={{width: 144, height: 144, backgroundColor: 'white'}}/>
+                        <Image source={QRBg} style={{ width: 144, height: 144, backgroundColor: 'white' }}/>
                     }
-                    <Text style={{color: '#FFFFFF', fontSize: 13, marginTop: 5}}>手机扫一扫注册新用户</Text>
+                    <Text style={{ color: '#FFFFFF', fontSize: 13, marginTop: 5 }}>手机扫一扫注册新用户</Text>
                     <Image source={bgContent}
                            style={styles.btnText}/>
                 </ImageBackground>
@@ -200,7 +199,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     }}>
                         <View>
                             <Image source={shareBtn}
-                                   style={{width: 201, height: 52}}/>
+                                   style={{ width: 201, height: 52 }}/>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
@@ -217,7 +216,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>
-                        <UIImage source={back_white} style={{width: 30, height: 30}}/>
+                        <UIImage source={back_white} style={{ width: 30, height: 30 }}/>
                     </View>
                 </TouchableWithoutFeedback>
 
@@ -226,17 +225,17 @@ export default class InviteFriendsPage extends BasePage<Props> {
                                 type={'Invite'}
                                 imageJson={{
                                     imageType: 'invite',
-                                    titleStr:'',
-                                    imageUrlStr:'',
-                                    QRCodeStr: this.state.inviteCode || this.linkUrl,
+                                    titleStr: '',
+                                    imageUrlStr: '',
+                                    QRCodeStr: this.state.inviteCode || this.linkUrl
                                 }}
                                 webJson={{
-                                    title: '送你1张免费商品兑换券，海量好物0元领！',
-                                    dec: '新人尊享，价值269元好礼在等你，惊喜连连福利不断~',
+                                    title: '您有1次免单机会~~',
+                                    dec: '新人首单全额返，海量好物0元拿！',
                                     linkUrl: this.linkUrl,
-                                    thumImage: `${apiEnvironment.getCurrentOssHost()}/sharegoods/h5/resource/icon/shareIcon.png`,
+                                    thumImage: `${apiEnvironment.getCurrentOssHost()}/sharegoods/h5/resource/icon/shareIcon.png`
                                 }}
-                                trackParmas={{QrCodeID: this.linkUrl}}
+                                trackParmas={{ QrCodeID: this.linkUrl }}
                                 trackEvent={trackEvent.QrCodeShareto}
                                 taskShareParams={{ //分享完成后，请求后台
                                     uri: this.linkUrl,
@@ -247,13 +246,13 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 />
             </View>
 
-        )
+        );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
     },
     headerStyle: {
         width: ScreenUtils.width,

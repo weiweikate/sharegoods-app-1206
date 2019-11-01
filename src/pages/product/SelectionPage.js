@@ -42,8 +42,7 @@ export default class SelectionPage extends Component {
     /**选择地址变化刷新库存**/
     updateShow = autorun(() => {
         const { skuListByArea } = (this.state || {}).data || {};
-        const { isAreaSku } = (this.state || {}).propData || {};
-        if (isAreaSku && this.state.modalVisible) {
+        if (skuListByArea && this.state.modalVisible) {
             this.state.selectStrList = [];
             this.state.selectSpecList = [];
             this.maxStock = 0;
@@ -61,7 +60,7 @@ export default class SelectionPage extends Component {
     show = (data, callBack, propData = {}) => {
         //type afterSpecIds
         //需要重置旧数据
-        const { needUpdate, isAreaSku, productIsPromotionPrice, singlePurchaseNumber } = propData;
+        const { needUpdate, productIsPromotionPrice, singlePurchaseNumber } = propData;
         if (needUpdate) {
             this.state.selectStrList = [];
             this.state.selectSpecList = [];
@@ -71,7 +70,8 @@ export default class SelectionPage extends Component {
         this.state.promotionLimit = singlePurchaseNumber || (productIsPromotionPrice ? promotionLimitNum : null);
 
         let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
-        let skuListTemp = JSON.parse(JSON.stringify((isAreaSku ? skuListByArea : skuList) || []));
+        //有skuListByArea优先说明是商品详情，否则使用skuList
+        let skuListTemp = JSON.parse(JSON.stringify(skuListByArea || skuList || []));
 
         let tittleList = [];
         //提取规格处理id

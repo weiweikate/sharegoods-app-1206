@@ -1,6 +1,6 @@
 # compiler: R8
-# compiler_version: 1.5.64
-# pg_map_id: 110a4e3
+# compiler_version: 1.5.68
+# pg_map_id: 063c50d
 com.meeruu.commonlib.BuildConfig -> com.meeruu.commonlib.BuildConfig:
     1:1:void <init>():6:6 -> <init>
 com.meeruu.commonlib.base.BaseActivity -> com.meeruu.commonlib.base.BaseActivity:
@@ -24,59 +24,59 @@ com.meeruu.commonlib.base.BaseActivity -> com.meeruu.commonlib.base.BaseActivity
     1:1:void setStatusColor(int):110:110 -> setStatusColor
     1:6:void verifyPermission(java.util.List):192:197 -> verifyPermission
 com.meeruu.commonlib.base.BaseApplication -> com.meeruu.commonlib.base.BaseApplication:
-    1:9:void <init>():57:65 -> <init>
-    1:30:com.qiyukf.unicorn.api.YSFOptions QiYuOptions():169:198 -> QiYuOptions
-    1:1:void access$000(com.meeruu.commonlib.base.BaseApplication):57:57 -> a
-    2:2:void access$100(com.meeruu.commonlib.base.BaseApplication,java.lang.String):57:57 -> a
-    1:6:void attachBaseContext(android.content.Context):120:125 -> attachBaseContext
-    1:34:void delayLoad():131:164 -> delayLoad
-    1:1:java.lang.String getDownLoadUrl():76:76 -> getDownLoadUrl
-    1:8:com.meeruu.commonlib.base.BaseApplication getInstance():84:91 -> getInstance
-    1:1:void getShopInfo(com.qiyukf.unicorn.api.YSFOptions):208:208 -> getShopInfo
-    1:1:boolean isDownload():68:68 -> isDownload
-    1:1:void navigateShopServiceByBid(java.lang.String):252:252 -> navigateShopServiceByBid
-    1:10:void onCreate():96:105 -> onCreate
-    1:4:void onLowMemory():297:300 -> onLowMemory
-    1:5:void onTrimMemory(int):284:288 -> onTrimMemory
-    1:1:void setDownLoadUrl(java.lang.String):80:80 -> setDownLoadUrl
-    1:1:void setDownload(boolean):72:72 -> setDownload
+    1:9:void <init>():56:64 -> <init>
+    1:30:com.qiyukf.unicorn.api.YSFOptions QiYuOptions():168:197 -> QiYuOptions
+    1:1:void access$000(com.meeruu.commonlib.base.BaseApplication):56:56 -> a
+    2:2:void access$100(com.meeruu.commonlib.base.BaseApplication,java.lang.String):56:56 -> a
+    1:6:void attachBaseContext(android.content.Context):119:124 -> attachBaseContext
+    1:34:void delayLoad():130:163 -> delayLoad
+    1:1:java.lang.String getDownLoadUrl():75:75 -> getDownLoadUrl
+    1:8:com.meeruu.commonlib.base.BaseApplication getInstance():83:90 -> getInstance
+    1:1:void getShopInfo(com.qiyukf.unicorn.api.YSFOptions):207:207 -> getShopInfo
+    1:1:boolean isDownload():67:67 -> isDownload
+    1:1:void navigateShopServiceByBid(java.lang.String):251:251 -> navigateShopServiceByBid
+    1:10:void onCreate():95:104 -> onCreate
+    1:4:void onLowMemory():296:299 -> onLowMemory
+    1:5:void onTrimMemory(int):283:287 -> onTrimMemory
+    1:1:void setDownLoadUrl(java.lang.String):79:79 -> setDownLoadUrl
+    1:1:void setDownload(boolean):71:71 -> setDownload
 com.meeruu.commonlib.base.BaseApplication$1 -> com.meeruu.commonlib.base.BaseApplication$1:
     com.meeruu.commonlib.base.BaseApplication this$0 -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):105:105 -> <init>
-    1:1:boolean queueIdle():110:110 -> queueIdle
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):104:104 -> <init>
+    1:1:boolean queueIdle():109:109 -> queueIdle
 com.meeruu.commonlib.base.BaseApplication$2 -> com.meeruu.commonlib.base.BaseApplication$2:
     com.meeruu.commonlib.base.BaseApplication this$0 -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):170:170 -> <init>
-    1:16:void onURLClicked(android.content.Context,java.lang.String):175:190 -> onURLClicked
-    17:25:void onURLClicked(android.content.Context,java.lang.String):186:194 -> onURLClicked
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):169:169 -> <init>
+    1:16:void onURLClicked(android.content.Context,java.lang.String):174:189 -> onURLClicked
+    17:25:void onURLClicked(android.content.Context,java.lang.String):185:193 -> onURLClicked
 com.meeruu.commonlib.base.BaseApplication$3 -> com.meeruu.commonlib.base.BaseApplication$3:
     com.meeruu.commonlib.base.BaseApplication this$0 -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):208:208 -> <init>
-    1:33:boolean onUrlClick(android.content.Context,java.lang.String):212:244 -> onUrlClick
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):207:207 -> <init>
+    1:33:boolean onUrlClick(android.content.Context,java.lang.String):211:243 -> onUrlClick
 com.meeruu.commonlib.base.BaseApplication$3$1 -> com.meeruu.commonlib.base.BaseApplication$3$1:
     java.lang.String val$bid -> a
     com.meeruu.commonlib.base.BaseApplication$3 this$1 -> b
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication$3,java.lang.String):216:216 -> <init>
-    1:2:java.util.Map getParams():224:225 -> getParams
-    1:1:java.lang.String getUrl():219:219 -> getUrl
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication$3,java.lang.String):215:215 -> <init>
+    1:2:java.util.Map getParams():223:224 -> getParams
+    1:1:java.lang.String getUrl():218:218 -> getUrl
 com.meeruu.commonlib.base.BaseApplication$3$2 -> com.meeruu.commonlib.base.BaseApplication$3$2:
     com.meeruu.commonlib.base.BaseApplication$3 this$1 -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication$3):228:228 -> <init>
-    1:1:void onErr(java.lang.String,java.lang.String):231:231 -> onErr
-    1:1:void onSuccess(java.lang.Object):228:228 -> onSuccess
-    2:5:void onSuccess(java.lang.String):236:239 -> onSuccess
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication$3):227:227 -> <init>
+    1:1:void onErr(java.lang.String,java.lang.String):230:230 -> onErr
+    1:1:void onSuccess(java.lang.Object):227:227 -> onSuccess
+    2:5:void onSuccess(java.lang.String):235:238 -> onSuccess
 com.meeruu.commonlib.base.BaseApplication$4 -> com.meeruu.commonlib.base.BaseApplication$4:
     com.meeruu.commonlib.base.BaseApplication this$0 -> b
     java.lang.String val$bid -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication,java.lang.String):252:252 -> <init>
-    1:2:java.util.Map getParams():260:261 -> getParams
-    1:1:java.lang.String getUrl():255:255 -> getUrl
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication,java.lang.String):251:251 -> <init>
+    1:2:java.util.Map getParams():259:260 -> getParams
+    1:1:java.lang.String getUrl():254:254 -> getUrl
 com.meeruu.commonlib.base.BaseApplication$5 -> com.meeruu.commonlib.base.BaseApplication$5:
     com.meeruu.commonlib.base.BaseApplication this$0 -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):264:264 -> <init>
-    1:1:void onErr(java.lang.String,java.lang.String):267:267 -> onErr
-    1:1:void onSuccess(java.lang.Object):264:264 -> onSuccess
-    2:6:void onSuccess(java.lang.String):272:276 -> onSuccess
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):263:263 -> <init>
+    1:1:void onErr(java.lang.String,java.lang.String):266:266 -> onErr
+    1:1:void onSuccess(java.lang.Object):263:263 -> onSuccess
+    2:6:void onSuccess(java.lang.String):271:275 -> onSuccess
 com.meeruu.commonlib.base.BaseFragment -> com.meeruu.commonlib.base.BaseFragment:
     1:11:void <init>():16:26 -> <init>
     1:5:void initPrepare():118:122 -> initPrepare
@@ -89,6 +89,18 @@ com.meeruu.commonlib.base.BaseFragment -> com.meeruu.commonlib.base.BaseFragment
     1:3:void onPause():86:88 -> onPause
     1:7:void onResume():74:80 -> onResume
     1:15:void setUserVisibleHint(boolean):95:109 -> setUserVisibleHint
+com.meeruu.commonlib.base.BaseModel -> com.meeruu.commonlib.base.BaseModel:
+    1:1:void <init>():12:12 -> <init>
+    1:1:void uploadCrach(java.lang.String):20:20 -> uploadCrach
+com.meeruu.commonlib.base.BaseModel$1 -> com.meeruu.commonlib.base.BaseModel$1:
+    java.lang.String val$content -> a
+    1:1:void <init>(java.lang.String):20:20 -> <init>
+    1:2:java.util.Map getParams():28:29 -> getParams
+    1:1:java.lang.String getUrl():23:23 -> getUrl
+com.meeruu.commonlib.base.BaseModel$2 -> com.meeruu.commonlib.base.BaseModel$2:
+    1:1:void <init>():32:32 -> <init>
+    1:1:void onSuccess(java.lang.Object):32:32 -> onSuccess
+    2:2:void onSuccess(java.lang.String):39:39 -> onSuccess
 com.meeruu.commonlib.bean.IdNameBean -> com.meeruu.commonlib.bean.IdNameBean:
     1:3:void <init>(int,java.lang.String):8:10 -> <init>
     1:1:int getId():14:14 -> getId
@@ -1072,15 +1084,15 @@ com.meeruu.commonlib.event.Event$MRUserUpdateEvent -> com.meeruu.commonlib.event
     1:2:void <init>(java.lang.String):20:21 -> <init>
     1:1:java.lang.String getContent():25:25 -> getContent
 com.meeruu.commonlib.handler.CrashHandler -> com.meeruu.commonlib.handler.CrashHandler:
-    1:7:void <clinit>():35:41 -> <clinit>
-    1:1:void <init>():52:52 -> <init>
-    2:2:void <init>():47:47 -> <init>
-    1:25:void collectDeviceInfo(android.content.Context):127:151 -> collectDeviceInfo
-    1:1:com.meeruu.commonlib.handler.CrashHandler getInstance():59:59 -> getInstance
-    1:3:boolean handleException(java.lang.Throwable):113:115 -> handleException
-    1:5:void init(android.content.Context):68:72 -> init
-    1:41:java.lang.String saveCrashInfo2File(java.lang.Throwable):164:204 -> saveCrashInfo2File
-    1:18:void uncaughtException(java.lang.Thread,java.lang.Throwable):80:97 -> uncaughtException
+    1:7:void <clinit>():36:42 -> <clinit>
+    1:1:void <init>():53:53 -> <init>
+    2:2:void <init>():48:48 -> <init>
+    1:20:void collectDeviceInfo(android.content.Context):133:152 -> collectDeviceInfo
+    1:1:com.meeruu.commonlib.handler.CrashHandler getInstance():60:60 -> getInstance
+    1:3:boolean handleException(java.lang.Throwable):119:121 -> handleException
+    1:5:void init(android.content.Context):69:73 -> init
+    1:40:java.lang.String saveCrashInfo2File(java.lang.Throwable):165:204 -> saveCrashInfo2File
+    1:23:void uncaughtException(java.lang.Thread,java.lang.Throwable):81:103 -> uncaughtException
 com.meeruu.commonlib.handler.WeakHandler -> com.meeruu.commonlib.handler.WeakHandler:
     com.meeruu.commonlib.handler.WeakHandler$ChainedRef mRunnables -> a
     1:1:void <init>():36:36 -> <init>
@@ -1182,64 +1194,64 @@ com.meeruu.commonlib.rn.QiyuImageLoader$2 -> com.meeruu.commonlib.rn.QiyuImageLo
     1:1:void onPostExecute(java.lang.Object):89:89 -> onPostExecute
     2:5:void onPostExecute(android.graphics.Bitmap):102:105 -> onPostExecute
 com.meeruu.commonlib.server.RequestManager -> com.meeruu.commonlib.server.RequestManager:
-    1:6:void <clinit>():56:61 -> <clinit>
-    1:13:void <init>():63:75 -> <init>
-    1:1:void access$000(com.meeruu.commonlib.server.RequestManager,java.lang.String,java.lang.String,com.meeruu.commonlib.callback.BaseCallback):54:54 -> access$000
-    1:1:void access$100(com.meeruu.commonlib.server.RequestManager,java.lang.Object,com.meeruu.commonlib.callback.BaseCallback):54:54 -> access$100
-    1:1:void access$200(com.meeruu.commonlib.server.RequestManager,long,long,com.meeruu.commonlib.callback.ReqProgressCallBack):54:54 -> access$200
-    1:1:okhttp3.RequestBody createProgressRequestBody(okhttp3.MediaType,java.io.File,com.meeruu.commonlib.callback.ReqProgressCallBack):540:540 -> createProgressRequestBody
-    1:12:void doDelete(com.meeruu.commonlib.config.BaseRequestConfig,com.meeruu.commonlib.callback.BaseCallback):261:272 -> doDelete
-    1:14:void doGet(int,com.meeruu.commonlib.config.BaseRequestConfig,com.meeruu.commonlib.callback.BaseCallback):174:187 -> doGet
-    1:2:void doGetReq(okhttp3.Request,com.meeruu.commonlib.callback.BaseCallback):294:295 -> doGetReq
-    1:12:void doPost(com.meeruu.commonlib.config.BaseRequestConfig,com.meeruu.commonlib.callback.BaseCallback):217:228 -> doPost
-    1:12:void doPut(com.meeruu.commonlib.config.BaseRequestConfig,com.meeruu.commonlib.callback.BaseCallback):239:250 -> doPut
-    1:2:void doRequest(okhttp3.Request,com.meeruu.commonlib.callback.BaseCallback):277:278 -> doRequest
-    1:22:void doResponse(okhttp3.Response,com.meeruu.commonlib.callback.BaseCallback):362:383 -> doResponse
-    1:8:void downLoadFile(java.lang.String,java.lang.String,com.meeruu.commonlib.callback.ReqProgressCallBack):460:467 -> downLoadFile
-    1:2:void failedCallBack(java.lang.String,java.lang.String,com.meeruu.commonlib.callback.BaseCallback):601:602 -> failedCallBack
-    1:9:java.util.Map getHttpHeaderParams():518:526 -> getHttpHeaderParams
-    1:11:com.meeruu.commonlib.server.RequestManager getInstance():79:89 -> getInstance
-    1:5:void justGetData(java.lang.String,com.meeruu.commonlib.callback.BaseCallback):191:195 -> justGetData
-    1:1:void progressCallBack(long,long,com.meeruu.commonlib.callback.ReqProgressCallBack):622:622 -> progressCallBack
-    1:12:okhttp3.Headers setHeaders(java.util.Map):100:111 -> setHeaders
-    1:14:okhttp3.RequestBody setRequestBody(java.util.Map):124:137 -> setRequestBody
-    1:11:java.lang.String setUrlParams(java.util.Map):150:160 -> setUrlParams
-    1:2:void successCallBack(java.lang.Object,com.meeruu.commonlib.callback.BaseCallback):581:582 -> successCallBack
-    1:54:void upLoadFile(com.meeruu.commonlib.config.BaseRequestConfig,com.meeruu.commonlib.callback.ReqProgressCallBack):396:449 -> upLoadFile
+    1:6:void <clinit>():57:62 -> <clinit>
+    1:13:void <init>():64:76 -> <init>
+    1:1:void access$000(com.meeruu.commonlib.server.RequestManager,java.lang.String,java.lang.String,com.meeruu.commonlib.callback.BaseCallback):55:55 -> access$000
+    1:1:void access$100(com.meeruu.commonlib.server.RequestManager,java.lang.Object,com.meeruu.commonlib.callback.BaseCallback):55:55 -> access$100
+    1:1:void access$200(com.meeruu.commonlib.server.RequestManager,long,long,com.meeruu.commonlib.callback.ReqProgressCallBack):55:55 -> access$200
+    1:1:okhttp3.RequestBody createProgressRequestBody(okhttp3.MediaType,java.io.File,com.meeruu.commonlib.callback.ReqProgressCallBack):542:542 -> createProgressRequestBody
+    1:12:void doDelete(com.meeruu.commonlib.config.BaseRequestConfig,com.meeruu.commonlib.callback.BaseCallback):262:273 -> doDelete
+    1:14:void doGet(int,com.meeruu.commonlib.config.BaseRequestConfig,com.meeruu.commonlib.callback.BaseCallback):175:188 -> doGet
+    1:2:void doGetReq(okhttp3.Request,com.meeruu.commonlib.callback.BaseCallback):295:296 -> doGetReq
+    1:12:void doPost(com.meeruu.commonlib.config.BaseRequestConfig,com.meeruu.commonlib.callback.BaseCallback):218:229 -> doPost
+    1:12:void doPut(com.meeruu.commonlib.config.BaseRequestConfig,com.meeruu.commonlib.callback.BaseCallback):240:251 -> doPut
+    1:2:void doRequest(okhttp3.Request,com.meeruu.commonlib.callback.BaseCallback):278:279 -> doRequest
+    1:22:void doResponse(okhttp3.Response,com.meeruu.commonlib.callback.BaseCallback):363:384 -> doResponse
+    1:8:void downLoadFile(java.lang.String,java.lang.String,com.meeruu.commonlib.callback.ReqProgressCallBack):461:468 -> downLoadFile
+    1:2:void failedCallBack(java.lang.String,java.lang.String,com.meeruu.commonlib.callback.BaseCallback):603:604 -> failedCallBack
+    1:10:java.util.Map getHttpHeaderParams():519:528 -> getHttpHeaderParams
+    1:11:com.meeruu.commonlib.server.RequestManager getInstance():80:90 -> getInstance
+    1:5:void justGetData(java.lang.String,com.meeruu.commonlib.callback.BaseCallback):192:196 -> justGetData
+    1:1:void progressCallBack(long,long,com.meeruu.commonlib.callback.ReqProgressCallBack):624:624 -> progressCallBack
+    1:12:okhttp3.Headers setHeaders(java.util.Map):101:112 -> setHeaders
+    1:14:okhttp3.RequestBody setRequestBody(java.util.Map):125:138 -> setRequestBody
+    1:11:java.lang.String setUrlParams(java.util.Map):151:161 -> setUrlParams
+    1:2:void successCallBack(java.lang.Object,com.meeruu.commonlib.callback.BaseCallback):583:584 -> successCallBack
+    1:54:void upLoadFile(com.meeruu.commonlib.config.BaseRequestConfig,com.meeruu.commonlib.callback.ReqProgressCallBack):397:450 -> upLoadFile
 com.meeruu.commonlib.server.RequestManager$1 -> com.meeruu.commonlib.server.RequestManager$1:
-    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.BaseCallback):195:195 -> <init>
-    1:1:void onFailure(okhttp3.Call,java.io.IOException):199:199 -> onFailure
-    1:2:void onResponse(okhttp3.Call,okhttp3.Response):204:205 -> onResponse
+    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.BaseCallback):196:196 -> <init>
+    1:1:void onFailure(okhttp3.Call,java.io.IOException):200:200 -> onFailure
+    1:2:void onResponse(okhttp3.Call,okhttp3.Response):205:206 -> onResponse
 com.meeruu.commonlib.server.RequestManager$2 -> com.meeruu.commonlib.server.RequestManager$2:
-    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.BaseCallback):278:278 -> <init>
-    1:2:void onFailure(okhttp3.Call,java.io.IOException):282:283 -> onFailure
-    1:1:void onResponse(okhttp3.Call,okhttp3.Response):288:288 -> onResponse
+    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.BaseCallback):279:279 -> <init>
+    1:2:void onFailure(okhttp3.Call,java.io.IOException):283:284 -> onFailure
+    1:1:void onResponse(okhttp3.Call,okhttp3.Response):289:289 -> onResponse
 com.meeruu.commonlib.server.RequestManager$3 -> com.meeruu.commonlib.server.RequestManager$3:
-    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.BaseCallback):295:295 -> <init>
-    1:2:void onFailure(okhttp3.Call,java.io.IOException):299:300 -> onFailure
-    1:20:void onResponse(okhttp3.Call,okhttp3.Response):307:326 -> onResponse
-    21:65:void onResponse(okhttp3.Call,okhttp3.Response):310:354 -> onResponse
+    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.BaseCallback):296:296 -> <init>
+    1:2:void onFailure(okhttp3.Call,java.io.IOException):300:301 -> onFailure
+    1:20:void onResponse(okhttp3.Call,okhttp3.Response):308:327 -> onResponse
+    21:65:void onResponse(okhttp3.Call,okhttp3.Response):311:355 -> onResponse
 com.meeruu.commonlib.server.RequestManager$4 -> com.meeruu.commonlib.server.RequestManager$4:
-    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.ReqProgressCallBack):422:422 -> <init>
-    1:2:void onFailure(okhttp3.Call,java.io.IOException):425:426 -> onFailure
-    1:14:void onResponse(okhttp3.Call,okhttp3.Response):431:444 -> onResponse
+    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.ReqProgressCallBack):423:423 -> <init>
+    1:2:void onFailure(okhttp3.Call,java.io.IOException):426:427 -> onFailure
+    1:14:void onResponse(okhttp3.Call,okhttp3.Response):432:445 -> onResponse
 com.meeruu.commonlib.server.RequestManager$5 -> com.meeruu.commonlib.server.RequestManager$5:
-    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.ReqProgressCallBack,java.io.File):467:467 -> <init>
-    1:2:void onFailure(okhttp3.Call,java.io.IOException):470:471 -> onFailure
-    1:29:void onResponse(okhttp3.Call,okhttp3.Response):477:505 -> onResponse
-    30:41:void onResponse(okhttp3.Call,okhttp3.Response):494:505 -> onResponse
-    42:50:void onResponse(okhttp3.Call,okhttp3.Response):499:507 -> onResponse
+    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.ReqProgressCallBack,java.io.File):468:468 -> <init>
+    1:2:void onFailure(okhttp3.Call,java.io.IOException):471:472 -> onFailure
+    1:29:void onResponse(okhttp3.Call,okhttp3.Response):478:506 -> onResponse
+    30:41:void onResponse(okhttp3.Call,okhttp3.Response):495:506 -> onResponse
+    42:50:void onResponse(okhttp3.Call,okhttp3.Response):500:508 -> onResponse
 com.meeruu.commonlib.server.RequestManager$6 -> com.meeruu.commonlib.server.RequestManager$6:
-    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,okhttp3.MediaType,java.io.File,com.meeruu.commonlib.callback.ReqProgressCallBack):540:540 -> <init>
-    1:1:long contentLength():548:548 -> contentLength
-    1:1:okhttp3.MediaType contentType():543:543 -> contentType
-    1:12:void writeTo(okio.BufferedSink):555:566 -> writeTo
+    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,okhttp3.MediaType,java.io.File,com.meeruu.commonlib.callback.ReqProgressCallBack):542:542 -> <init>
+    1:1:long contentLength():550:550 -> contentLength
+    1:1:okhttp3.MediaType contentType():545:545 -> contentType
+    1:12:void writeTo(okio.BufferedSink):557:568 -> writeTo
 com.meeruu.commonlib.server.RequestManager$7 -> com.meeruu.commonlib.server.RequestManager$7:
-    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.BaseCallback,java.lang.Object):582:582 -> <init>
-    1:1:void run():585:585 -> run
+    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.BaseCallback,java.lang.Object):584:584 -> <init>
+    1:1:void run():587:587 -> run
 com.meeruu.commonlib.server.RequestManager$8 -> com.meeruu.commonlib.server.RequestManager$8:
-    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.BaseCallback,java.lang.String,java.lang.String):602:602 -> <init>
-    1:1:void run():605:605 -> run
+    1:1:void <init>(com.meeruu.commonlib.server.RequestManager,com.meeruu.commonlib.callback.BaseCallback,java.lang.String,java.lang.String):604:604 -> <init>
+    1:1:void run():607:607 -> run
 com.meeruu.commonlib.tool.FastScrollLinearLayoutManager -> com.meeruu.commonlib.tool.FastScrollLinearLayoutManager:
     1:1:void <init>(android.content.Context):17:17 -> <init>
     2:8:void <init>(android.content.Context):13:19 -> <init>
@@ -1510,6 +1522,7 @@ com.meeruu.commonlib.utils.AppUtils -> com.meeruu.commonlib.utils.AppUtils:
     4:9:int getVersionCode():89:94 -> getVersionCode
     1:4:java.lang.String getVersionName():69:72 -> getVersionName
     5:10:java.lang.String getVersionName():71:76 -> getVersionName
+    1:2:boolean isApkCanInstall(android.content.Context,java.lang.String):334:335 -> isApkCanInstall
     1:15:boolean isAppOnForeground(android.content.Context):155:169 -> isAppOnForeground
     1:14:boolean isAvilible(android.content.Context,java.lang.String):309:322 -> isAvilible
     1:1:boolean isMainThread():41:41 -> isMainThread
@@ -1571,22 +1584,24 @@ com.meeruu.commonlib.utils.FastClickUtil -> com.meeruu.commonlib.utils.FastClick
     1:5:boolean isRecordWithOtherClick():32:36 -> isRecordWithOtherClick
 com.meeruu.commonlib.utils.FileUtils -> com.meeruu.commonlib.utils.FileUtils:
     1:1:void <init>():25:25 -> <init>
-    1:9:void copyFile(java.lang.String,java.lang.String):49:57 -> copyFile
-    1:2:boolean fileIsExists(java.lang.String):29:30 -> fileIsExists
-    1:13:java.lang.String getDataColumn(android.content.Context,android.net.Uri,java.lang.String,java.lang.String[]):184:196 -> getDataColumn
-    1:4:java.lang.String getExtensionName(java.lang.String):65:68 -> getExtensionName
-    1:4:java.lang.String getFileNameNoEx(java.lang.String):78:81 -> getFileNameNoEx
-    1:19:java.lang.String getFilePathByUri(android.content.Context,android.net.Uri):97:115 -> getFilePathByUri
-    20:69:java.lang.String getFilePathByUri(android.content.Context,android.net.Uri):114:163 -> getFilePathByUri
-    1:1:boolean isDownloadsDocument(android.net.Uri):213:213 -> isDownloadsDocument
-    1:1:boolean isExternalStorageDocument(android.net.Uri):205:205 -> isExternalStorageDocument
-    1:1:boolean isMediaDocument(android.net.Uri):221:221 -> isMediaDocument
+    1:9:void copyFile(java.lang.String,java.lang.String):69:77 -> copyFile
+    1:3:boolean deleteFile(java.lang.String):52:54 -> deleteFile
+    1:2:boolean fileIsExists(java.lang.String):35:36 -> fileIsExists
+    1:13:java.lang.String getDataColumn(android.content.Context,android.net.Uri,java.lang.String,java.lang.String[]):204:216 -> getDataColumn
+    1:4:java.lang.String getExtensionName(java.lang.String):85:88 -> getExtensionName
+    1:4:java.lang.String getFileNameNoEx(java.lang.String):98:101 -> getFileNameNoEx
+    1:19:java.lang.String getFilePathByUri(android.content.Context,android.net.Uri):117:135 -> getFilePathByUri
+    20:69:java.lang.String getFilePathByUri(android.content.Context,android.net.Uri):134:183 -> getFilePathByUri
+    1:1:boolean isDownloadsDocument(android.net.Uri):233:233 -> isDownloadsDocument
+    1:1:boolean isExternalStorageDocument(android.net.Uri):225:225 -> isExternalStorageDocument
+    1:1:boolean isMediaDocument(android.net.Uri):241:241 -> isMediaDocument
 com.meeruu.commonlib.utils.HttpUrlUtils -> com.meeruu.commonlib.utils.HttpUrlUtils:
-    1:1:void <init>():11:11 -> <init>
-    1:4:java.lang.String getGongmaoUrl():57:60 -> getGongmaoUrl
-    1:6:java.lang.String getH5Url(java.lang.String):46:51 -> getH5Url
-    1:6:java.lang.String getUrl(java.lang.String):35:40 -> getUrl
-    1:6:java.lang.String getValueByName(java.lang.String,java.lang.String):73:78 -> getValueByName
+    1:1:void <init>():9:9 -> <init>
+    1:1:java.lang.String getClientUrl(java.lang.String):46:46 -> getClientUrl
+    1:4:java.lang.String getGongmaoUrl():63:66 -> getGongmaoUrl
+    1:6:java.lang.String getH5Url(java.lang.String):52:57 -> getH5Url
+    1:6:java.lang.String getUrl(java.lang.String):34:39 -> getUrl
+    1:6:java.lang.String getValueByName(java.lang.String,java.lang.String):79:84 -> getValueByName
 com.meeruu.commonlib.utils.ImageCacheUtils -> com.meeruu.commonlib.utils.ImageCacheUtils:
     1:4:void <init>():15:18 -> <init>
     1:1:void deleteCacheFloder():29:29 -> deleteCacheFloder

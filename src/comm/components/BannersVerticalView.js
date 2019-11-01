@@ -46,7 +46,7 @@ export class BannersVerticalView extends Component {
                 {
                     bannerList.map((item, index) => {
                         const { image, linkType, linkTypeCode } = item;
-                        return <NoMoreClick key={index} onPress={() => {
+                        return <NoMoreClick key={index} activeOpacity={1} onPress={() => {
                             const router = homeModule.homeNavigate(linkType, linkTypeCode);
                             let params = homeModule.paramsNavigate(item);
                             if (router) {

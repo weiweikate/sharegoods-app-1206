@@ -13,7 +13,6 @@ import {
     NativeAppEventEmitter,
     NativeEventEmitter,
     NativeModules,
-    Platform,
     StyleSheet,
     Text,
     View
@@ -38,7 +37,6 @@ import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
 import loginModel from './pages/login/model/LoginModel';
 import { getSGspm_home, HomeSource } from './utils/OrderTrackUtil';
 import PrivacyModal from './pages/home/view/PrivacyModal';
-import { HomeAdModal_IOS } from './pages/home/view/HomeMessageModalView';
 import UserMemberUpdateModal from './pages/home/view/UserMemberUpdateModal';
 import homeModalManager from './pages/home/manager/HomeModalManager';
 import marketingUtils from './pages/marketing/MarketingUtils';
@@ -259,7 +257,6 @@ class App extends Component {
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
                 {marketingUtils.isShowModal ? <MarketingModal/> : null}
-                {Platform.OS === 'ios' ? <HomeAdModal_IOS/> : null}
                 <UserMemberUpdateModal/>
                 <PrivacyModal/>
             </View>

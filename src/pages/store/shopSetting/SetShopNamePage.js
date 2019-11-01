@@ -237,7 +237,7 @@ export default class SetShopNamePage extends BasePage {
     _renderHeaderView = () => {
         const uri = this.state.storeHeadUrlOrigin;
         return <View style={styles.whitePanel}>
-            <TouchableOpacity onPress={this._clickHeader}>
+            <TouchableOpacity onPress={this._clickHeader} activeOpacity={0.7}>
                 <AvatarImage style={styles.headerImg} source={{ uri: uri }}/>
             </TouchableOpacity>
         </View>;
@@ -274,6 +274,7 @@ export default class SetShopNamePage extends BasePage {
                                    editable={false}/>
                         <Image resizeMode={'contain'} source={arrow_right} style={styles.arrowImg}/>
                         <TouchableOpacity style={styles.bntArea}
+                                          activeOpacity={0.7}
                                           onPress={this._getCityPicker}/>
                     </View>
                     {

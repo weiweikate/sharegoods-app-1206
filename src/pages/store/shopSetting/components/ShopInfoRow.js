@@ -23,7 +23,7 @@ export default class ShopInfoRow extends Component {
     };
 
     render() {
-        return (<TouchableOpacity onPress={() => {
+        return (<TouchableOpacity activeOpacity={0.7} onPress={() => {
             this.props.id && this.props.click(this.props.id);
         }} style={styles.container}>
 

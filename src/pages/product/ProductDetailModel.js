@@ -290,7 +290,7 @@ export default class ProductDetailModel {
     @computed get productIsPromotionPrice() {
         const { activityType, activityStatus, activityTag } = this;
         let tempType = activityType === activity_type.skill || activityType === activity_type.verDown;
-        return (tempType && activityStatus === activity_status.inSell) || this.show || (isNoEmpty(activityTag) && activityType !== activity_type.pinGroup);
+        return (tempType || this.show || (isNoEmpty(activityTag) && activityType !== activity_type.pinGroup)) && activityStatus === activity_status.inSell;
     }
 
     @computed get isSkillIn() {
