@@ -14,7 +14,6 @@ import { MRText as Text } from '../../../components/ui';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import { homeModule } from '../model/Modules';
 import RouterMap from '../../../navigation/RouterMap';
-import {PageLoadingState} from '../../../components/pageDecorator/PageState';
 
 const icon_search = res.search;
 
@@ -33,8 +32,7 @@ export default class CategorySearchPage extends BasePage {
             swiperShow: false,
             bannerData: [],
             nameArr: [],
-            sectionArr: [],
-            loadingState: PageLoadingState.loading,
+            sectionArr: []
         };
     }
 
@@ -42,25 +40,15 @@ export default class CategorySearchPage extends BasePage {
         title: '商品分类'
     };
 
-    $getPageStateOptions = () => {
-        return {
-            loadingState: this.state.loadingState,
-            loadingProps:{
-            },
-        };
-    };
-
     componentDidMount() {
-        // this.$loadingShow('加载中');
-        setTimeout(() => {
-            let typeId = this.params.typeId;
-            this.getTypeList(typeId);
-            if (typeId) {
-                this._getTypeSection(typeId);
-            } else {
-                this.getHotSection();
-            }
-        }, 100);
+        this.$loadingShow('加载中');
+        let typeId = this.params.typeId;
+        this.getTypeList(typeId);
+        if (typeId) {
+            this._getTypeSection(typeId);
+        } else {
+            this.getHotSection();
+        }
     }
 
     componentWillUnmount() {
@@ -75,15 +63,15 @@ export default class CategorySearchPage extends BasePage {
             // 将为您推荐id设置为-10
             let item = { id: -10, name: '为您推荐' };
             datas.unshift(item);
+            let index = datas.findIndex((val) => {
+                // 这里只能用==，类型可能不一样
+                return val.id == typeId;
+            });
             this.setState({
-                nameArr: datas || [],
-                loadingState: PageLoadingState.success
+                nameArr: datas || []
             }, () => {
                 // 滚动到指定位置
                 if (typeId) {
-                    let index = datas.findIndex((val) => {
-                        return val.id === typeId;
-                    });
                     if (index > -1) {
                         // 找到了对应分类
                         if (this.state.leftIndex !== index) {
@@ -98,7 +86,7 @@ export default class CategorySearchPage extends BasePage {
                 }
             });
         }).catch((data) => {
-            this.setState({loadingState: PageLoadingState.fail})
+            this.$loadingDismiss();
             bridge.$toast(data.msg);
         });
     };
@@ -431,4 +419,3 @@ const styles = StyleSheet.create({
         padding: 5
     }
 });
-

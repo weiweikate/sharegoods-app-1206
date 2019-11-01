@@ -15,7 +15,7 @@ import DesignRule from '../../../constants/DesignRule';
 import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
 
-const { px2dp, statusBarHeight, autoSizeWidth } = ScreenUtils;
+const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 
 @observer
 export default class HomeSearchView extends Component {
@@ -42,7 +42,7 @@ export default class HomeSearchView extends Component {
         const resDou = StringUtils.isEmpty(homeModule.douData.icon)
             ? res.dou_red : { uri: homeModule.douData.icon };
         const colorDou = StringUtils.isEmpty(homeModule.titleImg) ? DesignRule.mainColor : '#fff';
-        const colorIput = StringUtils.isEmpty(homeModule.titleImg) ? DesignRule.textColor_placeholder : '#fff';
+        const colorInput = StringUtils.isEmpty(homeModule.titleImg) ? DesignRule.textColor_placeholder : '#fff';
         return (
             <View style={styles.navBar}>
                 <View style={styles.navContent}>
@@ -54,9 +54,9 @@ export default class HomeSearchView extends Component {
                         }}
                         activeOpacity={0.8}
                         style={{ flex: 1 }}>
-                        <View style={[styles.searchBox, { backgroundColor: '#F2F2F2' }]}>
+                        <View style={[styles.searchBox, { backgroundColor: 'rgba(242,242,242,0.5)' }]}>
                             <Image source={searchImg} style={styles.searchIcon}/>
-                            <UIText style={[styles.inputText, { color: colorIput }]} value={'请输入关键词'}/>
+                            <UIText style={[styles.inputText, { color: colorInput }]} value={'请输入关键词'}/>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -77,7 +77,7 @@ export default class HomeSearchView extends Component {
 let styles = StyleSheet.create({
     navBar: {
         flexDirection: 'column',
-        height: statusBarHeight + autoSizeWidth(44),
+        height: headerHeight,
         zIndex: 5
     },
     navContent: {
@@ -109,8 +109,7 @@ let styles = StyleSheet.create({
         borderRadius: 15,  // 设置圆角边
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: px2dp(10),
-        opacity: 0.6
+        marginLeft: px2dp(10)
     },
     msgIcon: {
         height: 24,
