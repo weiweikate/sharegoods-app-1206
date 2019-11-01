@@ -5,7 +5,7 @@ import { BackHandler, Image, Platform, TouchableOpacity, View } from 'react-nati
 import CommShareModal from '../../comm/components/CommShareModal';
 // import res from '../../comm/res';
 import apiEnvironment from '../../api/ApiEnvironment';
-import RouterMap, { routeNavigate, GoToTabItem, routePop } from '../../navigation/RouterMap';
+import RouterMap, { GoToTabItem, routeNavigate, routePop } from '../../navigation/RouterMap';
 import { autorun } from 'mobx';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
@@ -38,35 +38,37 @@ export default class RequestDetailPage extends BasePage {
 
     floatBarOptions = {
         title: this.params.title || (netState.isConnected ? '加载中...' : '网络异常'),
+        leftNavImage: res.button.back_white,
         show: !(this.props.params || {}).unShow,
-        headerStyle:{
-            position:'absolute',
-            top:0,
-            left:0,
-            zIndex:1,
-            backgroundColor:DesignRule.white,
-            borderBottomWidth:0,
+        headerStyle: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            backgroundColor: DesignRule.white,
+            borderBottomWidth: 0
         },
-        titleStyle:{
-            opacity:1
+        titleStyle: {
+            opacity: 1
         }
-    }
+    };
 
     transparentBarOptions = {
         title: '',
+        leftNavImage: res.button.back_white,
         show: !(this.props.params || {}).unShow,
-        headerStyle:{
-            position:'absolute',
-            top:0,
-            left:0,
-            zIndex:1,
-            backgroundColor:'transparent',
-            borderBottomWidth:0
+        headerStyle: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            backgroundColor: 'transparent',
+            borderBottomWidth: 0
         },
-        titleStyle:{
-            opacity:0
+        titleStyle: {
+            opacity: 0
         }
-    }
+    };
 
     normalBarOptions = {
         title: this.params.title || (netState.isConnected ? '加载中...' : '网络异常'),
@@ -75,13 +77,13 @@ export default class RequestDetailPage extends BasePage {
 
 
     //顶部导航栏类型，'normalBar'，'floatBar'，'transparentBar'
-    currentBarType = 'normalBar'
+    currentBarType = 'normalBar';
 
 
     constructor(props) {
         super(props);
         const params = this.props.params || this.params || {};
-        let { uri, title, sgspm, sgscm, paramsStr='' } = params;
+        let { uri, title, sgspm, sgscm, paramsStr = '' } = params;
         sgspm = sgspm || '';
         sgscm = sgscm || '';
         uri = decodeURIComponent(uri);
@@ -97,7 +99,7 @@ export default class RequestDetailPage extends BasePage {
             '&ts=' + new Date().getTime() +
             '&sgspm=' + sgspm +
             '&sgscm=' + sgscm
-            +paramsStr
+            + paramsStr
         ;
         //拼参数
         if (uri && uri.indexOf('?') > 0) {
@@ -329,25 +331,31 @@ export default class RequestDetailPage extends BasePage {
             return;
         }
 
-        if(msg.action === 'webviewBarDisplay'){
-            if(msg.type === this.currentBarType){
+        if (msg.action === 'webviewBarDisplay') {
+            if (msg.type === this.currentBarType) {
                 return;
             }
             this.currentBarType = msg.type || 'normalBar';
-            if(msg.type === 'floatBar'){
+            if (msg.type === 'floatBar') {
+                let isWhite = ['#fff', '#ffffff', '#FFFFFF', '#FFF', 'white'].includes(msg.color);
                 this.floatBarOptions.headerStyle.backgroundColor = msg.color || DesignRule.white;
+                this.floatBarOptions.leftNavImage = isWhite ? res.button.back_black : res.button.back_white;
+                this.floatBarOptions.titleStyle = isWhite ? {
+                    opacity: 1,
+                    color: DesignRule.textColor_mainTitle
+                } : { opacity: 1, color: 'white' };
                 this.$navigationBarOptions = this.floatBarOptions;
                 this.forceUpdate();
                 return;
             }
-            if(msg.type === 'transparentBar'){
+            if (msg.type === 'transparentBar') {
                 this.$navigationBarOptions = this.transparentBarOptions;
                 this.forceUpdate();
                 return;
             }
             this.$navigationBarOptions = this.normalBarOptions;
             this.forceUpdate();
-            return
+            return;
 
         }
 
@@ -361,7 +369,7 @@ export default class RequestDetailPage extends BasePage {
     _render() {
 
         let WebAdModal = this.WebAdModal;
-        console.log(this.state.uri)
+        console.log(this.state.uri);
         return (
             <View style={{ flex: 1, overflow: 'hidden' }}>
                 <WebViewBridge
@@ -386,6 +394,7 @@ export default class RequestDetailPage extends BasePage {
                         }
                         this.$navigate(r, p);
                     }}
+                    scrollEventThrottle={30}
                     onScrollBeginDrag={() => {//这个方法原生还没桥接过来
                         this.luckyIcon && this.luckyIcon.close();
                     }}
