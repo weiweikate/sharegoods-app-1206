@@ -137,7 +137,6 @@ export default class CategorySearchPage extends BasePage {
 
     _render() {
         return (
-
             <View style={{ flexDirection: 'column' }}>
                 <View style={{ height: 56, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={styles.searchBox} activeOpacity={0.7} onPress={() => this.go2SearchPage()}>
@@ -175,25 +174,26 @@ export default class CategorySearchPage extends BasePage {
                     }}>
                         {
                             this.state.swiperShow ?
-                                <ViewPager swiperShow={this.state.swiperShow}
-                                           arrayData={this.state.bannerData}
-                                           renderItem={(item) => this.renderViewPageItem(item)}
-                                           dotStyle={{
-                                               height: 5,
-                                               width: 5,
-                                               borderRadius: 5,
-                                               backgroundColor: 'white',
-                                               opacity: 0.4
-                                           }}
-                                           activeDotStyle={{
-                                               height: 5,
-                                               width: 20,
-                                               borderRadius: 5,
-                                               backgroundColor: 'white'
-                                           }}
-                                           autoplay={true}
-                                           height={bannerH}
-                                           style={{ marginBottom: 10 }}
+                                <ViewPager
+                                    swiperShow={this.state.swiperShow}
+                                    arrayData={this.state.bannerData}
+                                    renderItem={(item) => this.renderViewPageItem(item)}
+                                    dotStyle={{
+                                        height: 5,
+                                        width: 5,
+                                        borderRadius: 5,
+                                        backgroundColor: 'white',
+                                        opacity: 0.4
+                                    }}
+                                    activeDotStyle={{
+                                        height: 5,
+                                        width: 20,
+                                        borderRadius: 5,
+                                        backgroundColor: 'white'
+                                    }}
+                                    autoplay={true}
+                                    height={bannerH}
+                                    style={{ marginBottom: 10 }}
                                 /> : null
                         }
                         <SectionList
@@ -226,8 +226,10 @@ export default class CategorySearchPage extends BasePage {
 
     _categoryItem = (item) => {
         return (
-            <TouchableOpacity style={{ height: 45, flexDirection: 'row' }} activeOpacity={0.7}
-                              onPress={() => this._onCategoryClick(item.item, item.index)}>
+            <TouchableOpacity
+                style={{ height: 45, flexDirection: 'row' }}
+                activeOpacity={0.7}
+                onPress={() => this._onCategoryClick(item.item, item.index)}>
                 <View style={{
                     height: 45,
                     width: 2,

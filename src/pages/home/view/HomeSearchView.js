@@ -15,7 +15,7 @@ import DesignRule from '../../../constants/DesignRule';
 import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
 
-const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
+const { px2dp, statusBarHeight, autoSizeWidth } = ScreenUtils;
 
 @observer
 export default class HomeSearchView extends Component {
@@ -77,7 +77,7 @@ export default class HomeSearchView extends Component {
 let styles = StyleSheet.create({
     navBar: {
         flexDirection: 'column',
-        height: headerHeight,
+        height: statusBarHeight + autoSizeWidth(44),
         zIndex: 5
     },
     navContent: {
