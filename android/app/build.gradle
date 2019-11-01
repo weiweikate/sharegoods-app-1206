@@ -28,7 +28,7 @@ android {
         versionCode 2201
         versionName "2.2.1"
         ndk {
-            abiFilters "armeabi-v7a", "x86"
+            abiFilters "armeabi"
         }
         javaCompileOptions {
             annotationProcessorOptions { includeCompileClasspath = true }
@@ -51,7 +51,7 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86"
+            include "armeabi"
         }
     }
     sourceSets {
