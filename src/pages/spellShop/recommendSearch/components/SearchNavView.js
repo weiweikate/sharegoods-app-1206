@@ -8,7 +8,7 @@ import res from '../../../../comm/res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
 
 
-const icon_header_back = res.button.icon_header_back;
+const icon_header_back = res.button.back_black;
 
 
 export default class SearchNavView extends Component {

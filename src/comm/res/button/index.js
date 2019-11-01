@@ -1,5 +1,4 @@
 const button = {
-    icon_header_back: require('./back_black.png'),
     see_white: require('./see_white.png'),
     see: require('./see.png'),
     selected_circle_red: require('./selected_circle_red.png'),
@@ -30,12 +29,13 @@ const button = {
     icon_kefu: require('./kefu_icon_zaixian.png'),
     back_black: require('./back_black.png'), // 黑色回退按钮
     back_white: require('./back_white.png'), // 白色回退按钮
+    back_white_circle: require('./back_white_circle.png'), // 白色圆形回退
     btn_close_white: require('./tongyong_btn_close_grey.png'),
     inputtext_clear: require('./inputtext_clear.png'),
     btn_group: require('./btn_icon_group.png'), //我的拼团列表页
     share_group: require('./share_icon_group.png'), //我的拼团列表页
     btn_more_white: require('./icon_share_nor.png'), //点击更多
-    new_close_white: require('./icon_close_nor.png'), //点击关闭
+    new_close_white: require('./icon_close_nor.png') //点击关闭
 
 };
 export default button;
