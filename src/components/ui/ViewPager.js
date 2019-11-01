@@ -39,7 +39,6 @@ class ViewPager extends Component {
 
     renderSwiper = () => {
         let { ...props } = this.props;
-
         if (this.state.arrayData && this.state.arrayData.length > 0) {
             if (this.props.renderPagination) {
                 if (this.props.swiperShow) {
