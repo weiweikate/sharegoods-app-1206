@@ -22,7 +22,7 @@ import {
 
 } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
-import { AfterStatus, SubStatus, PageType, isRefundFail } from '../AfterType';
+import { AfterStatus, SubStatus, PageType, isRefundFail, RefundStatus } from '../AfterType';
 
 const {
     PAGE_AREFUND,
@@ -108,10 +108,15 @@ export default class StatusInfoView extends React.Component {
                         remarkStr: remarks,
                     }
                 }
+                if (refundStatus === RefundStatus.REFUND_WILL_SUCCESS) {
+                    return{
+                        titleStr: '平台已同意您的退款',
+                        detialStr: '退款金额预计三到五个工作日内原路返还',
+                    }
+                }
                 return{
                     titleStr: '售后已完成，退款成功',
-                    detialStr: '退款金额预计三到五个工作日内原路返还',
-                    remarkStr: '平台已同意您的退款',
+                    detialStr: '退款金额已经原路返还',
                 }
             case STATUS_FAIL: {
                 if (subStatus === REFUSE_REVOKED){
