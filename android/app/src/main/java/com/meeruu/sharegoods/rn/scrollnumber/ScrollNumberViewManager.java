@@ -35,16 +35,13 @@ public class ScrollNumberViewManager extends SimpleViewManager<MultiScrollNumber
         return scrollNumber;
     }
 
-    @ReactProp(name = "fontSize")
-    public void setFontSize(final MultiScrollNumber view,int size){
-        view.setTextSize(size);
-    }
-
-    @ReactProp(name = "numAndColor")
+    @ReactProp(name = "data")
     public void setNum(final MultiScrollNumber view, ReadableMap data){
         int num = data.getInt("num");
         int color = data.getInt("color");
+        int size = data.getInt("fontSize");
         int[] colors = new int[]{color};
+        view.setTextSize(size);
         view.setDefaultColors(colors);
         view.setNumber(num);
     }

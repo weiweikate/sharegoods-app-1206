@@ -111,16 +111,18 @@ public class MultiScrollNumber extends LinearLayout {
     public void setNumber(int val) {
         resetView();
         int number = val;
-        while (number > 0) {
-            int i = number % 10;
-            mTargetNumbers.add(i);
-            number /= 10;
+        if(number == 0){
+            mTargetNumbers.add(0);
+        }else {
+            while (number > 0) {
+                int i = number % 10;
+                mTargetNumbers.add(i);
+                number /= 10;
+            }
         }
 
         for (int i = mTargetNumbers.size() - 1; i >= 0; i--) {
             ScrollNumber scrollNumber = new ScrollNumber(mContext);
-//            scrollNumber.setTextColor(ContextCompat
-//                    .getColor(mContext, mTextColors[i % mTextColors.length]));
             scrollNumber.setTextColor(mTextColors[i % mTextColors.length]);
             scrollNumber.setVelocity(mVelocity);
             scrollNumber.setTextSize(mTextSize);
