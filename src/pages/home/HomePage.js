@@ -29,6 +29,7 @@ import store from '@mr/rn-store';
 import StringUtils from '../../utils/StringUtils';
 import homeController from '../marketing/controller/HomeController';
 import { homeNewUserModel } from './model/HomeNewUserModel';
+import bridge from '../../utils/bridge';
 
 
 /**
@@ -62,6 +63,9 @@ class HomePage extends BasePage {
             payload => {
                 homeModule.homeFocused(false);
                 homeTabManager.setHomeFocus(false);
+                if (StringUtils.isNoEmpty(homeModule.titleImg)) {
+                    bridge.setLightMode();
+                }
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
                     homeModalManager.leaveHome();
@@ -101,6 +105,9 @@ class HomePage extends BasePage {
                     track(trackEvent.ViewHomePage);
                     homeTabManager.setHomeFocus(true);
                     homeModule.homeFocused(true);
+                    if (StringUtils.isNoEmpty(homeModule.titleImg)) {
+                        bridge.setDarkMode();
+                    }
                     user.getToken().then(() => {//让user初始化完成
                         this.luckyIcon && this.luckyIcon.getLucky(1, '');
                         if (!homeModule.firstLoad) {
