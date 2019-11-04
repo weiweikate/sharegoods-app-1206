@@ -36,7 +36,7 @@ import TaskView from '../view/TaskView';
 import taskModel, {mineTaskModel} from '../model/TaskModel';
 import {SafeAreaView} from 'react-navigation';
 import SignInBannerView from './components/SignInBannerView';
-import RollNumTextView from '../../../comm/components/rollnumtext/RollNumTextView';
+import ScrollNumView from '../../../comm/components/rollnumtext/ScrollNumView';
 
 const {px2dp} = ScreenUtils;
 
@@ -226,7 +226,7 @@ export default class SignInPage extends BasePage {
     };
 
     showMore = () => {
-        track(trackEvent.SignInPageBtnClick,{signInPageBtnName:'查看规则'});
+        track(trackEvent.SignInPageBtnClick, {signInPageBtnName: '查看规则'});
         this.$navigate(RouterMap.HtmlPage, {
             title: '签到规则',
             uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/signInRule.html`
@@ -238,7 +238,7 @@ export default class SignInPage extends BasePage {
         if (this.signinRequesting) {
             return;
         }
-        track(trackEvent.SignInPageBtnClick,{signInPageBtnName:'点击签到'});
+        track(trackEvent.SignInPageBtnClick, {signInPageBtnName: '点击签到'});
         this.signinRequesting = true;
         let count;
         if (this.state.signInData[3].continuous) {
@@ -360,12 +360,8 @@ export default class SignInPage extends BasePage {
             <View style={styles.signInInfoWrapper}>
                 <View style={styles.accountWrapper}>
                     <Image style={styles.beanStyle} source={bean}/>
-                    <RollNumTextView
-                        speed={100}
-                        fontSize={px2dp(30)}
-                        num={user.userScore ? user.userScore : 0}
-                        singleStyle={{color: '#FF9502'}}
-                        contentStyle={{marginLeft: px2dp(10)}}/>
+                    <ScrollNumView style={{flex: 1, height: px2dp(30)}} color={'#FF9502'}
+                                   num={user.userScore ? user.userScore : 0} fontSize={px2dp(30)}/>
                 </View>
                 {this.state.showMore ? <View>
                     <View style={styles.circleWrapper}>
@@ -667,8 +663,8 @@ export default class SignInPage extends BasePage {
             return (
                 <ImageLoader source={{uri: this.state.adSource}} style={styles.adContain}>
                     {linkOne && linkOne.linkType ? this.adTouch(linkOne) : null}
-                    {linkTwo && linkTwo.linkType? this.adTouch(linkTwo) : null}
-                    {linkThree && linkThree.linkType? this.adTouch(linkThree) : null}
+                    {linkTwo && linkTwo.linkType ? this.adTouch(linkTwo) : null}
+                    {linkThree && linkThree.linkType ? this.adTouch(linkThree) : null}
                 </ImageLoader>
             )
         }

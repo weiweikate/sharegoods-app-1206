@@ -28,7 +28,7 @@ android {
         versionCode 2201
         versionName "2.2.1"
         ndk {
-            abiFilters "armeabi"
+            abiFilters  "armeabi-v7a", "x86"
         }
         javaCompileOptions {
             annotationProcessorOptions { includeCompileClasspath = true }
@@ -51,7 +51,7 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include "armeabi"
+            include  "armeabi-v7a", "x86"
         }
     }
     sourceSets {
@@ -182,7 +182,6 @@ dependencies {
     api rootProject.ext.dependencies.wechat
     api rootProject.ext.dependencies.webp
     api rootProject.ext.dependencies.webpAnimated
-
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
     api project(':@mr_react-native-video')
     api project(':react-native-linear-gradient')
