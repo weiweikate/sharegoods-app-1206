@@ -639,13 +639,14 @@ export default class SignInPage extends BasePage {
         ) : null;
     }
 
-    adTouch = (data) => {
+    adTouch = (data,index) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 TrackApi.BannerClick({
                     bannerType: data.linkType,
                     bannerContent: data.linkTypeCode,
-                    bannerLocation: 41
+                    bannerLocation: 41,
+                    bannerRank:index
                 });
 
                 const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
@@ -662,9 +663,9 @@ export default class SignInPage extends BasePage {
             const {linkOne, linkTwo, linkThree} = this.state.adData;
             return (
                 <ImageLoader source={{uri: this.state.adSource}} style={styles.adContain}>
-                    {linkOne && linkOne.linkType ? this.adTouch(linkOne) : null}
-                    {linkTwo && linkTwo.linkType ? this.adTouch(linkTwo) : null}
-                    {linkThree && linkThree.linkType ? this.adTouch(linkThree) : null}
+                    {linkOne && linkOne.linkType ? this.adTouch(linkOne,0) : null}
+                    {linkTwo && linkTwo.linkType ? this.adTouch(linkTwo,1) : null}
+                    {linkThree && linkThree.linkType ? this.adTouch(linkThree,2) : null}
                 </ImageLoader>
             )
         }

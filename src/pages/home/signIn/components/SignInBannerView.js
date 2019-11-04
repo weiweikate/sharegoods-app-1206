@@ -33,7 +33,7 @@ export default class SignInBannerView extends PureComponent {
             bannerType: data.linkType,
             bannerContent: data.linkTypeCode,
             bannerId:data.id,
-            bannerRank:data.rank,
+            bannerRank:index,
             bannerLocation: 42
         });
         if (data) {
