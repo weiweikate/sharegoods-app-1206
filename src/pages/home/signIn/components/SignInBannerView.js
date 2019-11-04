@@ -16,8 +16,8 @@ import {TrackApi} from '../../../../utils/SensorsTrack';
 
 const {px2dp} = ScreenUtils;
 const size = {
-    width: 345,
-    height: 110
+    width: 690,
+    height: 240
 }
 export const bannerHeight = ScreenUtils.getImgHeightWithWidth(size, DesignRule.width - px2dp(30));
 

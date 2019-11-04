@@ -62,8 +62,8 @@ const size = {
     height: 161
 };
 const adSize = {
-    width: 345,
-    height: 115
+    width: 750,
+    height: 240
 }
 const headerBgHeight = ScreenUtils.getImgHeightWithWidth(size);
 const adHeight = ScreenUtils.getImgHeightWithWidth(adSize);
