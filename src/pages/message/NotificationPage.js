@@ -165,7 +165,7 @@ export default class NotificationPage extends BasePage {
                     viewData: arrs
                 });
             } else {
-                Toast.toast(res.msg);
+                Toast.$toast(res.msg);
                 this.setState({ isEmpty: true });
             }
         });

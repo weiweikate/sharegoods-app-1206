@@ -79,7 +79,7 @@ export default class MessageGatherPage extends BasePage {
                 this.setState({viewData: arrData ,netFailedInfo: null, loadingState: PageLoadingState.success})
             }else{
                 this.setState({isEmpty:true ,netFailedInfo: null, loadingState: PageLoadingState.success})
-                Toast.toast(res.msg);
+                Toast.$toast(res.msg);
             }
         }).catch(error=>{
             this.$toastShow(error.msg);
