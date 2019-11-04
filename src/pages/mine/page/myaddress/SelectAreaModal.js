@@ -298,7 +298,7 @@ class AddressSelectModel {
                     dataitem.unshift({
                         'code': '',
                         'name': '',
-                        'fatherCode': data.data[0].fatherCode || ''
+                        'fatherCode': data.data[0] && data.data[0].fatherCode ? data.data[0].fatherCode : ''
                     })
                 }
                 this.contentList[this.itemIndex] = dataitem || [];
@@ -313,7 +313,11 @@ class AddressSelectModel {
                 this.itemIndex = 2;
             } else if (this.itemIndex === 2) {
                 this.itemIndex = 3;
-                dataitem.unshift({'code': '', 'name': '', 'fatherCode': data.data[0].fatherCode || ''})
+                dataitem.unshift({
+                    'code': '',
+                    'name': '',
+                    'fatherCode': data.data[0] && data.data[0].fatherCode ? data.data[0].fatherCode : ''
+                })
             }
 
             this.contentList[this.itemIndex] = dataitem;
