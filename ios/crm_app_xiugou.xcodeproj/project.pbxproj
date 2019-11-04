@@ -307,6 +307,9 @@
 		CD24240F21F837A9008C7FF4 /* NSDictionary+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CD24240E21F837A9008C7FF4 /* NSDictionary+Util.m */; };
 		CD288A9D230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CD288A9C230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m */; };
 		CD3D46F52361CEF9001D4182 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 031D543B230E992E00F8349C /* Lottie.framework */; };
+		CD548A3A237013A4001ECDA1 /* MRScrollNumberViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD548A39237013A4001ECDA1 /* MRScrollNumberViewManager.m */; };
+		CD548A3D2370144B001ECDA1 /* LNNumberScrollAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD548A3C2370144A001ECDA1 /* LNNumberScrollAnimatedView.m */; };
+		CD548A4023701460001ECDA1 /* MRScrollNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD548A3F23701460001ECDA1 /* MRScrollNumberView.m */; };
 		CD5EAF48221BEA9F007AAEE0 /* NetWorkTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF11221BEA9F007AAEE0 /* NetWorkTool.m */; };
 		CD5EAF9D221BFB5E007AAEE0 /* ShowGroundViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF9C221BFB5E007AAEE0 /* ShowGroundViewManager.m */; };
 		CD5EAFA0221BFB8E007AAEE0 /* ShowGroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF9F221BFB8E007AAEE0 /* ShowGroundView.m */; };
@@ -1384,6 +1387,12 @@
 		CD24240E21F837A9008C7FF4 /* NSDictionary+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Util.m"; sourceTree = "<group>"; };
 		CD288A9B230A450600C2C30E /* CHTCollectionViewWaterfallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTCollectionViewWaterfallLayout.h; sourceTree = "<group>"; };
 		CD288A9C230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTCollectionViewWaterfallLayout.m; sourceTree = "<group>"; };
+		CD548A38237013A4001ECDA1 /* MRScrollNumberViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRScrollNumberViewManager.h; sourceTree = "<group>"; };
+		CD548A39237013A4001ECDA1 /* MRScrollNumberViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRScrollNumberViewManager.m; sourceTree = "<group>"; };
+		CD548A3B2370144A001ECDA1 /* LNNumberScrollAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LNNumberScrollAnimatedView.h; sourceTree = "<group>"; };
+		CD548A3C2370144A001ECDA1 /* LNNumberScrollAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LNNumberScrollAnimatedView.m; sourceTree = "<group>"; };
+		CD548A3E23701460001ECDA1 /* MRScrollNumberView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRScrollNumberView.h; sourceTree = "<group>"; };
+		CD548A3F23701460001ECDA1 /* MRScrollNumberView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRScrollNumberView.m; sourceTree = "<group>"; };
 		CD5EAF11221BEA9F007AAEE0 /* NetWorkTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkTool.m; sourceTree = "<group>"; };
 		CD5EAF12221BEA9F007AAEE0 /* NetWorkTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkTool.h; sourceTree = "<group>"; };
 		CD5EAF49221BECA3007AAEE0 /* XG_Api.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XG_Api.h; sourceTree = "<group>"; };
@@ -2214,6 +2223,7 @@
 		506835C421379B78001AB175 /* NativeBridge */ = {
 			isa = PBXGroup;
 			children = (
+				CD5489F423701365001ECDA1 /* ScrollNumberView  */,
 				0157960F22FAB01400122524 /* ActivityVideo */,
 				01091612227053450043E997 /* Recommended */,
 				C4F01EE9222D13F500ACA1B4 /*  PhoneAuther */,
@@ -2968,6 +2978,19 @@
 				CD45EE0121C77E1A00846B39 /* libRNSensorsAnalyticsModule.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CD5489F423701365001ECDA1 /* ScrollNumberView  */ = {
+			isa = PBXGroup;
+			children = (
+				CD548A38237013A4001ECDA1 /* MRScrollNumberViewManager.h */,
+				CD548A39237013A4001ECDA1 /* MRScrollNumberViewManager.m */,
+				CD548A3B2370144A001ECDA1 /* LNNumberScrollAnimatedView.h */,
+				CD548A3C2370144A001ECDA1 /* LNNumberScrollAnimatedView.m */,
+				CD548A3E23701460001ECDA1 /* MRScrollNumberView.h */,
+				CD548A3F23701460001ECDA1 /* MRScrollNumberView.m */,
+			);
+			path = "ScrollNumberView ";
 			sourceTree = "<group>";
 		};
 		CD5EAF10221BEA9F007AAEE0 /* netTool */ = {
@@ -4119,12 +4142,14 @@
 				017FB44B22FBAE8C003677B4 /* ShowDynamicViewManager.m in Sources */,
 				017FB44C22FBAE8C003677B4 /* SwichView.m in Sources */,
 				50FB633F219AC4C100A35334 /* AppDelegate+APNS.m in Sources */,
+				CD548A4023701460001ECDA1 /* MRScrollNumberView.m in Sources */,
 				C4F2E41E22BE303100FF6213 /* SGMotionManager.m in Sources */,
 				C4F2E49522BE318F00FF6213 /* MRImageVideoManager.m in Sources */,
 				CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */,
 				C4F2E47822BE303100FF6213 /* IJSPhotoPreviewController.m in Sources */,
 				CD6741F621DEF78500464549 /* AdView.m in Sources */,
 				C4F2E45822BE303100FF6213 /* IJSImageManagerController.m in Sources */,
+				CD548A3A237013A4001ECDA1 /* MRScrollNumberViewManager.m in Sources */,
 				C4F2E44022BE303100FF6213 /* WAAVSERotateCommand.m in Sources */,
 				017FB50522FBAF8F003677B4 /* QUProgressView.m in Sources */,
 				C4F2E47F22BE303100FF6213 /* IJSDToolBarView.m in Sources */,
@@ -4232,6 +4257,7 @@
 				017FB50122FBAF8F003677B4 /* AliyunIConfig.m in Sources */,
 				C4F2E45722BE303100FF6213 /* IJSVideoCutController.m in Sources */,
 				C4F2E48422BE303100FF6213 /* TOCropViewControllerTransitioning.m in Sources */,
+				CD548A3D2370144B001ECDA1 /* LNNumberScrollAnimatedView.m in Sources */,
 				0157967622FAB01400122524 /* MBVideoHeaderView.m in Sources */,
 				C4F2E48922BE303100FF6213 /* TOCropOverlayView.m in Sources */,
 				C4F2E48822BE303100FF6213 /* TOCropView.m in Sources */,
