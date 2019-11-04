@@ -16,11 +16,12 @@ export default class ScrollNumView extends PureComponent {
   }
 
   render(){
-      let {color = '#000',num,...attributes } = this.props;
+      let {color = '#000',num,fontSize,...attributes } = this.props;
       let data = {
           color:processColor(color),
-          num
+          num,
+          fontSize
       }
-      return(<MrScrollNumberView {...attributes} numAndColor={data}/>)
+      return(<MrScrollNumberView {...attributes} data={data}/>)
   }
 }
