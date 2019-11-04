@@ -57,60 +57,6 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
 
 @observer
 export default class HomeFirstTabView extends Component {
-    dataProvider = new DataProvider((r1, r2) => {
-        return r1 !== r2;
-    });
-
-    layoutProvider = new LayoutProvider((i) => {
-        return this.dataProvider.getDataForIndex(i) || {};
-    }, (type, dim) => {
-
-        dim.width = ScreenUtils.width;
-
-        switch (type.type) {
-            case homeType.tabStaticView:
-                // 此处用autoSizeWidth，不要改成px2dp
-                dim.height = ScreenUtils.autoSizeWidth(40);
-                break;
-            case homeType.swiper:
-                dim.height = bannerModule.bannerList.length > 0 ? bannerHeight : 0;
-                break;
-            case homeType.activityCenter:
-                dim.height = homeModule.centerImgHeight;
-                break;
-            case homeType.newUserArea:
-                dim.height = homeNewUserModel.imgHeight;
-                break;
-            case homeType.channel:
-                dim.height = channelModules.channelHeight;
-                break;
-            case homeType.expandBanner:
-                dim.height = homeExpandBnnerModel.bannerHeight;
-                break;
-            case homeType.limitGoTop:
-                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitTopHeight : 0;
-                break;
-            case homeType.limitGoTime:
-                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitTimeHeight : 0;
-                break;
-            case homeType.goodsTitle:
-                // dim.height = homeModule.tabList.length > 0 ? px2dp(66-13) : 0;
-                dim.height = homeModule.goods.length > 0 ? px2dp(42) : 0;
-                break;
-            case homeType.goods:
-                dim.height = kHomeGoodsViewHeight;
-                break;
-            case homeType.custom_text:
-            case homeType.custom_goods:
-            case homeType.custom_imgAD:
-            case homeType.limitGoGoods:
-                dim.height = type.itemHeight || 0;
-                break;
-            default:
-                dim.height = 0;
-                break;
-        }
-    });
 
     constructor(props) {
         super(props);
@@ -120,51 +66,18 @@ export default class HomeFirstTabView extends Component {
         this.offsetY = 0;
     }
 
+    componentDidMount() {
+        this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
+        this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
+        this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
+        // 修复首页图标不准确
+        this.homeTabChange();
+    }
 
-    _keyExtractor = (item, index) => item.id + '';
-
-    _renderItem = (type, item, index) => {
-        type = type.type;
-        if (type === homeType.swiper) {
-            return <HomeBannerView navigate={routePush}/>;
-        } else if (type === homeType.activityCenter) {
-            return <HomeActivityCenterView navigate={routePush}/>;
-        } else if (type === homeType.newUserArea) {
-            return <HomeNewUserAreaView navigate={routePush}/>;
-        } else if (type === homeType.channel) {
-            return <HomeChannelView navigate={routePush}/>;
-        } else if (type === homeType.expandBanner) {
-            return <HomeExpandBannerView navigate={routePush}/>;
-        } else if (type === homeType.limitGoTop) {
-            return <HomeLimitGoTopView navigate={routePush}/>;
-        } else if (type === homeType.limitGoTime) {
-            return <HomeLimitGoTimeView navigate={routePush}/>;
-        } else if (type === homeType.limitGoGoods) {
-            return <HomeLimitGoGoodsView navigate={routePush} data={item}/>;
-        } else if (type === homeType.goods) {
-            return <GoodsCell data={item} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
-                              navigate={routePush}/>;
-        } else if (type === homeType.goodsTitle) {
-            return <View ref={e => this.toGoods = e}
-                         style={{ marginLeft: px2dp(15) }}
-                         onLayout={event => {
-                             // 保留，不能删除
-                         }}>
-                <HomeTitleView title={'为你推荐'}/>
-                {/*<TabTitleView/>*/}
-            </View>;
-        } else if (type === homeType.custom_goods) {
-            return <GoodsCustomView data={item}/>;
-        } else if (type === homeType.custom_text) {
-            return <TextCustomView data={item}/>;
-        } else if (type === homeType.custom_imgAD) {
-            return <TopicImageAdView data={item}/>;
-        }
-        return <View/>;
-    };
-
-    _onEndReached() {
-        homeModule.loadMoreHomeList();
+    componentWillUnmount() {
+        this.listenerRetouchHome && this.listenerRetouchHome.remove();
+        this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
+        this.listenerSkip && this.listenerSkip.remove();
     }
 
     _onRefresh() {
@@ -172,6 +85,24 @@ export default class HomeFirstTabView extends Component {
         homeModule.loadHomeList();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
     }
+
+    _onEndReached() {
+        homeModule.loadMoreHomeList();
+    }
+
+    homeTypeRefresh = (type) => {
+        let refreshTime = new Date().getTime();
+        // 防止透传消息堆积，不停的刷新
+        if (refreshTime - nowTime > 10 * 1000) {
+            homeModule.refreshHome(type);
+        }
+    };
+
+    homeSkip = (data) => {
+        // 跳标
+        const content = JSON.parse(data) || {};
+        intervalMsgModel.setMsgData(content);
+    };
 
     _onListViewScroll = (event) => {
         if (!homeModule.isFocused) {
@@ -210,35 +141,16 @@ export default class HomeFirstTabView extends Component {
         });
     };
 
-    renderRefreshLoading = () => {
-        return (
-            <HeaderLoading
-                isRefreshing={homeModule.isRefreshing}
-                onRefresh={this._onRefresh.bind(this)}
-                lineTop={ScreenUtils.autoSizeWidth(40)}
-            />
-        );
+    retouchHome = () => {
+        if (homeTabManager.aboveRecommend) {
+            this.recyclerListView && this.recyclerListView.scrollToTop(true);
+            homeTabManager.setAboveRecommend(false);
+        }
     };
 
-    _overrideRowRenderer = (type, data, index) => {
-        if (type.type === homeType.goodsTitle) {
-            return (
-                <StaticTabTitleView/>
-            );
-        }
-
-        if (type.type === homeType.limitGoTime) {
-            return <StaticLimitGoTimeView onPress={() => {
-               this.recyclerListView&&this.recyclerListView.scrollToIndex(this.limitGoTimeIndex,false,1,0);
-            }}/>;
-        }
-
-        if (type.type === homeType.limitStaticViewDismiss) {
-            DeviceEventEmitter.emit('staticeLimitGoTimeView', false);
-        }
-        return <View/>;
+    scrollToTop = () => {
+        this.retouchHome();
     };
-
 
     render() {
         if (Math.abs(tabModel.tabIndex) > 1) {
@@ -295,45 +207,133 @@ export default class HomeFirstTabView extends Component {
         );
     }
 
-    componentDidMount() {
-        this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
-        this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
-        this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
-        // 修复首页图标不准确
-        this.homeTabChange();
-    }
+    dataProvider = new DataProvider((r1, r2) => {
+        return r1 !== r2;
+    });
 
-    componentWillUnmount() {
-        this.listenerRetouchHome && this.listenerRetouchHome.remove();
-        this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
-        this.listenerSkip && this.listenerSkip.remove();
-    }
+    layoutProvider = new LayoutProvider((i) => {
+        return this.dataProvider.getDataForIndex(i) || {};
+    }, (type, dim) => {
 
-    retouchHome = () => {
-        if (homeTabManager.aboveRecommend) {
-            this.recyclerListView && this.recyclerListView.scrollToTop(true);
-            homeTabManager.setAboveRecommend(false);
+        dim.width = ScreenUtils.width;
+
+        switch (type.type) {
+            case homeType.tabStaticView:
+                // 此处用autoSizeWidth，不要改成px2dp
+                dim.height = ScreenUtils.autoSizeWidth(40);
+                break;
+            case homeType.swiper:
+                dim.height = bannerModule.bannerList.length > 0 ? bannerHeight : 0;
+                break;
+            case homeType.activityCenter:
+                dim.height = homeModule.centerImgHeight;
+                break;
+            case homeType.newUserArea:
+                dim.height = homeNewUserModel.imgHeight;
+                break;
+            case homeType.channel:
+                dim.height = channelModules.channelHeight;
+                break;
+            case homeType.expandBanner:
+                dim.height = homeExpandBnnerModel.bannerHeight;
+                break;
+            case homeType.limitGoTop:
+                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitTopHeight : 0;
+                break;
+            case homeType.limitGoTime:
+                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitTimeHeight : 0;
+                break;
+            case homeType.goodsTitle:
+                // dim.height = homeModule.tabList.length > 0 ? px2dp(66-13) : 0;
+                dim.height = homeModule.goods.length > 0 ? px2dp(42) : 0;
+                break;
+            case homeType.goods:
+                dim.height = kHomeGoodsViewHeight;
+                break;
+            case homeType.custom_text:
+            case homeType.custom_goods:
+            case homeType.custom_imgAD:
+            case homeType.limitGoGoods:
+                dim.height = type.itemHeight || 0;
+                break;
+            default:
+                dim.height = 0;
+                break;
         }
-    };
+    });
 
-    scrollToTop = () => {
-        this.recyclerListView && this.recyclerListView.scrollToTop(true);
-        homeTabManager.setAboveRecommend(false);
-    };
 
-    homeTypeRefresh = (type) => {
-        let refreshTime = new Date().getTime();
-        // 防止透传消息堆积，不停的刷新
-        if (refreshTime - nowTime > 10 * 1000) {
-            homeModule.refreshHome(type);
+    _keyExtractor = (item, index) => item.id + '';
+
+    _renderItem = (type, item, index) => {
+        type = type.type;
+        if (type === homeType.swiper) {
+            return <HomeBannerView navigate={routePush}/>;
+        } else if (type === homeType.activityCenter) {
+            return <HomeActivityCenterView navigate={routePush}/>;
+        } else if (type === homeType.newUserArea) {
+            return <HomeNewUserAreaView navigate={routePush}/>;
+        } else if (type === homeType.channel) {
+            return <HomeChannelView navigate={routePush}/>;
+        } else if (type === homeType.expandBanner) {
+            return <HomeExpandBannerView navigate={routePush}/>;
+        } else if (type === homeType.limitGoTop) {
+            return <HomeLimitGoTopView navigate={routePush}/>;
+        } else if (type === homeType.limitGoTime) {
+            return <HomeLimitGoTimeView navigate={routePush}/>;
+        } else if (type === homeType.limitGoGoods) {
+            return <HomeLimitGoGoodsView navigate={routePush} data={item}/>;
+        } else if (type === homeType.goods) {
+            return <GoodsCell data={item} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
+                              navigate={routePush}/>;
+        } else if (type === homeType.goodsTitle) {
+            return <View ref={e => this.toGoods = e}
+                         style={{ marginLeft: px2dp(15) }}
+                         onLayout={event => {
+                             // 保留，不能删除
+                         }}>
+                <HomeTitleView title={'为你推荐'}/>
+                {/*<TabTitleView/>*/}
+            </View>;
+        } else if (type === homeType.custom_goods) {
+            return <GoodsCustomView data={item}/>;
+        } else if (type === homeType.custom_text) {
+            return <TextCustomView data={item}/>;
+        } else if (type === homeType.custom_imgAD) {
+            return <TopicImageAdView data={item}/>;
         }
+        return <View/>;
     };
 
-    homeSkip = (data) => {
-        // 跳标
-        const content = JSON.parse(data) || {};
-        intervalMsgModel.setMsgData(content);
+    _overrideRowRenderer = (type, data, index) => {
+        if (type.type === homeType.goodsTitle) {
+            return (
+                <StaticTabTitleView/>
+            );
+        }
+
+        if (type.type === homeType.limitGoTime) {
+            return <StaticLimitGoTimeView onPress={() => {
+                this.recyclerListView&&this.recyclerListView.scrollToIndex(this.limitGoTimeIndex,false,1,0);
+            }}/>;
+        }
+
+        if (type.type === homeType.limitStaticViewDismiss) {
+            DeviceEventEmitter.emit('staticeLimitGoTimeView', false);
+        }
+        return <View/>;
     };
+
+    renderRefreshLoading = () => {
+        return (
+            <HeaderLoading
+                isRefreshing={homeModule.isRefreshing}
+                onRefresh={this._onRefresh.bind(this)}
+                lineTop={ScreenUtils.autoSizeWidth(40)}
+            />
+        );
+    };
+
 }
 
 const styles = StyleSheet.create({

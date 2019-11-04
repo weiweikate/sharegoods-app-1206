@@ -4,19 +4,13 @@
  */
 
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    Image,
-    requireNativeComponent
-} from 'react-native';
+import { Image, requireNativeComponent, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../BasePage';
 import ShowApi from './ShowApi';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
 import EmptyUtils from '../../utils/EmptyUtils';
 import user from '../../model/user';
-import RouterMap, { routeNavigate, routePop,routePush } from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePop, routePush } from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import { observer } from 'mobx-react';
 import apiEnvironment from '../../api/ApiEnvironment';
@@ -31,10 +25,11 @@ import CommShowShareModal from '../../comm/components/CommShowShareModal';
 import ShowUtils from './utils/ShowUtils';
 import DownloadUtils from './utils/DownloadUtils';
 import AddCartModel from './model/AddCartModel';
-const {px2dp} = ScreenUtils;
-const ShowVideoListView = requireNativeComponent('MrShowVideoListView');
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
+
+const { px2dp } = ScreenUtils;
+const ShowVideoListView = requireNativeComponent('MrShowVideoListView');
 
 @observer
 export default class ShowVideoPage extends BasePage {
@@ -50,7 +45,7 @@ export default class ShowVideoPage extends BasePage {
             detail: null,
             pageState: PageLoadingState.loading,
             productModalVisible: false,
-            errorMsg:'网络错误'
+            errorMsg: '网络错误'
         };
 
     }
@@ -60,7 +55,7 @@ export default class ShowVideoPage extends BasePage {
         return (
             <View style={styles.navTitle}>
                 <TouchableOpacity activeOpacity={0.7} style={styles.backView} onPress={() => routePop()}>
-                    <Image source={res.button.icon_header_back} style={{ width: 30, height: 30 }}/>
+                    <Image source={res.button.back_black} style={{ width: 30, height: 30 }}/>
                 </TouchableOpacity>
             </View>
         );
@@ -70,17 +65,17 @@ export default class ShowVideoPage extends BasePage {
         this.getData();
     }
 
-    getData=()=>{
+    getData = () => {
         ShowApi.showDetail({ showNo: this.params.code }).then((data) => {
             this.data = data.data || {};
-            if(this.params.isPersonal){
+            if (this.params.isPersonal) {
                 this.data.isPersonal = this.params.isPersonal;
                 this.data.isCollect = this.params.isCollect;
-            }else {
+            } else {
                 this.data.isPersonal = false;
             }
 
-            if(this.params.tabType){
+            if (this.params.tabType) {
                 this.data.tabType = this.params.tabType + '';
             }
             this.setState({
@@ -89,11 +84,10 @@ export default class ShowVideoPage extends BasePage {
         }).catch((error) => {
             this.setState({
                 pageState: PageLoadingState.fail,
-                errorMsg:error.msg
+                errorMsg: error.msg
             });
         });
-    }
-
+    };
 
 
     addCart = (detail) => {
@@ -110,7 +104,7 @@ export default class ShowVideoPage extends BasePage {
                     'amount': amount,
                     'skuCode': skuCode,
                     'productCode': detail.prodCode,
-                    'sgscm':`2.${showNo}.none.none`
+                    'sgscm': `2.${showNo}.none.none`
                 });
                 /*加入购物车埋点*/
                 const { userNo } = userInfoVO || {};
@@ -151,9 +145,9 @@ export default class ShowVideoPage extends BasePage {
             return (
                 <View style={{ flex: 1 }}>
                     <ShowVideoListView style={{ flex: 1 }}
-                                       onAttentionPress={({nativeEvent}) => {
+                                       onAttentionPress={({ nativeEvent }) => {
                                            if (user.isLogin) {
-                                               ShowApi.userFollow({userNo:nativeEvent.userInfoVO.userNo}).then().catch();
+                                               ShowApi.userFollow({ userNo: nativeEvent.userInfoVO.userNo }).then().catch();
                                            } else {
                                                routeNavigate(RouterMap.LoginPage);
                                            }
@@ -164,12 +158,15 @@ export default class ShowVideoPage extends BasePage {
                                        onBack={() => {
                                            this.$navigateBack(1);
                                        }}
-                                       onSeeUser={({nativeEvent})=>{
+                                       onSeeUser={({ nativeEvent }) => {
                                            let userNo = nativeEvent.userInfoVO.userNo;
-                                           if(user.code === userNo){
+                                           if (user.code === userNo) {
                                                routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
-                                           }else {
-                                               routePush(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
+                                           } else {
+                                               routePush(RouterMap.MyDynamicPage, {
+                                                   userType: 'others',
+                                                   userInfo: nativeEvent.userInfoVO
+                                               });
                                            }
                                        }}
                                        onPressTag={({ nativeEvent }) => {
@@ -179,7 +176,7 @@ export default class ShowVideoPage extends BasePage {
                                            this.setState({ detail: null }, () => {
                                                this.setState({
                                                    detail: nativeEvent,
-                                                   showText:false
+                                                   showText: false
                                                }, () => {
                                                    this.shareModal && this.shareModal.open();
                                                });
@@ -195,7 +192,7 @@ export default class ShowVideoPage extends BasePage {
                                        }}
                                        onDownloadPress={({ nativeEvent }) => {
                                            if (user.isLogin) {
-                                               let callback = ()=>{
+                                               let callback = () => {
                                                    ShowApi.incrCountByType({
                                                        showNo: nativeEvent.showNo,
                                                        type: 4
@@ -203,13 +200,13 @@ export default class ShowVideoPage extends BasePage {
                                                    this.setState({ detail: null }, () => {
                                                        this.setState({
                                                            detail: nativeEvent,
-                                                           showText:true
+                                                           showText: true
                                                        }, () => {
                                                            this.shareModal && this.shareModal.open();
                                                        });
                                                    });
-                                               }
-                                               DownloadUtils.downloadShow(nativeEvent,callback);
+                                               };
+                                               DownloadUtils.downloadShow(nativeEvent, callback);
                                            } else {
                                                routeNavigate(RouterMap.LoginPage);
                                            }
@@ -266,7 +263,7 @@ export default class ShowVideoPage extends BasePage {
                     {detail ?
                         <CommShowShareModal ref={(ref) => this.shareModal = ref}
                                             shareName={detail && detail.userInfoVO && detail.userInfoVO.userName}
-                                            type={ShareUtil.showSharedetailDataType(detail && detail.showType,this.state.showText)}
+                                            type={ShareUtil.showSharedetailDataType(detail && detail.showType, this.state.showText)}
                                             trackEvent={trackEvent.XiuChangShareClick}
                                             trackParmas={{
                                                 articleCode: detail.code,
@@ -291,7 +288,7 @@ export default class ShowVideoPage extends BasePage {
                                             webJson={{
                                                 title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                                thumImage:ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
+                                                thumImage: ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
                                                 dec: '好物不独享，内有惊喜福利~'
                                             }}
                         /> : null}
@@ -306,7 +303,7 @@ export default class ShowVideoPage extends BasePage {
                                                                              productCode: prodCode,
                                                                              trackType: 3,
                                                                              trackCode: detail.showNo,
-                                                                             sgscm:`2.${detail.showNo}.none.none`
+                                                                             sgscm: `2.${detail.showNo}.none.none`
                                                                          });
                                                                      }}
                                                                      addCart={this.addCart}
@@ -332,7 +329,7 @@ var styles = StyleSheet.create({
         top: ScreenUtils.statusBarHeight,
         position: 'absolute',
         left: 0,
-        backgroundColor:DesignRule.white
+        backgroundColor: DesignRule.white
     },
     container: {
         flex: 1,
@@ -343,6 +340,6 @@ var styles = StyleSheet.create({
         height: px2dp(44),
         alignItems: 'center',
         justifyContent: 'center'
-    },
+    }
 });
 

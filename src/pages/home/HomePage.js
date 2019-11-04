@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, DeviceEventEmitter, StyleSheet, View } from 'react-native';
+import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './model/Modules';
 import HomeSearchView from './view/HomeSearchView';
@@ -30,7 +30,7 @@ import StringUtils from '../../utils/StringUtils';
 import homeController from '../marketing/controller/HomeController';
 import { homeNewUserModel } from './model/HomeNewUserModel';
 
-
+const headerHeight = ScreenUtils.statusBarHeight + ScreenUtils.autoSizeWidth(44);
 /**
  * @author zhangjian
  * @date on 2018/9/7
@@ -49,10 +49,7 @@ class HomePage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = {
-            hasMessage: false,
-            y: new Animated.Value(0)
-        };
+        this.state = {};
     }
 
     componentDidMount() {
@@ -112,9 +109,6 @@ class HomePage extends BasePage {
                 TrackApi.homePage();//埋点
             }
         );
-        this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
-        this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.limitGoTimeViewlistener = DeviceEventEmitter.addListener('staticeLimitGoTimeView', (value) => {
             if (value) {//限时购是否处于吸顶状态
                 this.topTarBar && this.topTarBar.close();
@@ -128,12 +122,28 @@ class HomePage extends BasePage {
         this.willBlurSubscription && this.willBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
-        this.listener && this.listener.remove();
-        this.listenerMessage && this.listenerMessage.remove();
-        this.listenerLogout && this.listenerLogout.remove();
         this.limitGoTimeViewlistener && this.limitGoTimeViewlistener.remove();
     }
 
+
+
+    onChangeTab = (obj) => {
+        let { tabList } = tabModel;
+        let i = obj.i;
+        tabModel.changeTabIndex(i);
+        //首页回顶部
+        this.homeList && this.homeList.scrollToTop();
+        //埋点
+        this.trackViewHomePageChannel(tabList, i);
+        //顶部类目滑动
+        this.topTarBar && this.topTarBar.scrollTo({ x: i * 60 - ScreenUtils.width / 2 + 30 });
+        //顶部类目展开
+        this.topTarBar && this.topTarBar.open();
+    }
+
+    /**
+     * 左右切换埋点
+     */
     trackViewHomePageChannel(tabData, i) {
         // channelType  频道页类型      0：未知 1：推荐 2：专题 3：类目
         // channelName  频道页名称  字符串  8.15
@@ -157,26 +167,72 @@ class HomePage extends BasePage {
     }
 
 
+
     render() {
+        return (
+            <View style={[styles.container, { minHeight: headerHeight, minWidth: 1 }]}>
+                {this._renderSkinView()}
+                <HomeSearchView/>
+                <ScrollableTabView
+                    style={{ zIndex: -1 }}
+                    initialPage={0}
+                    onChangeTab={this.onChangeTab}
+                    renderTabBar={this._renderTabBar.bind(this)}>
+                    {this._renderViewItems()}
+                </ScrollableTabView>
+                {this._renderModal()}
+            </View>
+        );
+    }
+    /**
+     * 首页顶部换肤的View
+     */
+    _renderSkinView(){
+        return(
+            <View style={{
+                width: ScreenUtils.width,
+                position: 'absolute',
+                backgroundColor: StringUtils.isEmpty(homeModule.statusImg) ? 'white' : 'transparent',
+                left: 0,
+                right: 0
+            }}>
+                <ImageLoad
+                    style={{
+                        width: ScreenUtils.width,
+                        height: ScreenUtils.statusBarHeight
+                    }}
+                    source={{ uri: homeModule.statusImg }}
+                    showPlaceholder={false}/>
+                <ImageLoad
+                    style={{
+                        width: ScreenUtils.width,
+                        height: ScreenUtils.autoSizeWidth(44)
+                    }}
+                    source={{ uri: homeModule.titleImg }}
+                    showPlaceholder={false}/>
+            </View>
+        )
+    }
+
+    /**
+     * 生成ScrollableTabView的各个子视图
+     */
+    _renderViewItems() {
         let { tabList } = tabModel;
 
         let viewItems = [];
         viewItems.push(<HomeFirstTabView
             key={'HomeList_flag'}
             tabLabel={'推荐'}
-            ref={(ref => {
-                this.homeList = ref;
-            })}
-            onScrollBeginDrag={() => {
-                this.luckyIcon.close();
-            }}
+            ref={(ref => {this.homeList = ref;})}
+            onScrollBeginDrag={() => {this.luckyIcon.close();}}
             onScroll={(y) => {
                 if (y < ScreenUtils.width) {
                     this.topTarBar && this.topTarBar.open();
                 }
             }}
         />);
-        tabList.map((item, index) => {
+        tabList.forEach((item, index) => {
             if (item.navType === 2) {
                 viewItems.push(<DIYTopicList tabLabel={item.navName}
                                              key={'id' + item.id}
@@ -189,69 +245,32 @@ class HomePage extends BasePage {
                                                key={'id' + item.id}/>);
             }
         });
-        const headerHeight = ScreenUtils.statusBarHeight + ScreenUtils.autoSizeWidth(44);
-        return (
-            <View style={[styles.container, { minHeight: headerHeight, minWidth: 1 }]}>
-                <View style={{
-                    width: ScreenUtils.width,
-                    position: 'absolute',
-                    backgroundColor: StringUtils.isEmpty(homeModule.statusImg) ? 'white' : 'transparent',
-                    left: 0,
-                    right: 0
-                }}>
-                    <ImageLoad
-                        style={{
-                            width: ScreenUtils.width,
-                            height: ScreenUtils.statusBarHeight
-                        }}
-                        source={{ uri: homeModule.statusImg }}
-                        showPlaceholder={false}/>
-                    <ImageLoad
-                        style={{
-                            width: ScreenUtils.width,
-                            height: ScreenUtils.autoSizeWidth(44)
-                        }}
-                        source={{ uri: homeModule.titleImg }}
-                        showPlaceholder={false}/>
-                </View>
-                <HomeSearchView/>
-                <ScrollableTabView
-                    onChangeTab={(obj) => {
 
-                        let i = obj.i;
-                        tabModel.changeTabIndex(i);
-                        //首页回顶部
-                        this.homeList && this.homeList.scrollToTop();
-                        //埋点
-                        this.trackViewHomePageChannel(tabList, i);
-                        this.topTarBar && this.topTarBar.scrollTo({ x: i * 60 - ScreenUtils.width / 2 + 30 });
-                        this.topTarBar && this.topTarBar.open();
-                    }}
-                    renderTabBar={this._renderTabBar.bind(this)}
-                    style={{ zIndex: -1 }}
-                    //进界面的时候打算进第几个
-                    initialPage={0}>
-                    {viewItems}
-                </ScrollableTabView>
-
-                <LuckyIcon ref={(ref) => {
-                    this.luckyIcon = ref;
-                }}
-                           isHome={true}
-                />
-                <PraiseModel/>
-                <UserLevelModalView/>
-                <IntervalMsgView pageType={IntervalType.home}/>
-                <HomeMessageModalView/>
-                <VersionUpdateModalView/>
-            </View>
-        );
+        return viewItems;
     }
 
+    /**
+     * 顶部类目
+     */
     _renderTabBar(p) {
-        return <HomeTopTarBar p={p} ref={(r) => {
-            this.topTarBar = r;
-        }}/>;
+        return <HomeTopTarBar p={p}
+                              ref={(r) => this.topTarBar = r}/>;
+    }
+
+    /**
+     * 首页弹窗
+     */
+    _renderModal(){
+        return (
+            [<LuckyIcon ref={(ref) => this.luckyIcon = ref}
+                        isHome={true}/>,
+                <PraiseModel/>,
+                <UserLevelModalView/>,
+                <IntervalMsgView pageType={IntervalType.home}/>,
+                <HomeMessageModalView/>,
+                <VersionUpdateModalView/>
+            ])
+
     }
 }
 

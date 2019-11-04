@@ -13,7 +13,7 @@ export default class NavigatorBar extends Component {
 
         title: '',
 
-        leftNavImage: res.button.icon_header_back,
+        leftNavImage: res.button.back_black,
         leftNavTitle: '',
         leftNavItemHidden: false,
 
