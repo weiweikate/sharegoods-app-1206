@@ -182,7 +182,7 @@ export default class ShowProductListPage extends BasePage {
             <View style={styles.header}>
                 <View style={styles.flex}>
                     <TouchableOpacity activeOpacity={0.7} style={styles.backImg} onPress={() => this.$navigateBack()}>
-                        <Image source={res.button.icon_header_back} style={{ width: 30, height: 30 }}/>
+                        <Image source={res.button.back_black} style={{ width: 30, height: 30 }}/>
                     </TouchableOpacity>
                 </View>
                 <TouchableWithoutFeedback onPress={() => {

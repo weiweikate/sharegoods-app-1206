@@ -1,7 +1,7 @@
 import { action, observable } from 'mobx';
 // import TimerMixin from 'react-timer-mixin';
 import { DeviceEventEmitter } from 'react-native';
-import {AfterStatus, SubStatus} from './AfterType'
+import { AfterStatus, RefundStatus, SubStatus } from './AfterType';
 import orderApi from '../api/orderApi'
 
 class AfterSaleDetailModel {
@@ -59,6 +59,12 @@ class AfterSaleDetailModel {
                     data.refundInfo.cashAmount = item.refundAmount
                 }
             });
+
+            if (data.refundDetail.status !== 1 &&
+                data.refundDetail.status!==undefined &&
+                data.refundDetail.status !== null){//status存在且不等于1
+                data.refundInfo.status = RefundStatus.REFUND_WILL_SUCCESS
+            }
 
             this.pageData = data
             let cancelTime = service.cancelTime || 0;

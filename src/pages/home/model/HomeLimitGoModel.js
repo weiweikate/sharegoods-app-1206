@@ -62,12 +62,17 @@ export class LimitGoModules {
         homeModule.changelimitGoods(this.currentGoodsList);
     }
 
-
+    /**
+     * 请求限时购数据
+     * @type {(...args: any[][]) => CancellablePromise<FlowReturnType<any>>}
+     */
     @action loadLimitGo = flow(function* (change) {
+        //是否显示免单
         HomeApi.freeOrderSwitch().then((data) => {
             this.isShowFreeOrder = data.data || false;
         });
         try {
+            //是否显示限时购
             const isShowResult = yield HomeApi.isShowLimitGo();
             if (!isShowResult.data) {
                 this.spikeList = [];
@@ -164,7 +169,11 @@ export class LimitGoModules {
             console.log(error);
         }
     });
-
+    /**
+     * 提前关注
+     * @param spu
+     * @param code
+     */
     @action followSpike(spu, code) {
         HomeApi.followLimit({
             spu,
@@ -176,6 +185,11 @@ export class LimitGoModules {
         });
     }
 
+    /**
+     * 取消关注
+     * @param spu
+     * @param code
+     */
     @action cancleFollow(spu, code) {
         HomeApi.cancleFollow({
             spu,
@@ -187,6 +201,12 @@ export class LimitGoModules {
         });
     }
 
+    /**
+     * 处理限时自定义专题数据       [good1,[topicData1,topicData2,topicData3],good2] => [good1,topicData1,topicData2,topicData3,good2]
+     * @param data
+     * @returns {Promise<any[]>}
+     * @private
+     */
     _handleData(data) {
         let promises = [];
         data.forEach((sbuData, i) => {
@@ -213,7 +233,13 @@ export class LimitGoModules {
         });
     }
 
-    topicTrack=(i, index)=>()=>{
+    /**
+     * 限时购点击埋点
+     * @param i  第几列
+     * @param index 第几个
+     * @returns {function(*): Function}
+     */
+    topicTrack=(i, index)=>(specialTopicId)=>()=>{
         // 限时购商品点击埋点
         let activityData = this.spikeList[i];
         track(trackEvent.SpikeProdClick,
@@ -221,7 +247,8 @@ export class LimitGoModules {
                 'timeRangeId': activityData.activityCode,
                 'timeRange': activityData.time,
                 'timeRangeStatus': activityData.title,
-                'productIndex': index
+                'productIndex': index,
+                specialTopicId
             });
     }
 

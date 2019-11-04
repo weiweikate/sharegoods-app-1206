@@ -25,7 +25,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import res from '../../res';
 const  autoSizeWidth = ScreenUtils.autoSizeWidth;
-import {AfterStatus, SubStatus, PageType, isRefundFail} from '../AfterType'
+import {AfterStatus, SubStatus, PageType, isRefundFail, RefundStatus} from '../AfterType'
 import DottedLine from '../../../../comm/components/DottedLine';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -143,6 +143,19 @@ export default class HeaderView extends React.Component {
                     )
                 }
 
+                if (refundStatus === RefundStatus.REFUND_WILL_SUCCESS) {
+                    return(
+                        <View style={styles.timerLine}>
+                            {this.renderItem(1,'','填写申请')}
+                            <View style={styles.solidLine}/>
+                            {this.renderItem(3,'退款中','')}
+                            {this.renderDashedLine()}
+                            {this.renderItem(2,'','完成退款')}
+                        </View>
+                    )
+
+                }
+
                 return(
                     <View style={styles.timerLine}>
                         {this.renderItem(1,'','填写申请')}
@@ -168,7 +181,7 @@ export default class HeaderView extends React.Component {
     /**
      *  退货
      */
-    renderReturnSalesTimerLine(status, subStatus) {
+    renderReturnSalesTimerLine(status, subStatus,refundStatus) {
         switch (status) {
             case STATUS_IN_REVIEW:
                 return(
@@ -227,6 +240,20 @@ export default class HeaderView extends React.Component {
                 )
                 break
             case STATUS_SUCCESS:
+                if (refundStatus === RefundStatus.REFUND_WILL_SUCCESS) {
+                return(
+                    <View style={styles.timerLine}>
+                        {this.renderItem(1,'','填写申请')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(1,'','寄回商品')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(1,'','平台确认')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(3,'退款中','')}
+                        {this.renderDashedLine()}
+                        {this.renderItem(2,'','完成退款')}
+                    </View>
+                )}
                 return(
                     <View style={styles.timerLine}>
                         {this.renderItem(1,'','填写申请')}

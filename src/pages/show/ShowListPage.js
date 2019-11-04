@@ -41,7 +41,7 @@ const { px2dp } = ScreenUtils;
 const {
     mine_message_icon_gray
 } = res.homeBaseImg;
-const { icon_header_back } = res.button;
+const { back_black } = res.button;
 
 @observer
 export default class ShowListPage extends BasePage {
@@ -79,7 +79,7 @@ export default class ShowListPage extends BasePage {
     componentDidMount() {
 
         let initialPage = parseInt(`${this.params.initialPage}`);
-        if([0,1,2,3,4].indexOf(initialPage) === -1){
+        if ([0, 1, 2, 3, 4].indexOf(initialPage) === -1) {
             initialPage = 1;
         }
         this._gotoPage(initialPage);
@@ -224,7 +224,7 @@ export default class ShowListPage extends BasePage {
     _render() {
         const { left, needsExpensive, detail } = this.state;
         let initialPage = parseInt(`${this.params.initialPage}`);
-        if([0,1,2,3,4].indexOf(initialPage) === -1){
+        if ([0, 1, 2, 3, 4].indexOf(initialPage) === -1) {
             initialPage = 1;
         }
         let HotView = null;
@@ -266,7 +266,7 @@ export default class ShowListPage extends BasePage {
                         <TouchableOpacity
                             activeOpacity={0.7} style={styles.backImg}
                             onPress={() => this._onLeftPressed()}>
-                            <Image source={icon_header_back} style={{ width: 30, height: 30 }}/>
+                            <Image source={back_black} style={{ width: 30, height: 30 }}/>
                         </TouchableOpacity>
                         :
                         null

@@ -103,7 +103,7 @@ const vipBg = [
  */
 
 const { px2dp, headerHeight, statusBarHeight, getImgHeightWithWidth } = ScreenUtils;
-const headerBgSize = { width: 375, height: 237 };
+const headerBgSize = { width: 375, height: 247 };
 const scaleHeaderSize = getImgHeightWithWidth(headerBgSize);
 const halfScaleHeaderSize = scaleHeaderSize / 2;
 // const offset = scaleHeaderSize - headerHeight;
@@ -419,7 +419,7 @@ export default class MinePage extends BasePage {
         return (
             <View style={styles.headerBgStyle}>
                 <View
-                    style={{height: px2dp(68), flexDirection: 'row', marginRight: px2dp(5), alignItems: 'flex-end'}}>
+                    style={{height: px2dp(78), flexDirection: 'row', marginRight: px2dp(5), alignItems: 'flex-end'}}>
                     <TouchableOpacity onPress={this.jumpToUserInformationPage} activeOpacity={1}>
                         {icon}
                     </TouchableOpacity>
@@ -664,7 +664,7 @@ export default class MinePage extends BasePage {
         return (
             <View style={{
                 flex: 1,
-                marginTop: px2dp(5),
+                marginTop: px2dp(15),
                 marginHorizontal: px2dp(15),
                 justifyContent: 'center'
             }} ref={e => this.numArea = e}>
@@ -813,7 +813,7 @@ export default class MinePage extends BasePage {
                         </View> : null
                         }
                     </View>
-                    <View style={{ height: 9 }}/>
+                    <View style={{ height: 4 }}/>
                     <Text style={{ color: '#999999', fontSize: px2dp(12) }}>
                         {text}
                     </Text>
@@ -1306,7 +1306,7 @@ const styles = StyleSheet.create({
     headerBgStyle: {
         width: ScreenUtils.width,
         height: scaleHeaderSize,
-        paddingTop: ScreenUtils.statusBarHeight + 10,
+        paddingTop: ScreenUtils.statusBarHeight,
         backgroundColor: 'white'
     },
     userIconStyle: {
