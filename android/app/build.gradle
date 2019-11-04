@@ -28,7 +28,7 @@ android {
         versionCode 2201
         versionName "2.2.1"
         ndk {
-            abiFilters "armeabi"
+            abiFilters "armeabi-v7a", "x86"
         }
         javaCompileOptions {
             annotationProcessorOptions { includeCompileClasspath = true }
@@ -51,7 +51,7 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include "armeabi"
+            include "armeabi-v7a", "x86"
         }
     }
     sourceSets {
@@ -169,7 +169,7 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
 
     if (enableHermes) {
-        def hermesPath = "../../node_modules/hermes-engine/android/";
+        def hermesPath = "../../node_modules/hermesvm/android/"
         debugImplementation files(hermesPath + "hermes-debug.aar")
         releaseImplementation files(hermesPath + "hermes-release.aar")
         releaseStagingImplementation files(hermesPath + "hermes-release.aar")
