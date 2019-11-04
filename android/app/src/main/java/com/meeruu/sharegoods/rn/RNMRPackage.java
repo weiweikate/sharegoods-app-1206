@@ -14,6 +14,7 @@ import com.meeruu.sharegoods.rn.module.JPushModule;
 import com.meeruu.sharegoods.rn.module.PhoneAuthenModule;
 import com.meeruu.sharegoods.rn.module.QRCodeModule;
 import com.meeruu.sharegoods.rn.popmodal.PopModalManager;
+import com.meeruu.sharegoods.rn.scrollnumber.ScrollNumberViewManager;
 import com.meeruu.sharegoods.rn.showground.RecyclerViewHeaderManager;
 import com.meeruu.sharegoods.rn.showground.ShowAttentionViewManager;
 import com.meeruu.sharegoods.rn.showground.ShowDynamicViewManager;
@@ -85,6 +86,7 @@ public class RNMRPackage implements ReactPackage {
                 new ShowDynamicViewManager(),
                 new ShowVideoViewManager(),
                 new ShowAttentionViewManager(),
+                new ScrollNumberViewManager(),
                 new DottedLineManager());
     }
 
