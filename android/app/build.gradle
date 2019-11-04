@@ -169,7 +169,7 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
 
     if (enableHermes) {
-        def hermesPath = "../../node_modules/hermesvm/android/"
+        def hermesPath = "../../node_modules/hermesvm/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
         releaseImplementation files(hermesPath + "hermes-release.aar")
         releaseStagingImplementation files(hermesPath + "hermes-release.aar")
@@ -211,7 +211,7 @@ dependencies {
     implementation 'com.alivc.conan:AlivcConan:0.9.5'//核心库必须依赖
     implementation 'com.aliyun.video.android:AlivcSvideoFFmpeg:1.0.1'//必须依赖
     implementation 'com.aliyun.video.android:upload:1.5.2'// 上传库,如不需要上传可不依赖
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.aliyun.video.android:upload:1.5.2'
     implementation 'com.aliyun.dpa:oss-android-sdk:+'
 
