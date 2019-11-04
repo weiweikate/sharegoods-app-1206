@@ -110,7 +110,6 @@ public class MultiScrollNumber extends LinearLayout {
 
     public void setNumber(int val) {
         resetView();
-
         int number = val;
         while (number > 0) {
             int i = number % 10;
@@ -165,8 +164,10 @@ public class MultiScrollNumber extends LinearLayout {
 
         for (int i = mTargetNumbers.size() - 1; i >= 0; i--) {
             ScrollNumber scrollNumber = new ScrollNumber(mContext);
-            scrollNumber.setTextColor(ContextCompat
-                    .getColor(mContext, mTextColors[i % mTextColors.length]));
+//            scrollNumber.setTextColor(ContextCompat
+//                    .getColor(mContext, mTextColors[i % mTextColors.length]));
+            scrollNumber.setTextColor(mTextColors[i % mTextColors.length]);
+
             scrollNumber.setTextSize(mTextSize);
             if (!TextUtils.isEmpty(mFontFileName))
                 scrollNumber.setTextFont(mFontFileName);
@@ -235,5 +236,21 @@ public class MultiScrollNumber extends LinearLayout {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                 dpVal, getResources().getDisplayMetrics());
     }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        post(new Runnable(){
+            @Override
+            public void run() {
+                measure(
+                        MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY)
+                );
+                layout(getLeft(), getTop(), getRight(), getBottom());
+            }
+        });
+    }
+
 
 }
