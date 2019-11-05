@@ -34,11 +34,10 @@ import RouterMap, {routePush} from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import TaskView from '../view/TaskView';
 import taskModel, {mineTaskModel} from '../model/TaskModel';
-import {SafeAreaView} from 'react-navigation';
 import SignInBannerView from './components/SignInBannerView';
 import RollNumTextView from '../../../comm/components/rollnumtext/RollNumTextView';
 
-const {px2dp} = ScreenUtils;
+const {px2dp,isIphoneMax,isIphonex} = ScreenUtils;
 
 const platformHeight = 10;
 
@@ -690,7 +689,7 @@ export default class SignInPage extends BasePage {
 
         console.log(user);
         return (
-            <SafeAreaView style={styles.container}>
+            <View style={[styles.container,{marginBottom:(isIphoneMax || isIphonex) ? 50 : 0}]}>
                 <ScrollView
                     onScroll={this._onScroll}
                     scrollEventThrottle={30}
@@ -713,7 +712,7 @@ export default class SignInPage extends BasePage {
                 {this.navBackgroundRender()}
                 {this.navRender()}
                 {this._signModalRender()}
-            </SafeAreaView>
+            </View>
         );
     }
 }
