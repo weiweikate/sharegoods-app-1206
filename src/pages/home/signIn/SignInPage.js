@@ -34,12 +34,11 @@ import RouterMap, {routePush} from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import TaskView from '../view/TaskView';
 import taskModel, {mineTaskModel} from '../model/TaskModel';
-import {SafeAreaView} from 'react-navigation';
 import SignInBannerView from './components/SignInBannerView';
 import ScrollNumView from '../../../comm/components/rollnumtext/ScrollNumView';
 import { getSGspm_signIn, SignInSource } from '../../../utils/OrderTrackUtil';
 
-const {px2dp} = ScreenUtils;
+const {px2dp,safeBottom} = ScreenUtils;
 
 const platformHeight = 10;
 
@@ -689,7 +688,7 @@ export default class SignInPage extends BasePage {
 
         console.log(user);
         return (
-            <SafeAreaView style={styles.container}>
+            <View style={[styles.container,{marginBottom:safeBottom}]}>
                 <ScrollView
                     onScroll={this._onScroll}
                     scrollEventThrottle={30}
@@ -711,7 +710,7 @@ export default class SignInPage extends BasePage {
                 {this.navBackgroundRender()}
                 {this.navRender()}
                 {this._signModalRender()}
-            </SafeAreaView>
+            </View>
         );
     }
 }
