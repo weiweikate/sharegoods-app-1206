@@ -31,7 +31,9 @@ export const HomeSource = {
     hot: 8,//首页超值热卖
     recommend: 9,//为你推荐
     float: 10,//右下角浮动广告位
-    launchAd: 11//APP开机闪屏广告位
+    launchAd: 11,//APP开机闪屏广告位
+    newNser: 12,//新人专区
+    gourp: 13,//拼团
 
 }
 

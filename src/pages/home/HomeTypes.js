@@ -107,7 +107,9 @@ export const homePoint = {
     homeExpand: 9,// app通用广告位
 // 21：拼店首页banner推荐位
     homeCategory: 31,// 类目搜索banner广告位
-    homeDiy: 13//自定义模块
+    homeDiy: 13,//自定义模块
+    newNser: 15,//新人广告位
+
 // 32：秀场banner推荐
 // 41：签到广告位
 // 51：登录/注册页面广告位
