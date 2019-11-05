@@ -32,6 +32,7 @@ public class ScrollNumberViewManager extends SimpleViewManager<MultiScrollNumber
     @Override
     protected MultiScrollNumber createViewInstance(@Nonnull ThemedReactContext reactContext) {
         MultiScrollNumber scrollNumber = new MultiScrollNumber(reactContext);
+        scrollNumber.setScrollVelocity(150);
         return scrollNumber;
     }
 
