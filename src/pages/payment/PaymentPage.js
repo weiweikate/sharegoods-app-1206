@@ -397,4 +397,3 @@ const styles = StyleSheet.create({
         fontSize: px2dp(17)
     }
 });
-
