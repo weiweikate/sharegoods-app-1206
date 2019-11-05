@@ -66,10 +66,10 @@ export const homeLinkType = {
     classify: 12,      //分类
     nothing: 13,      //无跳转
     page: 14,      //页面路由
-    showHome:18,    //秀场首页
+    showHome: 18,    //秀场首页
     pinGroup: 19,      //拼团
     limitBuy: 20,      //限时购
-    signPage: 21,      // 签到页面
+    signPage: 21      // 签到页面
 };
 
 export const homeRoute = {
@@ -90,7 +90,7 @@ export const homeRoute = {
     [homeLinkType.pinGroup]: 'HtmlPage',
     [homeLinkType.limitBuy]: 'HtmlPage',
     [homeLinkType.signPage]: 'home/signIn/SignInPage',
-    [homeLinkType.showHome]: 'show/ShowListPage',
+    [homeLinkType.showHome]: 'show/ShowListPage'
 };
 
 //埋点
@@ -205,14 +205,14 @@ export function topicAdOnPress(data, item, p, title) {
  * @param data
  * @returns {Promise<*[]>}
  */
-export function asyncHandleTopicData(data,source,index = 0, itemIndex, topicTrack) {
-    data = data.data || {}
-    let config = data.config || {}
+export function asyncHandleTopicData(data, source, index = 0, itemIndex, topicTrack) {
+    data = data.data || {};
+    let config = data.config || {};
     let topicCode = config.topicCode;
-    data = data.widgets.data || [];
+    data = (data.widgets && data.widgets.data) || [];
 
-   let orderTrackParams = getSGscm(SGscmSource.topic, topicCode);
-    if (source){
+    let orderTrackParams = getSGscm(SGscmSource.topic, topicCode);
+    if (source) {
         orderTrackParams.sgspm = getSGspm_home(source, index, itemIndex).sgspm;
     }
 
