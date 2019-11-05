@@ -34,8 +34,8 @@ const api = {
     exchangeTokenCoin: ['/user/exchangeTokenCoin', { method: 'post', checkLogin: true }],
     //首页分类
     classify: ['/advertising/queryCategoryList', { method: 'get' }],
-    //秀豆兑换比例
-    getExchange: ['/common/config/getExchange', { method: 'get' }],
+    //秀豆兑换比例和兑换限制文案
+    getExchange: ['/common/config/getNewExchange', { method: 'get' }],
     //获取红包  type1:获取红包信息并领取 type2：获取红包信息
     getReceivePackage: ['/promotion/promotionPromoter/userReceivePackage', { method: 'get' }],
     //商品页面用户领取红包-->杨小猛
