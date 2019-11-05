@@ -49,7 +49,7 @@ export default class RequestDetailPage extends BasePage {
             borderBottomWidth: 0
         },
         titleStyle: {
-            opacity: 1
+            color: 'white'
         }
     };
 
@@ -66,7 +66,7 @@ export default class RequestDetailPage extends BasePage {
             borderBottomWidth: 0
         },
         titleStyle: {
-            opacity: 0
+            color: 'white'
         }
     };
 
@@ -341,9 +341,8 @@ export default class RequestDetailPage extends BasePage {
                 this.floatBarOptions.headerStyle.backgroundColor = msg.color || DesignRule.white;
                 this.floatBarOptions.leftNavImage = isWhite ? res.button.back_black : res.button.back_white;
                 this.floatBarOptions.titleStyle = isWhite ? {
-                    opacity: 1,
                     color: DesignRule.textColor_mainTitle
-                } : { opacity: 1, color: 'white' };
+                } : { color: 'white' };
                 this.$navigationBarOptions = this.floatBarOptions;
                 this.forceUpdate();
                 return;
@@ -447,4 +446,3 @@ export default class RequestDetailPage extends BasePage {
         );
     }
 }
-
