@@ -53,14 +53,27 @@ export default class PaymentPage extends BasePage {
     }
 
     componentDidMount() {
-        this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            this._cancelPay();
-            return true;
-        });
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                this.backHandler && this.backHandler.remove();
+            }
+        );
+
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+                    this._cancelPay();
+                    return true;
+                });
+            }
+        );
     }
 
     componentWillUnmount() {
-        this.backHandler && this.backHandler.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 
     $NavBarLeftPressed = () => {
@@ -186,10 +199,12 @@ export default class PaymentPage extends BasePage {
                     {
                         text: '确认离开', onPress: () => {
                             this._goToOrder();
+                            return true;
                         }
                     },
                     {
                         text: '继续支付', onPress: () => {
+                            return true;
                         }
                     }
                 ],
@@ -199,6 +214,7 @@ export default class PaymentPage extends BasePage {
     };
 
     _goToOrder(index) {
+        this.backHandler && this.backHandler.remove();
         const { bizType } = payment;
         if (this.params.from && this.params.from === 'capacity') {
             navigateBackToStore();
@@ -381,4 +397,3 @@ const styles = StyleSheet.create({
         fontSize: px2dp(17)
     }
 });
-
