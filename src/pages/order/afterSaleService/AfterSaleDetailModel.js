@@ -60,9 +60,9 @@ class AfterSaleDetailModel {
                 }
             });
 
-            if (data.refundDetail.status !== 1 &&
-                data.refundDetail.status!==undefined &&
-                data.refundDetail.status !== null){//status存在且不等于1
+            if (data.refundDetail.status !== 1 ||
+                data.refundDetail.status ===undefined ||
+                data.refundDetail.status === null){//status存在且不等于1
                 data.refundInfo.status = RefundStatus.REFUND_WILL_SUCCESS
             }
 
