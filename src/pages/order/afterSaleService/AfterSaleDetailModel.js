@@ -34,6 +34,10 @@ class AfterSaleDetailModel {
             data.exchangeExpress = data.exchangeExpress || {};
             data.refundAddress = data.refundAddress || {};
             data.product = data.product || {};
+
+            if (data.refundDetail){
+                data.refundInfo.refundAmount = data.refundDetail.refundAmount;
+            }
             data.refundInfo = data.refundInfo || {};
             data.refundDetail = data.refundDetail || {};
             if (data.service.secRemarks) {
@@ -51,7 +55,6 @@ class AfterSaleDetailModel {
             if (status === AfterStatus.WAIT_SUPPLIER_CANCLE_DEVLIER){
                 data.service.status = AfterStatus.STATUS_IN_REVIEW;
             }
-              data.refundInfo.refundAmount = data.refundDetail.refundAmount;
             ( data.refundDetail.refundItemList || [] ).forEach(item => {
                 if (item.payType === 1){//余额
                     data.refundInfo.accountAmount = item.refundAmount
@@ -60,9 +63,7 @@ class AfterSaleDetailModel {
                 }
             });
 
-            if (data.refundDetail.status !== 1 &&
-                data.refundDetail.status!==undefined &&
-                data.refundDetail.status !== null){//status存在且不等于1
+            if (data.refundInfo.isRefund === false){//status存在且不等于1
                 data.refundInfo.status = RefundStatus.REFUND_WILL_SUCCESS
             }
 

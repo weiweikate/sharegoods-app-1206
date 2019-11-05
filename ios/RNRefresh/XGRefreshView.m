@@ -70,9 +70,10 @@
              a.repeatCount = 1;
              [_line.rightLine addAnimation:a forKey:@""];
              [_line.leftLine addAnimation:a forKey:@""];
-             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.19 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                self.line.hidden = YES;
              });
+          [_anView stop];
           [_anView playFromProgress:0
               toProgress:1
           withCompletion:nil];

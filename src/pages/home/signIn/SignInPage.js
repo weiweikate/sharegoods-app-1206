@@ -77,7 +77,8 @@ export default class SignInPage extends BasePage {
         this.state = {
             loadingState: PageLoadingState.loading,
             signInData: null,
-            exchangeData: null,
+            exchangeString:'',
+            exchangeLimit:'',
             showModal: false,
             modalInfo: null,
             changeHeader: true,
@@ -185,13 +186,13 @@ export default class SignInPage extends BasePage {
      */
     getExchange = () => {
         HomeAPI.getExchange().then((data) => {
-            this.setState({
-                exchangeData: data.data
-            });
+            if(data.data){
+                this.setState({
+                    exchangeString: data.data.scale,
+                    exchangeLimit: data.data.limit,
+                });
+            }
         }).catch((error) => {
-            this.setState({
-                exchangeData: null
-            });
         });
     };
 
@@ -504,7 +505,7 @@ export default class SignInPage extends BasePage {
                             秀豆兑换1元现金券
                         </Text>
                         <Text style={styles.couponTagTextStyle}>
-                            {`${this.state.exchangeData}秀豆兑换1张劵\n无兑换限制，点击即可兑换`}
+                            {`${this.state.exchangeString}\n${this.state.exchangeLimit}`}
                         </Text>
                     </View>
                     <View style={{flex: 1}}/>
@@ -704,8 +705,7 @@ export default class SignInPage extends BasePage {
                               isSignIn={true}
                               signIn={this.userSign}
                               style={{marginTop: platformHeight, backgroundColor: '#F7F7F7', paddingBottom: 0}}/>
-                    {this.state.exchangeData ? this._couponRender() : null}
-                    {/*{this.state.exchangeData ? this._reminderRender() : null}*/}
+                    {(this.state.exchangeString && this.state.exchangeLimit) ? this._couponRender() : null}
                 </ScrollView>
                 {this.navBackgroundRender()}
                 {this.navRender()}
