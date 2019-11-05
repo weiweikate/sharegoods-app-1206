@@ -112,7 +112,7 @@ export class ActivityDidBeginView extends Component {
                 </View>
                 <View style={DidBeginViewStyles.rightView}>
                     <View style={{ marginLeft: 8, marginRight: 8 }}>
-                        <MRText style={DidBeginViewStyles.timeText}>{showTimeText}</MRText>
+                        <MRText style={DidBeginViewStyles.timeText} numberOfLines={1}>{showTimeText}</MRText>
                         <View style={DidBeginViewStyles.leaveView}>
                             <View style={[DidBeginViewStyles.progressView, { width: progressWidthS }]}/>
                             <View style={DidBeginViewStyles.leaveAmountView}>
@@ -154,7 +154,7 @@ const DidBeginViewStyles = StyleSheet.create({
     },
 
     rightView: {
-        flexDirection: 'row', alignItems: 'center',
+        flexDirection: 'row', alignItems: 'center', width: 130,
         backgroundColor: DesignRule.bgColor_yellow
     },
     timeText: {
