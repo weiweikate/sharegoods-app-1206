@@ -28,6 +28,7 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { MRText as Text } from '../../../components/ui';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
 import ShopCartRedNumView from './components/ShopCartRedNumView';
+import { getSGspm_search, SearchSource } from '../../../utils/OrderTrackUtil';
 
 const viewTypes = {
     rowView: 'rowView',
@@ -264,7 +265,7 @@ export default class SearchResultPage extends BasePage {
     _onPressAtIndex = (item) => {
         //埋点
         const { prodCode, name } = item || {};
-        let productIndex;
+        let productIndex = 0;
         this.state.productList.forEach((item1, index) => {
             if (item1.prodCode === prodCode) {
                 productIndex = index;
@@ -276,7 +277,8 @@ export default class SearchResultPage extends BasePage {
             spuCode: prodCode,
             spuName: name
         });
-        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,sgscm:this.params.sgscm,sgspm:this.params.sgspm });
+
+        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,sgscm:this.params.sgscm,...getSGspm_search(SearchSource.searchList,this.state.sortType,productIndex) });
     };
 
     //选择规格确认
