@@ -109,6 +109,7 @@ export const homePoint = {
     homeCategory: 31,// 类目搜索banner广告位
     homeDiy: 13,//自定义模块
     newNser: 15,//新人广告位
+    changeSkin:16 ,//换肤
 
 // 32：秀场banner推荐
 // 41：签到广告位

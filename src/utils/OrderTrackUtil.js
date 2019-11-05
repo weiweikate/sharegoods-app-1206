@@ -34,6 +34,7 @@ export const HomeSource = {
     launchAd: 11,//APP开机闪屏广告位
     newNser: 12,//新人专区
     gourp: 13,//拼团
+    changeSkin: 14,//换肤
 
 }
 

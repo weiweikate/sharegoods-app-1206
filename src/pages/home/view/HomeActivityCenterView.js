@@ -20,11 +20,11 @@ export default class HomeActivityCenterView extends Component {
             bridge.$toast('获取数据失败！');
             return;
         }
-        track(trackEvent.bannerClick, homeModule.bannerPoint(value, homePoint.newNser, 0));
+        track(trackEvent.bannerClick, homeModule.bannerPoint(value, homePoint.changeSkin, 0));
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);
-        navigate(router, { ...params,...getSGspm_home(HomeSource.newNser)});
+        navigate(router, { ...params,...getSGspm_home(HomeSource.changeSkin)});
     }
 
     render() {
