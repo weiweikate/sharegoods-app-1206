@@ -236,7 +236,9 @@ export function asyncHandleTopicData(data, source, index1 = 0, itemIndex, topicT
         //spm,scm
         item.orderTrackParams = orderTrackParams;
         //埋点方法
-        item.topicTrack = topicTrack(topicCode);
+        if (topicTrack){
+            item.topicTrack = topicTrack(topicCode);
+        }
         if (item.type === homeType.custom_goods) {
             item.itemHeight = GoodsCustomViewGetHeight(item);
             item.marginBottom = ScreenUtils.autoSizeWidth(0);
