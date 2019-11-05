@@ -129,7 +129,7 @@ export default class MyCouponsItems extends Component {
 
     renderModalContent = () => {
         const { invokeData, canInvoke } = this.state;
-        console.log('time', DateUtils.getDateDiff(invokeData.startTime));
+        console.log('time---', DateUtils.getDateDiff(invokeData.startTime));
         let time = invokeData.expireTime ? DateUtils.getDateDiff(invokeData.expireTime) : '';
         //判断是否存在配置地址，存在为true，不存在为false
         let redirectUrl = !EmptyUtils.isEmpty(invokeData.redirectUrl);
@@ -149,12 +149,13 @@ export default class MyCouponsItems extends Component {
                                       onPress={this.quitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
                     </TouchableOpacity>
-                    {!canInvoke && !redirectUrl ? null :<View style={{ height: '100%', width: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>}
+                    {!canInvoke && !redirectUrl ? null : <View
+                        style={{ height: '100%', width: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>}
                     {!canInvoke && !redirectUrl ? null :
                         <TouchableOpacity activeOpacity={0.7}
-                                          style={{justifyContent: 'center', alignItems: 'center', flex: 1}}
+                                          style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                                           onPress={() => this.commitTokenCoin(invokeData)}>
-                            <Text style={{color: '#0076FF', fontSize: px2dp(17)}} allowFontScaling={false}>
+                            <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>
                                 {canInvoke ? '确定' : '去使用'}
                             </Text>
                         </TouchableOpacity>
@@ -191,7 +192,7 @@ export default class MyCouponsItems extends Component {
     // 空布局
     _renderEmptyView = () => {
         if (this.state.isFirstLoad) {
-            return (<LoadingView style={{paddingTop: ScreenUtils.height/2-160}}/>);
+            return (<LoadingView style={{ paddingTop: ScreenUtils.height / 2 - 160 }}/>);
         } else {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

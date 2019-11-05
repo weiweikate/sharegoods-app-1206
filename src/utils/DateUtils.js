@@ -96,7 +96,6 @@ export const getDateDiff = (endDate) => {
         return false;
     }
     let diff = (Date.parse(new Date(endDate)) - Date.parse(new Date())) / 1000;
-
     if (diff <= 0) {
         return false;
     }
@@ -107,7 +106,7 @@ export const getDateDiff = (endDate) => {
         hours: 0,
         min: 0,
         sec: 0,
-        millisec: 0,
+        millisec: 0
     };
 
     if (diff >= (365.25 * 86400)) {
@@ -127,23 +126,23 @@ export const getDateDiff = (endDate) => {
         diff -= timeLeft.min * 60;
     }
     timeLeft.sec = diff;
-    if(timeLeft.days > 0){
+    if (timeLeft.days > 0) {
         return `${timeLeft.days > 0 ? timeLeft.days + '天' : ''}${timeLeft.hours > 0 ? timeLeft.hours + '时' : ''}${timeLeft.min > 0 ? timeLeft.min + '分' : ''}`;
 
-    }else if(timeLeft.hours > 0){
+    } else if (timeLeft.hours > 0) {
         return `${timeLeft.hours > 0 ? timeLeft.hours + '时' : ''}${timeLeft.min > 0 ? timeLeft.min + '分' : ''}`;
 
-    }else if(timeLeft.min > 0 ){
+    } else if (timeLeft.min > 0) {
         return `${timeLeft.min > 0 ? timeLeft.min + '分' : ''}`;
 
-    }else if(timeLeft.sec){
+    } else if (timeLeft.sec) {
         return `${timeLeft.sec > 0 ? timeLeft.sec + '秒' : ''}`;
 
     }
     return '';
-}
+};
 
-export const getDateDiffFun = (endDate,currentDate) => {
+export const getDateDiffFun = (endDate, currentDate) => {
     let diff = (Date.parse(new Date(endDate)) - Date.parse(new Date())) / 1000;
     if (diff <= 0) {
         return false;
@@ -178,7 +177,7 @@ export const getDateDiffFun = (endDate,currentDate) => {
     timeLeft.sec = diff;
 
     return timeLeft;
-}
+};
 
 
 export default {
