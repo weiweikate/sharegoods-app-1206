@@ -49,44 +49,6 @@ export default class DIYTopicList extends React.Component {
         };
     }
 
-    dataProvider = new DataProvider((r1, r2) => {
-        return r1 !== r2;
-    });
-
-    layoutProvider = new LayoutProvider((i) => {
-        return this.dataProvider.getDataForIndex(i) || {};
-    }, (type, dim) => {
-        dim.width = ScreenUtils.width;
-        switch (type.type) {
-            case homeType.custom_goods:
-            case homeType.custom_imgAD:
-            case homeType.custom_text:
-                dim.height = type.itemHeight;
-                break;
-            default:
-                dim.height = 0;
-        }
-    });
-
-    _keyExtractor = (item, index) => index + item.type;
-
-    _renderItem = (type, item, index) => {
-        type = type.type;
-        let p = { specialTopicId: this.props.data.linkCode };
-        if (type === homeType.custom_text) {
-            p.specialTopicArea = 6;
-            return <TextCustomView data={item} p={p}/>;
-        } else if (type === homeType.custom_imgAD) {
-            p.specialTopicArea = 1;
-            return <TopicImageAdView data={item} p={p}/>;
-        } else if (type === homeType.custom_goods) {
-            p.specialTopicArea = 3;
-            return <GoodsCustomView data={item} p={p}/>;
-        }
-        return <View/>;
-    };
-
-
     componentDidMount() {
         this.loadMoreDataUtil.onRefresh();
     }
@@ -123,5 +85,39 @@ export default class DIYTopicList extends React.Component {
             </View>
         );
     }
+
+    _keyExtractor = (item, index) => index + item.type;
+
+    dataProvider = new DataProvider((r1, r2) => {
+        return r1 !== r2;
+    });
+
+    layoutProvider = new LayoutProvider((i) => {
+        return this.dataProvider.getDataForIndex(i) || {};
+    }, (type, dim) => {
+        dim.width = ScreenUtils.width;
+        switch (type.type) {
+            case homeType.custom_goods:
+            case homeType.custom_imgAD:
+            case homeType.custom_text:
+                dim.height = type.itemHeight;
+                break;
+            default:
+                dim.height = 0;
+        }
+    });
+
+    _renderItem = (type, item, index) => {
+        type = type.type;
+        if (type === homeType.custom_text) {
+            return <TextCustomView data={item} />;
+        } else if (type === homeType.custom_imgAD) {
+            return <TopicImageAdView data={item} />;
+        } else if (type === homeType.custom_goods) {
+            return <GoodsCustomView data={item} />;
+        }
+        return <View/>;
+    };
+
 }
 

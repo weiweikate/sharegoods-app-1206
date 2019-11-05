@@ -95,6 +95,7 @@ export const getDateDiff = (endDate) => {
     if (!endDate) {
         return false;
     }
+
     let diff = (Date.parse(new Date(endDate)) - Date.parse(new Date())) / 1000;
 
     if (diff <= 0) {

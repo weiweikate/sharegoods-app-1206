@@ -35,9 +35,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import TaskView from '../view/TaskView';
 import taskModel, {mineTaskModel} from '../model/TaskModel';
 import SignInBannerView from './components/SignInBannerView';
-import RollNumTextView from '../../../comm/components/rollnumtext/RollNumTextView';
+import ScrollNumView from '../../../comm/components/rollnumtext/ScrollNumView';
+import { getSGspm_signIn, SignInSource } from '../../../utils/OrderTrackUtil';
 
-const {px2dp,isIphoneMax,isIphonex} = ScreenUtils;
+const {px2dp,safeBottom} = ScreenUtils;
 
 const platformHeight = 10;
 
@@ -61,8 +62,8 @@ const size = {
     height: 161
 };
 const adSize = {
-    width: 345,
-    height: 115
+    width: 750,
+    height: 240
 }
 const headerBgHeight = ScreenUtils.getImgHeightWithWidth(size);
 const adHeight = ScreenUtils.getImgHeightWithWidth(adSize);
@@ -76,7 +77,8 @@ export default class SignInPage extends BasePage {
         this.state = {
             loadingState: PageLoadingState.loading,
             signInData: null,
-            exchangeData: null,
+            exchangeString:'',
+            exchangeLimit:'',
             showModal: false,
             modalInfo: null,
             changeHeader: true,
@@ -184,13 +186,13 @@ export default class SignInPage extends BasePage {
      */
     getExchange = () => {
         HomeAPI.getExchange().then((data) => {
-            this.setState({
-                exchangeData: data.data
-            });
+            if(data.data){
+                this.setState({
+                    exchangeString: data.data.scale,
+                    exchangeLimit: data.data.limit,
+                });
+            }
         }).catch((error) => {
-            this.setState({
-                exchangeData: null
-            });
         });
     };
 
@@ -225,7 +227,7 @@ export default class SignInPage extends BasePage {
     };
 
     showMore = () => {
-        track(trackEvent.SignInPageBtnClick,{signInPageBtnName:'查看规则'});
+        track(trackEvent.SignInPageBtnClick, {signInPageBtnName: '查看规则'});
         this.$navigate(RouterMap.HtmlPage, {
             title: '签到规则',
             uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/signInRule.html`
@@ -237,7 +239,7 @@ export default class SignInPage extends BasePage {
         if (this.signinRequesting) {
             return;
         }
-        track(trackEvent.SignInPageBtnClick,{signInPageBtnName:'点击签到'});
+        track(trackEvent.SignInPageBtnClick, {signInPageBtnName: '点击签到'});
         this.signinRequesting = true;
         let count;
         if (this.state.signInData[3].continuous) {
@@ -359,12 +361,8 @@ export default class SignInPage extends BasePage {
             <View style={styles.signInInfoWrapper}>
                 <View style={styles.accountWrapper}>
                     <Image style={styles.beanStyle} source={bean}/>
-                    <RollNumTextView
-                        speed={100}
-                        fontSize={px2dp(30)}
-                        num={user.userScore ? user.userScore : 0}
-                        singleStyle={{color: '#FF9502'}}
-                        contentStyle={{marginLeft: px2dp(10)}}/>
+                    <ScrollNumView style={{flex: 1, height: px2dp(30)}} color={'#FF9502'}
+                                   num={user.userScore ? user.userScore : 0} fontSize={px2dp(30)}/>
                 </View>
                 {this.state.showMore ? <View>
                     <View style={styles.circleWrapper}>
@@ -507,7 +505,7 @@ export default class SignInPage extends BasePage {
                             秀豆兑换1元现金券
                         </Text>
                         <Text style={styles.couponTagTextStyle}>
-                            {`${this.state.exchangeData}秀豆兑换1张劵\n无兑换限制，点击即可兑换`}
+                            {`${this.state.exchangeString}\n${this.state.exchangeLimit}`}
                         </Text>
                     </View>
                     <View style={{flex: 1}}/>
@@ -642,18 +640,19 @@ export default class SignInPage extends BasePage {
         ) : null;
     }
 
-    adTouch = (data) => {
+    adTouch = (data,index) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 TrackApi.BannerClick({
                     bannerType: data.linkType,
                     bannerContent: data.linkTypeCode,
-                    bannerLocation: 41
+                    bannerLocation: 41,
+                    bannerRank:index
                 });
 
                 const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
                 let params = homeModule.paramsNavigate(data);
-                routePush(router, params);
+                routePush(router,{...params,...getSGspm_signIn(SignInSource.top,index)});
             }}>
                 <View style={styles.adTouchStyle}/>
             </TouchableWithoutFeedback>
@@ -665,9 +664,9 @@ export default class SignInPage extends BasePage {
             const {linkOne, linkTwo, linkThree} = this.state.adData;
             return (
                 <ImageLoader source={{uri: this.state.adSource}} style={styles.adContain}>
-                    {linkOne && linkOne.linkType ? this.adTouch(linkOne) : null}
-                    {linkTwo && linkTwo.linkType? this.adTouch(linkTwo) : null}
-                    {linkThree && linkThree.linkType? this.adTouch(linkThree) : null}
+                    {linkOne && linkOne.linkType ? this.adTouch(linkOne,0) : null}
+                    {linkTwo && linkTwo.linkType ? this.adTouch(linkTwo,1) : null}
+                    {linkThree && linkThree.linkType ? this.adTouch(linkThree,2) : null}
                 </ImageLoader>
             )
         }
@@ -689,7 +688,7 @@ export default class SignInPage extends BasePage {
 
         console.log(user);
         return (
-            <View style={[styles.container,{marginBottom:(isIphoneMax || isIphonex) ? 50 : 0}]}>
+            <View style={[styles.container,{marginBottom:safeBottom}]}>
                 <ScrollView
                     onScroll={this._onScroll}
                     scrollEventThrottle={30}
@@ -706,8 +705,7 @@ export default class SignInPage extends BasePage {
                               isSignIn={true}
                               signIn={this.userSign}
                               style={{marginTop: platformHeight, backgroundColor: '#F7F7F7', paddingBottom: 0}}/>
-                    {this.state.exchangeData ? this._couponRender() : null}
-                    {/*{this.state.exchangeData ? this._reminderRender() : null}*/}
+                    {(this.state.exchangeString && this.state.exchangeLimit) ? this._couponRender() : null}
                 </ScrollView>
                 {this.navBackgroundRender()}
                 {this.navRender()}

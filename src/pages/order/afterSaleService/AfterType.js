@@ -31,6 +31,7 @@ export const RefundStatus = {
     REFUND_FAIL_THIRD:    3, //三方退款失败
     REFUND_FAIL_PLATFORM: 4, //平台退款失败
     REFUND_CANCEL:        5, //取消退款
+    REFUND_WILL_SUCCESS:  99,//退款中
 };
 
 export function isRefundFail(refundStatus) {

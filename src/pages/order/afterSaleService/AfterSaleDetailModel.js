@@ -1,7 +1,7 @@
 import { action, observable } from 'mobx';
 // import TimerMixin from 'react-timer-mixin';
 import { DeviceEventEmitter } from 'react-native';
-import {AfterStatus, SubStatus} from './AfterType'
+import { AfterStatus, RefundStatus, SubStatus } from './AfterType';
 import orderApi from '../api/orderApi'
 
 class AfterSaleDetailModel {
@@ -34,6 +34,10 @@ class AfterSaleDetailModel {
             data.exchangeExpress = data.exchangeExpress || {};
             data.refundAddress = data.refundAddress || {};
             data.product = data.product || {};
+
+            if (data.refundDetail){
+                data.refundInfo.refundAmount = data.refundDetail.refundAmount;
+            }
             data.refundInfo = data.refundInfo || {};
             data.refundDetail = data.refundDetail || {};
             if (data.service.secRemarks) {
@@ -51,7 +55,6 @@ class AfterSaleDetailModel {
             if (status === AfterStatus.WAIT_SUPPLIER_CANCLE_DEVLIER){
                 data.service.status = AfterStatus.STATUS_IN_REVIEW;
             }
-              data.refundInfo.refundAmount = data.refundDetail.refundAmount;
             ( data.refundDetail.refundItemList || [] ).forEach(item => {
                 if (item.payType === 1){//余额
                     data.refundInfo.accountAmount = item.refundAmount
@@ -59,6 +62,10 @@ class AfterSaleDetailModel {
                     data.refundInfo.cashAmount = item.refundAmount
                 }
             });
+
+            if (data.refundInfo.isRefund === false){//status存在且不等于1
+                data.refundInfo.status = RefundStatus.REFUND_WILL_SUCCESS
+            }
 
             this.pageData = data
             let cancelTime = service.cancelTime || 0;

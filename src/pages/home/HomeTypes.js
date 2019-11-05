@@ -1,5 +1,4 @@
 import RouterMap, { routePush } from '../../navigation/RouterMap';
-import { track, trackEvent } from '../../utils/SensorsTrack';
 import { GoodsCustomViewGetHeight } from './view/GoodsCustomView';
 import { ImageAdViewGetHeight } from './view/TopicImageAdView';
 import bridge from '../../utils/bridge';
@@ -108,7 +107,10 @@ export const homePoint = {
     homeExpand: 9,// app通用广告位
 // 21：拼店首页banner推荐位
     homeCategory: 31,// 类目搜索banner广告位
-    homeDiy: 13//自定义模块
+    homeDiy: 13,//自定义模块
+    newNser: 15,//新人广告位
+    changeSkin:16 ,//换肤
+
 // 32：秀场banner推荐
 // 41：签到广告位
 // 51：登录/注册页面广告位
@@ -128,11 +130,20 @@ export const ContentType = {
     tab: 11//tab导航
 };
 
-
+/**
+ * 自定义专题点击
+ * @param data   一块数据{type: 'goods', data:[item]}
+ * @param item   子数据
+ * @param p 原埋点需要 暂时废弃
+ * @param title 原埋点需要 暂时废弃
+ */
 export function topicAdOnPress(data, item, p, title) {
     let p2 = {};
+    //获取scm，spm
     let orderTrackParams = data.orderTrackParams;
+    //调用埋点方法
     data.topicTrack && data.topicTrack();
+
     let linkValues = item.linkValue;
     let linkType = item.linkType;
     let linkValue = '';
@@ -145,6 +156,7 @@ export function topicAdOnPress(data, item, p, title) {
         }
 
     }
+    /** 进行类型判断，获取路由，与参数*/
     let route = '';
     let params = {};
     switch (linkType) {
@@ -188,15 +200,15 @@ export function topicAdOnPress(data, item, p, title) {
     }
     if (route) {
         if (orderTrackParams) {
+            //将scm，spm传到下一个页面
             params = { ...params, ...orderTrackParams };
         }
         routePush(route, params);
     }
-    if (p) {
-        p.contentValue = title || '';
-        track(trackEvent.SpecialTopicBtnClick, { ...p });
-    }
-
+    // if (p) {
+    //     p.contentValue = title || '';
+    //     track(trackEvent.SpecialTopicBtnClick, { ...p });
+    // }
 
 }
 
@@ -205,7 +217,7 @@ export function topicAdOnPress(data, item, p, title) {
  * @param data
  * @returns {Promise<*[]>}
  */
-export function asyncHandleTopicData(data, source, index = 0, itemIndex, topicTrack) {
+export function asyncHandleTopicData(data, source, index1 = 0, itemIndex, topicTrack) {
     data = data.data || {};
     let config = data.config || {};
     let topicCode = config.topicCode;
@@ -213,7 +225,7 @@ export function asyncHandleTopicData(data, source, index = 0, itemIndex, topicTr
 
     let orderTrackParams = getSGscm(SGscmSource.topic, topicCode);
     if (source) {
-        orderTrackParams.sgspm = getSGspm_home(source, index, itemIndex).sgspm;
+        orderTrackParams.sgspm = getSGspm_home(source, index1, itemIndex).sgspm;
     }
 
     data = [...data];
@@ -221,8 +233,12 @@ export function asyncHandleTopicData(data, source, index = 0, itemIndex, topicTr
     let count = data.length;
     for (let index = 0; index < count; index++) {
         let item = data[index];
+        //spm,scm
         item.orderTrackParams = orderTrackParams;
-        item.topicTrack = topicTrack;
+        //埋点方法
+        if (topicTrack){
+            item.topicTrack = topicTrack(topicCode);
+        }
         if (item.type === homeType.custom_goods) {
             item.itemHeight = GoodsCustomViewGetHeight(item);
             item.marginBottom = ScreenUtils.autoSizeWidth(0);

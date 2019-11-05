@@ -64,7 +64,8 @@ export default class GoodsCell extends Component {
             contentIndex: index,
             tabName: homeModule.tabName
         });
-        topicAdOnPress({},{linkType: data.linkType, linkValue: [data.linkCode]},null,null,{...getSGspm_home(HomeSource.recommend,index, homeModule.tabListIndex)});
+        data.orderTrackParams = {...getSGspm_home(HomeSource.recommend,homeModule.tabListIndex,index)};
+        topicAdOnPress(data,{linkType: data.linkType, linkValue: [data.linkCode]},null,null);
     }
 
     render() {

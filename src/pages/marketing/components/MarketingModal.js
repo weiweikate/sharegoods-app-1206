@@ -20,6 +20,7 @@ import user from '../../../model/user';
 import RouterMap from '../../../navigation/RouterMap';
 import homeController from '../controller/HomeController';
 import {TrackApi} from '../../../utils/SensorsTrack';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 @observer
 export default class MarketingModal extends PureComponent {
@@ -70,7 +71,7 @@ export default class MarketingModal extends PureComponent {
 
                     const router = homeModule.homeNavigate(currentContent.linkType, currentContent.linkTypeCode);
                     let params = homeModule.paramsNavigate(currentContent);
-                    routePush(router, params);
+                    routePush(router,{...params,...getSGspm_home(HomeSource.alert)} );
                 }}
                 onClose={() => {
                     marketingUtils.closeModal();
