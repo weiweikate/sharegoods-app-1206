@@ -42,6 +42,10 @@ export const SignInSource = {
     banner:202,
     task:203
 }
+
+export const SearchSource = {
+    searchList: 300
+}
 export function getSGscm(source = 'none',id = 'none', strategy = 'none', algorithm = 'none') {
     return {sgscm: source +'.'+ id +'.'+ strategy +'.'+ algorithm}
 }
@@ -59,4 +63,11 @@ export function getSGspm_signIn(source,index = 0, itemIndex) {
         return  {sgspm:'1.2.'+source+'.'+index+'_'+itemIndex}
     }
     return {sgspm:'1.2.'+source+'.'+index}
+}
+
+export function getSGspm_search(source,index = 0, itemIndex) {
+    if (itemIndex || itemIndex === 0){
+        return  {sgspm:'1.3.'+source+'.'+index+'_'+itemIndex}
+    }
+    return {sgspm:'1.3.'+source+'.'+index}
 }
