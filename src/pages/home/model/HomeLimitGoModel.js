@@ -169,6 +169,7 @@ export class LimitGoModules {
             console.log(error);
         }
     });
+
     /**
      * 提前关注
      * @param spu
@@ -213,7 +214,7 @@ export class LimitGoModules {
             (sbuData.productDetailList || []).forEach((item, index) => {
                 //处理自定义专题
                 if (item.specialSubject) {
-                    promises.push(asyncHandleTopicData({ data: item.specialSubject},HomeSource.limitGo,i, index, this.topicTrack(i,index)).then((data) => {
+                    promises.push(asyncHandleTopicData({ data: item.specialSubject }, HomeSource.limitGo, i, index, this.topicTrack(i, index)).then((data) => {
                         //将处理完的数组插回原来的数组，替代原来老自定义专题数据
                         sbuData.productDetailList.splice(sbuData.productDetailList.indexOf(item), 1, ...data);
                     }));
@@ -239,7 +240,7 @@ export class LimitGoModules {
      * @param index 第几个
      * @returns {function(*): Function}
      */
-    topicTrack=(i, index)=>(specialTopicId)=>()=>{
+    topicTrack = (i, index) => (specialTopicId) => () => {
         // 限时购商品点击埋点
         let activityData = this.spikeList[i];
         track(trackEvent.SpikeProdClick,
@@ -250,7 +251,7 @@ export class LimitGoModules {
                 'productIndex': index,
                 specialTopicId
             });
-    }
+    };
 
 }
 
