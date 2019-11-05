@@ -35,9 +35,13 @@ export const HomeSource = {
     newNser: 12,//新人专区
     gourp: 13,//拼团
     changeSkin: 14,//换肤
-
 }
 
+export const SignInSource = {
+    top:201,
+    banner:202,
+    task:203
+}
 export function getSGscm(source = 'none',id = 'none', strategy = 'none', algorithm = 'none') {
     return {sgscm: source +'.'+ id +'.'+ strategy +'.'+ algorithm}
 }
@@ -48,4 +52,11 @@ export function getSGspm_home(source,index = 0, itemIndex) {
       return  {sgspm:'1.1.'+source+'.'+index+'_'+itemIndex}
     }
   return {sgspm:'1.1.'+source+'.'+index}
+}
+
+export function getSGspm_signIn(source,index = 0, itemIndex) {
+    if (itemIndex || itemIndex === 0){
+        return  {sgspm:'1.2.'+source+'.'+index+'_'+itemIndex}
+    }
+    return {sgspm:'1.2.'+source+'.'+index}
 }

@@ -13,6 +13,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import MRBannerViewComponent from '../../../../components/ui/bannerView/MRBannerViewComponent';
 import { homeModule } from '../../model/Modules';
 import {TrackApi} from '../../../../utils/SensorsTrack';
+import { getSGspm_signIn, SignInSource } from '../../../../utils/OrderTrackUtil';
 
 const {px2dp} = ScreenUtils;
 const size = {
@@ -39,7 +40,7 @@ export default class SignInBannerView extends PureComponent {
         if (data) {
             const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
             let params = homeModule.paramsNavigate(data);
-            navigate(router, params);
+            navigate(router, {...params,...getSGspm_signIn(SignInSource.banner,index)});
         }
     };
 

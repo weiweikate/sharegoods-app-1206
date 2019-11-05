@@ -37,6 +37,7 @@ import taskModel, {mineTaskModel} from '../model/TaskModel';
 import {SafeAreaView} from 'react-navigation';
 import SignInBannerView from './components/SignInBannerView';
 import ScrollNumView from '../../../comm/components/rollnumtext/ScrollNumView';
+import { getSGspm_signIn, SignInSource } from '../../../utils/OrderTrackUtil';
 
 const {px2dp} = ScreenUtils;
 
@@ -652,7 +653,7 @@ export default class SignInPage extends BasePage {
 
                 const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
                 let params = homeModule.paramsNavigate(data);
-                routePush(router, params);
+                routePush(router,{...params,...getSGspm_signIn(SignInSource.top,index)});
             }}>
                 <View style={styles.adTouchStyle}/>
             </TouchableWithoutFeedback>
