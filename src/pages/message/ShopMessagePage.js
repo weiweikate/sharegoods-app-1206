@@ -100,7 +100,7 @@ export default class ShopMessagePage extends BasePage {
                 this.setState({ viewData: arrData, netFailedInfo: null, loadingState: PageLoadingState.success });
             } else {
                 this.setState({ isEmpty: true ,netFailedInfo: null, loadingState: PageLoadingState.success});
-                Toast.toast(res.msg);
+                Toast.$toast(res.msg);
             }
         }).catch((error) => {
             this.setState({ isEmpty: true,netFailedInfo: error, loadingState: PageLoadingState.fail });

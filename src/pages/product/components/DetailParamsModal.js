@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
     },
     topCloseBtn: {
         flex: 1
-
     },
     bottomView: {
         height: ScreenUtils.autoSizeHeight(440), borderTopLeftRadius: 10, borderTopRightRadius: 10,

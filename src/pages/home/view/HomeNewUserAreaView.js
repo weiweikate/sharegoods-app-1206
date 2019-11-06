@@ -7,6 +7,9 @@ import StringUtils from '../../../utils/StringUtils';
 import { homeNewUserModel } from '../model/HomeNewUserModel';
 import { homeModule } from '../model/Modules';
 import bridge from '../../../utils/bridge';
+import { homePoint } from '../HomeTypes';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { getSGspm_home, HomeSource } from '../../../utils/OrderTrackUtil';
 
 const { width } = ScreenUtils;
 
@@ -18,10 +21,11 @@ export default class HomeNewUserAreaView extends Component {
             bridge.$toast('获取数据失败！');
             return;
         }
+        track(trackEvent.bannerClick, homeModule.bannerPoint(value, homePoint.newNser, 0));
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);
-        navigate(router, { ...params });
+        navigate(router, { ...params, ...getSGspm_home(HomeSource.newNser) });
     }
 
     render() {

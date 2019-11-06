@@ -31,10 +31,21 @@ export const HomeSource = {
     hot: 8,//首页超值热卖
     recommend: 9,//为你推荐
     float: 10,//右下角浮动广告位
-    launchAd: 11//APP开机闪屏广告位
-
+    launchAd: 11,//APP开机闪屏广告位
+    newNser: 12,//新人专区
+    gourp: 13,//拼团
+    changeSkin: 14,//换肤
 }
 
+export const SignInSource = {
+    top:201,
+    banner:202,
+    task:203
+}
+
+export const SearchSource = {
+    searchList: 300
+}
 export function getSGscm(source = 'none',id = 'none', strategy = 'none', algorithm = 'none') {
     return {sgscm: source +'.'+ id +'.'+ strategy +'.'+ algorithm}
 }
@@ -45,4 +56,18 @@ export function getSGspm_home(source,index = 0, itemIndex) {
       return  {sgspm:'1.1.'+source+'.'+index+'_'+itemIndex}
     }
   return {sgspm:'1.1.'+source+'.'+index}
+}
+
+export function getSGspm_signIn(source,index = 0, itemIndex) {
+    if (itemIndex || itemIndex === 0){
+        return  {sgspm:'1.2.'+source+'.'+index+'_'+itemIndex}
+    }
+    return {sgspm:'1.2.'+source+'.'+index}
+}
+
+export function getSGspm_search(source,index = 0, itemIndex) {
+    if (itemIndex || itemIndex === 0){
+        return  {sgspm:'1.3.'+source+'.'+index+'_'+itemIndex}
+    }
+    return {sgspm:'1.3.'+source+'.'+index}
 }

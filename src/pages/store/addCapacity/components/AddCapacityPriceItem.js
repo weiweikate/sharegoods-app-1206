@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import res from '../../res';
@@ -84,7 +84,7 @@ const stylesItem = StyleSheet.create({
         fontSize: 17, color: DesignRule.textColor_redWarn
     },
     oPriceText: {
-        fontSize: 10, color: DesignRule.textColor_instruction, textDecorationLine: 'line-through',lineHeight:30
+        fontSize: 10, color: DesignRule.textColor_instruction, textDecorationLine: 'line-through', lineHeight: 30
     },
     rightBottomView: {
         flexDirection: 'row', alignItems: 'center', marginRight: 10, justifyContent: 'space-between'
@@ -156,7 +156,8 @@ export class PriceBottomView extends Component {
                 orderParamVO: {
                     orderProducts: orderProducts,
                     source: 2
-                }
+                },
+                from: 'capacity'
             });
         }).catch((e) => {
             bridge.$toast(e.msg);

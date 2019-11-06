@@ -22,6 +22,7 @@ import store from '@mr/rn-store';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { IntervalMsgNavigate } from '../../../comm/components/IntervalMsgView';
 import { homeType } from '../HomeTypes';
+import { getSGspm_signIn, SignInSource } from '../../../utils/OrderTrackUtil';
 
 const { px2dp } = ScreenUtil;
 
@@ -187,11 +188,11 @@ class TaskModel {
         this.missionBtnClickEvent(item);
         if (item.status === 0) {
             let { interactiveCode, interactiveValue, category } = item;
-            let extraParams = {}
+            let extraParams = {};
             if (category === 1) {//1-分享类任务
-                extraParams={openShareModal: true}
-            }else  if (category === 2){//2-浏览类任务
-                extraParams={paramsStr: '&category=2'}
+                extraParams = { openShareModal: true };
+            } else if (category === 2) {//2-浏览类任务
+                extraParams = { paramsStr: '&category=2', ...getSGspm_signIn(SignInSource.task) };
             }
             IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue, extraParams);
             return;
@@ -260,8 +261,9 @@ class TaskModel {
 
     /** 埋点相关*/
     boxBtnClickEvent(item) {
-        track(trackEvent.BoxBtnClick, { boxNum: this.boxs.indexOf(item),
-            userValue: this.progress ,
+        track(trackEvent.BoxBtnClick, {
+            boxNum: this.boxs.indexOf(item),
+            userValue: this.progress,
             missionType: this.missionType
         });
     }

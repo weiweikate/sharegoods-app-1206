@@ -28,7 +28,7 @@ export default class ShopAssistantDetailPage extends BasePage {
     _NavBarRenderRightItem = () => {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => {
                         this.$navigateBack();
                     }} style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
                         <Image source={NavLeft} style={{ width: 30, height: 30 }}/>

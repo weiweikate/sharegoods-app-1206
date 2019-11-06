@@ -123,7 +123,9 @@ export default class ShopCartPage extends BasePage {
         return (
             <View style={styles.listBgContent}>
                 <SwipeListView
+                    swipeRowStyle={{ width: DesignRule.width - px2dp(30), marginLeft: px2dp(15) }}
                     extraData={this.state}
+                    style={{ width: DesignRule.width }}
                     sections={shopCartStore.cartData}
                     useSectionList={true}
                     disableRightSwipe={true}
@@ -260,6 +262,7 @@ const styles = StyleSheet.create({
     listBgContent: {
         justifyContent: 'center',
         alignItems: 'center',
+        width: ScreenUtils.width,
         flex: 1
     },
     standaloneRowBack: {

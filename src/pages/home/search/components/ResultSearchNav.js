@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    Image
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
@@ -13,7 +8,7 @@ import { MRTextInputWithCancel } from '../../../../components/ui/UIText';
 
 const {
     button: {
-        icon_header_back: navBack
+        back_black: navBack
     },
     search: {
         verticalRow,

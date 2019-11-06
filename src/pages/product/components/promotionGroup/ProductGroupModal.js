@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, ScrollView } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
@@ -317,9 +317,11 @@ const stylesDesc = StyleSheet.create({
         width: ScreenUtils.width
     },
     container: {
-        height: ScreenUtils.autoSizeHeight(405),
+        height: ScreenUtils.autoSizeWidth(405) + ScreenUtils.safeBottom,
         borderTopLeftRadius: 10, borderTopRightRadius: 10,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        paddingBottom: ScreenUtils.safeBottom,
+        marginBottom: Platform.OS === 'ios' ? 0 : -ScreenUtils.statusBarHeight
     },
     topView: {
         flexDirection: 'row', justifyContent: 'center', alignItems: 'center',

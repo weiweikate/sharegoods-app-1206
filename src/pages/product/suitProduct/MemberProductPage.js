@@ -27,6 +27,7 @@ import CommShareModal from '../../../comm/components/CommShareModal';
 import RouterMap from '../../../navigation/RouterMap';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import user from '../../../model/user';
+import { trackEvent } from '../../../utils/SensorsTrack';
 
 @observer
 export default class MemberProductPage extends BasePage {
@@ -163,7 +164,7 @@ export default class MemberProductPage extends BasePage {
 
     _renderContent = () => {
         const { detailImages, mainImages } = this.memberProductModel;
-        const { afterSaleLimitText, afterSaleTip, shareContent } = this.memberProductModel;
+        const { afterSaleLimitText, afterSaleTip, shareContent, totalProPrice, totalPrice } = this.memberProductModel;
         const { productCode } = this.params;
         const htmlUrl = `${apiEnvironment.getCurrentH5Url()}/giftpack-product?spucode=${productCode}&upuserid=${user.code || ''}&index=0`;
         return (
@@ -181,9 +182,26 @@ export default class MemberProductPage extends BasePage {
                 <MemberSubAlert ref={(ref) => this.MemberSubAlert = ref} memberProductModel={this.memberProductModel}/>
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
+                                trackParmas={{
+                                    spuCode: productCode,
+                                    spuName: shareContent
+                                }}
+                                trackEvent={trackEvent.Share}
+                                type={'Image'}
+                                imageJson={{
+                                    monthSaleType: 5,
+                                    imageUrlStr: mainImages[0],
+                                    titleStr: `${shareContent}`,
+                                    retailPrice: `￥${totalProPrice}`,
+                                    priceType: ['礼包', '优惠套餐'],
+                                    priceStr: `￥${totalPrice}`,
+                                    QRCodeStr: htmlUrl,
+                                    shareMoney: '',
+                                    spellPrice: ''
+                                }}
                                 webJson={{
                                     title: shareContent,
-                                    dec: '',
+                                    dec: '套餐',
                                     linkUrl: htmlUrl,
                                     thumImage: mainImages[0]
                                 }}/>

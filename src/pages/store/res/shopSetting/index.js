@@ -11,5 +11,6 @@ const index = {
     store_level_2: require('../shopSetting/store_level_2.jpg'),
     store_level_3: require('../shopSetting/store_level_3.jpg'),
     addTutor: require('./addTutor.png'),
+    shopCloseAlert: require('./shopCloseAlert.png'),
 };
 export default index;

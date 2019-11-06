@@ -4,9 +4,7 @@ import BasePage from '../../../BasePage';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import bridge from '../../../utils/bridge';
-import ViewPager from '../../../components/ui/ViewPager';
 import UIText from '../../../components/ui/UIText';
-import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../../order/res';
 import ImageLoad from '@mr/image-placeholder';
@@ -14,7 +12,7 @@ import { MRText as Text } from '../../../components/ui';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import { homeModule } from '../model/Modules';
 import RouterMap from '../../../navigation/RouterMap';
-import {PageLoadingState} from '../../../components/pageDecorator/PageState';
+import StringUtils from '../../../utils/StringUtils';
 
 const icon_search = res.search;
 
@@ -30,11 +28,9 @@ export default class CategorySearchPage extends BasePage {
         super(props);
         this.state = {
             leftIndex: 0,
-            swiperShow: false,
-            bannerData: [],
+            bannerData: {},
             nameArr: [],
-            sectionArr: [],
-            loadingState: PageLoadingState.loading,
+            sectionArr: []
         };
     }
 
@@ -42,25 +38,15 @@ export default class CategorySearchPage extends BasePage {
         title: '商品分类'
     };
 
-    $getPageStateOptions = () => {
-        return {
-            loadingState: this.state.loadingState,
-            loadingProps:{
-            },
-        };
-    };
-
     componentDidMount() {
-        // this.$loadingShow('加载中');
-        setTimeout(() => {
-            let typeId = this.params.typeId;
-            this.getTypeList(typeId);
-            if (typeId) {
-                this._getTypeSection(typeId);
-            } else {
-                this.getHotSection();
-            }
-        }, 100);
+        this.$loadingShow('加载中');
+        let typeId = this.params.typeId;
+        this.getTypeList(typeId);
+        if (typeId) {
+            this._getTypeSection(typeId);
+        } else {
+            this.getHotSection();
+        }
     }
 
     componentWillUnmount() {
@@ -75,15 +61,15 @@ export default class CategorySearchPage extends BasePage {
             // 将为您推荐id设置为-10
             let item = { id: -10, name: '为您推荐' };
             datas.unshift(item);
+            let index = datas.findIndex((val) => {
+                // 这里只能用==，类型可能不一样
+                return val.id == typeId;
+            });
             this.setState({
-                nameArr: datas || [],
-                loadingState: PageLoadingState.success
+                nameArr: datas || []
             }, () => {
                 // 滚动到指定位置
                 if (typeId) {
-                    let index = datas.findIndex((val) => {
-                        return val.id === typeId;
-                    });
                     if (index > -1) {
                         // 找到了对应分类
                         if (this.state.leftIndex !== index) {
@@ -98,7 +84,7 @@ export default class CategorySearchPage extends BasePage {
                 }
             });
         }).catch((data) => {
-            this.setState({loadingState: PageLoadingState.fail})
+            this.$loadingDismiss();
             bridge.$toast(data.msg);
         });
     };
@@ -109,30 +95,15 @@ export default class CategorySearchPage extends BasePage {
             let datas = response.data || {};
             this.setState({
                 sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList || [] }],
-                bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
+                bannerData: {
                     img: datas.img,
                     linkType: datas.linkType,
                     linkTypeCode: datas.linkTypeCode
-                }]
-            })
-            ;
+                }
+            });
         }).catch((data) => {
             bridge.$toast(data.msg);
         });
-    };
-
-    renderViewPageItem = (item) => {
-        return (
-            <TouchableOpacity onPress={() => {
-                this.clickBanner(item);
-            }} activeOpacity={0.7}>
-                <ImageLoad
-                    source={{ uri: item.img }}
-                    borderRadius={5}
-                    style={{ width: bannerW, height: bannerH, borderRadius: 5, marginLeft: 10, marginRight: 10 }}
-                />
-            </TouchableOpacity>
-        );
     };
 
     go2SearchPage = () => {
@@ -148,8 +119,8 @@ export default class CategorySearchPage extends BasePage {
     };
 
     _render() {
+        let hasBanner = StringUtils.isNoEmpty(this.state.bannerData.img);
         return (
-
             <View style={{ flexDirection: 'column' }}>
                 <View style={{ height: 56, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={styles.searchBox} activeOpacity={0.7} onPress={() => this.go2SearchPage()}>
@@ -182,38 +153,34 @@ export default class CategorySearchPage extends BasePage {
                         width: bannerW + 20,
                         flexDirection: 'column',
                         backgroundColor: 'white',
-                        paddingTop: this.state.bannerData.length > 0 ? 10 : 0,
+                        paddingTop: hasBanner ? 10 : 0,
                         height: ScreenUtils.height - 56 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
                     }}>
                         {
-                            this.state.swiperShow ?
-                                <ViewPager swiperShow={this.state.swiperShow}
-                                           arrayData={this.state.bannerData}
-                                           renderItem={(item) => this.renderViewPageItem(item)}
-                                           dotStyle={{
-                                               height: 5,
-                                               width: 5,
-                                               borderRadius: 5,
-                                               backgroundColor: 'white',
-                                               opacity: 0.4
-                                           }}
-                                           activeDotStyle={{
-                                               height: 5,
-                                               width: 20,
-                                               borderRadius: 5,
-                                               backgroundColor: 'white'
-                                           }}
-                                           autoplay={true}
-                                           height={bannerH}
-                                           style={{ marginBottom: 10 }}
-                                /> : null
+                            hasBanner ?
+                                <TouchableOpacity onPress={() => {
+                                    this.clickBanner(this.state.bannerData);
+                                }} activeOpacity={0.7}>
+                                    <ImageLoad
+                                        source={{ uri: this.state.bannerData.img }}
+                                        borderRadius={5}
+                                        style={{
+                                            width: bannerW,
+                                            height: bannerH,
+                                            borderRadius: 5,
+                                            marginLeft: 10,
+                                            marginRight: 10
+                                        }}
+                                    />
+                                </TouchableOpacity>
+                                : null
                         }
                         <SectionList
                             ref={(ref) => {
                                 this.goods = ref;
                             }}
                             style={{
-                                marginTop: this.state.bannerData.length > 0 ? 10 : 0,
+                                marginTop: hasBanner ? 10 : 0,
                                 marginLeft: 10,
                                 marginRight: 10
                             }}
@@ -238,8 +205,10 @@ export default class CategorySearchPage extends BasePage {
 
     _categoryItem = (item) => {
         return (
-            <TouchableOpacity style={{ height: 45, flexDirection: 'row' }} activeOpacity={0.7}
-                              onPress={() => this._onCategoryClick(item.item, item.index)}>
+            <TouchableOpacity
+                style={{ height: 45, flexDirection: 'row' }}
+                activeOpacity={0.7}
+                onPress={() => this._onCategoryClick(item.item, item.index)}>
                 <View style={{
                     height: 45,
                     width: 2,
@@ -287,12 +256,11 @@ export default class CategorySearchPage extends BasePage {
                     let datas = response.data || {};
                     this.setState({
                         sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList || [] }],
-                        bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
+                        bannerData: {
                             img: datas.img,
                             linkType: datas.linkType,
                             linkTypeCode: datas.linkTypeCode
-                        }],
-                        swiperShow: !StringUtils.isEmpty(datas.img)
+                        }
                     }, () => {
                         this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
                     });
@@ -320,12 +288,11 @@ export default class CategorySearchPage extends BasePage {
             });
             this.setState({
                 sectionArr: arr || [],
-                bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
+                bannerData: {
                     img: datas.img,
                     linkType: datas.linkType,
                     linkTypeCode: datas.linkTypeCode
-                }],
-                swiperShow: !StringUtils.isEmpty(datas.img)
+                }
             }, () => {
                 if (this.state.sectionArr.length > 0) {
                     this.goods && this.goods.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
@@ -353,15 +320,16 @@ export default class CategorySearchPage extends BasePage {
                                    width: itemImgW
                                }}/>
                 </TouchableOpacity>
-                <UIText value={item.item.name}
-                        style={{
-                            textAlign: 'center',
-                            fontSize: 13,
-                            color: DesignRule.textColor_mainTitle,
-                            marginTop: 10,
-                            marginBottom: 22
-                        }}
-                        numberOfLines={2}/>
+                <UIText
+                    value={item.item.name}
+                    style={{
+                        textAlign: 'center',
+                        fontSize: 13,
+                        color: DesignRule.textColor_mainTitle,
+                        marginTop: 10,
+                        marginBottom: 22
+                    }}
+                    numberOfLines={2}/>
             </View>
         );
     };
@@ -375,7 +343,7 @@ export default class CategorySearchPage extends BasePage {
                         width: ScreenUtils.width - 110,
                         color: DesignRule.textColor_mainTitle,
                         marginBottom: 20,
-                        marginTop: this.state.bannerData.length === 0 && section.index === 0 ? 10 : 0
+                        marginTop: StringUtils.isEmpty(this.state.bannerData.img) && section.index === 0 ? 10 : 0
                     }}/>
         );
     };
@@ -431,4 +399,3 @@ const styles = StyleSheet.create({
         padding: 5
     }
 });
-

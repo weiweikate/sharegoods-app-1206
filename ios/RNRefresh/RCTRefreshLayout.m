@@ -8,6 +8,7 @@
 
 #import "RCTRefreshLayout.h"
 #import "RefreshLineVIew.h"
+#import "MBProgressHUD+PD.h"
 @interface RCTRefreshLayout ()
 
 @property (nonatomic, assign) MJRefreshState preState;
@@ -44,6 +45,15 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.19 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       self.line.hidden = YES;
     });
+    __weak typeof(self) weakSelf2 = self;
+           dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+              [self endRefreshingWithCompletionBlock:^{
+                       typeof(weakSelf2) self = weakSelf2;
+                       if (self.onChangeState) {
+                           self.onChangeState(@{@"state":@(MJRefreshStateIdle)});
+                       }
+                   }];
+           });
   }else if (state == MJRefreshStateIdle && self.state == MJRefreshStateRefreshing){
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       self.line.hidden = NO;
@@ -51,7 +61,6 @@
   }else{
      self.line.hidden = NO;
   }
-    [super setState:state];
     if (self.onChangeState) {
         if (state == MJRefreshStateIdle && (_preState == MJRefreshStateRefreshing || _preState == MJRefreshStateWillRefresh)) {
             self.onChangeState(@{@"state":@(4)}); // 结束刷新
@@ -61,6 +70,7 @@
             self.onChangeState(@{@"state":@(state)});
         }
     }
+   [super setState:state];
     _preState = state;
 }
 

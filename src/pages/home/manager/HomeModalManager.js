@@ -9,7 +9,6 @@ import { action, observable, flow ,computed} from 'mobx';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import MineApi from '../../mine/api/MineApi';
 import HomeAPI from '../api/HomeAPI';
-import { homeType } from '../HomeTypes';
 import store from '@mr/rn-store';
 import MessageApi from '../../message/api/MessageApi';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
@@ -17,7 +16,7 @@ import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import homeController from '../../marketing/controller/HomeController';
 
-const requsetCount = 5;
+const requsetCount = 4;
 
 class HomeModalManager {
     /** 控制升级框*/
@@ -41,12 +40,6 @@ class HomeModalManager {
     needShowNotice = false;
     @observable
     homeMessage = null;
-    /** 控制首页广告*/
-    @observable
-    isShowAd = false;
-    needShowAd = false;
-    @observable
-    AdData = null;
 
     /** 控制首页中奖*/
     @observable
@@ -67,7 +60,7 @@ class HomeModalManager {
     finishCount = 0;
 
     @computed get isShowModal(){
-        return this.isShowAd || this.isShowGift || this.isShowNotice || this.isShowPrivacyModal || this.isShowPrize || this.isShowUpdate || this.isShowUser || this.isShowUserMemberUpdate;
+        return this.isShowNotice || this.isShowPrivacyModal || this.isShowPrize || this.isShowUpdate || this.isShowUser || this.isShowUserMemberUpdate;
     }
 
     @action
@@ -86,7 +79,6 @@ class HomeModalManager {
         this.finishCount = 0;
         this.getVersion();
         this.getMessage();
-        this.getAd();
         this.getPrize();
         this.getPrivacy();
     }
@@ -95,8 +87,6 @@ class HomeModalManager {
     openNext() {
         if (this.isShowUpdate ||
             this.isShowNotice ||
-            this.isShowAd ||
-            this.isShowGift ||
             this.isShowPrize ||
             this.isShowUser ||
             this.isShowPrivacyModal
@@ -114,9 +104,6 @@ class HomeModalManager {
         } else if (this.needShowNotice === true) {
             this.isShowNotice = true;
             track(trackEvent.HomePagePopShow, {homePagePopType: 2});
-        } else if (this.needShowAd === true) {
-            this.isShowAd = true;
-            track(trackEvent.HomePagePopShow, {homePagePopType: 7});
         } else if (this.needShowPrize === true) {
             this.isShowPrize = true;
             track(trackEvent.HomePagePopShow, {homePagePopType: 6});
@@ -172,24 +159,6 @@ class HomeModalManager {
         this.needShowNotice = false;
         this.homeMessage = null;
 
-        this.isShowAd = false;
-        this.needShowAd = false;
-        this.openNext();
-    }
-
-
-    @action
-    closeAd(open) {
-        if (open){
-            track(trackEvent.HomePagePopBtnClick, {homePagePopType: 7, homePagePopImgURL: this.AdData.image});
-        }
-        let currStr = new Date().getTime();
-        store.save('@mr/home_lastAdTime', String(currStr));
-        this.isShowAd = false;
-        this.needShowAd = false;
-        this.AdData = null;
-        this.isShowNotice = false;
-        this.needShowNotice = false;
         this.openNext();
     }
 
@@ -286,28 +255,6 @@ class HomeModalManager {
         });
     }
 
-//一天弹一次 公告与广告不共存
-    @action
-    getAd() {
-        let currStr = new Date().getTime() + '';
-        store.get('@mr/home_lastAdTime').then((value) => {
-            if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-                HomeAPI.getHomeData({ type: homeType.windowAlert }).then(resp => {
-                    if (resp.data && resp.data.length > 0) {
-                        this.needShowAd = true;
-                        this.AdData = resp.data[0];
-                    }
-                    this.actionFinish();
-                }).catch((msg) => {
-                    this.actionFinish();
-                });
-            } else {
-                this.actionFinish();
-            }
-        }).catch(() => {
-            this.actionFinish();
-        });
-    }
 
     @action
     getPrize() {
